@@ -408,6 +408,10 @@ public:
 		referenceContent = ReplaceAll (referenceContent, L"\r\n", L"\n");
 		currentContent = ReplaceAll (currentContent, L"\r\n", L"\n");
 		if (referenceContent != currentContent) {
+			std::wcout << std::endl << L"=== CURRENT ===" << std::endl;
+			std::wcout << currentContent << std::endl;
+			std::wcout << L"=== REFERENCE ===" << std::endl;
+			std::wcout << referenceContent << std::endl;
 			context.WriteToFile (testFilesPath + "Current_" + referenceFileName);
 			return false;
 		}
