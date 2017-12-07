@@ -1,0 +1,8 @@
+Make/DevKit/VS/*
+Make/GCC/Binaries/*
+Make/VS/*/Release/*
+Make/VS/*/*/Release/*
+Make/VS/*/Debug/*
+Make/VS/*/*/Debug/*
+*.db
+*.opendb

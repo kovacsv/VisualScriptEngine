@@ -1,0 +1,86 @@
+#include "SimpleTest.hpp"
+#include "Geometry.hpp"
+
+using namespace NUIE;
+
+namespace GeometryTest
+{
+
+TEST (PointTest)
+{
+	Point p1 (1.0, 2.0);
+	Point p2 (3.0, 4.0);
+	ASSERT (p1.GetX () == 1.0);
+	ASSERT (p1.GetY () == 2.0);
+	ASSERT (p1 == Point (1.0, 2.0));
+	ASSERT (p1 != Point (1.0, 3.0));
+	ASSERT (p1 + p2 == Point (4.0, 6.0));
+	ASSERT (p1 - p2 == Point (-2.0, -2.0));
+	ASSERT (p1 * 2.0 == Point (2.0, 4.0));
+	ASSERT (p1 / 2.0 == Point (0.5, 1.0));
+	ASSERT (p1.DistanceTo (Point (2.0, 2.0)) == 1.0);
+	ASSERT (p1.DistanceTo (Point (1.0, 3.0)) == 1.0);
+	ASSERT (Point::GetMidPoint (p1, Point (3.0, 2.0)) == Point (2.0, 2.0));
+}
+
+TEST (SizeTest)
+{
+	Size s1 (1.0, 2.0);
+	Size s2 (3.0, 4.0);
+	ASSERT (s1.GetWidth () == 1.0);
+	ASSERT (s1.GetHeight () == 2.0);
+	ASSERT (s1 == Size (1.0, 2.0));
+	ASSERT (s1 != Size (1.0, 3.0));
+	ASSERT (s1 + s2 == Size (4.0, 6.0));
+	ASSERT (s1 - s2 == Size (-2.0, -2.0));
+	ASSERT (s1 * 2.0 == Size (2.0, 4.0));
+	ASSERT (s1 / 2.0 == Size (0.5, 1.0));
+	s1 = s1.Grow (2.0, 3.0);
+	ASSERT (s1 == Size (3.0, 5.0));
+	s1.SetWidth (4.0);
+	s1.SetHeight (6.0);
+	ASSERT (s1 == Size (4.0, 6.0));
+}
+
+TEST (RectTest)
+{
+	Rect r1 (1.0, 2.0, 3.0, 4.0);
+	
+	ASSERT (r1 == Rect (1.0, 2.0, 3.0, 4.0));
+	ASSERT (r1 != Rect (2.0, 3.0, 4.0, 5.0));
+
+	ASSERT (r1.GetX () == 1.0);
+	ASSERT (r1.GetY () == 2.0);
+	ASSERT (r1.GetWidth () == 3.0);
+	ASSERT (r1.GetHeight () == 4.0);
+
+	ASSERT (r1.GetLeft () == 1.0);
+	ASSERT (r1.GetRight () == 4.0);
+	ASSERT (r1.GetTop () == 2.0);
+	ASSERT (r1.GetBottom () == 6.0);
+
+	ASSERT (r1.GetTopLeft () == Point (1.0, 2.0));
+	ASSERT (r1.GetTopRight () == Point (4.0, 2.0));
+	ASSERT (r1.GetBottomLeft () == Point (1.0, 6.0));
+	ASSERT (r1.GetBottomRight () == Point (4.0, 6.0));
+
+	ASSERT (r1.GetCenter () == Point (2.5, 4.0));
+	ASSERT (r1.GetLeftCenter () == Point (1.0, 4.0));
+	ASSERT (r1.GetRightCenter () == Point (4.0, 4.0));
+	ASSERT (r1.GetTopCenter () == Point (2.5, 2.0));
+	ASSERT (r1.GetBottomCenter () == Point (2.5, 6.0));
+
+	ASSERT (r1.GetSize () == Size (3.0, 4.0));
+	ASSERT (r1.Contains (Point (2.0, 4.0)));
+	ASSERT (!r1.Contains (Point (0.0, 4.0)));
+	ASSERT (!r1.Contains (Point (2.0, 1.0)));
+	ASSERT (!r1.Contains (Point (6.0, 4.0)));
+	ASSERT (!r1.Contains (Point (2.0, 7.0)));
+
+	Rect r2 = Rect::FromPositionAndSize (Point (1.0, 2.0), Size (3.0, 4.0));
+	ASSERT (r1 == r2);
+	Rect r3 = Rect::FromCenterAndSize (Point (2.5, 4.0), Size (3.0, 4.0));
+	ASSERT (r1 == r3);
+}
+
+}

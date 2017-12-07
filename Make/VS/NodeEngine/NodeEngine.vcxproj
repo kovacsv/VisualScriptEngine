@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Checksum.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\MemoryStream.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Serializable.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\ConnectionManager.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Debug.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\EvaluationEnv.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\InputSlot.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Node.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NodeEngineTypes.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NodeId.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NodeManager.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NodeValueCache.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\OutputSlot.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\SingleValues.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Slot.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\ConnectionList.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\SlotId.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\SlotList.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NodeEngineUtilities.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Stamp.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Stream.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Value.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\GenericValue.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\ValueCombination.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Checksum.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\MemoryStream.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Serializable.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\ConnectionManager.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Debug.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\EvaluationEnv.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\InputSlot.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Node.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NodeId.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NodeManager.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NodeValueCache.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\OutputSlot.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\SingleValues.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Slot.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\SlotId.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NodeEngineUtilities.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Stamp.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Stream.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Value.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\ValueCombination.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AC633FDE-C8DD-4A56-8434-1EB1AA220358}</ProjectGuid>
+    <RootNamespace>NodeEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
