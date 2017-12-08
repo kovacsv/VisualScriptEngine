@@ -6,6 +6,19 @@
 namespace NUIE
 {
 
+class NodeIdToNodeMap
+{
+public:
+	NodeIdToNodeMap (const NodeUIManager& uiManager);
+
+	void			Insert (const NE::NodeId& nodeId, const UINode* uiNode);
+	const UINode*	GetUINode (const NE::NodeId& nodeId) const;
+	void			Enumerate (const std::function<void (const UINode*)>& processor) const;
+
+private:
+	std::unordered_map<NE::NodeId, const UINode*>	nodeIdToNodeMap;
+};
+
 class NodeUIManagerDrawer
 {
 public:
@@ -24,11 +37,11 @@ private:
 	bool				IsConnectionVisible (NodeUIEnvironment& env, const Point& beg, const Point& end) const;
 	bool				IsNodeVisible (NodeUIEnvironment& env, const UINode* uiNode) const;
 	bool				IsRectVisible (NodeUIEnvironment& env, const Rect& rect) const;
-	const UINode*		FindNodeById (const NE::NodeId& nodeId) const;
 
-	const NodeUIManager&									uiManager;
-	mutable std::vector<const UINode*>						nodesToDraw;
-	mutable std::unordered_map<NE::NodeId, const UINode*>	nodeIdToNodeMap;
+	const NodeUIManager&					uiManager;
+	NodeIdToNodeMap							nodeIdToNodeMap;
+	mutable std::vector<const UINode*>		visibleNodes;
+	mutable std::vector<const UINode*>		visibleConnectedNodes;
 };
 
 }

@@ -5,8 +5,39 @@
 namespace NUIE
 {
 
+NodeIdToNodeMap::NodeIdToNodeMap (const NodeUIManager& uiManager)
+{
+	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+		const UINode* uiNodePtr = uiNode.get ();
+		Insert (uiNodePtr->GetId (), uiNodePtr);
+		return true;
+	});
+}
+
+void NodeIdToNodeMap::Insert (const NE::NodeId& nodeId, const UINode* uiNode)
+{
+	nodeIdToNodeMap.insert ({ nodeId, uiNode });
+}
+
+const UINode* NodeIdToNodeMap::GetUINode (const NE::NodeId& nodeId) const
+{
+	auto found = nodeIdToNodeMap.find (nodeId);
+	if (found == nodeIdToNodeMap.end ()) {
+		return nullptr;
+	}
+	return found->second;
+}
+
+void NodeIdToNodeMap::Enumerate (const std::function<void (const UINode*)>& processor) const
+{
+	for (const auto& it : nodeIdToNodeMap) {
+		processor (it.second);
+	}
+}
+
 NodeUIManagerDrawer::NodeUIManagerDrawer (const NodeUIManager& uiManager) :
-	uiManager (uiManager)
+	uiManager (uiManager),
+	nodeIdToNodeMap (uiManager)
 {
 
 }
@@ -40,12 +71,11 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIEnvironment& env) const
 
 void NodeUIManagerDrawer::DrawConnections (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const
 {
-	for (const auto& it : nodeIdToNodeMap) {
-		const UINode* uiNode = it.second;
+	for (const UINode* uiNode : visibleConnectedNodes) {
 		uiNode->EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
 			Point beg = uiNode->GetOutputSlotConnPosition (env, outputSlot->GetId ());
 			uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const NE::InputSlotConstPtr& inputSlot) {
-				const UINode* endNode = FindNodeById (inputSlot->GetOwnerNodeId ());
+				const UINode* endNode = nodeIdToNodeMap.GetUINode (inputSlot->GetOwnerNodeId ());
 				if (DBGERROR (endNode == nullptr)) {
 					return;
 				}
@@ -80,7 +110,7 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIEnvironment& env) const
 	ColorBlenderNodeContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor ());
 	NodeUIEnvironmentContextDecorator selectionEnv (env, selectionContext);
 	const NodeUIManager::SelectedNodes& selectedNodes = uiManager.GetSelectedNodes ();
-	for (const UINode* uiNode : nodesToDraw) {
+	for (const UINode* uiNode: visibleNodes) {
 		const NE::NodeId& nodeId = uiNode->GetId ();
 		NE::Checksum drawingImageChecksum = uiNode->GetDrawingImageChecksum (env);
 
@@ -104,15 +134,37 @@ void NodeUIManagerDrawer::DrawSelectionRect (NodeUIEnvironment& env, const NodeD
 
 void NodeUIManagerDrawer::InitNodesToDraw (NodeUIEnvironment& env) const
 {
-	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
-		const UINode* uiNodePtr = uiNode.get ();
-		if (IsNodeVisible (env, uiNodePtr)) {
-			nodesToDraw.push_back (uiNodePtr);
+	std::unordered_set<const UINode*> visibleConnectedNodeSet;
+	nodeIdToNodeMap.Enumerate ([&] (const UINode* uiNode) {
+		if (IsNodeVisible (env, uiNode)) {
+			visibleNodes.push_back (uiNode);
+			visibleConnectedNodeSet.insert (uiNode);
+			uiNode->EnumerateInputSlots ([&] (const NE::InputSlotConstPtr& inputSlot) {
+				uiManager.EnumerateConnectedOutputSlots (inputSlot, [&] (const NE::OutputSlotConstPtr& outputSlot) {
+					const UINode* endNode = nodeIdToNodeMap.GetUINode (outputSlot->GetOwnerNodeId ());
+					visibleConnectedNodeSet.insert (endNode);
+				});
+				return true;
+			});
+			uiNode->EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
+				uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const NE::InputSlotConstPtr& inputSlot) {
+					const UINode* endNode = nodeIdToNodeMap.GetUINode (inputSlot->GetOwnerNodeId ());
+					visibleConnectedNodeSet.insert (endNode);
+				});
+				return true;
+			});
 		}
-		nodeIdToNodeMap.insert ({ uiNodePtr->GetId (), uiNodePtr });
-		return true;
 	});
-	std::sort (nodesToDraw.begin (), nodesToDraw.end (), [&] (const UINode* a, const UINode* b) -> bool {
+
+	for (const UINode* uiNode : visibleConnectedNodeSet) {
+		visibleConnectedNodes.push_back (uiNode);
+	}
+
+	std::sort (visibleNodes.begin (), visibleNodes.end (), [&] (const UINode* a, const UINode* b) -> bool {
+		return a->GetId () < b->GetId ();
+	});
+
+	std::sort (visibleConnectedNodes.begin (), visibleConnectedNodes.end (), [&] (const UINode* a, const UINode* b) -> bool {
 		return a->GetId () < b->GetId ();
 	});
 }
@@ -134,15 +186,6 @@ bool NodeUIManagerDrawer::IsRectVisible (NodeUIEnvironment& env, const Rect& rec
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	const DrawingContext& context = env.GetDrawingContext ();
 	return Rect::IsInBounds (viewBox.ModelToView (rect), context.GetWidth (), context.GetHeight ());
-}
-
-const UINode* NodeUIManagerDrawer::FindNodeById (const NE::NodeId& nodeId) const
-{
-	auto found = nodeIdToNodeMap.find (nodeId);
-	if (found == nodeIdToNodeMap.end ()) {
-		return nullptr;
-	}
-	return found->second;
 }
 
 }
