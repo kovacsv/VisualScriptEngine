@@ -6,3 +6,5 @@ Make/VS/*/Debug/*
 Make/VS/*/*/Debug/*
 *.db
 *.opendb
+*.suo
+
