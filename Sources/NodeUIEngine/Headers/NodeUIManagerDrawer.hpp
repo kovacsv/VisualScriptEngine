@@ -33,15 +33,14 @@ private:
 	void				DrawNodes (NodeUIEnvironment& env) const;
 	void				DrawSelectionRect (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const;
 
-	void				InitNodesToDraw (NodeUIEnvironment& env) const;
+	void				InitSortedNodeList () const;
 	bool				IsConnectionVisible (NodeUIEnvironment& env, const Point& beg, const Point& end) const;
 	bool				IsNodeVisible (NodeUIEnvironment& env, const UINode* uiNode) const;
 	bool				IsRectVisible (NodeUIEnvironment& env, const Rect& rect) const;
 
 	const NodeUIManager&					uiManager;
 	NodeIdToNodeMap							nodeIdToNodeMap;
-	mutable std::vector<const UINode*>		visibleNodes;
-	mutable std::vector<const UINode*>		allNodes;
+	mutable std::vector<const UINode*>		sortedNodeList;
 };
 
 }

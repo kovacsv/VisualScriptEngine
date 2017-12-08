@@ -39,13 +39,11 @@ NodeUIManagerDrawer::NodeUIManagerDrawer (const NodeUIManager& uiManager) :
 	uiManager (uiManager),
 	nodeIdToNodeMap (uiManager)
 {
-
+	InitSortedNodeList ();
 }
 	
 void NodeUIManagerDrawer::Draw (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const
 {
-	InitNodesToDraw (env);
-
 	NodeDrawingContext& drawingContext = env.GetDrawingContext ();
 	drawingContext.BeginDraw ();
 
@@ -71,7 +69,7 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIEnvironment& env) const
 
 void NodeUIManagerDrawer::DrawConnections (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const
 {
-	for (const UINode* uiNode : allNodes) {
+	for (const UINode* uiNode : sortedNodeList) {
 		uiNode->EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
 			Point beg = uiNode->GetOutputSlotConnPosition (env, outputSlot->GetId ());
 			uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const NE::InputSlotConstPtr& inputSlot) {
@@ -110,7 +108,11 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIEnvironment& env) const
 	ColorBlenderNodeContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor ());
 	NodeUIEnvironmentContextDecorator selectionEnv (env, selectionContext);
 	const NodeUIManager::SelectedNodes& selectedNodes = uiManager.GetSelectedNodes ();
-	for (const UINode* uiNode: visibleNodes) {
+	for (const UINode* uiNode: sortedNodeList) {
+		if (!IsNodeVisible (env, uiNode)) {
+			continue;
+		}
+
 		const NE::NodeId& nodeId = uiNode->GetId ();
 		NE::Checksum drawingImageChecksum = uiNode->GetDrawingImageChecksum (env);
 
@@ -132,21 +134,14 @@ void NodeUIManagerDrawer::DrawSelectionRect (NodeUIEnvironment& env, const NodeD
 	}
 }
 
-void NodeUIManagerDrawer::InitNodesToDraw (NodeUIEnvironment& env) const
+void NodeUIManagerDrawer::InitSortedNodeList () const
 {
 	std::unordered_set<const UINode*> visibleConnectedNodeSet;
 	nodeIdToNodeMap.Enumerate ([&] (const UINode* uiNode) {
-		allNodes.push_back (uiNode);
-		if (IsNodeVisible (env, uiNode)) {
-			visibleNodes.push_back (uiNode);
-		}
+		sortedNodeList.push_back (uiNode);
 	});
 
-	std::sort (visibleNodes.begin (), visibleNodes.end (), [&] (const UINode* a, const UINode* b) -> bool {
-		return a->GetId () < b->GetId ();
-	});
-
-	std::sort (allNodes.begin (), allNodes.end (), [&] (const UINode* a, const UINode* b) -> bool {
+	std::sort (sortedNodeList.begin (), sortedNodeList.end (), [&] (const UINode* a, const UINode* b) -> bool {
 		return a->GetId () < b->GetId ();
 	});
 }
