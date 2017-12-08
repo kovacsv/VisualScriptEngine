@@ -71,7 +71,7 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIEnvironment& env) const
 
 void NodeUIManagerDrawer::DrawConnections (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const
 {
-	for (const UINode* uiNode : visibleConnectedNodes) {
+	for (const UINode* uiNode : allNodes) {
 		uiNode->EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
 			Point beg = uiNode->GetOutputSlotConnPosition (env, outputSlot->GetId ());
 			uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const NE::InputSlotConstPtr& inputSlot) {
@@ -136,35 +136,17 @@ void NodeUIManagerDrawer::InitNodesToDraw (NodeUIEnvironment& env) const
 {
 	std::unordered_set<const UINode*> visibleConnectedNodeSet;
 	nodeIdToNodeMap.Enumerate ([&] (const UINode* uiNode) {
+		allNodes.push_back (uiNode);
 		if (IsNodeVisible (env, uiNode)) {
 			visibleNodes.push_back (uiNode);
-			visibleConnectedNodeSet.insert (uiNode);
-			uiNode->EnumerateInputSlots ([&] (const NE::InputSlotConstPtr& inputSlot) {
-				uiManager.EnumerateConnectedOutputSlots (inputSlot, [&] (const NE::OutputSlotConstPtr& outputSlot) {
-					const UINode* endNode = nodeIdToNodeMap.GetUINode (outputSlot->GetOwnerNodeId ());
-					visibleConnectedNodeSet.insert (endNode);
-				});
-				return true;
-			});
-			uiNode->EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
-				uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const NE::InputSlotConstPtr& inputSlot) {
-					const UINode* endNode = nodeIdToNodeMap.GetUINode (inputSlot->GetOwnerNodeId ());
-					visibleConnectedNodeSet.insert (endNode);
-				});
-				return true;
-			});
 		}
 	});
-
-	for (const UINode* uiNode : visibleConnectedNodeSet) {
-		visibleConnectedNodes.push_back (uiNode);
-	}
 
 	std::sort (visibleNodes.begin (), visibleNodes.end (), [&] (const UINode* a, const UINode* b) -> bool {
 		return a->GetId () < b->GetId ();
 	});
 
-	std::sort (visibleConnectedNodes.begin (), visibleConnectedNodes.end (), [&] (const UINode* a, const UINode* b) -> bool {
+	std::sort (allNodes.begin (), allNodes.end (), [&] (const UINode* a, const UINode* b) -> bool {
 		return a->GetId () < b->GetId ();
 	});
 }

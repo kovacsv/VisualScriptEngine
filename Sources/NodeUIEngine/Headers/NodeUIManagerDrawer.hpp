@@ -41,7 +41,7 @@ private:
 	const NodeUIManager&					uiManager;
 	NodeIdToNodeMap							nodeIdToNodeMap;
 	mutable std::vector<const UINode*>		visibleNodes;
-	mutable std::vector<const UINode*>		visibleConnectedNodes;
+	mutable std::vector<const UINode*>		allNodes;
 };
 
 }
