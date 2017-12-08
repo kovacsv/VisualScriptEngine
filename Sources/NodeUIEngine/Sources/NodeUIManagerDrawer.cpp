@@ -114,14 +114,8 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIEnvironment& env) const
 		}
 
 		const NE::NodeId& nodeId = uiNode->GetId ();
-		NE::Checksum drawingImageChecksum = uiNode->GetDrawingImageChecksum (env);
-
 		NodeUIEnvironment& envToUse = selectedNodes.Contains (nodeId) ? selectionEnv : env;
-		NodeDrawingContext& contextToUse = envToUse.GetDrawingContext ();
-
-		contextToUse.OnNodeDrawingBegin (nodeId, drawingImageChecksum, uiNode->GetNodeRect (envToUse));
 		uiNode->Draw (envToUse);
-		contextToUse.OnNodeDrawingEnd (nodeId);
 	}
 }
 

@@ -76,9 +76,13 @@ void UINode::SetNodePosition (const Point& newPosition)
 
 void UINode::Draw (NodeUIEnvironment& env) const
 {
+	env.GetDrawingContext ().OnNodeDrawingBegin (GetId (), GetDrawingImageChecksum (env), GetNodeRect (env));
+
 	ViewBox nodeViewBox (nodePosition, 1.0);
 	ViewBoxNodeContextDecorator nodeContext (env.GetDrawingContext (), nodeViewBox);
 	GetNodeDrawingImage (env).Draw (nodeContext);
+
+	env.GetDrawingContext ().OnNodeDrawingEnd (GetId ());
 }
 
 NE::Checksum UINode::GetDrawingImageChecksum (NodeUIEnvironment& env) const
