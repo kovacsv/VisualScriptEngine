@@ -5,35 +5,6 @@
 #include "NodeImageCache.hpp"
 #include <memory>
 
-class BitmapImageCacheData : public NUIE::NodeImageCachedContext
-{
-public:
-	BitmapImageCacheData (const NE::Checksum& checksum, const NUIE::IntRect& rect) :
-		NodeImageCachedContext (checksum, rect),
-		context (rect.GetWidth (), rect.GetHeight ())
-	{
-
-	}
-
-	virtual NUIE::DrawingContext& GetContext () override
-	{
-		return context;
-	}
-
-	virtual const NUIE::DrawingContext& GetContext () const override
-	{
-		return context;
-	}
-
-	BitmapContextGdi* GetTypedContext ()
-	{
-		return &context;
-	}
-
-private:
-	BitmapContextGdi context;
-};
-
 class NodeBitmapContextGdi : public NUIE::NodeDrawingContext
 {
 public:
@@ -66,11 +37,11 @@ public:
 	void				DrawToHDC (HDC hdc, int x, int y);
 
 private:
-	NUIE::DrawingContext*						ChooseContext ();
+	NUIE::DrawingContext*		ChooseContext ();
 
-	BitmapContextGdi							bitmapContext;
-	BitmapImageCacheData*						currentNodeCacheData;
-	NUIE::NodeImageCache<BitmapImageCacheData>	nodeImageCache;
+	BitmapContextGdi			bitmapContext;
+	NodeImageCachedContext*		currentNodeContext;
+	NodeImageCache				nodeImageCache;
 };
 
 #endif

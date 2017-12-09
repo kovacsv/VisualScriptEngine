@@ -3,7 +3,8 @@
 NodeImageCachedContext::NodeImageCachedContext (const NE::Checksum& checksum, const NUIE::IntRect& nodeRect) :
 	checksum (checksum),
 	nodeRect (nodeRect),
-	isUpToDate (false)
+	isUpToDate (false),
+	context (nodeRect.GetWidth (), nodeRect.GetHeight ())
 {
 
 }
@@ -34,69 +35,74 @@ void NodeImageCachedContext::UpdateRect (const NUIE::IntRect& rect)
 	isUpToDate = true;
 }
 
+BitmapContextGdi* NodeImageCachedContext::GetContext ()
+{
+	return &context;
+}
+
 void NodeImageCachedContext::Resize (int newWidth, int newHeight)
 {
-	return GetContext ().Resize (newWidth, newHeight);
+	return context.Resize (newWidth, newHeight);
 }
 
 double NodeImageCachedContext::GetWidth () const
 {
-	return GetContext ().GetWidth ();
+	return context.GetWidth ();
 }
 
 double NodeImageCachedContext::GetHeight () const
 {
-	return GetContext ().GetHeight ();
+	return context.GetHeight ();
 }
 
 void NodeImageCachedContext::BeginDraw ()
 {
-	GetContext ().BeginDraw ();
+	context.BeginDraw ();
 }
 
 void NodeImageCachedContext::EndDraw ()
 {
-	GetContext ().EndDraw ();
+	context.EndDraw ();
 }
 
 void NodeImageCachedContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
-	GetContext ().DrawLine (GetOffsettedPoint (beg), GetOffsettedPoint (end), pen);
+	context.DrawLine (GetOffsettedPoint (beg), GetOffsettedPoint (end), pen);
 }
 
 void NodeImageCachedContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
-	GetContext ().DrawBezier (GetOffsettedPoint (p1), GetOffsettedPoint (p2), GetOffsettedPoint (p3), GetOffsettedPoint (p4), pen);
+	context.DrawBezier (GetOffsettedPoint (p1), GetOffsettedPoint (p2), GetOffsettedPoint (p3), GetOffsettedPoint (p4), pen);
 }
 
 void NodeImageCachedContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	GetContext ().DrawRect (GetOffsettedRect (rect), pen);
+	context.DrawRect (GetOffsettedRect (rect), pen);
 }
 
 void NodeImageCachedContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	GetContext ().FillRect (GetOffsettedRect (rect), color);
+	context.FillRect (GetOffsettedRect (rect), color);
 }
 
 void NodeImageCachedContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	GetContext ().DrawEllipse (GetOffsettedRect (rect), pen);
+	context.DrawEllipse (GetOffsettedRect (rect), pen);
 }
 
 void NodeImageCachedContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	GetContext ().FillEllipse (GetOffsettedRect (rect), color);
+	context.FillEllipse (GetOffsettedRect (rect), color);
 }
 
 void NodeImageCachedContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& color)
 {
-	GetContext ().DrawFormattedText (GetOffsettedRect (rect), font, text, hAnchor, vAnchor, color);
+	context.DrawFormattedText (GetOffsettedRect (rect), font, text, hAnchor, vAnchor, color);
 }
 
 NUIE::Size NodeImageCachedContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	return GetContext ().MeasureText (font, text);
+	return context.MeasureText (font, text);
 }
 
 NUIE::Point NodeImageCachedContext::GetOffsettedPoint (const NUIE::Point& point)
@@ -107,4 +113,36 @@ NUIE::Point NodeImageCachedContext::GetOffsettedPoint (const NUIE::Point& point)
 NUIE::Rect NodeImageCachedContext::GetOffsettedRect (const NUIE::Rect& rect)
 {
 	return rect.Offset (-NUIE::Point (nodeRect.GetX (), nodeRect.GetY ()));
+}
+
+NodeImageCache::NodeImageCache ()
+{
+
+}
+
+NodeImageCache::~NodeImageCache ()
+{
+
+}
+
+NodeImageCachedContext* NodeImageCache::GetImageCacheData (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::IntRect& rect)
+{
+	auto found = cache.find (nodeId);
+	if (found != cache.end ()) {
+		ImageCacheDataPtr& cacheData = found->second;
+		if (cacheData->IsUpToDate (checksum)) {
+			cacheData->UpdateRect (rect);
+			return cacheData.get ();
+		} else {
+			cache.erase (found);
+		}
+	}
+	return Insert (nodeId, checksum, rect);
+}
+
+NodeImageCachedContext* NodeImageCache::Insert (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::IntRect& rect)
+{
+	ImageCacheDataPtr cacheData (new NodeImageCachedContext (checksum, rect));
+	cache.insert ({ nodeId, cacheData });
+	return cacheData.get ();
 }

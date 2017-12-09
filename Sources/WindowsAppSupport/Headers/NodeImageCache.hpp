@@ -4,6 +4,7 @@
 #include "DrawingContext.hpp"
 #include "NodeId.hpp"
 #include "Checksum.hpp"
+#include "BitmapContextGdi.hpp"
 
 #include <memory>
 #include <unordered_map>
@@ -19,6 +20,8 @@ public:
 
 	const NUIE::IntRect&			GetRect () const;
 	void							UpdateRect (const NUIE::IntRect& rect);
+	BitmapContextGdi*				GetContext ();
+
 
 	virtual void					Resize (int newWidth, int newHeight) override;
 
@@ -40,57 +43,28 @@ public:
 	virtual void					DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& color) override;
 	virtual NUIE::Size				MeasureText (const NUIE::Font& font, const std::wstring& text) override;
 
-	virtual DrawingContext&			GetContext () = 0;
-	virtual const DrawingContext&	GetContext () const = 0;
-
 private:
-	NUIE::Point		GetOffsettedPoint (const NUIE::Point& point);
-	NUIE::Rect		GetOffsettedRect (const NUIE::Rect& rect);
+	NUIE::Point			GetOffsettedPoint (const NUIE::Point& point);
+	NUIE::Rect			GetOffsettedRect (const NUIE::Rect& rect);
 
-	NE::Checksum	checksum;
-	NUIE::IntRect	nodeRect;
-	bool			isUpToDate;
+	NE::Checksum		checksum;
+	NUIE::IntRect		nodeRect;
+	bool				isUpToDate;
+	BitmapContextGdi	context;
 };
 
-template <typename CachedContextType>
 class NodeImageCache
 {
 public:
-	using ImageCacheDataPtr = std::shared_ptr<CachedContextType>;
+	NodeImageCache ();
+	~NodeImageCache ();
 
-	NodeImageCache ()
-	{
-
-	}
-
-	~NodeImageCache ()
-	{
-
-	}
-
-	CachedContextType* GetImageCacheData (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::IntRect& rect)
-	{
-		auto found = cache.find (nodeId);
-		if (found != cache.end ()) {
-			ImageCacheDataPtr& cacheData = found->second;
-			if (cacheData->IsUpToDate (checksum)) {
-				cacheData->UpdateRect (rect);
-				return cacheData.get ();
-			} else {
-				cache.erase (found);
-			}
-		}
-		return Insert (nodeId, checksum, rect);
-	}
-
+	NodeImageCachedContext*		GetImageCacheData (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::IntRect& rect);
+	
 private:
-	CachedContextType* Insert (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::IntRect& rect)
-	{
-		ImageCacheDataPtr cacheData (new CachedContextType (checksum, rect));
-		cache.insert ({ nodeId, cacheData });
-		return cacheData.get ();
-	}
+	NodeImageCachedContext*		Insert (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::IntRect& rect);
 
+	using ImageCacheDataPtr = std::shared_ptr<NodeImageCachedContext>;
 	std::unordered_map<NE::NodeId, ImageCacheDataPtr> cache;
 };
 

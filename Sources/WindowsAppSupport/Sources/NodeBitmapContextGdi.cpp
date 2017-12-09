@@ -3,7 +3,7 @@
 
 NodeBitmapContextGdi::NodeBitmapContextGdi (int width, int height) :
 	bitmapContext (width, height),
-	currentNodeCacheData (nullptr)
+	currentNodeContext (nullptr)
 {
 }
 
@@ -78,17 +78,17 @@ NUIE::Size NodeBitmapContextGdi::MeasureText (const NUIE::Font& font, const std:
 
 void NodeBitmapContextGdi::OnNodeDrawingBegin (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::Rect& rect)
 {
-	currentNodeCacheData = nodeImageCache.GetImageCacheData (nodeId, checksum, rect);
+	currentNodeContext = nodeImageCache.GetImageCacheData (nodeId, checksum, rect);
 }
 
 void NodeBitmapContextGdi::OnNodeDrawingEnd (const NE::NodeId& /*nodeId*/)
 {
-	if (currentNodeCacheData != nullptr) {
-		currentNodeCacheData->SetUpToDate (true);
-		const NUIE::IntRect& nodeRect = currentNodeCacheData->GetRect ();
-		currentNodeCacheData->GetTypedContext ()->DrawToContext (bitmapContext, nodeRect.GetX (), nodeRect.GetY ());
+	if (currentNodeContext != nullptr) {
+		currentNodeContext->SetUpToDate (true);
+		const NUIE::IntRect& nodeRect = currentNodeContext->GetRect ();
+		currentNodeContext->GetContext ()->DrawToContext (bitmapContext, nodeRect.GetX (), nodeRect.GetY ());
 	}
-	currentNodeCacheData = nullptr;
+	currentNodeContext = nullptr;
 }
 
 void NodeBitmapContextGdi::DrawToHDC (HDC hdc, int x, int y)
@@ -98,12 +98,12 @@ void NodeBitmapContextGdi::DrawToHDC (HDC hdc, int x, int y)
 
 NUIE::DrawingContext* NodeBitmapContextGdi::ChooseContext ()
 {
-	if (currentNodeCacheData != nullptr) {
-		if (currentNodeCacheData->IsUpToDate ()) {
+	if (currentNodeContext != nullptr) {
+		if (currentNodeContext->IsUpToDate ()) {
 			static NUIE::NullDrawingContext nullContext;
 			return &nullContext;
 		}
-		return currentNodeCacheData;
+		return currentNodeContext;
 	}
 	return &bitmapContext;
 }
