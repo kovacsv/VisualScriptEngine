@@ -1,9 +1,6 @@
 #include "NodeImageCache.hpp"
 
-namespace NUIE
-{
-
-NodeImageCachedContext::NodeImageCachedContext (const NE::Checksum& checksum, const IntRect& nodeRect) :
+NodeImageCachedContext::NodeImageCachedContext (const NE::Checksum& checksum, const NUIE::IntRect& nodeRect) :
 	checksum (checksum),
 	nodeRect (nodeRect),
 	isUpToDate (false)
@@ -26,12 +23,12 @@ void NodeImageCachedContext::SetUpToDate (bool newIsUpToDate)
 	isUpToDate = newIsUpToDate;
 }
 
-const IntRect& NodeImageCachedContext::GetRect () const
+const NUIE::IntRect& NodeImageCachedContext::GetRect () const
 {
 	return nodeRect;
 }
 
-void NodeImageCachedContext::UpdateRect (const IntRect& rect)
+void NodeImageCachedContext::UpdateRect (const NUIE::IntRect& rect)
 {
 	nodeRect = rect;
 	isUpToDate = true;
@@ -62,54 +59,52 @@ void NodeImageCachedContext::EndDraw ()
 	GetContext ().EndDraw ();
 }
 
-void NodeImageCachedContext::DrawLine (const Point& beg, const Point& end, const Pen& pen)
+void NodeImageCachedContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	GetContext ().DrawLine (GetOffsettedPoint (beg), GetOffsettedPoint (end), pen);
 }
 
-void NodeImageCachedContext::DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen)
+void NodeImageCachedContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
 	GetContext ().DrawBezier (GetOffsettedPoint (p1), GetOffsettedPoint (p2), GetOffsettedPoint (p3), GetOffsettedPoint (p4), pen);
 }
 
-void NodeImageCachedContext::DrawRect (const Rect& rect, const Pen& pen)
+void NodeImageCachedContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	GetContext ().DrawRect (GetOffsettedRect (rect), pen);
 }
 
-void NodeImageCachedContext::FillRect (const Rect& rect, const Color& color)
+void NodeImageCachedContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	GetContext ().FillRect (GetOffsettedRect (rect), color);
 }
 
-void NodeImageCachedContext::DrawEllipse (const Rect& rect, const Pen& pen)
+void NodeImageCachedContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	GetContext ().DrawEllipse (GetOffsettedRect (rect), pen);
 }
 
-void NodeImageCachedContext::FillEllipse (const Rect& rect, const Color& color)
+void NodeImageCachedContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	GetContext ().FillEllipse (GetOffsettedRect (rect), color);
 }
 
-void NodeImageCachedContext::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color)
+void NodeImageCachedContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& color)
 {
 	GetContext ().DrawFormattedText (GetOffsettedRect (rect), font, text, hAnchor, vAnchor, color);
 }
 
-Size NodeImageCachedContext::MeasureText (const Font& font, const std::wstring& text)
+NUIE::Size NodeImageCachedContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
 	return GetContext ().MeasureText (font, text);
 }
 
-Point NodeImageCachedContext::GetOffsettedPoint (const Point& point)
+NUIE::Point NodeImageCachedContext::GetOffsettedPoint (const NUIE::Point& point)
 {
-	return point - Point (nodeRect.GetX (), nodeRect.GetY ());
+	return point - NUIE::Point (nodeRect.GetX (), nodeRect.GetY ());
 }
 
-Rect NodeImageCachedContext::GetOffsettedRect (const Rect& rect)
+NUIE::Rect NodeImageCachedContext::GetOffsettedRect (const NUIE::Rect& rect)
 {
-	return rect.Offset (-Point (nodeRect.GetX (), nodeRect.GetY ()));
-}
-
+	return rect.Offset (-NUIE::Point (nodeRect.GetX (), nodeRect.GetY ()));
 }

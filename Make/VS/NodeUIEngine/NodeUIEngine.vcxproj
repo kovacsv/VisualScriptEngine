@@ -127,7 +127,6 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeDrawingExtension.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeDrawingImage.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeEditor.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeImageCache.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeUIManagerDrawer.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeCommands.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeUIPanelDrawer.hpp" />
@@ -156,7 +155,6 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeDrawingImage.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\CommandStructure.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeEditor.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeImageCache.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeUIManagerDrawer.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeCommands.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeUIPanelDrawer.cpp" />

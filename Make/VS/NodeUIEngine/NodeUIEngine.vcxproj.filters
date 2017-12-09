@@ -82,9 +82,6 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeDrawingContext.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeImageCache.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\Drawing.cpp">
@@ -157,9 +154,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeDrawingContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeImageCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
