@@ -64,8 +64,8 @@ public:
 private:
 	NodeImageCachedContext*		Insert (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::IntRect& rect);
 
-	using ImageCacheDataPtr = std::shared_ptr<NodeImageCachedContext>;
-	std::unordered_map<NE::NodeId, ImageCacheDataPtr> cache;
+	using ImageCachedContextPtr = std::shared_ptr<NodeImageCachedContext>;
+	std::unordered_map<NE::NodeId, ImageCachedContextPtr> cache;
 };
 
 #endif

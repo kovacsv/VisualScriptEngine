@@ -129,7 +129,7 @@ NodeImageCachedContext* NodeImageCache::GetImageCacheData (const NE::NodeId& nod
 {
 	auto found = cache.find (nodeId);
 	if (found != cache.end ()) {
-		ImageCacheDataPtr& cacheData = found->second;
+		ImageCachedContextPtr& cacheData = found->second;
 		if (cacheData->IsUpToDate (checksum)) {
 			cacheData->UpdateRect (rect);
 			return cacheData.get ();
@@ -142,7 +142,7 @@ NodeImageCachedContext* NodeImageCache::GetImageCacheData (const NE::NodeId& nod
 
 NodeImageCachedContext* NodeImageCache::Insert (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::IntRect& rect)
 {
-	ImageCacheDataPtr cacheData (new NodeImageCachedContext (checksum, rect));
+	ImageCachedContextPtr cacheData (new NodeImageCachedContext (checksum, rect));
 	cache.insert ({ nodeId, cacheData });
 	return cacheData.get ();
 }
