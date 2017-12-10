@@ -22,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuiltInNodes", "BuiltInNode
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsAppSupport", "WindowsAppSupport\WindowsAppSupport.vcxproj", "{103C18B8-1F71-461F-8D93-A9A8A869FFD5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsEmbeddingDemo", "WindowsEmbeddingDemo\WindowsEmbeddingDemo.vcxproj", "{0640A4E5-317D-4B63-95A4-127D1C8D8A80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -78,6 +80,14 @@ Global
 		{103C18B8-1F71-461F-8D93-A9A8A869FFD5}.Release|x64.Build.0 = Release|x64
 		{103C18B8-1F71-461F-8D93-A9A8A869FFD5}.Release|x86.ActiveCfg = Release|Win32
 		{103C18B8-1F71-461F-8D93-A9A8A869FFD5}.Release|x86.Build.0 = Release|Win32
+		{0640A4E5-317D-4B63-95A4-127D1C8D8A80}.Debug|x64.ActiveCfg = Debug|x64
+		{0640A4E5-317D-4B63-95A4-127D1C8D8A80}.Debug|x64.Build.0 = Debug|x64
+		{0640A4E5-317D-4B63-95A4-127D1C8D8A80}.Debug|x86.ActiveCfg = Debug|Win32
+		{0640A4E5-317D-4B63-95A4-127D1C8D8A80}.Debug|x86.Build.0 = Debug|Win32
+		{0640A4E5-317D-4B63-95A4-127D1C8D8A80}.Release|x64.ActiveCfg = Release|x64
+		{0640A4E5-317D-4B63-95A4-127D1C8D8A80}.Release|x64.Build.0 = Release|x64
+		{0640A4E5-317D-4B63-95A4-127D1C8D8A80}.Release|x86.ActiveCfg = Release|Win32
+		{0640A4E5-317D-4B63-95A4-127D1C8D8A80}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
