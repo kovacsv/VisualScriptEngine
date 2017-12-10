@@ -138,17 +138,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\DrawingControl.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\main.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\NodeEditorControl.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\ResultImage.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\TestAppNodes.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\DrawingControl.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\main.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ResultImage.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\NodeEngineTestApp\DrawingControl.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeEngineTestApp\NodeEditorControl.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeEngineTestApp\ResultImage.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeEngineTestApp\TestAppNodes.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\DrawingControl.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ResultImage.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

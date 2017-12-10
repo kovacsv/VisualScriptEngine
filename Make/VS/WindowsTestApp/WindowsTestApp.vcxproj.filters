@@ -7,33 +7,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\main.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\DrawingControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\TestAppNodes.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\ResultImage.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\NodeEditorControl.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ResultImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngineTestApp\DrawingControl.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\NodeEngineTestApp\TestAppNodes.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\DrawingControl.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngineTestApp\ResultImage.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngineTestApp\NodeEditorControl.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ResultImage.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngineTestApp\DrawingControl.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

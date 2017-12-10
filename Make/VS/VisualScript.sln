@@ -10,7 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NodeEngineTest", "NodeEngin
 		{AC633FDE-C8DD-4A56-8434-1EB1AA220358} = {AC633FDE-C8DD-4A56-8434-1EB1AA220358}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NodeEngineTestApp", "NodeEngineTestApp\NodeEngineTestApp.vcxproj", "{82252687-77EC-42B5-98BC-C1B42D5D6C78}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsTestApp", "WindowsTestApp\WindowsTestApp.vcxproj", "{82252687-77EC-42B5-98BC-C1B42D5D6C78}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NodeUIEngine", "NodeUIEngine\NodeUIEngine.vcxproj", "{62847B7A-AAF0-4EB7-B975-829609141C57}"
 EndProject
