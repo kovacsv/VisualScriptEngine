@@ -38,11 +38,6 @@ LRESULT CALLBACK Application::StaticWindowProc (HWND hwnd, UINT msg, WPARAM wPar
 
 	UI::TranslateEventToItem (app, hwnd, msg, wParam, lParam);
 	switch (msg) {
-		case WM_COMMAND:
-			{
-				int commandId  = LOWORD (wParam);
-			}
-			break;
 		case WM_CLOSE:
 			DestroyWindow (hwnd);
 			break;
