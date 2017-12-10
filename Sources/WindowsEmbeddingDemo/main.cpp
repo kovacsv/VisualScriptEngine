@@ -93,11 +93,6 @@ public:
 		EndPaint (hwnd, &ps);
 	}
 
-	void OnPaint (HWND hwnd)
-	{
-
-	}
-
 private:
 	NodeBitmapContextGdi	bitmapContext;
 	MyEventHandlers			eventHandlers;
