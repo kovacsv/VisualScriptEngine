@@ -70,10 +70,16 @@
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\ChecksumTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngineTest\VisualTestFramework.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\TestFramework\SimpleTest.hpp">
       <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeEngineTest\VisualTestFramework.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

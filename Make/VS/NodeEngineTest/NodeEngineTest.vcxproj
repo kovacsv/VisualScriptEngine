@@ -154,9 +154,11 @@
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\NumberTypeNodeTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\UIEngineTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\ValueTest.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngineTest\VisualTestFramework.cpp" />
     <ClCompile Include="..\..\..\Sources\TestFramework\SimpleTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Sources\NodeEngineTest\VisualTestFramework.hpp" />
     <ClInclude Include="..\..\..\Sources\TestFramework\SimpleTest.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
