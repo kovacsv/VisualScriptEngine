@@ -6,11 +6,8 @@
 #include <string>
 #include <memory>
 
-#ifdef _WIN32
-	#define PATH_SEPARATOR "\\"
-#else
-	#define PATH_SEPARATOR "/"
-#endif
+#define WIN_PATH_SEPARATOR	'\\'
+#define PATH_SEPARATOR		'/'
 
 #define TEST(TESTNAME)											\
 namespace TESTNAME##TestNamespace {								\

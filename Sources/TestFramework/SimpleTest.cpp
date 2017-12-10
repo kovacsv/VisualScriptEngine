@@ -83,6 +83,11 @@ Suite& Suite::Get ()
 void SetAppLocation (const std::string& newAppLocation)
 {
 	appLocation = newAppLocation;
+	for (size_t i = 0; i < appLocation.length (); ++i) {
+		if (appLocation[i] == WIN_PATH_SEPARATOR) {
+			appLocation[i] = PATH_SEPARATOR;
+		}
+	}
 }
 
 std::string GetAppLocation ()
@@ -92,12 +97,11 @@ std::string GetAppLocation ()
 
 std::string GetAppFolderLocation ()
 {
-	static const std::string separator (PATH_SEPARATOR);
-	size_t lastSeparator = appLocation.find_last_of (separator);
+	size_t lastSeparator = appLocation.find_last_of (PATH_SEPARATOR);
 	if (lastSeparator == std::wstring::npos) {
 		return std::string ();
 	}
-    std::string directoryPath = appLocation.substr (0, lastSeparator) + separator;
+    std::string directoryPath = appLocation.substr (0, lastSeparator) + PATH_SEPARATOR;
 	return directoryPath;
 }
 
