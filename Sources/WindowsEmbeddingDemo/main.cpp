@@ -1,4 +1,108 @@
+#include "NodeEditor.hpp"
+#include "NodeBitmapContextGdi.hpp"
+
 #include <windows.h>
+
+class MyEventHandlers : public NUIE::EventHandlers
+{
+public:
+	MyEventHandlers ()
+	{
+	
+	}
+
+	virtual void OnRecalculate () override
+	{
+	
+	}
+
+	virtual void OnRedraw () override
+	{
+	
+	}
+
+	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands) override
+	{
+		return nullptr;
+	}
+
+	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands) override
+	{
+		return nullptr;
+	}
+
+	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands) override
+	{
+		return nullptr;
+	}
+
+	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::InputSlotPtr& inputSlot, const NUIE::CommandStructure& commands) override
+	{
+		return nullptr;
+	}
+
+	void SetWindowHandle (HWND newHwnd)
+	{
+		hwnd = newHwnd;
+	}
+
+private:
+	HWND hwnd;
+};
+
+class MyNodeEditorInterface : public NUIE::NodeEditorInterface
+{
+public:
+	MyNodeEditorInterface () :
+		bitmapContext (0, 0),
+		evaluationEnv (nullptr)
+	{
+	
+	}
+
+	virtual NUIE::NodeDrawingContext& GetDrawingContext () override
+	{
+		return bitmapContext;
+	}
+	
+	virtual NUIE::EventHandlers& GetEventHandlers () override
+	{
+		return eventHandlers;
+	}
+
+	virtual NE::EvaluationEnv& GetEvaluationEnv () override
+	{
+		return evaluationEnv;
+	}
+
+	void SetWindowHandle (HWND newHwnd)
+	{
+		eventHandlers.SetWindowHandle (newHwnd);
+		hwnd = newHwnd;
+	}
+
+	void OnPaint ()
+	{
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint (hwnd, &ps);
+		bitmapContext.DrawToHDC (hdc, 0, 0);
+		EndPaint (hwnd, &ps);
+	}
+
+	void OnPaint (HWND hwnd)
+	{
+
+	}
+
+private:
+	NodeBitmapContextGdi	bitmapContext;
+	MyEventHandlers			eventHandlers;
+	NE::EvaluationEnv		evaluationEnv;
+	HWND					hwnd;
+};
+
+static MyNodeEditorInterface nodeEditorInterface;
+static NUIE::NodeEditor nodeEditor (nodeEditorInterface);
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -8,6 +112,19 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	}
 
 	switch (msg) {
+		case WM_CREATE:
+			nodeEditorInterface.SetWindowHandle (hwnd);
+			break;
+		case WM_PAINT:
+			nodeEditorInterface.OnPaint ();
+			break;
+		case WM_SIZE:
+			{
+				int newWidth = LOWORD (lParam);
+				int newHeight = HIWORD (lParam);
+				nodeEditor.OnResize (newWidth, newHeight);
+			}
+			break;
 		case WM_CLOSE:
 			DestroyWindow (hwnd);
 			break;

@@ -7,4 +7,6 @@ Make/VS/*/*/Debug/*
 *.db
 *.opendb
 *.suo
+*.vcxproj.user
+
 
