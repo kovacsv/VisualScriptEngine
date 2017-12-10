@@ -1,12 +1,14 @@
 #include "NodeEditor.hpp"
 #include "NodeBitmapContextGdi.hpp"
+#include "InputUINodes.hpp"
 
 #include <windows.h>
 
 class MyEventHandlers : public NUIE::EventHandlers
 {
 public:
-	MyEventHandlers ()
+	MyEventHandlers () :
+		hwnd (NULL)
 	{
 	
 	}
@@ -18,7 +20,7 @@ public:
 
 	virtual void OnRedraw () override
 	{
-	
+		InvalidateRect (hwnd, NULL, FALSE);
 	}
 
 	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands) override
@@ -55,7 +57,9 @@ class MyNodeEditorInterface : public NUIE::NodeEditorInterface
 public:
 	MyNodeEditorInterface () :
 		bitmapContext (0, 0),
-		evaluationEnv (nullptr)
+		eventHandlers (),
+		evaluationEnv (nullptr),
+		hwnd (NULL)
 	{
 	
 	}
@@ -113,7 +117,13 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 
 	switch (msg) {
 		case WM_CREATE:
-			nodeEditorInterface.SetWindowHandle (hwnd);
+			{
+				nodeEditorInterface.SetWindowHandle (hwnd);
+				NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
+				NUIE::NodeUIEnvironment& uiEnvironment = nodeEditor.GetNodeUIEnvironment ();
+				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+				nodeEditor.Update ();
+			}
 			break;
 		case WM_PAINT:
 			nodeEditorInterface.OnPaint ();
