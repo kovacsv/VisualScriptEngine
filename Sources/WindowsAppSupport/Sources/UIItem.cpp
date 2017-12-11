@@ -1,40 +1,10 @@
 #include "UIItem.hpp"
+#include "WindowsAppUtilities.hpp"
 
 #include <windowsx.h>
 
 namespace UI
 {
-
-class SetCaptureHandler
-{
-public:
-	SetCaptureHandler () :
-		counter (0)
-	{
-	
-	}
-
-	void HandleMouseDown (HWND hwnd)
-	{
-		if (counter == 0) {
-			SetCapture (hwnd);
-		}
-		counter += 1;
-	}
-
-	void HandleMouseUp ()
-	{
-		counter -= 1;
-		if (counter == 0) {
-			ReleaseCapture ();
-		}
-	}
-
-private:
-	int counter;
-};
-
-static SetCaptureHandler setCaptureHandler;
 
 Keys::Keys () :
 	types (0)
@@ -88,6 +58,8 @@ static Keys GetKeysFromEvent (WPARAM wParam)
 
 void TranslateEventToItem (Item* item, HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	static SetCaptureHandler setCaptureHandler;
+
 	switch (msg) {
 		case WM_CREATE:
 			item->OnCreate (hwnd);

@@ -1,5 +1,6 @@
 #include "NodeEditor.hpp"
 #include "NodeBitmapContextGdi.hpp"
+#include "WindowsAppUtilities.hpp"
 #include "InputUINodes.hpp"
 
 #include <windows.h>
@@ -25,22 +26,22 @@ public:
 
 	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands) override
 	{
-		return nullptr;
+		return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
 	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands) override
 	{
-		return nullptr;
+		return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
 	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands) override
 	{
-		return nullptr;
+		return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
 	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::InputSlotPtr& inputSlot, const NUIE::CommandStructure& commands) override
 	{
-		return nullptr;
+		return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
 	void SetWindowHandle (HWND newHwnd)
@@ -108,6 +109,10 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	if (msg == WM_CREATE) {
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
+	}
+
+	if (UI::ForwardInputEventToNodeEditor (nodeEditor, hwnd, msg, wParam, lParam)) {
+		return DefWindowProc (hwnd, msg, wParam, lParam);
 	}
 
 	switch (msg) {
