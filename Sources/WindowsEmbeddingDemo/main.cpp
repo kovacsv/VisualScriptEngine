@@ -1,7 +1,9 @@
 #include "NodeEditor.hpp"
 #include "NodeBitmapContextGdi.hpp"
 #include "WindowsAppUtilities.hpp"
+
 #include "InputUINodes.hpp"
+#include "ViewerUINodes.hpp"
 
 #include <windows.h>
 
@@ -121,19 +123,14 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				nodeEditorInterface.SetWindowHandle (hwnd);
 				NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 				NUIE::NodeUIEnvironment& uiEnvironment = nodeEditor.GetNodeUIEnvironment ();
-				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (100, 100), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (100, 300), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new NUIE::MultiLineViewerUINode (L"Viewer", NUIE::Point (300, 200), 5)), uiEnvironment.GetEvaluationEnv ());
 				nodeEditor.Update ();
 			}
 			break;
 		case WM_PAINT:
 			nodeEditorInterface.OnPaint ();
-			break;
-		case WM_SIZE:
-			{
-				int newWidth = LOWORD (lParam);
-				int newHeight = HIWORD (lParam);
-				nodeEditor.OnResize (newWidth, newHeight);
-			}
 			break;
 		case WM_CLOSE:
 			DestroyWindow (hwnd);
