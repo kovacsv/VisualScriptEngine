@@ -42,12 +42,10 @@ bool CustomControl::Init (HWND parentHandle, int x, int y, int width, int height
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
 	windowClass.hInstance = NULL;
-	windowClass.hIcon = LoadIcon (NULL, IDI_APPLICATION);
 	windowClass.hCursor = LoadCursor (NULL, IDC_ARROW);
 	windowClass.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
 	windowClass.lpszMenuName = NULL;
 	windowClass.lpszClassName = L"CustomControl";
-	windowClass.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
 	
 	RegisterClassEx (&windowClass);
 	windowHandle = CreateWindowEx (
