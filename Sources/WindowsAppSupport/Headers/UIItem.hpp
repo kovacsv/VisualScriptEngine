@@ -39,6 +39,7 @@ public:
 	virtual ~Item ();
 
 	void			MoveResize (int x, int y, int width, int height);
+	HWND			GetWindowHandle () const;
 
 	virtual void	OnCreate (HWND hwnd) = 0;
 	virtual void	OnPaint (HWND hwnd) = 0;

@@ -44,6 +44,11 @@ void Item::MoveResize (int x, int y, int width, int height)
 	MoveWindow (windowHandle, x, y, width, height, TRUE);
 }
 
+HWND Item::GetWindowHandle () const
+{
+	return windowHandle;
+}
+
 static Keys GetKeysFromEvent (WPARAM wParam)
 {
 	int flags = 0;
