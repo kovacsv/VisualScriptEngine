@@ -87,11 +87,11 @@ public:
 
 	virtual void OnMenuCommand (HWND hwnd, int commandId) override
 	{
-		if (commandId == FileMenuCommand::New) {
+		if (commandId == FileMenuCommand::File_New) {
 			drawingControl.Clear ();
 			nodeEditorControl.New ();
 			applicationState.ClearCurrentFileName ();
-		} else if (commandId == FileMenuCommand::Open || commandId == FileMenuCommand::Save || commandId == FileMenuCommand::SaveAs) {
+		} else if (commandId == FileMenuCommand::File_Open || commandId == FileMenuCommand::File_Save || commandId == FileMenuCommand::File_SaveAs) {
 			OPENFILENAME openFileName;
 			ZeroMemory (&openFileName, sizeof(openFileName));
 			wchar_t fileName[MAX_PATH] = L"";
@@ -101,28 +101,28 @@ public:
 			openFileName.nMaxFile = MAX_PATH;
 			openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
 			openFileName.lpstrDefExt = (LPCWSTR) L"txt";
-			if (commandId == FileMenuCommand::Open) {
+			if (commandId == FileMenuCommand::File_Open) {
 				if (GetOpenFileName (&openFileName)) {
 					drawingControl.Clear ();
 					if (nodeEditorControl.Open (fileName)) {
 						applicationState.SetCurrentFileName (fileName);
 					}
 				}
-			} else if (commandId == FileMenuCommand::Save) {
+			} else if (commandId == FileMenuCommand::File_Save) {
 				if (applicationState.HasCurrentFileName ()) {
 					nodeEditorControl.Save (applicationState.GetCurrentFileName ());
 				} else if (GetSaveFileName (&openFileName)) {
 					nodeEditorControl.Save (fileName);
 					applicationState.SetCurrentFileName (fileName);
 				}
-			} else if (commandId == FileMenuCommand::SaveAs) {
+			} else if (commandId == FileMenuCommand::File_SaveAs) {
 				if (GetSaveFileName (&openFileName)) {
 					nodeEditorControl.Save (fileName);
 					applicationState.SetCurrentFileName (fileName);
 				}
 			}
-		} else if (commandId == FileMenuCommand::Quit) {
-			Shut ();
+		} else if (commandId == FileMenuCommand::File_Quit) {
+			Close ();
 		}
 		UpdateStatusBar ();
 	}
@@ -130,11 +130,11 @@ public:
 private:
 	enum FileMenuCommand
 	{
-		New			= 1000,
-		Open		= 1001,
-		Save		= 1002,
-		SaveAs		= 1003,
-		Quit		= 1004
+		File_New		= 1000,
+		File_Open		= 1001,
+		File_Save		= 1002,
+		File_SaveAs		= 1003,
+		File_Quit		= 1004
 	};
 
 	void InitFileMenu (HWND hwnd)
@@ -145,12 +145,12 @@ private:
 		hMenubar = CreateMenu ();
 		hMenu = CreateMenu ();
 
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::New, L"&New");
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::Open, L"&Open");
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::Save, L"&Save");
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::SaveAs, L"&Save As");
+		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_New, L"&New");
+		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_Open, L"&Open");
+		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_Save, L"&Save");
+		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_SaveAs, L"&Save As");
 		AppendMenuW (hMenu, MF_SEPARATOR, 0, NULL);
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::Quit, L"&Quit");
+		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_Quit, L"&Quit");
 
 		AppendMenuW (hMenubar, MF_POPUP, (UINT_PTR) hMenu, L"&File");
 		SetMenu (hwnd, hMenubar);
@@ -188,10 +188,9 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, in
 
 	std::shared_ptr<ResultImage> resultImage (new ResultImage ());
 	std::shared_ptr<ResultImageEvaluationData> evaluationData (new ResultImageEvaluationData (resultImage));
-	NodeEngineTestApplication app (evaluationData);
 
-	ApplicationInitData initData (L"NodeEngineTestAppClass", L"Node Engine Test App", WindowWidth, WindowHeight);
-	app.Init (initData);
+	NodeEngineTestApplication app (evaluationData);
+	app.Open (L"Node Engine Test App", WindowWidth, WindowHeight);
 
 	return 0;
 }

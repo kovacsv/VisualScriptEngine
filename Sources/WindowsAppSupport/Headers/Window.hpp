@@ -1,17 +1,22 @@
-#ifndef CUSTOMCONTROL_HPP
-#define CUSTOMCONTROL_HPP
+#ifndef WINDOW_HPP
+#define WINDOW_HPP
 
 #include "UIItem.hpp"
 
 #include <windows.h>
+#include <string>
 
-class CustomControl : public UI::Item
+namespace UI
+{
+
+class Window : public UI::Item
 {
 public:
-	CustomControl ();
-	virtual ~CustomControl ();
+	Window ();
+	virtual ~Window ();
 
-	bool Init (HWND parentHandle, int x, int y, int width, int height);
+	bool	Open (const std::wstring& windowTitle, int width, int height);
+	void	Close ();
 
 private:
 	static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -28,5 +33,7 @@ private:
 	virtual void	OnIdle (HWND hwnd) override;
 };
 
+
+}
 
 #endif

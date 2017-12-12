@@ -176,6 +176,9 @@ void TranslateEventToItem (Item* item, HWND hwnd, UINT msg, WPARAM wParam, LPARA
 		case WM_DESTROY:
 			PostQuitMessage (0);
 			break;
+		default:
+			item->OnIdle (hwnd);
+			break;
 	}
 }
 

@@ -110,3 +110,8 @@ void CustomControl::OnResize (HWND hwnd, int newWidth, int newHeight)
 {
 
 }
+
+void CustomControl::OnIdle (HWND hwnd)
+{
+
+}
