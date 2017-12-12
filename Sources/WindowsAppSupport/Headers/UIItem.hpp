@@ -50,7 +50,6 @@ public:
 	virtual void	OnMouseDoubleClick (HWND hwnd, Keys keys, MouseButton button, int x, int y) = 0;
 	virtual void	OnMenuCommand (HWND hwnd, int commandId) = 0;
 	virtual void	OnResize (HWND hwnd, int newWidth, int newHeight) = 0;
-	virtual void	OnIdle (HWND hwnd) = 0;
 
 protected:
 	HWND windowHandle;

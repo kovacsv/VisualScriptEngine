@@ -77,6 +77,7 @@ bool Window::Open (const std::wstring& windowTitle, int width, int height)
 	while (GetMessage (&msg, NULL, 0, 0)) {
 		TranslateMessage (&msg);
 		DispatchMessage (&msg);
+		OnIdle (windowHandle);
 	}
 	return true;
 }
