@@ -9,18 +9,16 @@
 namespace UI
 {
 
-class Window : public UI::Item
+class Window : public Item
 {
 public:
 	Window ();
 	virtual ~Window ();
 
-	bool	Open (const std::wstring& windowTitle, int width, int height);
-	void	Close ();
+	bool			Open (const std::wstring& windowTitle, int width, int height);
+	void			Close ();
 
 private:
-	static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 	virtual void	OnCreate (HWND hwnd) override;
 	virtual void	OnPaint (HWND hwnd) override;
 	virtual void	OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;

@@ -5,7 +5,7 @@ namespace UI
 
 static std::wstring WindowClassName = L"UIWindowClass";
 
-LRESULT CALLBACK Window::StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_CREATE) {
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
@@ -30,7 +30,8 @@ LRESULT CALLBACK Window::StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, L
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
-Window::Window ()
+Window::Window () :
+	Item ()
 {
 }
 
@@ -44,7 +45,7 @@ bool Window::Open (const std::wstring& windowTitle, int width, int height)
 	memset (&windowClass, 0, sizeof (WNDCLASSEX));
 	windowClass.cbSize = sizeof(WNDCLASSEX);
 	windowClass.style = 0;
-	windowClass.lpfnWndProc = Window::StaticWindowProc;
+	windowClass.lpfnWndProc = StaticWindowProc;
 	windowClass.style = CS_DBLCLKS;
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
