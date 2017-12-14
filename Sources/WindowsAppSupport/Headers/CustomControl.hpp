@@ -14,8 +14,6 @@ public:
 	bool Init (HWND parentHandle, int x, int y, int width, int height);
 
 private:
-	static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 	virtual void	OnCreate (HWND hwnd) override;
 	virtual void	OnPaint (HWND hwnd) override;
 	virtual void	OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;

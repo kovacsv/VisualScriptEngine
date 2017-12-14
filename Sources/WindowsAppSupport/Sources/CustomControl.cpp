@@ -1,7 +1,7 @@
 #include "CustomControl.hpp"
 #include "Debug.hpp"
 
-LRESULT CALLBACK CustomControl::StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_CREATE) {
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
@@ -37,7 +37,7 @@ bool CustomControl::Init (HWND parentHandle, int x, int y, int width, int height
 	memset (&windowClass, 0, sizeof (WNDCLASSEX));
 	windowClass.cbSize = sizeof(WNDCLASSEX);
 	windowClass.style = 0;
-	windowClass.lpfnWndProc = CustomControl::StaticWindowProc;
+	windowClass.lpfnWndProc = StaticWindowProc;
 	windowClass.style = CS_DBLCLKS;
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
