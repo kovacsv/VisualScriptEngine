@@ -7,7 +7,12 @@ class DevKitBuilder:
 	def __init__ (self, rootDirectory):
 		self.rootDirectory = rootDirectory
 		self.solutionDir = os.path.join (self.rootDirectory, 'Make', 'VS')
-		
+		self.devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS')
+	
+	def Clean (self):
+		if os.path.exists (self.devKitFolder):
+			shutil.rmtree (self.devKitFolder)
+	
 	def Build (self):
 		msBuildPath = os.path.join (os.environ['ProgramFiles(x86)'], 'MSBuild', '14.0', 'Bin', 'MSBuild.exe')
 		solutionPath = os.path.join (self.solutionDir, 'VisualScript.sln')
@@ -25,13 +30,12 @@ class DevKitBuilder:
 		return subprocess.call ([testPath])
 		
 	def Publish (self):
-		devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS')
-		devKitHeaderFolder = os.path.join (devKitFolder, 'Headers')
-		devKitLibFolder = os.path.join (devKitFolder, 'Libs')
+		devKitHeaderFolder = os.path.join (self.devKitFolder, 'Headers')
+		devKitLibFolder = os.path.join (self.devKitFolder, 'Libs')
 		
-		if os.path.exists (devKitFolder):
-			shutil.rmtree (devKitFolder)
-		os.makedirs (devKitFolder)
+		if os.path.exists (self.devKitFolder):
+			shutil.rmtree (self.devKitFolder)
+		os.makedirs (self.devKitFolder)
 		os.makedirs (devKitHeaderFolder)
 		os.makedirs (devKitLibFolder)
 		
@@ -47,8 +51,11 @@ class DevKitBuilder:
 def Main (argv):
 	currentDir = os.path.dirname (os.path.abspath (__file__))
 	os.chdir (currentDir)
+	builder = DevKitBuilder (os.path.dirname (os.path.dirname (currentDir)))
+	if len (argv) > 1 and argv[1] == 'clean':
+		builder.Clean ()
+		return 0
 	if os.name == 'nt':
-		builder = DevKitBuilder (os.path.dirname (os.path.dirname (currentDir)))
 		print 'Build Solution'
 		if builder.Build () != 0:
 			print 'ERROR: Build Failed'
