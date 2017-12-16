@@ -63,6 +63,11 @@ void NumericUpDownUINode::UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDr
 	drawer.Draw (env, drawingImage);
 }
 
+void NumericUpDownUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
+{
+
+}
+
 NE::Stream::Status NumericUpDownUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);

@@ -96,6 +96,11 @@ void NormalUINode::UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingIm
 	drawer.Draw (env, drawingImage);
 }
 
+void NormalUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
+{
+
+}
+
 NE::Stream::Status NormalUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);

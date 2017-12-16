@@ -105,8 +105,8 @@ private:
 	virtual bool				RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot) override;
 
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIEnvironment& env) const;
-	virtual void				UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const;
-	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
+	virtual void				UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
+	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
 
 	std::wstring				nodeName;
 	Point						nodePosition;

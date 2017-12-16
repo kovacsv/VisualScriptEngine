@@ -28,7 +28,8 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
-	virtual void UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const override;
+	virtual void	UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const override;
+	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 };
 
 class IntegerUpDownUINode : public NumericUpDownUINode

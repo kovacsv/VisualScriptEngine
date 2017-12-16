@@ -376,14 +376,4 @@ const NodeDrawingImage& UINode::GetNodeDrawingImage (NodeUIEnvironment& env) con
 	return nodeDrawingImage;
 }
 
-void UINode::UpdateNodeDrawingImage (NodeUIEnvironment&, NodeDrawingImage&) const
-{
-
-}
-
-void UINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
-{
-
-}
-
 }
