@@ -1,10 +1,10 @@
 #ifndef NODEEDITORCONTROL_HPP
 #define NODEEDITORCONTROL_HPP
 
+#include "BitmapContextGdi.hpp"
 #include "CustomControl.hpp"
 #include "BuiltInCommands.hpp"
 #include "WindowsAppUtilities.hpp"
-#include "NodeBitmapContextGdi.hpp"
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"
 
@@ -52,18 +52,18 @@ class MyNodeEditorInterface : public NUIE::NodeEditorInterface
 public:
 	MyNodeEditorInterface (const std::shared_ptr<ResultImageEvaluationData>& evaluationData);
 
-	virtual NUIE::NodeDrawingContext&	GetDrawingContext () override;
-	virtual NUIE::EventHandlers&		GetEventHandlers () override;
-	virtual NE::EvaluationEnv&			GetEvaluationEnv () override;
+	virtual NUIE::DrawingContext&	GetDrawingContext () override;
+	virtual NUIE::EventHandlers&	GetEventHandlers () override;
+	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
 
 	void							SetWindowHandle (HWND newHwnd);
 	void							OnPaint ();
 
 private:
-	NodeBitmapContextGdi	bitmapContext;
-	AppEventHandlers		eventHandlers;
-	NE::EvaluationEnv		evaluationEnv;
-	HWND					hwnd;
+	BitmapContextGdi	bitmapContext;
+	AppEventHandlers	eventHandlers;
+	NE::EvaluationEnv	evaluationEnv;
+	HWND				hwnd;
 };
 
 class NodeEditorControl : public CustomControl

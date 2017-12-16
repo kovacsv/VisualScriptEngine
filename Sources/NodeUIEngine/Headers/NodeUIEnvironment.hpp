@@ -13,26 +13,26 @@ class EvaluationEnv;
 namespace NUIE
 {
 
-class NodeDrawingContext;
+class DrawingContext;
 class SkinParams;
 class EventHandlers;
 
 class NodeUIEnvironment
 {
 public:
-	NodeUIEnvironment (NodeDrawingContext& drawingContext, SkinParams& skinParams, EventHandlers& eventHandlers, NE::EvaluationEnv& evaluationEnv);
+	NodeUIEnvironment (DrawingContext& drawingContext, SkinParams& skinParams, EventHandlers& eventHandlers, NE::EvaluationEnv& evaluationEnv);
 	virtual ~NodeUIEnvironment ();
 
-	virtual NodeDrawingContext&		GetDrawingContext ();
-	virtual SkinParams&				GetSkinParams ();
-	virtual EventHandlers&			GetEventHandlers ();
-	virtual NE::EvaluationEnv&		GetEvaluationEnv ();
+	virtual DrawingContext&		GetDrawingContext ();
+	virtual SkinParams&			GetSkinParams ();
+	virtual EventHandlers&		GetEventHandlers ();
+	virtual NE::EvaluationEnv&	GetEvaluationEnv ();
 
 private:
-	NodeDrawingContext&		drawingContext;
-	SkinParams&				skinParams;
-	EventHandlers&			eventHandlers;
-	NE::EvaluationEnv&		evaluationEnv;
+	DrawingContext&		drawingContext;
+	SkinParams&			skinParams;
+	EventHandlers&		eventHandlers;
+	NE::EvaluationEnv&	evaluationEnv;
 };
 
 class NodeUIEnvironmentDecorator : public NodeUIEnvironment
@@ -45,13 +45,13 @@ public:
 class NodeUIEnvironmentContextDecorator : public NodeUIEnvironmentDecorator
 {
 public:
-	NodeUIEnvironmentContextDecorator (NodeUIEnvironment& decorated, NodeDrawingContext& decoratedDrawingContext);
+	NodeUIEnvironmentContextDecorator (NodeUIEnvironment& decorated, DrawingContext& decoratedDrawingContext);
 	virtual ~NodeUIEnvironmentContextDecorator ();
 
-	virtual NodeDrawingContext& GetDrawingContext () override;
+	virtual DrawingContext& GetDrawingContext () override;
 
 private:
-	NodeDrawingContext& decoratedDrawingContext;
+	DrawingContext& decoratedDrawingContext;
 };
 
 typedef std::shared_ptr<NodeUIEnvironment> NodeUIEnvironmentPtr;

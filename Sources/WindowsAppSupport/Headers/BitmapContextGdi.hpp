@@ -6,7 +6,8 @@
 #include <unordered_map>
 
 #include "HandleCache.hpp"
-#include "NodeDrawingContext.hpp"
+#include "DrawingContext.hpp"
+#include "Drawing.hpp"
 
 class PenCacheKey
 {

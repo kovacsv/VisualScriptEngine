@@ -130,8 +130,6 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\CustomControl.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Window.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\HandleCache.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\NodeBitmapContextGdi.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\NodeImageCache.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\UIItem.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtilities.hpp" />
   </ItemGroup>
@@ -141,8 +139,6 @@
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdiplus.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\CustomControl.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Window.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\NodeBitmapContextGdi.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\NodeImageCache.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\UIItem.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtilities.cpp" />
   </ItemGroup>

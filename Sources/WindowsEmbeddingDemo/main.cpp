@@ -1,5 +1,5 @@
 #include "NodeEditor.hpp"
-#include "NodeBitmapContextGdi.hpp"
+#include "BitmapContextGdi.hpp"
 #include "WindowsAppUtilities.hpp"
 
 #include "InputUINodes.hpp"
@@ -67,7 +67,7 @@ public:
 	
 	}
 
-	virtual NUIE::NodeDrawingContext& GetDrawingContext () override
+	virtual NUIE::DrawingContext& GetDrawingContext () override
 	{
 		return bitmapContext;
 	}
@@ -97,10 +97,10 @@ public:
 	}
 
 private:
-	NodeBitmapContextGdi	bitmapContext;
-	MyEventHandlers			eventHandlers;
-	NE::EvaluationEnv		evaluationEnv;
-	HWND					hwnd;
+	BitmapContextGdi	bitmapContext;
+	MyEventHandlers		eventHandlers;
+	NE::EvaluationEnv	evaluationEnv;
+	HWND				hwnd;
 };
 
 static MyNodeEditorInterface nodeEditorInterface;

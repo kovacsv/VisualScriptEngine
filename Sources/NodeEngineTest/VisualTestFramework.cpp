@@ -267,16 +267,6 @@ Size SVGDrawingContext::MeasureText (const Font& font, const std::wstring& text)
 	return Size (text.length () * font.GetSize (), font.GetSize () * 1.5);
 }
 
-void SVGDrawingContext::OnNodeDrawingBegin (const NodeId&, const NE::Checksum&, const Rect&)
-{
-		
-}
-
-void SVGDrawingContext::OnNodeDrawingEnd (const NodeId&)
-{
-		
-}
-
 TestEventHandlers::TestEventHandlers ()
 {
 	
@@ -325,7 +315,7 @@ const SVGDrawingContext& TestNodeEditorInterface::GetSVGDrawingContext () const
 	return drawingContext;
 }
 
-NodeDrawingContext& TestNodeEditorInterface::GetDrawingContext ()
+DrawingContext& TestNodeEditorInterface::GetDrawingContext ()
 {
 	return drawingContext;
 }

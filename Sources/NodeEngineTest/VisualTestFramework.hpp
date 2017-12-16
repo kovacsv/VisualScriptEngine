@@ -1,7 +1,6 @@
 #ifndef VISUALTESTFRAMEWORK_HPP
 #define VISUALTESTFRAMEWORK_HPP
 
-#include "NodeDrawingContext.hpp"
 #include "EvaluationEnv.hpp"
 #include "EventHandlers.hpp"
 #include "NodeEditor.hpp"
@@ -43,7 +42,7 @@ private:
 	std::wostringstream svgContent;
 };
 
-class SVGDrawingContext : public NodeDrawingContext
+class SVGDrawingContext : public DrawingContext
 {
 public:
 	SVGDrawingContext (double width, double height);
@@ -64,8 +63,6 @@ public:
 	virtual void		FillEllipse (const Rect&, const Color&) override;
 	virtual void		DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color) override;
 	virtual Size		MeasureText (const Font& font, const std::wstring& text) override;
-	virtual void		OnNodeDrawingBegin (const NodeId&, const NE::Checksum&, const Rect&) override;
-	virtual void		OnNodeDrawingEnd (const NodeId&) override;
 
 private:
 	SVGBuilder	svgBuilder;
@@ -87,15 +84,14 @@ public:
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::InputSlotPtr&, const CommandStructure&) override;
 };
 
-
 class TestNodeEditorInterface : public NodeEditorInterface
 {
 public:
 	TestNodeEditorInterface ();
-	const SVGDrawingContext&		GetSVGDrawingContext () const;
-	virtual NodeDrawingContext&		GetDrawingContext () override;
-	virtual EventHandlers&			GetEventHandlers () override;
-	virtual EvaluationEnv&			GetEvaluationEnv () override;
+	const SVGDrawingContext&	GetSVGDrawingContext () const;
+	virtual DrawingContext&		GetDrawingContext () override;
+	virtual EventHandlers&		GetEventHandlers () override;
+	virtual EvaluationEnv&		GetEvaluationEnv () override;
 
 private:
 	SVGDrawingContext	drawingContext;

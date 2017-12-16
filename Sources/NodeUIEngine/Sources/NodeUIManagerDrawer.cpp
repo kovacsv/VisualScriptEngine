@@ -44,13 +44,13 @@ NodeUIManagerDrawer::NodeUIManagerDrawer (const NodeUIManager& uiManager) :
 	
 void NodeUIManagerDrawer::Draw (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const
 {
-	NodeDrawingContext& drawingContext = env.GetDrawingContext ();
+	DrawingContext& drawingContext = env.GetDrawingContext ();
 	drawingContext.BeginDraw ();
 
 	DrawBackground (env);
 	{
-		TextSkipperNodeContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
-		ViewBoxNodeContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
+		TextSkipperContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
+		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
 		NodeUIEnvironmentContextDecorator drawEnv (env, viewBoxContext);
 		DrawConnections (drawEnv, drawExt);
 		DrawNodes (drawEnv);
@@ -105,7 +105,7 @@ void NodeUIManagerDrawer::DrawConnection (NodeUIEnvironment& env, const Point& b
 
 void NodeUIManagerDrawer::DrawNodes (NodeUIEnvironment& env) const
 {
-	ColorBlenderNodeContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor ());
+	ColorBlenderContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor ());
 	NodeUIEnvironmentContextDecorator selectionEnv (env, selectionContext);
 	const NodeUIManager::SelectedNodes& selectedNodes = uiManager.GetSelectedNodes ();
 	for (const UINode* uiNode: sortedNodeList) {

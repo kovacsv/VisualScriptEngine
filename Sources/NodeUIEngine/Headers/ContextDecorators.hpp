@@ -3,16 +3,16 @@
 
 #include "Geometry.hpp"
 #include "ViewBox.hpp"
-#include "NodeDrawingContext.hpp"
+#include "DrawingContext.hpp"
 #include <string>
 
 namespace NUIE
 {
 
-class ViewBoxNodeContextDecorator : public NodeDrawingContextDecorator
+class ViewBoxContextDecorator : public DrawingContextDecorator
 {
 public:
-	ViewBoxNodeContextDecorator (NodeDrawingContext& decorated, const ViewBox& viewBox);
+	ViewBoxContextDecorator (DrawingContext& decorated, const ViewBox& viewBox);
 
 	virtual void	DrawLine (const Point& beg, const Point& end, const Pen& pen) override;
 	virtual void	DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) override;
@@ -21,16 +21,15 @@ public:
 	virtual void	DrawEllipse (const Rect& rect, const Pen& pen) override;
 	virtual void	FillEllipse (const Rect& rect, const Color& color) override;
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color) override;
-	virtual void	OnNodeDrawingBegin (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::Rect& rect) override;
 
 private:
 	const ViewBox& viewBox;
 };
 
-class ColorChangerNodeContextDecorator : public NodeDrawingContextDecorator
+class ColorChangerContextDecorator : public DrawingContextDecorator
 {
 public:
-	ColorChangerNodeContextDecorator (NodeDrawingContext& decorated);
+	ColorChangerContextDecorator (DrawingContext& decorated);
 
 	virtual void	DrawLine (const Point& beg, const Point& end, const Pen& pen) override;
 	virtual void	DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) override;
@@ -45,12 +44,10 @@ private:
 	Pen				GetChangedPen (const Pen& origPen);
 };
 
-class ColorBlenderNodeContextDecorator : public ColorChangerNodeContextDecorator
+class ColorBlenderContextDecorator : public ColorChangerContextDecorator
 {
 public:
-	ColorBlenderNodeContextDecorator (NodeDrawingContext& decorated, const Color& blendColor);
-
-	virtual void	OnNodeDrawingBegin (const NE::NodeId& nodeId, const NE::Checksum& checksum, const NUIE::Rect& rect) override;
+	ColorBlenderContextDecorator (DrawingContext& decorated, const Color& blendColor);
 
 private:
 	virtual Color	GetChangedColor (const Color& origColor) override;
@@ -58,10 +55,10 @@ private:
 	Color blendColor;
 };
 
-class TextSkipperNodeContextDecorator : public NodeDrawingContextDecorator
+class TextSkipperContextDecorator : public DrawingContextDecorator
 {
 public:
-	TextSkipperNodeContextDecorator (NodeDrawingContext& decorated, bool isPreviewMode);
+	TextSkipperContextDecorator (DrawingContext& decorated, bool isPreviewMode);
 
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color) override;
 

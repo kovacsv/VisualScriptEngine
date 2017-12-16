@@ -2,7 +2,6 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SkinParams.hpp"
-#include "NodeDrawingContext.hpp"
 #include <algorithm>
 
 namespace NUIE

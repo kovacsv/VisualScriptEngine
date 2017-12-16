@@ -91,7 +91,7 @@ MyNodeEditorInterface::MyNodeEditorInterface (const std::shared_ptr<ResultImageE
 
 }
 
-NUIE::NodeDrawingContext& MyNodeEditorInterface::GetDrawingContext ()
+NUIE::DrawingContext& MyNodeEditorInterface::GetDrawingContext ()
 {
 	return bitmapContext;
 }

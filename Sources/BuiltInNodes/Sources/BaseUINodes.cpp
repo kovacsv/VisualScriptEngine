@@ -151,7 +151,7 @@ void CalculatedUINode::Draw (NodeUIEnvironment& env) const
 	if (nodeEnabled) {
 		UINode::Draw (env);
 	} else {
-		ColorBlenderNodeContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
+		ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
 		NodeUIEnvironmentContextDecorator disabledEnv (env, disabledContext);
 		UINode::Draw (disabledEnv);
 	}

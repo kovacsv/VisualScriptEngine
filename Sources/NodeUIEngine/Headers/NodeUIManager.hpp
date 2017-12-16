@@ -4,7 +4,6 @@
 #include "NodeManager.hpp"
 #include "NodeUIEnvironment.hpp"
 #include "NodeUIInteractionHandler.hpp"
-#include "NodeDrawingContext.hpp"
 #include "NodeDrawingExtension.hpp"
 #include "ViewBox.hpp"
 #include <unordered_map>

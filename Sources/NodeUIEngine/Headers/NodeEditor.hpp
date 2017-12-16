@@ -13,7 +13,7 @@ namespace NUIE
 class NodeEditorInterface
 {
 public:
-	virtual NodeDrawingContext&		GetDrawingContext () = 0;
+	virtual DrawingContext&			GetDrawingContext () = 0;
 	virtual EventHandlers&			GetEventHandlers () = 0;
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () = 0;
 };

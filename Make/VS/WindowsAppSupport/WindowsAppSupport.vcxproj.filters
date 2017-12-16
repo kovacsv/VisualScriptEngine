@@ -28,12 +28,6 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\HandleCache.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\NodeBitmapContextGdi.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\NodeImageCache.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Window.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -55,12 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtilities.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\NodeBitmapContextGdi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\NodeImageCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Window.cpp">
