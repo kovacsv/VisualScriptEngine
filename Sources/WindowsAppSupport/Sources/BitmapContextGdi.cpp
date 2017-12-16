@@ -207,7 +207,7 @@ void BitmapContextGdi::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& c
     ::Ellipse (memoryDC, gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
 }
 
-void BitmapContextGdi::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& color)
+void BitmapContextGdi::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& backgroundColor, const NUIE::Color& textColor)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 
@@ -237,8 +237,8 @@ void BitmapContextGdi::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Fo
 	}
 	
 	RECT gdiRect = CreateRect (rect);
-	SetTextColor (memoryDC, RGB (color.GetR (), color.GetG (), color.GetB ()));
-	SetBkMode (memoryDC, TRANSPARENT);
+	SetBkColor (memoryDC, RGB (backgroundColor.GetR (), backgroundColor.GetG (), backgroundColor.GetB ()));
+	SetTextColor (memoryDC, RGB (textColor.GetR (), textColor.GetG (), textColor.GetB ()));
 	SelectObject (memoryDC, fontCache.Get (font));
 	::DrawText (memoryDC, text.c_str (), (int) text.length (), &gdiRect, format);
 }

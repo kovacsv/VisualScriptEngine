@@ -216,7 +216,7 @@ void SVGDrawingContext::FillEllipse (const Rect&, const Color&)
 	DBGBREAK ();
 }
 				 
-void SVGDrawingContext::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color)
+void SVGDrawingContext::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const NUIE::Color&, const NUIE::Color& textColor)
 {
 	std::wstring textAnchor;
 	std::wstring dominantBaseline;
@@ -258,7 +258,7 @@ void SVGDrawingContext::DrawFormattedText (const Rect& rect, const Font& font, c
 		{ L"y", SVGBuilder::BegToString (y) },
 		{ L"dominant-baseline", dominantBaseline },
 		{ L"text-anchor", textAnchor },
-		{ L"style", SVGBuilder::ColorToFillStyle (color) + SVGBuilder::FontToFontStyle (font) }
+		{ L"style", SVGBuilder::ColorToFillStyle (textColor) + SVGBuilder::FontToFontStyle (font) }
 	});
 }
 

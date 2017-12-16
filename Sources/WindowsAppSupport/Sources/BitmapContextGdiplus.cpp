@@ -84,10 +84,10 @@ void BitmapContextGdiplus::FillEllipse (const NUIE::Rect& rect, const NUIE::Colo
 	graphics->FillEllipse (&brush, gdiRect);
 }
 
-void BitmapContextGdiplus::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& color)
+void BitmapContextGdiplus::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color&, const NUIE::Color& textColor)
 {
 	Gdiplus::Font gdiFont (font.GetFamily ().c_str (), (Gdiplus::REAL) font.GetSize ());
-	Gdiplus::SolidBrush brush (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()));
+	Gdiplus::SolidBrush brush (Gdiplus::Color (textColor.GetR (), textColor.GetG (), textColor.GetB ()));
 	Gdiplus::RectF gdiRect = CreateRectF (rect);
 	
 	Gdiplus::StringFormat format;

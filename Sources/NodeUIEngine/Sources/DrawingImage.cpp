@@ -161,13 +161,14 @@ void DrawingFillEllipse::AddToChecksum (NE::Checksum& checksum) const
 	AddColorToChecksum (checksum, color);
 }
 
-DrawingText::DrawingText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color) :
+DrawingText::DrawingText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor) :
 	rect (rect),
 	font (font),
 	text (text),
 	hAnchor (hAnchor),
 	vAnchor (vAnchor),
-	color (color)
+	backgroundColor (backgroundColor),
+	textColor (textColor)
 {
 
 }
@@ -179,7 +180,7 @@ DrawingText::~DrawingText ()
 
 void DrawingText::Draw (DrawingContext& context) const
 {
-	context.DrawFormattedText (rect, font, text, hAnchor, vAnchor, color);
+	context.DrawFormattedText (rect, font, text, hAnchor, vAnchor, backgroundColor, textColor);
 }
 
 void DrawingText::AddToChecksum (NE::Checksum& checksum) const
@@ -189,7 +190,8 @@ void DrawingText::AddToChecksum (NE::Checksum& checksum) const
 	checksum.Add (text);
 	checksum.Add ((int) hAnchor);
 	checksum.Add ((int) vAnchor);
-	AddColorToChecksum (checksum, color);
+	AddColorToChecksum (checksum, backgroundColor);
+	AddColorToChecksum (checksum, textColor);
 }
 
 MultiDrawingItem::MultiDrawingItem ()

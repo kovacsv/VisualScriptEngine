@@ -40,9 +40,9 @@ void ViewBoxContextDecorator::FillEllipse (const Rect& rect, const Color& color)
 	decorated.FillEllipse (viewBox.ModelToView (rect), color);
 }
 
-void ViewBoxContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color)
+void ViewBoxContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor)
 {
-	decorated.DrawFormattedText (viewBox.ModelToView (rect), viewBox.ModelToView (font), text, hAnchor, vAnchor, color);
+	decorated.DrawFormattedText (viewBox.ModelToView (rect), viewBox.ModelToView (font), text, hAnchor, vAnchor, backgroundColor, textColor);
 }
 
 ColorChangerContextDecorator::ColorChangerContextDecorator (DrawingContext& decorated) :
@@ -81,9 +81,9 @@ void ColorChangerContextDecorator::FillEllipse (const Rect& rect, const Color& c
 	decorated.FillEllipse (rect, GetChangedColor (color));
 }
 
-void ColorChangerContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color)
+void ColorChangerContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor)
 {
-	return decorated.DrawFormattedText (rect, font, text, hAnchor, vAnchor, GetChangedColor (color));
+	return decorated.DrawFormattedText (rect, font, text, hAnchor, vAnchor, GetChangedColor (backgroundColor), GetChangedColor (textColor));
 }
 
 Pen ColorChangerContextDecorator::GetChangedPen (const Pen& origPen)
@@ -114,10 +114,10 @@ TextSkipperContextDecorator::TextSkipperContextDecorator (DrawingContext& decora
 
 }
 
-void TextSkipperContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& color)
+void TextSkipperContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor)
 {
 	if (!isPreviewMode) {
-		decorated.DrawFormattedText (rect, font, text, hAnchor, vAnchor, color);
+		decorated.DrawFormattedText (rect, font, text, hAnchor, vAnchor, backgroundColor, textColor);
 	}
 }
 
