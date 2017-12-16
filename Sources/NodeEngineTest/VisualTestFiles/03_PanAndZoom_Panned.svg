@@ -8,13 +8,13 @@
 <rect x="105" y="133" width="106" height="29" style="fill:rgb(225,225,225);"/>
 <text x="206" y="147" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Output</text>
 <rect x="89" y="167" width="122" height="39" style="fill:rgb(200,200,200);"/>
-<rect x="94" y="172" width="26" height="29" style="fill:rgb(150,175,200);"/>
-<rect x="94" y="172" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
-<text x="107" y="186" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&lt;</text>
-<rect x="180" y="172" width="26" height="29" style="fill:rgb(150,175,200);"/>
-<rect x="180" y="172" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
-<text x="193" y="186" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&gt;</text>
 <text x="150" y="186" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">20</text>
+<rect x="94" y="172" width="26" height="29" style="fill:rgb(150,175,200);"/>
+<text x="107" y="186" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&lt;</text>
+<rect x="94" y="172" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
+<rect x="180" y="172" width="26" height="29" style="fill:rgb(150,175,200);"/>
+<text x="193" y="186" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&gt;</text>
+<rect x="180" y="172" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
 <rect x="89" y="94" width="122" height="112" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
 <rect x="263" y="279" width="174" height="34" style="fill:rgb(100,100,100);"/>
 <text x="354" y="296" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Range</text>
@@ -53,12 +53,12 @@
 <text x="650" y="396" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">23</text>
 <text x="650" y="425" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">24</text>
 <rect x="547" y="444" width="206" height="39" style="fill:rgb(200,200,200);"/>
-<rect x="552" y="449" width="26" height="29" style="fill:rgb(150,175,200);"/>
-<rect x="552" y="449" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
-<text x="565" y="464" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&lt;</text>
-<rect x="722" y="449" width="26" height="29" style="fill:rgb(150,175,200);"/>
-<rect x="722" y="449" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
-<text x="735" y="464" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&gt;</text>
 <text x="650" y="464" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">1 / 2</text>
+<rect x="552" y="449" width="26" height="29" style="fill:rgb(150,175,200);"/>
+<text x="565" y="464" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&lt;</text>
+<rect x="552" y="449" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
+<rect x="722" y="449" width="26" height="29" style="fill:rgb(150,175,200);"/>
+<text x="735" y="464" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&gt;</text>
+<rect x="722" y="449" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
 <rect x="547" y="216" width="206" height="267" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
 </svg>
