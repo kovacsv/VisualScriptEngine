@@ -40,8 +40,6 @@ public:
 	bool						IsEnabled () const;
 	void						SetEnableState (bool isEnabled, NE::EvaluationEnv& env);
 
-	virtual void				Draw (NodeUIEnvironment& env) const override final;
-
 	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const override;
 
 	virtual void				OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
@@ -52,6 +50,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
+	virtual void	DrawInplace (NodeUIEnvironment& env) const override final;
 	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 
 	bool nodeEnabled;

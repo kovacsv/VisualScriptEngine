@@ -37,7 +37,7 @@ public:
 	const Point&				GetNodePosition () const;
 	void						SetNodePosition (const Point& newPosition);
 
-	virtual void				Draw (NodeUIEnvironment& env) const;
+	void						Draw (NodeUIEnvironment& env) const;
 	NE::Checksum				GetDrawingImageChecksum (NodeUIEnvironment& env) const;
 
 	Status						GetStatus (NE::EvaluationEnv& env) const;
@@ -97,6 +97,7 @@ public:
 	void EnumerateUISlots (const std::function<bool (const SlotConstType&)>& processor) const;
 
 protected:
+	virtual void				DrawInplace (NodeUIEnvironment& env) const;
 	bool						RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot);
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
 

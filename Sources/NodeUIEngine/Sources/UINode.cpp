@@ -78,7 +78,8 @@ void UINode::Draw (NodeUIEnvironment& env) const
 {
 	ViewBox nodeViewBox (nodePosition, 1.0);
 	ViewBoxContextDecorator nodeContext (env.GetDrawingContext (), nodeViewBox);
-	GetNodeDrawingImage (env).Draw (nodeContext);
+	NodeUIEnvironmentContextDecorator nodeEnv (env, nodeContext);
+	DrawInplace (nodeEnv);
 }
 
 NE::Checksum UINode::GetDrawingImageChecksum (NodeUIEnvironment& env) const
@@ -340,6 +341,11 @@ template <>
 void UINode::EnumerateUISlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const
 {
 	EnumerateUIOutputSlots (processor);
+}
+
+void UINode::DrawInplace (NodeUIEnvironment& env) const
+{
+	GetNodeDrawingImage (env).Draw (env.GetDrawingContext ());
 }
 
 bool UINode::RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot)

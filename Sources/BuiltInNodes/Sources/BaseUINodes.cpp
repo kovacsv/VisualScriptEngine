@@ -151,17 +151,6 @@ void CalculatedUINode::SetEnableState (bool isEnabled, NE::EvaluationEnv& env)
 	}
 }
 
-void CalculatedUINode::Draw (NodeUIEnvironment& env) const
-{
-	if (nodeEnabled) {
-		UINode::Draw (env);
-	} else {
-		ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
-		NodeUIEnvironmentContextDecorator disabledEnv (env, disabledContext);
-		UINode::Draw (disabledEnv);
-	}
-}
-
 void CalculatedUINode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
 {
 	NormalUINode::RegisterCommands (commandRegistrator);
@@ -185,6 +174,17 @@ void CalculatedUINode::OnEnabled (const NE::ValuePtr&, NE::EvaluationEnv&) const
 void CalculatedUINode::OnDisabled (NE::EvaluationEnv&) const
 {
 
+}
+
+void CalculatedUINode::DrawInplace (NodeUIEnvironment& env) const
+{
+	if (nodeEnabled) {
+		UINode::DrawInplace (env);
+	} else {
+		ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
+		NodeUIEnvironmentContextDecorator disabledEnv (env, disabledContext);
+		UINode::DrawInplace (disabledEnv);
+	}
 }
 
 void CalculatedUINode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
