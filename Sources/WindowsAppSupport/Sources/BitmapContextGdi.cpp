@@ -287,11 +287,12 @@ POINT BitmapContextGdi::CreatePoint (const NUIE::Point& point) const
 
 RECT BitmapContextGdi::CreateRect (const NUIE::Rect& rect) const
 {
+	NUIE::IntRect intRect (rect);
 	RECT gdiRect;
-	gdiRect.left = (int) std::floor (rect.GetLeft ()) - 1;
-	gdiRect.top = (int) std::floor (rect.GetTop ()) - 1;
-	gdiRect.right = (int) std::floor (rect.GetRight ());
-	gdiRect.bottom = (int) std::floor (rect.GetBottom ());
+	gdiRect.left = intRect.GetX ();
+	gdiRect.top = intRect.GetY ();
+	gdiRect.right = intRect.GetX () + intRect.GetWidth ();
+	gdiRect.bottom = intRect.GetY () + intRect.GetHeight ();
 	return gdiRect;
 }
 
