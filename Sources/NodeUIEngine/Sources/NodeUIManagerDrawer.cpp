@@ -105,17 +105,25 @@ void NodeUIManagerDrawer::DrawConnection (NodeUIEnvironment& env, const Point& b
 
 void NodeUIManagerDrawer::DrawNodes (NodeUIEnvironment& env) const
 {
-	ColorBlenderContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor ());
-	NodeUIEnvironmentContextDecorator selectionEnv (env, selectionContext);
-	const NodeUIManager::SelectedNodes& selectedNodes = uiManager.GetSelectedNodes ();
+
 	for (const UINode* uiNode: sortedNodeList) {
 		if (!IsNodeVisible (env, uiNode)) {
 			continue;
 		}
+		DrawNode (env, uiNode);
+	}
+}
 
-		const NE::NodeId& nodeId = uiNode->GetId ();
-		NodeUIEnvironment& envToUse = selectedNodes.Contains (nodeId) ? selectionEnv : env;
-		uiNode->Draw (envToUse);
+void NodeUIManagerDrawer::DrawNode (NodeUIEnvironment& env, const UINode* uiNode) const
+{
+	const NE::NodeId& nodeId = uiNode->GetId ();
+	const NodeUIManager::SelectedNodes& selectedNodes = uiManager.GetSelectedNodes ();
+	if (selectedNodes.Contains (nodeId)) {
+		ColorBlenderContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor ());
+		NodeUIEnvironmentContextDecorator selectionEnv (env, selectionContext);
+		uiNode->Draw (selectionEnv);
+	} else {
+		uiNode->Draw (env);
 	}
 }
 

@@ -31,6 +31,7 @@ private:
 	void				DrawConnections (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const;
 	void				DrawConnection (NodeUIEnvironment& env, const Point& beg, const Point& end) const;
 	void				DrawNodes (NodeUIEnvironment& env) const;
+	void				DrawNode (NodeUIEnvironment& env, const UINode* uiNode) const;
 	void				DrawSelectionRect (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const;
 
 	void				InitSortedNodeList () const;
