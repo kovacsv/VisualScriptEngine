@@ -105,7 +105,6 @@ void NodeUIManagerDrawer::DrawConnection (NodeUIEnvironment& env, const Point& b
 
 void NodeUIManagerDrawer::DrawNodes (NodeUIEnvironment& env) const
 {
-
 	for (const UINode* uiNode: sortedNodeList) {
 		if (!IsNodeVisible (env, uiNode)) {
 			continue;
