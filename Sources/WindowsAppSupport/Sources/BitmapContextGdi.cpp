@@ -1,82 +1,19 @@
 #include "BitmapContextGdi.hpp"
 #include "Debug.hpp"
 
-PenCacheKey::PenCacheKey () :
-	thickness (0),
-	r (0),
-	g (0),
-	b (0)
+HANDLE CreateHandle (const PenCacheKey& key)
 {
-
+	return ::CreatePen (PS_SOLID, key.thickness, RGB (key.r, key.g, key.b));
 }
 
-PenCacheKey::PenCacheKey (const NUIE::Pen& pen) :
-	thickness ((int) pen.GetThickness ()),
-	r (pen.GetColor ().GetR ()),
-	g (pen.GetColor ().GetG ()),
-	b (pen.GetColor ().GetB ())
+HANDLE CreateHandle (const BrushCacheKey& key)
 {
-
+	return ::CreateSolidBrush (RGB (key.r, key.g, key.b));
 }
 
-HANDLE PenCacheKey::CreateHandle ()
+HANDLE CreateHandle (const FontCacheKey& key)
 {
-	return ::CreatePen (PS_SOLID, thickness, RGB (r, g, b));
-}
-
-bool PenCacheKey::operator== (const PenCacheKey& rhs) const
-{
-	return thickness == rhs.thickness && r == rhs.r && g == rhs.g && b == rhs.b;
-}
-
-BrushCacheKey::BrushCacheKey () :
-	r (0),
-	g (0),
-	b (0)
-{
-
-}
-
-BrushCacheKey::BrushCacheKey (const NUIE::Color& color) :
-	r (color.GetR ()),
-	g (color.GetG ()),
-	b (color.GetB ())
-{
-
-}
-
-HANDLE BrushCacheKey::CreateHandle ()
-{
-	return ::CreateSolidBrush (RGB (r, g, b));
-}
-
-bool BrushCacheKey::operator== (const BrushCacheKey& rhs) const
-{
-	return r == rhs.r && g == rhs.g && b == rhs.b;
-}
-
-FontCacheKey::FontCacheKey () :
-	family (L""),
-	size (0)
-{
-
-}
-
-FontCacheKey::FontCacheKey (const NUIE::Font& font) :
-	family (font.GetFamily ()),
-	size ((int) (font.GetSize ()))
-{
-
-}
-
-HANDLE FontCacheKey::CreateHandle ()
-{
-	return ::CreateFont (size, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, family.c_str ());
-}
-
-bool FontCacheKey::operator== (const FontCacheKey& rhs) const
-{
-	return family == rhs.family && size == rhs.size;
+	return ::CreateFont (key.size, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, key.family.c_str ());
 }
 
 class SelectObjectGuard
@@ -207,7 +144,7 @@ void BitmapContextGdi::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& c
     ::Ellipse (memoryDC, gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
 }
 
-void BitmapContextGdi::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& backgroundColor, const NUIE::Color& textColor)
+void BitmapContextGdi::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 
@@ -237,7 +174,7 @@ void BitmapContextGdi::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Fo
 	}
 	
 	RECT gdiRect = CreateRect (rect);
-	SetBkColor (memoryDC, RGB (backgroundColor.GetR (), backgroundColor.GetG (), backgroundColor.GetB ()));
+	SetBkMode (memoryDC, TRANSPARENT);
 	SetTextColor (memoryDC, RGB (textColor.GetR (), textColor.GetG (), textColor.GetB ()));
 	SelectObject (memoryDC, fontCache.Get (font));
 	::DrawText (memoryDC, text.c_str (), (int) text.length (), &gdiRect, format);

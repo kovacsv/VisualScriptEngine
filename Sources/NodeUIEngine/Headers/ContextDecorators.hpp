@@ -20,7 +20,7 @@ public:
 	virtual void	FillRect (const Rect& rect, const Color& color) override;
 	virtual void	DrawEllipse (const Rect& rect, const Pen& pen) override;
 	virtual void	FillEllipse (const Rect& rect, const Color& color) override;
-	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor) override;
+	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 
 private:
 	const ViewBox& viewBox;
@@ -37,7 +37,7 @@ public:
 	virtual void	FillRect (const Rect& rect, const Color& color) override;
 	virtual void	DrawEllipse (const Rect& rect, const Pen& pen) override;
 	virtual void	FillEllipse (const Rect& rect, const Color& color) override;
-	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor) override;
+	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 
 private:
 	virtual Color	GetChangedColor (const Color& origColor) = 0;
@@ -60,7 +60,7 @@ class TextSkipperContextDecorator : public DrawingContextDecorator
 public:
 	TextSkipperContextDecorator (DrawingContext& decorated, bool isPreviewMode);
 
-	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor) override;
+	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 
 private:
 	bool isPreviewMode;

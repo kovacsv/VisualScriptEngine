@@ -31,7 +31,7 @@ public:
 	virtual void	DrawEllipse (const Rect& rect, const Pen& pen) = 0;
 	virtual void	FillEllipse (const Rect& rect, const Color& color) = 0;
 
-	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor) = 0;
+	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) = 0;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) = 0;
 };
 
@@ -58,7 +58,7 @@ public:
 	virtual void	DrawEllipse (const Rect& rect, const Pen& pen) override;
 	virtual void	FillEllipse (const Rect& rect, const Color& color) override;
 
-	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor) override;
+	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) override;
 
 protected:
@@ -88,7 +88,7 @@ public:
 	virtual void	DrawEllipse (const Rect& rect, const Pen& pen) override;
 	virtual void	FillEllipse (const Rect& rect, const Color& color) override;
 
-	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor) override;
+	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) override;
 };
 

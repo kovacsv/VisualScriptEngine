@@ -116,7 +116,7 @@ private:
 class DrawingText : public DrawingItem
 {
 public:
-	DrawingText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor);
+	DrawingText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor);
 	virtual ~DrawingText ();
 
 	virtual void Draw (DrawingContext& context) const override;
@@ -128,7 +128,6 @@ private:
 	std::wstring		text;
 	HorizontalAnchor	hAnchor;
 	VerticalAnchor		vAnchor;
-	Color				backgroundColor;
 	Color				textColor;
 };
 

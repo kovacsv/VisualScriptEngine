@@ -82,9 +82,12 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
+static bool useBitmapContext = false;
+
 MyNodeEditorInterface::MyNodeEditorInterface (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	NUIE::NodeEditorInterface (),
 	bitmapContext (100, 100),
+	direct2DContext (100, 100),
 	evaluationEnv (evaluationData),
 	hwnd (NULL)
 {
@@ -93,7 +96,11 @@ MyNodeEditorInterface::MyNodeEditorInterface (const std::shared_ptr<ResultImageE
 
 NUIE::DrawingContext& MyNodeEditorInterface::GetDrawingContext ()
 {
-	return bitmapContext;
+	if (useBitmapContext) {
+		return bitmapContext;
+	} else {
+		return direct2DContext;
+	}
 }
 
 NUIE::EventHandlers& MyNodeEditorInterface::GetEventHandlers ()
@@ -108,22 +115,28 @@ NE::EvaluationEnv& MyNodeEditorInterface::GetEvaluationEnv ()
 
 void MyNodeEditorInterface::SetWindowHandle (HWND newHwnd)
 {
+	if (!useBitmapContext) {
+		direct2DContext.Init (newHwnd);
+	}
 	eventHandlers.SetWindowHandle (newHwnd);
 	hwnd = newHwnd;
 }
 
 void MyNodeEditorInterface::OnPaint ()
 {
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint (hwnd, &ps);
-	bitmapContext.DrawToHDC (hdc, 0, 0);
-	EndPaint (hwnd, &ps);
+	if (useBitmapContext) {
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint (hwnd, &ps);
+		bitmapContext.DrawToHDC (hdc, 0, 0);
+		EndPaint (hwnd, &ps);
+	}
 }
 
 NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	CustomControl (),
 	nodeEditorInterface (evaluationData),
-	nodeEditor (nodeEditorInterface)
+	nodeEditor (nodeEditorInterface),
+	isFirstPaint (true)
 {
 
 }
@@ -171,7 +184,13 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 
 void NodeEditorControl::OnPaint (HWND hwnd)
 {
+	// TODO: This is a hack!
 	nodeEditorInterface.OnPaint ();
+	if (!useBitmapContext && isFirstPaint) {
+		nodeEditor.GetNodeUIManager ().RequestRedraw ();
+		nodeEditor.Update ();
+		isFirstPaint = false;
+	}
 }
 
 void NodeEditorControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)

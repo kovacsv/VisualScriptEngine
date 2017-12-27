@@ -81,7 +81,7 @@ void NodeUITextPanelBase::Draw (NodeUIEnvironment& env, const Rect& rect, NodeDr
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, GetBackgroundColor (env))));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (rect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, GetBackgroundColor (env), GetTextColor (env))));
+	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (rect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, GetTextColor (env))));
 }
 
 NodeUITextPanel::NodeUITextPanel (const std::wstring& nodeText) :
@@ -138,7 +138,7 @@ void NodeUIStatusHeaderPanel::Draw (NodeUIEnvironment& env, const Rect& rect, No
 	const SkinParams& skinParams = env.GetSkinParams ();
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, skinParams.GetNodeHeaderBackgroundColor ())));
 	Rect textRect = Rect::FromPositionAndSize (Point (rect.GetLeft () + StatusRectSize * 2, rect.GetTop ()), Size (rect.GetWidth () - StatusRectSize * 2, rect.GetHeight ()));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), headerText, HorizontalAnchor::Center, VerticalAnchor::Center, skinParams.GetNodeHeaderBackgroundColor (), skinParams.GetNodeHeaderTextColor ())));
+	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), headerText, HorizontalAnchor::Center, VerticalAnchor::Center, skinParams.GetNodeHeaderTextColor ())));
 	Rect statusRect = Rect::FromPositionAndSize (Point (rect.GetLeft () + StatusRectSize, rect.GetTop () + StatusRectSize), Size (StatusRectSize, rect.GetHeight () - StatusRectSize * 2));
 	Color statusColor = (nodeStatus == UINode::Status::HasValue ? skinParams.GetHasValueStatusColor () : skinParams.GetHasNoValueStatusColor ());
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (statusRect, statusColor)));
@@ -183,7 +183,7 @@ void NodeUIMultiLineTextPanel::Draw (NodeUIEnvironment& env, const Rect& rect, N
 			Point textRectPosition (rect.GetLeft () + xOffset, rect.GetTop () + yOffset);
 			Size textRectSize (textRectWidth, maxTextSize.GetHeight ());
 			Rect textRect = Rect::FromPositionAndSize (textRectPosition, textRectSize);
-			drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, GetBackgroundColor (env), GetTextColor (env))));
+			drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, GetTextColor (env))));
 		}
 		yOffset += maxTextSize.GetHeight ();
 	}
@@ -247,7 +247,7 @@ void NodeUISlotPanel::Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawin
 		drawingImage.AddInputSlotConnPosition (slotId, slotRect.GetLeftCenter ());
 		drawingImage.AddInputSlotRect (slotId, slotRect);
 		drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
-		drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetSlotTextBackgroundColor (), skinParams.GetSlotTextColor ())));
+		drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetSlotTextColor ())));
 	});
 
 	Point outputSlotsStartPoint = rect.GetTopRight () + Point (0.0, nodePadding);
@@ -257,7 +257,7 @@ void NodeUISlotPanel::Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawin
 		drawingImage.AddOutputSlotConnPosition (slotId, slotRect.GetRightCenter ());
 		drawingImage.AddOutputSlotRect (slotId, slotRect);
 		drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
-		drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), HorizontalAnchor::Right, VerticalAnchor::Center, skinParams.GetSlotTextBackgroundColor (), skinParams.GetSlotTextColor ())));
+		drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), HorizontalAnchor::Right, VerticalAnchor::Center, skinParams.GetSlotTextColor ())));
 	});
 }
 
@@ -309,15 +309,15 @@ void NodeUILeftRightButtonsPanel::Draw (NodeUIEnvironment& env, const Rect& rect
 	Rect leftButtonRect = Rect::FromPositionAndSize (rect.GetTopLeft () + Point (nodePadding, nodePadding), leftButtonSize);
 	Rect rightButtonRect = Rect::FromPositionAndSize (rect.GetTopRight () - Point (rightButtonSize.GetWidth () + nodePadding, -nodePadding), rightButtonSize);
 	Rect textRect = Rect::FromPositionAndSize (leftButtonRect.GetTopRight (), Size (rightButtonRect.GetLeft () - leftButtonRect.GetRight (), nodeTextSize.GetHeight ()));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, backgroundColor, textColor)));
+	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));
 
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (leftButtonRect, buttonBackgroundColor)));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (leftButtonRect, skinParams.GetNodeTextFont (), leftButtonText, HorizontalAnchor::Center, VerticalAnchor::Center, buttonBackgroundColor, textColor)));
+	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (leftButtonRect, skinParams.GetNodeTextFont (), leftButtonText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingRect (leftButtonRect, GetButtonBorderPen (env))));
 	drawingImage.AddSpecialRect (leftButtonId, leftButtonRect);
 
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rightButtonRect, buttonBackgroundColor)));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (rightButtonRect, skinParams.GetNodeTextFont (), rightButtonText, HorizontalAnchor::Center, VerticalAnchor::Center, buttonBackgroundColor, textColor)));
+	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (rightButtonRect, skinParams.GetNodeTextFont (), rightButtonText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingRect (rightButtonRect, GetButtonBorderPen (env))));
 	drawingImage.AddSpecialRect (rightButtonId, rightButtonRect);
 }

@@ -29,7 +29,7 @@ public:
 	virtual void		DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen) override;
 	virtual void		FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color) override;
 
-	virtual void		DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& backgroundColor, const NUIE::Color& textColor) override;
+	virtual void		DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor) override;
 	virtual NUIE::Size	MeasureText (const NUIE::Font& font, const std::wstring& text) override;
 
 	void				Setup (HWND hwnd);

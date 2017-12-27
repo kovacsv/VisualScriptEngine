@@ -79,9 +79,9 @@ void DrawingContextDecorator::FillEllipse (const Rect& rect, const Color& color)
 	decorated.FillEllipse (rect, color);
 }
 
-void DrawingContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& backgroundColor, const Color& textColor)
+void DrawingContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor)
 {
-	decorated.DrawFormattedText (rect, font, text, hAnchor, vAnchor, backgroundColor, textColor);
+	decorated.DrawFormattedText (rect, font, text, hAnchor, vAnchor, textColor);
 }
 
 Size DrawingContextDecorator::MeasureText (const Font& font, const std::wstring& text)
@@ -154,7 +154,7 @@ void NullDrawingContext::FillEllipse (const Rect&, const Color&)
 
 }
 
-void NullDrawingContext::DrawFormattedText (const Rect&, const Font&, const std::wstring&, HorizontalAnchor, VerticalAnchor, const Color&, const Color&)
+void NullDrawingContext::DrawFormattedText (const Rect&, const Font&, const std::wstring&, HorizontalAnchor, VerticalAnchor, const Color&)
 {
 
 }

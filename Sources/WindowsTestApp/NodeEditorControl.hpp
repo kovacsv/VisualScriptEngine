@@ -2,6 +2,7 @@
 #define NODEEDITORCONTROL_HPP
 
 #include "BitmapContextGdi.hpp"
+#include "Direct2DContext.hpp"
 #include "CustomControl.hpp"
 #include "BuiltInCommands.hpp"
 #include "WindowsAppUtilities.hpp"
@@ -61,6 +62,7 @@ public:
 
 private:
 	BitmapContextGdi	bitmapContext;
+	Direct2DContext		direct2DContext;
 	AppEventHandlers	eventHandlers;
 	NE::EvaluationEnv	evaluationEnv;
 	HWND				hwnd;
@@ -90,6 +92,7 @@ private:
 
 	MyNodeEditorInterface	nodeEditorInterface;
 	NUIE::NodeEditor		nodeEditor;
+	bool					isFirstPaint;
 };
 
 #endif

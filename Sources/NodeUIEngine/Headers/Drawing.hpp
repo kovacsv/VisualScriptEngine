@@ -30,6 +30,9 @@ public:
 	unsigned char GetG () const;
 	unsigned char GetB () const;
 
+	bool	operator== (const Color& rhs) const;
+	bool	operator!= (const Color& rhs) const;
+
 private:
 	unsigned char r;
 	unsigned char g;
@@ -44,6 +47,9 @@ public:
 	const Color&	GetColor () const;
 	double			GetThickness () const;
 
+	bool	operator== (const Pen& rhs) const;
+	bool	operator!= (const Pen& rhs) const;
+
 private:
 	Color	color;
 	double	thickness;
@@ -56,6 +62,9 @@ public:
 
 	const std::wstring&		GetFamily () const;
 	const double			GetSize () const;
+
+	bool	operator== (const Font& rhs) const;
+	bool	operator!= (const Font& rhs) const;
 
 private:
 	std::wstring	family;

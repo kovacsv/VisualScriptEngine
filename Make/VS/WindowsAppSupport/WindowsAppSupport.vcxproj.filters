@@ -25,10 +25,13 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtilities.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\HandleCache.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Window.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Window.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Direct2DContext.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\DrawingCacheKeys.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -52,6 +55,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Direct2DContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\DrawingCacheKeys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

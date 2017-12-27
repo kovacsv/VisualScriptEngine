@@ -17,6 +17,10 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 		return (LRESULT) 1;
 	}
 
+	if (msg == WM_IME_SETCONTEXT) {
+		return (LRESULT) 1;
+	}
+
 	UI::TranslateEventToItem (control, hwnd, msg, wParam, lParam);
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
