@@ -217,13 +217,13 @@ void Direct2DContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Fon
 
 	switch (vAnchor) {
 		case NUIE::VerticalAnchor::Top:
-			textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+			textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 			break;
 		case NUIE::VerticalAnchor::Center:
 			textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 			break;
 		case NUIE::VerticalAnchor::Bottom:
-			textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+			textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_FAR);
 			break;
 	}
 
