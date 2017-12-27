@@ -229,6 +229,7 @@ void NodeEditorControl::OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseB
 
 void NodeEditorControl::OnResize (HWND hwnd, int newWidth, int newHeight)
 {
+	// TODO: Switch to fullscreen doesn't work with Direct2DContext
 	nodeEditor.OnResize (newWidth, newHeight);
 }
 
