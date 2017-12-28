@@ -47,10 +47,10 @@ private:
 	HWND hwnd;
 };
 
-class MyNodeEditorInterface : public NUIE::NodeEditorInterface
+class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
-	MyNodeEditorInterface (const std::shared_ptr<ResultImageEvaluationData>& evaluationData);
+	MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvaluationData>& evaluationData);
 
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 	virtual NUIE::SkinParams&		GetSkinParams () override;
@@ -91,7 +91,7 @@ private:
 	NUIE::KeySet		ConvertKeys (UI::Keys keys);
 	NUIE::MouseButton	ConvertMouseButton (UI::MouseButton button);
 
-	MyNodeEditorInterface	nodeEditorInterface;
+	MyNodeUIEnvironment		uiEnvironment;
 	NUIE::NodeEditor		nodeEditor;
 };
 

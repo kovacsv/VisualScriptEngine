@@ -83,15 +83,17 @@ public:
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::InputSlotPtr&, const CommandStructure&) override;
 };
 
-class TestNodeEditorInterface : public NodeEditorInterface
+class TestNodeUIEnvironment : public NodeUIEnvironment
 {
 public:
-	TestNodeEditorInterface ();
-	const SVGDrawingContext&	GetSVGDrawingContext () const;
+	TestNodeUIEnvironment ();
+
 	virtual DrawingContext&		GetDrawingContext () override;
 	virtual SkinParams&			GetSkinParams () override;
 	virtual EventHandlers&		GetEventHandlers () override;
 	virtual EvaluationEnv&		GetEvaluationEnv () override;
+
+	const SVGDrawingContext&	GetSVGDrawingContext () const;
 
 private:
 	SVGDrawingContext	drawingContext;
@@ -111,8 +113,8 @@ public:
 	void	Wheel (MouseWheelRotation rotation, const Point& point);
 	void	DragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
 
-	TestNodeEditorInterface		nodeEditorInterface;
-	NodeEditor					nodeEditor;
+	TestNodeUIEnvironment	uiEnvironment;
+	NodeEditor				nodeEditor;
 };
 
 #endif

@@ -17,9 +17,9 @@ static std::string WideStringToNormalString (const std::wstring& str)
 	return converter.to_bytes (str);
 }
 
-NodeEditor::NodeEditor (NodeEditorInterface& editorInterface) :
+NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (),
-	uiEnvironment (editorInterface.GetDrawingContext (), editorInterface.GetSkinParams (), editorInterface.GetEventHandlers (), editorInterface.GetEvaluationEnv ())
+	uiEnvironment (uiEnvironment)
 {
 
 }

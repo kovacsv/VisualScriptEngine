@@ -3,11 +3,7 @@
 namespace NUIE
 {
 
-NodeUIEnvironment::NodeUIEnvironment (DrawingContext& drawingContext, SkinParams& skinParams, EventHandlers& eventHandlers, NE::EvaluationEnv& evaluationEnv) :
-	drawingContext (drawingContext),
-	skinParams (skinParams),
-	eventHandlers (eventHandlers),
-	evaluationEnv (evaluationEnv)
+NodeUIEnvironment::NodeUIEnvironment ()
 {
 
 }
@@ -17,28 +13,9 @@ NodeUIEnvironment::~NodeUIEnvironment ()
 
 }
 
-DrawingContext& NodeUIEnvironment::GetDrawingContext ()
-{
-	return drawingContext;
-}
-
-SkinParams& NodeUIEnvironment::GetSkinParams ()
-{
-	return skinParams;
-}
-
-EventHandlers& NodeUIEnvironment::GetEventHandlers ()
-{
-	return eventHandlers;
-}
-
-NE::EvaluationEnv& NodeUIEnvironment::GetEvaluationEnv ()
-{
-	return evaluationEnv;
-}
-
 NodeUIEnvironmentDecorator::NodeUIEnvironmentDecorator (NodeUIEnvironment& decorated) :
-	NodeUIEnvironment (decorated.GetDrawingContext (), decorated.GetSkinParams (), decorated.GetEventHandlers (), decorated.GetEvaluationEnv ())
+	NodeUIEnvironment (),
+	decorated (decorated)
 {
 
 }
@@ -46,6 +23,26 @@ NodeUIEnvironmentDecorator::NodeUIEnvironmentDecorator (NodeUIEnvironment& decor
 NodeUIEnvironmentDecorator::~NodeUIEnvironmentDecorator ()
 {
 
+}
+
+DrawingContext& NodeUIEnvironmentDecorator::GetDrawingContext ()
+{
+	return decorated.GetDrawingContext ();
+}
+
+SkinParams& NodeUIEnvironmentDecorator::GetSkinParams ()
+{
+	return decorated.GetSkinParams ();
+}
+
+EventHandlers& NodeUIEnvironmentDecorator::GetEventHandlers ()
+{
+	return decorated.GetEventHandlers ();
+}
+
+NE::EvaluationEnv& NodeUIEnvironmentDecorator::GetEvaluationEnv ()
+{
+	return decorated.GetEvaluationEnv ();
 }
 
 NodeUIEnvironmentContextDecorator::NodeUIEnvironmentContextDecorator (NodeUIEnvironment& decorated, DrawingContext& decoratedDrawingContext) :

@@ -18,17 +18,17 @@ public:
 	{
 		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
-		integerInputNode = uiManager.AddNode (NUIE::UINodePtr (new IntegerUpDownUINode (L"Integer", NUIE::Point (100, 200), 20, 10)), nodeEditorInterface.GetEvaluationEnv ());
-		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new IntegerRangeNode (L"Range", NUIE::Point (300, 400))), nodeEditorInterface.GetEvaluationEnv ());
-		viewerUINode1 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerUINode (L"Viewer", NUIE::Point (600, 100), 5)), nodeEditorInterface.GetEvaluationEnv ());
-		viewerUINode2 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerUINode (L"Viewer 2", NUIE::Point (600, 400), 5)), nodeEditorInterface.GetEvaluationEnv ());
+		integerInputNode = uiManager.AddNode (NUIE::UINodePtr (new IntegerUpDownUINode (L"Integer", NUIE::Point (100, 200), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new IntegerRangeNode (L"Range", NUIE::Point (300, 400))), uiEnvironment.GetEvaluationEnv ());
+		viewerUINode1 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerUINode (L"Viewer", NUIE::Point (600, 100), 5)), uiEnvironment.GetEvaluationEnv ());
+		viewerUINode2 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerUINode (L"Viewer 2", NUIE::Point (600, 400), 5)), uiEnvironment.GetEvaluationEnv ());
 		nodeEditor.Update ();
 
 		pointInBackground = Point (5.0, 5.0);
-		integerInputRect = integerInputNode->GetNodeRect (nodeEditor.GetNodeUIEnvironment ());
-		rangeInputRect = rangeInputNode->GetNodeRect (nodeEditor.GetNodeUIEnvironment ());
-		viewer1InputRect = viewerUINode1->GetNodeRect (nodeEditor.GetNodeUIEnvironment ());
-		viewer2InputRect = viewerUINode2->GetNodeRect (nodeEditor.GetNodeUIEnvironment ());
+		integerInputRect = integerInputNode->GetNodeRect (uiEnvironment);
+		rangeInputRect = rangeInputNode->GetNodeRect (uiEnvironment);
+		viewer1InputRect = viewerUINode1->GetNodeRect (uiEnvironment);
+		viewer2InputRect = viewerUINode2->GetNodeRect (uiEnvironment);
 	}
 
 	UINodePtr	integerInputNode;

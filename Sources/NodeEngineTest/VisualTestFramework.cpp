@@ -297,7 +297,8 @@ CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&,
 	return nullptr;
 }
 
-TestNodeEditorInterface::TestNodeEditorInterface () :
+TestNodeUIEnvironment::TestNodeUIEnvironment () :
+	NUIE::NodeUIEnvironment (),
 	drawingContext (800, 600),
 	skinParams (),
 	eventHandlers (),
@@ -306,41 +307,41 @@ TestNodeEditorInterface::TestNodeEditorInterface () :
 	
 }
 
-const SVGDrawingContext& TestNodeEditorInterface::GetSVGDrawingContext () const
+DrawingContext& TestNodeUIEnvironment::GetDrawingContext ()
 {
 	return drawingContext;
 }
 
-DrawingContext& TestNodeEditorInterface::GetDrawingContext ()
-{
-	return drawingContext;
-}
-
-SkinParams& TestNodeEditorInterface::GetSkinParams ()
+SkinParams& TestNodeUIEnvironment::GetSkinParams ()
 {
 	return skinParams;
 }
 
-EventHandlers& TestNodeEditorInterface::GetEventHandlers ()
+EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
 {
 	return eventHandlers;
 }
 
-EvaluationEnv& TestNodeEditorInterface::GetEvaluationEnv ()
+EvaluationEnv& TestNodeUIEnvironment::GetEvaluationEnv ()
 {
 	return evaluationEnv;
 }
 
+const SVGDrawingContext& TestNodeUIEnvironment::GetSVGDrawingContext () const
+{
+	return drawingContext;
+}
+
 NodeEditorTestEnv::NodeEditorTestEnv () :
-	nodeEditorInterface (),
-	nodeEditor (nodeEditorInterface)
+	uiEnvironment (),
+	nodeEditor (uiEnvironment)
 {
 }
 
 bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 {
 	nodeEditor.Draw ();
-	const SVGDrawingContext& context = nodeEditorInterface.GetSVGDrawingContext ();
+	const SVGDrawingContext& context = uiEnvironment.GetSVGDrawingContext ();
 
 	std::string testFilesPath = SimpleTest::GetAppFolderLocation () + "VisualTestFiles" + PATH_SEPARATOR;
 	std::string referenceFilePath = testFilesPath + referenceFileName;

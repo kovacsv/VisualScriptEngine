@@ -79,8 +79,8 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 
 static bool useBitmapContext = false;
 
-MyNodeEditorInterface::MyNodeEditorInterface (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
-	NUIE::NodeEditorInterface (),
+MyNodeUIEnvironment::MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
+	NUIE::NodeUIEnvironment (),
 	bitmapContext (100, 100),
 	direct2DContext (100, 100),
 	skinParams (),
@@ -90,7 +90,7 @@ MyNodeEditorInterface::MyNodeEditorInterface (const std::shared_ptr<ResultImageE
 
 }
 
-NUIE::DrawingContext& MyNodeEditorInterface::GetDrawingContext ()
+NUIE::DrawingContext& MyNodeUIEnvironment::GetDrawingContext ()
 {
 	if (useBitmapContext) {
 		return bitmapContext;
@@ -99,22 +99,22 @@ NUIE::DrawingContext& MyNodeEditorInterface::GetDrawingContext ()
 	}
 }
 
-NUIE::SkinParams& MyNodeEditorInterface::GetSkinParams ()
+NUIE::SkinParams& MyNodeUIEnvironment::GetSkinParams ()
 {
 	return skinParams;
 }
 
-NUIE::EventHandlers& MyNodeEditorInterface::GetEventHandlers ()
+NUIE::EventHandlers& MyNodeUIEnvironment::GetEventHandlers ()
 {
 	return eventHandlers;
 }
 
-NE::EvaluationEnv& MyNodeEditorInterface::GetEvaluationEnv ()
+NE::EvaluationEnv& MyNodeUIEnvironment::GetEvaluationEnv ()
 {
 	return evaluationEnv;
 }
 
-void MyNodeEditorInterface::SetWindowHandle (HWND newHwnd)
+void MyNodeUIEnvironment::SetWindowHandle (HWND newHwnd)
 {
 	if (!useBitmapContext) {
 		direct2DContext.Init (newHwnd);
@@ -123,7 +123,7 @@ void MyNodeEditorInterface::SetWindowHandle (HWND newHwnd)
 	hwnd = newHwnd;
 }
 
-void MyNodeEditorInterface::DrawContextToWindow ()
+void MyNodeUIEnvironment::DrawContextToWindow ()
 {
 	if (useBitmapContext) {
 		PAINTSTRUCT ps;
@@ -135,15 +135,15 @@ void MyNodeEditorInterface::DrawContextToWindow ()
 
 NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	CustomControl (),
-	nodeEditorInterface (evaluationData),
-	nodeEditor (nodeEditorInterface)
+	uiEnvironment (evaluationData),
+	nodeEditor (uiEnvironment)
 {
 
 }
 
 void NodeEditorControl::OnCreate (HWND hwnd)
 {
-	nodeEditorInterface.SetWindowHandle (hwnd);
+	uiEnvironment.SetWindowHandle (hwnd);
 
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 	NUIE::NodeUIEnvironment& uiEnvironment = nodeEditor.GetNodeUIEnvironment ();
@@ -185,7 +185,7 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 void NodeEditorControl::OnPaint (HWND hwnd)
 {
 	nodeEditor.Draw ();
-	nodeEditorInterface.DrawContextToWindow ();
+	uiEnvironment.DrawContextToWindow ();
 }
 
 void NodeEditorControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)

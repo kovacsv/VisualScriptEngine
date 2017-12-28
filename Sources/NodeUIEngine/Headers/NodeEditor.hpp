@@ -10,19 +10,10 @@
 namespace NUIE
 {
 
-class NodeEditorInterface
-{
-public:
-	virtual DrawingContext&			GetDrawingContext () = 0;
-	virtual SkinParams&				GetSkinParams () = 0;
-	virtual EventHandlers&			GetEventHandlers () = 0;
-	virtual NE::EvaluationEnv&		GetEvaluationEnv () = 0;
-};
-
 class NodeEditor
 {
 public:
-	NodeEditor (NodeEditorInterface& editorInterface);
+	NodeEditor (NodeUIEnvironment& uiEnvironment);
 	virtual ~NodeEditor ();
 
 	void							OnMouseDown (const KeySet& pressedKeys, MouseButton button, int x, int y);
@@ -43,7 +34,7 @@ public:
 
 protected:
 	NodeUIManager			uiManager;
-	NodeUIEnvironment		uiEnvironment;
+	NodeUIEnvironment&		uiEnvironment;
 };
 
 }

@@ -20,19 +20,13 @@ class EventHandlers;
 class NodeUIEnvironment
 {
 public:
-	NodeUIEnvironment (DrawingContext& drawingContext, SkinParams& skinParams, EventHandlers& eventHandlers, NE::EvaluationEnv& evaluationEnv);
+	NodeUIEnvironment ();
 	virtual ~NodeUIEnvironment ();
 
-	virtual DrawingContext&		GetDrawingContext ();
-	virtual SkinParams&			GetSkinParams ();
-	virtual EventHandlers&		GetEventHandlers ();
-	virtual NE::EvaluationEnv&	GetEvaluationEnv ();
-
-private:
-	DrawingContext&		drawingContext;
-	SkinParams&			skinParams;
-	EventHandlers&		eventHandlers;
-	NE::EvaluationEnv&	evaluationEnv;
+	virtual DrawingContext&		GetDrawingContext () = 0;
+	virtual SkinParams&			GetSkinParams () = 0;
+	virtual EventHandlers&		GetEventHandlers () = 0;
+	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
 };
 
 class NodeUIEnvironmentDecorator : public NodeUIEnvironment
@@ -40,6 +34,14 @@ class NodeUIEnvironmentDecorator : public NodeUIEnvironment
 public:
 	NodeUIEnvironmentDecorator (NodeUIEnvironment& decorated);
 	virtual ~NodeUIEnvironmentDecorator ();
+
+	virtual DrawingContext&		GetDrawingContext () override;
+	virtual SkinParams&			GetSkinParams () override;
+	virtual EventHandlers&		GetEventHandlers () override;
+	virtual NE::EvaluationEnv&	GetEvaluationEnv () override;
+
+private:
+	NodeUIEnvironment& decorated;
 };
 
 class NodeUIEnvironmentContextDecorator : public NodeUIEnvironmentDecorator
@@ -48,7 +50,7 @@ public:
 	NodeUIEnvironmentContextDecorator (NodeUIEnvironment& decorated, DrawingContext& decoratedDrawingContext);
 	virtual ~NodeUIEnvironmentContextDecorator ();
 
-	virtual DrawingContext& GetDrawingContext () override;
+	virtual DrawingContext&		GetDrawingContext () override;
 
 private:
 	DrawingContext& decoratedDrawingContext;

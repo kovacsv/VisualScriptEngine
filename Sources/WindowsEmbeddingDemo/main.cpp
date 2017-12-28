@@ -50,10 +50,11 @@ private:
 	HWND hwnd;
 };
 
-class MyNodeEditorInterface : public NUIE::NodeEditorInterface
+class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
-	MyNodeEditorInterface () :
+	MyNodeUIEnvironment () :
+		NUIE::NodeUIEnvironment (),
 		bitmapContext (0, 0),
 		skinParams (),
 		eventHandlers (),
@@ -105,8 +106,8 @@ private:
 	HWND				hwnd;
 };
 
-static MyNodeEditorInterface nodeEditorInterface;
-static NUIE::NodeEditor nodeEditor (nodeEditorInterface);
+static MyNodeUIEnvironment uiEnvironment;
+static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -122,7 +123,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	switch (msg) {
 		case WM_CREATE:
 			{
-				nodeEditorInterface.SetWindowHandle (hwnd);
+				uiEnvironment.SetWindowHandle (hwnd);
 				NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 				NUIE::NodeUIEnvironment& uiEnvironment = nodeEditor.GetNodeUIEnvironment ();
 				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (100, 100), 20, 10)), uiEnvironment.GetEvaluationEnv ());
@@ -133,7 +134,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_PAINT:
 			nodeEditor.Draw ();
-			nodeEditorInterface.DrawContextToWindow ();
+			uiEnvironment.DrawContextToWindow ();
 			break;
 		case WM_CLOSE:
 			DestroyWindow (hwnd);
