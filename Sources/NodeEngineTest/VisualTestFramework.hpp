@@ -76,8 +76,7 @@ class TestEventHandlers : public EventHandlers
 public:
 	TestEventHandlers ();
 
-	virtual void		OnRecalculate () override;
-	virtual void		OnRedraw () override;
+	virtual void		RedrawRequested () override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const CommandStructure&) override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const CommandStructure&) override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::OutputSlotPtr&, const CommandStructure&) override;

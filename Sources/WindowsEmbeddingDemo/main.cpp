@@ -16,12 +16,7 @@ public:
 	
 	}
 
-	virtual void OnRecalculate () override
-	{
-	
-	}
-
-	virtual void OnRedraw () override
+	virtual void RedrawRequested () override
 	{
 		InvalidateRect (hwnd, NULL, FALSE);
 	}
@@ -130,6 +125,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			}
 			break;
 		case WM_PAINT:
+			nodeEditor.Draw ();
 			nodeEditorInterface.OnPaint ();
 			break;
 		case WM_CLOSE:

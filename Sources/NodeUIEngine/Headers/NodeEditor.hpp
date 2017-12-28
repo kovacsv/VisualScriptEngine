@@ -31,6 +31,7 @@ public:
 	void							OnMouseDoubleClick (const KeySet& pressedKeys, MouseButton button, int x, int y);
 	void							OnResize (int newWidth, int newHeight);
 	void							Update ();
+	void							Draw ();
 
 	NodeUIManager&					GetNodeUIManager ();
 	NodeUIEnvironment&				GetNodeUIEnvironment ();

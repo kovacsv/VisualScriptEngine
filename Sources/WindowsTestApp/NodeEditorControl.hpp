@@ -37,8 +37,7 @@ public:
 
 	void						SetWindowHandle (HWND newHwnd);
 
-	virtual void				OnRecalculate () override;
-	virtual void				OnRedraw () override;
+	virtual void				RedrawRequested () override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands) override;
@@ -92,7 +91,6 @@ private:
 
 	MyNodeEditorInterface	nodeEditorInterface;
 	NUIE::NodeEditor		nodeEditor;
-	bool					isFirstPaint;
 };
 
 #endif

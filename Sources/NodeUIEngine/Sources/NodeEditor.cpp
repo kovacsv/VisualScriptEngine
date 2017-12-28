@@ -66,6 +66,11 @@ void NodeEditor::Update ()
 	uiManager.Update (uiEnvironment);
 }
 
+void NodeEditor::Draw ()
+{
+	uiManager.Draw (uiEnvironment);
+}
+
 NodeUIManager& NodeEditor::GetNodeUIManager ()
 {
 	return uiManager;

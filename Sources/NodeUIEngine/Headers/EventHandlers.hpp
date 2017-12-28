@@ -14,8 +14,7 @@ public:
 	EventHandlers ();
 	virtual ~EventHandlers ();
 
-	virtual void				OnRecalculate () = 0;
-	virtual void				OnRedraw () = 0;
+	virtual void				RedrawRequested () = 0;
 
 	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const CommandStructure& commands) = 0;
 	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UINodePtr& uiNode, const CommandStructure& commands) = 0;

@@ -281,15 +281,19 @@ void NodeUIManager::Update (NodeUIEnvironment& env)
 			uiNode->Evaluate (env.GetEvaluationEnv ());
 			return true;
 		});
-		env.GetEventHandlers ().OnRecalculate ();
 		status.RequestRedraw ();
 	}
 	if (status.NeedToRedraw ()) {
-		NodeUIManagerDrawer drawer (*this);
-		drawer.Draw (env, interactionHandler.GetDrawingExtension ());
-		env.GetEventHandlers ().OnRedraw ();
+		env.GetEventHandlers ().RedrawRequested ();
 	}
 	status.Reset ();
+}
+
+
+void NodeUIManager::Draw (NodeUIEnvironment& env)
+{
+	NodeUIManagerDrawer drawer (*this);
+	drawer.Draw (env, interactionHandler.GetDrawingExtension ());
 }
 
 void NodeUIManager::ResizeContext (NodeUIEnvironment& env, int newWidth, int newHeight)

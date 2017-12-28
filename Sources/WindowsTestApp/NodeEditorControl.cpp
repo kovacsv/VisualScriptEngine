@@ -43,12 +43,7 @@ void AppEventHandlers::SetWindowHandle (HWND newHwnd)
 	hwnd = newHwnd;
 }
 
-void AppEventHandlers::OnRecalculate ()
-{
-
-}
-
-void AppEventHandlers::OnRedraw ()
+void AppEventHandlers::RedrawRequested ()
 {
 	InvalidateRect (hwnd, NULL, FALSE);
 }
@@ -135,8 +130,7 @@ void MyNodeEditorInterface::OnPaint ()
 NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	CustomControl (),
 	nodeEditorInterface (evaluationData),
-	nodeEditor (nodeEditorInterface),
-	isFirstPaint (true)
+	nodeEditor (nodeEditorInterface)
 {
 
 }
@@ -185,12 +179,8 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 void NodeEditorControl::OnPaint (HWND hwnd)
 {
 	// TODO: This is a hack!
+	nodeEditor.Draw ();
 	nodeEditorInterface.OnPaint ();
-	if (!useBitmapContext && isFirstPaint) {
-		nodeEditor.GetNodeUIManager ().RequestRedraw ();
-		nodeEditor.Update ();
-		isFirstPaint = false;
-	}
 }
 
 void NodeEditorControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)

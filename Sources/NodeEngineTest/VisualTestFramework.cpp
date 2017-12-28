@@ -272,12 +272,7 @@ TestEventHandlers::TestEventHandlers ()
 	
 }
 
-void TestEventHandlers::OnRecalculate ()
-{
-	
-}
-
-void TestEventHandlers::OnRedraw ()
+void TestEventHandlers::RedrawRequested ()
 {
 	
 }
@@ -338,6 +333,7 @@ NodeEditorTestEnv::NodeEditorTestEnv () :
 
 bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 {
+	nodeEditor.Draw ();
 	const SVGDrawingContext& context = nodeEditorInterface.GetSVGDrawingContext ();
 
 	std::string testFilesPath = SimpleTest::GetAppFolderLocation () + "VisualTestFiles" + PATH_SEPARATOR;
