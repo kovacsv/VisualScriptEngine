@@ -42,7 +42,6 @@ public:
 	bool							Save (const std::wstring& fileName) const;
 
 protected:
-	NodeEditorInterface&	editorInterface;
 	NodeUIManager			uiManager;
 	NodeUIEnvironment		uiEnvironment;
 };
