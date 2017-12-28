@@ -14,6 +14,7 @@ class NodeEditorInterface
 {
 public:
 	virtual DrawingContext&			GetDrawingContext () = 0;
+	virtual SkinParams&				GetSkinParams () = 0;
 	virtual EventHandlers&			GetEventHandlers () = 0;
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () = 0;
 };
@@ -42,7 +43,6 @@ public:
 
 protected:
 	NodeEditorInterface&	editorInterface;
-	SkinParams				skinParams;
 	NodeUIManager			uiManager;
 	NodeUIEnvironment		uiEnvironment;
 };

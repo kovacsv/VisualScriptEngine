@@ -89,11 +89,13 @@ public:
 	TestNodeEditorInterface ();
 	const SVGDrawingContext&	GetSVGDrawingContext () const;
 	virtual DrawingContext&		GetDrawingContext () override;
+	virtual SkinParams&			GetSkinParams () override;
 	virtual EventHandlers&		GetEventHandlers () override;
 	virtual EvaluationEnv&		GetEvaluationEnv () override;
 
 private:
 	SVGDrawingContext	drawingContext;
+	SkinParams			skinParams;
 	TestEventHandlers	eventHandlers;
 	EvaluationEnv		evaluationEnv;
 };

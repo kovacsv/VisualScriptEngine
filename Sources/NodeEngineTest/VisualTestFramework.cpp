@@ -299,6 +299,7 @@ CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&,
 
 TestNodeEditorInterface::TestNodeEditorInterface () :
 	drawingContext (800, 600),
+	skinParams (),
 	eventHandlers (),
 	evaluationEnv (nullptr)
 {
@@ -313,6 +314,11 @@ const SVGDrawingContext& TestNodeEditorInterface::GetSVGDrawingContext () const
 DrawingContext& TestNodeEditorInterface::GetDrawingContext ()
 {
 	return drawingContext;
+}
+
+SkinParams& TestNodeEditorInterface::GetSkinParams ()
+{
+	return skinParams;
 }
 
 EventHandlers& TestNodeEditorInterface::GetEventHandlers ()

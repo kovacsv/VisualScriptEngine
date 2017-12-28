@@ -53,6 +53,7 @@ public:
 	MyNodeEditorInterface (const std::shared_ptr<ResultImageEvaluationData>& evaluationData);
 
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
+	virtual NUIE::SkinParams&		GetSkinParams () override;
 	virtual NUIE::EventHandlers&	GetEventHandlers () override;
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
 
@@ -62,6 +63,7 @@ public:
 private:
 	BitmapContextGdi	bitmapContext;
 	Direct2DContext		direct2DContext;
+	NUIE::SkinParams	skinParams;
 	AppEventHandlers	eventHandlers;
 	NE::EvaluationEnv	evaluationEnv;
 	HWND				hwnd;

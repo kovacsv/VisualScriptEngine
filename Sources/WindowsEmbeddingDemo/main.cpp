@@ -55,6 +55,7 @@ class MyNodeEditorInterface : public NUIE::NodeEditorInterface
 public:
 	MyNodeEditorInterface () :
 		bitmapContext (0, 0),
+		skinParams (),
 		eventHandlers (),
 		evaluationEnv (nullptr),
 		hwnd (NULL)
@@ -65,6 +66,11 @@ public:
 	virtual NUIE::DrawingContext& GetDrawingContext () override
 	{
 		return bitmapContext;
+	}
+
+	virtual NUIE::SkinParams& GetSkinParams () override
+	{
+		return skinParams;
 	}
 	
 	virtual NUIE::EventHandlers& GetEventHandlers () override
@@ -93,6 +99,7 @@ public:
 
 private:
 	BitmapContextGdi	bitmapContext;
+	NUIE::SkinParams	skinParams;
 	MyEventHandlers		eventHandlers;
 	NE::EvaluationEnv	evaluationEnv;
 	HWND				hwnd;

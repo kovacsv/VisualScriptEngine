@@ -19,9 +19,8 @@ static std::string WideStringToNormalString (const std::wstring& str)
 
 NodeEditor::NodeEditor (NodeEditorInterface& editorInterface) :
 	editorInterface (editorInterface),
-	skinParams (),
 	uiManager (),
-	uiEnvironment (editorInterface.GetDrawingContext (), skinParams, editorInterface.GetEventHandlers (), editorInterface.GetEvaluationEnv ())
+	uiEnvironment (editorInterface.GetDrawingContext (), editorInterface.GetSkinParams (), editorInterface.GetEventHandlers (), editorInterface.GetEvaluationEnv ())
 {
 
 }

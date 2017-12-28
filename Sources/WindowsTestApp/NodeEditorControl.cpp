@@ -83,6 +83,7 @@ MyNodeEditorInterface::MyNodeEditorInterface (const std::shared_ptr<ResultImageE
 	NUIE::NodeEditorInterface (),
 	bitmapContext (100, 100),
 	direct2DContext (100, 100),
+	skinParams (),
 	evaluationEnv (evaluationData),
 	hwnd (NULL)
 {
@@ -96,6 +97,11 @@ NUIE::DrawingContext& MyNodeEditorInterface::GetDrawingContext ()
 	} else {
 		return direct2DContext;
 	}
+}
+
+NUIE::SkinParams& MyNodeEditorInterface::GetSkinParams ()
+{
+	return skinParams;
 }
 
 NUIE::EventHandlers& MyNodeEditorInterface::GetEventHandlers ()
