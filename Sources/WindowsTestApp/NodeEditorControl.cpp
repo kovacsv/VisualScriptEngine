@@ -178,7 +178,6 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 
 void NodeEditorControl::OnPaint (HWND hwnd)
 {
-	// TODO: This is a hack!
 	nodeEditor.Draw ();
 	nodeEditorInterface.OnPaint ();
 }
