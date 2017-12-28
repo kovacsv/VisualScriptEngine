@@ -117,7 +117,7 @@ void MyNodeEditorInterface::SetWindowHandle (HWND newHwnd)
 	hwnd = newHwnd;
 }
 
-void MyNodeEditorInterface::OnPaint ()
+void MyNodeEditorInterface::DrawContextToWindow ()
 {
 	if (useBitmapContext) {
 		PAINTSTRUCT ps;
@@ -179,7 +179,7 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 void NodeEditorControl::OnPaint (HWND hwnd)
 {
 	nodeEditor.Draw ();
-	nodeEditorInterface.OnPaint ();
+	nodeEditorInterface.DrawContextToWindow ();
 }
 
 void NodeEditorControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)

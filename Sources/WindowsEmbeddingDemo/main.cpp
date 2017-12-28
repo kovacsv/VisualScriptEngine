@@ -83,7 +83,7 @@ public:
 		hwnd = newHwnd;
 	}
 
-	void OnPaint ()
+	void DrawContextToWindow ()
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint (hwnd, &ps);
@@ -126,7 +126,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_PAINT:
 			nodeEditor.Draw ();
-			nodeEditorInterface.OnPaint ();
+			nodeEditorInterface.DrawContextToWindow ();
 			break;
 		case WM_CLOSE:
 			DestroyWindow (hwnd);

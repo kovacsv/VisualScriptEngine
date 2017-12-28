@@ -57,7 +57,7 @@ public:
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
 
 	void							SetWindowHandle (HWND newHwnd);
-	void							OnPaint ();
+	void							DrawContextToWindow ();
 
 private:
 	BitmapContextGdi	bitmapContext;
