@@ -26,7 +26,6 @@ public:
 	void							Draw ();
 
 	NodeUIManager&					GetNodeUIManager ();
-	NodeUIEnvironment&				GetNodeUIEnvironment ();
 	
 	void							Clear ();
 	bool							Load (const std::wstring& fileName);

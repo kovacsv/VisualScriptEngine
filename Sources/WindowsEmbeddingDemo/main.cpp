@@ -125,7 +125,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			{
 				uiEnvironment.SetWindowHandle (hwnd);
 				NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
-				NUIE::NodeUIEnvironment& uiEnvironment = nodeEditor.GetNodeUIEnvironment ();
 				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (100, 100), 20, 10)), uiEnvironment.GetEvaluationEnv ());
 				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (100, 300), 20, 10)), uiEnvironment.GetEvaluationEnv ());
 				uiManager.AddNode (NUIE::UINodePtr (new NUIE::MultiLineViewerUINode (L"Viewer", NUIE::Point (300, 200), 5)), uiEnvironment.GetEvaluationEnv ());

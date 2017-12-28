@@ -138,12 +138,12 @@ TEST (SlotConnectionTest)
 {
 	SimpleNodeEditorTestEnv env;
 
-	Point integerOutputSlotPosition = env.integerInputNode->GetOutputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("out")).GetCenter ();
-	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("out")).GetCenter ();
-	Rect viewer1InputSlotRect = env.viewerUINode1->GetInputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("in"));
+	Point integerOutputSlotPosition = env.integerInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Rect viewer1InputSlotRect = env.viewerUINode1->GetInputSlotRect (env.uiEnvironment, SlotId ("in"));
 	Point viewer1InputSlotPosition = viewer1InputSlotRect.GetCenter ();
-	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("in")).GetCenter ();
-	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("start")).GetCenter ();
+	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
+	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.uiEnvironment, SlotId ("start")).GetCenter ();
 
 	ASSERT (env.CheckReference ("02_SlotConnection_Basic.svg"));
 
@@ -191,7 +191,7 @@ TEST (SlotConnectionTest)
 		ASSERT (env.CheckReference ("02_SlotConnection_AllConnected.svg"));
 	}
 
-	viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("in")).GetCenter ();
+	viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
 	{ // connect integer output slot to viewer2 input slot
 		env.DragDrop (integerOutputSlotPosition, viewer2InputSlotPosition, [&] () {
 			ASSERT (env.CheckReference ("02_SlotConnection_ConnectingIntegerToViewer2.svg"));
@@ -205,17 +205,17 @@ TEST (PanAndZoomTest)
 	SimpleNodeEditorTestEnv env;
 	ASSERT (env.CheckReference ("03_PanAndZoom_Basic.svg"));
 
-	Point integerOutputSlotPosition = env.integerInputNode->GetOutputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("out")).GetCenter ();
-	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("start")).GetCenter ();
-	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("out")).GetCenter ();
-	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.nodeEditor.GetNodeUIEnvironment (), SlotId ("in")).GetCenter ();
+	Point integerOutputSlotPosition = env.integerInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.uiEnvironment, SlotId ("start")).GetCenter ();
+	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
 	{
 		env.DragDrop (integerOutputSlotPosition, rangeStartInputSlotPosition);	
 		env.DragDrop (rangeOutputSlotPosition, viewer2InputSlotPosition);
 		ASSERT (env.CheckReference ("03_PanAndZoom_Connections.svg"));
 	}
 
-	Point panStartPoint = env.rangeInputNode->GetNodeRect (env.nodeEditor.GetNodeUIEnvironment ()).GetTopLeft ();
+	Point panStartPoint = env.rangeInputNode->GetNodeRect (env.uiEnvironment).GetTopLeft ();
 	Point panEndPoint = panStartPoint + Point (50.0, -50.0);
 
 	{

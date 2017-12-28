@@ -74,11 +74,6 @@ NodeUIManager& NodeEditor::GetNodeUIManager ()
 	return uiManager;
 }
 
-NodeUIEnvironment& NodeEditor::GetNodeUIEnvironment ()
-{
-	return uiEnvironment;
-}
-
 void NodeEditor::Clear ()
 {
 	uiManager.Clear ();
