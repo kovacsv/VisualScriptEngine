@@ -45,8 +45,6 @@ void BitmapContextGdiplus::Resize (int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
-	bitmap.reset (new Gdiplus::Bitmap (width, height));
-	graphics.reset (new Gdiplus::Graphics (bitmap.get ()));
 	InitGraphics ();
 }
 
@@ -178,5 +176,7 @@ Gdiplus::RectF BitmapContextGdiplus::CreateRectF (const NUIE::Rect& rect) const
 
 void BitmapContextGdiplus::InitGraphics ()
 {
+	bitmap.reset (new Gdiplus::Bitmap (width, height));
+	graphics.reset (new Gdiplus::Graphics (bitmap.get ()));
 	graphics->SetSmoothingMode (Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
 }

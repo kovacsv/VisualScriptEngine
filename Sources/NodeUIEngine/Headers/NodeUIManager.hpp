@@ -69,6 +69,7 @@ public:
 	void					RequestRecalculate ();
 	void					RequestRedraw ();
 
+	void					InvalidateAllNodesDrawing ();
 	void					InvalidateNodeDrawing (const NE::NodeId& nodeId);
 	void					InvalidateNodeDrawing (const UINodePtr& uiNode);
 

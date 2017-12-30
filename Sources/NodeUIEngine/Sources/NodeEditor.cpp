@@ -59,6 +59,11 @@ void NodeEditor::OnResize (int newWidth, int newHeight)
 	uiManager.ResizeContext (uiEnvironment, newWidth, newHeight);
 }
 
+void NodeEditor::InvalidateAllNodesDrawing ()
+{
+	uiManager.InvalidateAllNodesDrawing ();
+}
+
 void NodeEditor::Update ()
 {
 	uiManager.Update (uiEnvironment);

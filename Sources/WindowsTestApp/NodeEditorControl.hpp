@@ -60,6 +60,7 @@ public:
 
 	void							Init (HWND hwnd);
 	void							DrawToHDC (HWND hwnd);
+	void							ChangeContext (HWND hwnd, short contextType);
 
 private:
 	std::unique_ptr<WinDrawingContext>	drawingContext;
@@ -85,6 +86,7 @@ public:
 	void				New ();
 	bool				Open (const std::wstring& fileName);
 	bool				Save (const std::wstring& fileName);
+	void				ChangeContext (short contextType);
 
 private:
 	NUIE::KeySet		ConvertKeys (UI::Keys keys);

@@ -87,11 +87,11 @@ public:
 
 	virtual void OnMenuCommand (HWND hwnd, int commandId) override
 	{
-		if (commandId == FileMenuCommand::File_New) {
+		if (commandId == MenuCommand::File_New) {
 			drawingControl.Clear ();
 			nodeEditorControl.New ();
 			applicationState.ClearCurrentFileName ();
-		} else if (commandId == FileMenuCommand::File_Open || commandId == FileMenuCommand::File_Save || commandId == FileMenuCommand::File_SaveAs) {
+		} else if (commandId == MenuCommand::File_Open || commandId == MenuCommand::File_Save || commandId == MenuCommand::File_SaveAs) {
 			OPENFILENAME openFileName;
 			ZeroMemory (&openFileName, sizeof(openFileName));
 			wchar_t fileName[MAX_PATH] = L"";
@@ -101,58 +101,72 @@ public:
 			openFileName.nMaxFile = MAX_PATH;
 			openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
 			openFileName.lpstrDefExt = (LPCWSTR) L"txt";
-			if (commandId == FileMenuCommand::File_Open) {
+			if (commandId == MenuCommand::File_Open) {
 				if (GetOpenFileName (&openFileName)) {
 					drawingControl.Clear ();
 					if (nodeEditorControl.Open (fileName)) {
 						applicationState.SetCurrentFileName (fileName);
 					}
 				}
-			} else if (commandId == FileMenuCommand::File_Save) {
+			} else if (commandId == MenuCommand::File_Save) {
 				if (applicationState.HasCurrentFileName ()) {
 					nodeEditorControl.Save (applicationState.GetCurrentFileName ());
 				} else if (GetSaveFileName (&openFileName)) {
 					nodeEditorControl.Save (fileName);
 					applicationState.SetCurrentFileName (fileName);
 				}
-			} else if (commandId == FileMenuCommand::File_SaveAs) {
+			} else if (commandId == MenuCommand::File_SaveAs) {
 				if (GetSaveFileName (&openFileName)) {
 					nodeEditorControl.Save (fileName);
 					applicationState.SetCurrentFileName (fileName);
 				}
 			}
-		} else if (commandId == FileMenuCommand::File_Quit) {
+		} else if (commandId == MenuCommand::Debug_GdiContext) {
+			nodeEditorControl.ChangeContext (1);
+		} else if (commandId == MenuCommand::Debug_GdiplusContext) {
+			nodeEditorControl.ChangeContext (2);
+		} else if (commandId == MenuCommand::Debug_Direct2DContext) {
+			nodeEditorControl.ChangeContext (3);
+		} else if (commandId == MenuCommand::File_Quit) {
 			Close ();
 		}
 		UpdateStatusBar ();
 	}
 
 private:
-	enum FileMenuCommand
+	enum MenuCommand
 	{
-		File_New		= 1000,
-		File_Open		= 1001,
-		File_Save		= 1002,
-		File_SaveAs		= 1003,
-		File_Quit		= 1004
+		File_New				= 1000,
+		File_Open				= 1001,
+		File_Save				= 1002,
+		File_SaveAs				= 1003,
+		File_Quit				= 1004,
+		Debug_GdiContext		= 1005,
+		Debug_GdiplusContext	= 1006,
+		Debug_Direct2DContext	= 1007
 	};
 
 	void InitFileMenu (HWND hwnd)
 	{
-		HMENU hMenubar;
-		HMENU hMenu;
+		HMENU hMenubar = CreateMenu ();
 
-		hMenubar = CreateMenu ();
-		hMenu = CreateMenu ();
+		HMENU hFileMenu = CreateMenu ();
+		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_New, L"&New");
+		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_Open, L"&Open");
+		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_Save, L"&Save");
+		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_SaveAs, L"&Save As");
+		AppendMenuW (hFileMenu, MF_SEPARATOR, 0, NULL);
+		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_Quit, L"&Quit");
+		AppendMenuW (hMenubar, MF_POPUP, (UINT_PTR) hFileMenu, L"&File");
 
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_New, L"&New");
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_Open, L"&Open");
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_Save, L"&Save");
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_SaveAs, L"&Save As");
-		AppendMenuW (hMenu, MF_SEPARATOR, 0, NULL);
-		AppendMenuW (hMenu, MF_STRING, FileMenuCommand::File_Quit, L"&Quit");
+		HMENU hDebugMenu = CreateMenu ();
+		HMENU hContextChangeMenu = CreateMenu ();
+		AppendMenuW (hDebugMenu, MF_POPUP, (UINT_PTR) hContextChangeMenu, L"Change Context");
+		AppendMenuW (hContextChangeMenu, MF_STRING, MenuCommand::Debug_GdiContext, L"Gdi");
+		AppendMenuW (hContextChangeMenu, MF_STRING, MenuCommand::Debug_GdiplusContext, L"Gdiplus");
+		AppendMenuW (hContextChangeMenu, MF_STRING, MenuCommand::Debug_Direct2DContext, L"Direct2D");
+		AppendMenuW (hMenubar, MF_POPUP, (UINT_PTR) hDebugMenu, L"&Debug");
 
-		AppendMenuW (hMenubar, MF_POPUP, (UINT_PTR) hMenu, L"&File");
 		SetMenu (hwnd, hMenubar);
 	}
 

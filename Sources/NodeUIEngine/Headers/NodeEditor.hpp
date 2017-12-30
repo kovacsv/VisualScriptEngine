@@ -22,6 +22,8 @@ public:
 	void							OnMouseWheel (const KeySet& pressedKeys, MouseWheelRotation rotation, int x, int y);
 	void							OnMouseDoubleClick (const KeySet& pressedKeys, MouseButton button, int x, int y);
 	void							OnResize (int newWidth, int newHeight);
+	
+	void							InvalidateAllNodesDrawing ();
 	void							Update ();
 	void							Draw ();
 

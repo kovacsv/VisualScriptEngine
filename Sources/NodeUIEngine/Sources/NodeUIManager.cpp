@@ -258,6 +258,14 @@ void NodeUIManager::RequestRedraw ()
 	status.RequestRedraw ();
 }
 
+void NodeUIManager::InvalidateAllNodesDrawing ()
+{
+	EnumerateUINodes ([&] (const UINodePtr& uiNode) {
+		uiNode->InvalidateDrawing ();
+		return true;
+	});
+}
+
 void NodeUIManager::InvalidateNodeDrawing (const NE::NodeId& nodeId)
 {
 	UINodePtr uiNode = GetUINode (nodeId);

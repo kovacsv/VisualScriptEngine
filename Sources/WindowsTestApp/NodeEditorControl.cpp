@@ -1,5 +1,6 @@
 #include "NodeEditorControl.hpp"
 #include "BitmapContextGdi.hpp"
+#include "BitmapContextGdiplus.hpp"
 #include "Direct2DContext.hpp"
 
 #include "InputUINodes.hpp"
@@ -77,8 +78,6 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
-static bool useBitmapContext = true;
-
 MyNodeUIEnvironment::MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	NUIE::NodeUIEnvironment (),
 	drawingContext (nullptr),
@@ -86,11 +85,7 @@ MyNodeUIEnvironment::MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvalu
 	eventHandlers (),
 	evaluationEnv (evaluationData)
 {
-	if (useBitmapContext) {
-		drawingContext.reset (new BitmapContextGdi ());
-	} else {
-		drawingContext.reset (new Direct2DContext ());
-	}
+	drawingContext.reset (new Direct2DContext ());
 }
 
 NUIE::DrawingContext& MyNodeUIEnvironment::GetDrawingContext ()
@@ -127,6 +122,26 @@ void MyNodeUIEnvironment::DrawToHDC (HWND hwnd)
 	EndPaint (hwnd, &ps);
 }
 
+void MyNodeUIEnvironment::ChangeContext (HWND hwnd, short contextType)
+{
+	// TODO: Drawing invalidate needed
+	switch (contextType) {
+		case 1:
+			drawingContext.reset (new BitmapContextGdi ());
+			break;
+		case 2:
+			drawingContext.reset (new BitmapContextGdiplus ());
+			break;
+		case 3:
+			drawingContext.reset (new Direct2DContext ());
+			break;
+		default:
+			DBGBREAK ();
+			break;
+	}
+	drawingContext->Init (hwnd);
+}
+
 NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	CustomControl (),
 	uiEnvironment (evaluationData),
@@ -141,7 +156,7 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
-	static const bool isStressTest = false;
+	static const bool isStressTest = 1;
 	if (isStressTest) {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -232,6 +247,13 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 		return false;
 	}
 	return true;
+}
+
+void NodeEditorControl::ChangeContext (short contextType)
+{
+	uiEnvironment.ChangeContext (windowHandle, contextType);
+	nodeEditor.InvalidateAllNodesDrawing ();
+	InvalidateRect (windowHandle, NULL, FALSE);
 }
 
 NUIE::KeySet NodeEditorControl::ConvertKeys (UI::Keys keys)
