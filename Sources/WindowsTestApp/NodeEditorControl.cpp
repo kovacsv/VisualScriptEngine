@@ -1,10 +1,10 @@
 #include "NodeEditorControl.hpp"
+#include "BitmapContextGdi.hpp"
+#include "Direct2DContext.hpp"
 
 #include "InputUINodes.hpp"
 #include "ViewerUINodes.hpp"
 #include "TestAppNodes.hpp"
-
-#include <time.h>
 
 MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
 	NUIE::CreateNodeCommand (name, uiManager, uiEnvironment, position),
@@ -81,22 +81,21 @@ static bool useBitmapContext = true;
 
 MyNodeUIEnvironment::MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	NUIE::NodeUIEnvironment (),
-	bitmapContext (),
-	direct2DContext (),
+	drawingContext (nullptr),
 	skinParams (),
-	evaluationEnv (evaluationData),
-	hwnd (NULL)
+	eventHandlers (),
+	evaluationEnv (evaluationData)
 {
-
+	if (useBitmapContext) {
+		drawingContext.reset (new BitmapContextGdi ());
+	} else {
+		drawingContext.reset (new Direct2DContext ());
+	}
 }
 
 NUIE::DrawingContext& MyNodeUIEnvironment::GetDrawingContext ()
 {
-	if (useBitmapContext) {
-		return bitmapContext;
-	} else {
-		return direct2DContext;
-	}
+	return *drawingContext.get ();
 }
 
 NUIE::SkinParams& MyNodeUIEnvironment::GetSkinParams ()
@@ -114,25 +113,18 @@ NE::EvaluationEnv& MyNodeUIEnvironment::GetEvaluationEnv ()
 	return evaluationEnv;
 }
 
-void MyNodeUIEnvironment::SetWindowHandle (HWND newHwnd)
+void MyNodeUIEnvironment::Init (HWND hwnd)
 {
-	if (useBitmapContext) {
-		bitmapContext.Init (newHwnd);
-	} else {
-		direct2DContext.Init (newHwnd);
-	}
-	eventHandlers.SetWindowHandle (newHwnd);
-	hwnd = newHwnd;
+	drawingContext->Init (hwnd);
+	eventHandlers.SetWindowHandle (hwnd);
 }
 
-void MyNodeUIEnvironment::DrawContextToWindow ()
+void MyNodeUIEnvironment::DrawToHDC (HWND hwnd)
 {
-	if (useBitmapContext) {
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint (hwnd, &ps);
-		bitmapContext.DrawToHDC (hdc);
-		EndPaint (hwnd, &ps);
-	}
+	PAINTSTRUCT ps;
+	HDC hdc = BeginPaint (hwnd, &ps);
+	drawingContext->DrawToHDC (hdc);
+	EndPaint (hwnd, &ps);
 }
 
 NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
@@ -145,7 +137,7 @@ NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluatio
 
 void NodeEditorControl::OnCreate (HWND hwnd)
 {
-	uiEnvironment.SetWindowHandle (hwnd);
+	uiEnvironment.Init (hwnd);
 
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
@@ -179,7 +171,7 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 void NodeEditorControl::OnPaint (HWND hwnd)
 {
 	nodeEditor.Draw ();
-	uiEnvironment.DrawContextToWindow ();
+	uiEnvironment.DrawToHDC (hwnd);
 }
 
 void NodeEditorControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)

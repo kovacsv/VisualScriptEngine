@@ -1,13 +1,14 @@
 #ifndef NODEEDITORCONTROL_HPP
 #define NODEEDITORCONTROL_HPP
 
-#include "BitmapContextGdi.hpp"
-#include "Direct2DContext.hpp"
+#include "WinDrawingContext.hpp"
 #include "CustomControl.hpp"
 #include "BuiltInCommands.hpp"
 #include "WindowsAppUtilities.hpp"
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"
+
+#include <memory>
 
 class MyCreateNodeCommand : public NUIE::CreateNodeCommand
 {
@@ -57,16 +58,14 @@ public:
 	virtual NUIE::EventHandlers&	GetEventHandlers () override;
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
 
-	void							SetWindowHandle (HWND newHwnd);
-	void							DrawContextToWindow ();
+	void							Init (HWND hwnd);
+	void							DrawToHDC (HWND hwnd);
 
 private:
-	BitmapContextGdi	bitmapContext;
-	Direct2DContext		direct2DContext;
-	NUIE::SkinParams	skinParams;
-	AppEventHandlers	eventHandlers;
-	NE::EvaluationEnv	evaluationEnv;
-	HWND				hwnd;
+	std::unique_ptr<WinDrawingContext>	drawingContext;
+	NUIE::SkinParams					skinParams;
+	AppEventHandlers					eventHandlers;
+	NE::EvaluationEnv					evaluationEnv;
 };
 
 class NodeEditorControl : public CustomControl
