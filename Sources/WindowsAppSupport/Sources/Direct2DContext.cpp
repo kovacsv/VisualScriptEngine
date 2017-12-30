@@ -240,6 +240,6 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 	direct2DHandler.directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, 1000.0, 1000.0, &textLayout);
 	DWRITE_TEXT_METRICS metrics;
 	textLayout->GetMetrics (&metrics);
-	return NUIE::Size (metrics.width, metrics.height);
 	SafeRelease (&textLayout);
+	return NUIE::Size (metrics.width, metrics.height);
 }
