@@ -38,7 +38,6 @@ public:
 
 	void						SetWindowHandle (HWND newHwnd);
 
-	virtual void				RedrawRequested () override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands) override;
@@ -57,6 +56,7 @@ public:
 	virtual NUIE::SkinParams&		GetSkinParams () override;
 	virtual NUIE::EventHandlers&	GetEventHandlers () override;
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
+	virtual void					RequestRedraw () override;
 
 	void							Init (HWND hwnd);
 	void							DrawToHDC (HWND hwnd);
@@ -67,6 +67,7 @@ private:
 	NUIE::SkinParams					skinParams;
 	AppEventHandlers					eventHandlers;
 	NE::EvaluationEnv					evaluationEnv;
+	HWND								windowHandle;
 };
 
 class NodeEditorControl : public CustomControl

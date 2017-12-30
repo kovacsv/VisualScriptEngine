@@ -292,7 +292,7 @@ void NodeUIManager::Update (NodeUIEnvironment& env)
 		status.RequestRedraw ();
 	}
 	if (status.NeedToRedraw ()) {
-		env.GetEventHandlers ().RedrawRequested ();
+		env.RequestRedraw ();
 	}
 	status.Reset ();
 }

@@ -45,6 +45,11 @@ NE::EvaluationEnv& NodeUIEnvironmentDecorator::GetEvaluationEnv ()
 	return decorated.GetEvaluationEnv ();
 }
 
+void NodeUIEnvironmentDecorator::RequestRedraw ()
+{
+	decorated.RequestRedraw ();
+}
+
 NodeUIEnvironmentContextDecorator::NodeUIEnvironmentContextDecorator (NodeUIEnvironment& decorated, DrawingContext& decoratedDrawingContext) :
 	NodeUIEnvironmentDecorator (decorated),
 	decoratedDrawingContext (decoratedDrawingContext)

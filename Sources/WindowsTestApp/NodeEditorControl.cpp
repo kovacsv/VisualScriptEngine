@@ -44,11 +44,6 @@ void AppEventHandlers::SetWindowHandle (HWND newHwnd)
 	hwnd = newHwnd;
 }
 
-void AppEventHandlers::RedrawRequested ()
-{
-	InvalidateRect (hwnd, NULL, FALSE);
-}
-
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands)
 {
 	NUIE::CommandStructure actualCommands = commands;
@@ -83,7 +78,8 @@ MyNodeUIEnvironment::MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvalu
 	drawingContext (nullptr),
 	skinParams (),
 	eventHandlers (),
-	evaluationEnv (evaluationData)
+	evaluationEnv (evaluationData),
+	windowHandle (NULL)
 {
 	drawingContext.reset (new BitmapContextGdi ());
 }
@@ -108,8 +104,14 @@ NE::EvaluationEnv& MyNodeUIEnvironment::GetEvaluationEnv ()
 	return evaluationEnv;
 }
 
+void MyNodeUIEnvironment::RequestRedraw ()
+{
+	InvalidateRect (windowHandle, NULL, FALSE);
+}
+
 void MyNodeUIEnvironment::Init (HWND hwnd)
 {
+	windowHandle = hwnd;
 	drawingContext->Init (hwnd);
 	eventHandlers.SetWindowHandle (hwnd);
 }

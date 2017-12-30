@@ -27,6 +27,7 @@ public:
 	virtual SkinParams&			GetSkinParams () = 0;
 	virtual EventHandlers&		GetEventHandlers () = 0;
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
+	virtual void				RequestRedraw () = 0;
 };
 
 class NodeUIEnvironmentDecorator : public NodeUIEnvironment
@@ -39,6 +40,7 @@ public:
 	virtual SkinParams&			GetSkinParams () override;
 	virtual EventHandlers&		GetEventHandlers () override;
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () override;
+	virtual void				RequestRedraw () override;
 
 private:
 	NodeUIEnvironment& decorated;

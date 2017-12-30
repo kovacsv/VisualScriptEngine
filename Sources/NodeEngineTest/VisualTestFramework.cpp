@@ -272,11 +272,6 @@ TestEventHandlers::TestEventHandlers ()
 	
 }
 
-void TestEventHandlers::RedrawRequested ()
-{
-	
-}
-
 CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const CommandStructure&)
 {
 	return nullptr;
@@ -325,6 +320,11 @@ EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
 EvaluationEnv& TestNodeUIEnvironment::GetEvaluationEnv ()
 {
 	return evaluationEnv;
+}
+
+void TestNodeUIEnvironment::RequestRedraw ()
+{
+	
 }
 
 const SVGDrawingContext& TestNodeUIEnvironment::GetSVGDrawingContext () const

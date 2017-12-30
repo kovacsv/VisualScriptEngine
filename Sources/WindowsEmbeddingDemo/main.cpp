@@ -16,11 +16,6 @@ public:
 	
 	}
 
-	virtual void RedrawRequested () override
-	{
-		InvalidateRect (hwnd, NULL, FALSE);
-	}
-
 	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands) override
 	{
 		return UI::SelectCommandFromContextMenu (hwnd, position, commands);
@@ -82,6 +77,12 @@ public:
 	virtual NE::EvaluationEnv& GetEvaluationEnv () override
 	{
 		return evaluationEnv;
+	}
+
+
+	virtual void RequestRedraw () override
+	{
+		InvalidateRect (hwnd, NULL, FALSE);
 	}
 
 	void SetWindowHandle (HWND newHwnd)

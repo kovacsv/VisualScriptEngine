@@ -76,7 +76,6 @@ class TestEventHandlers : public EventHandlers
 public:
 	TestEventHandlers ();
 
-	virtual void		RedrawRequested () override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const CommandStructure&) override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const CommandStructure&) override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::OutputSlotPtr&, const CommandStructure&) override;
@@ -92,6 +91,7 @@ public:
 	virtual SkinParams&			GetSkinParams () override;
 	virtual EventHandlers&		GetEventHandlers () override;
 	virtual EvaluationEnv&		GetEvaluationEnv () override;
+	virtual void				RequestRedraw () override;
 
 	const SVGDrawingContext&	GetSVGDrawingContext () const;
 
