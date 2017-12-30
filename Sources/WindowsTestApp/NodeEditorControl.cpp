@@ -151,16 +151,9 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 	if (isStressTest) {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (i * 50, j * 50))), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
 			}
 		}
-		//clock_t start = clock ();
-		//for (int i = 0; i < 500; i++) {
-		//	nodeEditor.GetNodeUIManager ().RequestRedraw ();
-		//	nodeEditor.Update ();
-		//}
-		//clock_t end = clock ();
-		//float seconds = (float) (end - start) / CLOCKS_PER_SEC;
 		nodeEditor.Update ();
 	} else {
 		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 10)), uiEnvironment.GetEvaluationEnv ());
