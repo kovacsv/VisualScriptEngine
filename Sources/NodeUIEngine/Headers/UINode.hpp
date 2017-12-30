@@ -38,7 +38,6 @@ public:
 	void						SetNodePosition (const Point& newPosition);
 
 	void						Draw (NodeUIEnvironment& env) const;
-	NE::Checksum				GetDrawingImageChecksum (NodeUIEnvironment& env) const;
 
 	Status						GetStatus (NE::EvaluationEnv& env) const;
 	Rect						GetNodeRect (NodeUIEnvironment& env) const;

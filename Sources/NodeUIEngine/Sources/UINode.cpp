@@ -82,12 +82,6 @@ void UINode::Draw (NodeUIEnvironment& env) const
 	DrawInplace (nodeEnv);
 }
 
-NE::Checksum UINode::GetDrawingImageChecksum (NodeUIEnvironment& env) const
-{
-	// TODO: Can be cacheable
-	return GetNodeDrawingImage (env).GetChecksum ();
-}
-
 UINode::Status UINode::GetStatus (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr value = Evaluate (env);

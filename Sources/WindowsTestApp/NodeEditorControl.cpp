@@ -124,7 +124,6 @@ void MyNodeUIEnvironment::DrawToHDC (HWND hwnd)
 
 void MyNodeUIEnvironment::ChangeContext (HWND hwnd, short contextType)
 {
-	// TODO: Drawing invalidate needed
 	switch (contextType) {
 		case 1:
 			drawingContext.reset (new BitmapContextGdi ());
