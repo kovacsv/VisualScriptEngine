@@ -34,7 +34,7 @@ public:
 static Direct2DHandler direct2DHandler;
 
 template <>
-ID2D1SolidColorBrush* CreateValue (ID2D1DCRenderTarget* renderTarget, const BrushCacheKey& key)
+ID2D1SolidColorBrush* CreateValue (ID2D1RenderTarget* renderTarget, const BrushCacheKey& key)
 {
 	ID2D1SolidColorBrush* d2Brush = nullptr;
 	renderTarget->CreateSolidColorBrush (D2D1::ColorF (key.r / 255.0f, key.g / 255.0f, key.b / 255.0f), &d2Brush);
@@ -42,7 +42,7 @@ ID2D1SolidColorBrush* CreateValue (ID2D1DCRenderTarget* renderTarget, const Brus
 }
 
 template <>
-IDWriteTextFormat* CreateValue (ID2D1DCRenderTarget* renderTarget, const FontCacheKey& key)
+IDWriteTextFormat* CreateValue (ID2D1RenderTarget* renderTarget, const FontCacheKey& key)
 {
 	IDWriteTextFormat* textFormat = nullptr;
 	direct2DHandler.directWriteFactory->CreateTextFormat (
@@ -95,29 +95,26 @@ void Direct2DContext::Init (HWND hwnd)
 {
 	windowHandle = hwnd;
 
-	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties = D2D1::RenderTargetProperties (
-		D2D1_RENDER_TARGET_TYPE_DEFAULT,
-		D2D1::PixelFormat(
-			DXGI_FORMAT_B8G8R8A8_UNORM,
-			D2D1_ALPHA_MODE_IGNORE),
-		0,
-		0,
-		D2D1_RENDER_TARGET_USAGE_NONE,
-		D2D1_FEATURE_LEVEL_DEFAULT
-	);
+	RECT rc;
+	GetClientRect (hwnd, &rc);
 
-	direct2DHandler.direct2DFactory->CreateDCRenderTarget (&renderTargetProperties, &renderTarget);
+	D2D1_SIZE_U size = D2D1::SizeU (rc.right - rc.left, rc.bottom - rc.top);
+
+	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties = D2D1::RenderTargetProperties ();
+	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties = D2D1::HwndRenderTargetProperties (hwnd, size);
+
+	direct2DHandler.direct2DFactory->CreateHwndRenderTarget (renderTargetProperties, hwndRenderTargetProperties, &renderTarget);
 	DBGASSERT (renderTarget != nullptr);
 
 	renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
-	BindToDC ();
 }
 
 void Direct2DContext::Resize (int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
-	BindToDC ();
+	D2D1_SIZE_U size = D2D1::SizeU (width, height);
+	renderTarget->Resize (size);
 }
 
 double Direct2DContext::GetWidth () const
@@ -241,11 +238,4 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 	textLayout->GetMetrics (&metrics);
 	return NUIE::Size (metrics.width, metrics.height);
 	SafeRelease (&textLayout);
-}
-
-void Direct2DContext::BindToDC ()
-{
-	RECT windowRect;
-	GetClientRect (windowHandle, &windowRect);
-	renderTarget->BindDC (GetDC (windowHandle), &windowRect);
 }

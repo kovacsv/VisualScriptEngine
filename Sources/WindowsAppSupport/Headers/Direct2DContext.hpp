@@ -19,7 +19,7 @@ inline void SafeRelease (Interface** interfaceToRelease)
 }
 
 template <typename KeyType, typename ValueType>
-ValueType* CreateValue (ID2D1DCRenderTarget* renderTarget, const KeyType& key);
+ValueType* CreateValue (ID2D1RenderTarget* renderTarget, const KeyType& key);
 
 template <typename KeyType, typename ValueType>
 class ObjectCache
@@ -37,7 +37,7 @@ public:
 		}	
 	}
 
-	ValueType* Get (ID2D1DCRenderTarget* renderTarget, const KeyType& key)
+	ValueType* Get (ID2D1RenderTarget* renderTarget, const KeyType& key)
 	{
 		KeyType cacheKey (key);
 		auto found = cache.find (cacheKey);
@@ -83,13 +83,11 @@ public:
 	virtual NUIE::Size			MeasureText (const NUIE::Font& font, const std::wstring& text) override;
 
 private:
-	void						BindToDC ();
-
 	int							width;
 	int							height;
 
 	HWND						windowHandle;
-	ID2D1DCRenderTarget*		renderTarget;
+	ID2D1HwndRenderTarget*		renderTarget;
 
 	ObjectCache<BrushCacheKey, ID2D1SolidColorBrush>	brushCache;
 	ObjectCache<FontCacheKey, IDWriteTextFormat>		textFormatCache;
