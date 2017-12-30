@@ -156,7 +156,7 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
-	static const bool isStressTest = 1;
+	static const bool isStressTest = false;
 	if (isStressTest) {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
