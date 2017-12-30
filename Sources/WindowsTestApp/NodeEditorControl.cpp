@@ -158,8 +158,9 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 
 	static const bool isStressTest = false;
 	if (isStressTest) {
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
+		static int count = 10;
+		for (int i = 0; i < count; i++) {
+			for (int j = 0; j < count; j++) {
 				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
 			}
 		}
