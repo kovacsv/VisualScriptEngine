@@ -85,7 +85,7 @@ MyNodeUIEnvironment::MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvalu
 	eventHandlers (),
 	evaluationEnv (evaluationData)
 {
-	drawingContext.reset (new Direct2DContext ());
+	drawingContext.reset (new BitmapContextGdi ());
 }
 
 NUIE::DrawingContext& MyNodeUIEnvironment::GetDrawingContext ()
