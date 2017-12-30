@@ -77,12 +77,12 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
-static bool useBitmapContext = false;
+static bool useBitmapContext = true;
 
 MyNodeUIEnvironment::MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	NUIE::NodeUIEnvironment (),
-	bitmapContext (100, 100),
-	direct2DContext (100, 100),
+	bitmapContext (),
+	direct2DContext (),
 	skinParams (),
 	evaluationEnv (evaluationData),
 	hwnd (NULL)
@@ -116,7 +116,9 @@ NE::EvaluationEnv& MyNodeUIEnvironment::GetEvaluationEnv ()
 
 void MyNodeUIEnvironment::SetWindowHandle (HWND newHwnd)
 {
-	if (!useBitmapContext) {
+	if (useBitmapContext) {
+		bitmapContext.Init (newHwnd);
+	} else {
 		direct2DContext.Init (newHwnd);
 	}
 	eventHandlers.SetWindowHandle (newHwnd);
@@ -128,7 +130,7 @@ void MyNodeUIEnvironment::DrawContextToWindow ()
 	if (useBitmapContext) {
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint (hwnd, &ps);
-		bitmapContext.DrawToHDC (hdc, 0, 0);
+		bitmapContext.DrawToHDC (hdc);
 		EndPaint (hwnd, &ps);
 	}
 }

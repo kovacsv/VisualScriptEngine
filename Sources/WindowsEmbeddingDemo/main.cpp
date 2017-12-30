@@ -55,7 +55,7 @@ class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 public:
 	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
-		bitmapContext (0, 0),
+		bitmapContext (),
 		skinParams (),
 		eventHandlers (),
 		evaluationEnv (nullptr),
@@ -94,7 +94,7 @@ public:
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint (hwnd, &ps);
-		bitmapContext.DrawToHDC (hdc, 0, 0);
+		bitmapContext.DrawToHDC (hdc);
 		EndPaint (hwnd, &ps);
 	}
 

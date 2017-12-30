@@ -133,6 +133,7 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Window.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\UIItem.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtilities.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WinDrawingContext.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Application.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Window.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\UIItem.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtilities.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WinDrawingContext.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

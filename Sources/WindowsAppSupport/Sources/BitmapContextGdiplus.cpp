@@ -1,18 +1,44 @@
 #include "BitmapContextGdiplus.hpp"
 #include "Debug.hpp"
 
-BitmapContextGdiplus::BitmapContextGdiplus (int width, int height) :
+BitmapContextGdiplus::BitmapContextGdiplus () :
+	WinDrawingContext (),
+	width (0),
+	height (0),
 	bitmap (new Gdiplus::Bitmap (width, height)),
-	graphics (new Gdiplus::Graphics (bitmap.get ())),
-	width (width),
-	height (height)
+	graphics (new Gdiplus::Graphics (bitmap.get ()))
 {
-	InitGraphics ();
+	
 }
 
 BitmapContextGdiplus::~BitmapContextGdiplus ()
 {
 
+}
+
+void BitmapContextGdiplus::Init (HWND hwnd)
+{
+	RECT clientRect;
+	GetClientRect (hwnd, &clientRect);
+	width = clientRect.right - clientRect.left;
+	height = clientRect.bottom - clientRect.top;
+	InitGraphics ();
+}
+
+void BitmapContextGdiplus::DrawToHDC (HDC hdc)
+{
+	HDC memoryDC = CreateCompatibleDC (hdc);
+	HBITMAP memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
+
+	HANDLE oldHandle = SelectObject (memoryDC, memoryBitmap);
+	Gdiplus::Graphics targetGraphics (memoryDC);
+	targetGraphics.DrawImage (bitmap.get (), 0, 0, width, height);
+	targetGraphics.ReleaseHDC (memoryDC);
+	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
+	SelectObject (memoryDC, oldHandle);
+
+	DeleteObject (memoryBitmap);
+	DeleteDC (memoryDC);
 }
 
 void BitmapContextGdiplus::Resize (int newWidth, int newHeight)
@@ -130,27 +156,6 @@ NUIE::Size BitmapContextGdiplus::MeasureText (const NUIE::Font& font, const std:
 	}
 
 	return NUIE::Size (textRect.Width, textRect.Height);
-}
-
-void BitmapContextGdiplus::Setup (HWND hwnd)
-{
-
-}
-
-void BitmapContextGdiplus::DrawToHDC (HDC hdc)
-{
-	HDC memoryDC = CreateCompatibleDC (hdc);
-	HBITMAP memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
-
-	HANDLE oldHandle = SelectObject (memoryDC, memoryBitmap);
-	Gdiplus::Graphics targetGraphics (memoryDC);
-	targetGraphics.DrawImage (bitmap.get (), 0, 0, width, height);
-	targetGraphics.ReleaseHDC (memoryDC);
-	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
-	SelectObject (memoryDC, oldHandle);
-
-	DeleteObject (memoryBitmap);
-	DeleteDC (memoryDC);
 }
 
 Gdiplus::Point BitmapContextGdiplus::CreatePoint (const NUIE::Point& point) const

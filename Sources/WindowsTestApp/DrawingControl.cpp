@@ -2,10 +2,15 @@
 
 DrawingControl::DrawingControl (const std::shared_ptr<ResultImage>& resultImage) :
 	CustomControl (),
-	bitmapContext (0, 0),
+	bitmapContext (),
 	resultImage (resultImage)
 {
 
+}
+
+void DrawingControl::OnCreate (HWND hwnd)
+{
+	bitmapContext.Init (hwnd);
 }
 
 void DrawingControl::OnPaint (HWND hwnd)

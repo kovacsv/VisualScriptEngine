@@ -5,7 +5,7 @@
 #include <gdiplus.h>
 #include <unordered_map>
 
-#include "DrawingContext.hpp"
+#include "WinDrawingContext.hpp"
 #include "DrawingCacheKeys.hpp"
 #include "Drawing.hpp"
 
@@ -44,12 +44,15 @@ private:
 	std::unordered_map<KeyType, HANDLE> cache;
 };
 
-class BitmapContextGdi : public NUIE::DrawingContext
+class BitmapContextGdi : public WinDrawingContext
 {
 public:
-	BitmapContextGdi (int width, int height);
+	BitmapContextGdi ();
 	BitmapContextGdi (const BitmapContextGdi& rhs) = delete;
 	virtual ~BitmapContextGdi ();
+
+	virtual void				Init (HWND hwnd) override;
+	virtual void				DrawToHDC (HDC hdc) override;
 
 	virtual void				Resize (int newWidth, int newHeight) override;
 
@@ -70,12 +73,6 @@ public:
 
 	virtual void				DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor) override;
 	virtual NUIE::Size			MeasureText (const NUIE::Font& font, const std::wstring& text) override;
-
-	void						StretchToContext (BitmapContextGdi& targetContext, int x, int y, int targetWidth, int targetHeight);
-	void						DrawToContext (BitmapContextGdi& targetContext, int x, int y);
-
-	void						DrawToHDC (HDC targetDC, int x, int y);
-	void						StretchToHDC (HDC targetDC, int x, int y, int targetWidth, int targetHeight);
 
 private:
 	POINT						CreatePoint (const NUIE::Point& point) const;

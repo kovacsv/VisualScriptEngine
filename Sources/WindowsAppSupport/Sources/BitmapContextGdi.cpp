@@ -35,21 +35,38 @@ private:
 	HANDLE	oldHandle;
 };
 
-BitmapContextGdi::BitmapContextGdi (int width, int height) :
-	width (width),
-	height (height),
+BitmapContextGdi::BitmapContextGdi () :
+	WinDrawingContext (),
+	width (0),
+	height (0),
 	memoryDC (NULL),
 	memoryBitmap (NULL)
 {
-	HDC hdc = GetDC (NULL);
-	memoryDC = CreateCompatibleDC (hdc);
-	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
+
 }
 
 BitmapContextGdi::~BitmapContextGdi ()
 {
 	DeleteObject (memoryBitmap);
 	DeleteDC (memoryDC);
+}
+
+void BitmapContextGdi::Init (HWND hwnd)
+{
+	RECT clientRect;
+	GetClientRect (hwnd, &clientRect);
+	width = clientRect.right - clientRect.left;
+	height = clientRect.bottom - clientRect.top;
+
+	HDC hdc = GetDC (NULL);
+	memoryDC = CreateCompatibleDC (hdc);
+	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
+}
+
+void BitmapContextGdi::DrawToHDC (HDC hdc)
+{
+	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
+	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
 }
 
 void BitmapContextGdi::Resize (int newWidth, int newHeight)
@@ -187,31 +204,6 @@ NUIE::Size BitmapContextGdi::MeasureText (const NUIE::Font& font, const std::wst
 	RECT gdiRect = { 0, 0, 0, 0 };
 	::DrawText (memoryDC, text.c_str (), (int) text.length (), &gdiRect, DT_CALCRECT);
 	return NUIE::Size (gdiRect.right - gdiRect.left + 5, gdiRect.bottom - gdiRect.top);
-}
-
-void BitmapContextGdi::StretchToContext (BitmapContextGdi& targetContext, int x, int y, int targetWidth, int targetHeight)
-{
-	SelectObjectGuard targetSelectGuard (targetContext.memoryDC, targetContext.memoryBitmap);
-	StretchToHDC (targetContext.memoryDC, x, y, targetWidth, targetHeight);
-}
-
-void BitmapContextGdi::DrawToContext (BitmapContextGdi& targetContext, int x, int y)
-{
-	SelectObjectGuard targetSelectGuard (targetContext.memoryDC, targetContext.memoryBitmap);
-	DrawToHDC (targetContext.memoryDC, x, y);
-}
-
-void BitmapContextGdi::DrawToHDC (HDC targetDC, int x, int y)
-{
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
-	BitBlt (targetDC, x, y, width, height, memoryDC, 0, 0, SRCCOPY);
-}
-
-void BitmapContextGdi::StretchToHDC (HDC targetDC, int x, int y, int targetWidth, int targetHeight)
-{
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
-	SetStretchBltMode (targetDC, HALFTONE);
-	StretchBlt (targetDC, x, y, targetWidth, targetHeight, memoryDC, 0, 0, width, height, SRCCOPY);
 }
 
 POINT BitmapContextGdi::CreatePoint (const NUIE::Point& point) const

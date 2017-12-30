@@ -1,7 +1,7 @@
 #ifndef DIRECT2DCONTEXT_HPP
 #define DIRECT2DCONTEXT_HPP
 
-#include "DrawingContext.hpp"
+#include "WinDrawingContext.hpp"
 #include "DrawingCacheKeys.hpp"
 
 #include <windows.h>
@@ -53,14 +53,15 @@ private:
 	std::unordered_map<KeyType, ValueType*> cache;
 };
 
-class Direct2DContext : public NUIE::DrawingContext
+class Direct2DContext : public WinDrawingContext
 {
 public:
-	Direct2DContext (int width, int height);
+	Direct2DContext ();
 	Direct2DContext (const Direct2DContext& rhs) = delete;
 	virtual ~Direct2DContext ();
 
-	void						Init (HWND newHwnd);
+	virtual void				Init (HWND newHwnd) override;
+	virtual void				DrawToHDC (HDC hdc) override;
 
 	virtual void				Resize (int newWidth, int newHeight) override;
 
@@ -85,8 +86,6 @@ public:
 private:
 	int							width;
 	int							height;
-
-	HWND						windowHandle;
 	ID2D1HwndRenderTarget*		renderTarget;
 
 	ObjectCache<BrushCacheKey, ID2D1SolidColorBrush>	brushCache;

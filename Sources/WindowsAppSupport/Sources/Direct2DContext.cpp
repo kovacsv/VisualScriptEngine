@@ -77,10 +77,10 @@ static float GetPenThickness (const NUIE::Pen& pen)
 	return std::floor (penThickness);
 }
 
-Direct2DContext::Direct2DContext (int width, int height) :
-	width (width),
-	height (height),
-	windowHandle (NULL),
+Direct2DContext::Direct2DContext () :
+	WinDrawingContext (),
+	width (0),
+	height (0),
 	renderTarget (nullptr)
 {
 
@@ -93,13 +93,12 @@ Direct2DContext::~Direct2DContext ()
 
 void Direct2DContext::Init (HWND hwnd)
 {
-	windowHandle = hwnd;
+	RECT clientRect;
+	GetClientRect (hwnd, &clientRect);
+	width = clientRect.right - clientRect.left;
+	height = clientRect.bottom - clientRect.top;
 
-	RECT rc;
-	GetClientRect (hwnd, &rc);
-
-	D2D1_SIZE_U size = D2D1::SizeU (rc.right - rc.left, rc.bottom - rc.top);
-
+	D2D1_SIZE_U size = D2D1::SizeU (width, height);
 	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties = D2D1::RenderTargetProperties ();
 	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties = D2D1::HwndRenderTargetProperties (hwnd, size);
 
@@ -107,6 +106,11 @@ void Direct2DContext::Init (HWND hwnd)
 	DBGASSERT (renderTarget != nullptr);
 
 	renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
+}
+
+void Direct2DContext::DrawToHDC (HDC hdc)
+{
+
 }
 
 void Direct2DContext::Resize (int newWidth, int newHeight)

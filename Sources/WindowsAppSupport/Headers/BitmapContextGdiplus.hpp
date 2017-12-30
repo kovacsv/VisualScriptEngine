@@ -4,13 +4,16 @@
 #include <windows.h>
 #include <gdiplus.h>
 #include <memory>
-#include "DrawingContext.hpp"
+#include "WinDrawingContext.hpp"
 
-class BitmapContextGdiplus : public NUIE::DrawingContext
+class BitmapContextGdiplus : public WinDrawingContext
 {
 public:
-	BitmapContextGdiplus (int width, int height);
+	BitmapContextGdiplus ();
 	virtual ~BitmapContextGdiplus ();
+
+	virtual void		Init (HWND hwnd) override;
+	virtual void		DrawToHDC (HDC hdc) override;
 
 	virtual void		Resize (int newWidth, int newHeight) override;
 
@@ -32,19 +35,16 @@ public:
 	virtual void		DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor) override;
 	virtual NUIE::Size	MeasureText (const NUIE::Font& font, const std::wstring& text) override;
 
-	void				Setup (HWND hwnd);
-	void				DrawToHDC (HDC hdc);
-
 private:
 	Gdiplus::Point		CreatePoint (const NUIE::Point& point) const;
 	Gdiplus::Rect		CreateRect (const NUIE::Rect& rect) const;
 	Gdiplus::RectF		CreateRectF (const NUIE::Rect& rect) const;
 	void				InitGraphics ();
 
-	std::unique_ptr<Gdiplus::Bitmap>	bitmap;
-	std::unique_ptr<Gdiplus::Graphics>	graphics;
 	int									width;
 	int									height;
+	std::unique_ptr<Gdiplus::Bitmap>	bitmap;
+	std::unique_ptr<Gdiplus::Graphics>	graphics;
 };
 
 #endif

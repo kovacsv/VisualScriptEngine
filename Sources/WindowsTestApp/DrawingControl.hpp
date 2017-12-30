@@ -12,6 +12,7 @@ class DrawingControl : public CustomControl
 public:
 	DrawingControl (const std::shared_ptr<ResultImage>& resultImage);
 
+	virtual void	OnCreate (HWND hwnd) override;
 	virtual void	OnPaint (HWND hwnd) override;
 	virtual void	OnResize (HWND hwnd, int newWidth, int newHeight) override;
 
