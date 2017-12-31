@@ -79,7 +79,6 @@ public:
 		return evaluationEnv;
 	}
 
-
 	virtual void RequestRedraw () override
 	{
 		InvalidateRect (hwnd, NULL, FALSE);
