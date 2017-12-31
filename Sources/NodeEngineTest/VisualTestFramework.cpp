@@ -292,8 +292,9 @@ CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&,
 	return nullptr;
 }
 
-TestNodeUIEnvironment::TestNodeUIEnvironment () :
+TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor) :
 	NUIE::NodeUIEnvironment (),
+	nodeEditor (nodeEditor),
 	drawingContext (800, 600),
 	skinParams (),
 	eventHandlers (),
@@ -324,7 +325,7 @@ EvaluationEnv& TestNodeUIEnvironment::GetEvaluationEnv ()
 
 void TestNodeUIEnvironment::RequestRedraw ()
 {
-	
+	nodeEditor.Draw ();
 }
 
 const SVGDrawingContext& TestNodeUIEnvironment::GetSVGDrawingContext () const
@@ -333,14 +334,13 @@ const SVGDrawingContext& TestNodeUIEnvironment::GetSVGDrawingContext () const
 }
 
 NodeEditorTestEnv::NodeEditorTestEnv () :
-	uiEnvironment (),
+	uiEnvironment (nodeEditor),
 	nodeEditor (uiEnvironment)
 {
 }
 
 bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 {
-	nodeEditor.Draw ();
 	const SVGDrawingContext& context = uiEnvironment.GetSVGDrawingContext ();
 
 	std::string testFilesPath = SimpleTest::GetAppFolderLocation () + "VisualTestFiles" + PATH_SEPARATOR;

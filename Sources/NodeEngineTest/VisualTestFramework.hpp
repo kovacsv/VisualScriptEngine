@@ -85,7 +85,7 @@ public:
 class TestNodeUIEnvironment : public NodeUIEnvironment
 {
 public:
-	TestNodeUIEnvironment ();
+	TestNodeUIEnvironment (NodeEditor& nodeEditor);
 
 	virtual DrawingContext&		GetDrawingContext () override;
 	virtual SkinParams&			GetSkinParams () override;
@@ -96,6 +96,8 @@ public:
 	const SVGDrawingContext&	GetSVGDrawingContext () const;
 
 private:
+	NodeEditor&			nodeEditor;
+
 	SVGDrawingContext	drawingContext;
 	SkinParams			skinParams;
 	TestEventHandlers	eventHandlers;
