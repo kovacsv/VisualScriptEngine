@@ -7,7 +7,7 @@
 
 #include <memory>
 
-class DrawingControl : public CustomControl
+class DrawingControl : public UI::CustomControl
 {
 public:
 	DrawingControl (const std::shared_ptr<ResultImage>& resultImage);

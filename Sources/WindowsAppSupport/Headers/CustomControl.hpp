@@ -5,6 +5,9 @@
 
 #include <windows.h>
 
+namespace UI
+{
+
 class CustomControl : public UI::Item
 {
 public:
@@ -25,5 +28,6 @@ private:
 	virtual void	OnResize (HWND hwnd, int newWidth, int newHeight) override;
 };
 
+}
 
 #endif

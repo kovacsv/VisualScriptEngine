@@ -1,7 +1,7 @@
 #include "DrawingControl.hpp"
 
 DrawingControl::DrawingControl (const std::shared_ptr<ResultImage>& resultImage) :
-	CustomControl (),
+	UI::CustomControl (),
 	bitmapContext (),
 	resultImage (resultImage)
 {

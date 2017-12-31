@@ -144,7 +144,7 @@ void MyNodeUIEnvironment::ChangeContext (HWND hwnd, short contextType)
 }
 
 NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
-	CustomControl (),
+	UI::CustomControl (),
 	uiEnvironment (evaluationData),
 	nodeEditor (uiEnvironment)
 {

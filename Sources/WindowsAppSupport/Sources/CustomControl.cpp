@@ -1,6 +1,9 @@
 #include "CustomControl.hpp"
 #include "Debug.hpp"
 
+namespace UI
+{
+
 static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_CREATE) {
@@ -110,5 +113,7 @@ void CustomControl::OnMenuCommand (HWND hwnd, int commandId)
 
 void CustomControl::OnResize (HWND hwnd, int newWidth, int newHeight)
 {
+
+}
 
 }

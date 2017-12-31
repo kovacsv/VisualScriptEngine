@@ -70,7 +70,7 @@ private:
 	HWND								windowHandle;
 };
 
-class NodeEditorControl : public CustomControl
+class NodeEditorControl : public UI::CustomControl
 {
 public:
 	NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData);
