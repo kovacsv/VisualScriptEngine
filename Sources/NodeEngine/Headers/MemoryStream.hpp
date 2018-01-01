@@ -19,10 +19,10 @@ public:
 	virtual Status		Read (double& val) override;
 	virtual Status		Read (std::string& val) override;
 	virtual Status		Read (std::wstring& val) override;
+	
+	void				Read (char* dest, size_t size);
 
 private:
-	void				ReadFromBuffer (char* dest, size_t size);
-
 	std::vector<char>	buffer;
 	size_t				position;
 };
@@ -42,9 +42,9 @@ public:
 	virtual Status				Write (const std::string& val) override;
 	virtual Status				Write (const std::wstring& val) override;
 
-private:
-	void						WriteToBuffer (const char* source, size_t size);
+	void						Write (const char* source, size_t size);
 
+private:
 	std::vector<char>			buffer;
 };
 
