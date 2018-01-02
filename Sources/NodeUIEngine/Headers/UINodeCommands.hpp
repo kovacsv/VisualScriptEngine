@@ -8,19 +8,6 @@
 namespace NUIE
 {
 
-class NodeSelection
-{
-public:
-	NodeSelection (const NodeUIManager::SelectedNodes& selectedNodes, const UINodePtr& currentNode);
-
-	void				Enumerate (NodeUIManager& uiManager, const std::function<void (const UINodePtr&)>& processor) const;
-	CommandStructure	CreateCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) const;
-
-private:
-	NodeUIManager::SelectedNodes	allSelectedNodes;
-	UINodePtr						representativeNode;
-};
-
 template <typename CommandType>
 class NodeGroupCommand
 {
