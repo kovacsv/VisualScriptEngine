@@ -18,7 +18,7 @@ static NodeUIManager::SelectedNodes SelectNodes (const NodeUIManager& uiManager,
 	return result;
 }
 
-CommandStructure CreateCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& representativeNode)
+static CommandStructure CreateCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& representativeNode)
 {
 	class MultiNodeCommand : public SingleCommand
 	{
