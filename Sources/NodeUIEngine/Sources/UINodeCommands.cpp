@@ -195,6 +195,114 @@ private:
 	CommandStructure	commandStructure;
 };
 
+NodeUIManager::SelectedNodes SelectNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& currentNode)
+{
+	NodeUIManager::SelectedNodes result = uiManager.GetSelectedNodes ();
+	if (!result.Contains (currentNode->GetId ())) {
+		result.Insert (currentNode->GetId ());
+	}
+	return result;
+}
+
+CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode)
+{
+	class MultiNodeCommand : public SingleCommand
+	{
+	public:
+		MultiNodeCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, NodeCommandPtr& nodeCommand) :
+			SingleCommand (name, nodeCommand->IsChecked ()),
+			uiManager (uiManager),
+			uiEnvironment (uiEnvironment),
+			nodeCommand (nodeCommand)
+		{
+
+		}
+
+		virtual ~MultiNodeCommand ()
+		{
+
+		}
+
+		void AddNode (const UINodePtr& uiNode)
+		{
+			if (DBGERROR (nodeCommand == nullptr)) {
+				return;
+			}
+			if (nodeCommand->IsApplicableTo (uiNode)) {
+				uiNodes.push_back (uiNode);
+			}
+		}
+
+		virtual void Do () override
+		{
+			if (DBGERROR (nodeCommand == nullptr)) {
+				return;
+			}
+			for (UINodePtr& uiNode : uiNodes) {
+				nodeCommand->Do (uiManager, uiEnvironment, uiNode);
+			}
+		}
+
+	private:
+		NodeUIManager&				uiManager;
+		NodeUIEnvironment&			uiEnvironment;
+		NodeCommandPtr				nodeCommand;
+		std::vector<UINodePtr>		uiNodes;
+	};
+
+	class CommandStructureBuilder : public NodeCommandRegistrator
+	{
+	public:
+		CommandStructureBuilder (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeUIManager::SelectedNodes& selectedNodes) :
+			uiManager (uiManager),
+			uiEnvironment (uiEnvironment),
+			selectedNodes (selectedNodes)
+		{
+
+		}
+
+		virtual void RegisterNodeCommand (NodeCommandPtr nodeCommand) override
+		{
+			std::shared_ptr<MultiNodeCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
+			commandStructure.AddCommand (multiNodeCommand);
+		}
+
+		virtual void RegisterNodeGroupCommand (NodeGroupCommandPtr nodeGroupCommand) override
+		{
+			GroupCommandPtr groupCommand (new GroupCommand (nodeGroupCommand->GetName ()));
+			nodeGroupCommand->EnumerateChildCommands ([&] (const NodeCommandPtr& nodeCommand) {
+				std::shared_ptr<MultiNodeCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
+				groupCommand->AddChildCommand (multiNodeCommand);
+			});
+			commandStructure.AddCommand (groupCommand);
+		}
+
+		std::shared_ptr<MultiNodeCommand> CreateMultiNodeCommand (NodeCommandPtr nodeCommand)
+		{
+			std::shared_ptr<MultiNodeCommand> multiNodeCommand (new MultiNodeCommand (nodeCommand->GetName (), uiManager, uiEnvironment, nodeCommand));
+			selectedNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+				UINodePtr uiNode = uiManager.GetUINode (nodeId);
+				if (nodeCommand->IsApplicableTo (uiNode)) {
+					multiNodeCommand->AddNode (uiNode);
+				}
+			});
+			return multiNodeCommand;
+		}
+
+		NodeUIManager&							uiManager;
+		NodeUIEnvironment&						uiEnvironment;
+		const NodeUIManager::SelectedNodes&		selectedNodes;
+		CommandStructure						commandStructure;
+	};
+
+	NodeUIManager::SelectedNodes allSelectedNodes = uiManager.GetSelectedNodes ();
+	allSelectedNodes.Insert (uiNode->GetId ());
+
+	CommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, allSelectedNodes);
+	uiNode->RegisterCommands (commandStructureBuilder);
+	return commandStructureBuilder.commandStructure;
+}
+
 CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotPtr& inputSlot)
 {
 	SlotCommandStructureBuilder<InputSlotCommandRegistrator, UIInputSlotPtr, UIOutputSlotConstPtr, InputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, inputSlot);

@@ -9,112 +9,6 @@
 namespace NUIE
 {
 
-static NodeUIManager::SelectedNodes SelectNodes (const NodeUIManager& uiManager, const UINodePtr& currentNode)
-{
-	NodeUIManager::SelectedNodes result = uiManager.GetSelectedNodes ();
-	if (!result.Contains (currentNode->GetId ())) {
-		result.Insert (currentNode->GetId ());
-	}
-	return result;
-}
-
-static CommandStructure CreateCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& representativeNode)
-{
-	class MultiNodeCommand : public SingleCommand
-	{
-	public:
-		MultiNodeCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, NodeCommandPtr& nodeCommand) :
-			SingleCommand (name, nodeCommand->IsChecked ()),
-			uiManager (uiManager),
-			uiEnvironment (uiEnvironment),
-			nodeCommand (nodeCommand)
-		{
-
-		}
-
-		virtual ~MultiNodeCommand ()
-		{
-
-		}
-
-		void AddNode (const UINodePtr& uiNode)
-		{
-			if (DBGERROR (nodeCommand == nullptr)) {
-				return;
-			}
-			if (nodeCommand->IsApplicableTo (uiNode)) {
-				uiNodes.push_back (uiNode);
-			}
-		}
-
-		virtual void Do () override
-		{
-			if (DBGERROR (nodeCommand == nullptr)) {
-				return;
-			}
-			for (UINodePtr& uiNode : uiNodes) {
-				nodeCommand->Do (uiManager, uiEnvironment, uiNode);
-			}
-		}
-
-	private:
-		NodeUIManager&				uiManager;
-		NodeUIEnvironment&			uiEnvironment;
-		NodeCommandPtr				nodeCommand;
-		std::vector<UINodePtr>		uiNodes;
-	};
-
-	class CommandStructureBuilder : public NodeCommandRegistrator
-	{
-	public:
-		CommandStructureBuilder (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeUIManager::SelectedNodes& selectedNodes) :
-			uiManager (uiManager),
-			uiEnvironment (uiEnvironment),
-			selectedNodes (selectedNodes)
-		{
-
-		}
-
-		virtual void RegisterNodeCommand (NodeCommandPtr nodeCommand) override
-		{
-			std::shared_ptr<MultiNodeCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
-			commandStructure.AddCommand (multiNodeCommand);
-		}
-
-		virtual void RegisterNodeGroupCommand (NodeGroupCommandPtr nodeGroupCommand) override
-		{
-			GroupCommandPtr groupCommand (new GroupCommand (nodeGroupCommand->GetName ()));
-			nodeGroupCommand->EnumerateChildCommands ([&] (const NodeCommandPtr& nodeCommand) {
-				std::shared_ptr<MultiNodeCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
-				groupCommand->AddChildCommand (multiNodeCommand);
-			});
-			commandStructure.AddCommand (groupCommand);
-		}
-
-		std::shared_ptr<MultiNodeCommand> CreateMultiNodeCommand (NodeCommandPtr nodeCommand)
-		{
-			std::shared_ptr<MultiNodeCommand> multiNodeCommand (new MultiNodeCommand (nodeCommand->GetName (), uiManager, uiEnvironment, nodeCommand));
-			selectedNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-				UINodePtr uiNode = uiManager.GetUINode (nodeId);
-				if (nodeCommand->IsApplicableTo (uiNode)) {
-					multiNodeCommand->AddNode (uiNode);
-				}
-			});
-			return multiNodeCommand;
-		}
-
-		NodeUIManager&							uiManager;
-		NodeUIEnvironment&						uiEnvironment;
-		const NodeUIManager::SelectedNodes&		selectedNodes;
-		CommandStructure						commandStructure;
-	};
-
-	NodeUIManager::SelectedNodes allSelectedNodes = SelectNodes (uiManager, representativeNode);
-	CommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, allSelectedNodes);
-	representativeNode->RegisterCommands (commandStructureBuilder);
-	return commandStructureBuilder.commandStructure;
-}
-
 class PanningHandler : public MouseMoveHandler
 {
 public:
@@ -229,7 +123,9 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = (position - prevPosition) / viewBox.GetScale ();
 
-		NodeUIManager::SelectedNodes nodesToMove = SelectNodes (uiManager, currentNode);
+		NodeUIManager::SelectedNodes nodesToMove = uiManager.GetSelectedNodes ();
+		nodesToMove.Insert (currentNode->GetId ());
+
 		nodesToMove.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			uiNode->SetNodePosition (uiNode->GetNodePosition () + diff);
@@ -515,7 +411,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 		CommandPtr selectedCommand;
 		bool found = FindItemUnderPosition (uiManager, env, position,
 			[&] (UINodePtr& foundNode) {
-				CommandStructure commands = CreateCommandStructure (uiManager, env, foundNode);
+				CommandStructure commands = CreateNodeCommandStructure (uiManager, env, foundNode);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundNode, commands);
 			},
 			[&] (UIOutputSlotPtr& foundOutputSlot) {

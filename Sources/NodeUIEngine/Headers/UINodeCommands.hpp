@@ -2,11 +2,12 @@
 #define UINODECOMMANDS_HPP
 
 #include "UINode.hpp"
-#include "NodeUIManager.hpp"
 #include "CommandStructure.hpp"
 
 namespace NUIE
 {
+
+class NodeUIManager;
 
 template <typename CommandType>
 class NodeGroupCommand
@@ -139,6 +140,7 @@ public:
 	virtual void EnumerateConnectedNodes (const std::function<void (UINodeConstPtr, UIInputSlotConstPtr)>& processor) const = 0;
 };
 
+CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode);
 CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotPtr& inputSlot);
 CommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIOutputSlotPtr& outputSlot);
 
