@@ -1,7 +1,7 @@
 #include "NodeUIInteractionHandler.hpp"
 #include "NodeUIManager.hpp"
-#include "UINodeCommands.hpp"
 #include "UIItemFinder.hpp"
+#include "UINodeCommandStructure.hpp"
 #include "Debug.hpp"
 
 #include <algorithm>

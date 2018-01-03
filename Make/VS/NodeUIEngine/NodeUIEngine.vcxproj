@@ -139,6 +139,7 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UIInputSlot.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UIItemFinder.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINode.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeCommandStructure.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UIOutputSlot.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\ViewBox.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\ContextDecorators.hpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UIInputSlot.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UIItemFinder.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINode.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeCommandStructure.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UIOutputSlot.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\ViewBox.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\ContextDecorators.cpp" />
