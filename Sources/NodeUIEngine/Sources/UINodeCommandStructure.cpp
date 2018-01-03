@@ -251,7 +251,7 @@ CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, Node
 	InputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<InputSlotCommandPtr> (L"Disconnect"));
 	uiManager.EnumerateConnectedOutputSlots (inputSlot, [&] (UIOutputSlotConstPtr outputSlot) {
 		UINodeConstPtr uiNode = uiManager.GetUINode (outputSlot->GetOwnerNodeId ());
-		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectInputSlotCommand (uiNode->GetNodeName (), outputSlot)));
+		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectInputSlotCommand (uiNode->GetNodeName () + L" (" + outputSlot->GetName () + L")", outputSlot)));
 	});
 	if (disconnectGroup->HasChildCommand ()) {
 		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
@@ -268,7 +268,7 @@ CommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager, Nod
 	OutputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<OutputSlotCommandPtr> (L"Disconnect"));
 	uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (UIInputSlotConstPtr inputSlot) {
 		UINodeConstPtr uiNode = uiManager.GetUINode (inputSlot->GetOwnerNodeId ());
-		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectOutputSlotCommand (uiNode->GetNodeName (), inputSlot)));
+		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectOutputSlotCommand (uiNode->GetNodeName () + L" (" + inputSlot->GetName () + L")", inputSlot)));
 	});
 	if (disconnectGroup->HasChildCommand ()) {
 		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
