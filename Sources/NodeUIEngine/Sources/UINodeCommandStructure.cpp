@@ -1,10 +1,67 @@
 #include "UINodeCommandStructure.hpp"
 #include "UINodeCommands.hpp"
-#include "NodeUIManager.hpp"
 #include "Debug.hpp"
 
 namespace NUIE
 {
+
+class DeleteNodeCommand : public NodeCommand
+{
+public:
+	DeleteNodeCommand (const std::wstring& name) :
+		NodeCommand (name, false)
+	{
+
+	}
+
+	virtual bool IsApplicableTo (const UINodePtr&) override
+	{
+		return true;
+	}
+
+	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
+	{
+		uiManager.DeleteNode (uiNode, uiEnvironment.GetEvaluationEnv ());
+	}
+};
+
+class DisconnectInputSlotCommand : public InputSlotCommand
+{
+public:
+	DisconnectInputSlotCommand (const std::wstring& name, const UIOutputSlotConstPtr& slotToDisconnect) :
+		InputSlotCommand (name, false),
+		slotToDisconnect (slotToDisconnect)
+	{
+
+	}
+
+	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UIInputSlotPtr& inputSlot) override
+	{
+		uiManager.DisconnectOutputSlotFromInputSlot (slotToDisconnect, inputSlot);
+	}
+
+private:
+	UIOutputSlotConstPtr slotToDisconnect;
+};
+
+class DisconnectOutputSlotCommand : public OutputSlotCommand
+{
+public:
+	DisconnectOutputSlotCommand (const std::wstring& name, const UIInputSlotConstPtr& slotToDisconnect) :
+		OutputSlotCommand (name, false),
+		slotToDisconnect (slotToDisconnect)
+	{
+
+	}
+
+	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UIOutputSlotPtr& outputSlot) override
+	{
+		uiManager.DisconnectOutputSlotFromInputSlot (outputSlot, slotToDisconnect);
+	}
+
+private:
+	UIInputSlotConstPtr slotToDisconnect;
+};
 
 class MultiNodeCommand : public SingleCommand
 {
@@ -95,21 +152,6 @@ public:
 	CommandStructure						commandStructure;
 };
 
-template <typename SourceSlotType, typename TargetSlotType>
-static void EnumerateConnectedSlots (const NodeUIManager& uiManager, const SourceSlotType& sourceSlot, const std::function<void (TargetSlotType)>& processor);
-
-template <>
-void EnumerateConnectedSlots<UIOutputSlotPtr, UIInputSlotConstPtr> (const NodeUIManager& uiManager, const UIOutputSlotPtr& sourceSlot, const std::function<void (UIInputSlotConstPtr)>& processor)
-{
-	uiManager.EnumerateConnectedInputSlots (sourceSlot, processor);
-}
-
-template <>
-void EnumerateConnectedSlots<UIInputSlotPtr, UIOutputSlotConstPtr> (const NodeUIManager& uiManager, const UIInputSlotPtr& sourceSlot, const std::function<void (UIOutputSlotConstPtr)>& processor)
-{
-	uiManager.EnumerateConnectedOutputSlots (sourceSlot, processor);
-}
-
 template <typename SlotType, typename CommandType>
 class SlotCommand : public SingleCommand
 {
@@ -145,7 +187,7 @@ private:
 	std::vector<UINodePtr>		uiNodes;
 };
 
-template <typename RegistratorType, typename SourceSlotType, typename TargetSlotType, typename SlotCommandType>
+template <typename RegistratorType, typename SourceSlotType, typename SlotCommandType>
 class SlotCommandStructureBuilder : public RegistratorType
 {
 public:
@@ -173,14 +215,6 @@ public:
 		commandStructure.AddCommand (groupCommand);
 	}
 
-	virtual void EnumerateConnectedNodes (const std::function<void (UINodeConstPtr, TargetSlotType)>& processor) const override
-	{
-		EnumerateConnectedSlots<SourceSlotType, TargetSlotType> (uiManager, sourceSlot, [&] (TargetSlotType connectedSlot) {
-			UINodeConstPtr uiNode = uiManager.GetUINode (connectedSlot->GetOwnerNodeId ());
-			processor (uiNode, connectedSlot);
-		});
-	}
-
 	CommandPtr CreateSlotCommand (SlotCommandType slotNodeCommand)
 	{
 		CommandPtr slotCommand (new SlotCommand<SourceSlotType, SlotCommandType> (slotNodeCommand->GetName (), uiManager, uiEnvironment, sourceSlot, slotNodeCommand));
@@ -205,20 +239,41 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 	allSelectedNodes.Insert (uiNode->GetId ());
 
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, allSelectedNodes);
+	commandStructureBuilder.RegisterNodeCommand (NodeCommandPtr (new DeleteNodeCommand (L"Delete Node")));
 	uiNode->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.commandStructure;
 }
 
 CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotPtr& inputSlot)
 {
-	SlotCommandStructureBuilder<InputSlotCommandRegistrator, UIInputSlotPtr, UIOutputSlotConstPtr, InputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, inputSlot);
+	SlotCommandStructureBuilder<InputSlotCommandRegistrator, UIInputSlotPtr, InputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, inputSlot);
+
+	InputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<InputSlotCommandPtr> (L"Disconnect"));
+	uiManager.EnumerateConnectedOutputSlots (inputSlot, [&] (UIOutputSlotConstPtr outputSlot) {
+		UINodeConstPtr uiNode = uiManager.GetUINode (outputSlot->GetOwnerNodeId ());
+		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectInputSlotCommand (uiNode->GetNodeName (), outputSlot)));
+	});
+	if (disconnectGroup->HasChildCommand ()) {
+		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
+	}
+
 	inputSlot->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();
 }
 
 CommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIOutputSlotPtr& outputSlot)
 {
-	SlotCommandStructureBuilder<OutputSlotCommandRegistrator, UIOutputSlotPtr, UIInputSlotConstPtr, OutputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, outputSlot);
+	SlotCommandStructureBuilder<OutputSlotCommandRegistrator, UIOutputSlotPtr, OutputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, outputSlot);
+
+	OutputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<OutputSlotCommandPtr> (L"Disconnect"));
+	uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (UIInputSlotConstPtr inputSlot) {
+		UINodeConstPtr uiNode = uiManager.GetUINode (inputSlot->GetOwnerNodeId ());
+		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectOutputSlotCommand (uiNode->GetNodeName (), inputSlot)));
+	});
+	if (disconnectGroup->HasChildCommand ()) {
+		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
+	}
+
 	outputSlot->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();
 }

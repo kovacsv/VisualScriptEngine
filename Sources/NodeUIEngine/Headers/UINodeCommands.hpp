@@ -17,6 +17,7 @@ public:
 	virtual ~NodeGroupCommand ();
 
 	const std::wstring&		GetName () const;
+	bool					HasChildCommand () const;
 	void					AddChildCommand (const CommandType& command);
 	void					EnumerateChildCommands (const std::function<void (const CommandType&)>& processor);
 
@@ -41,6 +42,12 @@ template <typename CommandType>
 const std::wstring& NodeGroupCommand<CommandType>::GetName () const
 {
 	return name;
+}
+
+template <typename CommandType>
+bool NodeGroupCommand<CommandType>::HasChildCommand () const
+{
+	return !childCommands.empty ();
 }
 
 template <typename CommandType>
@@ -126,7 +133,6 @@ public:
 
 	virtual void RegisterSlotCommand (InputSlotCommandPtr slotCommand) = 0;
 	virtual void RegisterSlotGroupCommand (InputSlotGroupCommandPtr nodeGroupCommand) = 0;
-	virtual void EnumerateConnectedNodes (const std::function<void (UINodeConstPtr, UIOutputSlotConstPtr)>& processor) const = 0;
 };
 
 class OutputSlotCommandRegistrator
@@ -137,7 +143,6 @@ public:
 
 	virtual void RegisterSlotCommand (OutputSlotCommandPtr slotCommand) = 0;
 	virtual void RegisterSlotGroupCommand (OutputSlotGroupCommandPtr nodeGroupCommand) = 0;
-	virtual void EnumerateConnectedNodes (const std::function<void (UINodeConstPtr, UIInputSlotConstPtr)>& processor) const = 0;
 };
 
 }

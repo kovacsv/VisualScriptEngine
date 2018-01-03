@@ -3,6 +3,7 @@
 
 #include "UINode.hpp"
 #include "CommandStructure.hpp"
+#include "NodeUIManager.hpp"
 
 namespace NUIE
 {

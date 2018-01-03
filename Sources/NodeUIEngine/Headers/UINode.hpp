@@ -11,7 +11,6 @@
 namespace NUIE
 {
 
-class NodeUIManager;
 class NodeUIEnvironment;
 class NodeCommandRegistrator;
 

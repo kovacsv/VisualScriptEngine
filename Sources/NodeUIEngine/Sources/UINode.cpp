@@ -4,33 +4,12 @@
 #include "Debug.hpp"
 #include "ContextDecorators.hpp"
 #include "UINodeCommands.hpp"
-#include "NodeUIManager.hpp"
 #include "NodeUIEnvironment.hpp"
 
 namespace NUIE
 {
 
 NE::SerializationInfo UINode::serializationInfo (NE::ObjectId ("{26A833A1-8FFD-48BA-8A4C-94BD02084BEA}"), NE::ObjectVersion (1));
-
-class DeleteNodeCommand : public NodeCommand
-{
-public:
-	DeleteNodeCommand (const std::wstring& name) :
-		NodeCommand (name, false)
-	{
-
-	}
-
-	virtual bool IsApplicableTo (const UINodePtr&) override
-	{
-		return true;
-	}
-
-	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
-	{
-		uiManager.DeleteNode (uiNode, uiEnvironment.GetEvaluationEnv ());
-	}
-};
 
 UINode::UINode () :
 	Node ()
@@ -242,9 +221,9 @@ NUIE::EventHandlerResult UINode::HandleMouseWheel (NodeUIEnvironment&, const Key
 	return EventHandlerResult::EventNotHandled;
 }
 
-void UINode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
+void UINode::RegisterCommands (NodeCommandRegistrator&) const
 {
-	commandRegistrator.RegisterNodeCommand (NodeCommandPtr (new DeleteNodeCommand (L"Delete Node")));
+
 }
 
 void UINode::OnCreated (NE::EvaluationEnv&) const

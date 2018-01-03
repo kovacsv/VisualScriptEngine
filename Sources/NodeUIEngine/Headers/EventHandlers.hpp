@@ -8,6 +8,8 @@
 namespace NUIE
 {
 
+class NodeUIManager;
+
 class EventHandlers
 {
 public:
