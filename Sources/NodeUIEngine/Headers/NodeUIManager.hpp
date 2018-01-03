@@ -51,8 +51,8 @@ public:
 	bool					ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
 	bool					DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
 
+	bool					HasConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot) const;
 	bool					HasConnectedOutputSlots (const UIInputSlotConstPtr& inputSlot) const;
-	size_t					GetConnectedOutputSlotCount (const UIInputSlotConstPtr& inputSlot) const;
 
 	void					EnumerateConnections (const std::function<void (const NE::NodeId&, const NE::SlotId&, const NE::NodeId&, const NE::SlotId&)>& processor) const;
 	void					EnumerateConnectedInputSlots (const NE::OutputSlotConstPtr& outputSlot, const std::function<void (const NE::InputSlotConstPtr&)>& processor) const;

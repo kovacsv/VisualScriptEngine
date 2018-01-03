@@ -316,14 +316,14 @@ void NodeManager::EnumerateConnections (const std::function<void (const NodeId&,
 	});
 }
 
+bool NodeManager::HasConnectedInputSlots (const OutputSlotConstPtr& outputSlot) const
+{
+	return connectionManager.HasConnectedInputSlots (outputSlot);
+}
+
 bool NodeManager::HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const
 {
 	return connectionManager.HasConnectedOutputSlots (inputSlot);
-}
-
-size_t NodeManager::GetConnectedOutputSlotCount (const InputSlotConstPtr& inputSlot) const
-{
-	return connectionManager.GetConnectedOutputSlotCount (inputSlot);
 }
 
 void NodeManager::EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const

@@ -183,14 +183,14 @@ bool NodeUIManager::DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPt
 	return nodeManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
 }
 
+bool NodeUIManager::HasConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot) const
+{
+	return nodeManager.HasConnectedInputSlots (outputSlot);
+}
+
 bool NodeUIManager::HasConnectedOutputSlots (const UIInputSlotConstPtr& inputSlot) const
 {
 	return nodeManager.HasConnectedOutputSlots (inputSlot);
-}
-
-size_t NodeUIManager::GetConnectedOutputSlotCount (const UIInputSlotConstPtr& inputSlot) const
-{
-	return nodeManager.GetConnectedOutputSlotCount (inputSlot);
 }
 
 void NodeUIManager::EnumerateConnections (const std::function<void (const NE::NodeId&, const NE::SlotId&, const NE::NodeId&, const NE::SlotId&)>& processor) const

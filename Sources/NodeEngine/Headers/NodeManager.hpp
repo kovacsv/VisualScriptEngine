@@ -48,8 +48,8 @@ public:
 	void						EnumerateConnections (const std::function<void (const NodeConstPtr&, const OutputSlotConstPtr&, const NodeConstPtr&, const InputSlotConstPtr&)>& processor) const;
 	void						EnumerateConnections (const std::function<void (const NodeId&, const SlotId&, const NodeId&, const SlotId&)>& processor) const;
 
+	bool						HasConnectedInputSlots (const OutputSlotConstPtr& outputSlot) const;
 	bool						HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const;
-	size_t						GetConnectedOutputSlotCount (const InputSlotConstPtr& inputSlot) const;
 	void						EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const;
 	void						EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const;
 
