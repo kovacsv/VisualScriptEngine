@@ -151,6 +151,7 @@ NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstri
 	currentPage (currentPage)
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
+	// TODO: Measuring all the texts can be slow
 	for (const std::wstring& nodeText : nodeTexts) {
 		Size textSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText);
 		textSize = textSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
