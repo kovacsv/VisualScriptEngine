@@ -56,6 +56,15 @@ TEST (ValueTest)
 	ASSERT (NumberValue::ToDouble (intValuePtr) == 6.0);
 }
 
+TEST (StringValueTest)
+{
+	StringValue val (L"Example");
+	ASSERT (Value::IsType<StringValue> (&val));
+	ASSERT (StringValue::Get (&val) == L"Example");
+	ASSERT (val.ToString () == L"Example");
+	ASSERT (GenericValueBase<std::wstring>::Get (&val) == L"Example");
+}
+
 TEST (CustomValueTest)
 {
 	AListValue aListVal;

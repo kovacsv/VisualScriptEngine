@@ -58,6 +58,22 @@ public:
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 };
 
+class StringValue : public SingleValue,
+					public GenericValueBase<std::wstring>
+{
+	DYNAMIC_SERIALIZABLE (StringValue);
+
+public:
+	StringValue ();
+	StringValue (const std::wstring& val);
+	virtual ~StringValue ();
+
+	virtual std::wstring	ToString () const override;
+
+	virtual Stream::Status	Read (InputStream& inputStream) override;
+	virtual Stream::Status	Write (OutputStream& outputStream) const override;
+};
+
 template <class Type>
 class GenericValue : public SingleValue,
 					 public GenericValueBase<Type>
