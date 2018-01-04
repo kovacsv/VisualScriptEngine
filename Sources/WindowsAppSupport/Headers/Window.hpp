@@ -15,7 +15,7 @@ public:
 	Window ();
 	virtual ~Window ();
 
-	bool			Open (const std::wstring& windowTitle, int width, int height);
+	virtual bool	Open (const std::wstring& windowTitle, int width, int height);
 	void			Close ();
 
 private:
@@ -28,8 +28,6 @@ private:
 	virtual void	OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
 	virtual void	OnMenuCommand (HWND hwnd, int commandId) override;
 	virtual void	OnResize (HWND hwnd, int newWidth, int newHeight) override;
-	
-	virtual void	OnIdle (HWND hwnd);
 };
 
 

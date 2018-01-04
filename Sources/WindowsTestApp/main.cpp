@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "Window.hpp"
 #include "CustomControl.hpp"
 #include "BitmapContextGdi.hpp"
 #include "BitmapContextGdiplus.hpp"
@@ -47,10 +48,10 @@ private:
 	std::wstring currentFileName;
 };
 
-class NodeEngineTestApplication : public Application
+class NodeEngineTestAppWindow : public UI::Window
 {
 public:
-	NodeEngineTestApplication (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
+	NodeEngineTestAppWindow (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 		windowHandle (NULL),
 		statusBarHandle (NULL),
 		applicationState (),
@@ -80,7 +81,7 @@ public:
 		drawingControl.MoveResize (0, clientHeight / 2, newWidth, clientHeight / 2);
 	}
 
-	virtual void OnIdle (HWND hwnd) override
+	void OnIdle ()
 	{
 		drawingControl.Invalidate ();
 	}
@@ -196,15 +197,39 @@ private:
 	NodeEditorControl				nodeEditorControl;
 };
 
+class NodeEngineTestApplication : public Application
+{
+public:
+	NodeEngineTestApplication () :
+		resultImage (new ResultImage ()),
+		evaluationData (new ResultImageEvaluationData (resultImage)),
+		appWindow (evaluationData)
+	{
+	
+	}
+
+	virtual void OnInit ()
+	{
+		appWindow.Open (L"Node Engine Test App", WindowWidth, WindowHeight);
+	}
+
+	virtual void OnIdle ()
+	{
+		appWindow.OnIdle ();
+	}
+
+private:
+	std::shared_ptr<ResultImage>				resultImage;
+	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
+	NodeEngineTestAppWindow						appWindow;
+};
+
 int wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	EnableLeakDetection ();
 
-	std::shared_ptr<ResultImage> resultImage (new ResultImage ());
-	std::shared_ptr<ResultImageEvaluationData> evaluationData (new ResultImageEvaluationData (resultImage));
-
-	NodeEngineTestApplication app (evaluationData);
-	app.Open (L"Node Engine Test App", WindowWidth, WindowHeight);
+	NodeEngineTestApplication app;
+	app.Start ();
 
 	return 0;
 }

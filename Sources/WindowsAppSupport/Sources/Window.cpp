@@ -74,12 +74,6 @@ bool Window::Open (const std::wstring& windowTitle, int width, int height)
 	ShowWindow (windowHandle, SW_SHOW);
 	UpdateWindow (windowHandle);
 
-	MSG msg;
-	while (GetMessage (&msg, NULL, 0, 0)) {
-		TranslateMessage (&msg);
-		DispatchMessage (&msg);
-		OnIdle (windowHandle);
-	}
 	return true;
 }
 
@@ -129,11 +123,6 @@ void Window::OnMenuCommand (HWND hwnd, int commandId)
 }
 
 void Window::OnResize (HWND hwnd, int newWidth, int newHeight)
-{
-
-}
-
-void Window::OnIdle (HWND hwnd)
 {
 
 }
