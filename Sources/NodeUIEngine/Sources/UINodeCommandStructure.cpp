@@ -19,9 +19,9 @@ public:
 		return true;
 	}
 
-	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
+	virtual void Do (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode) override
 	{
-		uiManager.DeleteNode (uiNode, uiEnvironment.GetEvaluationEnv ());
+		uiManager.DeleteNode (uiNode, evaluationEnv);
 	}
 };
 
@@ -96,7 +96,7 @@ public:
 			return;
 		}
 		for (UINodePtr& uiNode : uiNodes) {
-			nodeCommand->Do (uiManager, uiEnvironment, uiNode);
+			nodeCommand->Do (uiManager, uiEnvironment.GetEvaluationEnv (), uiNode);
 		}
 	}
 

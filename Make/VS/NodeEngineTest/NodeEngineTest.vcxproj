@@ -141,6 +141,7 @@
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\NodeManagerSerializationTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\NodeValueCombinationTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\SerializableTest.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngineTest\UINodeTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\ValueCombinationTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\GeometryTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\ListValueNodeTest.cpp" />

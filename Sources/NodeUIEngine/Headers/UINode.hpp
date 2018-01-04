@@ -12,6 +12,7 @@ namespace NUIE
 {
 
 class NodeUIEnvironment;
+class NodeParameterList;
 class NodeCommandRegistrator;
 
 class UINode :	public NE::Node,
@@ -72,6 +73,7 @@ public:
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position) override;
 
+	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const;
 	virtual void				OnCreated (NE::EvaluationEnv& env) const;
 	virtual void				OnDeleted (NE::EvaluationEnv& env) const;

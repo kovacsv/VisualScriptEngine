@@ -3,8 +3,10 @@
 #include "OutputSlot.hpp"
 #include "Debug.hpp"
 #include "ContextDecorators.hpp"
+#include "UINodeParameters.hpp"
 #include "UINodeCommands.hpp"
 #include "NodeUIEnvironment.hpp"
+#include "SingleValues.hpp"
 
 namespace NUIE
 {
@@ -219,6 +221,41 @@ NUIE::EventHandlerResult UINode::HandleMouseWheel (NodeUIEnvironment&, const Key
 {
 	// TODO: Never called
 	return EventHandlerResult::EventNotHandled;
+}
+
+void UINode::RegisterParameters (NodeParameterList& parameterList) const
+{
+	class NodeNameParameter : public NodeParameter
+	{
+	public:
+		NodeNameParameter () :
+			NodeParameter (L"Name")
+		{
+		
+		}
+
+		NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		{
+			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ()));
+		}
+
+		bool IsApplicableTo (const UINodePtr&) const override
+		{
+			return true;
+		}
+
+		bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!NE::Value::IsType<NE::StringValue> (value))) {
+				return false;
+			}
+			uiNode->SetNodeName (NE::StringValue::Get (value));
+			uiNode->InvalidateDrawing ();
+			return true;
+		}
+	};
+
+	parameterList.AddParameter (NodeParameterPtr (new NodeNameParameter ()));
 }
 
 void UINode::RegisterCommands (NodeCommandRegistrator&) const

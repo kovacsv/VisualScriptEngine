@@ -27,13 +27,13 @@ public:
 		return std::dynamic_pointer_cast<CalculatedUINode> (uiNode) != nullptr;
 	}
 
-	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
+	virtual void Do (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode) override
 	{
 		std::shared_ptr<CalculatedUINode> calcUINode = std::dynamic_pointer_cast<CalculatedUINode> (uiNode);
 		if (DBGERROR (calcUINode == nullptr)) {
 			return;
 		}
-		calcUINode->SetEnableState (enable, uiEnvironment.GetEvaluationEnv ());
+		calcUINode->SetEnableState (enable, evaluationEnv);
 		uiManager.RequestRedraw ();
 	}
 
@@ -56,7 +56,7 @@ public:
 		return std::dynamic_pointer_cast<CombinedValueUINode> (uiNode) != nullptr;
 	}
 
-	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UINodePtr& uiNode) override
+	virtual void Do (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode) override
 	{
 		std::shared_ptr<CombinedValueUINode> combValueUINode = std::dynamic_pointer_cast<CombinedValueUINode> (uiNode);
 		if (DBGERROR (combValueUINode == nullptr)) {
