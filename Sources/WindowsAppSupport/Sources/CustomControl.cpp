@@ -48,17 +48,13 @@ bool CustomControl::Init (HWND parentHandle, int x, int y, int width, int height
 	
 	RegisterClassEx (&windowClass);
 	windowHandle = CreateWindowEx (
-		0, windowClass.lpszClassName, L"", WS_CHILD,
+		0, windowClass.lpszClassName, L"", WS_CHILD | WS_VISIBLE,
 		CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, parentHandle, NULL, NULL, this
 	);
 
 	if (windowHandle == NULL) {
 		return false;
 	}
-
-	ShowWindow (windowHandle, SW_SHOW);
-	UpdateWindow (windowHandle);
-	MoveWindow (windowHandle, x, y, width, height, TRUE);
 
 	return true;
 }
