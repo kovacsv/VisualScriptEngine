@@ -4,10 +4,11 @@ import shutil
 import subprocess
 
 class DevKitBuilder:
-	def __init__ (self, rootDirectory):
+	def __init__ (self, rootDirectory, configMode):
 		self.rootDirectory = rootDirectory
+		self.configMode = configMode
 		self.solutionDir = os.path.join (self.rootDirectory, 'Make', 'VS')
-		self.devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS')
+		self.devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS_' + self.configMode)
 	
 	def Clean (self):
 		if os.path.exists (self.devKitFolder):
@@ -19,13 +20,13 @@ class DevKitBuilder:
 		buildResult = subprocess.call ([
 			msBuildPath,
 			solutionPath,
-			'/property:Configuration=Release',
+			'/property:Configuration=' + self.configMode,
 			'/property:Platform=x64'
 		])
 		return buildResult
 	
 	def Test (self):
-		binaryFolder = os.path.join (self.solutionDir, 'x64', 'Release')
+		binaryFolder = os.path.join (self.solutionDir, 'x64', self.configMode)
 		testPath = os.path.join (binaryFolder, 'NodeEngineTest.exe')
 		return subprocess.call ([testPath])
 		
@@ -39,7 +40,7 @@ class DevKitBuilder:
 		os.makedirs (devKitHeaderFolder)
 		os.makedirs (devKitLibFolder)
 		
-		binaryFolder = os.path.join (self.solutionDir, 'x64', 'Release')
+		binaryFolder = os.path.join (self.solutionDir, 'x64', self.configMode)
 		sourcesFolder = os.path.join (self.rootDirectory, 'Sources')
 
 		folderNames = ['NodeEngine', 'NodeUIEngine', 'BuiltInNodes', 'WindowsAppSupport']
@@ -51,24 +52,26 @@ class DevKitBuilder:
 def Main (argv):
 	currentDir = os.path.dirname (os.path.abspath (__file__))
 	os.chdir (currentDir)
-	builder = DevKitBuilder (os.path.dirname (os.path.dirname (currentDir)))
-	if len (argv) > 1 and argv[1] == 'clean':
-		builder.Clean ()
-		return 0
-	if os.name == 'nt':
-		print 'Build Solution'
-		if builder.Build () != 0:
-			print 'ERROR: Build Failed'
-			return 1
-		print 'Run Tests'
-		if builder.Test () != 0:
-			print 'ERROR: Test Failed'
-			return 1
-		print 'Publish DevKit'
-		if not builder.Publish ():
-			print 'ERROR: Publish Failed'
-			return 1
-		print 'Success'
+	for configMode in ['Debug', 'Release']:
+		rootDirectory = os.path.dirname (os.path.dirname (currentDir))
+		builder = DevKitBuilder (rootDirectory, configMode)
+		if len (argv) > 1 and argv[1] == 'clean':
+			builder.Clean ()
+			return 0
+		if os.name == 'nt':
+			print 'Build Solution'
+			if builder.Build () != 0:
+				print 'ERROR: Build Failed'
+				return 1
+			print 'Run Tests'
+			if builder.Test () != 0:
+				print 'ERROR: Test Failed'
+				return 1
+			print 'Publish DevKit'
+			if not builder.Publish ():
+				print 'ERROR: Publish Failed'
+				return 1
+			print 'Success'
 	return 0
 	
 sys.exit (Main (sys.argv))
