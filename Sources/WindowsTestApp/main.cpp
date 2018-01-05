@@ -51,10 +51,12 @@ private:
 class NodeEngineTestAppWindow : public UI::Window
 {
 public:
-	NodeEngineTestAppWindow (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
+	NodeEngineTestAppWindow () :
 		windowHandle (NULL),
 		statusBarHandle (NULL),
 		applicationState (),
+		resultImage (new ResultImage ()),
+		evaluationData (new ResultImageEvaluationData (resultImage)),
 		drawingControl (evaluationData->GetResultImage ()),
 		nodeEditorControl (evaluationData)
 	{
@@ -189,21 +191,21 @@ private:
 		SendMessage (statusBarHandle, SB_SETTEXT, 0, (LPARAM) currentFileText.c_str ());
 	}
 
-	HWND							windowHandle;
-	HWND							statusBarHandle;
-	ApplicationState				applicationState;
+	HWND										windowHandle;
+	HWND										statusBarHandle;
+	ApplicationState							applicationState;
 
-	DrawingControl					drawingControl;
-	NodeEditorControl				nodeEditorControl;
+	std::shared_ptr<ResultImage>				resultImage;
+	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
+
+	DrawingControl								drawingControl;
+	NodeEditorControl							nodeEditorControl;
 };
 
 class NodeEngineTestApplication : public Application
 {
 public:
-	NodeEngineTestApplication () :
-		resultImage (new ResultImage ()),
-		evaluationData (new ResultImageEvaluationData (resultImage)),
-		appWindow (evaluationData)
+	NodeEngineTestApplication ()
 	{
 	
 	}
@@ -219,9 +221,7 @@ public:
 	}
 
 private:
-	std::shared_ptr<ResultImage>				resultImage;
-	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
-	NodeEngineTestAppWindow						appWindow;
+	NodeEngineTestAppWindow appWindow;
 };
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
