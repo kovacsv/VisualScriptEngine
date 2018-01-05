@@ -81,11 +81,6 @@ public:
 		drawingControl.MoveResize (0, clientHeight / 2, newWidth, clientHeight / 2);
 	}
 
-	void OnIdle ()
-	{
-		drawingControl.Invalidate ();
-	}
-
 	virtual void OnMenuCommand (HWND hwnd, int commandId) override
 	{
 		if (commandId == MenuCommand::File_New) {
@@ -132,6 +127,11 @@ public:
 			Close ();
 		}
 		UpdateStatusBar ();
+	}
+
+	void OnIdle ()
+	{
+		drawingControl.Invalidate ();
 	}
 
 private:
