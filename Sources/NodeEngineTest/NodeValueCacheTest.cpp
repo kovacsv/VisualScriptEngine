@@ -329,6 +329,12 @@ TEST (EvaluationEnvTest)
 		ASSERT (IntValue::Get (result) == 5);
 		ASSERT (evalData->x == 6);
 	}
+
+	{
+		ValuePtr result = node->GetCalculatedValue ();
+		ASSERT (IntValue::Get (result) == 5);
+		ASSERT (evalData->x == 6);
+	}
 }
 
 }
