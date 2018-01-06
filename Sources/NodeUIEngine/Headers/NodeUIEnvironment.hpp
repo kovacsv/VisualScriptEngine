@@ -17,14 +17,22 @@ class DrawingContext;
 class SkinParams;
 class EventHandlers;
 
-class NodeUIEnvironment
+class NodeUIDrawingEnvironment
+{
+public:
+	NodeUIDrawingEnvironment ();
+	virtual ~NodeUIDrawingEnvironment ();
+
+	virtual DrawingContext&		GetDrawingContext () = 0;
+	virtual SkinParams&			GetSkinParams () = 0;
+};
+
+class NodeUIEnvironment : public NodeUIDrawingEnvironment
 {
 public:
 	NodeUIEnvironment ();
 	virtual ~NodeUIEnvironment ();
 
-	virtual DrawingContext&		GetDrawingContext () = 0;
-	virtual SkinParams&			GetSkinParams () = 0;
 	virtual EventHandlers&		GetEventHandlers () = 0;
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
 	virtual void				RequestRedraw () = 0;

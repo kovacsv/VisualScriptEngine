@@ -3,7 +3,18 @@
 namespace NUIE
 {
 
-NodeUIEnvironment::NodeUIEnvironment ()
+NodeUIDrawingEnvironment::NodeUIDrawingEnvironment ()
+{
+
+}
+
+NodeUIDrawingEnvironment::~NodeUIDrawingEnvironment ()
+{
+
+}
+
+NodeUIEnvironment::NodeUIEnvironment () :
+	NodeUIDrawingEnvironment ()
 {
 
 }

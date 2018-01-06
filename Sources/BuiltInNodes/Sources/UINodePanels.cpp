@@ -69,7 +69,7 @@ NodeUITextPanelBase::NodeUITextPanelBase (const std::wstring& nodeText) :
 	
 }
 
-Size NodeUITextPanelBase::GetMinSize (NodeUIEnvironment& env) const
+Size NodeUITextPanelBase::GetMinSize (NodeUIDrawingEnvironment& env) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	Size minSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText);
@@ -77,7 +77,7 @@ Size NodeUITextPanelBase::GetMinSize (NodeUIEnvironment& env) const
 	return minSize;
 }
 
-void NodeUITextPanelBase::Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUITextPanelBase::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, GetBackgroundColor (env))));
@@ -90,12 +90,12 @@ NodeUITextPanel::NodeUITextPanel (const std::wstring& nodeText) :
 	
 }
 
-Color NodeUITextPanel::GetTextColor (NodeUIEnvironment& env) const
+Color NodeUITextPanel::GetTextColor (NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentTextColor ();
 }
 
-Color NodeUITextPanel::GetBackgroundColor (NodeUIEnvironment& env) const
+Color NodeUITextPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentBackgroundColor ();
 }
@@ -106,12 +106,12 @@ NodeUIHeaderPanel::NodeUIHeaderPanel (const std::wstring& headerText) :
 	
 }
 
-Color NodeUIHeaderPanel::GetTextColor (NodeUIEnvironment& env) const
+Color NodeUIHeaderPanel::GetTextColor (NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeHeaderTextColor ();
 }
 
-Color NodeUIHeaderPanel::GetBackgroundColor (NodeUIEnvironment& env) const
+Color NodeUIHeaderPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
 }
@@ -124,7 +124,7 @@ NodeUIStatusHeaderPanel::NodeUIStatusHeaderPanel (const std::wstring& headerText
 	
 }
 
-Size NodeUIStatusHeaderPanel::GetMinSize (NodeUIEnvironment& env) const
+Size NodeUIStatusHeaderPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	Size minSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), headerText);
@@ -133,7 +133,7 @@ Size NodeUIStatusHeaderPanel::GetMinSize (NodeUIEnvironment& env) const
 	return minSize;
 }
 
-void NodeUIStatusHeaderPanel::Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUIStatusHeaderPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, skinParams.GetNodeHeaderBackgroundColor ())));
@@ -144,7 +144,7 @@ void NodeUIStatusHeaderPanel::Draw (NodeUIEnvironment& env, const Rect& rect, No
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (statusRect, statusColor)));
 }
 
-NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIEnvironment& env, size_t textsPerPage, size_t currentPage) :
+NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage, size_t currentPage) :
 	NodeUIPanel (),
 	nodeTexts (nodeTexts),
 	textsPerPage (textsPerPage),
@@ -160,7 +160,7 @@ NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstri
 	}	
 }
 
-Size NodeUIMultiLineTextPanel::GetMinSize (NodeUIEnvironment& env) const
+Size NodeUIMultiLineTextPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
@@ -168,7 +168,7 @@ Size NodeUIMultiLineTextPanel::GetMinSize (NodeUIEnvironment& env) const
 	return minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 }
 
-void NodeUIMultiLineTextPanel::Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUIMultiLineTextPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
 {
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, GetBackgroundColor (env))));
 	
@@ -190,17 +190,17 @@ void NodeUIMultiLineTextPanel::Draw (NodeUIEnvironment& env, const Rect& rect, N
 	}
 }
 
-Color NodeUIMultiLineTextPanel::GetTextColor (NodeUIEnvironment& env) const
+Color NodeUIMultiLineTextPanel::GetTextColor (NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentTextColor ();
 }
 
-Color NodeUIMultiLineTextPanel::GetBackgroundColor (NodeUIEnvironment& env) const
+Color NodeUIMultiLineTextPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentBackgroundColor ();
 }
 
-NodeUISlotPanel::NodeUISlotPanel (const UINode& node, NodeUIEnvironment& env) :
+NodeUISlotPanel::NodeUISlotPanel (const UINode& node, NodeUIDrawingEnvironment& env) :
 	NodeUIPanel (),
 	node (node)
 {
@@ -221,7 +221,7 @@ NodeUISlotPanel::NodeUISlotPanel (const UINode& node, NodeUIEnvironment& env) :
 	});
 }
 
-Size NodeUISlotPanel::GetMinSize (NodeUIEnvironment& env) const
+Size NodeUISlotPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
@@ -234,7 +234,7 @@ Size NodeUISlotPanel::GetMinSize (NodeUIEnvironment& env) const
 	return minSize;
 }
 
-void NodeUISlotPanel::Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUISlotPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
@@ -270,7 +270,7 @@ NodeUILeftRightButtonsPanel::NodeUILeftRightButtonsPanel (	const std::string& le
 															const std::string& rightButtonId,
 															const std::wstring& rightButtonText,
 															const std::wstring& nodeText,
-															NodeUIEnvironment& env) :
+															NodeUIDrawingEnvironment& env) :
 	NodeUIPanel (),
 	leftButtonId (leftButtonId),
 	leftButtonText (leftButtonText),
@@ -285,7 +285,7 @@ NodeUILeftRightButtonsPanel::NodeUILeftRightButtonsPanel (	const std::string& le
 	rightButtonSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), rightButtonText).Grow (2.0 * nodePadding, nodePadding);
 }
 
-Size NodeUILeftRightButtonsPanel::GetMinSize (NodeUIEnvironment& env) const
+Size NodeUILeftRightButtonsPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
@@ -296,7 +296,7 @@ Size NodeUILeftRightButtonsPanel::GetMinSize (NodeUIEnvironment& env) const
 	return minSize;
 }
 
-void NodeUILeftRightButtonsPanel::Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUILeftRightButtonsPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
@@ -323,22 +323,22 @@ void NodeUILeftRightButtonsPanel::Draw (NodeUIEnvironment& env, const Rect& rect
 	drawingImage.AddSpecialRect (rightButtonId, rightButtonRect);
 }
 
-Color NodeUILeftRightButtonsPanel::GetTextColor (NodeUIEnvironment& env) const
+Color NodeUILeftRightButtonsPanel::GetTextColor (NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentTextColor ();
 }
 
-Color NodeUILeftRightButtonsPanel::GetBackgroundColor (NodeUIEnvironment& env) const
+Color NodeUILeftRightButtonsPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentBackgroundColor ();
 }
 
-Pen NodeUILeftRightButtonsPanel::GetButtonBorderPen (NodeUIEnvironment&) const
+Pen NodeUILeftRightButtonsPanel::GetButtonBorderPen (NodeUIDrawingEnvironment&) const
 {
 	return DefaultButtonBorderPen;
 }
 
-Color NodeUILeftRightButtonsPanel::GetButtonBackgroundColor (NodeUIEnvironment&) const
+Color NodeUILeftRightButtonsPanel::GetButtonBackgroundColor (NodeUIDrawingEnvironment&) const
 {
 	return DefaultButtonBackgroundColor;
 }

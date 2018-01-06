@@ -74,14 +74,14 @@ void MultiLineViewerUINode::UpdateNodeDrawingImage (NodeUIEnvironment& env, Node
 	class NodeUIMultiLineTextViewerPanel : public NodeUIMultiLineTextPanel
 	{
 	public:
-		NodeUIMultiLineTextViewerPanel (const std::vector<std::wstring>& nodeTexts, NodeUIEnvironment& env, size_t textsPerPage, size_t currentPage) :
+		NodeUIMultiLineTextViewerPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage, size_t currentPage) :
 			NodeUIMultiLineTextPanel (nodeTexts, env, textsPerPage, currentPage)
 		{
 		
 		}
 
 	private:
-		virtual Color GetBackgroundColor (NodeUIEnvironment&) const override
+		virtual Color GetBackgroundColor (NodeUIDrawingEnvironment&) const override
 		{
 			return Color (255, 255, 100);
 		}
@@ -90,7 +90,7 @@ void MultiLineViewerUINode::UpdateNodeDrawingImage (NodeUIEnvironment& env, Node
 	class NodeUILeftRightButtonsViewerPanel : public NodeUILeftRightButtonsPanel
 	{
 	public:
-		NodeUILeftRightButtonsViewerPanel (NodeUIEnvironment& env, size_t currentPage, size_t pageCount) :
+		NodeUILeftRightButtonsViewerPanel (NodeUIDrawingEnvironment& env, size_t currentPage, size_t pageCount) :
 			NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount), env)
 		{
 		

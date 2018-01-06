@@ -35,12 +35,12 @@ class NodeUITextPanelBase : public NodeUIPanel
 public:
 	NodeUITextPanelBase (const std::wstring& nodeText);
 
-	virtual Size	GetMinSize (NodeUIEnvironment& env) const override;
-	virtual void	Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
+	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
 
 protected:
-	virtual Color	GetTextColor (NodeUIEnvironment& env) const = 0;
-	virtual Color	GetBackgroundColor (NodeUIEnvironment& env) const = 0;
+	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const = 0;
+	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const = 0;
 
 private:
 	std::wstring nodeText;
@@ -52,8 +52,8 @@ public:
 	NodeUITextPanel (const std::wstring& nodeText);
 
 private:
-	virtual Color	GetTextColor (NodeUIEnvironment& env) const override;
-	virtual Color	GetBackgroundColor (NodeUIEnvironment& env) const override;
+	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const override;
+	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const override;
 };
 
 class NodeUIHeaderPanel : public NodeUITextPanelBase
@@ -62,8 +62,8 @@ public:
 	NodeUIHeaderPanel (const std::wstring& headerText);
 
 private:
-	virtual Color	GetTextColor (NodeUIEnvironment& env) const override;
-	virtual Color	GetBackgroundColor (NodeUIEnvironment& env) const override;
+	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const override;
+	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const override;
 };
 
 class NodeUIStatusHeaderPanel : public NodeUIPanel
@@ -71,8 +71,8 @@ class NodeUIStatusHeaderPanel : public NodeUIPanel
 public:
 	NodeUIStatusHeaderPanel (const std::wstring& headerText, UINode::Status nodeStatus);
 
-	virtual Size	GetMinSize (NodeUIEnvironment& env) const override;
-	virtual void	Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
+	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
 
 private:
 	static const int StatusRectSize = 4;
@@ -84,14 +84,14 @@ private:
 class NodeUIMultiLineTextPanel : public NodeUIPanel
 {
 public:
-	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIEnvironment& env, size_t textsPerPage, size_t currentPage);
+	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage, size_t currentPage);
 
-	virtual Size	GetMinSize (NodeUIEnvironment& env) const override;
-	virtual void	Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
+	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
 
 protected:
-	virtual Color	GetTextColor (NodeUIEnvironment& env) const;
-	virtual Color	GetBackgroundColor (NodeUIEnvironment& env) const;
+	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const;
+	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const;
 
 private:
 	std::vector<std::wstring>	nodeTexts;
@@ -103,10 +103,10 @@ private:
 class NodeUISlotPanel : public NodeUIPanel
 {
 public:
-	NodeUISlotPanel (const UINode& node, NodeUIEnvironment& env);
+	NodeUISlotPanel (const UINode& node, NodeUIDrawingEnvironment& env);
 
-	virtual Size	GetMinSize (NodeUIEnvironment& env) const override;
-	virtual void	Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
+	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
 
 private:
 	const UINode&		node;
@@ -122,20 +122,20 @@ public:
 									const std::string& rightButtonId,
 									const std::wstring& rightButtonText,
 									const std::wstring& nodeText,
-									NodeUIEnvironment& env);
+									NodeUIDrawingEnvironment& env);
 
-	virtual Size	GetMinSize (NodeUIEnvironment& env) const override;
-	virtual void	Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
+	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
 
 protected:
 	static const Pen	DefaultButtonBorderPen;
 	static const Color	DefaultButtonBackgroundColor;
 
-	virtual Color	GetTextColor (NodeUIEnvironment& env) const;
-	virtual Color	GetBackgroundColor (NodeUIEnvironment& env) const;
+	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const;
+	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const;
 
-	virtual Pen		GetButtonBorderPen (NodeUIEnvironment& env) const;
-	virtual Color	GetButtonBackgroundColor (NodeUIEnvironment& env) const;
+	virtual Pen		GetButtonBorderPen (NodeUIDrawingEnvironment& env) const;
+	virtual Color	GetButtonBackgroundColor (NodeUIDrawingEnvironment& env) const;
 
 	std::string		leftButtonId;
 	std::wstring	leftButtonText;

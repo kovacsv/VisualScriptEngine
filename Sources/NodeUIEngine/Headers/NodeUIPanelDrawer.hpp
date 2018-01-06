@@ -13,8 +13,8 @@ public:
 	NodeUIPanel ();
 	virtual ~NodeUIPanel ();
 
-	virtual Size	GetMinSize (NodeUIEnvironment& env) const = 0;
-	virtual void	Draw (NodeUIEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const = 0;
+	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const = 0;
+	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const = 0;
 };
 
 typedef std::shared_ptr<NodeUIPanel> NodeUIPanelPtr;
@@ -27,7 +27,7 @@ public:
 	virtual ~NodeUIPanelDrawer ();
 
 	void	AddPanel (const NodeUIPanelPtr& panel);
-	void	Draw (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const;
+	void	Draw (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const;
 
 private:
 	std::vector<NodeUIPanelPtr> panels;
