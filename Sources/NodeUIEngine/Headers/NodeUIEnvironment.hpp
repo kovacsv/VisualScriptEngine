@@ -27,6 +27,8 @@ public:
 	virtual SkinParams&			GetSkinParams () = 0;
 };
 
+// TODO: NodeUICalculationEnvironment
+
 class NodeUIEnvironment : public NodeUIDrawingEnvironment
 {
 public:

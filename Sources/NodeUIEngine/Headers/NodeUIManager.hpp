@@ -74,8 +74,8 @@ public:
 	void					InvalidateNodeDrawing (const UINodePtr& uiNode);
 
 	void					Update (NodeUIEnvironment& env);
-	void					Draw (NodeUIEnvironment& env);
-	void					ResizeContext (NodeUIEnvironment& env, int newWidth, int newHeight);
+	void					Draw (NodeUIDrawingEnvironment& env);
+	void					ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
 
 	const ViewBox&			GetViewBox () const;
 	void					SetViewBox (const ViewBox& newViewBox);

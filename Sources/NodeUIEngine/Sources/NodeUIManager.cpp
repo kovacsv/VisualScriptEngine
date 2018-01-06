@@ -297,18 +297,16 @@ void NodeUIManager::Update (NodeUIEnvironment& env)
 	status.Reset ();
 }
 
-
-void NodeUIManager::Draw (NodeUIEnvironment& env)
+void NodeUIManager::Draw (NodeUIDrawingEnvironment& env)
 {
 	NodeUIManagerDrawer drawer (*this);
 	drawer.Draw (env, interactionHandler.GetDrawingExtension ());
 }
 
-void NodeUIManager::ResizeContext (NodeUIEnvironment& env, int newWidth, int newHeight)
+void NodeUIManager::ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight)
 {
 	env.GetDrawingContext ().Resize (newWidth, newHeight);
 	status.RequestRedraw ();
-	Update (env);
 }
 
 const ViewBox& NodeUIManager::GetViewBox () const
