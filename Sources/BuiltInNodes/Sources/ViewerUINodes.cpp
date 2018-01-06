@@ -98,7 +98,8 @@ void MultiLineViewerUINode::UpdateNodeDrawingImage (NodeUIEnvironment& env, Node
 	};
 
 	std::vector<std::wstring> nodeTexts = { L"<empty>" };
-	NE::ValuePtr nodeValue = Evaluate (env.GetEvaluationEnv ());
+	DBGASSERT (ValueIsCalculated ());
+	NE::ValuePtr nodeValue = GetCalculatedValue ();
 	if (nodeValue != nullptr) {
 		NE::IListValuePtr listValue = NE::CreateListValue (nodeValue);
 		nodeTexts.clear ();

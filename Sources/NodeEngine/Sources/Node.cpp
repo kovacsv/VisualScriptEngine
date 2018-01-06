@@ -107,6 +107,19 @@ ValuePtr Node::Evaluate (EvaluationEnv& env) const
 	return value;
 }
 
+ValuePtr Node::GetCalculatedValue () const
+{
+	if (DBGERROR (nodeEvaluator == nullptr)) {
+		return nullptr;
+	}
+
+	if (DBGERROR (!nodeEvaluator->IsNodeValueCalculated (nodeId))) {
+		return nullptr;
+	}
+
+	return nodeEvaluator->GetCalculatedNodeValue (nodeId);
+}
+
 void Node::InvalidateValue () const
 {
 	if (DBGERROR (nodeEvaluator == nullptr)) {

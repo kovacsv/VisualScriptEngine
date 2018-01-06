@@ -66,6 +66,7 @@ public:
 	void					EnumerateOutputSlots (const std::function<bool (const OutputSlotConstPtr&)>& processor) const;
 
 	ValuePtr				Evaluate (EvaluationEnv& env) const;
+	ValuePtr				GetCalculatedValue () const;
 	void					InvalidateValue () const;
 	bool					ValueIsCalculated () const;
 
