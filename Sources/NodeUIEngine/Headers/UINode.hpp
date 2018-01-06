@@ -21,12 +21,6 @@ class UINode :	public NE::Node,
 	SERIALIZABLE;
 
 public:
-	enum class Status
-	{
-		HasValue,
-		HasNoValue
-	};
-
 	UINode ();
 	UINode (const std::wstring& nodeName, const Point& nodePosition);
 	virtual ~UINode ();
@@ -39,7 +33,6 @@ public:
 
 	void						Draw (NodeUIEnvironment& env) const;
 
-	Status						GetStatus (NE::EvaluationEnv& env) const;
 	Rect						GetNodeRect (NodeUIEnvironment& env) const;
 	void						InvalidateDrawing () const;
 
@@ -105,8 +98,8 @@ private:
 	virtual bool				RegisterInputSlot (const NE::InputSlotPtr& newInputSlot) override;
 	virtual bool				RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot) override;
 
-	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIEnvironment& env) const;
-	virtual void				UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
+	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
+	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
 	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
 
 	std::wstring				nodeName;

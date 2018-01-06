@@ -70,7 +70,7 @@ public:
 		parameterList.AddParameter (NodeParameterPtr (new In1DefaultValueParameter ()));
 	}
 
-	virtual void UpdateNodeDrawingImage (NodeUIEnvironment&, NodeDrawingImage&) const override
+	virtual void UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
 	{
 	
 	}

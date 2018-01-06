@@ -69,7 +69,7 @@ NUIE::EventHandlerResult MultiLineViewerUINode::HandleMouseClick (NodeUIEnvironm
 	return EventHandlerResult::EventNotHandled;
 }
 
-void MultiLineViewerUINode::UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const
+void MultiLineViewerUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
 {
 	class NodeUIMultiLineTextViewerPanel : public NodeUIMultiLineTextPanel
 	{

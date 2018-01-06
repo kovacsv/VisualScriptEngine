@@ -88,19 +88,6 @@ NormalUINode::~NormalUINode ()
 
 }
 
-void NormalUINode::UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const
-{
-	NodeUIPanelDrawer drawer;
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUIStatusHeaderPanel (GetNodeName (), GetStatus (env.GetEvaluationEnv ()))));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
-	drawer.Draw (env, drawingImage);
-}
-
-void NormalUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
-{
-
-}
-
 NE::Stream::Status NormalUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
@@ -113,6 +100,25 @@ NE::Stream::Status NormalUINode::Write (NE::OutputStream& outputStream) const
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+void NormalUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+{
+	DBGASSERT (ValueIsCalculated ());
+	NodeUIStatusHeaderPanel::NodeStatus nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasNoValue;
+	if (GetCalculatedValue () != nullptr) {
+		nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasValue;
+	}
+
+	NodeUIPanelDrawer drawer;
+	drawer.AddPanel (NodeUIPanelPtr (new NodeUIStatusHeaderPanel (GetNodeName (), nodeStatus)));
+	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
+	drawer.Draw (env, drawingImage);
+}
+
+void NormalUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
+{
+
 }
 
 CalculatedUINode::CalculatedUINode () :

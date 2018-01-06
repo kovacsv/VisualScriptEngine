@@ -48,10 +48,11 @@ NUIE::EventHandlerResult NumericUpDownUINode::HandleMouseClick (NodeUIEnvironmen
 	return EventHandlerResult::EventNotHandled;
 }
 
-void NumericUpDownUINode::UpdateNodeDrawingImage (NodeUIEnvironment& env, NodeDrawingImage& drawingImage) const
+void NumericUpDownUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
 {
 	std::wstring nodeText = L"<empty>";
-	NE::ValuePtr nodeValue = Evaluate (env.GetEvaluationEnv ());
+	DBGASSERT (ValueIsCalculated ());
+	NE::ValuePtr nodeValue = GetCalculatedValue ();
 	if (nodeValue != nullptr) {
 		nodeText = nodeValue->ToString ();
 	}

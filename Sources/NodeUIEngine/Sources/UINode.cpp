@@ -61,15 +61,6 @@ void UINode::Draw (NodeUIEnvironment& env) const
 	DrawInplace (nodeEnv);
 }
 
-UINode::Status UINode::GetStatus (NE::EvaluationEnv& env) const
-{
-	NE::ValuePtr value = Evaluate (env);
-	if (value != nullptr) {
-		return Status::HasValue;
-	}
-	return Status::HasNoValue;
-}
-
 Rect UINode::GetNodeRect (NodeUIEnvironment& env) const
 {
 	Rect nodeRect = GetNodeDrawingImage (env).GetNodeRect ();
@@ -382,7 +373,7 @@ bool UINode::RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot)
 	return Node::RegisterOutputSlot (newOutputSlot);
 }
 
-const NodeDrawingImage& UINode::GetNodeDrawingImage (NodeUIEnvironment& env) const
+const NodeDrawingImage& UINode::GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const
 {
 	if (nodeDrawingImage.IsEmpty ()) {
 		UpdateNodeDrawingImage (env, nodeDrawingImage);

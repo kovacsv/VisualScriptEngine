@@ -116,7 +116,7 @@ Color NodeUIHeaderPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) cons
 	return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
 }
 
-NodeUIStatusHeaderPanel::NodeUIStatusHeaderPanel (const std::wstring& headerText, UINode::Status nodeStatus) :
+NodeUIStatusHeaderPanel::NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus) :
 	NodeUIPanel (),
 	headerText (headerText),
 	nodeStatus (nodeStatus)
@@ -140,7 +140,7 @@ void NodeUIStatusHeaderPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& r
 	Rect textRect = Rect::FromPositionAndSize (Point (rect.GetLeft () + StatusRectSize * 2, rect.GetTop ()), Size (rect.GetWidth () - StatusRectSize * 2, rect.GetHeight ()));
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), headerText, HorizontalAnchor::Center, VerticalAnchor::Center, skinParams.GetNodeHeaderTextColor ())));
 	Rect statusRect = Rect::FromPositionAndSize (Point (rect.GetLeft () + StatusRectSize, rect.GetTop () + StatusRectSize), Size (StatusRectSize, rect.GetHeight () - StatusRectSize * 2));
-	Color statusColor = (nodeStatus == UINode::Status::HasValue ? skinParams.GetHasValueStatusColor () : skinParams.GetHasNoValueStatusColor ());
+	Color statusColor = (nodeStatus == NodeStatus::HasValue ? skinParams.GetHasValueStatusColor () : skinParams.GetHasNoValueStatusColor ());
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (statusRect, statusColor)));
 }
 

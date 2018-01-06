@@ -69,7 +69,13 @@ private:
 class NodeUIStatusHeaderPanel : public NodeUIPanel
 {
 public:
-	NodeUIStatusHeaderPanel (const std::wstring& headerText, UINode::Status nodeStatus);
+	enum class NodeStatus
+	{
+		HasValue,
+		HasNoValue
+	};
+
+	NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus);
 
 	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
 	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
@@ -78,7 +84,7 @@ private:
 	static const int StatusRectSize = 4;
 
 	std::wstring	headerText;
-	UINode::Status	nodeStatus;
+	NodeStatus		nodeStatus;
 };
 
 class NodeUIMultiLineTextPanel : public NodeUIPanel
