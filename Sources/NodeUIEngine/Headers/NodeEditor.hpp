@@ -4,6 +4,7 @@
 #include "DrawingContext.hpp"
 #include "EventHandlers.hpp"
 #include "NodeUIManager.hpp"
+#include "NodeUIInteractionHandler.hpp"
 #include "NodeUIEnvironment.hpp"
 #include "SkinParams.hpp"
 
@@ -34,8 +35,9 @@ public:
 	bool							Save (const std::wstring& fileName) const;
 
 protected:
-	NodeUIManager			uiManager;
-	NodeUIEnvironment&		uiEnvironment;
+	NodeUIManager				uiManager;
+	NodeUIInteractionHandler	uiInteractionHandler;
+	NodeUIEnvironment&			uiEnvironment;
 };
 
 }

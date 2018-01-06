@@ -19,6 +19,7 @@ static std::string WideStringToNormalString (const std::wstring& str)
 
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (),
+	uiInteractionHandler (uiManager),
 	uiEnvironment (uiEnvironment)
 {
 
@@ -31,27 +32,32 @@ NodeEditor::~NodeEditor ()
 
 void NodeEditor::OnMouseDown (const KeySet& keys, MouseButton button, int x, int y)
 {
-	uiManager.OnMouseDown (uiEnvironment, keys, button, Point (x, y));
+	uiInteractionHandler.OnMouseDown (uiEnvironment, keys, button, Point (x, y));
+	uiManager.Update (uiEnvironment);
 }
 
 void NodeEditor::OnMouseUp (const KeySet& keys, MouseButton button, int x, int y)
 {
-	uiManager.OnMouseUp (uiEnvironment, keys, button, Point (x, y));
+	uiInteractionHandler.OnMouseUp (uiEnvironment, keys, button, Point (x, y));
+	uiManager.Update (uiEnvironment);
 }
 
 void NodeEditor::OnMouseMove (const KeySet& keys, int x, int y)
 {
-	uiManager.OnMouseMove (uiEnvironment, keys, Point (x, y));
+	uiInteractionHandler.OnMouseMove (uiEnvironment, keys, Point (x, y));
+	uiManager.Update (uiEnvironment);
 }
 
 void NodeEditor::OnMouseWheel (const KeySet& keys, MouseWheelRotation rotation, int x, int y)
 {
-	uiManager.OnMouseWheel (uiEnvironment, keys, rotation, Point (x, y));
+	uiInteractionHandler.OnMouseWheel (uiEnvironment, keys, rotation, Point (x, y));
+	uiManager.Update (uiEnvironment);
 }
 
 void NodeEditor::OnMouseDoubleClick (const KeySet& keys, MouseButton button, int x, int y)
 {
-	uiManager.OnMouseDoubleClick (uiEnvironment, keys, button, Point (x, y));
+	uiInteractionHandler.OnMouseDoubleClick (uiEnvironment, keys, button, Point (x, y));
+	uiManager.Update (uiEnvironment);
 }
 
 void NodeEditor::OnResize (int newWidth, int newHeight)
@@ -71,7 +77,7 @@ void NodeEditor::Update ()
 
 void NodeEditor::Draw ()
 {
-	uiManager.Draw (uiEnvironment);
+	uiManager.Draw (uiEnvironment, uiInteractionHandler.GetDrawingExtension ());
 }
 
 NodeUIManager& NodeEditor::GetNodeUIManager ()

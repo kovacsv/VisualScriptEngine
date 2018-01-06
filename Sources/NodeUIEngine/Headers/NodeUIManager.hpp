@@ -2,10 +2,11 @@
 #define NODEUIMANAGER_HPP
 
 #include "NodeManager.hpp"
+#include "UINode.hpp"
 #include "NodeUIEnvironment.hpp"
-#include "NodeUIInteractionHandler.hpp"
 #include "NodeDrawingExtension.hpp"
 #include "ViewBox.hpp"
+
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
@@ -74,18 +75,12 @@ public:
 	void					InvalidateNodeDrawing (const UINodePtr& uiNode);
 
 	void					Update (NodeUIEnvironment& env);
-	void					Draw (NodeUIDrawingEnvironment& env);
+	void					Draw (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawingExtension);
 	void					ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
 
 	const ViewBox&			GetViewBox () const;
 	void					SetViewBox (const ViewBox& newViewBox);
 	bool					IsPreviewMode () const;
-
-	void					OnMouseDown (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
-	void					OnMouseUp (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
-	void					OnMouseMove (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position);
-	void					OnMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position);
-	void					OnMouseDoubleClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
 
 	void					Clear ();
 	bool					Load (NE::InputStream& inputStream);
@@ -113,7 +108,6 @@ private:
 	NE::NodeManager				nodeManager;
 	ViewBox						viewBox;
 
-	NodeUIInteractionHandler	interactionHandler;
 	SelectedNodes				selectedNodes;
 	Status						status;
 };

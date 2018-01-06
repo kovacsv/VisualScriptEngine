@@ -92,7 +92,6 @@ bool NodeUIManager::Status::NeedToRedraw () const
 NodeUIManager::NodeUIManager () :
 	nodeManager (),
 	viewBox (Point (0, 0), 1.0),
-	interactionHandler (*this),
 	selectedNodes (),
 	status ()
 {
@@ -297,10 +296,10 @@ void NodeUIManager::Update (NodeUIEnvironment& env)
 	status.Reset ();
 }
 
-void NodeUIManager::Draw (NodeUIDrawingEnvironment& env)
+void NodeUIManager::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawingExtension)
 {
 	NodeUIManagerDrawer drawer (*this);
-	drawer.Draw (env, interactionHandler.GetDrawingExtension ());
+	drawer.Draw (env, drawingExtension);
 }
 
 void NodeUIManager::ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight)
@@ -323,36 +322,6 @@ void NodeUIManager::SetViewBox (const ViewBox& newViewBox)
 bool NodeUIManager::IsPreviewMode () const
 {
 	return viewBox.GetScale () < 0.3;
-}
-
-void NodeUIManager::OnMouseDown (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
-{
-	interactionHandler.OnMouseDown (env, pressedKeys, mouseButton, position);
-	Update (env);
-}
-
-void NodeUIManager::OnMouseUp (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
-{
-	interactionHandler.OnMouseUp (env, pressedKeys, mouseButton, position);
-	Update (env);
-}
-
-void NodeUIManager::OnMouseMove (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position)
-{
-	interactionHandler.OnMouseMove (env, pressedKeys, position);
-	Update (env);
-}
-
-void NodeUIManager::OnMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position)
-{
-	interactionHandler.OnMouseWheel (env, pressedKeys, rotation, position);
-	Update (env);
-}	
-
-void NodeUIManager::OnMouseDoubleClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
-{
-	interactionHandler.OnMouseDoubleClick (env, pressedKeys, mouseButton, position);
-	Update (env);
 }
 
 void NodeUIManager::Clear ()
