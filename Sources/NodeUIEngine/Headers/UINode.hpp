@@ -75,13 +75,13 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 	template <class SlotType>
-	Point GetSlotConnPosition (NodeUIEnvironment& env, const NE::SlotId& slotId);
+	Point GetSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId);
 
 	template <class SlotType>
-	bool HasSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId);
+	bool HasSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId);
 
 	template <class SlotType>
-	Rect GetSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId);
+	Rect GetSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId);
 
 	template <class SlotType>
 	void EnumerateUISlots (const std::function<bool (const SlotType&)>& processor);

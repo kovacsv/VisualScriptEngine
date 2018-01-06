@@ -6,7 +6,7 @@ namespace NUIE
 static const double SlotSnappingDistanceInPixel = 20.0;
 
 template <class SlotType>
-static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& viewPosition)
+static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	SlotType foundSlot = nullptr;
 	double minDistance = INF;
@@ -30,7 +30,7 @@ static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIEnvironm
 }
 
 template <class SlotType>
-static SlotType FindSlotInNode (const UINodePtr& uiNode, NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& viewPosition)
+static SlotType FindSlotInNode (const UINodePtr& uiNode, NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	SlotType foundSlot = nullptr;
 	const ViewBox& viewBox = uiManager.GetViewBox ();
@@ -47,7 +47,7 @@ static SlotType FindSlotInNode (const UINodePtr& uiNode, NodeUIManager& uiManage
 	return foundSlot;
 }
 
-UINodePtr FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& viewPosition)
+UINodePtr FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	UINodePtr foundNode = nullptr;
@@ -62,7 +62,7 @@ UINodePtr FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIEnvironment& en
 	return foundNode;
 }
 
-UIInputSlotPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& viewPosition)
+UIInputSlotPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	UIInputSlotPtr foundSlot = nullptr;
 	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, nullptr, [&] (const UIInputSlotPtr& inputSlot) {
@@ -71,7 +71,7 @@ UIInputSlotPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIEnvir
 	return foundSlot;
 }
 
-UIOutputSlotPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& viewPosition)
+UIOutputSlotPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	UIOutputSlotPtr foundSlot = nullptr;
 	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, [&] (const UIOutputSlotPtr& inputSlot) {
@@ -80,7 +80,7 @@ UIOutputSlotPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIEnv
 	return foundSlot;
 }
 
-bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& viewPosition,
+bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition,
 							const std::function<void (UINodePtr&)>& nodeFound,
 							const std::function<void (UIOutputSlotPtr&)>& outputSlotFound,
 							const std::function<void (UIInputSlotPtr&)>& inputSlotFound)

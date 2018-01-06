@@ -283,37 +283,37 @@ NE::Stream::Status UINode::Write (NE::OutputStream& outputStream) const
 }
 
 template <>
-Point UINode::GetSlotConnPosition<UIInputSlotPtr> (NodeUIEnvironment& env, const NE::SlotId& slotId)
+Point UINode::GetSlotConnPosition<UIInputSlotPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId)
 {
 	return GetInputSlotConnPosition (env, slotId);
 }
 
 template <>
-Point UINode::GetSlotConnPosition<UIOutputSlotPtr> (NodeUIEnvironment& env, const NE::SlotId& slotId)
+Point UINode::GetSlotConnPosition<UIOutputSlotPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId)
 {
 	return GetOutputSlotConnPosition (env, slotId);
 }
 
 template <>
-bool UINode::HasSlotRect <UIInputSlotPtr> (NodeUIEnvironment& env, const NE::SlotId& slotId)
+bool UINode::HasSlotRect <UIInputSlotPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId)
 {
 	return HasInputSlotRect (env, slotId);
 }
 
 template <>
-bool UINode::HasSlotRect<UIOutputSlotPtr> (NodeUIEnvironment& env, const NE::SlotId& slotId)
+bool UINode::HasSlotRect<UIOutputSlotPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId)
 {
 	return HasOutputSlotRect (env, slotId);
 }
 
 template <>
-Rect UINode::GetSlotRect <UIInputSlotPtr> (NodeUIEnvironment& env, const NE::SlotId& slotId)
+Rect UINode::GetSlotRect <UIInputSlotPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId)
 {
 	return GetInputSlotRect (env, slotId);
 }
 
 template <>
-Rect UINode::GetSlotRect<UIOutputSlotPtr> (NodeUIEnvironment& env, const NE::SlotId& slotId)
+Rect UINode::GetSlotRect<UIOutputSlotPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId)
 {
 	return GetOutputSlotRect (env, slotId);
 }
