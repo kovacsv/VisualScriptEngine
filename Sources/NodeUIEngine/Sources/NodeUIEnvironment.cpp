@@ -13,8 +13,19 @@ NodeUIDrawingEnvironment::~NodeUIDrawingEnvironment ()
 
 }
 
+NodeUICalculationEnvironment::NodeUICalculationEnvironment ()
+{
+
+}
+
+NodeUICalculationEnvironment::~NodeUICalculationEnvironment ()
+{
+
+}
+
 NodeUIEnvironment::NodeUIEnvironment () :
-	NodeUIDrawingEnvironment ()
+	NodeUIDrawingEnvironment (),
+	NodeUICalculationEnvironment ()
 {
 
 }

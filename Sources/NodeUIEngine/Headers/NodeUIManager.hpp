@@ -74,7 +74,7 @@ public:
 	void					InvalidateNodeDrawing (const NE::NodeId& nodeId);
 	void					InvalidateNodeDrawing (const UINodePtr& uiNode);
 
-	void					Update (NodeUIEnvironment& env);
+	void					Update (NodeUICalculationEnvironment& env);
 	void					Draw (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawingExtension);
 	void					ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
 
@@ -105,11 +105,10 @@ private:
 		bool	needToRedraw;
 	};
 
-	NE::NodeManager				nodeManager;
-	ViewBox						viewBox;
-
-	SelectedNodes				selectedNodes;
-	Status						status;
+	NE::NodeManager		nodeManager;
+	SelectedNodes		selectedNodes;
+	ViewBox				viewBox;
+	Status				status;
 };
 
 }

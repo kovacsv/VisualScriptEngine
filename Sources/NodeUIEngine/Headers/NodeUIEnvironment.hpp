@@ -27,17 +27,23 @@ public:
 	virtual SkinParams&			GetSkinParams () = 0;
 };
 
-// TODO: NodeUICalculationEnvironment
-
-class NodeUIEnvironment : public NodeUIDrawingEnvironment
+class NodeUICalculationEnvironment
 {
 public:
-	NodeUIEnvironment ();
-	virtual ~NodeUIEnvironment ();
+	NodeUICalculationEnvironment ();
+	virtual ~NodeUICalculationEnvironment ();
 
 	virtual EventHandlers&		GetEventHandlers () = 0;
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
 	virtual void				RequestRedraw () = 0;
+};
+
+class NodeUIEnvironment :	public NodeUIDrawingEnvironment,
+							public NodeUICalculationEnvironment
+{
+public:
+	NodeUIEnvironment ();
+	virtual ~NodeUIEnvironment ();
 };
 
 class NodeUIDrawingEnvironmentDecorator : public NodeUIDrawingEnvironment

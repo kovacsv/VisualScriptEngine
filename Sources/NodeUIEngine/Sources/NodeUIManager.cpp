@@ -91,8 +91,8 @@ bool NodeUIManager::Status::NeedToRedraw () const
 
 NodeUIManager::NodeUIManager () :
 	nodeManager (),
-	viewBox (Point (0, 0), 1.0),
 	selectedNodes (),
+	viewBox (Point (0, 0), 1.0),
 	status ()
 {
 
@@ -281,7 +281,7 @@ void NodeUIManager::InvalidateNodeDrawing (const UINodePtr& uiNode)
 	status.RequestRedraw ();
 }
 
-void NodeUIManager::Update (NodeUIEnvironment& env)
+void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 {
 	if (status.NeedToRecalculate ()) {
 		EnumerateUINodes ([&] (const UINodePtr& uiNode) {
