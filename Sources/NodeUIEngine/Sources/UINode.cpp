@@ -53,15 +53,15 @@ void UINode::SetNodePosition (const Point& newPosition)
 	nodePosition = newPosition;
 }
 
-void UINode::Draw (NodeUIEnvironment& env) const
+void UINode::Draw (NodeUIDrawingEnvironment& env) const
 {
 	ViewBox nodeViewBox (nodePosition, 1.0);
 	ViewBoxContextDecorator nodeContext (env.GetDrawingContext (), nodeViewBox);
-	NodeUIEnvironmentContextDecorator nodeEnv (env, nodeContext);
+	NodeUIDrawingEnvironmentContextDecorator nodeEnv (env, nodeContext);
 	DrawInplace (nodeEnv);
 }
 
-Rect UINode::GetNodeRect (NodeUIEnvironment& env) const
+Rect UINode::GetNodeRect (NodeUIDrawingEnvironment& env) const
 {
 	Rect nodeRect = GetNodeDrawingImage (env).GetNodeRect ();
 	return nodeRect.Offset (nodePosition);
@@ -72,46 +72,46 @@ void UINode::InvalidateDrawing () const
 	nodeDrawingImage.Reset ();
 }
 
-Point UINode::GetInputSlotConnPosition (NodeUIEnvironment& env, const NE::SlotId& slotId) const
+Point UINode::GetInputSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
 {
 	Point position = GetNodeDrawingImage (env).GetInputSlotConnPosition (slotId);
 	return position + nodePosition;
 }
 
-Point UINode::GetOutputSlotConnPosition (NodeUIEnvironment& env, const NE::SlotId& slotId) const
+Point UINode::GetOutputSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
 {
 	Point position = GetNodeDrawingImage (env).GetOutputSlotConnPosition (slotId);
 	return position + nodePosition;
 }
 
-bool UINode::HasInputSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId) const
+bool UINode::HasInputSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
 {
 	return GetNodeDrawingImage (env).HasInputSlotRect (slotId);
 }
 
-Rect UINode::GetInputSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId) const
+Rect UINode::GetInputSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
 {
 	Rect rect = GetNodeDrawingImage (env).GetInputSlotRect (slotId);
 	return rect.Offset (nodePosition);
 }
 
-bool UINode::HasOutputSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId) const
+bool UINode::HasOutputSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
 {
 	return GetNodeDrawingImage (env).HasOutputSlotRect (slotId);
 }
 
-Rect UINode::GetOutputSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId) const
+Rect UINode::GetOutputSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
 {
 	Rect rect = GetNodeDrawingImage (env).GetOutputSlotRect (slotId);
 	return rect.Offset (nodePosition);
 }
 
-bool UINode::HasSpecialRect (NodeUIEnvironment& env, const std::string& rectId) const
+bool UINode::HasSpecialRect (NodeUIDrawingEnvironment& env, const std::string& rectId) const
 {
 	return GetNodeDrawingImage (env).HasSpecialRect (rectId);
 }
 
-Rect UINode::GetSpecialRect (NodeUIEnvironment& env, const std::string& rectId) const
+Rect UINode::GetSpecialRect (NodeUIDrawingEnvironment& env, const std::string& rectId) const
 {
 	Rect rect = GetNodeDrawingImage (env).GetSpecialRect (rectId);
 	return rect.Offset (nodePosition);
@@ -342,7 +342,7 @@ void UINode::EnumerateUISlots (const std::function<bool (const UIOutputSlotConst
 	EnumerateUIOutputSlots (processor);
 }
 
-void UINode::DrawInplace (NodeUIEnvironment& env) const
+void UINode::DrawInplace (NodeUIDrawingEnvironment& env) const
 {
 	GetNodeDrawingImage (env).Draw (env.GetDrawingContext ());
 }

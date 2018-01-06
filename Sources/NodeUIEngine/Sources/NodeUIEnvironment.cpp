@@ -24,56 +24,41 @@ NodeUIEnvironment::~NodeUIEnvironment ()
 
 }
 
-NodeUIEnvironmentDecorator::NodeUIEnvironmentDecorator (NodeUIEnvironment& decorated) :
-	NodeUIEnvironment (),
+NodeUIDrawingEnvironmentDecorator::NodeUIDrawingEnvironmentDecorator (NodeUIDrawingEnvironment& decorated) :
+	NodeUIDrawingEnvironment (),
 	decorated (decorated)
 {
 
 }
 
-NodeUIEnvironmentDecorator::~NodeUIEnvironmentDecorator ()
+NodeUIDrawingEnvironmentDecorator::~NodeUIDrawingEnvironmentDecorator ()
 {
 
 }
 
-DrawingContext& NodeUIEnvironmentDecorator::GetDrawingContext ()
+DrawingContext& NodeUIDrawingEnvironmentDecorator::GetDrawingContext ()
 {
 	return decorated.GetDrawingContext ();
 }
 
-SkinParams& NodeUIEnvironmentDecorator::GetSkinParams ()
+SkinParams& NodeUIDrawingEnvironmentDecorator::GetSkinParams ()
 {
 	return decorated.GetSkinParams ();
 }
 
-EventHandlers& NodeUIEnvironmentDecorator::GetEventHandlers ()
-{
-	return decorated.GetEventHandlers ();
-}
-
-NE::EvaluationEnv& NodeUIEnvironmentDecorator::GetEvaluationEnv ()
-{
-	return decorated.GetEvaluationEnv ();
-}
-
-void NodeUIEnvironmentDecorator::RequestRedraw ()
-{
-	decorated.RequestRedraw ();
-}
-
-NodeUIEnvironmentContextDecorator::NodeUIEnvironmentContextDecorator (NodeUIEnvironment& decorated, DrawingContext& decoratedDrawingContext) :
-	NodeUIEnvironmentDecorator (decorated),
+NodeUIDrawingEnvironmentContextDecorator::NodeUIDrawingEnvironmentContextDecorator (NodeUIDrawingEnvironment& decorated, DrawingContext& decoratedDrawingContext) :
+	NodeUIDrawingEnvironmentDecorator (decorated),
 	decoratedDrawingContext (decoratedDrawingContext)
 {
 
 }
 
-NodeUIEnvironmentContextDecorator::~NodeUIEnvironmentContextDecorator ()
+NodeUIDrawingEnvironmentContextDecorator::~NodeUIDrawingEnvironmentContextDecorator ()
 {
 
 }
 
-DrawingContext& NodeUIEnvironmentContextDecorator::GetDrawingContext ()
+DrawingContext& NodeUIDrawingEnvironmentContextDecorator::GetDrawingContext ()
 {
 	return decoratedDrawingContext;
 }

@@ -31,22 +31,22 @@ public:
 	const Point&				GetNodePosition () const;
 	void						SetNodePosition (const Point& newPosition);
 
-	void						Draw (NodeUIEnvironment& env) const;
+	void						Draw (NodeUIDrawingEnvironment& env) const;
 
-	Rect						GetNodeRect (NodeUIEnvironment& env) const;
+	Rect						GetNodeRect (NodeUIDrawingEnvironment& env) const;
 	void						InvalidateDrawing () const;
 
-	Point						GetInputSlotConnPosition (NodeUIEnvironment& env, const NE::SlotId& slotId) const;
-	Point						GetOutputSlotConnPosition (NodeUIEnvironment& env, const NE::SlotId& slotId) const;
+	Point						GetInputSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
+	Point						GetOutputSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
 
-	bool						HasInputSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId) const;
-	Rect						GetInputSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId) const;
+	bool						HasInputSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
+	Rect						GetInputSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
 
-	bool						HasOutputSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId) const;
-	Rect						GetOutputSlotRect (NodeUIEnvironment& env, const NE::SlotId& slotId) const;
+	bool						HasOutputSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
+	Rect						GetOutputSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
 
-	bool						HasSpecialRect (NodeUIEnvironment& env, const std::string& rectId) const;
-	Rect						GetSpecialRect (NodeUIEnvironment& env, const std::string& rectId) const;
+	bool						HasSpecialRect (NodeUIDrawingEnvironment& env, const std::string& rectId) const;
+	Rect						GetSpecialRect (NodeUIDrawingEnvironment& env, const std::string& rectId) const;
 
 	UIInputSlotPtr				GetUIInputSlot (const NE::SlotId& slotId);
 	UIOutputSlotPtr				GetUIOutputSlot (const NE::SlotId& slotId);
@@ -90,7 +90,7 @@ public:
 	void EnumerateUISlots (const std::function<bool (const SlotConstType&)>& processor) const;
 
 protected:
-	virtual void				DrawInplace (NodeUIEnvironment& env) const;
+	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 	bool						RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot);
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
 

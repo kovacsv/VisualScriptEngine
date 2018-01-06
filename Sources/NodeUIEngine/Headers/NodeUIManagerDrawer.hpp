@@ -24,20 +24,20 @@ class NodeUIManagerDrawer
 public:
 	NodeUIManagerDrawer (const NodeUIManager& uiManager);
 	
-	void Draw (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const;
+	void Draw (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const;
 
 private:
-	void				DrawBackground (NodeUIEnvironment& env) const;
-	void				DrawConnections (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const;
-	void				DrawConnection (NodeUIEnvironment& env, const Point& beg, const Point& end) const;
-	void				DrawNodes (NodeUIEnvironment& env) const;
-	void				DrawNode (NodeUIEnvironment& env, const UINode* uiNode) const;
-	void				DrawSelectionRect (NodeUIEnvironment& env, const NodeDrawingExtension* drawExt) const;
+	void				DrawBackground (NodeUIDrawingEnvironment& env) const;
+	void				DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const;
+	void				DrawConnection (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;
+	void				DrawNodes (NodeUIDrawingEnvironment& env) const;
+	void				DrawNode (NodeUIDrawingEnvironment& env, const UINode* uiNode) const;
+	void				DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const;
 
 	void				InitSortedNodeList () const;
-	bool				IsConnectionVisible (NodeUIEnvironment& env, const Point& beg, const Point& end) const;
-	bool				IsNodeVisible (NodeUIEnvironment& env, const UINode* uiNode) const;
-	bool				IsRectVisible (NodeUIEnvironment& env, const Rect& rect) const;
+	bool				IsConnectionVisible (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;
+	bool				IsNodeVisible (NodeUIDrawingEnvironment& env, const UINode* uiNode) const;
+	bool				IsRectVisible (NodeUIDrawingEnvironment& env, const Rect& rect) const;
 
 	const NodeUIManager&					uiManager;
 	NodeIdToNodeMap							nodeIdToNodeMap;

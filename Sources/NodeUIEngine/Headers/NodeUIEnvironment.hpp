@@ -38,35 +38,30 @@ public:
 	virtual void				RequestRedraw () = 0;
 };
 
-class NodeUIEnvironmentDecorator : public NodeUIEnvironment
+class NodeUIDrawingEnvironmentDecorator : public NodeUIDrawingEnvironment
 {
 public:
-	NodeUIEnvironmentDecorator (NodeUIEnvironment& decorated);
-	virtual ~NodeUIEnvironmentDecorator ();
+	NodeUIDrawingEnvironmentDecorator (NodeUIDrawingEnvironment& decorated);
+	virtual ~NodeUIDrawingEnvironmentDecorator ();
 
 	virtual DrawingContext&		GetDrawingContext () override;
 	virtual SkinParams&			GetSkinParams () override;
-	virtual EventHandlers&		GetEventHandlers () override;
-	virtual NE::EvaluationEnv&	GetEvaluationEnv () override;
-	virtual void				RequestRedraw () override;
 
 private:
-	NodeUIEnvironment& decorated;
+	NodeUIDrawingEnvironment& decorated;
 };
 
-class NodeUIEnvironmentContextDecorator : public NodeUIEnvironmentDecorator
+class NodeUIDrawingEnvironmentContextDecorator : public NodeUIDrawingEnvironmentDecorator
 {
 public:
-	NodeUIEnvironmentContextDecorator (NodeUIEnvironment& decorated, DrawingContext& decoratedDrawingContext);
-	virtual ~NodeUIEnvironmentContextDecorator ();
+	NodeUIDrawingEnvironmentContextDecorator (NodeUIDrawingEnvironment& decorated, DrawingContext& decoratedDrawingContext);
+	virtual ~NodeUIDrawingEnvironmentContextDecorator ();
 
 	virtual DrawingContext&		GetDrawingContext () override;
 
 private:
 	DrawingContext& decoratedDrawingContext;
 };
-
-typedef std::shared_ptr<NodeUIEnvironment> NodeUIEnvironmentPtr;
 
 }
 

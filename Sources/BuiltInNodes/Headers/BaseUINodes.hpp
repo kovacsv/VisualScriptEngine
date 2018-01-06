@@ -50,7 +50,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
-	virtual void	DrawInplace (NodeUIEnvironment& env) const override final;
+	virtual void	DrawInplace (NodeUIDrawingEnvironment& env) const override final;
 	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 
 	bool nodeEnabled;
