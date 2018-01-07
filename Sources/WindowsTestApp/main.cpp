@@ -12,9 +12,6 @@
 #include <iostream>
 #include <fstream>
 
-static int WindowWidth = 900;
-static int WindowHeight = 600;
-
 class ApplicationState
 {
 public:
@@ -48,16 +45,12 @@ private:
 	std::wstring currentFileName;
 };
 
-class NodeEngineTestAppWindow : public UI::Window
+class NodeEditorWindow : public UI::Window
 {
 public:
-	NodeEngineTestAppWindow () :
-		windowHandle (NULL),
+	NodeEditorWindow (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 		statusBarHandle (NULL),
 		applicationState (),
-		resultImage (new ResultImage ()),
-		evaluationData (new ResultImageEvaluationData (resultImage)),
-		drawingControl (evaluationData->GetResultImage ()),
 		nodeEditorControl (evaluationData)
 	{
 
@@ -65,9 +58,7 @@ public:
 
 	virtual void OnCreate (HWND hwnd) override
 	{
-		windowHandle = hwnd;
 		nodeEditorControl.Init (hwnd, 0, 0, 0, 0);
-		drawingControl.Init (hwnd, 0, 0, 0, 0);
 		InitFileMenu (hwnd);
 		InitStatusBar (hwnd);
 	}
@@ -79,14 +70,12 @@ public:
 		RECT statusBarRect = {0, 0, 0, 0};
 		GetClientRect (statusBarHandle, &statusBarRect);
 		int clientHeight = newHeight - (statusBarRect.bottom - statusBarRect.top);
-		nodeEditorControl.MoveResize (0, 0, newWidth, clientHeight / 2);
-		drawingControl.MoveResize (0, clientHeight / 2, newWidth, clientHeight / 2);
+		nodeEditorControl.MoveResize (0, 0, newWidth, clientHeight);
 	}
 
 	virtual void OnMenuCommand (HWND hwnd, int commandId) override
 	{
 		if (commandId == MenuCommand::File_New) {
-			drawingControl.Clear ();
 			nodeEditorControl.New ();
 			applicationState.ClearCurrentFileName ();
 		} else if (commandId == MenuCommand::File_Open || commandId == MenuCommand::File_Save || commandId == MenuCommand::File_SaveAs) {
@@ -101,7 +90,6 @@ public:
 			openFileName.lpstrDefExt = (LPCWSTR) L"txt";
 			if (commandId == MenuCommand::File_Open) {
 				if (GetOpenFileName (&openFileName)) {
-					drawingControl.Clear ();
 					if (nodeEditorControl.Open (fileName)) {
 						applicationState.SetCurrentFileName (fileName);
 					}
@@ -129,11 +117,6 @@ public:
 			Close ();
 		}
 		UpdateStatusBar ();
-	}
-
-	void OnIdle ()
-	{
-		drawingControl.Invalidate ();
 	}
 
 private:
@@ -191,37 +174,68 @@ private:
 		SendMessage (statusBarHandle, SB_SETTEXT, 0, (LPARAM) currentFileText.c_str ());
 	}
 
-	HWND										windowHandle;
-	HWND										statusBarHandle;
-	ApplicationState							applicationState;
+	HWND				statusBarHandle;
+	ApplicationState	applicationState;
+	NodeEditorControl	nodeEditorControl;
+};
 
-	std::shared_ptr<ResultImage>				resultImage;
-	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
+class DrawingWindow : public UI::Window
+{
+public:
+	DrawingWindow (const std::shared_ptr<ResultImage>& resultImage) :
+		drawingControl (resultImage)
+	{
 
-	DrawingControl								drawingControl;
-	NodeEditorControl							nodeEditorControl;
+	}
+
+	virtual void OnCreate (HWND hwnd) override
+	{
+		drawingControl.Init (hwnd, 0, 0, 0, 0);
+	}
+
+	virtual void OnResize (HWND hwnd, int newWidth, int newHeight) override
+	{
+		drawingControl.MoveResize (0, 0, newWidth, newHeight);
+	}
+
+	void OnIdle ()
+	{
+		drawingControl.Invalidate ();
+	}
+
+private:
+	DrawingControl		drawingControl;
 };
 
 class NodeEngineTestApplication : public Application
 {
 public:
-	NodeEngineTestApplication ()
+	NodeEngineTestApplication () :
+		resultImage (new ResultImage ()),
+		evaluationData (new ResultImageEvaluationData (resultImage)),
+		nodeEditorWindow (evaluationData),
+		drawingWindow (resultImage)
 	{
 	
 	}
 
 	virtual void OnInit ()
 	{
-		appWindow.Open (L"Node Engine Test App", WindowWidth, WindowHeight);
+		nodeEditorWindow.Open (L"Node Engine Test App", 20, 20, 800, 600);
+		drawingWindow.Open (L"Drawing", 830, 20, 600, 600);
 	}
 
 	virtual void OnIdle ()
 	{
-		appWindow.OnIdle ();
+		drawingWindow.OnIdle ();
 	}
 
 private:
-	NodeEngineTestAppWindow appWindow;
+	std::shared_ptr<ResultImage>				resultImage;
+	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
+
+	NodeEditorWindow							nodeEditorWindow;
+	DrawingWindow								drawingWindow;
 };
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)

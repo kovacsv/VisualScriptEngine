@@ -20,10 +20,10 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 	UI::TranslateEventToItem (window, hwnd, msg, wParam, lParam);
 	switch (msg) {
 		case WM_CLOSE:
-			DestroyWindow (hwnd);
+			window->OnClose (hwnd);
 			break;
 		case WM_DESTROY:
-			PostQuitMessage (0);
+			window->OnDestroy (hwnd);
 			break;
 	}
 
@@ -39,7 +39,7 @@ Window::~Window ()
 {
 }
 
-bool Window::Open (const std::wstring& windowTitle, int width, int height)
+bool Window::Open (const std::wstring& windowTitle, int x, int y, int width, int height)
 {
 	WNDCLASSEX windowClass;
 	memset (&windowClass, 0, sizeof (WNDCLASSEX));
@@ -59,12 +59,12 @@ bool Window::Open (const std::wstring& windowTitle, int width, int height)
 
 	RegisterClassEx (&windowClass);
 
-	RECT requiredRect = { 0, 0, width, height };
+	RECT requiredRect = { x, y, x + width, y + height };
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
 	windowHandle = CreateWindowEx (
 		WS_EX_WINDOWEDGE, windowClass.lpszClassName, windowTitle.c_str (), WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, this
+		x, y, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, this
 	);
 
 	if (windowHandle == NULL) {
@@ -75,6 +75,16 @@ bool Window::Open (const std::wstring& windowTitle, int width, int height)
 }
 
 void Window::Close ()
+{
+	SendMessage (windowHandle, WM_CLOSE, NULL, NULL);
+}
+
+void Window::OnClose (HWND hwnd)
+{
+	DestroyWindow (hwnd);
+}
+
+void Window::OnDestroy (HWND hwnd)
 {
 	PostQuitMessage (0);
 }

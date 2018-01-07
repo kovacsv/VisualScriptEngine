@@ -123,10 +123,6 @@ void TranslateEventToItem (Item* item, HWND hwnd, UINT msg, WPARAM wParam, LPARA
 			break;
 		case WM_MOUSEMOVE:
 			{
-				if (dynamic_cast<Window*> (item) == nullptr) {
-					// before Windows 10 only the focused control catches the mouse wheel message
-					SetFocus (hwnd);
-				}
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				item->OnMouseMove (hwnd, GetKeysFromEvent (wParam), x, y);
@@ -134,6 +130,7 @@ void TranslateEventToItem (Item* item, HWND hwnd, UINT msg, WPARAM wParam, LPARA
 			break;
 		case WM_MOUSEWHEEL:
 			{
+				// TODO: before Windows 10 only the focused control catches the mouse wheel message
 				POINT mousePos;
 				mousePos.x = GET_X_LPARAM (lParam);
 				mousePos.y = GET_Y_LPARAM (lParam);

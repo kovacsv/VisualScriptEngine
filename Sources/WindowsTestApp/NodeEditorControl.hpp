@@ -93,8 +93,9 @@ private:
 	NUIE::KeySet		ConvertKeys (UI::Keys keys);
 	NUIE::MouseButton	ConvertMouseButton (UI::MouseButton button);
 
-	MyNodeUIEnvironment		uiEnvironment;
-	NUIE::NodeEditor		nodeEditor;
+	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
+	MyNodeUIEnvironment							uiEnvironment;
+	NUIE::NodeEditor							nodeEditor;
 };
 
 #endif

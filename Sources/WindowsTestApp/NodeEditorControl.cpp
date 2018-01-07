@@ -145,6 +145,7 @@ void MyNodeUIEnvironment::ChangeContext (HWND hwnd, short contextType)
 
 NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
 	UI::CustomControl (),
+	evaluationData (evaluationData),
 	uiEnvironment (evaluationData),
 	nodeEditor (uiEnvironment)
 {
@@ -232,11 +233,13 @@ void NodeEditorControl::OnResize (HWND hwnd, int newWidth, int newHeight)
 
 void NodeEditorControl::New ()
 {
+	evaluationData->GetResultImage ()->Clear ();
 	nodeEditor.Clear ();
 }
 
 bool NodeEditorControl::Open (const std::wstring& fileName)
 {
+	evaluationData->GetResultImage ()->Clear ();
 	if (!nodeEditor.Load (fileName)) {
 		return false;
 	}
