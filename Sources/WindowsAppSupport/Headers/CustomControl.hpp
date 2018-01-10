@@ -8,7 +8,7 @@
 namespace UI
 {
 
-class CustomControl : public UI::Item
+class CustomControl : public EventBasedItem
 {
 public:
 	CustomControl ();
@@ -19,12 +19,11 @@ public:
 private:
 	virtual void	OnCreate (HWND hwnd) override;
 	virtual void	OnPaint (HWND hwnd) override;
-	virtual void	OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void	OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void	OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override;
-	virtual void	OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta) override;
-	virtual void	OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void	OnMenuCommand (HWND hwnd, int commandId) override;
+	virtual void	OnMouseDown (HWND hwnd, Keys keys, MouseButton button, int x, int y) override;
+	virtual void	OnMouseUp (HWND hwnd, Keys keys, MouseButton button, int x, int y) override;
+	virtual void	OnMouseMove (HWND hwnd, Keys keys, int x, int y) override;
+	virtual void	OnMouseWheel (HWND hwnd, Keys keys, int x, int y, int delta) override;
+	virtual void	OnMouseDoubleClick (HWND hwnd, Keys keys, MouseButton button, int x, int y) override;
 	virtual void	OnResize (HWND hwnd, int newWidth, int newHeight) override;
 };
 

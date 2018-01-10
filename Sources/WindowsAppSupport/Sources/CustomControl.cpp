@@ -16,11 +16,12 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 		return DefWindowProc (hwnd, msg, wParam, lParam);
 	}
 
-	UI::TranslateEventToItem (control, hwnd, msg, wParam, lParam);
+	TranslateEventToItem (control, hwnd, msg, wParam, lParam);
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
-CustomControl::CustomControl ()
+CustomControl::CustomControl () :
+	EventBasedItem ()
 {
 
 }
@@ -69,32 +70,27 @@ void CustomControl::OnPaint (HWND hwnd)
 
 }
 
-void CustomControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void CustomControl::OnMouseDown (HWND hwnd, Keys keys, MouseButton button, int x, int y)
 {
 
 }
 
-void CustomControl::OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void CustomControl::OnMouseUp (HWND hwnd, Keys keys, MouseButton button, int x, int y)
 {
 
 }
 
-void CustomControl::OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y)
+void CustomControl::OnMouseMove (HWND hwnd, Keys keys, int x, int y)
 {
 
 }
 
-void CustomControl::OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta)
+void CustomControl::OnMouseWheel (HWND hwnd, Keys keys, int x, int y, int delta)
 {
 
 }
 
-void CustomControl::OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
-{
-
-}
-
-void CustomControl::OnMenuCommand (HWND hwnd, int commandId)
+void CustomControl::OnMouseDoubleClick (HWND hwnd, Keys keys, MouseButton button, int x, int y)
 {
 
 }

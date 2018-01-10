@@ -50,6 +50,17 @@ HWND Item::GetWindowHandle () const
 	return windowHandle;
 }
 
+EventBasedItem::EventBasedItem () :
+	Item ()
+{
+
+}
+
+EventBasedItem::~EventBasedItem ()
+{
+
+}
+
 static Keys GetKeysFromEvent (WPARAM wParam)
 {
 	int flags = 0;
@@ -62,7 +73,7 @@ static Keys GetKeysFromEvent (WPARAM wParam)
 	return Keys (flags);
 }
 
-void TranslateEventToItem (Item* item, HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+void TranslateEventToItem (EventBasedItem* item, HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	static SetCaptureHandler setCaptureHandler;
 
@@ -158,15 +169,6 @@ void TranslateEventToItem (Item* item, HWND hwnd, UINT msg, WPARAM wParam, LPARA
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				item->OnMouseDoubleClick (hwnd, GetKeysFromEvent (wParam), MouseButton::Right, x, y);
-			}
-			break;
-		case WM_COMMAND:
-			{
-				if (HIWORD (wParam) == 0) {
-					int commandId = LOWORD (wParam);
-					item->OnMenuCommand (hwnd, commandId);
-					break;
-				}
 			}
 			break;
 		case WM_SIZE:

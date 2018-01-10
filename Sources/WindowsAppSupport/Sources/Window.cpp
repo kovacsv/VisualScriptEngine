@@ -17,8 +17,17 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 		return DefWindowProc (hwnd, msg, wParam, lParam);
 	}
 
-	UI::TranslateEventToItem (window, hwnd, msg, wParam, lParam);
+	TranslateEventToItem (window, hwnd, msg, wParam, lParam);
 	switch (msg) {
+		case WM_COMMAND:
+			{
+				if (HIWORD (wParam) == 0) {
+					int commandId = LOWORD (wParam);
+					window->OnMenuCommand (hwnd, commandId);
+					break;
+				}
+			}
+			break;
 		case WM_CLOSE:
 			window->OnClose (hwnd);
 			break;
@@ -31,7 +40,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 }
 
 Window::Window () :
-	Item ()
+	EventBasedItem ()
 {
 }
 
@@ -89,6 +98,11 @@ void Window::OnDestroy (HWND hwnd)
 	PostQuitMessage (0);
 }
 
+void Window::OnMenuCommand (HWND hwnd, int commandId)
+{
+
+}
+
 void Window::OnCreate (HWND hwnd)
 {
 
@@ -99,32 +113,27 @@ void Window::OnPaint (HWND hwnd)
 
 }
 
-void Window::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void Window::OnMouseDown (HWND hwnd, Keys keys, MouseButton button, int x, int y)
 {
 
 }
 
-void Window::OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void Window::OnMouseUp (HWND hwnd, Keys keys, MouseButton button, int x, int y)
 {
 
 }
 
-void Window::OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y)
+void Window::OnMouseMove (HWND hwnd, Keys keys, int x, int y)
 {
 
 }
 
-void Window::OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta)
+void Window::OnMouseWheel (HWND hwnd, Keys keys, int x, int y, int delta)
 {
 
 }
 
-void Window::OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
-{
-
-}
-
-void Window::OnMenuCommand (HWND hwnd, int commandId)
+void Window::OnMouseDoubleClick (HWND hwnd, Keys keys, MouseButton button, int x, int y)
 {
 
 }
