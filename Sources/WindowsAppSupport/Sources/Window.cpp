@@ -1,5 +1,7 @@
 #include "Window.hpp"
 
+#include <windowsx.h>
+
 namespace UI
 {
 
@@ -17,8 +19,101 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 		return DefWindowProc (hwnd, msg, wParam, lParam);
 	}
 
-	TranslateEventToItem (window, hwnd, msg, wParam, lParam);
 	switch (msg) {
+		case WM_CREATE:
+			window->OnCreate (hwnd);
+			break;
+		case WM_PAINT:
+			window->OnPaint (hwnd);
+			break;
+		case WM_LBUTTONDOWN:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseDown (hwnd, GetKeysFromEvent (wParam), MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONDOWN:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseDown (hwnd, GetKeysFromEvent (wParam), MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONDOWN:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseDown (hwnd, GetKeysFromEvent (wParam), MouseButton::Right, x, y);
+			}
+			break;
+		case WM_LBUTTONUP:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseUp (hwnd, GetKeysFromEvent (wParam), MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONUP:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseUp (hwnd, GetKeysFromEvent (wParam), MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONUP:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseUp (hwnd, GetKeysFromEvent (wParam), MouseButton::Right, x, y);
+			}
+			break;
+		case WM_MOUSEMOVE:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseMove (hwnd, GetKeysFromEvent (wParam), x, y);
+			}
+			break;
+		case WM_MOUSEWHEEL:
+			{
+				// TODO: before Windows 10 only the focused control catches the mouse wheel message
+				POINT mousePos;
+				mousePos.x = GET_X_LPARAM (lParam);
+				mousePos.y = GET_Y_LPARAM (lParam);
+				ScreenToClient (hwnd, &mousePos);
+				int delta = GET_WHEEL_DELTA_WPARAM (wParam);
+				window->OnMouseWheel (hwnd, GetKeysFromEvent (wParam), mousePos.x, mousePos.y, delta);
+			}
+			break;
+		case WM_LBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseDoubleClick (hwnd, GetKeysFromEvent (wParam), MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseDoubleClick (hwnd, GetKeysFromEvent (wParam), MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				window->OnMouseDoubleClick (hwnd, GetKeysFromEvent (wParam), MouseButton::Right, x, y);
+			}
+			break;
+		case WM_SIZE:
+			{
+				int newWidth = LOWORD (lParam);
+				int newHeight = HIWORD (lParam);
+				window->OnResize (hwnd, newWidth, newHeight);
+			}
+			break;
 		case WM_COMMAND:
 			{
 				if (HIWORD (wParam) == 0) {
@@ -40,7 +135,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 }
 
 Window::Window () :
-	EventBasedItem ()
+	Item ()
 {
 }
 
