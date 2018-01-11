@@ -12,9 +12,6 @@ bool EnumerateVariationIndices (std::vector<size_t> maxIndices,
 	}
 	std::vector<size_t> indices;
 	for (size_t i = 0; i < length; i++) {
-		if (maxIndices[i] < 0) {
-			return false;
-		}
 		indices.push_back (0);
 	}
 	int columnIndex = (int) length - 1;
