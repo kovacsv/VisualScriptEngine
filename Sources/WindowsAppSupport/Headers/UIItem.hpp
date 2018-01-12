@@ -38,10 +38,12 @@ public:
 	Item ();
 	virtual ~Item ();
 
-	void			MoveResize (int x, int y, int width, int height);
-	HWND			GetWindowHandle () const;
+	void	MoveResize (int x, int y, int width, int height);
 
-protected:
+	void	SetWindowHandle (HWND newWindowHandle);
+	HWND	GetWindowHandle () const;
+
+private:
 	HWND windowHandle;
 };
 

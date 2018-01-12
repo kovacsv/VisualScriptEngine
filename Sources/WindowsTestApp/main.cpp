@@ -83,7 +83,7 @@ public:
 			ZeroMemory (&openFileName, sizeof(openFileName));
 			wchar_t fileName[MAX_PATH] = L"";
 			openFileName.lStructSize = sizeof (openFileName); 
-			openFileName.hwndOwner = windowHandle;
+			openFileName.hwndOwner = GetWindowHandle ();
 			openFileName.lpstrFile = (LPWSTR) fileName;
 			openFileName.nMaxFile = MAX_PATH;
 			openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";

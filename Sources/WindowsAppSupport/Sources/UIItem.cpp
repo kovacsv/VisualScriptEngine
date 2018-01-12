@@ -45,6 +45,11 @@ void Item::MoveResize (int x, int y, int width, int height)
 	MoveWindow (windowHandle, x, y, width, height, TRUE);
 }
 
+void Item::SetWindowHandle (HWND newWindowHandle)
+{
+	windowHandle = newWindowHandle;
+}
+
 HWND Item::GetWindowHandle () const
 {
 	return windowHandle;

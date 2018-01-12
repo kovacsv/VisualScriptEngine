@@ -23,6 +23,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 
 	switch (msg) {
 		case WM_CREATE:
+			control->SetWindowHandle (hwnd);
 			control->OnCreate (hwnd);
 			break;
 		case WM_PAINT:
@@ -154,12 +155,12 @@ bool CustomControl::Init (HWND parentHandle, int x, int y, int width, int height
 	windowClass.lpszClassName = L"CustomControl";
 	
 	RegisterClassEx (&windowClass);
-	windowHandle = CreateWindowEx (
+	HWND hwnd = CreateWindowEx (
 		0, windowClass.lpszClassName, L"", WS_CHILD | WS_VISIBLE,
 		CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, parentHandle, NULL, NULL, this
 	);
 
-	if (windowHandle == NULL) {
+	if (hwnd == NULL) {
 		return false;
 	}
 

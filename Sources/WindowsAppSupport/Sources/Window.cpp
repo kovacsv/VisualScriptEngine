@@ -21,6 +21,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 
 	switch (msg) {
 		case WM_CREATE:
+			window->SetWindowHandle (hwnd);
 			window->OnCreate (hwnd);
 			break;
 		case WM_PAINT:
@@ -166,12 +167,12 @@ bool Window::Open (const std::wstring& windowTitle, int x, int y, int width, int
 	RECT requiredRect = { x, y, x + width, y + height };
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
-	windowHandle = CreateWindowEx (
+	HWND hwnd = CreateWindowEx (
 		WS_EX_WINDOWEDGE, windowClass.lpszClassName, windowTitle.c_str (), WS_OVERLAPPEDWINDOW | WS_VISIBLE,
 		x, y, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, this
 	);
 
-	if (windowHandle == NULL) {
+	if (hwnd == NULL) {
 		return false;
 	}
 
@@ -180,7 +181,7 @@ bool Window::Open (const std::wstring& windowTitle, int x, int y, int width, int
 
 void Window::Close ()
 {
-	SendMessage (windowHandle, WM_CLOSE, NULL, NULL);
+	SendMessage (GetWindowHandle (), WM_CLOSE, NULL, NULL);
 }
 
 void Window::OnClose (HWND hwnd)

@@ -256,9 +256,9 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 
 void NodeEditorControl::ChangeContext (short contextType)
 {
-	uiEnvironment.ChangeContext (windowHandle, contextType);
+	uiEnvironment.ChangeContext (GetWindowHandle (), contextType);
 	nodeEditor.InvalidateAllNodesDrawing ();
-	InvalidateRect (windowHandle, NULL, FALSE);
+	InvalidateRect (GetWindowHandle (), NULL, FALSE);
 }
 
 NUIE::KeySet NodeEditorControl::ConvertKeys (UI::Keys keys)
