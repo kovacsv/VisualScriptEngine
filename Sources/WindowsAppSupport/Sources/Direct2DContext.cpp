@@ -68,6 +68,11 @@ static D2D1_RECT_F CreateRect (const NUIE::Rect& rect)
 	return D2D1::RectF ((float) rect.GetLeft (), (float) rect.GetTop (), (float) rect.GetRight (), (float) rect.GetBottom ());
 }
 
+static D2D1_ELLIPSE CreateEllipse (const NUIE::Rect& rect)
+{
+	return D2D1::Ellipse (CreatePoint (rect.GetCenter ()), (float) rect.GetWidth () / 2.0f, (float) rect.GetHeight () / 2.0f);
+}
+
 static float GetPenThickness (const NUIE::Pen& pen)
 {
 	float penThickness = (float) pen.GetThickness ();
@@ -147,7 +152,8 @@ void Direct2DContext::EndDraw ()
 
 void Direct2DContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
-	DBGBREAK ();
+	ID2D1SolidColorBrush* d2Brush = brushCache.Get (renderTarget, pen.GetColor ());
+	renderTarget->DrawLine (CreatePoint (beg), CreatePoint (end), d2Brush, GetPenThickness (pen));
 }
 
 void Direct2DContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
@@ -186,12 +192,16 @@ void Direct2DContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color
 
 void Direct2DContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	DBGBREAK ();
+	D2D1_ELLIPSE d2Ellipse = CreateEllipse (rect);
+	ID2D1SolidColorBrush* d2Brush = brushCache.Get (renderTarget, pen.GetColor ());
+	renderTarget->DrawEllipse (&d2Ellipse, d2Brush, GetPenThickness (pen));
 }
 
 void Direct2DContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	DBGBREAK ();
+	D2D1_ELLIPSE d2Ellipse = CreateEllipse (rect);
+	ID2D1SolidColorBrush* d2Brush = brushCache.Get (renderTarget, color);
+	renderTarget->FillEllipse (&d2Ellipse, d2Brush);
 }
 
 void Direct2DContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
