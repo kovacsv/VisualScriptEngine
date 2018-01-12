@@ -1,46 +1,86 @@
 #include "DrawingControl.hpp"
+#include "ContextDecorators.hpp"
+#include "BitmapContextGdiplus.hpp"
 
 DrawingControl::DrawingControl (const std::shared_ptr<ResultImage>& resultImage) :
 	UI::CustomControl (),
-	bitmapContext (),
-	resultImage (resultImage)
+	resultImage (resultImage),
+	drawingContext (new BitmapContextGdiplus ()),
+	viewBox (NUIE::Point (0.0, 0.0), 1.0),
+	lastMousePos (nullptr)
 {
 
 }
 
 void DrawingControl::OnCreate (HWND hwnd)
 {
-	bitmapContext.Init (hwnd);
+	drawingContext->Init (hwnd);
 }
 
 void DrawingControl::OnPaint (HWND hwnd)
 {
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint (hwnd, &ps);
-	bitmapContext.DrawToHDC (hdc);
+	drawingContext->DrawToHDC (hdc);
 	EndPaint (hwnd, &ps);
+}
+
+void DrawingControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+{
+	if (button == UI::MouseButton::Middle) {
+		lastMousePos.reset (new NUIE::Point (x, y));
+	}
+}
+
+void DrawingControl::OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+{
+	if (button == UI::MouseButton::Middle) {
+		lastMousePos.reset (nullptr);
+	}
+}
+
+void DrawingControl::OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y)
+{
+	if (lastMousePos != nullptr) {
+		NUIE::Point diff = NUIE::Point (x, y) - *lastMousePos;
+		viewBox.SetOffset (viewBox.GetOffset () + diff);
+		lastMousePos->Set (x, y);
+		InvalidateImage ();
+	}
+}
+
+void DrawingControl::OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta)
+{
+	double scaleRatio = (delta > 0 ? 1.1 : 0.9);
+	viewBox.SetScale (viewBox.GetScale () * scaleRatio, NUIE::Point (x, y));
+	InvalidateImage ();
 }
 
 void DrawingControl::OnResize (HWND hwnd, int newWidth, int newHeight)
 {
-	bitmapContext.Resize (newWidth, newHeight);
-	resultImage->Invalidate ();
-	Invalidate ();
+	drawingContext->Resize (newWidth, newHeight);
+	InvalidateImage ();
 }
 
 void DrawingControl::Clear ()
 {
 	resultImage->Clear ();
-	Invalidate ();
+	InvalidateImage ();
 }
 
 void DrawingControl::Invalidate ()
 {
 	if (resultImage->IsModified ()) {
-		bitmapContext.FillRect (NUIE::Rect (-10, -10, bitmapContext.GetWidth () + 20, bitmapContext.GetHeight () + 20), NUIE::Color (255, 255, 255));
-		//NUIE::ViewBoxContextDecorator centerDecorator (bitmapContext, NUIE::ViewBox (NUIE::Point (bitmapContext.GetWidth () / 2.0, bitmapContext.GetHeight () / 2.0), 1.0));
-		resultImage->Draw (bitmapContext);
+		drawingContext->FillRect (NUIE::Rect (-10, -10, drawingContext->GetWidth () + 20, drawingContext->GetHeight () + 20), NUIE::Color (255, 255, 255));
+		NUIE::ViewBoxContextDecorator viewBoxDecorator (*drawingContext, viewBox);
+		resultImage->Draw (viewBoxDecorator);
 		InvalidateRect (GetWindowHandle (), NULL, FALSE);
 		resultImage->Validate ();
 	}
+}
+
+void DrawingControl::InvalidateImage ()
+{
+	resultImage->Invalidate ();
+	Invalidate ();
 }

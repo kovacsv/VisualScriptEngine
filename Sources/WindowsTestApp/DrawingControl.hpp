@@ -3,7 +3,8 @@
 
 #include "CustomControl.hpp"
 #include "ResultImage.hpp"
-#include "BitmapContextGdiplus.hpp"
+#include "WinDrawingContext.hpp"
+#include "ViewBox.hpp"
 
 #include <memory>
 
@@ -14,14 +15,23 @@ public:
 
 	virtual void	OnCreate (HWND hwnd) override;
 	virtual void	OnPaint (HWND hwnd) override;
+	virtual void	OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
+	virtual void	OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
+	virtual void	OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override;
+	virtual void	OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta) override;
 	virtual void	OnResize (HWND hwnd, int newWidth, int newHeight) override;
 
 	void			Clear ();
 	void			Invalidate ();
 
 private:
-	BitmapContextGdiplus bitmapContext;
-	std::shared_ptr<ResultImage> resultImage;
+	void			InvalidateImage ();
+
+	std::shared_ptr<ResultImage>		resultImage;
+
+	std::shared_ptr<WinDrawingContext>	drawingContext;
+	NUIE::ViewBox						viewBox;
+	std::unique_ptr<NUIE::Point>		lastMousePos;
 };
 
 #endif
