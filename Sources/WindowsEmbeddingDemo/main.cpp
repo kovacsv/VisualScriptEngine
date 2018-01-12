@@ -79,7 +79,12 @@ public:
 		return evaluationEnv;
 	}
 
-	virtual void RequestRedraw () override
+	virtual void OnValuesRecalculated () override
+	{
+		
+	}
+
+	virtual void OnRedrawRequest () override
 	{
 		InvalidateRect (hwnd, NULL, FALSE);
 	}

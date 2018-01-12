@@ -323,7 +323,12 @@ EvaluationEnv& TestNodeUIEnvironment::GetEvaluationEnv ()
 	return evaluationEnv;
 }
 
-void TestNodeUIEnvironment::RequestRedraw ()
+void TestNodeUIEnvironment::OnValuesRecalculated ()
+{
+
+}
+
+void TestNodeUIEnvironment::OnRedrawRequest ()
 {
 	nodeEditor.Draw ();
 }

@@ -19,6 +19,11 @@ void DrawingControl::OnCreate (HWND hwnd)
 
 void DrawingControl::OnPaint (HWND hwnd)
 {
+	drawingContext->FillRect (NUIE::Rect (-10, -10, drawingContext->GetWidth () + 20, drawingContext->GetHeight () + 20), NUIE::Color (255, 255, 255));
+	NUIE::ViewBoxContextDecorator viewBoxDecorator (*drawingContext, viewBox);
+	resultImage->Draw (viewBoxDecorator);
+	resultImage->Validate ();
+
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint (hwnd, &ps);
 	drawingContext->DrawToHDC (hdc);
@@ -45,7 +50,7 @@ void DrawingControl::OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y)
 		NUIE::Point diff = NUIE::Point (x, y) - *lastMousePos;
 		viewBox.SetOffset (viewBox.GetOffset () + diff);
 		lastMousePos->Set (x, y);
-		InvalidateImage ();
+		RedrawImage ();
 	}
 }
 
@@ -53,34 +58,22 @@ void DrawingControl::OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int d
 {
 	double scaleRatio = (delta > 0 ? 1.1 : 0.9);
 	viewBox.SetScale (viewBox.GetScale () * scaleRatio, NUIE::Point (x, y));
-	InvalidateImage ();
+	RedrawImage ();
 }
 
 void DrawingControl::OnResize (HWND hwnd, int newWidth, int newHeight)
 {
 	drawingContext->Resize (newWidth, newHeight);
-	InvalidateImage ();
+	RedrawImage ();
 }
 
-void DrawingControl::Clear ()
+void DrawingControl::ClearImage ()
 {
 	resultImage->Clear ();
-	InvalidateImage ();
+	RedrawImage ();
 }
 
-void DrawingControl::Invalidate ()
+void DrawingControl::RedrawImage ()
 {
-	if (resultImage->IsModified ()) {
-		drawingContext->FillRect (NUIE::Rect (-10, -10, drawingContext->GetWidth () + 20, drawingContext->GetHeight () + 20), NUIE::Color (255, 255, 255));
-		NUIE::ViewBoxContextDecorator viewBoxDecorator (*drawingContext, viewBox);
-		resultImage->Draw (viewBoxDecorator);
-		InvalidateRect (GetWindowHandle (), NULL, FALSE);
-		resultImage->Validate ();
-	}
-}
-
-void DrawingControl::InvalidateImage ()
-{
-	resultImage->Invalidate ();
-	Invalidate ();
+	InvalidateRect (GetWindowHandle (), NULL, FALSE);
 }

@@ -91,7 +91,8 @@ public:
 	virtual SkinParams&			GetSkinParams () override;
 	virtual EventHandlers&		GetEventHandlers () override;
 	virtual EvaluationEnv&		GetEvaluationEnv () override;
-	virtual void				RequestRedraw () override;
+	virtual void				OnValuesRecalculated () override;
+	virtual void				OnRedrawRequest () override;
 
 	const SVGDrawingContext&	GetSVGDrawingContext () const;
 

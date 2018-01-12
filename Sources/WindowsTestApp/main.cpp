@@ -45,13 +45,48 @@ private:
 	std::wstring currentFileName;
 };
 
+class DrawingWindow :	public UI::Window,
+						public UpdateInterface
+{
+public:
+	DrawingWindow (const std::shared_ptr<ResultImage>& resultImage) :
+		drawingControl (resultImage)
+	{
+
+	}
+
+	virtual void OnCreate (HWND hwnd) override
+	{
+		drawingControl.Init (hwnd, 0, 0, 0, 0);
+	}
+
+	virtual void OnResize (HWND hwnd, int newWidth, int newHeight) override
+	{
+		drawingControl.MoveResize (0, 0, newWidth, newHeight);
+	}
+
+	virtual void ClearImage ()
+	{
+		drawingControl.ClearImage ();
+	}
+
+	virtual void RedrawImage () override
+	{
+		drawingControl.RedrawImage ();
+	}
+
+private:
+	DrawingControl		drawingControl;
+};
+
 class NodeEditorWindow : public UI::Window
 {
 public:
-	NodeEditorWindow (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
+	NodeEditorWindow (UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
+		updateInterface (updateInterface),
 		statusBarHandle (NULL),
 		applicationState (),
-		nodeEditorControl (evaluationData)
+		nodeEditorControl (updateInterface, evaluationEnv)
 	{
 
 	}
@@ -77,6 +112,7 @@ public:
 	{
 		if (commandId == MenuCommand::File_New) {
 			nodeEditorControl.New ();
+			updateInterface.ClearImage ();
 			applicationState.ClearCurrentFileName ();
 		} else if (commandId == MenuCommand::File_Open || commandId == MenuCommand::File_Save || commandId == MenuCommand::File_SaveAs) {
 			OPENFILENAME openFileName;
@@ -91,6 +127,7 @@ public:
 			if (commandId == MenuCommand::File_Open) {
 				if (GetOpenFileName (&openFileName)) {
 					if (nodeEditorControl.Open (fileName)) {
+						updateInterface.ClearImage ();
 						applicationState.SetCurrentFileName (fileName);
 					}
 				}
@@ -174,37 +211,12 @@ private:
 		SendMessage (statusBarHandle, SB_SETTEXT, 0, (LPARAM) currentFileText.c_str ());
 	}
 
+	UpdateInterface&	updateInterface;
+
 	HWND				statusBarHandle;
 	ApplicationState	applicationState;
+
 	NodeEditorControl	nodeEditorControl;
-};
-
-class DrawingWindow : public UI::Window
-{
-public:
-	DrawingWindow (const std::shared_ptr<ResultImage>& resultImage) :
-		drawingControl (resultImage)
-	{
-
-	}
-
-	virtual void OnCreate (HWND hwnd) override
-	{
-		drawingControl.Init (hwnd, 0, 0, 0, 0);
-	}
-
-	virtual void OnResize (HWND hwnd, int newWidth, int newHeight) override
-	{
-		drawingControl.MoveResize (0, 0, newWidth, newHeight);
-	}
-
-	void OnIdle ()
-	{
-		drawingControl.Invalidate ();
-	}
-
-private:
-	DrawingControl		drawingControl;
 };
 
 class NodeEngineTestApplication : public Application
@@ -213,8 +225,9 @@ public:
 	NodeEngineTestApplication () :
 		resultImage (new ResultImage ()),
 		evaluationData (new ResultImageEvaluationData (resultImage)),
-		nodeEditorWindow (evaluationData),
-		drawingWindow (resultImage)
+		evaluationEnv (evaluationData),
+		drawingWindow (resultImage),
+		nodeEditorWindow (drawingWindow, evaluationEnv)
 	{
 	
 	}
@@ -225,17 +238,13 @@ public:
 		drawingWindow.Open (L"Drawing", 830, 20, 600, 600);
 	}
 
-	virtual void OnIdle ()
-	{
-		drawingWindow.OnIdle ();
-	}
-
 private:
 	std::shared_ptr<ResultImage>				resultImage;
 	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
+	NE::EvaluationEnv							evaluationEnv;
 
-	NodeEditorWindow							nodeEditorWindow;
 	DrawingWindow								drawingWindow;
+	NodeEditorWindow							nodeEditorWindow;
 };
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)

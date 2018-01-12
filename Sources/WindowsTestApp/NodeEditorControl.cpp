@@ -73,88 +73,22 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
-MyNodeUIEnvironment::MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
-	NUIE::NodeUIEnvironment (),
+NodeEditorControl::NodeEditorControl (UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
+	UI::CustomControl (),
+	updateInterface (updateInterface),
+	evaluationEnv (evaluationEnv),
 	drawingContext (nullptr),
 	skinParams (),
 	eventHandlers (),
-	evaluationEnv (evaluationData),
-	windowHandle (NULL)
+	nodeEditor (*this)
 {
 	drawingContext.reset (new BitmapContextGdi ());
 }
 
-NUIE::DrawingContext& MyNodeUIEnvironment::GetDrawingContext ()
-{
-	return *drawingContext.get ();
-}
-
-NUIE::SkinParams& MyNodeUIEnvironment::GetSkinParams ()
-{
-	return skinParams;
-}
-
-NUIE::EventHandlers& MyNodeUIEnvironment::GetEventHandlers ()
-{
-	return eventHandlers;
-}
-
-NE::EvaluationEnv& MyNodeUIEnvironment::GetEvaluationEnv ()
-{
-	return evaluationEnv;
-}
-
-void MyNodeUIEnvironment::RequestRedraw ()
-{
-	InvalidateRect (windowHandle, NULL, FALSE);
-}
-
-void MyNodeUIEnvironment::Init (HWND hwnd)
-{
-	windowHandle = hwnd;
-	drawingContext->Init (hwnd);
-	eventHandlers.SetWindowHandle (hwnd);
-}
-
-void MyNodeUIEnvironment::DrawToHDC (HWND hwnd)
-{
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint (hwnd, &ps);
-	drawingContext->DrawToHDC (hdc);
-	EndPaint (hwnd, &ps);
-}
-
-void MyNodeUIEnvironment::ChangeContext (HWND hwnd, short contextType)
-{
-	switch (contextType) {
-		case 1:
-			drawingContext.reset (new BitmapContextGdi ());
-			break;
-		case 2:
-			drawingContext.reset (new BitmapContextGdiplus ());
-			break;
-		case 3:
-			drawingContext.reset (new Direct2DContext ());
-			break;
-		default:
-			DBGBREAK ();
-			break;
-	}
-	drawingContext->Init (hwnd);
-}
-
-NodeEditorControl::NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData) :
-	UI::CustomControl (),
-	evaluationData (evaluationData),
-	uiEnvironment (evaluationData),
-	nodeEditor (uiEnvironment)
-{
-
-}
-
 void NodeEditorControl::OnCreate (HWND hwnd)
 {
-	uiEnvironment.Init (hwnd);
+	drawingContext->Init (hwnd);
+	eventHandlers.SetWindowHandle (hwnd);
 
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
@@ -163,19 +97,19 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 		static int count = 10;
 		for (int i = 0; i < count; i++) {
 			for (int j = 0; j < count; j++) {
-				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), GetEvaluationEnv ());
 			}
 		}
 		nodeEditor.Update ();
 	} else {
-		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 10)), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 180), 20, 10)), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (200, 100))), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (200, 220), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 10)), GetEvaluationEnv ());
+		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 180), 20, 10)), GetEvaluationEnv ());
+		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (200, 100))), GetEvaluationEnv ());
+		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (200, 220), 20, 10)), GetEvaluationEnv ());
 		std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
-		uiManager.AddNode (pointNode, uiEnvironment.GetEvaluationEnv ());
+		uiManager.AddNode (pointNode, GetEvaluationEnv ());
 		pointNode->SetValueCombinationMode (NE::ValueCombinationMode::CrossProduct);
-		NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::MultiLineViewerUINode (L"Viewer", NUIE::Point (600, 150), 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::MultiLineViewerUINode (L"Viewer", NUIE::Point (600, 150), 5)), GetEvaluationEnv ());
 
 		uiManager.ConnectOutputSlotToInputSlot (startInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("start")));
 		uiManager.ConnectOutputSlotToInputSlot (stepInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("step")));
@@ -189,7 +123,11 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 void NodeEditorControl::OnPaint (HWND hwnd)
 {
 	nodeEditor.Draw ();
-	uiEnvironment.DrawToHDC (hwnd);
+
+	PAINTSTRUCT ps;
+	HDC hdc = BeginPaint (hwnd, &ps);
+	drawingContext->DrawToHDC (hdc);
+	EndPaint (hwnd, &ps);
 }
 
 void NodeEditorControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
@@ -231,15 +169,43 @@ void NodeEditorControl::OnResize (HWND hwnd, int newWidth, int newHeight)
 	nodeEditor.OnResize (newWidth, newHeight);
 }
 
+NUIE::DrawingContext& NodeEditorControl::GetDrawingContext ()
+{
+	return *drawingContext.get ();
+}
+
+NUIE::SkinParams& NodeEditorControl::GetSkinParams ()
+{
+	return skinParams;
+}
+
+NUIE::EventHandlers& NodeEditorControl::GetEventHandlers ()
+{
+	return eventHandlers;
+}
+
+NE::EvaluationEnv& NodeEditorControl::GetEvaluationEnv ()
+{
+	return evaluationEnv;
+}
+
+void NodeEditorControl::OnValuesRecalculated ()
+{
+	updateInterface.RedrawImage ();
+}
+
+void NodeEditorControl::OnRedrawRequest ()
+{
+	InvalidateRect (GetWindowHandle (), NULL, FALSE);
+}
+
 void NodeEditorControl::New ()
 {
-	evaluationData->GetResultImage ()->Clear ();
 	nodeEditor.Clear ();
 }
 
 bool NodeEditorControl::Open (const std::wstring& fileName)
 {
-	evaluationData->GetResultImage ()->Clear ();
 	if (!nodeEditor.Load (fileName)) {
 		return false;
 	}
@@ -256,7 +222,21 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 
 void NodeEditorControl::ChangeContext (short contextType)
 {
-	uiEnvironment.ChangeContext (GetWindowHandle (), contextType);
+	switch (contextType) {
+		case 1:
+			drawingContext.reset (new BitmapContextGdi ());
+			break;
+		case 2:
+			drawingContext.reset (new BitmapContextGdiplus ());
+			break;
+		case 3:
+			drawingContext.reset (new Direct2DContext ());
+			break;
+		default:
+			DBGBREAK ();
+			break;
+	}
+	drawingContext->Init (GetWindowHandle ());
 	nodeEditor.InvalidateAllNodesDrawing ();
 	InvalidateRect (GetWindowHandle (), NULL, FALSE);
 }

@@ -21,12 +21,10 @@ public:
 	virtual void	OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta) override;
 	virtual void	OnResize (HWND hwnd, int newWidth, int newHeight) override;
 
-	void			Clear ();
-	void			Invalidate ();
+	void			ClearImage ();
+	void			RedrawImage ();
 
 private:
-	void			InvalidateImage ();
-
 	std::shared_ptr<ResultImage>		resultImage;
 
 	std::shared_ptr<WinDrawingContext>	drawingContext;

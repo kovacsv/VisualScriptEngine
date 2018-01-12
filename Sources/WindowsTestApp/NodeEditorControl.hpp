@@ -47,54 +47,50 @@ private:
 	HWND hwnd;
 };
 
-class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
+class UpdateInterface
 {
 public:
-	MyNodeUIEnvironment (const std::shared_ptr<ResultImageEvaluationData>& evaluationData);
+	virtual void ClearImage () = 0;
+	virtual void RedrawImage () = 0;
+};
+
+class NodeEditorControl :	public UI::CustomControl,
+							public NUIE::NodeUIEnvironment
+{
+public:
+	NodeEditorControl (UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv);
+
+	virtual void					OnCreate (HWND hwnd) override;
+	virtual void					OnPaint (HWND hwnd) override;
+	virtual void					OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
+	virtual void					OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
+	virtual void					OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override;
+	virtual void					OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta) override;
+	virtual void					OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
+	virtual void					OnResize (HWND hwnd, int newWidth, int newHeight) override;
 
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 	virtual NUIE::SkinParams&		GetSkinParams () override;
 	virtual NUIE::EventHandlers&	GetEventHandlers () override;
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
-	virtual void					RequestRedraw () override;
+	virtual void					OnValuesRecalculated () override;
+	virtual void					OnRedrawRequest () override;
 
-	void							Init (HWND hwnd);
-	void							DrawToHDC (HWND hwnd);
-	void							ChangeContext (HWND hwnd, short contextType);
-
-private:
-	std::unique_ptr<WinDrawingContext>	drawingContext;
-	NUIE::SkinParams					skinParams;
-	AppEventHandlers					eventHandlers;
-	NE::EvaluationEnv					evaluationEnv;
-	HWND								windowHandle;
-};
-
-class NodeEditorControl : public UI::CustomControl
-{
-public:
-	NodeEditorControl (const std::shared_ptr<ResultImageEvaluationData>& evaluationData);
-
-	virtual void		OnCreate (HWND hwnd) override;
-	virtual void		OnPaint (HWND hwnd) override;
-	virtual void		OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void		OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void		OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override;
-	virtual void		OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta) override;
-	virtual void		OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void		OnResize (HWND hwnd, int newWidth, int newHeight) override;
-
-	void				New ();
-	bool				Open (const std::wstring& fileName);
-	bool				Save (const std::wstring& fileName);
-	void				ChangeContext (short contextType);
+	void							New ();
+	bool							Open (const std::wstring& fileName);
+	bool							Save (const std::wstring& fileName);
+	void							ChangeContext (short contextType);
 
 private:
 	NUIE::KeySet		ConvertKeys (UI::Keys keys);
 	NUIE::MouseButton	ConvertMouseButton (UI::MouseButton button);
 
-	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
-	MyNodeUIEnvironment							uiEnvironment;
+	UpdateInterface&							updateInterface;
+	NE::EvaluationEnv&							evaluationEnv;
+
+	std::unique_ptr<WinDrawingContext>			drawingContext;
+	NUIE::SkinParams							skinParams;
+	AppEventHandlers							eventHandlers;
 	NUIE::NodeEditor							nodeEditor;
 };
 

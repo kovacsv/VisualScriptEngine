@@ -288,10 +288,11 @@ void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 			uiNode->Evaluate (env.GetEvaluationEnv ());
 			return true;
 		});
+		env.OnValuesRecalculated ();
 		status.RequestRedraw ();
 	}
 	if (status.NeedToRedraw ()) {
-		env.RequestRedraw ();
+		env.OnRedrawRequest ();
 	}
 	status.Reset ();
 }

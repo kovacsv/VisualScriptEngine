@@ -35,7 +35,9 @@ public:
 
 	virtual EventHandlers&		GetEventHandlers () = 0;
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
-	virtual void				RequestRedraw () = 0;
+	
+	virtual void				OnValuesRecalculated () = 0;
+	virtual void				OnRedrawRequest () = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,
