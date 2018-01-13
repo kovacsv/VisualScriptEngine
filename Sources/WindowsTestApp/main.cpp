@@ -45,74 +45,85 @@ private:
 	std::wstring currentFileName;
 };
 
-class DrawingWindow :	public UI::Window,
-						public UpdateInterface
-{
-public:
-	DrawingWindow (const std::shared_ptr<ResultImage>& resultImage) :
-		drawingControl (resultImage)
-	{
-
-	}
-
-	virtual void OnCreate (HWND hwnd) override
-	{
-		drawingControl.Init (hwnd, 0, 0, 0, 0);
-	}
-
-	virtual void OnResize (HWND hwnd, int newWidth, int newHeight) override
-	{
-		drawingControl.MoveResize (0, 0, newWidth, newHeight);
-	}
-
-	virtual void ClearImage ()
-	{
-		drawingControl.ClearImage ();
-	}
-
-	virtual void RedrawImage () override
-	{
-		drawingControl.RedrawImage ();
-	}
-
-private:
-	DrawingControl		drawingControl;
-};
-
 class NodeEditorWindow : public UI::Window
 {
 public:
-	NodeEditorWindow (UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
-		updateInterface (updateInterface),
+	class DrawingUpdateInterface : public UpdateInterface
+	{
+	public:
+		DrawingUpdateInterface (DrawingControl& drawingControl) :
+			drawingControl (drawingControl)
+		{
+		
+		}
+
+		virtual void ClearImage () override
+		{
+			drawingControl.ClearImage ();
+		}
+
+		virtual void RedrawImage () override
+		{
+			drawingControl.RedrawImage ();
+		}
+
+	private:
+		DrawingControl& drawingControl;
+	};
+
+	NodeEditorWindow (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
 		statusBarHandle (NULL),
 		applicationState (),
-		nodeEditorControl (updateInterface, evaluationEnv)
+		drawingControl (resultImage),
+		drawingUpdateInterface (drawingControl),
+		nodeEditorControl (drawingUpdateInterface, evaluationEnv)
 	{
 
 	}
+
+private:
+	enum MenuCommand
+	{
+		File_New				= 1000,
+		File_Open				= 1001,
+		File_Save				= 1002,
+		File_SaveAs				= 1003,
+		File_Quit				= 1004,
+		Debug_GdiContext		= 1005,
+		Debug_GdiplusContext	= 1006,
+		Debug_Direct2DContext	= 1007
+	};
 
 	virtual void OnCreate (HWND hwnd) override
 	{
 		nodeEditorControl.Init (hwnd, 0, 0, 0, 0);
+		drawingControl.Init (hwnd, 0, 0, 0, 0);
 		InitFileMenu (hwnd);
 		InitStatusBar (hwnd);
 	}
 
 	virtual void OnResize (HWND hwnd, int newWidth, int newHeight) override
 	{
+		static const int splitterWidth = 3;
 		SendMessage (statusBarHandle, WM_SIZE, 0, 0);
+
 		UpdateStatusBar ();
 		RECT statusBarRect = {0, 0, 0, 0};
 		GetClientRect (statusBarHandle, &statusBarRect);
 		int clientHeight = newHeight - (statusBarRect.bottom - statusBarRect.top);
-		nodeEditorControl.MoveResize (0, 0, newWidth, clientHeight);
+
+		int nodeEditorWidth = newWidth / 2;
+		int drawingWidth = nodeEditorWidth - splitterWidth;
+
+		nodeEditorControl.MoveResize (0, 0, nodeEditorWidth, clientHeight);
+		drawingControl.MoveResize (nodeEditorWidth + splitterWidth, 0, drawingWidth, clientHeight);
 	}
 
 	virtual void OnMenuCommand (HWND hwnd, int commandId) override
 	{
 		if (commandId == MenuCommand::File_New) {
 			nodeEditorControl.New ();
-			updateInterface.ClearImage ();
+			drawingControl.ClearImage ();
 			applicationState.ClearCurrentFileName ();
 		} else if (commandId == MenuCommand::File_Open || commandId == MenuCommand::File_Save || commandId == MenuCommand::File_SaveAs) {
 			OPENFILENAME openFileName;
@@ -127,7 +138,7 @@ public:
 			if (commandId == MenuCommand::File_Open) {
 				if (GetOpenFileName (&openFileName)) {
 					if (nodeEditorControl.Open (fileName)) {
-						updateInterface.ClearImage ();
+						drawingControl.ClearImage ();
 						applicationState.SetCurrentFileName (fileName);
 					}
 				}
@@ -156,18 +167,10 @@ public:
 		UpdateStatusBar ();
 	}
 
-private:
-	enum MenuCommand
+	virtual void OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override
 	{
-		File_New				= 1000,
-		File_Open				= 1001,
-		File_Save				= 1002,
-		File_SaveAs				= 1003,
-		File_Quit				= 1004,
-		Debug_GdiContext		= 1005,
-		Debug_GdiplusContext	= 1006,
-		Debug_Direct2DContext	= 1007
-	};
+	
+	}
 
 	void InitFileMenu (HWND hwnd)
 	{
@@ -211,12 +214,12 @@ private:
 		SendMessage (statusBarHandle, SB_SETTEXT, 0, (LPARAM) currentFileText.c_str ());
 	}
 
-	UpdateInterface&	updateInterface;
+	HWND					statusBarHandle;
+	ApplicationState		applicationState;
 
-	HWND				statusBarHandle;
-	ApplicationState	applicationState;
-
-	NodeEditorControl	nodeEditorControl;
+	DrawingControl			drawingControl;
+	DrawingUpdateInterface	drawingUpdateInterface;
+	NodeEditorControl		nodeEditorControl;
 };
 
 class NodeEngineTestApplication : public Application
@@ -226,8 +229,7 @@ public:
 		resultImage (new ResultImage ()),
 		evaluationData (new ResultImageEvaluationData (resultImage)),
 		evaluationEnv (evaluationData),
-		drawingWindow (resultImage),
-		nodeEditorWindow (drawingWindow, evaluationEnv)
+		nodeEditorWindow (resultImage, evaluationEnv)
 	{
 	
 	}
@@ -235,15 +237,12 @@ public:
 	virtual void OnInit ()
 	{
 		nodeEditorWindow.Open (L"Node Engine Test App", 20, 20, 800, 600);
-		drawingWindow.Open (L"Drawing", 830, 20, 600, 600);
 	}
 
 private:
 	std::shared_ptr<ResultImage>				resultImage;
 	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
 	NE::EvaluationEnv							evaluationEnv;
-
-	DrawingWindow								drawingWindow;
 	NodeEditorWindow							nodeEditorWindow;
 };
 

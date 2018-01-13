@@ -156,7 +156,7 @@ bool CustomControl::Init (HWND parentHandle, int x, int y, int width, int height
 	
 	RegisterClassEx (&windowClass);
 	HWND hwnd = CreateWindowEx (
-		0, windowClass.lpszClassName, L"", WS_CHILD | WS_VISIBLE,
+		WS_EX_CLIENTEDGE, windowClass.lpszClassName, L"", WS_CHILD | WS_VISIBLE,
 		CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, parentHandle, NULL, NULL, this
 	);
 
