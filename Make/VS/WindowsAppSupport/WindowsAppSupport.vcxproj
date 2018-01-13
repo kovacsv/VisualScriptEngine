@@ -130,6 +130,7 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\CustomControl.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Direct2DContext.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\DrawingCacheKeys.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Splitter.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Window.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\UIItem.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtilities.hpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\CustomControl.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Direct2DContext.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\DrawingCacheKeys.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Splitter.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Window.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\UIItem.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtilities.cpp" />

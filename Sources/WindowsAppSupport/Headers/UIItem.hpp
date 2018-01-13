@@ -38,13 +38,23 @@ public:
 	Item ();
 	virtual ~Item ();
 
-	void	MoveResize (int x, int y, int width, int height);
+	virtual void	MoveResize (int x, int y, int width, int height) = 0;
+};
 
-	void	SetWindowHandle (HWND newWindowHandle);
-	HWND	GetWindowHandle () const;
+class WindowItem : public Item
+{
+public:
+	WindowItem ();
+	virtual ~WindowItem ();
+
+	virtual void	MoveResize (int x, int y, int width, int height) override;
+
+	void			SetWindowHandle (HWND newWindowHandle);
+	HWND			GetWindowHandle () const;
 
 private:
 	HWND windowHandle;
+
 };
 
 Keys GetKeysFromEvent (WPARAM wParam);

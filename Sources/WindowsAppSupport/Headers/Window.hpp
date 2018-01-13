@@ -9,7 +9,7 @@
 namespace UI
 {
 
-class Window : public Item
+class Window : public WindowItem
 {
 public:
 	Window ();

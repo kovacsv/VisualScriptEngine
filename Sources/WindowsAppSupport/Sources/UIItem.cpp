@@ -1,6 +1,4 @@
 #include "UIItem.hpp"
-#include "Window.hpp"
-#include "WindowsAppUtilities.hpp"
 
 #include <windowsx.h>
 
@@ -29,8 +27,7 @@ bool Keys::IsKeyPressed (int keyTypes) const
 	return (types & keyTypes) != 0;
 }
 
-Item::Item () :
-	windowHandle (NULL)
+Item::Item ()
 {
 
 }
@@ -40,17 +37,29 @@ Item::~Item ()
 
 }
 
-void Item::MoveResize (int x, int y, int width, int height)
+WindowItem::WindowItem () :
+	Item (),
+	windowHandle (NULL)
+{
+
+}
+
+WindowItem::~WindowItem ()
+{
+
+}
+
+void WindowItem::MoveResize (int x, int y, int width, int height)
 {
 	MoveWindow (windowHandle, x, y, width, height, TRUE);
 }
 
-void Item::SetWindowHandle (HWND newWindowHandle)
+void WindowItem::SetWindowHandle (HWND newWindowHandle)
 {
 	windowHandle = newWindowHandle;
 }
 
-HWND Item::GetWindowHandle () const
+HWND WindowItem::GetWindowHandle () const
 {
 	return windowHandle;
 }

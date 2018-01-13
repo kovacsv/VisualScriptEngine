@@ -128,7 +128,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 }
 
 CustomControl::CustomControl () :
-	Item ()
+	WindowItem ()
 {
 
 }

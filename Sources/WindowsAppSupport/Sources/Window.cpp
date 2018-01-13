@@ -136,7 +136,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 }
 
 Window::Window () :
-	Item ()
+	WindowItem ()
 {
 }
 

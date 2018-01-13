@@ -8,7 +8,7 @@
 namespace UI
 {
 
-class CustomControl : public Item
+class CustomControl : public WindowItem
 {
 public:
 	CustomControl ();

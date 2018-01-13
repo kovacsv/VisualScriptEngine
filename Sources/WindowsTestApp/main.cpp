@@ -7,6 +7,7 @@
 #include "Debug.hpp"
 #include "NodeEditorControl.hpp"
 #include "DrawingControl.hpp"
+#include "Splitter.hpp"
 
 #include <CommCtrl.h>
 #include <iostream>
@@ -48,6 +49,18 @@ private:
 class NodeEditorWindow : public UI::Window
 {
 public:
+	NodeEditorWindow (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
+		statusBarHandle (NULL),
+		applicationState (),
+		drawingControl (resultImage),
+		drawingUpdateInterface (drawingControl),
+		nodeEditorControl (drawingUpdateInterface, evaluationEnv),
+		splitterControl (nodeEditorControl, drawingControl)
+	{
+
+	}
+
+private:
 	class DrawingUpdateInterface : public UpdateInterface
 	{
 	public:
@@ -71,17 +84,6 @@ public:
 		DrawingControl& drawingControl;
 	};
 
-	NodeEditorWindow (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
-		statusBarHandle (NULL),
-		applicationState (),
-		drawingControl (resultImage),
-		drawingUpdateInterface (drawingControl),
-		nodeEditorControl (drawingUpdateInterface, evaluationEnv)
-	{
-
-	}
-
-private:
 	enum MenuCommand
 	{
 		File_New				= 1000,
@@ -104,7 +106,7 @@ private:
 
 	virtual void OnResize (HWND hwnd, int newWidth, int newHeight) override
 	{
-		static const int splitterWidth = 3;
+		static const int splitterWidth = 4;
 		SendMessage (statusBarHandle, WM_SIZE, 0, 0);
 
 		UpdateStatusBar ();
@@ -112,11 +114,7 @@ private:
 		GetClientRect (statusBarHandle, &statusBarRect);
 		int clientHeight = newHeight - (statusBarRect.bottom - statusBarRect.top);
 
-		int nodeEditorWidth = newWidth / 2;
-		int drawingWidth = nodeEditorWidth - splitterWidth;
-
-		nodeEditorControl.MoveResize (0, 0, nodeEditorWidth, clientHeight);
-		drawingControl.MoveResize (nodeEditorWidth + splitterWidth, 0, drawingWidth, clientHeight);
+		splitterControl.MoveResize (0, 0, newWidth, clientHeight);
 	}
 
 	virtual void OnMenuCommand (HWND hwnd, int commandId) override
@@ -169,7 +167,7 @@ private:
 
 	virtual void OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override
 	{
-	
+		SetCursor (LoadCursor (NULL, IDC_SIZEWE));
 	}
 
 	void InitFileMenu (HWND hwnd)
@@ -220,6 +218,7 @@ private:
 	DrawingControl			drawingControl;
 	DrawingUpdateInterface	drawingUpdateInterface;
 	NodeEditorControl		nodeEditorControl;
+	UI::Splitter			splitterControl;
 };
 
 class NodeEngineTestApplication : public Application
