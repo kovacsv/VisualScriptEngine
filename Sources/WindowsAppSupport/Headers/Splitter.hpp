@@ -6,17 +6,21 @@
 namespace UI
 {
 
-class Splitter : Item
+class Splitter
 {
 public:
 	Splitter (Item& firstItem, Item& secondItem);
 	virtual ~Splitter ();
 
-	virtual void	MoveResize (int x, int y, int width, int height) override;
+	void	MoveSplitter (int xDiff);
+	void	MoveResizeItems (int x, int y, int width, int height);
 
 private:
 	Item&	firstItem;
 	Item&	secondItem;
+
+	int		fullWidth;
+	int		fullHeight;
 	double	ratio;
 };
 

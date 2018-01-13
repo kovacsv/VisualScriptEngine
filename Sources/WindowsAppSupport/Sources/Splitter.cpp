@@ -4,9 +4,10 @@ namespace UI
 {
 
 Splitter::Splitter (Item& firstItem, Item& secondItem) :
-	Item (),
 	firstItem (firstItem),
 	secondItem (secondItem),
+	fullWidth (0),
+	fullHeight (0),
 	ratio (0.5)
 {
 
@@ -17,7 +18,12 @@ Splitter::~Splitter ()
 
 }
 
-void Splitter::MoveResize (int x, int y, int width, int height)
+void Splitter::MoveSplitter (int xDiff)
+{
+	// TODO
+}
+
+void Splitter::MoveResizeItems (int x, int y, int width, int height)
 {
 	static const int splitterWidth = 4;
 	static const int splitterHalfWidth = splitterWidth / 2;
@@ -27,6 +33,9 @@ void Splitter::MoveResize (int x, int y, int width, int height)
 
 	firstItem.MoveResize (x, y, firstItemWidth, height);
 	secondItem.MoveResize (x + firstItemWidth + splitterWidth, y, secondItemWidth, height);
+
+	fullWidth = width;
+	fullHeight = height;
 }
 
 }
