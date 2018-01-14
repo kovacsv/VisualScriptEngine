@@ -177,7 +177,7 @@ bool Window::Open (const std::wstring& windowTitle, int x, int y, int width, int
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
 	HWND hwnd = CreateWindowEx (
-		WS_EX_WINDOWEDGE, windowClass.lpszClassName, windowTitle.c_str (), WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+		WS_EX_WINDOWEDGE, windowClass.lpszClassName, windowTitle.c_str (), WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_VISIBLE,
 		x, y, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, this
 	);
 
