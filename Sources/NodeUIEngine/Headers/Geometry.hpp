@@ -121,6 +121,7 @@ class IntRect
 {
 public:
 	IntRect ();
+	IntRect (int x, int y, int width, int height);
 	IntRect (const Rect& rect);
 
 	int		GetX () const;

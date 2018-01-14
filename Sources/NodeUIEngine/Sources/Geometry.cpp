@@ -339,6 +339,15 @@ IntRect::IntRect () :
 
 }
 
+IntRect::IntRect (int x, int y, int width, int height) :
+	x (x),
+	y (y),
+	width (width),
+	height (height)
+{
+
+}
+
 IntRect::IntRect (const Rect& rect) :
 	x ((int) std::floor (rect.GetLeft ()) - 1),
 	y ((int) std::floor (rect.GetTop ()) - 1),

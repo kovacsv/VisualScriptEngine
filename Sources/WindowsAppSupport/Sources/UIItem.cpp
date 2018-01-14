@@ -5,6 +5,21 @@
 namespace UI
 {
 
+Rect::Rect () :
+	Rect (0, 0, 0, 0)
+{
+
+}
+
+Rect::Rect (int x, int y, int width, int height) :
+	x (x),
+	y (y),
+	width (width),
+	height (height)
+{
+
+}
+
 Keys::Keys () :
 	types (0)
 {
@@ -49,9 +64,29 @@ WindowItem::~WindowItem ()
 
 }
 
-void WindowItem::MoveResize (int x, int y, int width, int height)
+Rect WindowItem::GetRect () const
 {
-	MoveWindow (windowHandle, x, y, width, height, TRUE);
+	Rect result;
+
+	RECT windowRect;
+	GetWindowRect (windowHandle, &windowRect);
+
+	POINT position;
+	position.x = windowRect.left;
+	position.y = windowRect.top;
+	ScreenToClient (GetParent (windowHandle), &position);
+
+	result.x = position.x;
+	result.y = position.y;
+	result.width = windowRect.right - windowRect.left;
+	result.height = windowRect.bottom - windowRect.top;
+
+	return result;
+}
+
+void WindowItem::SetRect (const Rect& rect)
+{
+	MoveWindow (windowHandle, rect.x, rect.y, rect.width, rect.height, TRUE);
 }
 
 void WindowItem::SetWindowHandle (HWND newWindowHandle)

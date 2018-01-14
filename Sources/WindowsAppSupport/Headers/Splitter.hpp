@@ -12,7 +12,9 @@ public:
 	Splitter (Item& firstItem, Item& secondItem);
 	virtual ~Splitter ();
 
-	void	MoveSplitter (int xDiff);
+	bool	IsSplitterArea (int x, int y) const;
+
+	bool	MoveSplitter (int diff);
 	void	MoveResizeItems (int x, int y, int width, int height);
 
 private:

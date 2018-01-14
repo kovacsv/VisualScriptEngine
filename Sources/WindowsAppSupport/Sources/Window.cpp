@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "WindowsAppUtilities.hpp"
 
 #include <windowsx.h>
 
@@ -9,6 +10,8 @@ static std::wstring WindowClassName = L"UIWindowClass";
 
 static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	static SetCaptureHandler setCaptureHandler;
+
 	if (msg == WM_CREATE) {
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
@@ -29,6 +32,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			break;
 		case WM_LBUTTONDOWN:
 			{
+				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				window->OnMouseDown (hwnd, GetKeysFromEvent (wParam), MouseButton::Left, x, y);
@@ -36,6 +40,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			break;
 		case WM_MBUTTONDOWN:
 			{
+				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				window->OnMouseDown (hwnd, GetKeysFromEvent (wParam), MouseButton::Middle, x, y);
@@ -43,6 +48,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			break;
 		case WM_RBUTTONDOWN:
 			{
+				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				window->OnMouseDown (hwnd, GetKeysFromEvent (wParam), MouseButton::Right, x, y);
@@ -50,6 +56,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			break;
 		case WM_LBUTTONUP:
 			{
+				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				window->OnMouseUp (hwnd, GetKeysFromEvent (wParam), MouseButton::Left, x, y);
@@ -57,6 +64,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			break;
 		case WM_MBUTTONUP:
 			{
+				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				window->OnMouseUp (hwnd, GetKeysFromEvent (wParam), MouseButton::Middle, x, y);
@@ -64,6 +72,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			break;
 		case WM_RBUTTONUP:
 			{
+				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				window->OnMouseUp (hwnd, GetKeysFromEvent (wParam), MouseButton::Right, x, y);

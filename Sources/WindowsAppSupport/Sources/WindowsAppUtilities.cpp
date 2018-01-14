@@ -24,8 +24,9 @@ void SetCaptureHandler::HandleMouseDown (HWND hwnd)
 void SetCaptureHandler::HandleMouseUp ()
 {
 	counter -= 1;
-	if (counter == 0) {
+	if (counter <= 0) { // sometimes down and up are not in pair
 		ReleaseCapture ();
+		counter = 0;
 	}
 }
 
