@@ -8,10 +8,10 @@ namespace UI
 {
 
 Splitter::Splitter (Item& firstItem, Item& secondItem) :
+	Item (),
 	firstItem (firstItem),
 	secondItem (secondItem),
-	fullWidth (0),
-	fullHeight (0),
+	fullRect (0, 0, 0, 0),
 	ratio (0.5)
 {
 
@@ -20,6 +20,22 @@ Splitter::Splitter (Item& firstItem, Item& secondItem) :
 Splitter::~Splitter ()
 {
 
+}
+
+Rect Splitter::GetRect () const
+{
+	return fullRect;
+}
+
+void Splitter::SetRect (const Rect& rect)
+{
+	int firstItemWidth = (int) (rect.width * ratio) - splitterHalfWidth;
+	int secondItemWidth = rect.width - firstItemWidth - splitterWidth;
+
+	firstItem.SetRect (Rect (rect.x, rect.y, firstItemWidth, rect.height));
+	secondItem.SetRect (Rect (rect.x + firstItemWidth + splitterWidth, rect.y, secondItemWidth, rect.height));
+
+	fullRect = rect;
 }
 
 bool Splitter::IsSplitterArea (int x, int y) const
@@ -56,18 +72,6 @@ bool Splitter::MoveSplitter (int diff)
 	int fullWidth = firstRect.width + secondRect.width;
 	ratio = (double) firstRect.width / (double) fullWidth;
 	return true;
-}
-
-void Splitter::MoveResizeItems (int x, int y, int width, int height)
-{
-	int firstItemWidth = (int) (width * ratio) - splitterHalfWidth;
-	int secondItemWidth = width - firstItemWidth - splitterWidth;
-
-	firstItem.SetRect (Rect (x, y, firstItemWidth, height));
-	secondItem.SetRect (Rect (x + firstItemWidth + splitterWidth, y, secondItemWidth, height));
-
-	fullWidth = width;
-	fullHeight = height;
 }
 
 }

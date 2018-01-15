@@ -115,7 +115,7 @@ private:
 		GetClientRect (statusBarHandle, &statusBarRect);
 		int clientHeight = newHeight - (statusBarRect.bottom - statusBarRect.top);
 
-		splitterControl.MoveResizeItems (0, 0, newWidth, clientHeight);
+		splitterControl.SetRect (UI::Rect (0, 0, newWidth, clientHeight));
 	}
 
 	virtual void OnMenuCommand (HWND hwnd, int commandId) override
