@@ -29,7 +29,7 @@ public:
 
 	virtual void Do (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode) override
 	{
-		// TODO: OnValuesRecalculated should be called
+		// TODO: OnValuesRecalculated or similar should be called
 		std::shared_ptr<CalculatedUINode> calcUINode = std::dynamic_pointer_cast<CalculatedUINode> (uiNode);
 		if (DBGERROR (calcUINode == nullptr)) {
 			return;
