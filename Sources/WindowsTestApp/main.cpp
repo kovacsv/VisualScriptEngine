@@ -55,7 +55,7 @@ public:
 		drawingControl (resultImage),
 		drawingUpdateInterface (drawingControl),
 		nodeEditorControl (drawingUpdateInterface, evaluationEnv),
-		splitterControl (nodeEditorControl, drawingControl)
+		splitterControl (nodeEditorControl, drawingControl, 0.7)
 	{
 
 	}
@@ -233,7 +233,7 @@ private:
 	DrawingControl			drawingControl;
 	DrawingUpdateInterface	drawingUpdateInterface;
 	NodeEditorControl		nodeEditorControl;
-	UI::HorizontalSplitter	splitterControl;
+	UI::VerticalSplitter	splitterControl;
 };
 
 class NodeEngineTestApplication : public Application
@@ -250,7 +250,7 @@ public:
 
 	virtual void OnInit ()
 	{
-		nodeEditorWindow.Open (L"Node Engine Test App", 20, 20, 800, 640);
+		nodeEditorWindow.Open (L"Node Engine Test App", 20, 20, 1000, 600);
 	}
 
 private:

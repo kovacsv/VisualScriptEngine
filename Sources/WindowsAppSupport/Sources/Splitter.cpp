@@ -7,13 +7,13 @@ static const int minItemWidth = 20;
 namespace UI
 {
 
-Splitter::Splitter (Item& firstItem, Item& secondItem) :
+Splitter::Splitter (Item& firstItem, Item& secondItem, double ratio) :
 	Item (),
 	firstItem (firstItem),
 	secondItem (secondItem),
 	lastMousePos (0),
 	fullRect (0, 0, 0, 0),
-	ratio (0.5)
+	ratio (ratio)
 {
 
 }
@@ -81,8 +81,8 @@ bool Splitter::MoveSplitter (int diff)
 	return true;
 }
 
-HorizontalSplitter::HorizontalSplitter (Item& firstItem, Item& secondItem) :
-	Splitter (firstItem, secondItem)
+HorizontalSplitter::HorizontalSplitter (Item& firstItem, Item& secondItem, double ratio) :
+	Splitter (firstItem, secondItem, ratio)
 {
 
 }
@@ -129,8 +129,8 @@ double HorizontalSplitter::RecalculateRatio (const Rect& firstRect, const Rect& 
 	return (double) firstRect.height / (double) fullHeight;
 }
 
-VerticalSplitter::VerticalSplitter (Item& firstItem, Item& secondItem) :
-	Splitter (firstItem, secondItem)
+VerticalSplitter::VerticalSplitter (Item& firstItem, Item& secondItem, double ratio) :
+	Splitter (firstItem, secondItem, ratio)
 {
 
 }

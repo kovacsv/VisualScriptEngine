@@ -9,7 +9,7 @@ namespace UI
 class Splitter : public Item
 {
 public:
-	Splitter (Item& firstItem, Item& secondItem);
+	Splitter (Item& firstItem, Item& secondItem, double ratio);
 	virtual ~Splitter ();
 
 	virtual Rect	GetRect () const override;
@@ -41,7 +41,7 @@ protected:
 class HorizontalSplitter : public Splitter
 {
 public:
-	HorizontalSplitter (Item& firstItem, Item& secondItem);
+	HorizontalSplitter (Item& firstItem, Item& secondItem, double ratio);
 	virtual ~HorizontalSplitter ();
 
 private:
@@ -55,7 +55,7 @@ private:
 class VerticalSplitter : public Splitter
 {
 public:
-	VerticalSplitter (Item& firstItem, Item& secondItem);
+	VerticalSplitter (Item& firstItem, Item& secondItem, double ratio);
 	virtual ~VerticalSplitter ();
 
 private:
