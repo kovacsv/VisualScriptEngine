@@ -116,7 +116,7 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& env) const
 void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& env, const UINode* uiNode) const
 {
 	const NE::NodeId& nodeId = uiNode->GetId ();
-	const NodeUIManager::SelectedNodes& selectedNodes = uiManager.GetSelectedNodes ();
+	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
 	if (selectedNodes.Contains (nodeId)) {
 		ColorBlenderContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor ());
 		NodeUIDrawingEnvironmentContextDecorator selectionEnv (env, selectionContext);

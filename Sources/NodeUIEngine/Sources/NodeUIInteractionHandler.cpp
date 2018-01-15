@@ -62,7 +62,7 @@ public:
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Rect modelSelectionRect = viewBox.ViewToModel (selectionRect);
-		NodeUIManager::SelectedNodes selectedNodes = uiManager.GetSelectedNodes ();
+		NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
 		if (!pressedKeys.Contains (KeyCode::Control)) {
 			selectedNodes.Clear ();
 		}
@@ -123,9 +123,7 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = (position - prevPosition) / viewBox.GetScale ();
 
-		NodeUIManager::SelectedNodes nodesToMove = uiManager.GetSelectedNodes ();
-		nodesToMove.Insert (currentNode->GetId ());
-
+		NodeCollection nodesToMove = GetNodesForCommand (uiManager, currentNode);
 		nodesToMove.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			uiNode->SetNodePosition (uiNode->GetNodePosition () + diff);
@@ -385,7 +383,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 	}
 
 	if (mouseButton == MouseButton::Left) {
-		NodeUIManager::SelectedNodes selectedNodes;
+		NodeCollection selectedNodes;
 		UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
 		if (foundNode != nullptr) {
 			const NE::NodeId& foundNodeId = foundNode->GetId ();

@@ -14,28 +14,29 @@
 namespace NUIE
 {
 
+class NodeCollection
+{
+public:
+	NodeCollection ();
+	NodeCollection (const NE::NodeId& nodeId);
+	NodeCollection (const std::unordered_set<NE::NodeId>& nodes);
+	~NodeCollection ();
+
+	bool	Contains (const NE::NodeId& nodeId) const;
+	size_t	Count () const;
+
+	void	Enumerate (const std::function<void (const NE::NodeId&)>& processor) const;
+	void	Insert (const NE::NodeId& nodeId);
+	void	Erase (const NE::NodeId& nodeId);
+	void	Clear ();
+
+private:
+	std::unordered_set<NE::NodeId> nodes;
+};
+
 class NodeUIManager
 {
 public:
-	class SelectedNodes
-	{
-	public:
-		SelectedNodes ();
-		SelectedNodes (const std::unordered_set<NE::NodeId>& selection);
-		~SelectedNodes ();
-
-		bool	Contains (const NE::NodeId& nodeId) const;
-		size_t	Count () const;
-
-		void	Enumerate (const std::function<void (const NE::NodeId&)>& processor) const;
-		void	Insert (const NE::NodeId& nodeId);
-		void	Erase (const NE::NodeId& nodeId);
-		void	Clear ();
-
-	private:
-		std::unordered_set<NE::NodeId> selection;
-	};
-
 	NodeUIManager ();
 	virtual ~NodeUIManager ();
 
@@ -43,8 +44,8 @@ public:
 	bool					DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env);
 	bool					DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env);
 
-	const SelectedNodes&	GetSelectedNodes () const;
-	void					SetSelectedNodes (const SelectedNodes& newSelectedNodes);
+	const NodeCollection&	GetSelectedNodes () const;
+	void					SetSelectedNodes (const NodeCollection& newSelectedNodes);
 
 	bool					IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
 	bool					CanConnectMoreOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;
@@ -106,7 +107,7 @@ private:
 	};
 
 	NE::NodeManager		nodeManager;
-	SelectedNodes		selectedNodes;
+	NodeCollection		selectedNodes;
 	ViewBox				viewBox;
 	Status				status;
 };

@@ -10,52 +10,58 @@ namespace NUIE
 
 static const size_t NodeUIManagerVersion = 1;
 
-NodeUIManager::SelectedNodes::SelectedNodes ()
+NodeCollection::NodeCollection ()
 {
 
 }
 
-NodeUIManager::SelectedNodes::SelectedNodes (const std::unordered_set<NE::NodeId>& selection) :
-	selection (selection)
+NodeCollection::NodeCollection (const NE::NodeId& nodeId) :
+	nodes ({ nodeId })
 {
 
 }
 
-NodeUIManager::SelectedNodes::~SelectedNodes ()
+NodeCollection::NodeCollection (const std::unordered_set<NE::NodeId>& nodes) :
+	nodes (nodes)
 {
 
 }
 
-bool NodeUIManager::SelectedNodes::Contains (const NE::NodeId& nodeId) const
+NodeCollection::~NodeCollection ()
 {
-	return selection.find (nodeId) != selection.end ();
+
 }
 
-size_t NodeUIManager::SelectedNodes::Count () const
+bool NodeCollection::Contains (const NE::NodeId& nodeId) const
 {
-	return selection.size ();
+	return nodes.find (nodeId) != nodes.end ();
 }
 
-void NodeUIManager::SelectedNodes::Enumerate (const std::function<void (const NE::NodeId&)>& processor) const
+size_t NodeCollection::Count () const
 {
-	for (const NE::NodeId& nodeId : selection) {
+	return nodes.size ();
+}
+
+void NodeCollection::Enumerate (const std::function<void (const NE::NodeId&)>& processor) const
+{
+	for (const NE::NodeId& nodeId : nodes) {
 		processor (nodeId);
 	}
 }
 
-void NodeUIManager::SelectedNodes::Insert (const NE::NodeId& nodeId)
+void NodeCollection::Insert (const NE::NodeId& nodeId)
 {
-	selection.insert (nodeId);
+	nodes.insert (nodeId);
 }
 
-void NodeUIManager::SelectedNodes::Erase (const NE::NodeId& nodeId)
+void NodeCollection::Erase (const NE::NodeId& nodeId)
 {
-	selection.erase (nodeId);
+	nodes.erase (nodeId);
 }
 
-void NodeUIManager::SelectedNodes::Clear ()
+void NodeCollection::Clear ()
 {
-	selection.clear ();
+	nodes.clear ();
 }
 
 NodeUIManager::Status::Status ()
@@ -141,12 +147,12 @@ bool NodeUIManager::DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env
 	return DeleteNode (node, env);
 }
 
-const NodeUIManager::SelectedNodes& NodeUIManager::GetSelectedNodes () const
+const NodeCollection& NodeUIManager::GetSelectedNodes () const
 {
 	return selectedNodes;
 }
 
-void NodeUIManager::SetSelectedNodes (const SelectedNodes& newSelectedNodes)
+void NodeUIManager::SetSelectedNodes (const NodeCollection& newSelectedNodes)
 {
 	selectedNodes = newSelectedNodes;
 	status.RequestRedraw ();

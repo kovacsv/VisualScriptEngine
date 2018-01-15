@@ -110,10 +110,10 @@ private:
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
 {
 public:
-	NodeCommandStructureBuilder (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeUIManager::SelectedNodes& selectedNodes) :
+	NodeCommandStructureBuilder (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes) :
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
-		selectedNodes (selectedNodes)
+		relevantNodes (relevantNodes)
 	{
 
 	}
@@ -137,7 +137,7 @@ public:
 	std::shared_ptr<MultiNodeCommand> CreateMultiNodeCommand (NodeCommandPtr nodeCommand)
 	{
 		std::shared_ptr<MultiNodeCommand> multiNodeCommand (new MultiNodeCommand (nodeCommand->GetName (), uiManager, uiEnvironment, nodeCommand));
-		selectedNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			if (nodeCommand->IsApplicableTo (uiNode)) {
 				multiNodeCommand->AddNode (uiNode);
@@ -146,10 +146,10 @@ public:
 		return multiNodeCommand;
 	}
 
-	NodeUIManager&							uiManager;
-	NodeUIEnvironment&						uiEnvironment;
-	const NodeUIManager::SelectedNodes&		selectedNodes;
-	CommandStructure						commandStructure;
+	NodeUIManager&			uiManager;
+	NodeUIEnvironment&		uiEnvironment;
+	const NodeCollection&	relevantNodes;
+	CommandStructure		commandStructure;
 };
 
 template <typename SlotType, typename CommandType>
@@ -233,12 +233,19 @@ private:
 	CommandStructure	commandStructure;
 };
 
+NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode)
+{
+	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+	if (selectedNodes.Contains (uiNode->GetId ())) {
+		return selectedNodes;
+	}
+	return NodeCollection (uiNode->GetId ());
+}
+
 CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode)
 {
-	NodeUIManager::SelectedNodes allSelectedNodes = uiManager.GetSelectedNodes ();
-	allSelectedNodes.Insert (uiNode->GetId ());
-
-	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, allSelectedNodes);
+	NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
+	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
 	commandStructureBuilder.RegisterNodeCommand (NodeCommandPtr (new DeleteNodeCommand (L"Delete Node")));
 	uiNode->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.commandStructure;
