@@ -55,8 +55,7 @@ public:
 		drawingControl (resultImage),
 		drawingUpdateInterface (drawingControl),
 		nodeEditorControl (drawingUpdateInterface, evaluationEnv),
-		splitterControl (nodeEditorControl, drawingControl),
-		lastSplitterDragPos (0)
+		splitterControl (nodeEditorControl, drawingControl)
 	{
 
 	}
@@ -169,25 +168,21 @@ private:
 	virtual void OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override
 	{
 		if (splitterControl.IsSplitterArea (x, y)) {
-			lastSplitterDragPos = x;
+			splitterControl.OnMouseDown (x, y);
 		}
 	}
 
 	virtual void OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override
 	{
-		lastSplitterDragPos = 0;
+		splitterControl.OnMouseUp ();
 	}
 
 	virtual void OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override
 	{
 		if (splitterControl.IsSplitterArea (x, y)) {
-			SetCursor (LoadCursor (NULL, IDC_SIZEWE));
+			SetCursor (LoadCursor (NULL, IDC_SIZEALL));
 		}
-		if (lastSplitterDragPos != 0) {
-			if (splitterControl.MoveSplitter (x - lastSplitterDragPos)) {
-				lastSplitterDragPos = x;
-			}
-		}
+		splitterControl.OnMouseMove (x, y);
 	}
 
 	void InitFileMenu (HWND hwnd)
@@ -238,9 +233,7 @@ private:
 	DrawingControl			drawingControl;
 	DrawingUpdateInterface	drawingUpdateInterface;
 	NodeEditorControl		nodeEditorControl;
-	UI::Splitter			splitterControl;
-
-	int						lastSplitterDragPos;
+	UI::VerticalSplitter	splitterControl;
 };
 
 class NodeEngineTestApplication : public Application
