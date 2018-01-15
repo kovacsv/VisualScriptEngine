@@ -233,7 +233,7 @@ private:
 	DrawingControl			drawingControl;
 	DrawingUpdateInterface	drawingUpdateInterface;
 	NodeEditorControl		nodeEditorControl;
-	UI::VerticalSplitter	splitterControl;
+	UI::HorizontalSplitter	splitterControl;
 };
 
 class NodeEngineTestApplication : public Application
@@ -250,7 +250,7 @@ public:
 
 	virtual void OnInit ()
 	{
-		nodeEditorWindow.Open (L"Node Engine Test App", 20, 20, 800, 600);
+		nodeEditorWindow.Open (L"Node Engine Test App", 20, 20, 800, 640);
 	}
 
 private:
