@@ -7,9 +7,10 @@ NE::DynamicSerializationInfo	PointNode::serializationInfo (NE::ObjectId ("{E19AC
 NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3D1-7D67-4513-9F29-60E2D7B5DE2B}"), NE::ObjectVersion (1), LineNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
 
-Point::Point (int x, int y) :
+Point::Point (int x, int y, int size) :
 	x (x),
-	y (y)
+	y (y),
+	size (size)
 {
 
 }
@@ -182,6 +183,7 @@ void PointNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("x"), L"X", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("y"), L"Y", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("size"), L"Size", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("point"), L"Point")));
 }
 
@@ -189,13 +191,14 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
 	NE::ValuePtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
-	if (!NE::IsComplexType<NE::IntValue> (x) || !NE::IsComplexType<NE::IntValue> (y)) {
+	NE::ValuePtr size = EvaluateSingleInputSlot (NE::SlotId ("size"), env);
+	if (!NE::IsComplexType<NE::IntValue> (x) || !NE::IsComplexType<NE::IntValue> (y) || !NE::IsComplexType<NE::IntValue> (size)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
-	CombineValues ({x, y}, [&] (const NE::ValueCombination& combination) {
-		result->Push (NE::ValuePtr (new PointValue (Point (NE::IntValue::Get (combination.GetValue (0)), NE::IntValue::Get (combination.GetValue (1))))));
+	CombineValues ({x, y, size}, [&] (const NE::ValueCombination& combination) {
+		result->Push (NE::ValuePtr (new PointValue (Point (NE::IntValue::Get (combination.GetValue (0)), NE::IntValue::Get (combination.GetValue (1)), NE::IntValue::Get (combination.GetValue (2))))));
 	});
 
 	return result;
@@ -263,7 +266,7 @@ NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& valu
 	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
 	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
 		Point point = PointValue::Get (innerValue);
-		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (NUIE::Rect (point.x - 5, point.y - 5, 10, 10), NUIE::Color (0, 0, 0))));
+		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (NUIE::Rect (point.x - point.size / 2, point.y - point.size / 2, point.size, point.size), NUIE::Color (0, 0, 0))));
 	});
 	return result;
 }

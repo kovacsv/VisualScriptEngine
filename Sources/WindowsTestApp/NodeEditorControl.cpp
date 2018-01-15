@@ -18,7 +18,7 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 {
 	switch (nodeType) {
 	case NodeType::Integer:
-		return NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", modelPosition, 0, 10));
+		return NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", modelPosition, 0, 5));
 	case NodeType::IntegerRange:
 		return NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", modelPosition));
 	case NodeType::Point:
@@ -102,10 +102,10 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 		}
 		nodeEditor.Update ();
 	} else {
-		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 10)), GetEvaluationEnv ());
-		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 180), 20, 10)), GetEvaluationEnv ());
+		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 5)), GetEvaluationEnv ());
+		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 180), 20, 5)), GetEvaluationEnv ());
 		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (200, 100))), GetEvaluationEnv ());
-		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (200, 220), 20, 10)), GetEvaluationEnv ());
+		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (200, 220), 20, 5)), GetEvaluationEnv ());
 		std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
 		uiManager.AddNode (pointNode, GetEvaluationEnv ());
 		pointNode->SetValueCombinationMode (NE::ValueCombinationMode::CrossProduct);

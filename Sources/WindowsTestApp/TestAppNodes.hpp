@@ -13,12 +13,13 @@
 class Point
 {
 public:
-	Point (int x, int y);
+	Point (int x, int y, int size);
 	
 	std::wstring ToString () const;
 
 	int x;
 	int y;
+	int size;
 };
 
 class Line
