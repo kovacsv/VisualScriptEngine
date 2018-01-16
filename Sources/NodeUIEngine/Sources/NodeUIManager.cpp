@@ -118,8 +118,8 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& en
 	if (resultNode == nullptr) {
 		return nullptr;
 	}
-	status.RequestRecalculate ();
 	uiNode->OnCreated (env);
+	status.RequestRecalculate ();
 	return uiNode;
 }
 
