@@ -29,13 +29,12 @@ public:
 
 	virtual void Do (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode) override
 	{
-		// TODO: OnValuesRecalculated or similar should be called
 		std::shared_ptr<CalculatedUINode> calcUINode = std::dynamic_pointer_cast<CalculatedUINode> (uiNode);
 		if (DBGERROR (calcUINode == nullptr)) {
 			return;
 		}
 		calcUINode->SetEnableState (enable, evaluationEnv);
-		uiManager.RequestRedraw ();
+		uiManager.RequestRecalculate ();
 	}
 
 private:
@@ -151,7 +150,7 @@ void CalculatedUINode::SetEnableState (bool isEnabled, NE::EvaluationEnv& env)
 	nodeEnabled = isEnabled;
 	InvalidateDrawing ();
 	if (nodeEnabled) {
-		NE::ValuePtr value = Evaluate (env);
+		NE::ValuePtr value = GetCalculatedValue ();
 		OnEnabled (value, env);
 	} else {
 		OnDisabled (env);
