@@ -1,17 +1,16 @@
-#include "Application.hpp"
-#include "Window.hpp"
-#include "CustomControl.hpp"
 #include "BitmapContextGdi.hpp"
 #include "BitmapContextGdiplus.hpp"
 #include "WindowsAppUtilities.hpp"
-#include "Debug.hpp"
 #include "NodeEditorControl.hpp"
 #include "DrawingControl.hpp"
-#include "Splitter.hpp"
+#include "Debug.hpp"
 
 #include <CommCtrl.h>
 #include <iostream>
 #include <fstream>
+
+#include "wx/wx.h"
+#include "wx/splitter.h"
 
 class ApplicationState
 {
@@ -46,174 +45,123 @@ private:
 	std::wstring currentFileName;
 };
 
-class NodeEditorWindow : public UI::Window
+class MainFrame : public wxFrame
 {
 public:
-	NodeEditorWindow (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
-		statusBarHandle (NULL),
-		applicationState (),
-		drawingControl (resultImage),
-		drawingUpdateInterface (drawingControl),
-		nodeEditorControl (drawingUpdateInterface, evaluationEnv),
-		splitterControl (nodeEditorControl, drawingControl, 0.7)
+	enum CommandId
 	{
-
-	}
-
-private:
-	class DrawingUpdateInterface : public UpdateInterface
-	{
-	public:
-		DrawingUpdateInterface (DrawingControl& drawingControl) :
-			drawingControl (drawingControl)
-		{
-		
-		}
-
-		virtual void ClearImage () override
-		{
-			drawingControl.ClearImage ();
-		}
-
-		virtual void RedrawImage () override
-		{
-			drawingControl.RedrawImage ();
-		}
-
-	private:
-		DrawingControl& drawingControl;
+		File_New		= 1,
+		File_Open		= 2,
+		File_Save		= 3,
+		File_SaveAs		= 4,
+		File_Exit		= 5
 	};
 
-	enum MenuCommand
+	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
+		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
+		menuBar (new wxMenuBar ()),
+		fileMenu (new wxMenu ()),
+		splitter (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE)),
+		drawingControl (new DrawingControl (splitter, resultImage)),
+		updateInterface (drawingControl),
+		nodeEditorControl (new NodeEditorControl (splitter, updateInterface, evaluationEnv)),
+		applicationState ()
 	{
-		File_New				= 1000,
-		File_Open				= 1001,
-		File_Save				= 1002,
-		File_SaveAs				= 1003,
-		File_Quit				= 1004,
-		Debug_GdiContext		= 1005,
-		Debug_GdiplusContext	= 1006,
-		Debug_Direct2DContext	= 1007
-	};
+		fileMenu->Append (CommandId::File_New, "New");
+		fileMenu->Append (CommandId::File_Open, "Open...");
+		fileMenu->Append (CommandId::File_Save, "Save...");
+		fileMenu->Append (CommandId::File_SaveAs, "Save As...");
+		fileMenu->AppendSeparator ();
+		fileMenu->Append (CommandId::File_Exit, L"Exit");
+		menuBar->Append (fileMenu, L"&File");
+		SetMenuBar (menuBar);
 
-	virtual void OnCreate (HWND hwnd) override
-	{
-		nodeEditorControl.Init (hwnd, 0, 0, 0, 0);
-		drawingControl.Init (hwnd, 0, 0, 0, 0);
-		InitFileMenu (hwnd);
-		InitStatusBar (hwnd);
-	}
+		splitter->SetSashGravity (0.5);
+		splitter->SetMinimumPaneSize (20);
+		splitter->SplitVertically (nodeEditorControl, drawingControl, 700);
 
-	virtual void OnResize (HWND hwnd, int newWidth, int newHeight) override
-	{
-		static const int splitterWidth = 4;
-		SendMessage (statusBarHandle, WM_SIZE, 0, 0);
-
+		CreateStatusBar ();
 		UpdateStatusBar ();
-		RECT statusBarRect = {0, 0, 0, 0};
-		GetClientRect (statusBarHandle, &statusBarRect);
-		int clientHeight = newHeight - (statusBarRect.bottom - statusBarRect.top);
-
-		splitterControl.SetRect (UI::Rect (0, 0, newWidth, clientHeight));
 	}
 
-	virtual void OnMenuCommand (HWND hwnd, int commandId) override
+	~MainFrame ()
 	{
-		if (commandId == MenuCommand::File_New) {
-			nodeEditorControl.New ();
-			drawingControl.ClearImage ();
-			applicationState.ClearCurrentFileName ();
-		} else if (commandId == MenuCommand::File_Open || commandId == MenuCommand::File_Save || commandId == MenuCommand::File_SaveAs) {
-			OPENFILENAME openFileName;
-			ZeroMemory (&openFileName, sizeof(openFileName));
-			wchar_t fileName[MAX_PATH] = L"";
-			openFileName.lStructSize = sizeof (openFileName); 
-			openFileName.hwndOwner = GetWindowHandle ();
-			openFileName.lpstrFile = (LPWSTR) fileName;
-			openFileName.nMaxFile = MAX_PATH;
-			openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
-			openFileName.lpstrDefExt = (LPCWSTR) L"txt";
-			if (commandId == MenuCommand::File_Open) {
-				if (GetOpenFileName (&openFileName)) {
-					if (nodeEditorControl.Open (fileName)) {
-						drawingControl.ClearImage ();
-						applicationState.SetCurrentFileName (fileName);
-					}
-				}
-			} else if (commandId == MenuCommand::File_Save) {
-				if (applicationState.HasCurrentFileName ()) {
-					nodeEditorControl.Save (applicationState.GetCurrentFileName ());
-				} else if (GetSaveFileName (&openFileName)) {
-					nodeEditorControl.Save (fileName);
-					applicationState.SetCurrentFileName (fileName);
-				}
-			} else if (commandId == MenuCommand::File_SaveAs) {
-				if (GetSaveFileName (&openFileName)) {
-					nodeEditorControl.Save (fileName);
-					applicationState.SetCurrentFileName (fileName);
-				}
+	
+	}
+
+	void OnNew (wxCommandEvent& event)
+	{
+		nodeEditorControl->New ();
+		drawingControl->ClearImage ();
+		applicationState.ClearCurrentFileName ();
+		UpdateStatusBar ();
+	}
+
+	void OnOpen (wxCommandEvent& event)
+	{
+		// TODO: Duplicated code
+		OPENFILENAME openFileName;
+		ZeroMemory (&openFileName, sizeof(openFileName));
+		wchar_t fileName[MAX_PATH] = L"";
+		openFileName.lStructSize = sizeof (openFileName); 
+		openFileName.hwndOwner = (HWND) GetHandle ();
+		openFileName.lpstrFile = (LPWSTR) fileName;
+		openFileName.nMaxFile = MAX_PATH;
+		openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
+		openFileName.lpstrDefExt = (LPCWSTR) L"txt";
+		if (GetOpenFileName (&openFileName)) {
+			drawingControl->ClearImage ();
+			// TODO: handle when open fails
+			if (nodeEditorControl->Open (fileName)) {
+				applicationState.SetCurrentFileName (fileName);
 			}
-		} else if (commandId == MenuCommand::Debug_GdiContext) {
-			nodeEditorControl.ChangeContext (1);
-		} else if (commandId == MenuCommand::Debug_GdiplusContext) {
-			nodeEditorControl.ChangeContext (2);
-		} else if (commandId == MenuCommand::Debug_Direct2DContext) {
-			nodeEditorControl.ChangeContext (3);
-		} else if (commandId == MenuCommand::File_Quit) {
-			Close ();
 		}
 		UpdateStatusBar ();
 	}
 
-	virtual void OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override
+	void OnSave (wxCommandEvent& event)
 	{
-		if (splitterControl.IsSplitterArea (x, y)) {
-			splitterControl.OnMouseDown (x, y);
+		// TODO: Duplicated code
+		OPENFILENAME openFileName;
+		ZeroMemory (&openFileName, sizeof(openFileName));
+		wchar_t fileName[MAX_PATH] = L"";
+		openFileName.lStructSize = sizeof (openFileName); 
+		openFileName.hwndOwner = (HWND) GetHandle ();
+		openFileName.lpstrFile = (LPWSTR) fileName;
+		openFileName.nMaxFile = MAX_PATH;
+		openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
+		openFileName.lpstrDefExt = (LPCWSTR) L"txt";
+		if (applicationState.HasCurrentFileName ()) {
+			nodeEditorControl->Save (applicationState.GetCurrentFileName ());
+		} else if (GetSaveFileName (&openFileName)) {
+			nodeEditorControl->Save (fileName);
+			applicationState.SetCurrentFileName (fileName);
 		}
-	}
-
-	virtual void OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override
-	{
-		splitterControl.OnMouseUp ();
-	}
-
-	virtual void OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override
-	{
-		if (splitterControl.IsSplitterArea (x, y)) {
-			SetCursor (LoadCursor (NULL, IDC_SIZEALL));
-		}
-		splitterControl.OnMouseMove (x, y);
-	}
-
-	void InitFileMenu (HWND hwnd)
-	{
-		HMENU hMenubar = CreateMenu ();
-
-		HMENU hFileMenu = CreateMenu ();
-		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_New, L"&New");
-		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_Open, L"&Open");
-		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_Save, L"&Save");
-		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_SaveAs, L"&Save As");
-		AppendMenuW (hFileMenu, MF_SEPARATOR, 0, NULL);
-		AppendMenuW (hFileMenu, MF_STRING, MenuCommand::File_Quit, L"&Quit");
-		AppendMenuW (hMenubar, MF_POPUP, (UINT_PTR) hFileMenu, L"&File");
-
-		HMENU hDebugMenu = CreateMenu ();
-		HMENU hContextChangeMenu = CreateMenu ();
-		AppendMenuW (hDebugMenu, MF_POPUP, (UINT_PTR) hContextChangeMenu, L"Change Context");
-		AppendMenuW (hContextChangeMenu, MF_STRING, MenuCommand::Debug_GdiContext, L"Gdi");
-		AppendMenuW (hContextChangeMenu, MF_STRING, MenuCommand::Debug_GdiplusContext, L"Gdiplus");
-		AppendMenuW (hContextChangeMenu, MF_STRING, MenuCommand::Debug_Direct2DContext, L"Direct2D");
-		AppendMenuW (hMenubar, MF_POPUP, (UINT_PTR) hDebugMenu, L"&Debug");
-
-		SetMenu (hwnd, hMenubar);
-	}
-
-	void InitStatusBar (HWND hwnd)
-	{
-		statusBarHandle = CreateWindowEx (0, STATUSCLASSNAME, NULL, WS_CHILD | WS_VISIBLE | SBARS_SIZEGRIP, 0, 0, 0, 0, hwnd, NULL, NULL, NULL);
-		ShowWindow (statusBarHandle, SW_SHOW);
 		UpdateStatusBar ();
+	}
+
+	void OnSaveAs (wxCommandEvent& event)
+	{
+		// TODO: Duplicated code
+		OPENFILENAME openFileName;
+		ZeroMemory (&openFileName, sizeof(openFileName));
+		wchar_t fileName[MAX_PATH] = L"";
+		openFileName.lStructSize = sizeof (openFileName); 
+		openFileName.hwndOwner = (HWND) GetHandle ();
+		openFileName.lpstrFile = (LPWSTR) fileName;
+		openFileName.nMaxFile = MAX_PATH;
+		openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
+		openFileName.lpstrDefExt = (LPCWSTR) L"txt";
+		if (GetSaveFileName (&openFileName)) {
+			nodeEditorControl->Save (fileName);
+			applicationState.SetCurrentFileName (fileName);
+		}
+		UpdateStatusBar ();
+	}
+
+	void OnExit (wxCommandEvent& event)
+	{
+		Close (true);
 	}
 
 	void UpdateStatusBar ()
@@ -222,50 +170,75 @@ private:
 		if (applicationState.HasCurrentFileName ()) {
 			currentFileText = applicationState.GetCurrentFileName ();
 		}
-		int statusBarColumnWidths[] = {300, -1};
-		SendMessage (statusBarHandle, SB_SETPARTS, 2, (LPARAM) statusBarColumnWidths);
-		SendMessage (statusBarHandle, SB_SETTEXT, 0, (LPARAM) currentFileText.c_str ());
+		SetStatusText (currentFileText);
 	}
 
-	HWND					statusBarHandle;
+private:
+	class DrawingUpdateInterface : public UpdateInterface
+	{
+	public:
+		DrawingUpdateInterface (DrawingControl* drawingControl) :
+			drawingControl (drawingControl)
+		{
+		
+		}
+
+		virtual void RedrawImage () override
+		{
+			drawingControl->RedrawImage ();
+		}
+
+	private:
+		DrawingControl* drawingControl;
+	};
+
+	wxMenuBar*				menuBar;
+	wxMenu*					fileMenu;
+
+	wxSplitterWindow*		splitter;
+	DrawingControl*			drawingControl;
+	DrawingUpdateInterface	updateInterface;
+	NodeEditorControl*		nodeEditorControl;
+
 	ApplicationState		applicationState;
 
-	DrawingControl			drawingControl;
-	DrawingUpdateInterface	drawingUpdateInterface;
-	NodeEditorControl		nodeEditorControl;
-	UI::VerticalSplitter	splitterControl;
+	DECLARE_EVENT_TABLE ()
 };
 
-class NodeEngineTestApplication : public Application
+BEGIN_EVENT_TABLE (MainFrame, wxFrame)
+EVT_MENU (MainFrame::CommandId::File_New, MainFrame::OnNew)
+EVT_MENU (MainFrame::CommandId::File_Open, MainFrame::OnOpen)
+EVT_MENU (MainFrame::CommandId::File_Save, MainFrame::OnSave)
+EVT_MENU (MainFrame::CommandId::File_SaveAs, MainFrame::OnSaveAs)
+EVT_MENU (MainFrame::CommandId::File_Exit, MainFrame::OnExit)
+END_EVENT_TABLE ()
+
+class NodeEngineTestApplication : public wxApp
 {
 public:
 	NodeEngineTestApplication () :
 		resultImage (new ResultImage ()),
 		evaluationData (new ResultImageEvaluationData (resultImage)),
 		evaluationEnv (evaluationData),
-		nodeEditorWindow (resultImage, evaluationEnv)
+		mainFrame (nullptr)
 	{
 	
 	}
 
-	virtual void OnInit ()
+	virtual bool OnInit ()
 	{
-		nodeEditorWindow.Open (L"Node Engine Test App", 20, 20, 1000, 600);
+		mainFrame = new MainFrame (resultImage, evaluationEnv);
+		mainFrame->Show (true);
+		SetTopWindow (mainFrame);
+		return true;
 	}
 
 private:
 	std::shared_ptr<ResultImage>				resultImage;
 	std::shared_ptr<ResultImageEvaluationData>	evaluationData;
 	NE::EvaluationEnv							evaluationEnv;
-	NodeEditorWindow							nodeEditorWindow;
+
+	MainFrame*									mainFrame;
 };
 
-int wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
-{
-	EnableLeakDetection ();
-
-	NodeEngineTestApplication app;
-	app.Start ();
-
-	return 0;
-}
+IMPLEMENT_APP (NodeEngineTestApplication)

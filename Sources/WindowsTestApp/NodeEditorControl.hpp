@@ -2,12 +2,13 @@
 #define NODEEDITORCONTROL_HPP
 
 #include "WinDrawingContext.hpp"
-#include "CustomControl.hpp"
+#include "BitmapContextGdi.hpp"
 #include "BuiltInCommands.hpp"
 #include "WindowsAppUtilities.hpp"
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"
 
+#include "wx/wx.h"
 #include <memory>
 
 class MyCreateNodeCommand : public NUIE::CreateNodeCommand
@@ -34,9 +35,7 @@ private:
 class AppEventHandlers : public NUIE::EventHandlers
 {
 public:
-	AppEventHandlers ();
-
-	void						SetWindowHandle (HWND newHwnd);
+	AppEventHandlers (wxPanel* panel);
 
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands) override;
@@ -44,30 +43,52 @@ public:
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::InputSlotPtr& inputSlot, const NUIE::CommandStructure& commands) override;
 
 private:
-	HWND hwnd;
+	wxPanel* panel;
 };
 
 class UpdateInterface
 {
 public:
-	virtual void ClearImage () = 0;
 	virtual void RedrawImage () = 0;
 };
 
-class NodeEditorControl :	public UI::CustomControl,
+// On double click event the mouse down and up events are not in pair
+class MouseCaptureHandler
+{
+public:
+	MouseCaptureHandler (wxPanel* panel);
+
+	void		OnMouseDown ();
+	void		OnMouseUp ();
+	void		OnCaptureLost ();
+
+private:
+	wxPanel*	panel;
+	int			counter;
+};
+
+class NodeEditorControl :	public wxPanel,
 							public NUIE::NodeUIEnvironment
 {
 public:
-	NodeEditorControl (UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv);
+	NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv);
 
-	virtual void					OnCreate (HWND hwnd) override;
-	virtual void					OnPaint (HWND hwnd) override;
-	virtual void					OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void					OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void					OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y) override;
-	virtual void					OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta) override;
-	virtual void					OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y) override;
-	virtual void					OnResize (HWND hwnd, int newWidth, int newHeight) override;
+	void							OnPaint (wxPaintEvent& evt);
+	void							OnResize (wxSizeEvent& evt);
+	void							OnMouseCaptureLost (wxMouseCaptureLostEvent& evt);
+
+	void							OnLeftButtonDown (wxMouseEvent& evt);
+	void							OnLeftButtonUp (wxMouseEvent& evt);
+	void							OnMiddleButtonDown (wxMouseEvent& evt);
+	void							OnMiddleButtonUp (wxMouseEvent& evt);
+	void							OnRightButtonDown (wxMouseEvent& evt);
+	void							OnRightButtonUp (wxMouseEvent& evt);
+	void							OnMouseMove (wxMouseEvent& evt);
+	void							OnMouseWheel (wxMouseEvent& evt);
+
+	void							New ();
+	bool							Open (const std::wstring& fileName);
+	bool							Save (const std::wstring& fileName);
 
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 	virtual NUIE::SkinParams&		GetSkinParams () override;
@@ -76,22 +97,18 @@ public:
 	virtual void					OnValuesRecalculated () override;
 	virtual void					OnRedrawRequest () override;
 
-	void							New ();
-	bool							Open (const std::wstring& fileName);
-	bool							Save (const std::wstring& fileName);
-	void							ChangeContext (short contextType);
-
 private:
-	NUIE::KeySet		ConvertKeys (UI::Keys keys);
-	NUIE::MouseButton	ConvertMouseButton (UI::MouseButton button);
+	MouseCaptureHandler		captureHandler;
 
-	UpdateInterface&							updateInterface;
-	NE::EvaluationEnv&							evaluationEnv;
+	UpdateInterface&		updateInterface;
+	NE::EvaluationEnv&		evaluationEnv;
 
-	std::unique_ptr<WinDrawingContext>			drawingContext;
-	NUIE::SkinParams							skinParams;
-	AppEventHandlers							eventHandlers;
-	NUIE::NodeEditor							nodeEditor;
+	BitmapContextGdi		drawingContext;
+	NUIE::SkinParams		skinParams;
+	AppEventHandlers		eventHandlers;
+	NUIE::NodeEditor		nodeEditor;
+
+	DECLARE_EVENT_TABLE ()
 };
 
 #endif

@@ -1,6 +1,28 @@
 #include "BitmapContextGdiplus.hpp"
 #include "Debug.hpp"
 
+class GdiplusInitializer
+{
+public:
+	GdiplusInitializer ()
+	{
+		Gdiplus::GdiplusStartupInput input;
+		Gdiplus::GdiplusStartupOutput output;
+		Gdiplus::Status status = Gdiplus::GdiplusStartup (&gdiPlusToken, &input, &output);
+		DBGASSERT (status == Gdiplus::Ok);
+	}
+
+	~GdiplusInitializer ()
+	{
+		Gdiplus::GdiplusShutdown (gdiPlusToken);
+	}
+
+private:
+	ULONG_PTR	gdiPlusToken;
+};
+
+static GdiplusInitializer gdiplusInitializer;
+
 BitmapContextGdiplus::BitmapContextGdiplus () :
 	WinDrawingContext (),
 	width (0),

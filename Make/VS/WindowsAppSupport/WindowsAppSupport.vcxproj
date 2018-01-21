@@ -124,28 +124,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Application.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\BitmapContextGdi.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\BitmapContextGdiplus.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\CustomControl.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Direct2DContext.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\DrawingCacheKeys.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Splitter.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Window.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\UIItem.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtilities.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WinDrawingContext.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Application.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdi.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdiplus.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\CustomControl.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Direct2DContext.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\DrawingCacheKeys.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Splitter.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Window.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\UIItem.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtilities.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WinDrawingContext.cpp" />
   </ItemGroup>

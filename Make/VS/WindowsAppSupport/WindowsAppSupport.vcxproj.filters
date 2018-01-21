@@ -7,25 +7,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Application.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\BitmapContextGdi.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\BitmapContextGdiplus.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\CustomControl.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\UIItem.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtilities.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Window.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Direct2DContext.hpp">
@@ -37,30 +25,15 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WinDrawingContext.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Splitter.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdiplus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\CustomControl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\UIItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtilities.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Direct2DContext.cpp">
@@ -70,9 +43,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WinDrawingContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Splitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

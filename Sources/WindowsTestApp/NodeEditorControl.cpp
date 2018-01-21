@@ -17,35 +17,31 @@ MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager
 NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPosition)
 {
 	switch (nodeType) {
-	case NodeType::Integer:
-		return NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", modelPosition, 0, 5));
-	case NodeType::IntegerRange:
-		return NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", modelPosition));
-	case NodeType::Point:
-		return NUIE::UINodePtr (new PointNode (L"Point", modelPosition));
-	case NodeType::Line:
-		return NUIE::UINodePtr (new LineNode (L"Line", modelPosition));
-	case NodeType::Circle:
-		return NUIE::UINodePtr (new CircleNode (L"Circle", modelPosition));
-	case NodeType::Viewer:
-		return NUIE::UINodePtr (new NUIE::MultiLineViewerUINode (L"Viewer", modelPosition, 5));
+		case NodeType::Integer:
+			return NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", modelPosition, 0, 5));
+		case NodeType::IntegerRange:
+			return NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", modelPosition));
+		case NodeType::Point:
+			return NUIE::UINodePtr (new PointNode (L"Point", modelPosition));
+		case NodeType::Line:
+			return NUIE::UINodePtr (new LineNode (L"Line", modelPosition));
+		case NodeType::Circle:
+			return NUIE::UINodePtr (new CircleNode (L"Circle", modelPosition));
+		case NodeType::Viewer:
+			return NUIE::UINodePtr (new NUIE::MultiLineViewerUINode (L"Viewer", modelPosition, 5));
 	}
 	return nullptr;
 }
 
-AppEventHandlers::AppEventHandlers () :
-	hwnd (NULL)
+AppEventHandlers::AppEventHandlers (wxPanel* panel) :
+	panel (panel)
 {
 
-}
-
-void AppEventHandlers::SetWindowHandle (HWND newHwnd)
-{
-	hwnd = newHwnd;
 }
 
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands)
 {
+	// TODO: wx context menu
 	NUIE::CommandStructure actualCommands = commands;
 	NUIE::GroupCommandPtr createCommandGroup (new NUIE::GroupCommand (L"Add Node"));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
@@ -55,40 +51,64 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Circle, uiManager, uiEnvironment, L"Circle", position)));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Viewer", position)));
 	actualCommands.AddCommand (createCommandGroup);
-	return UI::SelectCommandFromContextMenu (hwnd, position, actualCommands);
+	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, actualCommands);
 }
 
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands)
 {
-	return UI::SelectCommandFromContextMenu (hwnd, position, commands);
+	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
 }
 
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands)
 {
-	return UI::SelectCommandFromContextMenu (hwnd, position, commands);
+	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
 }
 
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::InputSlotPtr& inputSlot, const NUIE::CommandStructure& commands)
 {
-	return UI::SelectCommandFromContextMenu (hwnd, position, commands);
+	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
 }
 
-NodeEditorControl::NodeEditorControl (UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
-	UI::CustomControl (),
+MouseCaptureHandler::MouseCaptureHandler (wxPanel* panel) :
+	panel (panel),
+	counter (0)
+{
+
+}
+
+void MouseCaptureHandler::OnMouseDown ()
+{
+	panel->CaptureMouse ();
+	counter++;
+}
+
+void MouseCaptureHandler::OnMouseUp ()
+{
+	counter--;
+	if (counter == 0) {
+		panel->ReleaseMouse ();
+	}
+	counter = 0;
+}
+
+void MouseCaptureHandler::OnCaptureLost ()
+{
+	counter = 0;
+}
+
+NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
+	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
+	captureHandler (this),
+	NUIE::NodeUIEnvironment (),
 	updateInterface (updateInterface),
 	evaluationEnv (evaluationEnv),
-	drawingContext (nullptr),
+	drawingContext (),
 	skinParams (),
-	eventHandlers (),
+	eventHandlers (this),
 	nodeEditor (*this)
 {
-	drawingContext.reset (new BitmapContextGdi ());
-}
-
-void NodeEditorControl::OnCreate (HWND hwnd)
-{
-	drawingContext->Init (hwnd);
-	eventHandlers.SetWindowHandle (hwnd);
+	HWND hwnd = GetHandle ();
+	drawingContext.Init (hwnd);
 
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
@@ -120,58 +140,107 @@ void NodeEditorControl::OnCreate (HWND hwnd)
 	}
 }
 
-void NodeEditorControl::OnPaint (HWND hwnd)
+void NodeEditorControl::OnPaint (wxPaintEvent& evt)
 {
 	nodeEditor.Draw ();
 
 	PAINTSTRUCT ps;
+	HWND hwnd = (HWND) GetHandle ();
 	HDC hdc = BeginPaint (hwnd, &ps);
-	drawingContext->DrawToHDC (hdc);
+	drawingContext.DrawToHDC (hdc);
 	EndPaint (hwnd, &ps);
 }
 
-void NodeEditorControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void NodeEditorControl::OnResize (wxSizeEvent& evt)
 {
-	NUIE::KeySet pressedKeys = ConvertKeys (keys);
-	NUIE::MouseButton mouseButton = ConvertMouseButton (button);
-	nodeEditor.OnMouseDown (pressedKeys, mouseButton, x, y);
+	wxSize size = evt.GetSize ();
+	drawingContext.Resize (size.GetWidth (), size.GetHeight ());
 }
 
-void NodeEditorControl::OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
 {
-	NUIE::KeySet pressedKeys = ConvertKeys (keys);
-	NUIE::MouseButton mouseButton = ConvertMouseButton (button);
-	nodeEditor.OnMouseUp (pressedKeys, mouseButton, x, y);
+	captureHandler.OnCaptureLost ();
 }
 
-void NodeEditorControl::OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y)
+void NodeEditorControl::OnLeftButtonDown (wxMouseEvent& evt)
 {
-	NUIE::KeySet pressedKeys = ConvertKeys (keys);
-	nodeEditor.OnMouseMove (pressedKeys, x, y);
+	// TODO: KeySet
+	captureHandler.OnMouseDown ();
+	nodeEditor.OnMouseDown (NUIE::EmptyKeySet, NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 }
 
-void NodeEditorControl::OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta)
+void NodeEditorControl::OnLeftButtonUp (wxMouseEvent& evt)
 {
-	NUIE::KeySet pressedKeys = ConvertKeys (keys);
-	NUIE::MouseWheelRotation rotation = delta > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
-	nodeEditor.OnMouseWheel (pressedKeys, rotation, x, y);
+	// TODO: KeySet
+	nodeEditor.OnMouseUp (NUIE::EmptyKeySet, NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	captureHandler.OnMouseUp ();
 }
 
-void NodeEditorControl::OnMouseDoubleClick (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void NodeEditorControl::OnRightButtonDown (wxMouseEvent& evt)
 {
-	NUIE::KeySet pressedKeys = ConvertKeys (keys);
-	NUIE::MouseButton mouseButton = ConvertMouseButton (button);
-	nodeEditor.OnMouseDoubleClick (pressedKeys, mouseButton, x, y);
+	// TODO: KeySet
+	captureHandler.OnMouseDown ();
+	nodeEditor.OnMouseDown (NUIE::EmptyKeySet, NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 }
 
-void NodeEditorControl::OnResize (HWND hwnd, int newWidth, int newHeight)
+void NodeEditorControl::OnRightButtonUp (wxMouseEvent& evt)
 {
-	nodeEditor.OnResize (newWidth, newHeight);
+	// TODO: KeySet
+	nodeEditor.OnMouseUp (NUIE::EmptyKeySet, NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	captureHandler.OnMouseUp ();
+}
+
+void NodeEditorControl::OnMiddleButtonDown (wxMouseEvent& evt)
+{
+	// TODO: KeySet
+	captureHandler.OnMouseDown ();
+	nodeEditor.OnMouseDown (NUIE::EmptyKeySet, NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+}
+
+void NodeEditorControl::OnMiddleButtonUp (wxMouseEvent& evt)
+{
+	// TODO: KeySet
+	nodeEditor.OnMouseUp (NUIE::EmptyKeySet, NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	captureHandler.OnMouseUp ();
+}
+
+void NodeEditorControl::OnMouseMove (wxMouseEvent& evt)
+{
+	// TODO: KeySet
+	nodeEditor.OnMouseMove (NUIE::EmptyKeySet, evt.GetX (), evt.GetY ());
+}
+
+void NodeEditorControl::OnMouseWheel (wxMouseEvent& evt)
+{
+	// TODO: KeySet
+	NUIE::MouseWheelRotation rotation = evt.GetWheelRotation () > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
+	nodeEditor.OnMouseWheel (NUIE::EmptyKeySet, rotation, evt.GetX (), evt.GetY ());
+}
+
+void NodeEditorControl::New ()
+{
+	nodeEditor.Clear ();
+}
+ 
+bool NodeEditorControl::Open (const std::wstring& fileName)
+{
+	if (!nodeEditor.Load (fileName)) {
+		return false;
+	}
+	return true;
+}
+ 
+bool NodeEditorControl::Save (const std::wstring& fileName)
+{
+	if (!nodeEditor.Save (fileName)) {
+		return false;
+	}
+	return true;
 }
 
 NUIE::DrawingContext& NodeEditorControl::GetDrawingContext ()
 {
-	return *drawingContext.get ();
+	return drawingContext;
 }
 
 NUIE::SkinParams& NodeEditorControl::GetSkinParams ()
@@ -196,70 +265,20 @@ void NodeEditorControl::OnValuesRecalculated ()
 
 void NodeEditorControl::OnRedrawRequest ()
 {
-	InvalidateRect (GetWindowHandle (), NULL, FALSE);
+	Refresh (false);
 }
 
-void NodeEditorControl::New ()
-{
-	nodeEditor.Clear ();
-}
-
-bool NodeEditorControl::Open (const std::wstring& fileName)
-{
-	if (!nodeEditor.Load (fileName)) {
-		return false;
-	}
-	return true;
-}
-
-bool NodeEditorControl::Save (const std::wstring& fileName)
-{
-	if (!nodeEditor.Save (fileName)) {
-		return false;
-	}
-	return true;
-}
-
-void NodeEditorControl::ChangeContext (short contextType)
-{
-	switch (contextType) {
-		case 1:
-			drawingContext.reset (new BitmapContextGdi ());
-			break;
-		case 2:
-			drawingContext.reset (new BitmapContextGdiplus ());
-			break;
-		case 3:
-			drawingContext.reset (new Direct2DContext ());
-			break;
-		default:
-			DBGBREAK ();
-			break;
-	}
-	drawingContext->Init (GetWindowHandle ());
-	nodeEditor.InvalidateAllNodesDrawing ();
-	InvalidateRect (GetWindowHandle (), NULL, FALSE);
-}
-
-NUIE::KeySet NodeEditorControl::ConvertKeys (UI::Keys keys)
-{
-	std::unordered_set<NUIE::KeyCode> keyCodes;
-	if (keys.IsKeyPressed (UI::Keys::ControlKey)) {
-		keyCodes.insert (NUIE::KeyCode::Control);
-	}
-	if (keys.IsKeyPressed (UI::Keys::ShiftKey)) {
-		keyCodes.insert (NUIE::KeyCode::Shift);
-	}
-	return NUIE::KeySet (keyCodes);
-}
-
-NUIE::MouseButton NodeEditorControl::ConvertMouseButton (UI::MouseButton button)
-{
-	NUIE::MouseButton mouseButton = NUIE::MouseButton::Left;
-	switch (button) {
-		case UI::MouseButton::Left: mouseButton = NUIE::MouseButton::Left; break;
-		case UI::MouseButton::Middle: mouseButton = NUIE::MouseButton::Middle; break;
-		case UI::MouseButton::Right: mouseButton = NUIE::MouseButton::Right; break;
-	}
-	return mouseButton;
-}
+BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)
+// TODO: double click events
+EVT_PAINT (NodeEditorControl::OnPaint)
+EVT_SIZE (NodeEditorControl::OnResize)
+EVT_MOUSE_CAPTURE_LOST (NodeEditorControl::OnMouseCaptureLost)
+EVT_LEFT_DOWN (NodeEditorControl::OnLeftButtonDown)
+EVT_LEFT_UP (NodeEditorControl::OnLeftButtonUp)
+EVT_RIGHT_DOWN (NodeEditorControl::OnRightButtonDown)
+EVT_RIGHT_UP (NodeEditorControl::OnRightButtonUp)
+EVT_MIDDLE_DOWN (NodeEditorControl::OnMiddleButtonDown)
+EVT_MIDDLE_UP (NodeEditorControl::OnMiddleButtonUp)
+EVT_MOUSEWHEEL (NodeEditorControl::OnMouseWheel)
+EVT_MOTION (NodeEditorControl::OnMouseMove)
+END_EVENT_TABLE ()

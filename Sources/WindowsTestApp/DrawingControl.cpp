@@ -1,69 +1,62 @@
 #include "DrawingControl.hpp"
 #include "ContextDecorators.hpp"
-#include "BitmapContextGdiplus.hpp"
 
-DrawingControl::DrawingControl (const std::shared_ptr<ResultImage>& resultImage) :
-	UI::CustomControl (),
+DrawingControl::DrawingControl (wxWindow *parent, const std::shared_ptr<ResultImage>& resultImage) :
+	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
 	resultImage (resultImage),
-	drawingContext (new BitmapContextGdiplus ()),
+	drawingContext (),
 	viewBox (NUIE::Point (0.0, 0.0), 1.0),
 	lastMousePos (nullptr)
 {
-
+	HWND hwnd = GetHandle ();
+	drawingContext.Init (hwnd);
 }
 
-void DrawingControl::OnCreate (HWND hwnd)
+void DrawingControl::OnPaint (wxPaintEvent& evt)
 {
-	drawingContext->Init (hwnd);
-}
-
-void DrawingControl::OnPaint (HWND hwnd)
-{
-	drawingContext->FillRect (NUIE::Rect (-10, -10, drawingContext->GetWidth () + 20, drawingContext->GetHeight () + 20), NUIE::Color (255, 255, 255));
-	NUIE::ViewBoxContextDecorator viewBoxDecorator (*drawingContext, viewBox);
+	drawingContext.FillRect (NUIE::Rect (-10, -10, drawingContext.GetWidth () + 20, drawingContext.GetHeight () + 20), NUIE::Color (255, 255, 255));
+	NUIE::ViewBoxContextDecorator viewBoxDecorator (drawingContext, viewBox);
 	resultImage->Draw (viewBoxDecorator);
 	resultImage->Validate ();
 
 	PAINTSTRUCT ps;
+	HWND hwnd = (HWND) GetHandle ();
 	HDC hdc = BeginPaint (hwnd, &ps);
-	drawingContext->DrawToHDC (hdc);
+	drawingContext.DrawToHDC (hdc);
 	EndPaint (hwnd, &ps);
 }
 
-void DrawingControl::OnMouseDown (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void DrawingControl::OnResize (wxSizeEvent& evt)
 {
-	if (button == UI::MouseButton::Middle) {
-		lastMousePos.reset (new NUIE::Point (x, y));
-	}
+	wxSize size = evt.GetSize ();
+	drawingContext.Resize (size.GetWidth (), size.GetHeight ());
 }
 
-void DrawingControl::OnMouseUp (HWND hwnd, UI::Keys keys, UI::MouseButton button, int x, int y)
+void DrawingControl::OnMiddleButtonDown (wxMouseEvent& evt)
 {
-	if (button == UI::MouseButton::Middle) {
-		lastMousePos.reset (nullptr);
-	}
+	// TODO: mouse capture handling
+	lastMousePos.reset (new NUIE::Point (evt.GetX (), evt.GetY ()));
 }
 
-void DrawingControl::OnMouseMove (HWND hwnd, UI::Keys keys, int x, int y)
+void DrawingControl::OnMiddleButtonUp (wxMouseEvent& evt)
+{
+	lastMousePos.reset (nullptr);
+}
+
+void DrawingControl::OnMouseMove (wxMouseEvent& evt)
 {
 	if (lastMousePos != nullptr) {
-		NUIE::Point diff = NUIE::Point (x, y) - *lastMousePos;
+		NUIE::Point diff = NUIE::Point (evt.GetX (), evt.GetY ()) - *lastMousePos;
 		viewBox.SetOffset (viewBox.GetOffset () + diff);
-		lastMousePos->Set (x, y);
+		lastMousePos->Set (evt.GetX (), evt.GetY ());
 		RedrawImage ();
 	}
 }
 
-void DrawingControl::OnMouseWheel (HWND hwnd, UI::Keys keys, int x, int y, int delta)
+void DrawingControl::OnMouseWheel (wxMouseEvent& evt)
 {
-	double scaleRatio = (delta > 0 ? 1.1 : 0.9);
-	viewBox.SetScale (viewBox.GetScale () * scaleRatio, NUIE::Point (x, y));
-	RedrawImage ();
-}
-
-void DrawingControl::OnResize (HWND hwnd, int newWidth, int newHeight)
-{
-	drawingContext->Resize (newWidth, newHeight);
+	double scaleRatio = (evt.GetWheelRotation () > 0 ? 1.1 : 0.9);
+	viewBox.SetScale (viewBox.GetScale () * scaleRatio, NUIE::Point (evt.GetX (), evt.GetY ()));
 	RedrawImage ();
 }
 
@@ -75,5 +68,14 @@ void DrawingControl::ClearImage ()
 
 void DrawingControl::RedrawImage ()
 {
-	InvalidateRect (GetWindowHandle (), NULL, FALSE);
+	Refresh (false);
 }
+
+BEGIN_EVENT_TABLE(DrawingControl, wxPanel)
+EVT_PAINT (DrawingControl::OnPaint)
+EVT_SIZE (DrawingControl::OnResize)
+EVT_MIDDLE_DOWN (DrawingControl::OnMiddleButtonDown)
+EVT_MIDDLE_UP (DrawingControl::OnMiddleButtonUp)
+EVT_MOUSEWHEEL (DrawingControl::OnMouseWheel)
+EVT_MOTION (DrawingControl::OnMouseMove)
+END_EVENT_TABLE ()
