@@ -21,11 +21,14 @@ void MouseCaptureHandler::OnMouseUp ()
 	if (counter == 0) {
 		panel->ReleaseMouse ();
 	}
+	if (counter < 0) {
+		counter = 0;
+	}
 }
 
 void MouseCaptureHandler::OnCaptureLost ()
 {
-	counter = 0;
+	counter--;
 }
 
 static NUIE::KeySet GetKeysFromEvent (WPARAM wParam)
