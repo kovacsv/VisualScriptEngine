@@ -31,11 +31,6 @@ void MouseCaptureHandler::OnCaptureLost ()
 	counter--;
 }
 
-static NUIE::KeySet GetKeysFromEvent (WPARAM wParam)
-{
-
-}
-
 NUIE::KeySet GetKeysFromEvent (wxMouseEvent& evt)
 {
 	std::unordered_set<NUIE::KeyCode> keys;
