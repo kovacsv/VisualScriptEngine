@@ -9,7 +9,9 @@ MouseCaptureHandler::MouseCaptureHandler (wxPanel* panel) :
 
 void MouseCaptureHandler::OnMouseDown ()
 {
-	panel->CaptureMouse ();
+	if (counter == 0) {
+		panel->CaptureMouse ();
+	}
 	counter++;
 }
 
@@ -19,7 +21,6 @@ void MouseCaptureHandler::OnMouseUp ()
 	if (counter == 0) {
 		panel->ReleaseMouse ();
 	}
-	counter = 0;
 }
 
 void MouseCaptureHandler::OnCaptureLost ()

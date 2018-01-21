@@ -89,10 +89,16 @@ public:
 
 	void							OnLeftButtonDown (wxMouseEvent& evt);
 	void							OnLeftButtonUp (wxMouseEvent& evt);
-	void							OnMiddleButtonDown (wxMouseEvent& evt);
-	void							OnMiddleButtonUp (wxMouseEvent& evt);
+	void							OnLeftButtonDoubleClick (wxMouseEvent& evt);
+
 	void							OnRightButtonDown (wxMouseEvent& evt);
 	void							OnRightButtonUp (wxMouseEvent& evt);
+	void							OnRightButtonDoubleClick (wxMouseEvent& evt);
+
+	void							OnMiddleButtonDown (wxMouseEvent& evt);
+	void							OnMiddleButtonUp (wxMouseEvent& evt);
+	void							OnMiddleButtonDoubleClick (wxMouseEvent& evt);
+
 	void							OnMouseMove (wxMouseEvent& evt);
 	void							OnMouseWheel (wxMouseEvent& evt);
 

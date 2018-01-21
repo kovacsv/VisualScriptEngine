@@ -192,6 +192,13 @@ void NodeEditorControl::OnLeftButtonUp (wxMouseEvent& evt)
 	captureHandler.OnMouseUp ();
 }
 
+
+void NodeEditorControl::OnLeftButtonDoubleClick (wxMouseEvent& evt)
+{
+	// TODO: KeySet
+	nodeEditor.OnMouseDoubleClick (NUIE::EmptyKeySet, NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+}
+
 void NodeEditorControl::OnRightButtonDown (wxMouseEvent& evt)
 {
 	// TODO: KeySet
@@ -206,6 +213,12 @@ void NodeEditorControl::OnRightButtonUp (wxMouseEvent& evt)
 	captureHandler.OnMouseUp ();
 }
 
+void NodeEditorControl::OnRightButtonDoubleClick (wxMouseEvent& evt)
+{
+	// TODO: KeySet
+	nodeEditor.OnMouseDoubleClick (NUIE::EmptyKeySet, NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+}
+
 void NodeEditorControl::OnMiddleButtonDown (wxMouseEvent& evt)
 {
 	// TODO: KeySet
@@ -218,6 +231,12 @@ void NodeEditorControl::OnMiddleButtonUp (wxMouseEvent& evt)
 	// TODO: KeySet
 	nodeEditor.OnMouseUp (NUIE::EmptyKeySet, NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
+}
+
+void NodeEditorControl::OnMiddleButtonDoubleClick (wxMouseEvent& evt)
+{
+	// TODO: KeySet
+	nodeEditor.OnMouseDoubleClick (NUIE::EmptyKeySet, NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMouseMove (wxMouseEvent& evt)
@@ -255,16 +274,24 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 }
 
 BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)
-// TODO: double click events
+
 EVT_PAINT (NodeEditorControl::OnPaint)
 EVT_SIZE (NodeEditorControl::OnResize)
 EVT_MOUSE_CAPTURE_LOST (NodeEditorControl::OnMouseCaptureLost)
+
 EVT_LEFT_DOWN (NodeEditorControl::OnLeftButtonDown)
 EVT_LEFT_UP (NodeEditorControl::OnLeftButtonUp)
+EVT_LEFT_DCLICK (NodeEditorControl::OnLeftButtonDoubleClick)
+
 EVT_RIGHT_DOWN (NodeEditorControl::OnRightButtonDown)
 EVT_RIGHT_UP (NodeEditorControl::OnRightButtonUp)
+EVT_RIGHT_DCLICK (NodeEditorControl::OnRightButtonDoubleClick)
+
 EVT_MIDDLE_DOWN (NodeEditorControl::OnMiddleButtonDown)
 EVT_MIDDLE_UP (NodeEditorControl::OnMiddleButtonUp)
+EVT_MIDDLE_DCLICK (NodeEditorControl::OnMiddleButtonDoubleClick)
+
 EVT_MOUSEWHEEL (NodeEditorControl::OnMouseWheel)
 EVT_MOTION (NodeEditorControl::OnMouseMove)
+
 END_EVENT_TABLE ()
