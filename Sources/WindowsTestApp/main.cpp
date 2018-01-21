@@ -61,10 +61,10 @@ public:
 		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
 		menuBar (new wxMenuBar ()),
 		fileMenu (new wxMenu ()),
-		splitter (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE)),
-		drawingControl (new DrawingControl (splitter, resultImage)),
+		editorAndDrawingWindow (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE)),
+		drawingControl (new DrawingControl (editorAndDrawingWindow, resultImage)),
 		updateInterface (drawingControl),
-		nodeEditorControl (new NodeEditorControl (splitter, updateInterface, evaluationEnv)),
+		nodeEditorControl (new NodeEditorControl (editorAndDrawingWindow, updateInterface, evaluationEnv)),
 		applicationState ()
 	{
 		fileMenu->Append (CommandId::File_New, "New");
@@ -76,9 +76,9 @@ public:
 		menuBar->Append (fileMenu, L"&File");
 		SetMenuBar (menuBar);
 
-		splitter->SetSashGravity (0.5);
-		splitter->SetMinimumPaneSize (20);
-		splitter->SplitVertically (nodeEditorControl, drawingControl, 700);
+		editorAndDrawingWindow->SetSashGravity (0.5);
+		editorAndDrawingWindow->SetMinimumPaneSize (20);
+		editorAndDrawingWindow->SplitVertically (nodeEditorControl, drawingControl, 700);
 
 		CreateStatusBar ();
 		UpdateStatusBar ();
@@ -171,7 +171,7 @@ private:
 	wxMenuBar*				menuBar;
 	wxMenu*					fileMenu;
 
-	wxSplitterWindow*		splitter;
+	wxSplitterWindow*		editorAndDrawingWindow;
 	DrawingControl*			drawingControl;
 	DrawingUpdateInterface	updateInterface;
 	NodeEditorControl*		nodeEditorControl;
