@@ -22,7 +22,8 @@ bool KeySet::Contains (KeyCode keyCode) const
 	return keys.find (keyCode) != keys.end ();
 }
 
-MouseEventTranslator::MouseEventTranslator ()
+MouseEventTranslator::MouseEventTranslator (MouseEventHandler& handler) :
+	handler (handler)
 {
 
 }
@@ -40,12 +41,12 @@ void MouseEventTranslator::OnMouseDown (NodeUIEnvironment&, const KeySet&, Mouse
 void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	if (movingMouseButtons.find (mouseButton) != movingMouseButtons.end ()) {
-		HandleMouseDragStop (env, pressedKeys, mouseButton, position);
+		handler.HandleMouseDragStop (env, pressedKeys, mouseButton, position);
 		movingMouseButtons.erase (mouseButton);
 	}
 
 	if (downMouseButtons.find (mouseButton) != downMouseButtons.end ()) {
-		HandleMouseClick (env, pressedKeys, mouseButton, position);
+		handler.HandleMouseClick (env, pressedKeys, mouseButton, position);
 		downMouseButtons.erase (mouseButton);
 	}
 }
@@ -53,25 +54,25 @@ void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const KeySet& pres
 void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position)
 {
 	for (const auto& it : downMouseButtons) {
-		HandleMouseDragStart (env, pressedKeys, it.first, it.second);
+		handler.HandleMouseDragStart (env, pressedKeys, it.first, it.second);
 		movingMouseButtons.insert (it.first);
 	}
 	downMouseButtons.clear ();
 
 	if (!movingMouseButtons.empty ()) {
-		HandleMouseDrag (env, pressedKeys, position);
+		handler.HandleMouseDrag (env, pressedKeys, position);
 	}
 }
 
 void MouseEventTranslator::OnMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position)
 {
-	HandleMouseWheel (env, pressedKeys, rotation, position);
+	handler.HandleMouseWheel (env, pressedKeys, rotation, position);
 }
 
 void MouseEventTranslator::OnMouseDoubleClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	// TODO: this is a hack
-	HandleMouseClick (env, pressedKeys, mouseButton, position);
+	handler.HandleMouseClick (env, pressedKeys, mouseButton, position);
 }
 
 }

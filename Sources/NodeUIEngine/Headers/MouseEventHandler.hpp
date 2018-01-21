@@ -77,7 +77,7 @@ enum class EventHandlerResult
 
 class MouseEventHandler
 {
-protected:
+public:
 	virtual EventHandlerResult	HandleMouseDragStart (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
 	virtual EventHandlerResult	HandleMouseDragStop (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
 	virtual EventHandlerResult	HandleMouseDrag (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position) = 0;
@@ -85,10 +85,10 @@ protected:
 	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position) = 0;
 };
 
-class MouseEventTranslator : public MouseEventHandler
+class MouseEventTranslator
 {
 public:
-	MouseEventTranslator ();
+	MouseEventTranslator (MouseEventHandler& handler);
 	virtual ~MouseEventTranslator ();
 
 	void	OnMouseDown (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
@@ -98,6 +98,7 @@ public:
 	void	OnMouseDoubleClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
 
 private:
+	MouseEventHandler&						handler;
 	std::unordered_map<MouseButton, Point>	downMouseButtons;
 	std::unordered_set<MouseButton>			movingMouseButtons;
 };

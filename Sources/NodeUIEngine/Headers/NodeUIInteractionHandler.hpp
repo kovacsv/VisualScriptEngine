@@ -29,7 +29,7 @@ private:
 	UINodePtr		currentNode;
 };
 
-class NodeUIInteractionHandler : public MouseEventTranslator
+class NodeUIInteractionHandler : public MouseEventHandler
 {
 public:
 	NodeUIInteractionHandler (NodeUIManager& uiManager);

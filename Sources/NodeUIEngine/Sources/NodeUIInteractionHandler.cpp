@@ -297,6 +297,7 @@ EventHandlerResult NodeMouseEventHandler::HandleMouseWheel (NodeUIEnvironment&, 
 }
 
 NodeUIInteractionHandler::NodeUIInteractionHandler (NodeUIManager& uiManager) :
+	MouseEventHandler (),
 	uiManager (uiManager),
 	multiMouseMoveHandler (),
 	nodeMouseEventHandler (uiManager)

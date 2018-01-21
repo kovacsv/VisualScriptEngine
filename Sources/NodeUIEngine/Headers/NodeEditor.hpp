@@ -37,6 +37,7 @@ public:
 protected:
 	NodeUIManager				uiManager;
 	NodeUIInteractionHandler	uiInteractionHandler;
+	MouseEventTranslator		mouseEventTranslator;
 	NodeUIEnvironment&			uiEnvironment;
 };
 
