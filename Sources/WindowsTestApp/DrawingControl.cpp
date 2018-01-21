@@ -3,6 +3,7 @@
 
 DrawingControl::DrawingControl (wxWindow *parent, const std::shared_ptr<ResultImage>& resultImage) :
 	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
+	captureHandler (this),
 	resultImage (resultImage),
 	drawingContext (),
 	viewBox (NUIE::Point (0.0, 0.0), 1.0),
@@ -26,6 +27,11 @@ void DrawingControl::OnPaint (wxPaintEvent& evt)
 	EndPaint (hwnd, &ps);
 }
 
+void DrawingControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
+{
+	captureHandler.OnCaptureLost ();
+}
+
 void DrawingControl::OnResize (wxSizeEvent& evt)
 {
 	wxSize size = evt.GetSize ();
@@ -34,12 +40,13 @@ void DrawingControl::OnResize (wxSizeEvent& evt)
 
 void DrawingControl::OnMiddleButtonDown (wxMouseEvent& evt)
 {
-	// TODO: mouse capture handling
+	captureHandler.OnMouseDown ();
 	lastMousePos.reset (new NUIE::Point (evt.GetX (), evt.GetY ()));
 }
 
 void DrawingControl::OnMiddleButtonUp (wxMouseEvent& evt)
 {
+	captureHandler.OnMouseUp ();
 	lastMousePos.reset (nullptr);
 }
 
@@ -74,6 +81,7 @@ void DrawingControl::RedrawImage ()
 BEGIN_EVENT_TABLE(DrawingControl, wxPanel)
 EVT_PAINT (DrawingControl::OnPaint)
 EVT_SIZE (DrawingControl::OnResize)
+EVT_MOUSE_CAPTURE_LOST (DrawingControl::OnMouseCaptureLost)
 EVT_MIDDLE_DOWN (DrawingControl::OnMiddleButtonDown)
 EVT_MIDDLE_UP (DrawingControl::OnMiddleButtonUp)
 EVT_MOUSEWHEEL (DrawingControl::OnMouseWheel)

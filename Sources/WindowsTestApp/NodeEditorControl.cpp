@@ -69,33 +69,6 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
 }
 
-MouseCaptureHandler::MouseCaptureHandler (wxPanel* panel) :
-	panel (panel),
-	counter (0)
-{
-
-}
-
-void MouseCaptureHandler::OnMouseDown ()
-{
-	panel->CaptureMouse ();
-	counter++;
-}
-
-void MouseCaptureHandler::OnMouseUp ()
-{
-	counter--;
-	if (counter == 0) {
-		panel->ReleaseMouse ();
-	}
-	counter = 0;
-}
-
-void MouseCaptureHandler::OnCaptureLost ()
-{
-	counter = 0;
-}
-
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (wxPanel* nodeEditorControl, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	updateInterface (updateInterface),

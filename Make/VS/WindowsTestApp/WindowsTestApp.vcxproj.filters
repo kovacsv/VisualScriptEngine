@@ -22,6 +22,9 @@
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\DrawingControl.hpp">
@@ -34,6 +37,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

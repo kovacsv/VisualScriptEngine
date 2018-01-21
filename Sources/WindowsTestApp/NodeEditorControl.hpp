@@ -5,6 +5,7 @@
 #include "BitmapContextGdi.hpp"
 #include "BuiltInCommands.hpp"
 #include "WindowsAppUtilities.hpp"
+#include "ControlUtilities.hpp"
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"
 
@@ -50,21 +51,6 @@ class UpdateInterface
 {
 public:
 	virtual void RedrawImage () = 0;
-};
-
-// On double click event the mouse down and up events are not in pair
-class MouseCaptureHandler
-{
-public:
-	MouseCaptureHandler (wxPanel* panel);
-
-	void		OnMouseDown ();
-	void		OnMouseUp ();
-	void		OnCaptureLost ();
-
-private:
-	wxPanel*	panel;
-	int			counter;
 };
 
 class NodeEditorUIEnvironment : public NUIE::NodeUIEnvironment

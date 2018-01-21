@@ -4,6 +4,7 @@
 #include "ResultImage.hpp"
 #include "BitmapContextGdiplus.hpp"
 #include "ViewBox.hpp"
+#include "ControlUtilities.hpp"
 
 #include "wx/wx.h"
 #include <memory>
@@ -15,6 +16,7 @@ public:
 
 	void	OnPaint (wxPaintEvent& evt);
 	void	OnResize (wxSizeEvent& evt);
+	void	OnMouseCaptureLost (wxMouseCaptureLostEvent& evt);
 
 	void	OnMiddleButtonDown (wxMouseEvent& evt);
 	void	OnMiddleButtonUp (wxMouseEvent& evt);
@@ -25,6 +27,7 @@ public:
 	void	RedrawImage ();
 
 private:
+	MouseCaptureHandler					captureHandler;
 	std::shared_ptr<ResultImage>		resultImage;
 
 	BitmapContextGdiplus				drawingContext;
