@@ -7,6 +7,8 @@
 #include "ViewerUINodes.hpp"
 #include "TestAppNodes.hpp"
 
+#include "wx/menu.h"
+
 MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
 	NUIE::CreateNodeCommand (name, uiManager, uiEnvironment, position),
 	nodeType (nodeType)
@@ -180,76 +182,65 @@ void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
 
 void NodeEditorControl::OnLeftButtonDown (wxMouseEvent& evt)
 {
-	// TODO: KeySet
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (NUIE::EmptyKeySet, NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDown (GetKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnLeftButtonUp (wxMouseEvent& evt)
 {
-	// TODO: KeySet
-	nodeEditor.OnMouseUp (NUIE::EmptyKeySet, NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseUp (GetKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 
 void NodeEditorControl::OnLeftButtonDoubleClick (wxMouseEvent& evt)
 {
-	// TODO: KeySet
-	nodeEditor.OnMouseDoubleClick (NUIE::EmptyKeySet, NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDoubleClick (GetKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnRightButtonDown (wxMouseEvent& evt)
 {
-	// TODO: KeySet
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (NUIE::EmptyKeySet, NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDown (GetKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnRightButtonUp (wxMouseEvent& evt)
 {
-	// TODO: KeySet
-	nodeEditor.OnMouseUp (NUIE::EmptyKeySet, NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseUp (GetKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 void NodeEditorControl::OnRightButtonDoubleClick (wxMouseEvent& evt)
 {
-	// TODO: KeySet
-	nodeEditor.OnMouseDoubleClick (NUIE::EmptyKeySet, NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDoubleClick (GetKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMiddleButtonDown (wxMouseEvent& evt)
 {
-	// TODO: KeySet
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (NUIE::EmptyKeySet, NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDown (GetKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMiddleButtonUp (wxMouseEvent& evt)
 {
-	// TODO: KeySet
-	nodeEditor.OnMouseUp (NUIE::EmptyKeySet, NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseUp (GetKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 void NodeEditorControl::OnMiddleButtonDoubleClick (wxMouseEvent& evt)
 {
-	// TODO: KeySet
-	nodeEditor.OnMouseDoubleClick (NUIE::EmptyKeySet, NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDoubleClick (GetKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMouseMove (wxMouseEvent& evt)
 {
-	// TODO: KeySet
-	nodeEditor.OnMouseMove (NUIE::EmptyKeySet, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseMove (GetKeysFromEvent (evt), evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMouseWheel (wxMouseEvent& evt)
 {
-	// TODO: KeySet
 	NUIE::MouseWheelRotation rotation = evt.GetWheelRotation () > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
-	nodeEditor.OnMouseWheel (NUIE::EmptyKeySet, rotation, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseWheel (GetKeysFromEvent (evt), rotation, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::New ()
