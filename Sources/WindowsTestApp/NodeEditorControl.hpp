@@ -67,8 +67,32 @@ private:
 	int			counter;
 };
 
-class NodeEditorControl :	public wxPanel,
-							public NUIE::NodeUIEnvironment
+class NodeEditorUIEnvironment : public NUIE::NodeUIEnvironment
+{
+public:
+	NodeEditorUIEnvironment (wxPanel* nodeEditorControl, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv);
+
+	void							OnPaint ();
+	void							OnResize (int width, int height);
+
+	virtual NUIE::DrawingContext&	GetDrawingContext () override;
+	virtual NUIE::SkinParams&		GetSkinParams () override;
+	virtual NUIE::EventHandlers&	GetEventHandlers () override;
+	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
+	virtual void					OnValuesRecalculated () override;
+	virtual void					OnRedrawRequest () override;
+
+private:
+	wxPanel*				nodeEditorControl;
+	UpdateInterface&		updateInterface;
+	NE::EvaluationEnv&		evaluationEnv;
+
+	BitmapContextGdi		drawingContext;
+	NUIE::SkinParams		skinParams;
+	AppEventHandlers		eventHandlers;
+};
+
+class NodeEditorControl :	public wxPanel
 {
 public:
 	NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv);
@@ -90,23 +114,10 @@ public:
 	bool							Open (const std::wstring& fileName);
 	bool							Save (const std::wstring& fileName);
 
-	virtual NUIE::DrawingContext&	GetDrawingContext () override;
-	virtual NUIE::SkinParams&		GetSkinParams () override;
-	virtual NUIE::EventHandlers&	GetEventHandlers () override;
-	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
-	virtual void					OnValuesRecalculated () override;
-	virtual void					OnRedrawRequest () override;
-
 private:
-	MouseCaptureHandler		captureHandler;
-
-	UpdateInterface&		updateInterface;
-	NE::EvaluationEnv&		evaluationEnv;
-
-	BitmapContextGdi		drawingContext;
-	NUIE::SkinParams		skinParams;
-	AppEventHandlers		eventHandlers;
-	NUIE::NodeEditor		nodeEditor;
+	MouseCaptureHandler				captureHandler;
+	NodeEditorUIEnvironment			uiEnvironment;
+	NUIE::NodeEditor				nodeEditor;
 
 	DECLARE_EVENT_TABLE ()
 };

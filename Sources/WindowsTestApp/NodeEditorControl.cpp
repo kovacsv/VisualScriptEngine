@@ -96,20 +96,68 @@ void MouseCaptureHandler::OnCaptureLost ()
 	counter = 0;
 }
 
-NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
-	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
-	captureHandler (this),
-	NUIE::NodeUIEnvironment (),
+NodeEditorUIEnvironment::NodeEditorUIEnvironment (wxPanel* nodeEditorControl, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
+	nodeEditorControl (nodeEditorControl),
 	updateInterface (updateInterface),
 	evaluationEnv (evaluationEnv),
 	drawingContext (),
 	skinParams (),
-	eventHandlers (this),
-	nodeEditor (*this)
+	eventHandlers (nodeEditorControl)
 {
-	HWND hwnd = GetHandle ();
+	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
 	drawingContext.Init (hwnd);
+}
 
+void NodeEditorUIEnvironment::OnPaint ()
+{
+	PAINTSTRUCT ps;
+	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
+	HDC hdc = BeginPaint (hwnd, &ps);
+	drawingContext.DrawToHDC (hdc);
+	EndPaint (hwnd, &ps);
+}
+
+void NodeEditorUIEnvironment::OnResize (int width, int height)
+{
+	drawingContext.Resize (width, height);
+}
+
+NUIE::DrawingContext& NodeEditorUIEnvironment::GetDrawingContext ()
+{
+	return drawingContext;
+}
+
+NUIE::SkinParams& NodeEditorUIEnvironment::GetSkinParams ()
+{
+	return skinParams;
+}
+
+NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
+{
+	return eventHandlers;
+}
+
+NE::EvaluationEnv& NodeEditorUIEnvironment::GetEvaluationEnv ()
+{
+	return evaluationEnv;
+}
+
+void NodeEditorUIEnvironment::OnValuesRecalculated ()
+{
+	updateInterface.RedrawImage ();
+}
+
+void NodeEditorUIEnvironment::OnRedrawRequest ()
+{
+	nodeEditorControl->Refresh (false);
+}
+
+NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
+	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
+	captureHandler (this),
+	uiEnvironment (this, updateInterface, evaluationEnv),
+	nodeEditor (uiEnvironment)
+{
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
 	static const bool isStressTest = false;
@@ -117,19 +165,19 @@ NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateI
 		static int count = 10;
 		for (int i = 0; i < count; i++) {
 			for (int j = 0; j < count; j++) {
-				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
 			}
 		}
 		nodeEditor.Update ();
 	} else {
-		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 5)), GetEvaluationEnv ());
-		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 180), 20, 5)), GetEvaluationEnv ());
-		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (200, 100))), GetEvaluationEnv ());
-		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (200, 220), 20, 5)), GetEvaluationEnv ());
+		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 180), 20, 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (200, 100))), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (200, 220), 20, 5)), uiEnvironment.GetEvaluationEnv ());
 		std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
-		uiManager.AddNode (pointNode, GetEvaluationEnv ());
+		uiManager.AddNode (pointNode, uiEnvironment.GetEvaluationEnv ());
 		pointNode->SetValueCombinationMode (NE::ValueCombinationMode::CrossProduct);
-		NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::MultiLineViewerUINode (L"Viewer", NUIE::Point (600, 150), 5)), GetEvaluationEnv ());
+		NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::MultiLineViewerUINode (L"Viewer", NUIE::Point (600, 150), 5)), uiEnvironment.GetEvaluationEnv ());
 
 		uiManager.ConnectOutputSlotToInputSlot (startInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("start")));
 		uiManager.ConnectOutputSlotToInputSlot (stepInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("step")));
@@ -143,18 +191,13 @@ NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateI
 void NodeEditorControl::OnPaint (wxPaintEvent& evt)
 {
 	nodeEditor.Draw ();
-
-	PAINTSTRUCT ps;
-	HWND hwnd = (HWND) GetHandle ();
-	HDC hdc = BeginPaint (hwnd, &ps);
-	drawingContext.DrawToHDC (hdc);
-	EndPaint (hwnd, &ps);
+	uiEnvironment.OnPaint ();
 }
 
 void NodeEditorControl::OnResize (wxSizeEvent& evt)
 {
 	wxSize size = evt.GetSize ();
-	drawingContext.Resize (size.GetWidth (), size.GetHeight ());
+	uiEnvironment.OnResize (size.GetWidth (), size.GetHeight ());
 }
 
 void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
@@ -236,36 +279,6 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 		return false;
 	}
 	return true;
-}
-
-NUIE::DrawingContext& NodeEditorControl::GetDrawingContext ()
-{
-	return drawingContext;
-}
-
-NUIE::SkinParams& NodeEditorControl::GetSkinParams ()
-{
-	return skinParams;
-}
-
-NUIE::EventHandlers& NodeEditorControl::GetEventHandlers ()
-{
-	return eventHandlers;
-}
-
-NE::EvaluationEnv& NodeEditorControl::GetEvaluationEnv ()
-{
-	return evaluationEnv;
-}
-
-void NodeEditorControl::OnValuesRecalculated ()
-{
-	updateInterface.RedrawImage ();
-}
-
-void NodeEditorControl::OnRedrawRequest ()
-{
-	Refresh (false);
 }
 
 BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)
