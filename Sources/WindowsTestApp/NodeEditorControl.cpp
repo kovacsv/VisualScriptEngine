@@ -192,7 +192,6 @@ void NodeEditorControl::OnLeftButtonUp (wxMouseEvent& evt)
 	captureHandler.OnMouseUp ();
 }
 
-
 void NodeEditorControl::OnLeftButtonDoubleClick (wxMouseEvent& evt)
 {
 	nodeEditor.OnMouseDoubleClick (GetKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());

@@ -99,17 +99,9 @@ public:
 
 	void OnOpen (wxCommandEvent& event)
 	{
-		// TODO: Duplicated code
-		OPENFILENAME openFileName;
-		ZeroMemory (&openFileName, sizeof(openFileName));
-		wchar_t fileName[MAX_PATH] = L"";
-		openFileName.lStructSize = sizeof (openFileName); 
-		openFileName.hwndOwner = (HWND) GetHandle ();
-		openFileName.lpstrFile = (LPWSTR) fileName;
-		openFileName.nMaxFile = MAX_PATH;
-		openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
-		openFileName.lpstrDefExt = (LPCWSTR) L"txt";
-		if (GetOpenFileName (&openFileName)) {
+		wxFileDialog fileDialog (this, L"Open", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+		if (fileDialog.ShowModal () == wxID_OK) {
+			std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
 			drawingControl->ClearImage ();
 			// TODO: handle when open fails
 			if (nodeEditorControl->Open (fileName)) {
@@ -121,19 +113,11 @@ public:
 
 	void OnSave (wxCommandEvent& event)
 	{
-		// TODO: Duplicated code
-		OPENFILENAME openFileName;
-		ZeroMemory (&openFileName, sizeof(openFileName));
-		wchar_t fileName[MAX_PATH] = L"";
-		openFileName.lStructSize = sizeof (openFileName); 
-		openFileName.hwndOwner = (HWND) GetHandle ();
-		openFileName.lpstrFile = (LPWSTR) fileName;
-		openFileName.nMaxFile = MAX_PATH;
-		openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
-		openFileName.lpstrDefExt = (LPCWSTR) L"txt";
+		wxFileDialog fileDialog (this, L"Save", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
 		if (applicationState.HasCurrentFileName ()) {
 			nodeEditorControl->Save (applicationState.GetCurrentFileName ());
-		} else if (GetSaveFileName (&openFileName)) {
+		} else if (fileDialog.ShowModal () == wxID_OK) {
+			std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
 			nodeEditorControl->Save (fileName);
 			applicationState.SetCurrentFileName (fileName);
 		}
@@ -142,17 +126,9 @@ public:
 
 	void OnSaveAs (wxCommandEvent& event)
 	{
-		// TODO: Duplicated code
-		OPENFILENAME openFileName;
-		ZeroMemory (&openFileName, sizeof(openFileName));
-		wchar_t fileName[MAX_PATH] = L"";
-		openFileName.lStructSize = sizeof (openFileName); 
-		openFileName.hwndOwner = (HWND) GetHandle ();
-		openFileName.lpstrFile = (LPWSTR) fileName;
-		openFileName.nMaxFile = MAX_PATH;
-		openFileName.lpstrFilter = (LPCWSTR) L"Node Engine Files (*.ne)\0*.ne\0";
-		openFileName.lpstrDefExt = (LPCWSTR) L"txt";
-		if (GetSaveFileName (&openFileName)) {
+		wxFileDialog fileDialog (this, L"Save As", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
+		if (fileDialog.ShowModal () == wxID_OK) {
+			std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
 			nodeEditorControl->Save (fileName);
 			applicationState.SetCurrentFileName (fileName);
 		}
