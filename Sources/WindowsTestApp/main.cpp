@@ -209,10 +209,10 @@ public:
 	}
 
 private:
-	class DrawingUpdateInterface : public UpdateInterface
+	class NodeEditorUpdateInterface : public UpdateInterface
 	{
 	public:
-		DrawingUpdateInterface (DrawingControl* drawingControl) :
+		NodeEditorUpdateInterface (DrawingControl* drawingControl) :
 			drawingControl (drawingControl)
 		{
 		
@@ -223,21 +223,26 @@ private:
 			drawingControl->RedrawImage ();
 		}
 
+		virtual void UpdateParameters () override
+		{
+			
+		}
+
 	private:
 		DrawingControl* drawingControl;
 	};
 
-	wxMenuBar*				menuBar;
-	wxMenu*					fileMenu;
+	wxMenuBar*					menuBar;
+	wxMenu*						fileMenu;
 
-	LeftPanel*				leftPanel;
-	wxSplitterWindow*		editorAndDrawingWindow;
-	DrawingControl*			drawingControl;
-	DrawingUpdateInterface	updateInterface;
-	NodeEditorControl*		nodeEditorControl;
-	wxBoxSizer*				mainSizer;
+	LeftPanel*					leftPanel;
+	wxSplitterWindow*			editorAndDrawingWindow;
+	DrawingControl*				drawingControl;
+	NodeEditorUpdateInterface	updateInterface;
+	NodeEditorControl*			nodeEditorControl;
+	wxBoxSizer*					mainSizer;
 
-	ApplicationState		applicationState;
+	ApplicationState			applicationState;
 
 	DECLARE_EVENT_TABLE ()
 };

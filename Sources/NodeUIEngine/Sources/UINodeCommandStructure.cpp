@@ -142,6 +142,7 @@ public:
 			if (nodeCommand->IsApplicableTo (uiNode)) {
 				multiNodeCommand->AddNode (uiNode);
 			}
+			return true;
 		});
 		return multiNodeCommand;
 	}

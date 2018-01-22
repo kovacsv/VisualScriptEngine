@@ -23,9 +23,20 @@ NodeUICalculationEnvironment::~NodeUICalculationEnvironment ()
 
 }
 
+NodeUISelectionEnvironment::NodeUISelectionEnvironment ()
+{
+
+}
+
+NodeUISelectionEnvironment::~NodeUISelectionEnvironment ()
+{
+
+}
+
 NodeUIEnvironment::NodeUIEnvironment () :
 	NodeUIDrawingEnvironment (),
-	NodeUICalculationEnvironment ()
+	NodeUICalculationEnvironment (),
+	NodeUISelectionEnvironment ()
 {
 
 }

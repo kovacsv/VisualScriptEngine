@@ -40,8 +40,18 @@ public:
 	virtual void				OnRedrawRequest () = 0;
 };
 
+class NodeUISelectionEnvironment
+{
+public:
+	NodeUISelectionEnvironment ();
+	virtual ~NodeUISelectionEnvironment ();
+
+	virtual void				OnSelectionChanged () = 0;
+};
+
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,
-							public NodeUICalculationEnvironment
+							public NodeUICalculationEnvironment,
+							public NodeUISelectionEnvironment
 {
 public:
 	NodeUIEnvironment ();

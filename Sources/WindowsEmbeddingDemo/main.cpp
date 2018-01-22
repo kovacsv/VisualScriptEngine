@@ -89,6 +89,11 @@ public:
 		InvalidateRect (hwnd, NULL, FALSE);
 	}
 
+	virtual void OnSelectionChanged () override
+	{
+		
+	}
+
 	void SetWindowHandle (HWND newHwnd)
 	{
 		eventHandlers.SetWindowHandle (newHwnd);

@@ -51,6 +51,7 @@ class UpdateInterface
 {
 public:
 	virtual void RedrawImage () = 0;
+	virtual void UpdateParameters () = 0;
 };
 
 class NodeEditorUIEnvironment : public NUIE::NodeUIEnvironment
@@ -67,6 +68,7 @@ public:
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
 	virtual void					OnValuesRecalculated () override;
 	virtual void					OnRedrawRequest () override;
+	virtual void					OnSelectionChanged () override;
 
 private:
 	wxPanel*				nodeEditorControl;

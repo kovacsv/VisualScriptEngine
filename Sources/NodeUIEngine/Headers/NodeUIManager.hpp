@@ -25,7 +25,7 @@ public:
 	bool	Contains (const NE::NodeId& nodeId) const;
 	size_t	Count () const;
 
-	void	Enumerate (const std::function<void (const NE::NodeId&)>& processor) const;
+	void	Enumerate (const std::function<bool (const NE::NodeId&)>& processor) const;
 	void	Insert (const NE::NodeId& nodeId);
 	void	Erase (const NE::NodeId& nodeId);
 	void	Clear ();
@@ -45,7 +45,7 @@ public:
 	bool					DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env);
 
 	const NodeCollection&	GetSelectedNodes () const;
-	void					SetSelectedNodes (const NodeCollection& newSelectedNodes);
+	void					SetSelectedNodes (const NodeCollection& newSelectedNodes, NodeUISelectionEnvironment& env);
 
 	bool					IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
 	bool					CanConnectMoreOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;

@@ -42,10 +42,12 @@ size_t NodeCollection::Count () const
 	return nodes.size ();
 }
 
-void NodeCollection::Enumerate (const std::function<void (const NE::NodeId&)>& processor) const
+void NodeCollection::Enumerate (const std::function<bool (const NE::NodeId&)>& processor) const
 {
 	for (const NE::NodeId& nodeId : nodes) {
-		processor (nodeId);
+		if (!processor (nodeId)) {
+			return;
+		}
 	}
 }
 
@@ -152,9 +154,10 @@ const NodeCollection& NodeUIManager::GetSelectedNodes () const
 	return selectedNodes;
 }
 
-void NodeUIManager::SetSelectedNodes (const NodeCollection& newSelectedNodes)
+void NodeUIManager::SetSelectedNodes (const NodeCollection& newSelectedNodes, NodeUISelectionEnvironment& env)
 {
 	selectedNodes = newSelectedNodes;
+	env.OnSelectionChanged ();
 	status.RequestRedraw ();
 }
 

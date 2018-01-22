@@ -333,6 +333,11 @@ void TestNodeUIEnvironment::OnRedrawRequest ()
 	nodeEditor.Draw ();
 }
 
+void TestNodeUIEnvironment::OnSelectionChanged ()
+{
+	
+}
+
 const SVGDrawingContext& TestNodeUIEnvironment::GetSVGDrawingContext () const
 {
 	return drawingContext;
