@@ -64,10 +64,10 @@ public:
 
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 	virtual NUIE::SkinParams&		GetSkinParams () override;
-	virtual NUIE::EventHandlers&	GetEventHandlers () override;
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
 	virtual void					OnValuesRecalculated () override;
 	virtual void					OnRedrawRequest () override;
+	virtual NUIE::EventHandlers&	GetEventHandlers () override;
 	virtual void					OnSelectionChanged () override;
 
 private:

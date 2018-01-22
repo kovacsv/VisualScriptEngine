@@ -69,11 +69,6 @@ public:
 		return skinParams;
 	}
 	
-	virtual NUIE::EventHandlers& GetEventHandlers () override
-	{
-		return eventHandlers;
-	}
-
 	virtual NE::EvaluationEnv& GetEvaluationEnv () override
 	{
 		return evaluationEnv;
@@ -87,6 +82,11 @@ public:
 	virtual void OnRedrawRequest () override
 	{
 		InvalidateRect (hwnd, NULL, FALSE);
+	}
+
+	virtual NUIE::EventHandlers& GetEventHandlers () override
+	{
+		return eventHandlers;
 	}
 
 	virtual void OnSelectionChanged () override

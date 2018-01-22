@@ -33,25 +33,24 @@ public:
 	NodeUICalculationEnvironment ();
 	virtual ~NodeUICalculationEnvironment ();
 
-	virtual EventHandlers&		GetEventHandlers () = 0;
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
-	
 	virtual void				OnValuesRecalculated () = 0;
 	virtual void				OnRedrawRequest () = 0;
 };
 
-class NodeUISelectionEnvironment
+class NodeUIInteractionEnvironment
 {
 public:
-	NodeUISelectionEnvironment ();
-	virtual ~NodeUISelectionEnvironment ();
+	NodeUIInteractionEnvironment ();
+	virtual ~NodeUIInteractionEnvironment ();
 
+	virtual EventHandlers&		GetEventHandlers () = 0;
 	virtual void				OnSelectionChanged () = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,
 							public NodeUICalculationEnvironment,
-							public NodeUISelectionEnvironment
+							public NodeUIInteractionEnvironment
 {
 public:
 	NodeUIEnvironment ();

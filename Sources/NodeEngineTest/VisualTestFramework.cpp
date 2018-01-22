@@ -313,11 +313,6 @@ SkinParams& TestNodeUIEnvironment::GetSkinParams ()
 	return skinParams;
 }
 
-EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
-{
-	return eventHandlers;
-}
-
 EvaluationEnv& TestNodeUIEnvironment::GetEvaluationEnv ()
 {
 	return evaluationEnv;
@@ -331,6 +326,11 @@ void TestNodeUIEnvironment::OnValuesRecalculated ()
 void TestNodeUIEnvironment::OnRedrawRequest ()
 {
 	nodeEditor.Draw ();
+}
+
+EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
+{
+	return eventHandlers;
 }
 
 void TestNodeUIEnvironment::OnSelectionChanged ()

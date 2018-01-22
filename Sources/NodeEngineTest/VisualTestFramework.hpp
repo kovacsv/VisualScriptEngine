@@ -89,10 +89,10 @@ public:
 
 	virtual DrawingContext&		GetDrawingContext () override;
 	virtual SkinParams&			GetSkinParams () override;
-	virtual EventHandlers&		GetEventHandlers () override;
 	virtual EvaluationEnv&		GetEvaluationEnv () override;
 	virtual void				OnValuesRecalculated () override;
 	virtual void				OnRedrawRequest () override;
+	virtual EventHandlers&		GetEventHandlers () override;
 	virtual void				OnSelectionChanged () override;
 
 	const SVGDrawingContext&	GetSVGDrawingContext () const;

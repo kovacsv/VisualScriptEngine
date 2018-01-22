@@ -45,7 +45,7 @@ public:
 	bool					DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env);
 
 	const NodeCollection&	GetSelectedNodes () const;
-	void					SetSelectedNodes (const NodeCollection& newSelectedNodes, NodeUISelectionEnvironment& env);
+	void					SetSelectedNodes (const NodeCollection& newSelectedNodes, NodeUIInteractionEnvironment& env);
 
 	bool					IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
 	bool					CanConnectMoreOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;

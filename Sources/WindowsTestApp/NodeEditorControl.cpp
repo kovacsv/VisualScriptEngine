@@ -107,11 +107,6 @@ NUIE::SkinParams& NodeEditorUIEnvironment::GetSkinParams ()
 	return skinParams;
 }
 
-NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
-{
-	return eventHandlers;
-}
-
 NE::EvaluationEnv& NodeEditorUIEnvironment::GetEvaluationEnv ()
 {
 	return evaluationEnv;
@@ -125,6 +120,11 @@ void NodeEditorUIEnvironment::OnValuesRecalculated ()
 void NodeEditorUIEnvironment::OnRedrawRequest ()
 {
 	nodeEditorControl->Refresh (false);
+}
+
+NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
+{
+	return eventHandlers;
 }
 
 void NodeEditorUIEnvironment::OnSelectionChanged ()
