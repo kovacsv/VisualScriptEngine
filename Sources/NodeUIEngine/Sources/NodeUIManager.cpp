@@ -154,10 +154,9 @@ const NodeCollection& NodeUIManager::GetSelectedNodes () const
 	return selectedNodes;
 }
 
-void NodeUIManager::SetSelectedNodes (const NodeCollection& newSelectedNodes, NodeUIInteractionEnvironment& env)
+void NodeUIManager::SetSelectedNodes (const NodeCollection& newSelectedNodes)
 {
 	selectedNodes = newSelectedNodes;
-	env.OnSelectionChanged ();
 	status.RequestRedraw ();
 }
 

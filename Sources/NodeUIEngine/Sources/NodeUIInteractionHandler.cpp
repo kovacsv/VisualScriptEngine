@@ -79,7 +79,7 @@ public:
 			}
 			return true;
 		});
-		uiManager.SetSelectedNodes (selectedNodes, env);
+		uiManager.SetSelectedNodes (selectedNodes);
 	}
 
 	virtual void EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const override
@@ -404,7 +404,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 				}
 			}
 		}
-		uiManager.SetSelectedNodes (selectedNodes, env);
+		uiManager.SetSelectedNodes (selectedNodes);
 		handlerResult = EventHandlerResult::EventHandled;
 	} else if (mouseButton == MouseButton::Right) {
 		EventHandlers& eventHandlers = env.GetEventHandlers ();

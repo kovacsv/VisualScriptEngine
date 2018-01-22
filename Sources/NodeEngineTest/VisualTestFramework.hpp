@@ -93,7 +93,6 @@ public:
 	virtual void				OnValuesRecalculated () override;
 	virtual void				OnRedrawRequest () override;
 	virtual EventHandlers&		GetEventHandlers () override;
-	virtual void				OnSelectionChanged () override;
 
 	const SVGDrawingContext&	GetSVGDrawingContext () const;
 

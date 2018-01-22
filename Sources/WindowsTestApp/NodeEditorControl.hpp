@@ -68,7 +68,6 @@ public:
 	virtual void					OnValuesRecalculated () override;
 	virtual void					OnRedrawRequest () override;
 	virtual NUIE::EventHandlers&	GetEventHandlers () override;
-	virtual void					OnSelectionChanged () override;
 
 private:
 	wxPanel*				nodeEditorControl;
