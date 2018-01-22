@@ -66,6 +66,16 @@ void NodeCollection::Clear ()
 	nodes.clear ();
 }
 
+bool NodeCollection::operator== (const NodeCollection& rhs) const
+{
+	return nodes == rhs.nodes;
+}
+
+bool NodeCollection::operator!= (const NodeCollection& rhs) const
+{
+	return !operator== (rhs);
+}
+
 NodeUIManager::Status::Status ()
 {
 	Reset ();

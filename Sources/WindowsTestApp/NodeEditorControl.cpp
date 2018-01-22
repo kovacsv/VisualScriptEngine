@@ -127,6 +127,11 @@ NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
 	return eventHandlers;
 }
 
+void NodeEditorUIEnvironment::OnSelectionChanged ()
+{
+	updateInterface.UpdateParameters ();
+}
+
 NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
 	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
 	captureHandler (this),

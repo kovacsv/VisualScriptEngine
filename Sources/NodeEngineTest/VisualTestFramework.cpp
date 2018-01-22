@@ -333,6 +333,11 @@ EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
 	return eventHandlers;
 }
 
+void TestNodeUIEnvironment::OnSelectionChanged ()
+{
+	
+}
+
 const SVGDrawingContext& TestNodeUIEnvironment::GetSVGDrawingContext () const
 {
 	return drawingContext;

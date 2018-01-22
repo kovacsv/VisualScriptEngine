@@ -86,7 +86,7 @@ public:
 	virtual ~NodeCommand ();
 
 	virtual bool	IsApplicableTo (const UINodePtr& uiNode) = 0;
-	virtual void	Do (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode) = 0;
+	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) = 0;
 };
 
 typedef std::shared_ptr<NodeCommand> NodeCommandPtr;

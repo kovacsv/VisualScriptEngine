@@ -30,6 +30,9 @@ public:
 	void	Erase (const NE::NodeId& nodeId);
 	void	Clear ();
 
+	bool	operator== (const NodeCollection& rhs) const;
+	bool	operator!= (const NodeCollection& rhs) const;
+
 private:
 	std::unordered_set<NE::NodeId> nodes;
 };

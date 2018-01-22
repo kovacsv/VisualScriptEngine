@@ -220,7 +220,7 @@ void PointNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrat
 			return std::dynamic_pointer_cast<PointNode> (uiNode) != nullptr;
 		}
 
-		virtual void Do (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode) override
+		virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment&, NUIE::UINodePtr& uiNode) override
 		{
 			uiNode->SetNodeName (L"New Node Name");
 			uiManager.RequestRedraw ();
@@ -241,7 +241,7 @@ void PointNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrat
 			return std::dynamic_pointer_cast<PointNode> (uiNode) != nullptr;
 		}
 
-		virtual void Do (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode) override
+		virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment&, NUIE::UINodePtr& uiNode) override
 		{
 			std::shared_ptr<PointNode> pointNode = std::dynamic_pointer_cast<PointNode> (uiNode);
 			if (DBGERROR (pointNode == nullptr)) {

@@ -45,6 +45,7 @@ public:
 	virtual ~NodeUIInteractionEnvironment ();
 
 	virtual EventHandlers&		GetEventHandlers () = 0;
+	virtual void				OnSelectionChanged () = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,

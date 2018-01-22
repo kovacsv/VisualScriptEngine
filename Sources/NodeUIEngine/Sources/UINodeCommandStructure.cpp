@@ -19,9 +19,9 @@ public:
 		return true;
 	}
 
-	virtual void Do (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode) override
+	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
 	{
-		uiManager.DeleteNode (uiNode, evaluationEnv);
+		uiManager.DeleteNode (uiNode, uiEnvironment.GetEvaluationEnv ());
 	}
 };
 
@@ -95,8 +95,12 @@ public:
 		if (DBGERROR (nodeCommand == nullptr)) {
 			return;
 		}
+		NodeCollection oldSelection = uiManager.GetSelectedNodes ();
 		for (UINodePtr& uiNode : uiNodes) {
-			nodeCommand->Do (uiManager, uiEnvironment.GetEvaluationEnv (), uiNode);
+			nodeCommand->Do (uiManager, uiEnvironment, uiNode);
+		}
+		if (oldSelection != uiManager.GetSelectedNodes ()) {
+			uiEnvironment.OnSelectionChanged ();
 		}
 	}
 
