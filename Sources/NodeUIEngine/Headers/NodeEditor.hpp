@@ -6,6 +6,7 @@
 #include "NodeUIManager.hpp"
 #include "NodeUIInteractionHandler.hpp"
 #include "NodeUIEnvironment.hpp"
+#include "UINodeParameters.hpp"
 #include "SkinParams.hpp"
 
 namespace NUIE

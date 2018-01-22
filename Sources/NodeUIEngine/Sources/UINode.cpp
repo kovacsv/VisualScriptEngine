@@ -220,24 +220,29 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 	{
 	public:
 		NodeNameParameter () :
-			NodeParameter (L"Name")
+			NodeParameter ("NodeNameParameter", L"Name")
 		{
 		
 		}
 
-		NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ()));
 		}
 
-		bool IsApplicableTo (const UINodePtr&) const override
+		virtual bool IsApplicableTo (const UINodePtr&) const override
 		{
 			return true;
 		}
 
-		bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, NE::ValuePtr& value) override
+		virtual bool CanSetValue (const UINodePtr&, NE::ValuePtr& value) const override
 		{
-			if (DBGERROR (!NE::Value::IsType<NE::StringValue> (value))) {
+			return NE::Value::IsType<NE::StringValue> (value);
+		}
+
+		virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!CanSetValue (uiNode, value))) {
 				return false;
 			}
 			uiNode->SetNodeName (NE::StringValue::Get (value));

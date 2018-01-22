@@ -44,7 +44,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				NodeParameter (L"In1")
+				NodeParameter ("in1", L"In1")
 			{
 			
 			}
@@ -54,9 +54,14 @@ public:
 				return uiNode->GetInputSlot (SlotId ("in1"))->GetDefaultValue ();
 			}
 
-			virtual bool IsApplicableTo (const UINodePtr&) const override
+			virtual bool IsApplicableTo (const UINodePtr& uiNode) const override
 			{
-				return true;
+				return std::dynamic_pointer_cast<TestNode> (uiNode) != nullptr;
+			}
+
+			virtual bool CanSetValue (const UINodePtr&, NE::ValuePtr& value) const override
+			{
+				return NE::Value::IsType<NE::IntValue> (value);
 			}
 
 			virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, NE::ValuePtr& value) override
@@ -81,6 +86,53 @@ public:
 	}
 };
 
+class TestNode2 : public TestNode
+{
+public:
+	TestNode2 (const std::wstring& name, const Point& position) :
+		TestNode (name, position)
+	{
+		
+	}
+
+	virtual void RegisterParameters (NodeParameterList& parameterList) const override
+	{
+		class In1DefaultValueParameter : public NodeParameter
+		{
+		public:
+			In1DefaultValueParameter () :
+				NodeParameter ("in2", L"In2")
+			{
+			
+			}
+
+			virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+			{
+				return uiNode->GetInputSlot (SlotId ("in2"))->GetDefaultValue ();
+			}
+
+			virtual bool IsApplicableTo (const UINodePtr& uiNode) const override
+			{
+				return std::dynamic_pointer_cast<TestNode2> (uiNode) != nullptr;
+			}
+
+			virtual bool CanSetValue (const UINodePtr&, NE::ValuePtr& value) const override
+			{
+				return NE::Value::IsType<NE::IntValue> (value);
+			}
+
+			virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, NE::ValuePtr& value) override
+			{
+				uiNode->GetInputSlot (SlotId ("in2"))->SetDefaultValue (value);
+				return true;
+			}
+		};
+
+		TestNode::RegisterParameters (parameterList);
+		parameterList.AddParameter (NodeParameterPtr (new In1DefaultValueParameter ()));
+	}
+};
+
 TEST (NodeParametersTest)
 {
 	NodeUIManager uiManager;
@@ -97,12 +149,14 @@ TEST (NodeParametersTest)
 	
 	ASSERT (node->GetNodeName () == L"TestNode");
 	NodeParameterPtr nameParam = paramList.GetParameter (0);
+	ASSERT (nameParam->GetId () == "NodeNameParameter");
 	ASSERT (nameParam->GetName () == L"Name");
 	ValuePtr newNameValue (new StringValue (L"NewNodeName"));
 	nameParam->SetValue (uiManager, NE::EmptyEvaluationEnv, node, newNameValue);
 	ASSERT (node->GetNodeName () == L"NewNodeName");
 
 	NodeParameterPtr in1DefParam = paramList.GetParameter (1);
+	ASSERT (in1DefParam->GetId () == "in1");
 	ASSERT (in1DefParam->GetName () == L"In1");
 	ASSERT (IntValue::Get (in1DefParam->GetValue (node)) == 1);
 	ValuePtr newIn1Value (new IntValue (5));
@@ -110,6 +164,74 @@ TEST (NodeParametersTest)
 	ASSERT (IntValue::Get (in1DefParam->GetValue (node)) == 5);
 	nodeValue = node->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (nodeValue) == 7);
+}
+
+TEST (NodeParametersTest2)
+{
+	NodeUIManager uiManager;
+
+	UINodePtr node (new TestNode (L"TestNode", Point (0, 0)));
+	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
+	UINodePtr node2 (new TestNode (L"TestNode", Point (0, 0)));
+	ASSERT (uiManager.AddNode (node2, NE::EmptyEvaluationEnv) != nullptr);
+
+	{
+		NodeParameterList paramList;
+		RegisterCommonParameters (uiManager, NodeCollection (), paramList);
+		ASSERT (paramList.GetParameterCount () == 0);
+	}
+
+	{
+		NodeParameterList paramList;
+		RegisterCommonParameters (uiManager, NodeCollection (node->GetId ()), paramList);
+		ASSERT (paramList.GetParameterCount () == 2);
+		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
+		paramList.GetParameter (1)->GetId () == "in1";
+	}
+
+	{
+		NodeParameterList paramList;
+		RegisterCommonParameters (uiManager, NodeCollection (node2->GetId ()), paramList);
+		ASSERT (paramList.GetParameterCount () == 2);
+		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
+		paramList.GetParameter (1)->GetId () == "in2";
+	}
+
+	{
+		NodeParameterList paramList;
+		NodeCollection nodeCollection;
+		nodeCollection.Insert (node->GetId ());
+		nodeCollection.Insert (node2->GetId ());
+		RegisterCommonParameters (uiManager, nodeCollection, paramList);
+		ASSERT (paramList.GetParameterCount () == 2);
+		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
+		paramList.GetParameter (1)->GetId () == "in1";
+	}
+}
+
+TEST (NodeParametersTest3)
+{
+	NodeUIManager uiManager;
+
+	UINodePtr node (new TestNode (L"TestNode", Point (0, 0)));
+	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
+	UINodePtr node2 (new TestNode (L"TestNode", Point (0, 0)));
+	ASSERT (uiManager.AddNode (node2, NE::EmptyEvaluationEnv) != nullptr);
+
+	{
+		NodeParameterList paramList;
+		NodeCollection nodeCollection;
+		nodeCollection.Insert (node->GetId ());
+		nodeCollection.Insert (node2->GetId ());
+		RegisterCommonParameters (uiManager, nodeCollection, paramList);
+		ASSERT (paramList.GetParameterCount () == 2);
+		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
+		paramList.GetParameter (1)->GetId () == "in1";
+		ValuePtr newName (new StringValue (L"NewName"));
+		ApplyCommonParameter (uiManager, nodeCollection, paramList.GetParameter (0), EmptyEvaluationEnv, newName);
+		ASSERT (node->GetNodeName () == L"NewName");
+		ASSERT (node2->GetNodeName () == L"NewName");
+	}
 }
 
 }
