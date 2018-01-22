@@ -4,6 +4,7 @@
 #include "NodeEditorControl.hpp"
 #include "DrawingControl.hpp"
 #include "Debug.hpp"
+#include "ParameterList.hpp"
 
 #include <CommCtrl.h>
 #include <iostream>
@@ -45,6 +46,58 @@ private:
 	std::wstring currentFileName;
 };
 
+class MyParamAccessor : public ParameterAccessor
+{
+public:
+	MyParamAccessor () :
+		ParameterAccessor ()
+	{
+	}
+
+	virtual size_t GetParameterCount () const override
+	{
+		return 0;
+	}
+
+	virtual std::wstring GetParameterName (int index) const override
+	{
+		return L"";
+	}
+
+	virtual std::wstring GetParameterValue (int index) const override
+	{
+		return L"";
+	}
+
+	virtual bool SetParameterValue (int index, const std::wstring& value) override
+	{
+		return true;
+	}
+
+private:
+	std::vector<std::pair<std::wstring, std::wstring>> params;
+};
+
+class LeftPanel : public wxPanel
+{
+public:
+	LeftPanel (wxWindow *parent) :
+		wxPanel (parent, wxID_ANY, wxDefaultPosition, wxSize (200, 200)),
+		parameterAccessor (),
+		parameterList (new ParameterList (this, parameterAccessor)),
+		sizer (new wxBoxSizer (wxHORIZONTAL))
+	{
+		parameterList->FillParameters ();
+		sizer->Add (parameterList, 0, wxEXPAND);
+		SetSizer (sizer);
+	}
+
+private:
+	MyParamAccessor		parameterAccessor;
+	ParameterList*		parameterList;
+	wxBoxSizer*			sizer;
+};
+
 class MainFrame : public wxFrame
 {
 public:
@@ -58,15 +111,21 @@ public:
 	};
 
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
-		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
+		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1200, 600)),
 		menuBar (new wxMenuBar ()),
 		fileMenu (new wxMenu ()),
-		editorAndDrawingWindow (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE)),
+		leftPanel (new LeftPanel (this)),
+		editorAndDrawingWindow (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
 		drawingControl (new DrawingControl (editorAndDrawingWindow, resultImage)),
 		updateInterface (drawingControl),
 		nodeEditorControl (new NodeEditorControl (editorAndDrawingWindow, updateInterface, evaluationEnv)),
+		mainSizer (new wxBoxSizer (wxHORIZONTAL)),
 		applicationState ()
 	{
+		mainSizer->Add (leftPanel, 0, wxEXPAND);
+		mainSizer->Add (editorAndDrawingWindow, 1, wxEXPAND);
+		SetSizer (mainSizer);
+
 		fileMenu->Append (CommandId::File_New, "New");
 		fileMenu->Append (CommandId::File_Open, "Open...");
 		fileMenu->Append (CommandId::File_Save, "Save...");
@@ -76,12 +135,12 @@ public:
 		menuBar->Append (fileMenu, L"&File");
 		SetMenuBar (menuBar);
 
+		CreateStatusBar ();
+		UpdateStatusBar ();
+
 		editorAndDrawingWindow->SetSashGravity (0.5);
 		editorAndDrawingWindow->SetMinimumPaneSize (20);
 		editorAndDrawingWindow->SplitVertically (nodeEditorControl, drawingControl, 700);
-
-		CreateStatusBar ();
-		UpdateStatusBar ();
 	}
 
 	~MainFrame ()
@@ -171,10 +230,12 @@ private:
 	wxMenuBar*				menuBar;
 	wxMenu*					fileMenu;
 
+	LeftPanel*				leftPanel;
 	wxSplitterWindow*		editorAndDrawingWindow;
 	DrawingControl*			drawingControl;
 	DrawingUpdateInterface	updateInterface;
 	NodeEditorControl*		nodeEditorControl;
+	wxBoxSizer*				mainSizer;
 
 	ApplicationState		applicationState;
 
