@@ -111,10 +111,10 @@ public:
 	};
 
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
-		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1200, 600)),
+		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
 		menuBar (new wxMenuBar ()),
 		fileMenu (new wxMenu ()),
-		leftPanel (new LeftPanel (this)),
+		//leftPanel (new LeftPanel (this)),
 		editorAndDrawingWindow (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
 		drawingControl (new DrawingControl (editorAndDrawingWindow, resultImage)),
 		updateInterface (drawingControl),
@@ -122,7 +122,7 @@ public:
 		mainSizer (new wxBoxSizer (wxHORIZONTAL)),
 		applicationState ()
 	{
-		mainSizer->Add (leftPanel, 0, wxEXPAND);
+		//mainSizer->Add (leftPanel, 0, wxEXPAND);
 		mainSizer->Add (editorAndDrawingWindow, 1, wxEXPAND);
 		SetSizer (mainSizer);
 
