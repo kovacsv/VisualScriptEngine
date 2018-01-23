@@ -70,6 +70,70 @@ private:
 	wxBoxSizer*			sizer;
 };
 
+class NodeEditorUpdateInterface : public UpdateInterface
+{
+public:
+	NodeEditorUpdateInterface (ParametersPanel* parametersPanel, DrawingControl* drawingControl) :
+		parametersPanel (parametersPanel),
+		drawingControl (drawingControl)
+	{
+		
+	}
+
+	virtual void RedrawResultImage () override
+	{
+		drawingControl->RedrawImage ();
+	}
+
+	virtual void UpdateParameters (NUIE::NodeParameterAccessorPtr& nodeParameterAccessor) override
+	{
+		class MyParamAccessor : public ParameterAccessor
+		{
+		public:
+			MyParamAccessor (NUIE::NodeParameterAccessorPtr& nodeParameterAccessor) :
+				ParameterAccessor (),
+				nodeParameterAccessor (nodeParameterAccessor)
+			{
+			}
+
+			virtual size_t GetParameterCount () const override
+			{
+				return nodeParameterAccessor->GetParameterCount ();
+			}
+
+			virtual std::wstring GetParameterName (int index) const override
+			{
+				return nodeParameterAccessor->GetParameterName (index);
+			}
+
+			virtual std::wstring GetParameterValue (int index) const override
+			{
+				NE::ValuePtr value = nodeParameterAccessor->GetParameterValue (index);
+				if (DBGERROR (!NE::Value::IsType<NE::StringValue> (value))) {
+					return L"";
+				}
+				return NE::StringValue::Get (value);
+			}
+
+			virtual bool SetParameterValue (int index, const std::wstring& value) override
+			{
+				NE::ValuePtr valuePtr (new NE::StringValue (value));
+				return nodeParameterAccessor->SetParameterValue (index, valuePtr);
+			}
+
+		private:
+			NUIE::NodeParameterAccessorPtr nodeParameterAccessor;
+		};
+
+		ParameterAccessorPtr accessor (new MyParamAccessor (nodeParameterAccessor));
+		parametersPanel->FillParameters (accessor);
+	}
+
+private:
+	ParametersPanel*	parametersPanel;
+	DrawingControl*		drawingControl;
+};
+
 class MainFrame : public wxFrame
 {
 public:
@@ -181,70 +245,6 @@ public:
 	}
 
 private:
-	class NodeEditorUpdateInterface : public UpdateInterface
-	{
-	public:
-		NodeEditorUpdateInterface (ParametersPanel* parametersPanel, DrawingControl* drawingControl) :
-			parametersPanel (parametersPanel),
-			drawingControl (drawingControl)
-		{
-		
-		}
-
-		virtual void RedrawResultImage () override
-		{
-			drawingControl->RedrawImage ();
-		}
-
-		virtual void UpdateParameters (NUIE::NodeParameterAccessorPtr& nodeParameterAccessor) override
-		{
-			class MyParamAccessor : public ParameterAccessor
-			{
-			public:
-				MyParamAccessor (NUIE::NodeParameterAccessorPtr& nodeParameterAccessor) :
-					ParameterAccessor (),
-					nodeParameterAccessor (nodeParameterAccessor)
-				{
-				}
-
-				virtual size_t GetParameterCount () const override
-				{
-					return nodeParameterAccessor->GetParameterCount ();
-				}
-
-				virtual std::wstring GetParameterName (int index) const override
-				{
-					return nodeParameterAccessor->GetParameterName (index);
-				}
-
-				virtual std::wstring GetParameterValue (int index) const override
-				{
-					NE::ValuePtr value = nodeParameterAccessor->GetParameterValue (index);
-					if (DBGERROR (!NE::Value::IsType<NE::StringValue> (value))) {
-						return L"";
-					}
-					return NE::StringValue::Get (value);
-				}
-
-				virtual bool SetParameterValue (int index, const std::wstring& value) override
-				{
-					NE::ValuePtr valuePtr (new NE::StringValue (value));
-					return nodeParameterAccessor->SetParameterValue (index, valuePtr);
-				}
-
-			private:
-				NUIE::NodeParameterAccessorPtr nodeParameterAccessor;
-			};
-
-			ParameterAccessorPtr accessor (new MyParamAccessor (nodeParameterAccessor));
-			parametersPanel->FillParameters (accessor);
-		}
-
-	private:
-		ParametersPanel*	parametersPanel;
-		DrawingControl*		drawingControl;
-	};
-
 	wxMenuBar*					menuBar;
 	wxMenu*						fileMenu;
 
