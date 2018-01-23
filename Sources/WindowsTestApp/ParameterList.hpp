@@ -21,7 +21,6 @@ public:
 typedef std::shared_ptr<ParameterAccessor> ParameterAccessorPtr;
 typedef std::shared_ptr<const ParameterAccessor> ParameterAccessorConstPtr;
 
-
 class ParameterList : public wxDataViewListCtrl
 {
 public:

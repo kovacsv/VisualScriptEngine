@@ -5,6 +5,7 @@
 #include "ContextDecorators.hpp"
 #include "UINodeParameters.hpp"
 #include "UINodeCommands.hpp"
+#include "NodeUIManager.hpp"
 #include "NodeUIEnvironment.hpp"
 #include "SingleValues.hpp"
 
@@ -235,18 +236,19 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 			return true;
 		}
 
-		virtual bool CanSetValue (const UINodePtr&, NE::ValuePtr& value) const override
+		virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const override
 		{
 			return NE::Value::IsType<NE::StringValue> (value);
 		}
 
-		virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, NE::ValuePtr& value) override
+		virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
 		{
 			if (DBGERROR (!CanSetValue (uiNode, value))) {
 				return false;
 			}
 			uiNode->SetNodeName (NE::StringValue::Get (value));
 			uiNode->InvalidateDrawing ();
+			uiManager.RequestRedraw ();
 			return true;
 		}
 	};

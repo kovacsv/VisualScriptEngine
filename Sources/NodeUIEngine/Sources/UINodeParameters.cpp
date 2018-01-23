@@ -52,11 +52,9 @@ NodeParameterPtr& NodeParameterList::GetParameter (size_t index)
 	return parameters[index];
 }
 
-void NodeParameterList::EnumerateParameters (const std::function<void (NodeParameterPtr&)>& processor)
+const NodeParameterPtr& NodeParameterList::GetParameter (size_t index) const
 {
-	for (NodeParameterPtr& parameter : parameters) {
-		processor (parameter);
-	}
+	return parameters[index];
 }
 
 static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vector<UINodePtr>& uiNodes)
@@ -84,7 +82,8 @@ void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& n
 	for (const UINodePtr& uiNode : uiNodes) {
 		NodeParameterList parameters;
 		uiNode->RegisterParameters (parameters);
-		parameters.EnumerateParameters ([&] (NodeParameterPtr& parameter) {
+		for (size_t paramIndex = 0; paramIndex < parameters.GetParameterCount (); ++paramIndex) {
+			NodeParameterPtr& parameter = parameters.GetParameter (paramIndex);
 			if (registeredParameters.find (parameter->GetId ()) != registeredParameters.end ()) {
 				return;
 			}
@@ -92,11 +91,11 @@ void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& n
 			if (IsParameterApplicableTo (parameter, uiNodes)) {
 				parameterList.AddParameter (parameter);
 			}
-		});
+		}
 	}
 }
 
-bool ApplyCommonParameter (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, NE::EvaluationEnv& evaluationEnv, NE::ValuePtr& value)
+bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value)
 {
 	std::vector<UINodePtr> uiNodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {

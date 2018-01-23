@@ -22,8 +22,8 @@ public:
 
 	virtual NE::ValuePtr	GetValue (const UINodePtr& uiNode) const = 0;
 	virtual bool			IsApplicableTo (const UINodePtr& uiNode) const = 0;
-	virtual bool			CanSetValue (const UINodePtr& uiNode, NE::ValuePtr& value) const = 0;
-	virtual bool			SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, NE::ValuePtr& value) = 0;
+	virtual bool			CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const = 0;
+	virtual bool			SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
 
 private:
 	std::string		paramId;
@@ -39,11 +39,11 @@ public:
 	NodeParameterList ();
 	~NodeParameterList ();
 
-	void				AddParameter (const NodeParameterPtr& parameter);
+	void						AddParameter (const NodeParameterPtr& parameter);
 
-	size_t				GetParameterCount () const;
-	NodeParameterPtr&	GetParameter (size_t index);
-	void				EnumerateParameters (const std::function<void (NodeParameterPtr&)>& processor);
+	size_t						GetParameterCount () const;
+	NodeParameterPtr&			GetParameter (size_t index);
+	const NodeParameterPtr&		GetParameter (size_t index) const;
 
 private:
 	std::vector<NodeParameterPtr>	parameters;
@@ -53,7 +53,7 @@ typedef std::shared_ptr<NodeParameterList> NodeParameterListPtr;
 typedef std::shared_ptr<const NodeParameterList> NodeParameterListConstPtr;
 
 void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList);
-bool ApplyCommonParameter (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, NE::EvaluationEnv& evaluationEnv, NE::ValuePtr& value);
+bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);
 
 }
 

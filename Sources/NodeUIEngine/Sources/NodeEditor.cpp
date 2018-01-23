@@ -1,5 +1,6 @@
 #include "NodeEditor.hpp"
 #include "MemoryStream.hpp"
+#include "SingleValues.hpp" // TODO: Remove this
 
 #include <fstream>
 #include <locale>
@@ -15,6 +16,16 @@ static std::string WideStringToNormalString (const std::wstring& str)
 {
 	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
 	return converter.to_bytes (str);
+}
+
+NodeParameterAccessor::NodeParameterAccessor ()
+{
+
+}
+
+NodeParameterAccessor::~NodeParameterAccessor ()
+{
+
 }
 
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
@@ -81,11 +92,50 @@ void NodeEditor::Draw ()
 	uiManager.Draw (uiEnvironment, uiInteractionHandler.GetDrawingExtension ());
 }
 
-NodeParameterListPtr NodeEditor::GetSelectionParameters ()
+NodeParameterAccessorPtr NodeEditor::GetSelectionParameters ()
 {
-	NodeParameterListPtr selectionParameters (new NodeParameterList ());
-	RegisterCommonParameters (uiManager, uiManager.GetSelectedNodes (), *selectionParameters.get ());
-	return selectionParameters;
+	class SelectionNodeParameterAccessor : public NodeParameterAccessor
+	{
+	public:
+		SelectionNodeParameterAccessor (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
+			NodeParameterAccessor (),
+			uiManager (uiManager),
+			uiEnvironment (uiEnvironment)
+		{
+			RegisterCommonParameters (uiManager, uiManager.GetSelectedNodes (), selectionParameters);
+		}
+
+		virtual size_t GetParameterCount () const override
+		{
+			return selectionParameters.GetParameterCount ();
+		}
+
+		virtual const std::wstring& GetParameterName (size_t index) const override
+		{
+			return selectionParameters.GetParameter (index)->GetName ();
+		}
+
+		virtual NE::ValuePtr GetParameterValue (size_t) const override
+		{
+			return NE::ValuePtr (new NE::StringValue (L"---"));
+		}
+
+		virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+		{
+			NodeParameterPtr& parameter = selectionParameters.GetParameter (index);
+			bool success = ApplyCommonParameter (uiManager, uiEnvironment.GetEvaluationEnv (), uiManager.GetSelectedNodes (), parameter, value);
+			uiManager.Update (uiEnvironment);
+			return success;
+		}
+
+	private:
+		NodeUIManager&		uiManager;
+		NodeUIEnvironment&	uiEnvironment;
+		NodeParameterList	selectionParameters;
+	};
+
+	NodeParameterAccessorPtr paramAccessor (new SelectionNodeParameterAccessor (uiManager, uiEnvironment));
+	return paramAccessor;
 }
 
 NodeUIManager& NodeEditor::GetNodeUIManager ()

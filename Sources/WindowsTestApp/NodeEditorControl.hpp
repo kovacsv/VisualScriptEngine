@@ -51,7 +51,7 @@ class UpdateInterface
 {
 public:
 	virtual void RedrawResultImage () = 0;
-	virtual void UpdateParameters (NUIE::NodeParameterListPtr& parameterList) = 0;
+	virtual void UpdateParameters (NUIE::NodeParameterAccessorPtr& paramAccessor) = 0;
 };
 
 class NodeEditorControl;

@@ -5,6 +5,7 @@
 #include "DrawingControl.hpp"
 #include "Debug.hpp"
 #include "ParameterList.hpp"
+#include "SingleValues.hpp"
 
 #include <CommCtrl.h>
 #include <iostream>
@@ -195,42 +196,47 @@ private:
 			drawingControl->RedrawImage ();
 		}
 
-		virtual void UpdateParameters (NUIE::NodeParameterListPtr& parameterList) override
+		virtual void UpdateParameters (NUIE::NodeParameterAccessorPtr& nodeParameterAccessor) override
 		{
 			class MyParamAccessor : public ParameterAccessor
 			{
 			public:
-				MyParamAccessor (NUIE::NodeParameterListPtr& paramList) :
+				MyParamAccessor (NUIE::NodeParameterAccessorPtr& nodeParameterAccessor) :
 					ParameterAccessor (),
-					paramList (paramList)
+					nodeParameterAccessor (nodeParameterAccessor)
 				{
 				}
 
 				virtual size_t GetParameterCount () const override
 				{
-					return paramList->GetParameterCount ();
+					return nodeParameterAccessor->GetParameterCount ();
 				}
 
 				virtual std::wstring GetParameterName (int index) const override
 				{
-					return paramList->GetParameter (index)->GetName ();
+					return nodeParameterAccessor->GetParameterName (index);
 				}
 
 				virtual std::wstring GetParameterValue (int index) const override
 				{
-					return L"Value";
+					NE::ValuePtr value = nodeParameterAccessor->GetParameterValue (index);
+					if (DBGERROR (!NE::Value::IsType<NE::StringValue> (value))) {
+						return L"";
+					}
+					return NE::StringValue::Get (value);
 				}
 
 				virtual bool SetParameterValue (int index, const std::wstring& value) override
 				{
-					return false;
+					NE::ValuePtr valuePtr (new NE::StringValue (value));
+					return nodeParameterAccessor->SetParameterValue (index, valuePtr);
 				}
 
 			private:
-				NUIE::NodeParameterListPtr paramList;
+				NUIE::NodeParameterAccessorPtr nodeParameterAccessor;
 			};
 
-			ParameterAccessorPtr accessor (new MyParamAccessor (parameterList));
+			ParameterAccessorPtr accessor (new MyParamAccessor (nodeParameterAccessor));
 			leftPanel->FillParameters (accessor);
 		}
 

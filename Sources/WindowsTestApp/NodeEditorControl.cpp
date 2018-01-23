@@ -275,8 +275,8 @@ void NodeEditorControl::RedrawResultImage ()
 
 void NodeEditorControl::UpdateParameters ()
 {
-	NUIE::NodeParameterListPtr parameters = nodeEditor.GetSelectionParameters ();
-	updateInterface.UpdateParameters (parameters);
+	NUIE::NodeParameterAccessorPtr paramAccessor = nodeEditor.GetSelectionParameters ();
+	updateInterface.UpdateParameters (paramAccessor);
 }
 
 BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)

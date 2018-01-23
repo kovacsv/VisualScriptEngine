@@ -59,12 +59,12 @@ public:
 				return std::dynamic_pointer_cast<TestNode> (uiNode) != nullptr;
 			}
 
-			virtual bool CanSetValue (const UINodePtr&, NE::ValuePtr& value) const override
+			virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const override
 			{
 				return NE::Value::IsType<NE::IntValue> (value);
 			}
 
-			virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, NE::ValuePtr& value) override
+			virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
 			{
 				uiNode->GetInputSlot (SlotId ("in1"))->SetDefaultValue (value);
 				return true;
@@ -116,12 +116,12 @@ public:
 				return std::dynamic_pointer_cast<TestNode2> (uiNode) != nullptr;
 			}
 
-			virtual bool CanSetValue (const UINodePtr&, NE::ValuePtr& value) const override
+			virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const override
 			{
 				return NE::Value::IsType<NE::IntValue> (value);
 			}
 
-			virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, NE::ValuePtr& value) override
+			virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
 			{
 				uiNode->GetInputSlot (SlotId ("in2"))->SetDefaultValue (value);
 				return true;
@@ -228,7 +228,7 @@ TEST (NodeParametersTest3)
 		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
 		paramList.GetParameter (1)->GetId () == "in1";
 		ValuePtr newName (new StringValue (L"NewName"));
-		ApplyCommonParameter (uiManager, nodeCollection, paramList.GetParameter (0), EmptyEvaluationEnv, newName);
+		ApplyCommonParameter (uiManager, EmptyEvaluationEnv, nodeCollection, paramList.GetParameter (0), newName);
 		ASSERT (node->GetNodeName () == L"NewName");
 		ASSERT (node2->GetNodeName () == L"NewName");
 	}
