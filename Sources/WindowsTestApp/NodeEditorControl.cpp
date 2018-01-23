@@ -71,9 +71,8 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
 }
 
-NodeEditorUIEnvironment::NodeEditorUIEnvironment (wxPanel* nodeEditorControl, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
+NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
-	updateInterface (updateInterface),
 	evaluationEnv (evaluationEnv),
 	drawingContext (),
 	skinParams (),
@@ -114,7 +113,7 @@ NE::EvaluationEnv& NodeEditorUIEnvironment::GetEvaluationEnv ()
 
 void NodeEditorUIEnvironment::OnValuesRecalculated ()
 {
-	updateInterface.RedrawImage ();
+	nodeEditorControl->RedrawResultImage ();
 }
 
 void NodeEditorUIEnvironment::OnRedrawRequest ()
@@ -129,13 +128,14 @@ NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
 
 void NodeEditorUIEnvironment::OnSelectionChanged ()
 {
-	updateInterface.UpdateParameters ();
+	nodeEditorControl->UpdateParameters ();
 }
 
 NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
 	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
+	updateInterface (updateInterface),
 	captureHandler (this),
-	uiEnvironment (this, updateInterface, evaluationEnv),
+	uiEnvironment (this, evaluationEnv),
 	nodeEditor (uiEnvironment)
 {
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
@@ -266,6 +266,17 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 		return false;
 	}
 	return true;
+}
+
+void NodeEditorControl::RedrawResultImage ()
+{
+	updateInterface.RedrawResultImage ();
+}
+
+void NodeEditorControl::UpdateParameters ()
+{
+	NUIE::NodeParameterListPtr parameters = nodeEditor.GetSelectionParameters ();
+	updateInterface.UpdateParameters (parameters);
 }
 
 BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)

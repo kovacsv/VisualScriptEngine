@@ -4,6 +4,8 @@
 #include "wx/wx.h"
 #include "wx/dataview.h"
 
+#include <memory>
+
 class ParameterAccessor
 {
 public:
@@ -16,16 +18,22 @@ public:
 	virtual bool			SetParameterValue (int index, const std::wstring& value) = 0;
 };
 
+typedef std::shared_ptr<ParameterAccessor> ParameterAccessorPtr;
+typedef std::shared_ptr<const ParameterAccessor> ParameterAccessorConstPtr;
+
+
 class ParameterList : public wxDataViewListCtrl
 {
 public:
-	ParameterList (wxWindow* parent, ParameterAccessor& paramAccessor);
+	ParameterList (wxWindow* parent);
+
+	void	SetParameterAccessor (const ParameterAccessorPtr& newParamAccessor);
 
 	void	FillParameters ();
 	void	OnEditingDone (wxDataViewEvent& evt);
 
 private:
-	ParameterAccessor& paramAccessor;
+	ParameterAccessorPtr paramAccessor;
 
 	DECLARE_EVENT_TABLE ();
 };

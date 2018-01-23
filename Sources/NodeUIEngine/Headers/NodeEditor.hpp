@@ -29,6 +29,7 @@ public:
 	void							Update ();
 	void							Draw ();
 
+	NodeParameterListPtr			GetSelectionParameters ();
 	NodeUIManager&					GetNodeUIManager ();
 	
 	void							Clear ();

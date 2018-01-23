@@ -46,54 +46,25 @@ private:
 	std::wstring currentFileName;
 };
 
-class MyParamAccessor : public ParameterAccessor
-{
-public:
-	MyParamAccessor () :
-		ParameterAccessor ()
-	{
-	}
-
-	virtual size_t GetParameterCount () const override
-	{
-		return 0;
-	}
-
-	virtual std::wstring GetParameterName (int index) const override
-	{
-		return L"";
-	}
-
-	virtual std::wstring GetParameterValue (int index) const override
-	{
-		return L"";
-	}
-
-	virtual bool SetParameterValue (int index, const std::wstring& value) override
-	{
-		return true;
-	}
-
-private:
-	std::vector<std::pair<std::wstring, std::wstring>> params;
-};
-
 class LeftPanel : public wxPanel
 {
 public:
 	LeftPanel (wxWindow *parent) :
 		wxPanel (parent, wxID_ANY, wxDefaultPosition, wxSize (200, 200)),
-		parameterAccessor (),
-		parameterList (new ParameterList (this, parameterAccessor)),
+		parameterList (new ParameterList (this)),
 		sizer (new wxBoxSizer (wxHORIZONTAL))
 	{
-		parameterList->FillParameters ();
 		sizer->Add (parameterList, 0, wxEXPAND);
 		SetSizer (sizer);
 	}
 
+	void FillParameters (ParameterAccessorPtr& paramAccessor)
+	{
+		parameterList->SetParameterAccessor (paramAccessor);
+		parameterList->FillParameters ();
+	}
+
 private:
-	MyParamAccessor		parameterAccessor;
 	ParameterList*		parameterList;
 	wxBoxSizer*			sizer;
 };
@@ -111,18 +82,18 @@ public:
 	};
 
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
-		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
+		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1200, 600)),
 		menuBar (new wxMenuBar ()),
 		fileMenu (new wxMenu ()),
-		//leftPanel (new LeftPanel (this)),
+		leftPanel (new LeftPanel (this)),
 		editorAndDrawingWindow (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
 		drawingControl (new DrawingControl (editorAndDrawingWindow, resultImage)),
-		updateInterface (drawingControl),
+		updateInterface (leftPanel, drawingControl),
 		nodeEditorControl (new NodeEditorControl (editorAndDrawingWindow, updateInterface, evaluationEnv)),
 		mainSizer (new wxBoxSizer (wxHORIZONTAL)),
 		applicationState ()
 	{
-		//mainSizer->Add (leftPanel, 0, wxEXPAND);
+		mainSizer->Add (leftPanel, 0, wxEXPAND);
 		mainSizer->Add (editorAndDrawingWindow, 1, wxEXPAND);
 		SetSizer (mainSizer);
 
@@ -212,24 +183,60 @@ private:
 	class NodeEditorUpdateInterface : public UpdateInterface
 	{
 	public:
-		NodeEditorUpdateInterface (DrawingControl* drawingControl) :
+		NodeEditorUpdateInterface (LeftPanel* leftPanel, DrawingControl* drawingControl) :
+			leftPanel (leftPanel),
 			drawingControl (drawingControl)
 		{
 		
 		}
 
-		virtual void RedrawImage () override
+		virtual void RedrawResultImage () override
 		{
 			drawingControl->RedrawImage ();
 		}
 
-		virtual void UpdateParameters () override
+		virtual void UpdateParameters (NUIE::NodeParameterListPtr& parameterList) override
 		{
-			
+			class MyParamAccessor : public ParameterAccessor
+			{
+			public:
+				MyParamAccessor (NUIE::NodeParameterListPtr& paramList) :
+					ParameterAccessor (),
+					paramList (paramList)
+				{
+				}
+
+				virtual size_t GetParameterCount () const override
+				{
+					return paramList->GetParameterCount ();
+				}
+
+				virtual std::wstring GetParameterName (int index) const override
+				{
+					return paramList->GetParameter (index)->GetName ();
+				}
+
+				virtual std::wstring GetParameterValue (int index) const override
+				{
+					return L"Value";
+				}
+
+				virtual bool SetParameterValue (int index, const std::wstring& value) override
+				{
+					return false;
+				}
+
+			private:
+				NUIE::NodeParameterListPtr paramList;
+			};
+
+			ParameterAccessorPtr accessor (new MyParamAccessor (parameterList));
+			leftPanel->FillParameters (accessor);
 		}
 
 	private:
-		DrawingControl* drawingControl;
+		LeftPanel*			leftPanel;
+		DrawingControl*		drawingControl;
 	};
 
 	wxMenuBar*					menuBar;

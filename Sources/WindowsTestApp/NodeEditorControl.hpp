@@ -50,14 +50,16 @@ private:
 class UpdateInterface
 {
 public:
-	virtual void RedrawImage () = 0;
-	virtual void UpdateParameters () = 0;
+	virtual void RedrawResultImage () = 0;
+	virtual void UpdateParameters (NUIE::NodeParameterListPtr& parameterList) = 0;
 };
+
+class NodeEditorControl;
 
 class NodeEditorUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
-	NodeEditorUIEnvironment (wxPanel* nodeEditorControl, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv);
+	NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv);
 
 	void							OnPaint ();
 	void							OnResize (int width, int height);
@@ -71,8 +73,7 @@ public:
 	virtual void					OnSelectionChanged () override;
 
 private:
-	wxPanel*				nodeEditorControl;
-	UpdateInterface&		updateInterface;
+	NodeEditorControl*		nodeEditorControl;
 	NE::EvaluationEnv&		evaluationEnv;
 
 	BitmapContextGdi		drawingContext;
@@ -108,7 +109,11 @@ public:
 	bool							Open (const std::wstring& fileName);
 	bool							Save (const std::wstring& fileName);
 
+	void							RedrawResultImage ();
+	void							UpdateParameters ();
+
 private:
+	UpdateInterface&				updateInterface;
 	MouseCaptureHandler				captureHandler;
 	NodeEditorUIEnvironment			uiEnvironment;
 	NUIE::NodeEditor				nodeEditor;

@@ -81,6 +81,13 @@ void NodeEditor::Draw ()
 	uiManager.Draw (uiEnvironment, uiInteractionHandler.GetDrawingExtension ());
 }
 
+NodeParameterListPtr NodeEditor::GetSelectionParameters ()
+{
+	NodeParameterListPtr selectionParameters (new NodeParameterList ());
+	RegisterCommonParameters (uiManager, uiManager.GetSelectedNodes (), *selectionParameters.get ());
+	return selectionParameters;
+}
+
 NodeUIManager& NodeEditor::GetNodeUIManager ()
 {
 	return uiManager;

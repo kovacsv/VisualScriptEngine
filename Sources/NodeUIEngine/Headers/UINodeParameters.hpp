@@ -49,6 +49,9 @@ private:
 	std::vector<NodeParameterPtr>	parameters;
 };
 
+typedef std::shared_ptr<NodeParameterList> NodeParameterListPtr;
+typedef std::shared_ptr<const NodeParameterList> NodeParameterListConstPtr;
+
 void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList);
 bool ApplyCommonParameter (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, NE::EvaluationEnv& evaluationEnv, NE::ValuePtr& value);
 
