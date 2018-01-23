@@ -2,7 +2,7 @@
 #include "ContextDecorators.hpp"
 
 DrawingControl::DrawingControl (wxWindow *parent, const std::shared_ptr<ResultImage>& resultImage) :
-	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
+	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
 	captureHandler (this),
 	resultImage (resultImage),
 	drawingContext (),

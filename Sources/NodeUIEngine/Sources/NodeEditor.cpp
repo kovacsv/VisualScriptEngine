@@ -115,9 +115,11 @@ NodeParameterAccessorPtr NodeEditor::GetSelectionParameters ()
 			return selectionParameters.GetParameter (index)->GetName ();
 		}
 
-		virtual NE::ValuePtr GetParameterValue (size_t) const override
+		virtual NE::ValuePtr GetParameterValue (size_t index) const override
 		{
-			return NE::ValuePtr (new NE::StringValue (L"---"));
+			NE::NodeId lastSelectedId = uiManager.GetSelectedNodes ().GetLast ();
+			UINodePtr lastSelectedNode = uiManager.GetUINode (lastSelectedId);
+			return selectionParameters.GetParameter (index)->GetValue (lastSelectedNode);
 		}
 
 		virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override

@@ -19,22 +19,23 @@ class NodeCollection
 public:
 	NodeCollection ();
 	NodeCollection (const NE::NodeId& nodeId);
-	NodeCollection (const std::unordered_set<NE::NodeId>& nodes);
 	~NodeCollection ();
 
-	bool	Contains (const NE::NodeId& nodeId) const;
-	size_t	Count () const;
+	bool		Contains (const NE::NodeId& nodeId) const;
+	size_t		Count () const;
+	NE::NodeId	GetLast () const;
 
-	void	Enumerate (const std::function<bool (const NE::NodeId&)>& processor) const;
-	void	Insert (const NE::NodeId& nodeId);
-	void	Erase (const NE::NodeId& nodeId);
-	void	Clear ();
+	void		Enumerate (const std::function<bool (const NE::NodeId&)>& processor) const;
+	void		Insert (const NE::NodeId& nodeId);
+	void		Erase (const NE::NodeId& nodeId);
+	void		Clear ();
 
-	bool	operator== (const NodeCollection& rhs) const;
-	bool	operator!= (const NodeCollection& rhs) const;
+	bool		operator== (const NodeCollection& rhs) const;
+	bool		operator!= (const NodeCollection& rhs) const;
 
 private:
-	std::unordered_set<NE::NodeId> nodes;
+	std::vector<NE::NodeId>			nodes;
+	std::unordered_set<NE::NodeId>	nodeSet;
 };
 
 class NodeUIManager

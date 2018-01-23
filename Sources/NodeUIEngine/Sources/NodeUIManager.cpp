@@ -16,13 +16,8 @@ NodeCollection::NodeCollection ()
 }
 
 NodeCollection::NodeCollection (const NE::NodeId& nodeId) :
-	nodes ({ nodeId })
-{
-
-}
-
-NodeCollection::NodeCollection (const std::unordered_set<NE::NodeId>& nodes) :
-	nodes (nodes)
+	nodes ({ nodeId }),
+	nodeSet ({ nodeId })
 {
 
 }
@@ -34,12 +29,20 @@ NodeCollection::~NodeCollection ()
 
 bool NodeCollection::Contains (const NE::NodeId& nodeId) const
 {
-	return nodes.find (nodeId) != nodes.end ();
+	return nodeSet.find (nodeId) != nodeSet.end ();
 }
 
 size_t NodeCollection::Count () const
 {
 	return nodes.size ();
+}
+
+NE::NodeId NodeCollection::GetLast () const
+{
+	if (nodes.empty ()) {
+		return NE::NullNodeId;
+	}
+	return nodes.back ();
 }
 
 void NodeCollection::Enumerate (const std::function<bool (const NE::NodeId&)>& processor) const
@@ -53,22 +56,27 @@ void NodeCollection::Enumerate (const std::function<bool (const NE::NodeId&)>& p
 
 void NodeCollection::Insert (const NE::NodeId& nodeId)
 {
-	nodes.insert (nodeId);
+	nodes.push_back (nodeId);
+	nodeSet.insert (nodeId);
 }
 
 void NodeCollection::Erase (const NE::NodeId& nodeId)
 {
-	nodes.erase (nodeId);
+	if (Contains (nodeId)) {
+		nodes.erase (std::find (nodes.begin (), nodes.end (), nodeId));
+		nodeSet.erase (nodeId);
+	}
 }
 
 void NodeCollection::Clear ()
 {
 	nodes.clear ();
+	nodeSet.clear ();
 }
 
 bool NodeCollection::operator== (const NodeCollection& rhs) const
 {
-	return nodes == rhs.nodes;
+	return nodes == rhs.nodes && nodeSet == rhs.nodeSet;
 }
 
 bool NodeCollection::operator!= (const NodeCollection& rhs) const

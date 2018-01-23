@@ -132,7 +132,7 @@ void NodeEditorUIEnvironment::OnSelectionChanged ()
 }
 
 NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
-	wxPanel (parent, wxID_ANY, wxPoint (0, 0), wxSize (200, 200)),
+	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
 	updateInterface (updateInterface),
 	captureHandler (this),
 	uiEnvironment (this, evaluationEnv),

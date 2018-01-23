@@ -47,11 +47,11 @@ private:
 	std::wstring currentFileName;
 };
 
-class LeftPanel : public wxPanel
+class ParametersPanel : public wxPanel
 {
 public:
-	LeftPanel (wxWindow *parent) :
-		wxPanel (parent, wxID_ANY, wxDefaultPosition, wxSize (200, 200)),
+	ParametersPanel (wxWindow *parent) :
+		wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
 		parameterList (new ParameterList (this)),
 		sizer (new wxBoxSizer (wxHORIZONTAL))
 	{
@@ -83,19 +83,19 @@ public:
 	};
 
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
-		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1200, 600)),
+		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
 		menuBar (new wxMenuBar ()),
 		fileMenu (new wxMenu ()),
-		leftPanel (new LeftPanel (this)),
-		editorAndDrawingWindow (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
-		drawingControl (new DrawingControl (editorAndDrawingWindow, resultImage)),
-		updateInterface (leftPanel, drawingControl),
-		nodeEditorControl (new NodeEditorControl (editorAndDrawingWindow, updateInterface, evaluationEnv)),
+		parametersPanel (new ParametersPanel (this)),
+		editorAndDrawingSplitter (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
+		drawingControl (new DrawingControl (editorAndDrawingSplitter, resultImage)),
+		updateInterface (parametersPanel, drawingControl),
+		nodeEditorControl (new NodeEditorControl (editorAndDrawingSplitter, updateInterface, evaluationEnv)),
 		mainSizer (new wxBoxSizer (wxHORIZONTAL)),
 		applicationState ()
 	{
-		mainSizer->Add (leftPanel, 0, wxEXPAND);
-		mainSizer->Add (editorAndDrawingWindow, 1, wxEXPAND);
+		mainSizer->Add (editorAndDrawingSplitter, 1, wxEXPAND);
+		mainSizer->Add (parametersPanel, 0, wxEXPAND);
 		SetSizer (mainSizer);
 
 		fileMenu->Append (CommandId::File_New, "New");
@@ -110,9 +110,9 @@ public:
 		CreateStatusBar ();
 		UpdateStatusBar ();
 
-		editorAndDrawingWindow->SetSashGravity (0.5);
-		editorAndDrawingWindow->SetMinimumPaneSize (20);
-		editorAndDrawingWindow->SplitVertically (nodeEditorControl, drawingControl, 700);
+		editorAndDrawingSplitter->SetSashGravity (0.5);
+		editorAndDrawingSplitter->SetMinimumPaneSize (20);
+		editorAndDrawingSplitter->SplitHorizontally (nodeEditorControl, drawingControl, 300);
 	}
 
 	~MainFrame ()
@@ -184,8 +184,8 @@ private:
 	class NodeEditorUpdateInterface : public UpdateInterface
 	{
 	public:
-		NodeEditorUpdateInterface (LeftPanel* leftPanel, DrawingControl* drawingControl) :
-			leftPanel (leftPanel),
+		NodeEditorUpdateInterface (ParametersPanel* parametersPanel, DrawingControl* drawingControl) :
+			parametersPanel (parametersPanel),
 			drawingControl (drawingControl)
 		{
 		
@@ -237,19 +237,19 @@ private:
 			};
 
 			ParameterAccessorPtr accessor (new MyParamAccessor (nodeParameterAccessor));
-			leftPanel->FillParameters (accessor);
+			parametersPanel->FillParameters (accessor);
 		}
 
 	private:
-		LeftPanel*			leftPanel;
+		ParametersPanel*	parametersPanel;
 		DrawingControl*		drawingControl;
 	};
 
 	wxMenuBar*					menuBar;
 	wxMenu*						fileMenu;
 
-	LeftPanel*					leftPanel;
-	wxSplitterWindow*			editorAndDrawingWindow;
+	ParametersPanel*			parametersPanel;
+	wxSplitterWindow*			editorAndDrawingSplitter;
 	DrawingControl*				drawingControl;
 	NodeEditorUpdateInterface	updateInterface;
 	NodeEditorControl*			nodeEditorControl;
