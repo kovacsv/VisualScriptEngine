@@ -84,16 +84,16 @@ public:
 	void EnumerateSlots (const std::function<bool (const SlotConstType&)>& processor) const;
 
 	template <class Type>
-	static bool IsType (Node* val);
+	static bool IsType (Node* node);
 
 	template <class Type>
-	static bool IsType (const NodePtr& val);
+	static bool IsType (const NodePtr& node);
 
 	template <class Type>
-	static Type* Cast (Node* val);
+	static Type* Cast (Node* node);
 
 	template <class Type>
-	static std::shared_ptr<Type> Cast (const NodePtr& val);
+	static std::shared_ptr<Type> Cast (const NodePtr& node);
 
 protected:
 	virtual bool			RegisterInputSlot (const InputSlotPtr& newInputSlot);
@@ -131,7 +131,7 @@ bool Node::IsType (const NodePtr& node)
 template <class Type>
 Type* Node::Cast (Node* node)
 {
-	return dynamic_cast<Type*> (val);
+	return dynamic_cast<Type*> (node);
 }
 
 template <class Type>
