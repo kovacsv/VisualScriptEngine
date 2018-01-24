@@ -56,7 +56,7 @@ public:
 
 			virtual bool IsApplicableTo (const UINodePtr& uiNode) const override
 			{
-				return std::dynamic_pointer_cast<TestNode> (uiNode) != nullptr;
+				return NE::Node::IsType<TestNode> (uiNode);
 			}
 
 			virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const override
@@ -113,7 +113,7 @@ public:
 
 			virtual bool IsApplicableTo (const UINodePtr& uiNode) const override
 			{
-				return std::dynamic_pointer_cast<TestNode2> (uiNode) != nullptr;
+				return NE::Node::IsType<TestNode2> (uiNode);
 			}
 
 			virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const override

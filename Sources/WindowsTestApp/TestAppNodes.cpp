@@ -217,7 +217,7 @@ void PointNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrat
 
 		virtual bool IsApplicableTo (const NUIE::UINodePtr& uiNode) override
 		{
-			return std::dynamic_pointer_cast<PointNode> (uiNode) != nullptr;
+			return NE::Node::IsType<PointNode> (uiNode);
 		}
 
 		virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment&, NUIE::UINodePtr& uiNode) override
@@ -238,12 +238,12 @@ void PointNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrat
 
 		virtual bool IsApplicableTo (const NUIE::UINodePtr& uiNode) override
 		{
-			return std::dynamic_pointer_cast<PointNode> (uiNode) != nullptr;
+			return NE::Node::IsType<PointNode> (uiNode);
 		}
 
 		virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment&, NUIE::UINodePtr& uiNode) override
 		{
-			std::shared_ptr<PointNode> pointNode = std::dynamic_pointer_cast<PointNode> (uiNode);
+			std::shared_ptr<PointNode> pointNode = NE::Node::Cast<PointNode> (uiNode);
 			if (DBGERROR (pointNode == nullptr)) {
 				return;
 			}

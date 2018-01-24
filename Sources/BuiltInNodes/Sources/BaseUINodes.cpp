@@ -24,12 +24,12 @@ public:
 
 	virtual bool IsApplicableTo (const UINodePtr& uiNode) override
 	{
-		return std::dynamic_pointer_cast<CalculatedUINode> (uiNode) != nullptr;
+		return NE::Node::IsType<CalculatedUINode> (uiNode);
 	}
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
 	{
-		std::shared_ptr<CalculatedUINode> calcUINode = std::dynamic_pointer_cast<CalculatedUINode> (uiNode);
+		std::shared_ptr<CalculatedUINode> calcUINode = NE::Node::Cast<CalculatedUINode> (uiNode);
 		if (DBGERROR (calcUINode == nullptr)) {
 			return;
 		}
@@ -53,12 +53,12 @@ public:
 
 	virtual bool IsApplicableTo (const UINodePtr& uiNode) override
 	{
-		return std::dynamic_pointer_cast<CombinedValueUINode> (uiNode) != nullptr;
+		return NE::Node::IsType<CombinedValueUINode> (uiNode);
 	}
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UINodePtr& uiNode) override
 	{
-		std::shared_ptr<CombinedValueUINode> combValueUINode = std::dynamic_pointer_cast<CombinedValueUINode> (uiNode);
+		std::shared_ptr<CombinedValueUINode> combValueUINode = NE::Node::Cast<CombinedValueUINode> (uiNode);
 		if (DBGERROR (combValueUINode == nullptr)) {
 			return;
 		}

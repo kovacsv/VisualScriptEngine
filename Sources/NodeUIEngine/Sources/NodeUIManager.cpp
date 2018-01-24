@@ -250,7 +250,7 @@ void NodeUIManager::EnumerateConnectedOutputSlots (const UIInputSlotConstPtr& in
 UINodePtr NodeUIManager::GetUINode (const NE::NodeId& nodeId)
 {
 	NE::NodePtr node = nodeManager.GetNode (nodeId);
-	return std::dynamic_pointer_cast<UINode> (node);
+	return NE::Node::Cast<UINode> (node);
 }
 
 UINodeConstPtr NodeUIManager::GetUINode (const NE::NodeId& nodeId) const

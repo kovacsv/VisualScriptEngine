@@ -217,11 +217,11 @@ NUIE::EventHandlerResult UINode::HandleMouseWheel (NodeUIEnvironment&, const Key
 
 void UINode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	class NodeNameParameter : public NodeParameter
+	class NodeNameParameter : public TypedNodeParameter<UINode, NE::StringValue>
 	{
 	public:
 		NodeNameParameter () :
-			NodeParameter ("NodeNameParameter", L"Name")
+			TypedNodeParameter<UINode, NE::StringValue> ("NodeNameParameter", L"Name")
 		{
 		
 		}
@@ -229,16 +229,6 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ()));
-		}
-
-		virtual bool IsApplicableTo (const UINodePtr&) const override
-		{
-			return true;
-		}
-
-		virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const override
-		{
-			return NE::Value::IsType<NE::StringValue> (value);
 		}
 
 		virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
