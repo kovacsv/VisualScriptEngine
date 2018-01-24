@@ -3,6 +3,8 @@
 #include "SingleValues.hpp"
 #include "Debug.hpp"
 
+#include <regex>
+
 namespace NUIE
 {
 
@@ -112,20 +114,26 @@ std::wstring ParameterValueToString (const NE::ValuePtr& value, NodeParameter::T
 NE::ValuePtr StringToParameterValue (const std::wstring& str, NodeParameter::Type type)
 {
 	NE::ValuePtr result = nullptr;
-	switch (type) {
-		case NodeParameter::Type::String:
-			{
-				result.reset (new NE::StringValue (str));
-			}
-			break;
-		case NodeParameter::Type::Integer:
-			{
-				result.reset (new NE::IntValue (std::stoi (str)));
-			}
-			break;
-		default:
-			DBGBREAK ();
-			break;
+	try {
+		switch (type) {
+			case NodeParameter::Type::String:
+				{
+					result.reset (new NE::StringValue (str));
+				}
+				break;
+			case NodeParameter::Type::Integer:
+				{
+					if (std::regex_match (str.begin (), str.end (), std::wregex (L"[(-|+)|][0-9]+"))) {
+						result.reset (new NE::IntValue (std::stoi (str)));
+					}
+				}
+				break;
+			default:
+				DBGBREAK ();
+				break;
+		}
+	} catch (...) {
+		result = nullptr;
 	}
 	return result;
 }

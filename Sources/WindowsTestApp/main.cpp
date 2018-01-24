@@ -117,6 +117,9 @@ public:
 			{
 				NUIE::NodeParameter::Type type = nodeParameterAccessor->GetParameterType (index);
 				NE::ValuePtr valuePtr = NUIE::StringToParameterValue (value, type);
+				if (valuePtr == nullptr) {
+					return false;
+				}
 				return nodeParameterAccessor->SetParameterValue (index, valuePtr);
 			}
 
@@ -146,7 +149,7 @@ public:
 	};
 
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
-		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
+		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1200, 600)),
 		menuBar (new wxMenuBar ()),
 		fileMenu (new wxMenu ()),
 		parametersPanel (new ParametersPanel (this)),
@@ -157,8 +160,8 @@ public:
 		mainSizer (new wxBoxSizer (wxHORIZONTAL)),
 		applicationState ()
 	{
-		mainSizer->Add (editorAndDrawingSplitter, 1, wxEXPAND);
 		mainSizer->Add (parametersPanel, 0, wxEXPAND);
+		mainSizer->Add (editorAndDrawingSplitter, 1, wxEXPAND);
 		SetSizer (mainSizer);
 
 		fileMenu->Append (CommandId::File_New, "New");
@@ -175,7 +178,7 @@ public:
 
 		editorAndDrawingSplitter->SetSashGravity (0.5);
 		editorAndDrawingSplitter->SetMinimumPaneSize (20);
-		editorAndDrawingSplitter->SplitHorizontally (nodeEditorControl, drawingControl, 300);
+		editorAndDrawingSplitter->SplitVertically (nodeEditorControl, drawingControl, 700);
 	}
 
 	~MainFrame ()
