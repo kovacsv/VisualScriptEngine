@@ -1,5 +1,6 @@
 #include "UINodeParameters.hpp"
 #include "NodeUIManager.hpp"
+#include "SingleValues.hpp"
 #include "Debug.hpp"
 
 namespace NUIE
@@ -71,6 +72,62 @@ static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vec
 		}
 	}
 	return true;
+}
+
+NodeParameterAccessor::NodeParameterAccessor ()
+{
+
+}
+
+NodeParameterAccessor::~NodeParameterAccessor ()
+{
+
+}
+
+std::wstring ParameterValueToString (const NE::ValuePtr& value, NodeParameter::Type type)
+{
+	std::wstring result = L"";
+	switch (type) {
+		case NodeParameter::Type::String:
+			{
+				if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
+					result = NE::StringValue::Get (value);
+				}
+			}
+			break;
+		case NodeParameter::Type::Integer:
+			{
+				if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
+					result = std::to_wstring (NE::IntValue::Get (value));
+				}
+			}
+			break;
+		default:
+			DBGBREAK ();
+			break;
+	}
+	return result;
+}
+
+NE::ValuePtr StringToParameterValue (const std::wstring& str, NodeParameter::Type type)
+{
+	NE::ValuePtr result = nullptr;
+	switch (type) {
+		case NodeParameter::Type::String:
+			{
+				result.reset (new NE::StringValue (str));
+			}
+			break;
+		case NodeParameter::Type::Integer:
+			{
+				result.reset (new NE::IntValue (std::stoi (str)));
+			}
+			break;
+		default:
+			DBGBREAK ();
+			break;
+	}
+	return result;
 }
 
 void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList)

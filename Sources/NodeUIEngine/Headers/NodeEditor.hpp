@@ -12,22 +12,6 @@
 namespace NUIE
 {
 
-class NodeParameterAccessor
-{
-public:
-	NodeParameterAccessor ();
-	virtual ~NodeParameterAccessor ();
-
-	virtual size_t					GetParameterCount () const = 0;
-	virtual const std::wstring&		GetParameterName (size_t index) const = 0;
-	virtual NE::ValuePtr			GetParameterValue (size_t index) const = 0;
-	virtual NodeParameter::Type		GetParameterType (size_t index) const = 0;
-	virtual bool					SetParameterValue (size_t index, const NE::ValuePtr& value) = 0;
-};
-
-typedef std::shared_ptr<NodeParameterAccessor> NodeParameterAccessorPtr;
-typedef std::shared_ptr<const NodeParameterAccessor> NodeParameterAccessorConstPtr;
-
 class NodeEditor
 {
 public:

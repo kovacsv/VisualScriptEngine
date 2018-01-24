@@ -109,27 +109,14 @@ public:
 			virtual std::wstring GetParameterValue (int index) const override
 			{
 				NE::ValuePtr value = nodeParameterAccessor->GetParameterValue (index);
-				if (NE::Value::IsType<NE::StringValue> (value)) {
-					return NE::StringValue::Get (value);
-				} else if (NE::Value::IsType<NE::IntValue> (value)) {
-					return std::to_wstring (NE::IntValue::Get (value));
-				}
-				DBGBREAK ();
-				return L"";
+				NUIE::NodeParameter::Type type = nodeParameterAccessor->GetParameterType (index);
+				return NUIE::ParameterValueToString (value, type);
 			}
 
 			virtual bool SetParameterValue (int index, const std::wstring& value) override
 			{
-				NE::ValuePtr valuePtr = nullptr;
 				NUIE::NodeParameter::Type type = nodeParameterAccessor->GetParameterType (index);
-				if (type == NUIE::NodeParameter::Type::String) {
-					valuePtr.reset (new NE::StringValue (value));
-				} else if (type == NUIE::NodeParameter::Type::Integer) {
-					valuePtr.reset (new NE::IntValue (std::stoi (value)));
-				}
-				if (DBGERROR (valuePtr == nullptr)) {
-					return false;
-				}
+				NE::ValuePtr valuePtr = NUIE::StringToParameterValue (value, type);
 				return nodeParameterAccessor->SetParameterValue (index, valuePtr);
 			}
 

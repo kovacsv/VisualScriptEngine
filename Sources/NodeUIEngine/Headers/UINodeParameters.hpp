@@ -86,8 +86,27 @@ private:
 typedef std::shared_ptr<NodeParameterList> NodeParameterListPtr;
 typedef std::shared_ptr<const NodeParameterList> NodeParameterListConstPtr;
 
-void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList);
-bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);
+class NodeParameterAccessor
+{
+public:
+	NodeParameterAccessor ();
+	virtual ~NodeParameterAccessor ();
+
+	virtual size_t					GetParameterCount () const = 0;
+	virtual const std::wstring&		GetParameterName (size_t index) const = 0;
+	virtual NE::ValuePtr			GetParameterValue (size_t index) const = 0;
+	virtual NodeParameter::Type		GetParameterType (size_t index) const = 0;
+	virtual bool					SetParameterValue (size_t index, const NE::ValuePtr& value) = 0;
+};
+
+typedef std::shared_ptr<NodeParameterAccessor> NodeParameterAccessorPtr;
+typedef std::shared_ptr<const NodeParameterAccessor> NodeParameterAccessorConstPtr;
+
+std::wstring	ParameterValueToString (const NE::ValuePtr& value, NodeParameter::Type type);
+NE::ValuePtr	StringToParameterValue (const std::wstring& str, NodeParameter::Type type);
+
+void			RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList);
+bool			ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);
 
 }
 

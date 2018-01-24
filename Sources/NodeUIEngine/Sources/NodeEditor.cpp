@@ -18,16 +18,6 @@ static std::string WideStringToNormalString (const std::wstring& str)
 	return converter.to_bytes (str);
 }
 
-NodeParameterAccessor::NodeParameterAccessor ()
-{
-
-}
-
-NodeParameterAccessor::~NodeParameterAccessor ()
-{
-
-}
-
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (),
 	uiInteractionHandler (uiManager),
