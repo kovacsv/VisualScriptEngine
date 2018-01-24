@@ -21,6 +21,7 @@ public:
 typedef std::shared_ptr<ParameterAccessor> ParameterAccessorPtr;
 typedef std::shared_ptr<const ParameterAccessor> ParameterAccessorConstPtr;
 
+// TODO: Crash on selection change when editing
 class ParameterList : public wxDataViewListCtrl
 {
 public:
@@ -32,6 +33,8 @@ public:
 	void	OnEditingDone (wxDataViewEvent& evt);
 
 private:
+	void	ClearList ();
+
 	ParameterAccessorPtr paramAccessor;
 
 	DECLARE_EVENT_TABLE ();

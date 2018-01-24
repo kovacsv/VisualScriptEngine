@@ -1,6 +1,8 @@
 #include "ParameterList.hpp"
 #include "Debug.hpp"
 
+#include "wx/univ/renderer.h"
+
 ParameterAccessor::ParameterAccessor ()
 {
 
@@ -30,7 +32,7 @@ void ParameterList::FillParameters ()
 		return;
 	}
 
-	DeleteAllItems ();
+	ClearList ();
 	for (size_t i = 0; i < paramAccessor->GetParameterCount (); ++i) {
 		wxVector<wxVariant> data;
 		data.push_back (wxVariant (paramAccessor->GetParameterName (i)));
@@ -52,6 +54,18 @@ void ParameterList::OnEditingDone (wxDataViewEvent& evt)
 		evt.SetValue (wxVariant (paramAccessor->GetParameterValue (paramIndex)));
 		evt.Veto ();
 	}
+}
+
+void ParameterList::ClearList ()
+{
+	wxDataViewColumn* column = GetColumn (1);
+	if (DBGVERIFY (column != nullptr)) {
+		wxDataViewRenderer* renderer = column->GetRenderer ();
+		if (DBGVERIFY (renderer != nullptr)) {
+			renderer->CancelEditing ();
+		}
+	}
+	DeleteAllItems ();
 }
 
 BEGIN_EVENT_TABLE (ParameterList, wxDataViewListCtrl)
