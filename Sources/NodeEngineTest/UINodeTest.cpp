@@ -44,7 +44,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				NodeParameter ("in1", L"In1")
+				NodeParameter ("in1", L"In1", NodeParameter::Type::String)
 			{
 			
 			}
@@ -101,7 +101,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				NodeParameter ("in2", L"In2")
+				NodeParameter ("in2", L"In2", NodeParameter::Type::String)
 			{
 			
 			}

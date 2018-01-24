@@ -221,7 +221,7 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 	{
 	public:
 		NodeNameParameter () :
-			TypedNodeParameter<UINode, NE::StringValue> ("NodeNameParameter", L"Name")
+			TypedNodeParameter<UINode, NE::StringValue> ("NodeNameParameter", L"Name", NodeParameter::Type::String)
 		{
 		
 		}

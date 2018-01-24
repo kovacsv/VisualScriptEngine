@@ -5,9 +5,10 @@
 namespace NUIE
 {
 
-NodeParameter::NodeParameter (const std::string& paramId, const std::wstring& name) :
+NodeParameter::NodeParameter (const std::string& paramId, const std::wstring& name, Type type) :
 	paramId (paramId),
-	name (name)
+	name (name),
+	type (type)
 {
 
 }
@@ -25,6 +26,11 @@ const std::string& NodeParameter::GetId () const
 const std::wstring& NodeParameter::GetName () const
 {
 	return name;
+}
+
+NodeParameter::Type NodeParameter::GetType () const
+{
+	return type;
 }
 
 NodeParameterList::NodeParameterList ()

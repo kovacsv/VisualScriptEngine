@@ -1,6 +1,7 @@
 #include "TestAppNodes.hpp"
 #include "ResultImage.hpp"
 #include "ValueCombination.hpp"
+#include "UINodeParameters.hpp"
 
 NE::SerializationInfo			GeometricNode::serializationInfo (NE::ObjectId ("{74700C2B-6587-4850-A2F6-9DAB38896F41}"), NE::ObjectVersion (1));
 NE::DynamicSerializationInfo	PointNode::serializationInfo (NE::ObjectId ("{E19AC155-90A7-43EA-9406-8E0876BAE05F}"), NE::ObjectVersion (1), PointNode::CreateSerializableInstance);
@@ -202,6 +203,66 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 	});
 
 	return result;
+}
+
+void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	// TODO: Code duplication
+	class XPositionParameter : public NUIE::TypedNodeParameter<UINode, NE::IntValue>
+	{
+	public:
+		XPositionParameter () :
+			TypedNodeParameter<NUIE::UINode, NE::IntValue> ("XPositionParameter", L"X", NodeParameter::Type::Integer)
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValue (const NUIE::UINodePtr& uiNode) const override
+		{
+			return uiNode->GetInputSlot (NE::SlotId ("x"))->GetDefaultValue ();
+		}
+
+		virtual bool SetValue (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!CanSetValue (uiNode, value))) {
+				return false;
+			}
+			uiNode->GetInputSlot (NE::SlotId ("x"))->SetDefaultValue (value);
+			uiNode->InvalidateValue ();
+			uiManager.RequestRecalculate ();
+			return true;
+		}
+	};
+
+	class YPositionParameter : public NUIE::TypedNodeParameter<UINode, NE::IntValue>
+	{
+	public:
+		YPositionParameter () :
+			TypedNodeParameter<NUIE::UINode, NE::IntValue> ("YPositionParameter", L"Y", NodeParameter::Type::Integer)
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValue (const NUIE::UINodePtr& uiNode) const override
+		{
+			return uiNode->GetInputSlot (NE::SlotId ("y"))->GetDefaultValue ();
+		}
+
+		virtual bool SetValue (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!CanSetValue (uiNode, value))) {
+				return false;
+			}
+			uiNode->GetInputSlot (NE::SlotId ("y"))->SetDefaultValue (value);
+			uiNode->InvalidateValue ();
+			uiManager.RequestRecalculate ();
+			return true;
+		}
+	};
+
+	UINode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new XPositionParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new YPositionParameter ()));
 }
 
 void PointNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const

@@ -14,11 +14,18 @@ class NodeUIEnvironment;
 class NodeParameter
 {
 public:
-	NodeParameter (const std::string& paramId, const std::wstring& name);
+	enum class Type
+	{
+		String,
+		Integer
+	};
+
+	NodeParameter (const std::string& paramId, const std::wstring& name, Type type);
 	virtual ~NodeParameter ();
 
 	const std::string&		GetId () const;
 	const std::wstring&		GetName () const;
+	Type					GetType () const;
 
 	virtual NE::ValuePtr	GetValue (const UINodePtr& uiNode) const = 0;
 	virtual bool			IsApplicableTo (const UINodePtr& uiNode) const = 0;
@@ -28,6 +35,7 @@ public:
 private:
 	std::string		paramId;
 	std::wstring	name;
+	Type			type;
 };
 
 typedef std::shared_ptr<NodeParameter> NodeParameterPtr;
@@ -37,8 +45,8 @@ template <typename NodeType, typename ValueType>
 class TypedNodeParameter : public NodeParameter
 {
 public:
-	TypedNodeParameter (const std::string& paramId, const std::wstring& name) :
-		NodeParameter (paramId, name)
+	TypedNodeParameter (const std::string& paramId, const std::wstring& name, NodeParameter::Type type) :
+		NodeParameter (paramId, name, type)
 	{
 
 	}

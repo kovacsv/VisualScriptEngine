@@ -99,6 +99,7 @@ public:
 
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
 	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
