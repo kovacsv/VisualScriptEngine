@@ -32,12 +32,19 @@ void ParameterList::FillParameters ()
 		return;
 	}
 
+	int selectedRow = GetSelectedRow ();
 	ClearList ();
-	for (size_t i = 0; i < paramAccessor->GetParameterCount (); ++i) {
+
+	size_t parameterCount = paramAccessor->GetParameterCount ();
+	for (size_t i = 0; i < parameterCount; ++i) {
 		wxVector<wxVariant> data;
 		data.push_back (wxVariant (paramAccessor->GetParameterName (i)));
 		data.push_back (wxVariant (paramAccessor->GetParameterValue (i)));
 		AppendItem (data, i);
+	}
+
+	if (selectedRow >= 0 && selectedRow < parameterCount) {
+		SelectRow (selectedRow);
 	}
 }
 
@@ -51,9 +58,10 @@ void ParameterList::OnEditingDone (wxDataViewEvent& evt)
 	size_t paramIndex = GetItemData (evt.GetItem ());
 	wxVariant val = evt.GetValue ();
 	if (!paramAccessor->SetParameterValue (paramIndex, val.GetString ().ToStdWstring ())) {
-		evt.SetValue (wxVariant (paramAccessor->GetParameterValue (paramIndex)));
 		evt.Veto ();
 	}
+
+	FillParameters ();
 }
 
 void ParameterList::ClearList ()
