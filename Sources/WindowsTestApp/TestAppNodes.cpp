@@ -207,62 +207,29 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 
 void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	// TODO: Code duplication
-	class XPositionParameter : public NUIE::TypedNodeParameter<UINode, NE::IntValue>
+	class PositionXParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::IntValue>
 	{
 	public:
-		XPositionParameter () :
-			TypedNodeParameter<NUIE::UINode, NE::IntValue> ("XPositionParameter", L"X", NodeParameter::Type::Integer)
+		PositionXParameter () :
+			SlotDefaultValueParameter<PointNode, NE::IntValue> ("PositionXParameter", L"Position X", NodeParameter::Type::Integer, NE::SlotId ("x"))
 		{
 
-		}
-
-		virtual NE::ValuePtr GetValue (const NUIE::UINodePtr& uiNode) const override
-		{
-			return uiNode->GetInputSlot (NE::SlotId ("x"))->GetDefaultValue ();
-		}
-
-		virtual bool SetValue (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
-		{
-			if (DBGERROR (!CanSetValue (uiNode, value))) {
-				return false;
-			}
-			uiNode->GetInputSlot (NE::SlotId ("x"))->SetDefaultValue (value);
-			uiNode->InvalidateValue ();
-			uiManager.RequestRecalculate ();
-			return true;
 		}
 	};
 
-	class YPositionParameter : public NUIE::TypedNodeParameter<UINode, NE::IntValue>
+	class PositionYParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::IntValue>
 	{
 	public:
-		YPositionParameter () :
-			TypedNodeParameter<NUIE::UINode, NE::IntValue> ("YPositionParameter", L"Y", NodeParameter::Type::Integer)
+		PositionYParameter () :
+			SlotDefaultValueParameter<PointNode, NE::IntValue> ("PositionYParameter", L"Position Y", NodeParameter::Type::Integer, NE::SlotId ("y"))
 		{
 
-		}
-
-		virtual NE::ValuePtr GetValue (const NUIE::UINodePtr& uiNode) const override
-		{
-			return uiNode->GetInputSlot (NE::SlotId ("y"))->GetDefaultValue ();
-		}
-
-		virtual bool SetValue (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
-		{
-			if (DBGERROR (!CanSetValue (uiNode, value))) {
-				return false;
-			}
-			uiNode->GetInputSlot (NE::SlotId ("y"))->SetDefaultValue (value);
-			uiNode->InvalidateValue ();
-			uiManager.RequestRecalculate ();
-			return true;
 		}
 	};
 
 	UINode::RegisterParameters (parameterList);
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new XPositionParameter ()));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new YPositionParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionXParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionYParameter ()));
 }
 
 void PointNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const

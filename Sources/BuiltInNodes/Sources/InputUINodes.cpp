@@ -1,5 +1,7 @@
 #include "InputUINodes.hpp"
 #include "UINodePanels.hpp"
+#include "UINodeParameters.hpp"
+#include "NodeUIManager.hpp"
 #include "SkinParams.hpp"
 
 #include <algorithm>
@@ -109,6 +111,51 @@ NE::ValuePtr IntegerUpDownUINode::Calculate (NE::EvaluationEnv&) const
 	return NE::ValuePtr (new NE::IntValue (val));
 }
 
+void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) const
+{
+	class ValueParameter : public TypedNodeParameter<IntegerUpDownUINode, NE::IntValue>
+	{
+	public:
+		ValueParameter () :
+			TypedNodeParameter<IntegerUpDownUINode, NE::IntValue> ("IntegerUpDownValueParameter", L"Value", NodeParameter::Type::Integer)
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		{
+			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
+			if (DBGERROR (upDownNode == nullptr)) {
+				return nullptr;
+			}
+			return NE::ValuePtr (new NE::IntValue (upDownNode->GetValue ()));
+		}
+
+		virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!CanSetValue (uiNode, value))) {
+				return false;
+			}
+			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
+			if (DBGERROR (upDownNode == nullptr)) {
+				return false;
+			}
+			if (DBGERROR (!NE::Value::IsType<NE::IntValue> (value))) {
+				return false;
+			}
+			upDownNode->SetValue (NE::IntValue::Get (value));
+			upDownNode->InvalidateValue ();
+			upDownNode->InvalidateDrawing ();
+			uiManager.RequestRecalculate ();
+			uiManager.RequestRedraw ();
+			return true;
+		}
+	};
+
+	UINode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NodeParameterPtr (new ValueParameter ()));
+}
+
 void IntegerUpDownUINode::Increase ()
 {
 	val = val + step;
@@ -137,6 +184,17 @@ NE::Stream::Status IntegerUpDownUINode::Write (NE::OutputStream& outputStream) c
 	outputStream.Write (val);
 	outputStream.Write (step);
 	return outputStream.GetStatus ();
+}
+
+int IntegerUpDownUINode::GetValue () const
+{
+	return val;
+}
+
+void IntegerUpDownUINode::SetValue (int newValue)
+{
+	val = newValue;
+	InvalidateValue ();
 }
 
 DoubleUpDownUINode::DoubleUpDownUINode () :

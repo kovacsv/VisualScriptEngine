@@ -123,7 +123,7 @@ NE::ValuePtr StringToParameterValue (const std::wstring& str, NodeParameter::Typ
 				break;
 			case NodeParameter::Type::Integer:
 				{
-					if (std::regex_match (str.begin (), str.end (), std::wregex (L"[(-|+)|][0-9]+"))) {
+					if (std::regex_match (str.begin (), str.end (), std::wregex (L"[(-|+)]?[0-9]+"))) {
 						result.reset (new NE::IntValue (std::stoi (str)));
 					}
 				}

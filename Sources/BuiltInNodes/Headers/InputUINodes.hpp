@@ -42,12 +42,16 @@ public:
 
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 
 	virtual void				Increase () override;
 	virtual void				Decrease () override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+	int							GetValue () const;
+	void						SetValue (int newValue);
 
 private:
 	int val;

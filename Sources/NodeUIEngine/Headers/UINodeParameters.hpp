@@ -67,6 +67,41 @@ public:
 	}
 };
 
+template <typename NodeType, typename ValueType>
+class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
+{
+public:
+	SlotDefaultValueParameter (const std::string& paramId, const std::wstring& name, NodeParameter::Type type, const NE::SlotId& slotId) :
+		TypedNodeParameter<NodeType, ValueType> (paramId, name, type),
+		slotId (slotId)
+	{
+
+	}
+
+	virtual NE::ValuePtr GetValue (const NUIE::UINodePtr& uiNode) const override
+	{
+		NE::InputSlotConstPtr inputSlot = uiNode->GetInputSlot (slotId);
+		if (DBGERROR (inputSlot == nullptr)) {
+			return nullptr;
+		}
+		return inputSlot->GetDefaultValue ();
+	}
+
+	virtual bool SetValue (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+	{
+		if (DBGERROR (!CanSetValue (uiNode, value))) {
+			return false;
+		}
+		uiNode->GetInputSlot (slotId)->SetDefaultValue (value);
+		uiNode->InvalidateValue ();
+		uiManager.RequestRecalculate ();
+		return true;
+	}
+
+private:
+	NE::SlotId slotId;
+};
+
 class NodeParameterList
 {
 public:
