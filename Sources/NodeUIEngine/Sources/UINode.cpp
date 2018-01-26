@@ -4,10 +4,10 @@
 #include "Debug.hpp"
 #include "ContextDecorators.hpp"
 #include "UINodeParameters.hpp"
+#include "CommonUINodeParameters.hpp"
 #include "UINodeCommands.hpp"
 #include "NodeUIManager.hpp"
 #include "NodeUIEnvironment.hpp"
-#include "SingleValues.hpp"
 
 namespace NUIE
 {
@@ -217,32 +217,6 @@ NUIE::EventHandlerResult UINode::HandleMouseWheel (NodeUIEnvironment&, const Key
 
 void UINode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	class NodeNameParameter : public TypedNodeParameter<UINode, NE::StringValue>
-	{
-	public:
-		NodeNameParameter () :
-			TypedNodeParameter<UINode, NE::StringValue> ("NodeNameParameter", L"Name", NodeParameter::Type::String)
-		{
-		
-		}
-
-		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
-		{
-			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ()));
-		}
-
-		virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
-		{
-			if (DBGERROR (!CanSetValue (uiNode, value))) {
-				return false;
-			}
-			uiNode->SetNodeName (NE::StringValue::Get (value));
-			uiNode->InvalidateDrawing ();
-			uiManager.RequestRedraw ();
-			return true;
-		}
-	};
-
 	parameterList.AddParameter (NodeParameterPtr (new NodeNameParameter ()));
 }
 

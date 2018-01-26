@@ -9,8 +9,8 @@
 #else
 #define DBGBREAK()
 #define DBGASSERT(condition)
-#define DBGERROR(condition) condition
-#define DBGVERIFY(condition) condition
+#define DBGERROR(condition) (condition)
+#define DBGVERIFY(condition) (condition)
 #endif
 
 void DbgBreak ();

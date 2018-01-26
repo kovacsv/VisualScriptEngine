@@ -41,32 +41,6 @@ private:
 typedef std::shared_ptr<NodeParameter> NodeParameterPtr;
 typedef std::shared_ptr<const NodeParameter> NodeParameterConstPtr;
 
-template <typename NodeType, typename ValueType>
-class TypedNodeParameter : public NodeParameter
-{
-public:
-	TypedNodeParameter (const std::string& paramId, const std::wstring& name, NodeParameter::Type type) :
-		NodeParameter (paramId, name, type)
-	{
-
-	}
-
-	virtual ~TypedNodeParameter ()
-	{
-
-	}
-
-	virtual bool IsApplicableTo (const UINodePtr& uiNode) const
-	{
-		return NE::Node::IsType<NodeType> (uiNode);
-	}
-
-	virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const
-	{
-		return NE::Value::IsType<ValueType> (value);
-	}
-};
-
 class NodeParameterList
 {
 public:
