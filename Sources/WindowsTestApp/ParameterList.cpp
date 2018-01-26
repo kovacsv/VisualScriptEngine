@@ -56,10 +56,8 @@ void ParameterList::OnEditingDone (wxDataViewEvent& evt)
 	}
 
 	size_t paramIndex = GetItemData (evt.GetItem ());
-	wxVariant val = evt.GetValue ();
-	if (!paramAccessor->SetParameterValue (paramIndex, val.GetString ().ToStdWstring ())) {
-		evt.Veto ();
-	}
+	paramAccessor->SetParameterValue (paramIndex, evt.GetValue ().GetString ().ToStdWstring ());
+	evt.Veto ();
 
 	FillParameters ();
 }

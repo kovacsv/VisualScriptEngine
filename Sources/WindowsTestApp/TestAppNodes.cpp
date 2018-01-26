@@ -233,60 +233,6 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionYParameter ()));
 }
 
-void PointNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
-{
-	class ExampleCommand : public NUIE::NodeCommand
-	{
-	public:
-		ExampleCommand () :
-			NodeCommand (L"Rename command", false)
-		{
-
-		}
-
-		virtual bool IsApplicableTo (const NUIE::UINodePtr& uiNode) override
-		{
-			return NE::Node::IsType<PointNode> (uiNode);
-		}
-
-		virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment&, NUIE::UINodePtr& uiNode) override
-		{
-			uiNode->SetNodeName (L"New Node Name");
-			uiManager.RequestRedraw ();
-		}
-	};
-
-	class ExampleCommand2 : public NUIE::NodeCommand
-	{
-	public:
-		ExampleCommand2 () :
-			NodeCommand (L"Set Default To (50, 50)", false)
-		{
-
-		}
-
-		virtual bool IsApplicableTo (const NUIE::UINodePtr& uiNode) override
-		{
-			return NE::Node::IsType<PointNode> (uiNode);
-		}
-
-		virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment&, NUIE::UINodePtr& uiNode) override
-		{
-			std::shared_ptr<PointNode> pointNode = NE::Node::Cast<PointNode> (uiNode);
-			if (DBGERROR (pointNode == nullptr)) {
-				return;
-			}
-			pointNode->GetUIInputSlot (NE::SlotId ("x"))->SetDefaultValue (NE::ValuePtr (new NE::IntValue (50)));
-			pointNode->GetUIInputSlot (NE::SlotId ("y"))->SetDefaultValue (NE::ValuePtr (new NE::IntValue (50)));
-			uiManager.RequestRecalculate ();
-		}
-	};
-
-	GeometricNode::RegisterCommands (commandRegistrator);
-	commandRegistrator.RegisterNodeCommand (NUIE::NodeCommandPtr (new ExampleCommand ()));
-	commandRegistrator.RegisterNodeCommand (NUIE::NodeCommandPtr (new ExampleCommand2 ()));
-}
-
 NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& value) const
 {
 	if (!NE::Value::IsType<NE::ListValue> (value)) {
