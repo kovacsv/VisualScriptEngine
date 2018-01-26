@@ -8,6 +8,41 @@ NE::DynamicSerializationInfo	PointNode::serializationInfo (NE::ObjectId ("{E19AC
 NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3D1-7D67-4513-9F29-60E2D7B5DE2B}"), NE::ObjectVersion (1), LineNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
 
+template <typename NodeType, typename ValueType>
+class SlotDefaultValueParameter : public NUIE::TypedNodeParameter<NodeType, ValueType>
+{
+public:
+	SlotDefaultValueParameter (const std::string& paramId, const std::wstring& name, NUIE::NodeParameter::Type type, const NE::SlotId& slotId) :
+		TypedNodeParameter<NodeType, ValueType> (paramId, name, type),
+		slotId (slotId)
+	{
+
+	}
+
+	virtual NE::ValuePtr GetValue (const NUIE::UINodePtr& uiNode) const override
+	{
+		NE::InputSlotConstPtr inputSlot = uiNode->GetInputSlot (slotId);
+		if (DBGERROR (inputSlot == nullptr)) {
+			return nullptr;
+		}
+		return inputSlot->GetDefaultValue ();
+	}
+
+	virtual bool SetValue (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+	{
+		if (DBGERROR (!CanSetValue (uiNode, value))) {
+			return false;
+		}
+		uiNode->GetInputSlot (slotId)->SetDefaultValue (value);
+		uiNode->InvalidateValue ();
+		uiManager.RequestRecalculate ();
+		return true;
+	}
+
+private:
+	NE::SlotId slotId;
+};
+
 Point::Point (int x, int y, int size) :
 	x (x),
 	y (y),
@@ -207,7 +242,7 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 
 void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class PositionXParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::IntValue>
+	class PositionXParameter : public SlotDefaultValueParameter<PointNode, NE::IntValue>
 	{
 	public:
 		PositionXParameter () :
@@ -217,7 +252,7 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 		}
 	};
 
-	class PositionYParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::IntValue>
+	class PositionYParameter : public SlotDefaultValueParameter<PointNode, NE::IntValue>
 	{
 	public:
 		PositionYParameter () :
