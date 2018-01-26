@@ -153,7 +153,7 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 		}
 	};
 
-	UINode::RegisterParameters (parameterList);
+	NumericUpDownUINode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NodeParameterPtr (new ValueParameter ()));
 }
 
@@ -297,6 +297,44 @@ NE::ValuePtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
 	}
 
 	return list;
+}
+
+void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) const
+{
+	class StartParameter : public NUIE::SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	{
+	public:
+		StartParameter () :
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("StartParameter", L"Start", NodeParameter::Type::Integer, NE::SlotId ("start"))
+		{
+
+		}
+	};
+
+	class StepParameter : public NUIE::SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	{
+	public:
+		StepParameter () :
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("StepParameter", L"Step", NodeParameter::Type::Integer, NE::SlotId ("step"))
+		{
+
+		}
+	};
+
+	class CountParameter : public NUIE::SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	{
+	public:
+		CountParameter () :
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("CountParameter", L"Count", NodeParameter::Type::Integer, NE::SlotId ("count"))
+		{
+
+		}
+	};
+
+	UINode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new StartParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new StepParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
 }
 
 NE::Stream::Status IntegerRangeNode::Read (NE::InputStream& inputStream)

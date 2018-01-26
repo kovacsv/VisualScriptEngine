@@ -228,9 +228,20 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 		}
 	};
 
+	class SizeParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::IntValue>
+	{
+	public:
+		SizeParameter () :
+			SlotDefaultValueParameter<PointNode, NE::IntValue> ("SizeParameter", L"Size", NodeParameter::Type::Integer, NE::SlotId ("size"))
+		{
+
+		}
+	};
+
 	UINode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionXParameter ()));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionYParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new SizeParameter ()));
 }
 
 NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& value) const
