@@ -7,7 +7,7 @@
 #include "ViewerUINodes.hpp"
 #include "TestAppNodes.hpp"
 
-#include "wx/menu.h"
+#include "ParameterDialog.hpp"
 
 MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
 	NUIE::CreateNodeCommand (name, uiManager, uiEnvironment, position),
@@ -71,6 +71,15 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
 }
 
+bool AppEventHandlers::OnParameterSettings (NUIE::NodeParameterAccessorPtr paramAccessor)
+{
+	ParameterDialog paramDialog (panel, paramAccessor);
+	if (paramDialog.ShowModal () == ParameterDialog::DialogIds::OkButtonId) {
+		return true;
+	}
+	return false;
+}
+
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	evaluationEnv (evaluationEnv),
@@ -128,7 +137,7 @@ NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
 
 void NodeEditorUIEnvironment::OnSelectionChanged ()
 {
-	nodeEditorControl->UpdateParameters ();
+
 }
 
 NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
@@ -271,12 +280,6 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 void NodeEditorControl::RedrawResultImage ()
 {
 	updateInterface.RedrawResultImage ();
-}
-
-void NodeEditorControl::UpdateParameters ()
-{
-	NUIE::NodeParameterAccessorPtr paramAccessor = nodeEditor.GetSelectionParameters ();
-	updateInterface.UpdateParameters (paramAccessor);
 }
 
 BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)

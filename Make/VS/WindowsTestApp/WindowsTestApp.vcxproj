@@ -145,7 +145,7 @@
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\DrawingControl.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\main.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ParameterList.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ParameterDialog.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\ResultImage.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.cpp" />
   </ItemGroup>
@@ -153,7 +153,7 @@
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\DrawingControl.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ParameterList.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ParameterDialog.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\ResultImage.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.hpp" />
   </ItemGroup>

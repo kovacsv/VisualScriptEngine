@@ -292,6 +292,11 @@ CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&,
 	return nullptr;
 }
 
+bool TestEventHandlers::OnParameterSettings (NodeParameterAccessorPtr)
+{
+	return false;
+}
+
 TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor) :
 	NUIE::NodeUIEnvironment (),
 	nodeEditor (nodeEditor),

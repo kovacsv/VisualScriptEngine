@@ -25,7 +25,7 @@
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ParameterList.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ParameterDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,7 +45,7 @@
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ParameterList.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ParameterDialog.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

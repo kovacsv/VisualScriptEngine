@@ -42,6 +42,7 @@ public:
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::InputSlotPtr& inputSlot, const NUIE::CommandStructure& commands) override;
+	virtual bool				OnParameterSettings (NUIE::NodeParameterAccessorPtr paramAccessor) override;
 
 private:
 	wxPanel* panel;
@@ -51,7 +52,6 @@ class UpdateInterface
 {
 public:
 	virtual void RedrawResultImage () = 0;
-	virtual void UpdateParameters (NUIE::NodeParameterAccessorPtr& paramAccessor) = 0;
 };
 
 class NodeEditorControl;
@@ -110,7 +110,6 @@ public:
 	bool							Save (const std::wstring& fileName);
 
 	void							RedrawResultImage ();
-	void							UpdateParameters ();
 
 private:
 	UpdateInterface&				updateInterface;

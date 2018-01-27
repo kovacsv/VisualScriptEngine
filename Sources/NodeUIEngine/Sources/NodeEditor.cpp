@@ -112,7 +112,7 @@ NodeParameterAccessorPtr NodeEditor::GetSelectionParameters ()
 			return selectionParameters.GetParameter (index)->GetValue (lastSelectedNode);
 		}
 
-		virtual NUIE::NodeParameter::Type GetParameterType (size_t index) const override
+		virtual NUIE::ParameterType GetParameterType (size_t index) const override
 		{
 			return selectionParameters.GetParameter (index)->GetType ();
 		}

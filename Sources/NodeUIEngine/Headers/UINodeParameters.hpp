@@ -2,6 +2,7 @@
 #define UINODEPARAMETERS_HPP
 
 #include "UINode.hpp"
+#include "UINodeParameterAccessor.hpp"
 #include "Value.hpp"
 
 namespace NUIE
@@ -14,18 +15,12 @@ class NodeUIEnvironment;
 class NodeParameter
 {
 public:
-	enum class Type
-	{
-		String,
-		Integer
-	};
-
-	NodeParameter (const std::string& paramId, const std::wstring& name, Type type);
+	NodeParameter (const std::string& paramId, const std::wstring& name, ParameterType type);
 	virtual ~NodeParameter ();
 
 	const std::string&		GetId () const;
 	const std::wstring&		GetName () const;
-	Type					GetType () const;
+	ParameterType			GetType () const;
 
 	virtual NE::ValuePtr	GetValue (const UINodePtr& uiNode) const = 0;
 	virtual bool			IsApplicableTo (const UINodePtr& uiNode) const = 0;
@@ -35,7 +30,7 @@ public:
 private:
 	std::string		paramId;
 	std::wstring	name;
-	Type			type;
+	ParameterType	type;
 };
 
 typedef std::shared_ptr<NodeParameter> NodeParameterPtr;
@@ -60,24 +55,8 @@ private:
 typedef std::shared_ptr<NodeParameterList> NodeParameterListPtr;
 typedef std::shared_ptr<const NodeParameterList> NodeParameterListConstPtr;
 
-class NodeParameterAccessor
-{
-public:
-	NodeParameterAccessor ();
-	virtual ~NodeParameterAccessor ();
-
-	virtual size_t					GetParameterCount () const = 0;
-	virtual const std::wstring&		GetParameterName (size_t index) const = 0;
-	virtual NE::ValuePtr			GetParameterValue (size_t index) const = 0;
-	virtual NodeParameter::Type		GetParameterType (size_t index) const = 0;
-	virtual bool					SetParameterValue (size_t index, const NE::ValuePtr& value) = 0;
-};
-
-typedef std::shared_ptr<NodeParameterAccessor> NodeParameterAccessorPtr;
-typedef std::shared_ptr<const NodeParameterAccessor> NodeParameterAccessorConstPtr;
-
-std::wstring	ParameterValueToString (const NE::ValuePtr& value, NodeParameter::Type type);
-NE::ValuePtr	StringToParameterValue (const std::wstring& str, NodeParameter::Type type);
+std::wstring	ParameterValueToString (const NE::ValuePtr& value, ParameterType type);
+NE::ValuePtr	StringToParameterValue (const std::wstring& str, ParameterType type);
 
 void			RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList);
 bool			ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);

@@ -4,7 +4,7 @@
 #include "NodeEditorControl.hpp"
 #include "DrawingControl.hpp"
 #include "Debug.hpp"
-#include "ParameterList.hpp"
+#include "ParameterDialog.hpp"
 #include "SingleValues.hpp"
 
 #include <CommCtrl.h>
@@ -47,34 +47,10 @@ private:
 	std::wstring currentFileName;
 };
 
-class ParametersPanel : public wxPanel
-{
-public:
-	ParametersPanel (wxWindow *parent) :
-		wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
-		parameterList (new ParameterList (this)),
-		sizer (new wxBoxSizer (wxHORIZONTAL))
-	{
-		sizer->Add (parameterList, 0, wxEXPAND);
-		SetSizer (sizer);
-	}
-
-	void FillParameters (ParameterAccessorPtr& paramAccessor)
-	{
-		parameterList->SetParameterAccessor (paramAccessor);
-		parameterList->FillParameters ();
-	}
-
-private:
-	ParameterList*		parameterList;
-	wxBoxSizer*			sizer;
-};
-
 class NodeEditorUpdateInterface : public UpdateInterface
 {
 public:
-	NodeEditorUpdateInterface (ParametersPanel* parametersPanel, DrawingControl* drawingControl) :
-		parametersPanel (parametersPanel),
+	NodeEditorUpdateInterface (DrawingControl* drawingControl) :
 		drawingControl (drawingControl)
 	{
 		
@@ -85,55 +61,8 @@ public:
 		drawingControl->RedrawImage ();
 	}
 
-	virtual void UpdateParameters (NUIE::NodeParameterAccessorPtr& nodeParameterAccessor) override
-	{
-		class MyParamAccessor : public ParameterAccessor
-		{
-		public:
-			MyParamAccessor (NUIE::NodeParameterAccessorPtr& nodeParameterAccessor) :
-				ParameterAccessor (),
-				nodeParameterAccessor (nodeParameterAccessor)
-			{
-			}
-
-			virtual size_t GetParameterCount () const override
-			{
-				return nodeParameterAccessor->GetParameterCount ();
-			}
-
-			virtual std::wstring GetParameterName (int index) const override
-			{
-				return nodeParameterAccessor->GetParameterName (index);
-			}
-
-			virtual std::wstring GetParameterValue (int index) const override
-			{
-				NE::ValuePtr value = nodeParameterAccessor->GetParameterValue (index);
-				NUIE::NodeParameter::Type type = nodeParameterAccessor->GetParameterType (index);
-				return NUIE::ParameterValueToString (value, type);
-			}
-
-			virtual bool SetParameterValue (int index, const std::wstring& value) override
-			{
-				NUIE::NodeParameter::Type type = nodeParameterAccessor->GetParameterType (index);
-				NE::ValuePtr valuePtr = NUIE::StringToParameterValue (value, type);
-				if (valuePtr == nullptr) {
-					return false;
-				}
-				return nodeParameterAccessor->SetParameterValue (index, valuePtr);
-			}
-
-		private:
-			NUIE::NodeParameterAccessorPtr nodeParameterAccessor;
-		};
-
-		ParameterAccessorPtr accessor (new MyParamAccessor (nodeParameterAccessor));
-		parametersPanel->FillParameters (accessor);
-	}
-
 private:
-	ParametersPanel*	parametersPanel;
-	DrawingControl*		drawingControl;
+	DrawingControl* drawingControl;
 };
 
 class MainFrame : public wxFrame
@@ -149,21 +78,15 @@ public:
 	};
 
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
-		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1200, 600)),
+		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
 		menuBar (new wxMenuBar ()),
 		fileMenu (new wxMenu ()),
-		parametersPanel (new ParametersPanel (this)),
 		editorAndDrawingSplitter (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
 		drawingControl (new DrawingControl (editorAndDrawingSplitter, resultImage)),
-		updateInterface (parametersPanel, drawingControl),
+		updateInterface (drawingControl),
 		nodeEditorControl (new NodeEditorControl (editorAndDrawingSplitter, updateInterface, evaluationEnv)),
-		mainSizer (new wxBoxSizer (wxHORIZONTAL)),
 		applicationState ()
 	{
-		mainSizer->Add (parametersPanel, 0, wxEXPAND);
-		mainSizer->Add (editorAndDrawingSplitter, 1, wxEXPAND);
-		SetSizer (mainSizer);
-
 		fileMenu->Append (CommandId::File_New, "New");
 		fileMenu->Append (CommandId::File_Open, "Open...");
 		fileMenu->Append (CommandId::File_Save, "Save...");
@@ -250,12 +173,10 @@ private:
 	wxMenuBar*					menuBar;
 	wxMenu*						fileMenu;
 
-	ParametersPanel*			parametersPanel;
 	wxSplitterWindow*			editorAndDrawingSplitter;
 	DrawingControl*				drawingControl;
 	NodeEditorUpdateInterface	updateInterface;
 	NodeEditorControl*			nodeEditorControl;
-	wxBoxSizer*					mainSizer;
 
 	ApplicationState			applicationState;
 

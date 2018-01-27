@@ -118,7 +118,7 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 	{
 	public:
 		ValueParameter () :
-			TypedNodeParameter<IntegerUpDownUINode, NE::IntValue> ("IntegerUpDownValueParameter", L"Value", NodeParameter::Type::Integer)
+			TypedNodeParameter<IntegerUpDownUINode, NE::IntValue> ("IntegerUpDownValueParameter", L"Value", ParameterType::Integer)
 		{
 
 		}
@@ -305,7 +305,7 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 	{
 	public:
 		StartParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("StartParameter", L"Start", NodeParameter::Type::Integer, NE::SlotId ("start"))
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("StartParameter", L"Start", ParameterType::Integer, NE::SlotId ("start"))
 		{
 
 		}
@@ -315,7 +315,7 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 	{
 	public:
 		StepParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("StepParameter", L"Step", NodeParameter::Type::Integer, NE::SlotId ("step"))
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("StepParameter", L"Step", ParameterType::Integer, NE::SlotId ("step"))
 		{
 
 		}
@@ -325,7 +325,7 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 	{
 	public:
 		CountParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("CountParameter", L"Count", NodeParameter::Type::Integer, NE::SlotId ("count"))
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("CountParameter", L"Count", ParameterType::Integer, NE::SlotId ("count"))
 		{
 
 		}

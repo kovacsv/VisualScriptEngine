@@ -36,6 +36,12 @@ public:
 		return UI::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
+	virtual bool OnParameterSettings (NUIE::NodeParameterAccessorPtr) override
+	{
+		// TODO
+		return false;
+	}
+
 	void SetWindowHandle (HWND newHwnd)
 	{
 		hwnd = newHwnd;

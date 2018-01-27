@@ -1,5 +1,7 @@
 #include "UINodeCommandStructure.hpp"
 #include "UINodeCommands.hpp"
+#include "UINodeParameters.hpp"
+#include "EventHandlers.hpp"
 #include "Debug.hpp"
 
 namespace NUIE
@@ -111,6 +113,109 @@ private:
 	std::vector<UINodePtr>		uiNodes;
 };
 
+class SetParametersCommand : public SingleCommand
+{
+public:
+	SetParametersCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes) :
+		SingleCommand (name, false),
+		uiManager (uiManager),
+		uiEnvironment (uiEnvironment),
+		relevantNodes (relevantNodes),
+		relevantParameters ()
+	{
+
+	}
+
+	virtual ~SetParametersCommand ()
+	{
+
+	}
+
+	virtual void Do () override
+	{
+		class SelectionParameterAccessor : public NodeParameterAccessor
+		{
+		public:
+			SelectionParameterAccessor (NodeParameterList& paramList, UINodePtr& lastSelectedNode) :
+				paramList (paramList),
+				lastSelectedNode (lastSelectedNode)
+			{
+			
+			}
+
+			void ApplyChanges (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes)
+			{
+				for (const auto& it : changedParameterValues) {
+					NodeParameterPtr& parameter = paramList.GetParameter (it.first);
+					ApplyCommonParameter (uiManager, uiEnvironment.GetEvaluationEnv (), relevantNodes, parameter, it.second);
+				}
+			}
+
+			virtual size_t GetParameterCount () const override
+			{
+				return paramList.GetParameterCount ();
+			}
+
+			virtual const std::wstring& GetParameterName (size_t index) const override
+			{
+				static const std::wstring InvalidParameterName = L"";
+				NodeParameterPtr parameter = paramList.GetParameter (index);
+				if (DBGERROR (parameter == nullptr)) {
+					return InvalidParameterName;
+				}
+				return parameter->GetName ();
+			}
+
+			virtual NE::ValuePtr GetParameterValue (size_t index) const override
+			{
+				NodeParameterPtr parameter = paramList.GetParameter (index);
+				if (DBGERROR (parameter == nullptr)) {
+					return nullptr;
+				}
+				return parameter->GetValue (lastSelectedNode);
+			}
+
+			virtual ParameterType GetParameterType (size_t index) const override
+			{
+				NodeParameterPtr parameter = paramList.GetParameter (index);
+				if (DBGERROR (parameter == nullptr)) {
+					return ParameterType::Undefined;
+				}
+				return parameter->GetType ();
+			}
+
+			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+			{
+				changedParameterValues.insert_or_assign (index, value);
+				return true;
+			}
+
+		private:
+			NodeParameterList&							paramList;
+			UINodePtr&									lastSelectedNode;
+			std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
+		};
+
+		NE::NodeId lastSelectedId = relevantNodes.GetLast ();
+		UINodePtr lastSelectedNode = uiManager.GetUINode (lastSelectedId);
+		if (DBGERROR (lastSelectedNode == nullptr)) {
+			return;
+		}
+
+		RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
+		std::shared_ptr<SelectionParameterAccessor> paramAccessor (new SelectionParameterAccessor (relevantParameters, lastSelectedNode));
+		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramAccessor)) {
+			paramAccessor->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
+		}
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	NodeCollection		relevantNodes;
+	NodeParameterList	relevantParameters;
+};
+
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
 {
 public:
@@ -138,6 +243,17 @@ public:
 		commandStructure.AddCommand (groupCommand);
 	}
 
+	void RegisterCommand (CommandPtr command)
+	{
+		commandStructure.AddCommand (command);
+	}
+
+	CommandStructure& GetCommandStructure ()
+	{
+		return commandStructure;
+	}
+
+private:
 	std::shared_ptr<MultiNodeCommand> CreateMultiNodeCommand (NodeCommandPtr nodeCommand)
 	{
 		std::shared_ptr<MultiNodeCommand> multiNodeCommand (new MultiNodeCommand (nodeCommand->GetName (), uiManager, uiEnvironment, nodeCommand));
@@ -251,9 +367,10 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 {
 	NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
+	commandStructureBuilder.RegisterCommand (CommandPtr (new SetParametersCommand (L"Set Parameters", uiManager, uiEnvironment, relevantNodes)));
 	commandStructureBuilder.RegisterNodeCommand (NodeCommandPtr (new DeleteNodeCommand (L"Delete Node")));
 	uiNode->RegisterCommands (commandStructureBuilder);
-	return commandStructureBuilder.commandStructure;
+	return commandStructureBuilder.GetCommandStructure ();
 }
 
 CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotPtr& inputSlot)

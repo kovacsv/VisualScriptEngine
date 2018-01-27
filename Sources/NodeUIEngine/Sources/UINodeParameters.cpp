@@ -6,7 +6,7 @@
 namespace NUIE
 {
 
-NodeParameter::NodeParameter (const std::string& paramId, const std::wstring& name, Type type) :
+NodeParameter::NodeParameter (const std::string& paramId, const std::wstring& name, ParameterType type) :
 	paramId (paramId),
 	name (name),
 	type (type)
@@ -29,7 +29,7 @@ const std::wstring& NodeParameter::GetName () const
 	return name;
 }
 
-NodeParameter::Type NodeParameter::GetType () const
+ParameterType NodeParameter::GetType () const
 {
 	return type;
 }
@@ -74,28 +74,18 @@ static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vec
 	return true;
 }
 
-NodeParameterAccessor::NodeParameterAccessor ()
-{
-
-}
-
-NodeParameterAccessor::~NodeParameterAccessor ()
-{
-
-}
-
-std::wstring ParameterValueToString (const NE::ValuePtr& value, NodeParameter::Type type)
+std::wstring ParameterValueToString (const NE::ValuePtr& value, ParameterType type)
 {
 	std::wstring result = L"";
 	switch (type) {
-		case NodeParameter::Type::String:
+		case ParameterType::String:
 			{
 				if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
 					result = NE::StringValue::Get (value);
 				}
 			}
 			break;
-		case NodeParameter::Type::Integer:
+		case ParameterType::Integer:
 			{
 				if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 					result = std::to_wstring (NE::IntValue::Get (value));
@@ -109,15 +99,15 @@ std::wstring ParameterValueToString (const NE::ValuePtr& value, NodeParameter::T
 	return result;
 }
 
-NE::ValuePtr StringToParameterValue (const std::wstring& str, NodeParameter::Type type)
+NE::ValuePtr StringToParameterValue (const std::wstring& str, ParameterType type)
 {
 	NE::ValuePtr result = nullptr;
 	try {
 		switch (type) {
-			case NodeParameter::Type::String:
+			case ParameterType::String:
 				result.reset (new NE::StringValue (str));
 				break;
-			case NodeParameter::Type::Integer:
+			case ParameterType::Integer:
 				result.reset (new NE::IntValue (std::stoi (str)));
 				break;
 			default:

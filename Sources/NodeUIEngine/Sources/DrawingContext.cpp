@@ -3,16 +3,6 @@
 namespace NUIE
 {
 
-DrawingContext::DrawingContext ()
-{
-
-}
-
-DrawingContext::~DrawingContext ()
-{
-
-}
-
 DrawingContextDecorator::DrawingContextDecorator (DrawingContext& decorated) :
 	decorated (decorated)
 {

@@ -212,7 +212,7 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	{
 	public:
 		PositionXParameter () :
-			SlotDefaultValueParameter<PointNode, NE::IntValue> ("PositionXParameter", L"Position X", NodeParameter::Type::Integer, NE::SlotId ("x"))
+			SlotDefaultValueParameter<PointNode, NE::IntValue> ("PositionXParameter", L"Position X", NUIE::ParameterType::Integer, NE::SlotId ("x"))
 		{
 
 		}
@@ -222,7 +222,7 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	{
 	public:
 		PositionYParameter () :
-			SlotDefaultValueParameter<PointNode, NE::IntValue> ("PositionYParameter", L"Position Y", NodeParameter::Type::Integer, NE::SlotId ("y"))
+			SlotDefaultValueParameter<PointNode, NE::IntValue> ("PositionYParameter", L"Position Y", NUIE::ParameterType::Integer, NE::SlotId ("y"))
 		{
 
 		}
@@ -232,7 +232,7 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	{
 	public:
 		SizeParameter () :
-			SlotDefaultValueParameter<PointNode, NE::IntValue> ("SizeParameter", L"Size", NodeParameter::Type::Integer, NE::SlotId ("size"))
+			SlotDefaultValueParameter<PointNode, NE::IntValue> ("SizeParameter", L"Size", NUIE::ParameterType::Integer, NE::SlotId ("size"))
 		{
 
 		}

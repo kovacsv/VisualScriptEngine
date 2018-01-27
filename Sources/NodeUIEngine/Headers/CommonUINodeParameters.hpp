@@ -12,7 +12,7 @@ template <typename NodeType, typename ValueType>
 class TypedNodeParameter : public NodeParameter
 {
 public:
-	TypedNodeParameter (const std::string& paramId, const std::wstring& name, NodeParameter::Type type) :
+	TypedNodeParameter (const std::string& paramId, const std::wstring& name, ParameterType type) :
 		NodeParameter (paramId, name, type)
 	{
 
@@ -38,7 +38,7 @@ template <typename NodeType, typename ValueType>
 class SlotDefaultValueParameter : public NUIE::TypedNodeParameter<NodeType, ValueType>
 {
 public:
-	SlotDefaultValueParameter (const std::string& paramId, const std::wstring& name, NUIE::NodeParameter::Type type, const NE::SlotId& slotId) :
+	SlotDefaultValueParameter (const std::string& paramId, const std::wstring& name, NUIE::ParameterType type, const NE::SlotId& slotId) :
 		TypedNodeParameter<NodeType, ValueType> (paramId, name, type),
 		slotId (slotId)
 	{
