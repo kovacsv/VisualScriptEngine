@@ -151,13 +151,15 @@ NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstri
 	currentPage (currentPage)
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
-	// TODO: Measuring all the texts can be slow
-	for (const std::wstring& nodeText : nodeTexts) {
-		Size textSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText);
-		textSize = textSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
-		maxTextSize.SetWidth (std::max (maxTextSize.GetWidth (), textSize.GetWidth ()));
-		maxTextSize.SetHeight (std::max (maxTextSize.GetHeight (), textSize.GetHeight ()));
-	}	
+	for (size_t i = 0; i < textsPerPage; ++i) {
+		size_t textIndex = (currentPage - 1) * textsPerPage + i;
+		if (textIndex < nodeTexts.size ()) {
+			Size textSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeTexts[i]);
+			textSize = textSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
+			maxTextSize.SetWidth (std::max (maxTextSize.GetWidth (), textSize.GetWidth ()));
+			maxTextSize.SetHeight (std::max (maxTextSize.GetHeight (), textSize.GetHeight ()));
+		}
+	}
 }
 
 Size NodeUIMultiLineTextPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
