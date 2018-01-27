@@ -9,6 +9,36 @@ NE::DynamicSerializationInfo	PointValue::serializationInfo (NE::ObjectId ("{D10E
 NE::DynamicSerializationInfo	LineValue::serializationInfo (NE::ObjectId ("{E899A12E-F87F-4B6B-ACD8-5C86573C382F}"), NE::ObjectVersion (1), LineValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleValue::serializationInfo (NE::ObjectId ("{82190020-867B-4260-94BA-49D8FE94418E}"), NE::ObjectVersion (1), CircleValue::CreateSerializableInstance);
 
+static void ReadColor (NE::InputStream& inputStream, Color& color)
+{
+	inputStream.Read (color.r);
+	inputStream.Read (color.g);
+	inputStream.Read (color.b);
+}
+
+static void WriteColor (NE::OutputStream& outputStream, const Color& color)
+{
+	outputStream.Write (color.r);
+	outputStream.Write (color.g);
+	outputStream.Write (color.b);
+}
+
+static void ReadPoint (NE::InputStream& inputStream, Point& point)
+{
+	inputStream.Read (point.x);
+	inputStream.Read (point.y);
+	inputStream.Read (point.size);
+	ReadColor (inputStream, point.color);
+}
+
+static void WritePoint (NE::OutputStream& outputStream, const Point& point)
+{
+	outputStream.Write (point.x);
+	outputStream.Write (point.y);
+	outputStream.Write (point.size);
+	WriteColor (outputStream, point.color);
+}
+
 Color::Color () :
 	Color (0, 0, 0)
 {
@@ -132,18 +162,14 @@ std::wstring ColorValue::ToString () const
 NE::Stream::Status ColorValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	inputStream.Read (val.r);
-	inputStream.Read (val.g);
-	inputStream.Read (val.b);
+	ReadColor (inputStream, val);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status ColorValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	outputStream.Write (val.r);
-	outputStream.Write (val.g);
-	outputStream.Write (val.b);
+	WriteColor (outputStream, val);
 	return outputStream.GetStatus ();
 }
 
@@ -167,14 +193,14 @@ std::wstring PointValue::ToString () const
 NE::Stream::Status PointValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	DBGBREAK (); // TODO: Implement this
+	ReadPoint (inputStream, val);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status PointValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	DBGBREAK (); // TODO: Implement this
+	WritePoint (outputStream, val);
 	return outputStream.GetStatus ();
 }
 
@@ -198,14 +224,18 @@ std::wstring LineValue::ToString () const
 NE::Stream::Status LineValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	DBGBREAK (); // TODO: Implement this
+	ReadPoint (inputStream, val.beg);
+	ReadPoint (inputStream, val.end);
+	ReadColor (inputStream, val.color);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status LineValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	DBGBREAK (); // TODO: Implement this
+	WritePoint (outputStream, val.beg);
+	WritePoint (outputStream, val.end);
+	WriteColor (outputStream, val.color);
 	return outputStream.GetStatus ();
 }
 
@@ -229,13 +259,17 @@ std::wstring CircleValue::ToString () const
 NE::Stream::Status CircleValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	DBGBREAK (); // TODO: Implement this
+	ReadPoint (inputStream, val.center);
+	inputStream.Read (val.radius);
+	ReadColor (inputStream, val.color);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status CircleValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	DBGBREAK (); // TODO: Implement this
+	WritePoint (outputStream, val.center);
+	outputStream.Write (val.radius);
+	WriteColor (outputStream, val.color);
 	return outputStream.GetStatus ();
 }
