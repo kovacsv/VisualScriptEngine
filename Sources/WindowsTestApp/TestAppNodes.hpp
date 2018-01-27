@@ -10,59 +10,83 @@
 #include "UINodeCommands.hpp"
 #include "BaseUINodes.hpp"
 
+class Color
+{
+public:
+	Color (unsigned char r, unsigned char g, unsigned char b);
+
+	std::wstring ToString () const;
+
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+};
+
 class Point
 {
 public:
-	Point (int x, int y, int size);
+	Point (int x, int y, int size, Color color);
 	
 	std::wstring ToString () const;
 
-	int x;
-	int y;
-	int size;
+	int		x;
+	int		y;
+	int		size;
+	Color	color;
 };
 
 class Line
 {
 public:
-	Line (Point beg, Point end);
+	Line (Point beg, Point end, Color color);
 
 	std::wstring ToString () const;
 
-	Point beg;
-	Point end;
+	Point	beg;
+	Point	end;
+	Color	color;
 };
 
 class Circle
 {
 public:
-	Circle (Point center, int radius);
+	Circle (Point center, int radius, Color color);
 
 	std::wstring ToString () const;
 
 	Point	center;
 	int		radius;
+	Color	color;
+};
+
+// TODO: IO for these values
+
+class ColorValue : public NE::GenericValue<Color>
+{
+public:
+	ColorValue (const Color& val);
+	virtual std::wstring ToString () const override;
 };
 
 class PointValue : public NE::GenericValue<Point>
 {
 public:
 	PointValue (const Point& val);
-	virtual std::wstring ToString () const;
+	virtual std::wstring ToString () const override;
 };
 
 class LineValue : public NE::GenericValue<Line>
 {
 public:
 	LineValue (const Line& val);
-	virtual std::wstring ToString () const;
+	virtual std::wstring ToString () const override;
 }; 
 
 class CircleValue : public NE::GenericValue<Circle>
 {
 public:
 	CircleValue (const Circle& val);
-	virtual std::wstring ToString () const;
+	virtual std::wstring ToString () const override;
 }; 
 
 class GeometricNode : public NUIE::CombinedValueUINode
@@ -88,6 +112,23 @@ private:
 
 	mutable NUIE::DrawingItemConstPtr	drawingItem;
 };
+
+class ColorNode : public NUIE::CombinedValueUINode
+{
+	DYNAMIC_SERIALIZABLE (ColorNode);
+
+public:
+	ColorNode ();
+	ColorNode (const std::wstring& name, const NUIE::Point& position);
+
+	virtual void				RegisterSlots () override;
+	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+};
+
 
 class PointNode : public GeometricNode
 {

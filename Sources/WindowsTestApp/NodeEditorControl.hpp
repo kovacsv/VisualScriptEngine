@@ -19,6 +19,7 @@ public:
 	{
 		Integer,
 		IntegerRange,
+		Color,
 		Point,
 		Line,
 		Circle,
