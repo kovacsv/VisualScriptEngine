@@ -48,6 +48,12 @@ Stream::Status MemoryInputStream::Read (bool& val)
 	return GetStatus ();
 }
 
+Stream::Status MemoryInputStream::Read (unsigned char& val)
+{
+	Read ((char*) &val, sizeof (val));
+	return GetStatus ();
+}
+
 Stream::Status MemoryInputStream::Read (size_t& val)
 {
 	Read ((char*) &val, sizeof (val));
@@ -108,6 +114,12 @@ const std::vector<char>& MemoryOutputStream::GetBuffer () const
 }
 
 Stream::Status MemoryOutputStream::Write (const bool& val)
+{
+	Write ((const char*) &val, sizeof (val));
+	return GetStatus ();
+}
+
+Stream::Status MemoryOutputStream::Write (const unsigned char& val)
 {
 	Write ((const char*) &val, sizeof (val));
 	return GetStatus ();

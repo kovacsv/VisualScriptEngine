@@ -31,6 +31,7 @@ public:
 	virtual ~InputStream ();
 
 	virtual Status	Read (bool& val) = 0;
+	virtual Status	Read (unsigned char& val) = 0;
 	virtual Status	Read (size_t& val) = 0;
 	virtual Status	Read (int& val) = 0;
 	virtual Status	Read (double& val) = 0;
@@ -45,6 +46,7 @@ public:
 	virtual ~OutputStream ();
 
 	virtual Status	Write (const bool& val) = 0;
+	virtual Status	Write (const unsigned char& val) = 0;
 	virtual Status	Write (const size_t& val) = 0;
 	virtual Status	Write (const int& val) = 0;
 	virtual Status	Write (const double& val) = 0;
