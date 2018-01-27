@@ -76,6 +76,8 @@ public:
 	void					RequestRedraw ();
 
 	void					InvalidateAllNodesDrawing ();
+	void					InvalidateNodeValue (const NE::NodeId& nodeId);
+	void					InvalidateNodeValue (const UINodePtr& uiNode);
 	void					InvalidateNodeDrawing (const NE::NodeId& nodeId);
 	void					InvalidateNodeDrawing (const UINodePtr& uiNode);
 

@@ -149,6 +149,7 @@ public:
 					NodeParameterPtr& parameter = paramList.GetParameter (it.first);
 					ApplyCommonParameter (uiManager, uiEnvironment.GetEvaluationEnv (), relevantNodes, parameter, it.second);
 				}
+				uiManager.Update (uiEnvironment);
 			}
 
 			virtual size_t GetParameterCount () const override

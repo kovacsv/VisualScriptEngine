@@ -145,10 +145,8 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 				return false;
 			}
 			upDownNode->SetValue (NE::IntValue::Get (value));
-			upDownNode->InvalidateValue ();
-			upDownNode->InvalidateDrawing ();
-			uiManager.RequestRecalculate ();
-			uiManager.RequestRedraw ();
+			uiManager.InvalidateNodeValue (upDownNode);
+			uiManager.InvalidateNodeDrawing (upDownNode);
 			return true;
 		}
 	};

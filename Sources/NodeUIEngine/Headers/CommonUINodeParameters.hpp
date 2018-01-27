@@ -61,8 +61,8 @@ public:
 			return false;
 		}
 		uiNode->GetInputSlot (slotId)->SetDefaultValue (value);
-		uiNode->InvalidateValue ();
-		uiManager.RequestRecalculate ();
+		uiManager.InvalidateNodeValue (uiNode->GetId ());
+		uiManager.InvalidateNodeDrawing (uiNode->GetId ());
 		return true;
 	}
 

@@ -291,6 +291,18 @@ void NodeUIManager::InvalidateAllNodesDrawing ()
 	});
 }
 
+void NodeUIManager::InvalidateNodeValue (const NE::NodeId& nodeId)
+{
+	UINodePtr uiNode = GetUINode (nodeId);
+	InvalidateNodeValue (uiNode);
+}
+
+void NodeUIManager::InvalidateNodeValue (const UINodePtr& uiNode)
+{
+	uiNode->InvalidateValue ();
+	status.RequestRecalculate ();
+}
+
 void NodeUIManager::InvalidateNodeDrawing (const NE::NodeId& nodeId)
 {
 	UINodePtr uiNode = GetUINode (nodeId);
