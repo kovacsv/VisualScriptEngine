@@ -6,7 +6,6 @@
 #include "NodeUIManager.hpp"
 #include "NodeUIInteractionHandler.hpp"
 #include "NodeUIEnvironment.hpp"
-#include "UINodeParameters.hpp"
 #include "SkinParams.hpp"
 
 namespace NUIE
@@ -29,7 +28,6 @@ public:
 	void						Update ();
 	void						Draw ();
 
-	NodeParameterAccessorPtr	GetSelectionParameters ();
 	NodeUIManager&				GetNodeUIManager ();
 	
 	void						Clear ();

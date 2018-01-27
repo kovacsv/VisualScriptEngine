@@ -82,59 +82,6 @@ void NodeEditor::Draw ()
 	uiManager.Draw (uiEnvironment, uiInteractionHandler.GetDrawingExtension ());
 }
 
-NodeParameterAccessorPtr NodeEditor::GetSelectionParameters ()
-{
-	class SelectionNodeParameterAccessor : public NodeParameterAccessor
-	{
-	public:
-		SelectionNodeParameterAccessor (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-			NodeParameterAccessor (),
-			uiManager (uiManager),
-			uiEnvironment (uiEnvironment)
-		{
-			RegisterCommonParameters (uiManager, uiManager.GetSelectedNodes (), selectionParameters);
-		}
-
-		virtual size_t GetParameterCount () const override
-		{
-			return selectionParameters.GetParameterCount ();
-		}
-
-		virtual const std::wstring& GetParameterName (size_t index) const override
-		{
-			return selectionParameters.GetParameter (index)->GetName ();
-		}
-
-		virtual NE::ValuePtr GetParameterValue (size_t index) const override
-		{
-			NE::NodeId lastSelectedId = uiManager.GetSelectedNodes ().GetLast ();
-			UINodePtr lastSelectedNode = uiManager.GetUINode (lastSelectedId);
-			return selectionParameters.GetParameter (index)->GetValue (lastSelectedNode);
-		}
-
-		virtual NUIE::ParameterType GetParameterType (size_t index) const override
-		{
-			return selectionParameters.GetParameter (index)->GetType ();
-		}
-
-		virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
-		{
-			NodeParameterPtr& parameter = selectionParameters.GetParameter (index);
-			bool success = ApplyCommonParameter (uiManager, uiEnvironment.GetEvaluationEnv (), uiManager.GetSelectedNodes (), parameter, value);
-			uiManager.Update (uiEnvironment);
-			return success;
-		}
-
-	private:
-		NodeUIManager&		uiManager;
-		NodeUIEnvironment&	uiEnvironment;
-		NodeParameterList	selectionParameters;
-	};
-
-	NodeParameterAccessorPtr paramAccessor (new SelectionNodeParameterAccessor (uiManager, uiEnvironment));
-	return paramAccessor;
-}
-
 NodeUIManager& NodeEditor::GetNodeUIManager ()
 {
 	return uiManager;
