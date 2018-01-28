@@ -73,6 +73,22 @@ public:
 	}
 };
 
+template <typename NodeType>
+class PositiveIntegerParameter : public TypedNodeParameter<NodeType, NE::IntValue>
+{
+public:
+	PositiveIntegerParameter (const std::string& paramId, const std::wstring& name) :
+		TypedNodeParameter<NodeType, NE::IntValue> (paramId, name, ParameterType::Integer)
+	{
+
+	}
+
+	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const
+	{
+		return value->GetValue () > 0;
+	}
+};
+
 template <typename NodeType, typename ValueType>
 class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
 {

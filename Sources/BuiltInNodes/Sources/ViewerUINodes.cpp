@@ -1,5 +1,6 @@
 #include "ViewerUINodes.hpp"
 #include "UINodePanels.hpp"
+#include "UINodeCommonParameters.hpp"
 #include "SkinParams.hpp"
 
 #include <algorithm>
@@ -41,6 +42,39 @@ void MultiLineViewerUINode::RegisterSlots ()
 NE::ValuePtr MultiLineViewerUINode::Calculate (NE::EvaluationEnv& env) const
 {
 	return EvaluateSingleInputSlot (NE::SlotId ("in"), env);
+}
+
+void MultiLineViewerUINode::RegisterParameters (NodeParameterList& parameterList) const
+{
+	class TextPerPageParameter : public PositiveIntegerParameter<MultiLineViewerUINode>
+	{
+	public:
+		TextPerPageParameter () :
+			PositiveIntegerParameter<MultiLineViewerUINode> ("MultiLineViewerUINodeTextPerPageParameter", L"Texts per page")
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		{
+			std::shared_ptr<MultiLineViewerUINode> viewerNode = NE::Node::Cast<MultiLineViewerUINode> (uiNode);
+			return NE::ValuePtr (new NE::IntValue ((int) viewerNode->GetTextsPerPage ()));
+		}
+
+		virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!CanSetValue (uiNode, value))) {
+				return false;
+			}
+			std::shared_ptr<MultiLineViewerUINode> viewerNode = NE::Node::Cast<MultiLineViewerUINode> (uiNode);
+			viewerNode->SetTextsPerPage (NE::IntValue::Get (value));
+			uiManager.InvalidateNodeDrawing (viewerNode);
+			return true;
+		}
+	};
+
+	UINode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NodeParameterPtr (new TextPerPageParameter ()));
 }
 
 NUIE::EventHandlerResult MultiLineViewerUINode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
@@ -161,6 +195,17 @@ NE::Stream::Status MultiLineViewerUINode::Write (NE::OutputStream& outputStream)
 	UINode::Write (outputStream);
 	outputStream.Write (textsPerPage);
 	return outputStream.GetStatus ();
+}
+
+size_t MultiLineViewerUINode::GetTextsPerPage () const
+{
+	return textsPerPage;
+}
+
+void MultiLineViewerUINode::SetTextsPerPage (size_t newTextsPerPage)
+{
+	textsPerPage = newTextsPerPage;
+	InvalidateDrawing ();
 }
 
 }
