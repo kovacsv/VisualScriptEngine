@@ -130,6 +130,11 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 		{
 
 		}
+
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		{
+			return value->GetValue () >= 0 && value->GetValue () <= 255;
+		}
 	};
 
 	class GreenParameter : public NUIE::SlotDefaultValueParameter<ColorNode, NE::IntValue>
@@ -140,6 +145,11 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 		{
 
 		}
+
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		{
+			return value->GetValue () >= 0 && value->GetValue () <= 255;
+		}
 	};
 
 	class BlueParameter : public NUIE::SlotDefaultValueParameter<ColorNode, NE::IntValue>
@@ -149,6 +159,11 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 			SlotDefaultValueParameter<ColorNode, NE::IntValue> ("BlueParameter", L"Blue", NUIE::ParameterType::Integer, NE::SlotId ("b"))
 		{
 
+		}
+
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		{
+			return value->GetValue () >= 0 && value->GetValue () <= 255;
 		}
 	};
 
@@ -247,6 +262,11 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 			SlotDefaultValueParameter<PointNode, NE::IntValue> ("SizeParameter", L"Size", NUIE::ParameterType::Integer, NE::SlotId ("size"))
 		{
 
+		}
+
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		{
+			return value->GetValue () >= 0;
 		}
 	};
 

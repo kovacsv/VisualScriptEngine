@@ -4,7 +4,7 @@ namespace NUIE
 {
 
 NodeNameParameter::NodeNameParameter () :
-	TypedNodeParameter<UINode, NE::StringValue> ("NodeNameParameter", L"Name", ParameterType::String)
+	NotEmptyStringParameter<UINode> ("NodeNameParameter", L"Name")
 {
 
 }

@@ -28,27 +28,52 @@ public:
 		return NE::Node::IsType<NodeType> (uiNode);
 	}
 
-	virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const
+	virtual bool CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const
 	{
 		if (!NE::Value::IsType<ValueType> (value)) {
 			return false;
 		}
+		std::shared_ptr<ValueType> typedValue = NE::Value::Cast<ValueType> (value);
+		if (!IsValidValue (uiNode, typedValue)) {
+			return false;
+		}
+		return true;
+	}
+
+	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<ValueType>&) const
+	{
 		return true;
 	}
 };
 
-template <typename NodeType, typename ValueType>
-class SlotDefaultValueParameter : public NUIE::TypedNodeParameter<NodeType, ValueType>
+template <typename NodeType>
+class NotEmptyStringParameter : public TypedNodeParameter<NodeType, NE::StringValue>
 {
 public:
-	SlotDefaultValueParameter (const std::string& paramId, const std::wstring& name, NUIE::ParameterType type, const NE::SlotId& slotId) :
+	NotEmptyStringParameter (const std::string& paramId, const std::wstring& name) :
+		TypedNodeParameter<NodeType, NE::StringValue> (paramId, name, ParameterType::String)
+	{
+
+	}
+
+	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::StringValue>& value) const override
+	{
+		return !value->GetValue ().empty ();
+	}
+};
+
+template <typename NodeType, typename ValueType>
+class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
+{
+public:
+	SlotDefaultValueParameter (const std::string& paramId, const std::wstring& name, ParameterType type, const NE::SlotId& slotId) :
 		TypedNodeParameter<NodeType, ValueType> (paramId, name, type),
 		slotId (slotId)
 	{
 
 	}
 
-	virtual NE::ValuePtr GetValue (const NUIE::UINodePtr& uiNode) const override
+	virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
 	{
 		NE::InputSlotConstPtr inputSlot = uiNode->GetInputSlot (slotId);
 		if (DBGERROR (inputSlot == nullptr)) {
@@ -57,9 +82,9 @@ public:
 		return inputSlot->GetDefaultValue ();
 	}
 
-	virtual bool SetValue (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
 	{
-		bool canSetValue = NUIE::TypedNodeParameter<NodeType, ValueType>::CanSetValue (uiNode, value);
+		bool canSetValue = TypedNodeParameter<NodeType, ValueType>::CanSetValue (uiNode, value);
 		if (DBGERROR (!canSetValue)) {
 			return false;
 		}
@@ -73,7 +98,7 @@ private:
 	NE::SlotId slotId;
 };
 
-class NodeNameParameter : public TypedNodeParameter<UINode, NE::StringValue>
+class NodeNameParameter : public NotEmptyStringParameter<UINode>
 {
 public:
 	NodeNameParameter ();

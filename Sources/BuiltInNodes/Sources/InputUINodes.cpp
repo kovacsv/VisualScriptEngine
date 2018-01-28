@@ -32,7 +32,7 @@ NumericUpDownUINode::~NumericUpDownUINode ()
 
 }
 
-NUIE::EventHandlerResult NumericUpDownUINode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
+EventHandlerResult NumericUpDownUINode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
 {
 	if (mouseButton != MouseButton::Left) {
 		return EventHandlerResult::EventNotHandled;
@@ -299,7 +299,7 @@ NE::ValuePtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
 
 void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	class StartParameter : public NUIE::SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	class StartParameter : public SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
 	{
 	public:
 		StartParameter () :
@@ -309,7 +309,7 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 		}
 	};
 
-	class StepParameter : public NUIE::SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	class StepParameter : public SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
 	{
 	public:
 		StepParameter () :
@@ -319,7 +319,7 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 		}
 	};
 
-	class CountParameter : public NUIE::SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	class CountParameter : public SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
 	{
 	public:
 		CountParameter () :
@@ -327,12 +327,17 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 		{
 
 		}
+
+		virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		{
+			return value->GetValue () >= 0;
+		}
 	};
 
 	UINode::RegisterParameters (parameterList);
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new StartParameter ()));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new StepParameter ()));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
+	parameterList.AddParameter (NodeParameterPtr (new StartParameter ()));
+	parameterList.AddParameter (NodeParameterPtr (new StepParameter ()));
+	parameterList.AddParameter (NodeParameterPtr (new CountParameter ()));
 }
 
 NE::Stream::Status IntegerRangeNode::Read (NE::InputStream& inputStream)
