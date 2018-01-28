@@ -1,5 +1,5 @@
-#ifndef COMMONUINODEPARAMETERS_HPP
-#define COMMONUINODEPARAMETERS_HPP
+#ifndef UINODECOMMONPARAMETERS_HPP
+#define UINODECOMMONPARAMETERS_HPP
 
 #include "UINodeParameters.hpp"
 #include "NodeUIManager.hpp"
@@ -30,7 +30,10 @@ public:
 
 	virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const
 	{
-		return NE::Value::IsType<ValueType> (value);
+		if (!NE::Value::IsType<ValueType> (value)) {
+			return false;
+		}
+		return true;
 	}
 };
 

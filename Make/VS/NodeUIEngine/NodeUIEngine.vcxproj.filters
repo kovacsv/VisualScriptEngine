@@ -85,10 +85,10 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeParameters.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\CommonUINodeParameters.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeParameterAccessor.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeParameterAccessor.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeCommonParameters.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -165,7 +165,7 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeParameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\CommonUINodeParameters.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeCommonParameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

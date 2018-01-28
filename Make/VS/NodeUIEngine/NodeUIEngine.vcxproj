@@ -118,7 +118,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\CommonUINodeParameters.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeCommonParameters.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\Drawing.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\DrawingContext.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\DrawingImage.hpp" />
@@ -148,7 +148,7 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\ContextDecorators.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\CommonUINodeParameters.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeCommonParameters.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\Drawing.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\DrawingContext.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\DrawingImage.cpp" />

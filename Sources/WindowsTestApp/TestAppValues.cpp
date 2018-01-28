@@ -2,7 +2,7 @@
 #include "ResultImage.hpp"
 #include "ValueCombination.hpp"
 #include "UINodeParameters.hpp"
-#include "CommonUINodeParameters.hpp"
+#include "UINodeCommonParameters.hpp"
 
 NE::DynamicSerializationInfo	ColorValue::serializationInfo (NE::ObjectId ("{E6D2DBDC-6311-4BA5-9B1A-A0FFF8CA2444}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	PointValue::serializationInfo (NE::ObjectId ("{D10E20B6-856A-4AAC-A806-FC60E6D1E82F}"), NE::ObjectVersion (1), PointValue::CreateSerializableInstance);

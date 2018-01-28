@@ -1,7 +1,7 @@
 #include "InputUINodes.hpp"
 #include "UINodePanels.hpp"
 #include "UINodeParameters.hpp"
-#include "CommonUINodeParameters.hpp"
+#include "UINodeCommonParameters.hpp"
 #include "NodeUIManager.hpp"
 #include "SkinParams.hpp"
 

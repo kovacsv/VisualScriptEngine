@@ -187,12 +187,22 @@ public:
 
 			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
 			{
+				NodeParameterPtr parameter = paramList.GetParameter (index);
+				if (DBGERROR (parameter == nullptr)) {
+					return false;
+				}
+
+				if (!parameter->CanSetValue (lastSelectedNode, value)) {
+					return false;
+				}
+
 				auto found = changedParameterValues.find (index);
 				if (found != changedParameterValues.end ()) {
 					found->second = value;
 				} else {
 					changedParameterValues.insert ({ index, value });
 				}
+
 				return true;
 			}
 

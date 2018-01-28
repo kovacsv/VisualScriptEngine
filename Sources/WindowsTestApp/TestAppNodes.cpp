@@ -2,7 +2,7 @@
 #include "ResultImage.hpp"
 #include "ValueCombination.hpp"
 #include "UINodeParameters.hpp"
-#include "CommonUINodeParameters.hpp"
+#include "UINodeCommonParameters.hpp"
 #include "TestAppValues.hpp"
 
 NE::SerializationInfo			GeometricNode::serializationInfo (NE::ObjectId ("{74700C2B-6587-4850-A2F6-9DAB38896F41}"), NE::ObjectVersion (1));

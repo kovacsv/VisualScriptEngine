@@ -4,7 +4,7 @@
 #include "Debug.hpp"
 #include "ContextDecorators.hpp"
 #include "UINodeParameters.hpp"
-#include "CommonUINodeParameters.hpp"
+#include "UINodeCommonParameters.hpp"
 #include "UINodeCommands.hpp"
 #include "NodeUIManager.hpp"
 #include "NodeUIEnvironment.hpp"

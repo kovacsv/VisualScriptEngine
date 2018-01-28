@@ -97,7 +97,7 @@ public:
 	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const
 	{
 		NE::ValuePtr val = EvaluateSingleInputSlot (SlotId ("in"), env);
-		ListValue* input = Value::Cast<ListValue> (val);
+		ListValue* input = Value::Cast<ListValue> (val.get ());
 		int result = 0;
 		input->Enumerate ([&] (const ValuePtr& value) {
 			result += IntValue::Get (value);

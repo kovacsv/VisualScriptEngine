@@ -45,7 +45,7 @@ public:
 	static Type* Cast (Value* val);
 
 	template <class Type>
-	static Type* Cast (const ValuePtr& val);
+	static std::shared_ptr<Type> Cast (const ValuePtr& val);
 };
 
 template <class Type>
@@ -67,9 +67,9 @@ Type* Value::Cast (Value* val)
 }
 
 template <class Type>
-Type* Value::Cast (const ValuePtr& val)
+std::shared_ptr<Type> Value::Cast (const ValuePtr& val)
 {
-	return dynamic_cast<Type*> (val.get ());
+	return std::dynamic_pointer_cast<Type> (val);
 }
 
 class SingleValue : public Value
@@ -142,7 +142,7 @@ bool IsComplexType (const ValuePtr& val)
 		return true;
 	}
 	if (Value::IsType<ListValue> (val)) {
-		ListValue* listVal = Value::Cast<ListValue> (val);
+		ListValue* listVal = Value::Cast<ListValue> (val.get ());
 		if (listVal->GetSize () == 0) {
 			return false;
 		}
