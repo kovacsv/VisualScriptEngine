@@ -6,11 +6,21 @@
 namespace NUIE
 {
 
-enum class ParameterType
+class ParameterType
 {
-	Undefined,
-	String,
-	Integer
+public:
+	ParameterType (const std::string& id);
+
+	const std::string&	GetId () const;
+	bool				operator== (const ParameterType& rhs) const;
+	bool				operator!= (const ParameterType& rhs) const;
+
+	static ParameterType Undefined;
+	static ParameterType String;
+	static ParameterType Integer;
+
+private:
+	std::string id;
 };
 
 class NodeParameterAccessor
@@ -19,7 +29,7 @@ public:
 	virtual size_t					GetParameterCount () const = 0;
 	virtual const std::wstring&		GetParameterName (size_t index) const = 0;
 	virtual NE::ValuePtr			GetParameterValue (size_t index) const = 0;
-	virtual ParameterType			GetParameterType (size_t index) const = 0;
+	virtual const ParameterType&	GetParameterType (size_t index) const = 0;
 	virtual bool					SetParameterValue (size_t index, const NE::ValuePtr& value) = 0;
 };
 

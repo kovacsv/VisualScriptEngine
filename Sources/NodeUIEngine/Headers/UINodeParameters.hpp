@@ -15,12 +15,12 @@ class NodeUIEnvironment;
 class NodeParameter
 {
 public:
-	NodeParameter (const std::string& paramId, const std::wstring& name, ParameterType type);
+	NodeParameter (const std::string& paramId, const std::wstring& name, const ParameterType& type);
 	virtual ~NodeParameter ();
 
 	const std::string&		GetId () const;
 	const std::wstring&		GetName () const;
-	ParameterType			GetType () const;
+	const ParameterType&	GetType () const;
 
 	virtual NE::ValuePtr	GetValue (const UINodePtr& uiNode) const = 0;
 	virtual bool			IsApplicableTo (const UINodePtr& uiNode) const = 0;
@@ -55,8 +55,8 @@ private:
 typedef std::shared_ptr<NodeParameterList> NodeParameterListPtr;
 typedef std::shared_ptr<const NodeParameterList> NodeParameterListConstPtr;
 
-std::wstring	ParameterValueToString (const NE::ValuePtr& value, ParameterType type);
-NE::ValuePtr	StringToParameterValue (const std::wstring& str, ParameterType type);
+std::wstring	ParameterValueToString (const NE::ValuePtr& value, const ParameterType& type);
+NE::ValuePtr	StringToParameterValue (const std::wstring& str, const ParameterType& type);
 
 void			RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList);
 bool			ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);

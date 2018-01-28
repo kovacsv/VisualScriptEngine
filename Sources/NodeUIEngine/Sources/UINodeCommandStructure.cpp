@@ -176,7 +176,7 @@ public:
 				return parameter->GetValue (lastSelectedNode);
 			}
 
-			virtual ParameterType GetParameterType (size_t index) const override
+			virtual const ParameterType& GetParameterType (size_t index) const override
 			{
 				NodeParameterPtr parameter = paramList.GetParameter (index);
 				if (DBGERROR (parameter == nullptr)) {

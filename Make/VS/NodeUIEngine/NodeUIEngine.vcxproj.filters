@@ -168,5 +168,8 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeCommonParameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeParameterAccessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
 namespace NUIE
 {
 
-NodeParameter::NodeParameter (const std::string& paramId, const std::wstring& name, ParameterType type) :
+NodeParameter::NodeParameter (const std::string& paramId, const std::wstring& name, const ParameterType& type) :
 	paramId (paramId),
 	name (name),
 	type (type)
@@ -29,7 +29,7 @@ const std::wstring& NodeParameter::GetName () const
 	return name;
 }
 
-ParameterType NodeParameter::GetType () const
+const ParameterType& NodeParameter::GetType () const
 {
 	return type;
 }
@@ -74,45 +74,33 @@ static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vec
 	return true;
 }
 
-std::wstring ParameterValueToString (const NE::ValuePtr& value, ParameterType type)
+std::wstring ParameterValueToString (const NE::ValuePtr& value, const ParameterType& type)
 {
 	std::wstring result = L"";
-	switch (type) {
-		case ParameterType::String:
-			{
-				if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
-					result = NE::StringValue::Get (value);
-				}
-			}
-			break;
-		case ParameterType::Integer:
-			{
-				if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
-					result = std::to_wstring (NE::IntValue::Get (value));
-				}
-			}
-			break;
-		default:
-			DBGBREAK ();
-			break;
+	if (type == ParameterType::String) {
+		if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
+			result = NE::StringValue::Get (value);
+		}
+	} else if (type == ParameterType::Integer) {
+		if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
+			result = std::to_wstring (NE::IntValue::Get (value));
+		}
+	} else {
+		DBGBREAK ();
 	}
 	return result;
 }
 
-NE::ValuePtr StringToParameterValue (const std::wstring& str, ParameterType type)
+NE::ValuePtr StringToParameterValue (const std::wstring& str, const ParameterType& type)
 {
 	NE::ValuePtr result = nullptr;
 	try {
-		switch (type) {
-			case ParameterType::String:
-				result.reset (new NE::StringValue (str));
-				break;
-			case ParameterType::Integer:
-				result.reset (new NE::IntValue (std::stoi (str)));
-				break;
-			default:
-				DBGBREAK ();
-				break;
+		if (type == ParameterType::String) {
+			result.reset (new NE::StringValue (str));
+		} else if (type == ParameterType::Integer) {
+			result.reset (new NE::IntValue (std::stoi (str)));
+		} else {
+			DBGBREAK ();
 		}
 	} catch (...) {
 		result = nullptr;
