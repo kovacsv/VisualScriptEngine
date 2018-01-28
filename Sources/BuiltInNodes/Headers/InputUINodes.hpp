@@ -53,6 +53,9 @@ public:
 	int							GetValue () const;
 	void						SetValue (int newValue);
 
+	int							GetStep () const;
+	void						SetStep (int newStep);
+
 private:
 	int val;
 	int step;

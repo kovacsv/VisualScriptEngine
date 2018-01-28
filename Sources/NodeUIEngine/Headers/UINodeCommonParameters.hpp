@@ -62,6 +62,17 @@ public:
 	}
 };
 
+template <typename NodeType>
+class IntegerParameter : public TypedNodeParameter<NodeType, NE::IntValue>
+{
+public:
+	IntegerParameter (const std::string& paramId, const std::wstring& name) :
+		TypedNodeParameter<NodeType, NE::IntValue> (paramId, name, ParameterType::Integer)
+	{
+
+	}
+};
+
 template <typename NodeType, typename ValueType>
 class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
 {

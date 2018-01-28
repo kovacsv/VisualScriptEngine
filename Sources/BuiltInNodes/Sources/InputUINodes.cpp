@@ -114,11 +114,11 @@ NE::ValuePtr IntegerUpDownUINode::Calculate (NE::EvaluationEnv&) const
 
 void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	class ValueParameter : public TypedNodeParameter<IntegerUpDownUINode, NE::IntValue>
+	class ValueParameter : public IntegerParameter<IntegerUpDownUINode>
 	{
 	public:
 		ValueParameter () :
-			TypedNodeParameter<IntegerUpDownUINode, NE::IntValue> ("IntegerUpDownValueParameter", L"Value", ParameterType::Integer)
+			IntegerParameter<IntegerUpDownUINode> ("IntegerUpDownValueParameter", L"Value")
 		{
 
 		}
@@ -151,8 +151,44 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 		}
 	};
 
+	class StepParameter : public IntegerParameter<IntegerUpDownUINode>
+	{
+	public:
+		StepParameter () :
+			IntegerParameter<IntegerUpDownUINode> ("IntegerUpDownStepParameter", L"Step")
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		{
+			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
+			if (DBGERROR (upDownNode == nullptr)) {
+				return nullptr;
+			}
+			return NE::ValuePtr (new NE::IntValue (upDownNode->GetStep ()));
+		}
+
+		virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!CanSetValue (uiNode, value))) {
+				return false;
+			}
+			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
+			if (DBGERROR (upDownNode == nullptr)) {
+				return false;
+			}
+			if (DBGERROR (!NE::Value::IsType<NE::IntValue> (value))) {
+				return false;
+			}
+			upDownNode->SetStep (NE::IntValue::Get (value));
+			return true;
+		}
+	};
+
 	NumericUpDownUINode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NodeParameterPtr (new ValueParameter ()));
+	parameterList.AddParameter (NodeParameterPtr (new StepParameter ()));
 }
 
 void IntegerUpDownUINode::Increase ()
@@ -194,6 +230,16 @@ void IntegerUpDownUINode::SetValue (int newValue)
 {
 	val = newValue;
 	InvalidateValue ();
+}
+
+int IntegerUpDownUINode::GetStep () const
+{
+	return step;
+}
+
+void IntegerUpDownUINode::SetStep (int newStep)
+{
+	step = newStep;
 }
 
 DoubleUpDownUINode::DoubleUpDownUINode () :
@@ -303,7 +349,7 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 	{
 	public:
 		StartParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("StartParameter", L"Start", ParameterType::Integer, NE::SlotId ("start"))
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("IntegerRangeNodeStartParameter", L"Start", ParameterType::Integer, NE::SlotId ("start"))
 		{
 
 		}
@@ -313,7 +359,7 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 	{
 	public:
 		StepParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("StepParameter", L"Step", ParameterType::Integer, NE::SlotId ("step"))
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("IntegerRangeNodeStepParameter", L"Step", ParameterType::Integer, NE::SlotId ("step"))
 		{
 
 		}
@@ -323,7 +369,7 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 	{
 	public:
 		CountParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("CountParameter", L"Count", ParameterType::Integer, NE::SlotId ("count"))
+			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("IntegerRangeNodeCountParameter", L"Count", ParameterType::Integer, NE::SlotId ("count"))
 		{
 
 		}
