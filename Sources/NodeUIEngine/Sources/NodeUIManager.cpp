@@ -322,17 +322,13 @@ void NodeUIManager::InvalidateNodeDrawing (const UINodePtr& uiNode)
 void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 {
 	if (status.NeedToRecalculate ()) {
-		bool wasRecalculation = false;
 		EnumerateUINodes ([&] (const UINodePtr& uiNode) {
 			if (!uiNode->ValueIsCalculated ()) {
 				uiNode->Evaluate (env.GetEvaluationEnv ());
-				wasRecalculation = true;
 			}
 			return true;
 		});
-		if (wasRecalculation) {
-			env.OnValuesRecalculated ();
-		}
+		env.OnValuesRecalculated ();
 		status.RequestRedraw ();
 	}
 	if (status.NeedToRedraw ()) {
