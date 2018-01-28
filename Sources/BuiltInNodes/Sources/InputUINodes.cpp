@@ -126,9 +126,6 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
 		{
 			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
-			if (DBGERROR (upDownNode == nullptr)) {
-				return nullptr;
-			}
 			return NE::ValuePtr (new NE::IntValue (upDownNode->GetValue ()));
 		}
 
@@ -138,12 +135,6 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 				return false;
 			}
 			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
-			if (DBGERROR (upDownNode == nullptr)) {
-				return false;
-			}
-			if (DBGERROR (!NE::Value::IsType<NE::IntValue> (value))) {
-				return false;
-			}
 			upDownNode->SetValue (NE::IntValue::Get (value));
 			uiManager.InvalidateNodeValue (upDownNode);
 			uiManager.InvalidateNodeDrawing (upDownNode);
@@ -163,9 +154,6 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
 		{
 			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
-			if (DBGERROR (upDownNode == nullptr)) {
-				return nullptr;
-			}
 			return NE::ValuePtr (new NE::IntValue (upDownNode->GetStep ()));
 		}
 
@@ -175,12 +163,6 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 				return false;
 			}
 			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
-			if (DBGERROR (upDownNode == nullptr)) {
-				return false;
-			}
-			if (DBGERROR (!NE::Value::IsType<NE::IntValue> (value))) {
-				return false;
-			}
 			upDownNode->SetStep (NE::IntValue::Get (value));
 			return true;
 		}
