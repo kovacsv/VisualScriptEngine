@@ -109,15 +109,6 @@ private:
 	NE::SlotId slotId;
 };
 
-class NodeNameParameter : public NotEmptyStringParameter<UINode>
-{
-public:
-	NodeNameParameter ();
-
-	virtual NE::ValuePtr	GetValue (const UINodePtr& uiNode) const override;
-	virtual bool			SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override;
-};
-
 }
 
 #endif

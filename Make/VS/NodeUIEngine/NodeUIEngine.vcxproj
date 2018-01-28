@@ -149,7 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeParameterAccessor.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeCommonParameters.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\Drawing.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\DrawingContext.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\DrawingImage.cpp" />
