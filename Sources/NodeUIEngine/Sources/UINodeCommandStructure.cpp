@@ -116,10 +116,11 @@ private:
 class SetParametersCommand : public SingleCommand
 {
 public:
-	SetParametersCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes) :
+	SetParametersCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NodeCollection& relevantNodes) :
 		SingleCommand (name, false),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
+		currentNode (currentNode),
 		relevantNodes (relevantNodes),
 		relevantParameters ()
 	{
@@ -136,9 +137,9 @@ public:
 		class SelectionParameterAccessor : public NodeParameterAccessor
 		{
 		public:
-			SelectionParameterAccessor (NodeParameterList& paramList, UINodePtr& lastSelectedNode) :
+			SelectionParameterAccessor (NodeParameterList& paramList, const UINodePtr& currentNode) :
 				paramList (paramList),
-				lastSelectedNode (lastSelectedNode)
+				currentNode (currentNode)
 			{
 			
 			}
@@ -173,7 +174,7 @@ public:
 				if (DBGERROR (parameter == nullptr)) {
 					return nullptr;
 				}
-				return parameter->GetValue (lastSelectedNode);
+				return parameter->GetValue (currentNode);
 			}
 
 			virtual const ParameterType& GetParameterType (size_t index) const override
@@ -192,7 +193,7 @@ public:
 					return false;
 				}
 
-				if (!parameter->CanSetValue (lastSelectedNode, value)) {
+				if (!parameter->CanSetValue (currentNode, value)) {
 					return false;
 				}
 
@@ -208,18 +209,12 @@ public:
 
 		private:
 			NodeParameterList&							paramList;
-			UINodePtr&									lastSelectedNode;
+			const UINodePtr&							currentNode;
 			std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
 		};
 
-		NE::NodeId lastSelectedId = relevantNodes.GetLast ();
-		UINodePtr lastSelectedNode = uiManager.GetUINode (lastSelectedId);
-		if (DBGERROR (lastSelectedNode == nullptr)) {
-			return;
-		}
-
 		RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
-		std::shared_ptr<SelectionParameterAccessor> paramAccessor (new SelectionParameterAccessor (relevantParameters, lastSelectedNode));
+		std::shared_ptr<SelectionParameterAccessor> paramAccessor (new SelectionParameterAccessor (relevantParameters, currentNode));
 		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramAccessor)) {
 			paramAccessor->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
 		}
@@ -228,6 +223,7 @@ public:
 private:
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
+	UINodePtr			currentNode;
 	NodeCollection		relevantNodes;
 	NodeParameterList	relevantParameters;
 };
@@ -383,7 +379,7 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 {
 	NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
-	commandStructureBuilder.RegisterCommand (CommandPtr (new SetParametersCommand (L"Set Parameters", uiManager, uiEnvironment, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (CommandPtr (new SetParametersCommand (L"Set Parameters", uiManager, uiEnvironment, uiNode, relevantNodes)));
 	commandStructureBuilder.RegisterNodeCommand (NodeCommandPtr (new DeleteNodeCommand (L"Delete Node")));
 	uiNode->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();
