@@ -110,10 +110,10 @@ private:
 	ListValuePtr			EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
 
 	NodeId					nodeId;
+	NodeEvaluatorConstPtr	nodeEvaluator;
+
 	SlotList<InputSlot>		inputSlots;
 	SlotList<OutputSlot>	outputSlots;
-
-	NodeEvaluatorConstPtr	nodeEvaluator;
 };
 
 template <class Type>
