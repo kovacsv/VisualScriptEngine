@@ -42,6 +42,7 @@ class Node : public Serializable
 
 public:
 	Node ();
+	Node (const Node& src) = delete;
 	virtual ~Node ();
 
 	bool					IsEmpty () const;

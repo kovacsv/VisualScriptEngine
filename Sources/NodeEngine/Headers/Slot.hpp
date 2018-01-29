@@ -17,6 +17,7 @@ class Slot : public Serializable
 public:
 	Slot ();
 	Slot (const SlotId& slotId);
+	Slot (const Slot& src) = delete;
 	virtual ~Slot ();
 
 	const SlotId&			GetId () const;

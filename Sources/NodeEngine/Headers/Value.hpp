@@ -29,6 +29,7 @@ class Value : public Serializable
 
 public:
 	Value ();
+	Value (const Value& srd) = delete;
 	virtual ~Value ();
 
 	virtual std::wstring	ToString () const = 0;
