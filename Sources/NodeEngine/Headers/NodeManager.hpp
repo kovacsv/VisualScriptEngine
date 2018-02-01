@@ -14,6 +14,12 @@
 namespace NE
 {
 
+class NodeFilter
+{
+public:
+	virtual bool NeedToProcessNode (const NodeId& nodeId) const = 0;
+};
+
 class NodeManager : public Serializable
 {
 	SERIALIZABLE;
@@ -71,6 +77,9 @@ public:
 
 private:
 	NodePtr						AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter);
+
+	Stream::Status				Read (InputStream& inputStream, const NodeFilter& nodeFilter);
+	Stream::Status				Write (OutputStream& outputStream, const NodeFilter& nodeFilter) const;
 
 	NodeIdGenerator							idGenerator;
 	std::unordered_map<NodeId, NodePtr>		nodeIdToNodeTable;

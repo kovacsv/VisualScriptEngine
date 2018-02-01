@@ -109,6 +109,15 @@ public:
 	}
 };
 
+class AllNodeFilter : public NodeFilter
+{
+public:
+	virtual bool NeedToProcessNode (const NodeId&) const override
+	{
+		return true;
+	}
+};
+
 NodeManager::NodeManager () :
 	idGenerator (),
 	nodeIdToNodeTable (),
@@ -412,6 +421,28 @@ void NodeManager::EnumerateDependentNodesRecursive (const NodeConstPtr& node, co
 
 Stream::Status NodeManager::Read (InputStream& inputStream)
 {
+	AllNodeFilter allNodeFilter;
+	return Read (inputStream, allNodeFilter);
+}
+
+Stream::Status NodeManager::Write (OutputStream& outputStream) const
+{
+	AllNodeFilter allNodeFilter;
+	return Write (outputStream, allNodeFilter);
+}
+
+NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
+{
+	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {
+		return nullptr;
+	}
+	node->SetNodeEvaluator (setter);
+	nodeIdToNodeTable.insert ({ node->GetId (), node });
+	return node;
+}
+
+Stream::Status NodeManager::Read (InputStream& inputStream, const NodeFilter& nodeFilter)
+{
 	if (DBGERROR (!IsEmpty ())) {
 		return Stream::Status::Error;
 	}
@@ -426,6 +457,11 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 		if (DBGERROR (node == nullptr || node->HasNodeEvaluator () || node->GetId () == NullNodeId)) {
 			return Stream::Status::Error;
 		}
+
+		if (!nodeFilter.NeedToProcessNode (node->GetId ())) {
+			continue;
+		}
+
 		NodeManagerNodeEvaluatorSetterForRead setter (node->GetId (), nodeEvaluator);
 		if (DBGERROR (AddNode (node, setter) == nullptr)) {
 			return Stream::Status::Error;
@@ -445,6 +481,10 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 		inputNodeId.Read (inputStream);
 		inputSlotId.Read (inputStream);
 		
+		if (!nodeFilter.NeedToProcessNode (outputNodeId) || !nodeFilter.NeedToProcessNode (inputNodeId)) {
+			continue;
+		}
+
 		NodePtr outputNode = GetNode (outputNodeId);
 		NodePtr inputNode = GetNode (inputNodeId);
 		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
@@ -458,38 +498,45 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 	return inputStream.GetStatus ();
 }
 
-Stream::Status NodeManager::Write (OutputStream& outputStream) const
+Stream::Status NodeManager::Write (OutputStream& outputStream, const NodeFilter& nodeFilter) const
 {
 	ObjectHeader header (outputStream, serializationInfo);
 	idGenerator.Write (outputStream);
 
-	size_t nodeCount = nodeIdToNodeTable.size ();
-	outputStream.Write (nodeCount);
+	size_t nodeCount = 0;
 	EnumerateNodes ([&] (const NodeConstPtr& node) {
-		WriteDynamicObject (outputStream, node.get ());
+		if (nodeFilter.NeedToProcessNode (node->GetId ())) {
+			nodeCount++;
+		}
 		return true;
 	});
 
-	size_t connectionCount = connectionManager.GetConnectionCount ();
+	outputStream.Write (nodeCount);
+	EnumerateNodes ([&] (const NodeConstPtr& node) {
+		if (nodeFilter.NeedToProcessNode (node->GetId ())) {
+			WriteDynamicObject (outputStream, node.get ());
+		}
+		return true;
+	});
+
+	size_t connectionCount = 0;
+	EnumerateConnections ([&] (const NodeId& outputNodeId, const SlotId&, const NodeId& inputNodeId, const SlotId&) {
+		if (nodeFilter.NeedToProcessNode (outputNodeId) && nodeFilter.NeedToProcessNode (inputNodeId)) {
+			connectionCount++;
+		}
+	});
+
 	outputStream.Write (connectionCount);
 	EnumerateConnections ([&] (const NodeId& outputNodeId, const SlotId& outputSlotId, const NodeId& inputNodeId, const SlotId& inputSlotId) {
-		outputNodeId.Write (outputStream);
-		outputSlotId.Write (outputStream);
-		inputNodeId.Write (outputStream);
-		inputSlotId.Write (outputStream);
+		if (nodeFilter.NeedToProcessNode (outputNodeId) && nodeFilter.NeedToProcessNode (inputNodeId)) {
+			outputNodeId.Write (outputStream);
+			outputSlotId.Write (outputStream);
+			inputNodeId.Write (outputStream);
+			inputSlotId.Write (outputStream);
+		}
 	});
 
 	return outputStream.GetStatus ();
-}
-
-NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
-{
-	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {
-		return nullptr;
-	}
-	node->SetNodeEvaluator (setter);
-	nodeIdToNodeTable.insert ({ node->GetId (), node });
-	return node;
 }
 
 }
