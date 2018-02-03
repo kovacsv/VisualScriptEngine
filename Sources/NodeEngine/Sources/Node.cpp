@@ -190,7 +190,7 @@ void Node::SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter)
 {
 	nodeId = evaluatorSetter.GetNodeId ();
 	nodeEvaluator = evaluatorSetter.GetNodeEvaluator ();
-	if (evaluatorSetter.NeedToRegisterSlots ()) {
+	if (evaluatorSetter.GetSlotRegistrationMode () == SlotRegistrationMode::RegisterSlots) {
 		RegisterSlots ();
 	}
 }

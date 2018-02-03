@@ -57,9 +57,10 @@ private:
 class NodeManagerNodeEvaluatorSetter : public NodeEvaluatorSetter
 {
 public:
-	NodeManagerNodeEvaluatorSetter (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator) :
+	NodeManagerNodeEvaluatorSetter (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator, SlotRegistrationMode slotRegMode) :
 		newNodeId (newNodeId),
-		newNodeEvaluator (newNodeEvaluator)
+		newNodeEvaluator (newNodeEvaluator),
+		slotRegMode (slotRegMode)
 	{
 		
 	}
@@ -74,39 +75,15 @@ public:
 		return newNodeEvaluator;
 	}
 
+	virtual SlotRegistrationMode GetSlotRegistrationMode () const override
+	{
+		return slotRegMode;
+	}
+
 private:
 	const NodeId&					newNodeId;
 	const NodeEvaluatorConstPtr&	newNodeEvaluator;
-};
-
-class NodeManagerNodeEvaluatorSetterForAdd : public NodeManagerNodeEvaluatorSetter
-{
-public:
-	NodeManagerNodeEvaluatorSetterForAdd (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator) :
-		NodeManagerNodeEvaluatorSetter (newNodeId, newNodeEvaluator)
-	{
-		
-	}
-
-	virtual bool NeedToRegisterSlots () const override
-	{
-		return true;
-	}
-};
-
-class NodeManagerNodeEvaluatorSetterForRead : public NodeManagerNodeEvaluatorSetter
-{
-public:
-	NodeManagerNodeEvaluatorSetterForRead (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator) :
-		NodeManagerNodeEvaluatorSetter (newNodeId, newNodeEvaluator)
-	{
-		
-	}
-
-	virtual bool NeedToRegisterSlots () const override
-	{
-		return false;
-	}
+	SlotRegistrationMode			slotRegMode;
 };
 
 class AllNodeFilter : public NodeFilter
@@ -198,7 +175,7 @@ NodePtr NodeManager::AddNode (const NodePtr& node)
 	}
 
 	NodeId newNodeId (idGenerator.GenerateUniqueId ());
-	NodeManagerNodeEvaluatorSetterForAdd setter (newNodeId, nodeEvaluator);
+	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, SlotRegistrationMode::RegisterSlots);
 	return AddNode (node, setter);
 }
 
@@ -462,7 +439,7 @@ Stream::Status NodeManager::Read (InputStream& inputStream, const NodeFilter& no
 			continue;
 		}
 
-		NodeManagerNodeEvaluatorSetterForRead setter (node->GetId (), nodeEvaluator);
+		NodeManagerNodeEvaluatorSetter setter (node->GetId (), nodeEvaluator, SlotRegistrationMode::DoNotRegisterSlots);
 		if (DBGERROR (AddNode (node, setter) == nullptr)) {
 			return Stream::Status::Error;
 		}

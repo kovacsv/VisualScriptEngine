@@ -28,12 +28,18 @@ public:
 	virtual void		SetCalculatedNodeValue (const NodeId& nodeId, const ValuePtr& valuePtr) const = 0;
 };
 
+enum class SlotRegistrationMode
+{
+	RegisterSlots,
+	DoNotRegisterSlots
+};
+
 class NodeEvaluatorSetter
 {
 public:
 	virtual const NodeId&					GetNodeId () const = 0;
 	virtual const NodeEvaluatorConstPtr&	GetNodeEvaluator () const = 0;
-	virtual bool							NeedToRegisterSlots () const = 0;
+	virtual SlotRegistrationMode			GetSlotRegistrationMode () const = 0;
 };
 
 class Node : public Serializable
