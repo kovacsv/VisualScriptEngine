@@ -415,11 +415,6 @@ bool NodeManager::MergeTo (NodeManager& targetNodeManager, const NodeFilter& nod
 	return true;
 }
 
-bool NodeManager::MergeFrom (NodeManager& sourceNodeManager, const NodeFilter& nodeFilter)
-{
-	return sourceNodeManager.MergeTo (*this, nodeFilter);
-}
-
 Stream::Status NodeManager::Read (InputStream& inputStream)
 {
 	if (DBGERROR (!IsEmpty ())) {

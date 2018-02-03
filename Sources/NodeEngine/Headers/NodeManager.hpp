@@ -75,7 +75,6 @@ public:
 	void						EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 
 	bool						MergeTo (NodeManager& targetNodeManager, const NodeFilter& nodeFilter) const;
-	bool						MergeFrom (NodeManager& sourceNodeManager, const NodeFilter& nodeFilter);
 
 	virtual Stream::Status		Read (InputStream& inputStream) override;
 	virtual Stream::Status		Write (OutputStream& outputStream) const override;
