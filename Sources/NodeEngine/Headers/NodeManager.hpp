@@ -26,11 +26,13 @@ class NodeManager : public Serializable
 
 public:
 	NodeManager ();
+	NodeManager (const NodeManager& src) = delete;
 	~NodeManager ();
 
 	void						Clear ();
 	bool						IsEmpty () const;
 	size_t						GetNodeCount () const;
+	size_t						GetConnectionCount () const;
 
 	void						EnumerateNodes (const std::function<bool (const NodePtr&)>& processor);
 	void						EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const;
@@ -72,14 +74,23 @@ public:
 	void						EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 	void						EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 
+	bool						MergeTo (NodeManager& targetNodeManager, const NodeFilter& nodeFilter) const;
+	bool						MergeFrom (NodeManager& sourceNodeManager, const NodeFilter& nodeFilter);
+
 	virtual Stream::Status		Read (InputStream& inputStream) override;
 	virtual Stream::Status		Write (OutputStream& outputStream) const override;
 
 private:
+	enum class IdHandlingPolicy
+	{
+		KeepOriginalId,
+		GenerateNewId
+	};
+
 	NodePtr						AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter);
 
-	Stream::Status				Read (InputStream& inputStream, const NodeFilter& nodeFilter);
-	Stream::Status				Write (OutputStream& outputStream, const NodeFilter& nodeFilter) const;
+	Stream::Status				ReadNodes (InputStream& inputStream, IdHandlingPolicy idHandling);
+	Stream::Status				WriteNodes (OutputStream& outputStream, const NodeFilter& nodeFilter) const;
 
 	NodeIdGenerator							idGenerator;
 	std::unordered_map<NodeId, NodePtr>		nodeIdToNodeTable;

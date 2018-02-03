@@ -76,6 +76,9 @@
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\UINodeTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngineTest\NodeManagerMergeTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\TestFramework\SimpleTest.hpp">

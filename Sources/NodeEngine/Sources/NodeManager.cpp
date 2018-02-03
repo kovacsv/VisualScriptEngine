@@ -3,6 +3,7 @@
 #include "Debug.hpp"
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
+#include "MemoryStream.hpp"
 
 namespace NE
 {
@@ -125,6 +126,11 @@ bool NodeManager::IsEmpty () const
 size_t NodeManager::GetNodeCount () const
 {
 	return nodeIdToNodeTable.size ();
+}
+
+size_t NodeManager::GetConnectionCount () const
+{
+	return connectionManager.GetConnectionCount ();
 }
 
 void NodeManager::EnumerateNodes (const std::function<bool (const NodePtr&)>& processor)
@@ -396,16 +402,53 @@ void NodeManager::EnumerateDependentNodesRecursive (const NodeConstPtr& node, co
 	});
 }
 
+bool NodeManager::MergeTo (NodeManager& targetNodeManager, const NodeFilter& nodeFilter) const
+{
+	MemoryOutputStream outputStream;
+	if (DBGERROR (WriteNodes (outputStream, nodeFilter) != Stream::Status::NoError)) {
+		return false;
+	}
+	MemoryInputStream inputStream (outputStream.GetBuffer ());
+	if (DBGERROR (targetNodeManager.ReadNodes (inputStream, IdHandlingPolicy::GenerateNewId) != Stream::Status::NoError)) {
+		return false;
+	}
+	return true;
+}
+
+bool NodeManager::MergeFrom (NodeManager& sourceNodeManager, const NodeFilter& nodeFilter)
+{
+	return sourceNodeManager.MergeTo (*this, nodeFilter);
+}
+
 Stream::Status NodeManager::Read (InputStream& inputStream)
 {
-	AllNodeFilter allNodeFilter;
-	return Read (inputStream, allNodeFilter);
+	if (DBGERROR (!IsEmpty ())) {
+		return Stream::Status::Error;
+	}
+
+	ObjectHeader header (inputStream);
+	idGenerator.Read (inputStream);
+
+	Stream::Status nodeStatus = ReadNodes (inputStream, IdHandlingPolicy::KeepOriginalId);
+	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
+		return nodeStatus;
+	}
+
+	return inputStream.GetStatus ();
 }
 
 Stream::Status NodeManager::Write (OutputStream& outputStream) const
 {
+	ObjectHeader header (outputStream, serializationInfo);
+	idGenerator.Write (outputStream);
+
 	AllNodeFilter allNodeFilter;
-	return Write (outputStream, allNodeFilter);
+	Stream::Status nodeStatus =  WriteNodes (outputStream, allNodeFilter);
+	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
+		return nodeStatus;
+	}
+
+	return outputStream.GetStatus ();
 }
 
 NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
@@ -418,14 +461,9 @@ NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& se
 	return node;
 }
 
-Stream::Status NodeManager::Read (InputStream& inputStream, const NodeFilter& nodeFilter)
+Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolicy idHandling)
 {
-	if (DBGERROR (!IsEmpty ())) {
-		return Stream::Status::Error;
-	}
-
-	ObjectHeader header (inputStream);
-	idGenerator.Read (inputStream);
+	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
 
 	size_t nodeCount = 0;
 	inputStream.Read (nodeCount);
@@ -435,11 +473,15 @@ Stream::Status NodeManager::Read (InputStream& inputStream, const NodeFilter& no
 			return Stream::Status::Error;
 		}
 
-		if (!nodeFilter.NeedToProcessNode (node->GetId ())) {
-			continue;
+		NodeId newNodeId;
+		if (idHandling == IdHandlingPolicy::KeepOriginalId) {
+			newNodeId = node->GetId ();
+		} else if (idHandling == IdHandlingPolicy::GenerateNewId) {
+			newNodeId = idGenerator.GenerateUniqueId ();
 		}
+		oldToNewNodeIdTable.insert ({ node->GetId (), newNodeId });
 
-		NodeManagerNodeEvaluatorSetter setter (node->GetId (), nodeEvaluator, SlotRegistrationMode::DoNotRegisterSlots);
+		NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, SlotRegistrationMode::DoNotRegisterSlots);
 		if (DBGERROR (AddNode (node, setter) == nullptr)) {
 			return Stream::Status::Error;
 		}
@@ -457,13 +499,9 @@ Stream::Status NodeManager::Read (InputStream& inputStream, const NodeFilter& no
 		outputSlotId.Read (inputStream);
 		inputNodeId.Read (inputStream);
 		inputSlotId.Read (inputStream);
-		
-		if (!nodeFilter.NeedToProcessNode (outputNodeId) || !nodeFilter.NeedToProcessNode (inputNodeId)) {
-			continue;
-		}
 
-		NodePtr outputNode = GetNode (outputNodeId);
-		NodePtr inputNode = GetNode (inputNodeId);
+		NodePtr outputNode = GetNode (oldToNewNodeIdTable[outputNodeId]);
+		NodePtr inputNode = GetNode (oldToNewNodeIdTable[inputNodeId]);
 		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
 			return Stream::Status::Error;
 		}
@@ -475,11 +513,8 @@ Stream::Status NodeManager::Read (InputStream& inputStream, const NodeFilter& no
 	return inputStream.GetStatus ();
 }
 
-Stream::Status NodeManager::Write (OutputStream& outputStream, const NodeFilter& nodeFilter) const
+Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFilter& nodeFilter) const
 {
-	ObjectHeader header (outputStream, serializationInfo);
-	idGenerator.Write (outputStream);
-
 	size_t nodeCount = 0;
 	EnumerateNodes ([&] (const NodeConstPtr& node) {
 		if (nodeFilter.NeedToProcessNode (node->GetId ())) {
