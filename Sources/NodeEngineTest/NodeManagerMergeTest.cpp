@@ -171,6 +171,30 @@ TEST (MergeAllNodesTest_Reverse)
 	ASSERT (IntValue::Get (result) == 5);
 }
 
+TEST (MergeAllNodesTest_Scope)
+{
+	NodeManager target;
+	{
+		NodeManager source;
+		InitNodeManager (source);
+		AllNodeFilter allNodeFilter;
+		target.MergeFrom (source, allNodeFilter);
+	}
+
+	ASSERT (target.GetNodeCount () == 4);
+	ASSERT (target.GetConnectionCount () == 3);
+
+	ASSERT (FindNodesByName (target, L"1").size () == 1);
+	ASSERT (FindNodesByName (target, L"2").size () == 1);
+	ASSERT (FindNodesByName (target, L"3").size () == 1);
+	ASSERT (FindNodesByName (target, L"4").size () == 1);
+	
+	NodeConstPtr targetNode4 = FindNodesByName (target, L"4")[0];
+	ValuePtr result = targetNode4->Evaluate (EmptyEvaluationEnv);
+	ASSERT (IntValue::Get (result) == 5);
+}
+
+
 TEST (MergeAllNodesTwiceTest)
 {
 	NodeManager source;
