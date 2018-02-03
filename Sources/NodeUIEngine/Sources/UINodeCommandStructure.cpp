@@ -7,26 +7,6 @@
 namespace NUIE
 {
 
-class DeleteNodeCommand : public NodeCommand
-{
-public:
-	DeleteNodeCommand (const std::wstring& name) :
-		NodeCommand (name, false)
-	{
-
-	}
-
-	virtual bool IsApplicableTo (const UINodePtr&) override
-	{
-		return true;
-	}
-
-	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
-	{
-		uiManager.DeleteNode (uiNode, uiEnvironment.GetEvaluationEnv ());
-	}
-};
-
 class DisconnectInputSlotCommand : public InputSlotCommand
 {
 public:
@@ -228,6 +208,37 @@ private:
 	NodeParameterList	relevantParameters;
 };
 
+class DeleteNodesCommand : public SingleCommand
+{
+public:
+	DeleteNodesCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes) :
+		SingleCommand (name, false),
+		uiManager (uiManager),
+		uiEnvironment (uiEnvironment),
+		relevantNodes (relevantNodes)
+	{
+
+	}
+
+	virtual ~DeleteNodesCommand ()
+	{
+
+	}
+
+	virtual void Do () override
+	{
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+			uiManager.DeleteNode (nodeId, uiEnvironment.GetEvaluationEnv ());
+			return true;
+		});
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	NodeCollection		relevantNodes;
+};
+
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
 {
 public:
@@ -380,7 +391,7 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 	NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
 	commandStructureBuilder.RegisterCommand (CommandPtr (new SetParametersCommand (L"Set Parameters", uiManager, uiEnvironment, uiNode, relevantNodes)));
-	commandStructureBuilder.RegisterNodeCommand (NodeCommandPtr (new DeleteNodeCommand (L"Delete Node")));
+	commandStructureBuilder.RegisterCommand (CommandPtr (new DeleteNodesCommand (L"Delete Nodes", uiManager, uiEnvironment, relevantNodes)));
 	uiNode->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();
 }
