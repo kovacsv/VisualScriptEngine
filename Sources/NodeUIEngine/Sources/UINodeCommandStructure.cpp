@@ -4,6 +4,8 @@
 #include "EventHandlers.hpp"
 #include "Debug.hpp"
 
+#include <limits>
+
 namespace NUIE
 {
 
@@ -288,10 +290,11 @@ private:
 class PasteNodesCommand : public SingleCommand
 {
 public:
-	PasteNodesCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
+	PasteNodesCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position) :
 		SingleCommand (name, false),
 		uiManager (uiManager),
-		uiEnvironment (uiEnvironment)
+		uiEnvironment (uiEnvironment),
+		position (position)
 	{
 
 	}
@@ -318,11 +321,28 @@ public:
 			}
 			return true;
 		});
+
+		Point centerPosition;
+		for (UINodePtr& uiNode : newNodes) {
+			Point nodePosition = uiNode->GetNodePosition ();
+			centerPosition = centerPosition + nodePosition;
+		}
+
+		NodeCollection newSelection;
+		centerPosition = centerPosition / (double) newNodes.size ();
+		Point nodeOffset = position - centerPosition;
+		for (UINodePtr& uiNode : newNodes) {
+			uiNode->SetNodePosition (uiNode->GetNodePosition () + nodeOffset);
+			newSelection.Insert (uiNode->GetId ());
+		}
+
+		uiManager.SetSelectedNodes (newSelection);
 	}
 
 private:
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
+	Point				position;
 };
 
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
@@ -472,12 +492,12 @@ NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodeP
 	return NodeCollection (uiNode->GetId ());
 }
 
-CommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& /*uiManager*/, NodeUIEnvironment& /*uiEnvironment*/)
+CommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position)
 {
 	CommandStructure commandStructure;
-	//if (uiManager.CanPaste ()) {
-	//	commandStructure.AddCommand (CommandPtr (new PasteNodesCommand (L"Paste Nodes", uiManager, uiEnvironment)));
-	//}
+	if (uiManager.CanPaste ()) {
+		commandStructure.AddCommand (CommandPtr (new PasteNodesCommand (L"Paste Nodes", uiManager, uiEnvironment, position)));
+	}
 	return commandStructure;
 }
 
@@ -486,7 +506,7 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 	NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
 	commandStructureBuilder.RegisterCommand (CommandPtr (new SetParametersCommand (L"Set Parameters", uiManager, uiEnvironment, uiNode, relevantNodes)));
-	//commandStructureBuilder.RegisterCommand (CommandPtr (new CopyNodesCommand (L"Copy Nodes", uiManager, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (CommandPtr (new CopyNodesCommand (L"Copy Nodes", uiManager, relevantNodes)));
 	commandStructureBuilder.RegisterCommand (CommandPtr (new DeleteNodesCommand (L"Delete Nodes", uiManager, uiEnvironment, relevantNodes)));
 	uiNode->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();

@@ -426,7 +426,8 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 			}
 		);
 		if (!found) {
-			CommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, env);
+			Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
+			CommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, env, modelPosition);
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {
