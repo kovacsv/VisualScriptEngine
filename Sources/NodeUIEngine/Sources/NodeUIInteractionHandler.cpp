@@ -426,7 +426,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 			}
 		);
 		if (!found) {
-			CommandStructure commands;
+			CommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, env);
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {

@@ -242,10 +242,9 @@ private:
 class CopyNodesCommand : public SingleCommand
 {
 public:
-	CopyNodesCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes) :
+	CopyNodesCommand (const std::wstring& name, NodeUIManager& uiManager, const NodeCollection& relevantNodes) :
 		SingleCommand (name, false),
 		uiManager (uiManager),
-		uiEnvironment (uiEnvironment),
 		relevantNodes (relevantNodes)
 	{
 
@@ -258,8 +257,65 @@ public:
 
 	virtual void Do () override
 	{
-		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-			uiManager.DeleteNode (nodeId, uiEnvironment.GetEvaluationEnv ());
+		class CopyFilter : public NE::NodeFilter
+		{
+		public:
+			CopyFilter (const NodeCollection& relevantNodes) :
+				relevantNodes (relevantNodes)
+			{
+			
+			}
+
+			virtual bool NeedToProcessNode (const NE::NodeId& nodeId) const override
+			{
+				return relevantNodes.Contains (nodeId);
+			}
+
+		private:
+			const NodeCollection& relevantNodes;
+		};
+
+		CopyFilter copyFilter (relevantNodes);
+		uiManager.Copy (copyFilter);
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NodeCollection		relevantNodes;
+};
+
+
+class PasteNodesCommand : public SingleCommand
+{
+public:
+	PasteNodesCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
+		SingleCommand (name, false),
+		uiManager (uiManager),
+		uiEnvironment (uiEnvironment)
+	{
+
+	}
+
+	virtual ~PasteNodesCommand ()
+	{
+
+	}
+
+	virtual void Do () override
+	{
+		std::unordered_set<NE::NodeId> oldNodes;
+		uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+			oldNodes.insert (uiNode->GetId ());
+			return true;
+		});
+
+		uiManager.Paste ();
+
+		std::vector<UINodePtr> newNodes;
+		uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) {
+			if (oldNodes.find (uiNode->GetId ()) == oldNodes.end ()) {
+				newNodes.push_back (uiNode);
+			}
 			return true;
 		});
 	}
@@ -267,7 +323,6 @@ public:
 private:
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
-	NodeCollection		relevantNodes;
 };
 
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
@@ -417,11 +472,21 @@ NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodeP
 	return NodeCollection (uiNode->GetId ());
 }
 
+CommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& /*uiManager*/, NodeUIEnvironment& /*uiEnvironment*/)
+{
+	CommandStructure commandStructure;
+	//if (uiManager.CanPaste ()) {
+	//	commandStructure.AddCommand (CommandPtr (new PasteNodesCommand (L"Paste Nodes", uiManager, uiEnvironment)));
+	//}
+	return commandStructure;
+}
+
 CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode)
 {
 	NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
 	commandStructureBuilder.RegisterCommand (CommandPtr (new SetParametersCommand (L"Set Parameters", uiManager, uiEnvironment, uiNode, relevantNodes)));
+	//commandStructureBuilder.RegisterCommand (CommandPtr (new CopyNodesCommand (L"Copy Nodes", uiManager, relevantNodes)));
 	commandStructureBuilder.RegisterCommand (CommandPtr (new DeleteNodesCommand (L"Delete Nodes", uiManager, uiEnvironment, relevantNodes)));
 	uiNode->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();
