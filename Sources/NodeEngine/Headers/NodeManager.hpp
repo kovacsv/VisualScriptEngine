@@ -20,6 +20,12 @@ public:
 	virtual bool NeedToProcessNode (const NodeId& nodeId) const = 0;
 };
 
+class AllNodesFilter : public NodeFilter
+{
+public:
+	virtual bool NeedToProcessNode (const NodeId& nodeId) const override;
+};
+
 class NodeManager : public Serializable
 {
 	SERIALIZABLE;

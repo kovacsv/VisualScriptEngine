@@ -10,6 +10,11 @@ namespace NE
 
 SerializationInfo NodeManager::serializationInfo (ObjectId ("{89708300-2783-452E-89A1-D842283C3B3F}"), ObjectVersion (1));
 
+bool AllNodesFilter::NeedToProcessNode (const NodeId&) const
+{
+	return true;
+}
+
 class NodeManagerNodeEvaluator : public NodeEvaluator
 {
 public:
@@ -85,15 +90,6 @@ private:
 	const NodeId&					newNodeId;
 	const NodeEvaluatorConstPtr&	newNodeEvaluator;
 	SlotRegistrationMode			slotRegMode;
-};
-
-class AllNodeFilter : public NodeFilter
-{
-public:
-	virtual bool NeedToProcessNode (const NodeId&) const override
-	{
-		return true;
-	}
 };
 
 NodeManager::NodeManager () :
@@ -437,8 +433,8 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	ObjectHeader header (outputStream, serializationInfo);
 	idGenerator.Write (outputStream);
 
-	AllNodeFilter allNodeFilter;
-	Stream::Status nodeStatus =  WriteNodes (outputStream, allNodeFilter);
+	AllNodesFilter allNodesFilter;
+	Stream::Status nodeStatus =  WriteNodes (outputStream, allNodesFilter);
 	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
 		return nodeStatus;
 	}

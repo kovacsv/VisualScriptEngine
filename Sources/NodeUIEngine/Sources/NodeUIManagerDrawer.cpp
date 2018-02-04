@@ -1,4 +1,5 @@
 #include "NodeUIManagerDrawer.hpp"
+#include "NodeDrawingExtension.hpp"
 #include "ContextDecorators.hpp"
 #include "SkinParams.hpp"
 

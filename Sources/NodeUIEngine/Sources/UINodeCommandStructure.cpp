@@ -239,6 +239,37 @@ private:
 	NodeCollection		relevantNodes;
 };
 
+class CopyNodesCommand : public SingleCommand
+{
+public:
+	CopyNodesCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes) :
+		SingleCommand (name, false),
+		uiManager (uiManager),
+		uiEnvironment (uiEnvironment),
+		relevantNodes (relevantNodes)
+	{
+
+	}
+
+	virtual ~CopyNodesCommand ()
+	{
+
+	}
+
+	virtual void Do () override
+	{
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+			uiManager.DeleteNode (nodeId, uiEnvironment.GetEvaluationEnv ());
+			return true;
+		});
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	NodeCollection		relevantNodes;
+};
+
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
 {
 public:
