@@ -73,7 +73,7 @@ public:
 	bool					Save (NE::OutputStream& outputStream) const;
 
 	bool					CanPaste () const;
-	bool					Copy (NE::NodeFilter& nodeFilter);
+	bool					Copy (const NodeCollection& nodeCollection);
 	bool					Paste ();
 
 private:

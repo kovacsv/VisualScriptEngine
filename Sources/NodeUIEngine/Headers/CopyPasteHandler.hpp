@@ -2,6 +2,7 @@
 #define COPYPASTEHANDLER_HPP
 
 #include "NodeManager.hpp"
+#include "NodeCollection.hpp"
 
 namespace NUIE
 {
@@ -12,7 +13,7 @@ public:
 	CopyPasteHandler ();
 
 	bool	CanPaste () const;
-	bool	CopyFrom (const NE::NodeManager& source, NE::NodeFilter& nodeFilter);
+	bool	CopyFrom (const NE::NodeManager& source, const NodeCollection& nodeCollection);
 	bool	PasteTo (NE::NodeManager& target);
 
 private:

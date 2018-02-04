@@ -259,26 +259,7 @@ public:
 
 	virtual void Do () override
 	{
-		class CopyFilter : public NE::NodeFilter
-		{
-		public:
-			CopyFilter (const NodeCollection& relevantNodes) :
-				relevantNodes (relevantNodes)
-			{
-			
-			}
-
-			virtual bool NeedToProcessNode (const NE::NodeId& nodeId) const override
-			{
-				return relevantNodes.Contains (nodeId);
-			}
-
-		private:
-			const NodeCollection& relevantNodes;
-		};
-
-		CopyFilter copyFilter (relevantNodes);
-		uiManager.Copy (copyFilter);
+		uiManager.Copy (relevantNodes);
 	}
 
 private:

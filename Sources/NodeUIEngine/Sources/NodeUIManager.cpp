@@ -332,9 +332,9 @@ bool NodeUIManager::CanPaste () const
 	return copyPasteHandler.CanPaste ();
 }
 
-bool NodeUIManager::Copy (NE::NodeFilter& nodeFilter)
+bool NodeUIManager::Copy (const NodeCollection& nodeCollection)
 {
-	return copyPasteHandler.CopyFrom (nodeManager, nodeFilter);
+	return copyPasteHandler.CopyFrom (nodeManager, nodeCollection);
 }
 
 bool NodeUIManager::Paste ()
