@@ -29,12 +29,5 @@ addons:
     build_command_prepend: "cd Make && cd GCC && make clean && cov-configure --comptype gcc --compiler gcc-5 --template"
     build_command: "make"
     branch_pattern: coverity_scan
-    
-before_script:
-  - cd Make
-  - cd GCC
-  - make clean
 
-script:
-  - make
-  - make test
+script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then "cd Make && cd GCC && make clean && make && make test" ; fi
