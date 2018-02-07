@@ -86,12 +86,12 @@ bool AppEventHandlers::OnParameterSettings (NUIE::NodeParameterAccessorPtr param
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	evaluationEnv (evaluationEnv),
-	drawingContext (),
+	drawingContext (new BitmapContextGdi ()),
 	skinParams (),
 	eventHandlers (nodeEditorControl)
 {
 	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
-	drawingContext.Init (hwnd);
+	drawingContext->Init (hwnd);
 }
 
 void NodeEditorUIEnvironment::OnPaint ()
@@ -99,18 +99,18 @@ void NodeEditorUIEnvironment::OnPaint ()
 	PAINTSTRUCT ps;
 	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
 	HDC hdc = BeginPaint (hwnd, &ps);
-	drawingContext.DrawToHDC (hdc);
+	drawingContext->DrawToHDC (hdc);
 	EndPaint (hwnd, &ps);
 }
 
 void NodeEditorUIEnvironment::OnResize (int width, int height)
 {
-	drawingContext.Resize (width, height);
+	drawingContext->Resize (width, height);
 }
 
 NUIE::DrawingContext& NodeEditorUIEnvironment::GetDrawingContext ()
 {
-	return drawingContext;
+	return *drawingContext;
 }
 
 NUIE::SkinParams& NodeEditorUIEnvironment::GetSkinParams ()

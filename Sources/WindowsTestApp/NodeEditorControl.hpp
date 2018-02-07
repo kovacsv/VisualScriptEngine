@@ -2,7 +2,6 @@
 #define NODEEDITORCONTROL_HPP
 
 #include "WinDrawingContext.hpp"
-#include "BitmapContextGdi.hpp"
 #include "BuiltInCommands.hpp"
 #include "WindowsAppUtilities.hpp"
 #include "ControlUtilities.hpp"
@@ -77,9 +76,9 @@ private:
 	NodeEditorControl*		nodeEditorControl;
 	NE::EvaluationEnv&		evaluationEnv;
 
-	BitmapContextGdi		drawingContext;
-	NUIE::SkinParams		skinParams;
-	AppEventHandlers		eventHandlers;
+	std::shared_ptr<WinDrawingContext>	drawingContext;
+	NUIE::SkinParams					skinParams;
+	AppEventHandlers					eventHandlers;
 };
 
 class NodeEditorControl :	public wxPanel
