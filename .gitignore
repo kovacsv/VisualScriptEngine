@@ -1,6 +1,8 @@
 Make/DevKit/VS_Debug/*
 Make/DevKit/VS_Release/*
 Make/GCC/Binaries/*
+Make/GCC/DebugBinaries/*
+Make/GCC/ReleaseBinaries/*
 Make/VS/*/Release/*
 Make/VS/*/*/Release/*
 Make/VS/*/Debug/*

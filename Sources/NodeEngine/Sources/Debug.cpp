@@ -1,7 +1,7 @@
 #include "Debug.hpp"
 #include <assert.h>
 
-#ifdef DEBUG
+#if defined(DEBUG) && defined(_MSC_VER)
 	#include <crtdbg.h>
 	#define _CRTDBG_MAP_ALLOC
 	#ifndef DBG_NEW
@@ -34,7 +34,7 @@ bool DbgVerify (bool condition)
 
 void EnableLeakDetection ()
 {
-#ifdef DEBUG
+#if defined(DEBUG) && defined(_MSC_VER)
 	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 }
