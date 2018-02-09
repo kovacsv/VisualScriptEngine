@@ -7,7 +7,6 @@
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"
 #include "BitmapContextGdi.hpp"
-#include "AppDrawingContext.hpp"
 
 #include "wx/wx.h"
 #include <memory>

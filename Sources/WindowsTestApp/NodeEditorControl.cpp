@@ -131,9 +131,6 @@ NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorC
 
 void NodeEditorUIEnvironment::OnPaint (wxPanel* panel, wxPaintEvent& evt)
 {
-	//wxPaintDC dc (panel);
-	//drawingContext.DrawToDC (&dc);
-
 	PAINTSTRUCT ps;
 	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
 	HDC hdc = BeginPaint (hwnd, &ps);
