@@ -3,7 +3,6 @@
 
 #include "WinDrawingContext.hpp"
 #include "BuiltInCommands.hpp"
-#include "WindowsAppUtilities.hpp"
 #include "ControlUtilities.hpp"
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"

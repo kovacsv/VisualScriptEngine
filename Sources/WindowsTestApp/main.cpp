@@ -1,6 +1,5 @@
 #include "BitmapContextGdi.hpp"
 #include "BitmapContextGdiplus.hpp"
-#include "WindowsAppUtilities.hpp"
 #include "NodeEditorControl.hpp"
 #include "DrawingControl.hpp"
 #include "Debug.hpp"

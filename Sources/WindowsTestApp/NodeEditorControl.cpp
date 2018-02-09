@@ -9,6 +9,43 @@
 
 #include "ParameterDialog.hpp"
 
+#include "wx/menu.h"
+
+static NUIE::CommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::CommandStructure& commands)
+{
+	if (commands.IsEmpty ()) {
+		return nullptr;
+	}
+
+	wxMenu popupMenu;
+	wxMenu* currentMenu = &popupMenu;
+
+	size_t currentCommandId = 1000;
+	std::unordered_map<size_t, NUIE::CommandPtr> commandTable;
+	std::function<void (const NUIE::CommandPtr&)> addCommand = [&] (const NUIE::CommandPtr& command) {
+		if (command->HasChildCommands ()) {
+			wxMenu* oldMenu = currentMenu;
+			currentMenu = new wxMenu ();
+			oldMenu->AppendSubMenu (currentMenu, command->GetName ());
+			command->EnumerateChildCommands (addCommand);
+			currentMenu = oldMenu;
+		} else {
+			currentMenu->Append (currentCommandId, command->GetName ());
+			commandTable.insert ({ currentCommandId, command });
+			currentCommandId += 1;
+		}
+	};
+	commands.EnumerateCommands (addCommand);
+
+	wxPoint mousePos ((int) position.GetX (), (int) position.GetY ());
+	int selectedItem = panel->GetPopupMenuSelectionFromUser (popupMenu, mousePos);
+	if (selectedItem == wxID_NONE) {
+		return nullptr;
+	}
+
+	return commandTable[selectedItem];
+}
+
 MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
 	NUIE::CreateNodeCommand (name, uiManager, uiEnvironment, position),
 	nodeType (nodeType)
@@ -45,7 +82,6 @@ AppEventHandlers::AppEventHandlers (wxPanel* panel) :
 
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands)
 {
-	// TODO: wx context menu
 	NUIE::CommandStructure actualCommands = commands;
 	NUIE::GroupCommandPtr createCommandGroup (new NUIE::GroupCommand (L"Add Node"));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
@@ -56,22 +92,22 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Circle, uiManager, uiEnvironment, L"Circle", position)));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Viewer", position)));
 	actualCommands.AddCommand (createCommandGroup);
-	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, actualCommands);
+	return SelectCommandFromContextMenu (panel, position, actualCommands);
 }
 
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands)
 {
-	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
+	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands)
 {
-	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
+	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
 NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::InputSlotPtr& inputSlot, const NUIE::CommandStructure& commands)
 {
-	return UI::SelectCommandFromContextMenu ((HWND) panel->GetHandle (), position, commands);
+	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
 bool AppEventHandlers::OnParameterSettings (NUIE::NodeParameterAccessorPtr paramAccessor)
