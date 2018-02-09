@@ -1,5 +1,4 @@
 #include "NodeEditorControl.hpp"
-#include "BitmapContextGdiplus.hpp"
 #include "Direct2DContext.hpp"
 
 #include "InputUINodes.hpp"
@@ -125,17 +124,12 @@ NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorC
 	skinParams (),
 	eventHandlers (nodeEditorControl)
 {
-	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
-	drawingContext.Init (hwnd);
+	drawingContext.Init (nodeEditorControl->GetHandle ());
 }
 
 void NodeEditorUIEnvironment::OnPaint (wxPanel* panel, wxPaintEvent& evt)
 {
-	PAINTSTRUCT ps;
-	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
-	HDC hdc = BeginPaint (hwnd, &ps);
-	drawingContext.DrawToHDC (hdc);
-	EndPaint (hwnd, &ps);
+	drawingContext.Draw (nodeEditorControl->GetHandle ());
 }
 
 void NodeEditorUIEnvironment::OnResize (int width, int height)

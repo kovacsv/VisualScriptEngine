@@ -1,7 +1,6 @@
 #ifndef NODEEDITORCONTROL_HPP
 #define NODEEDITORCONTROL_HPP
 
-#include "WinDrawingContext.hpp"
 #include "BuiltInCommands.hpp"
 #include "ControlUtilities.hpp"
 #include "NodeEditor.hpp"

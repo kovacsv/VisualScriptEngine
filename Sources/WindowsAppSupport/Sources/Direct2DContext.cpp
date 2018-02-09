@@ -83,7 +83,7 @@ static float GetPenThickness (const NUIE::Pen& pen)
 }
 
 Direct2DContext::Direct2DContext () :
-	WinDrawingContext (),
+	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
 	renderTarget (nullptr)
@@ -96,8 +96,10 @@ Direct2DContext::~Direct2DContext ()
 	SafeRelease (&renderTarget);
 }
 
-void Direct2DContext::Init (HWND hwnd)
+void Direct2DContext::Init (void* nativeHandle)
 {
+	HWND hwnd = (HWND) nativeHandle;
+
 	RECT clientRect;
 	GetClientRect (hwnd, &clientRect);
 	width = clientRect.right - clientRect.left;
@@ -113,7 +115,7 @@ void Direct2DContext::Init (HWND hwnd)
 	renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
 }
 
-void Direct2DContext::DrawToHDC (HDC hdc)
+void Direct2DContext::Draw (void*)
 {
 
 }

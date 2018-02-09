@@ -108,10 +108,7 @@ public:
 
 	void DrawContextToWindow ()
 	{
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint (hwnd, &ps);
-		bitmapContext.DrawToHDC (hdc);
-		EndPaint (hwnd, &ps);
+		bitmapContext.Draw (hwnd);
 	}
 
 private:

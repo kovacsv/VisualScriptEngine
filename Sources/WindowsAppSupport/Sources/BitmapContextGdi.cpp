@@ -36,7 +36,7 @@ private:
 };
 
 BitmapContextGdi::BitmapContextGdi () :
-	WinDrawingContext (),
+	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
 	memoryDC (NULL),
@@ -51,8 +51,10 @@ BitmapContextGdi::~BitmapContextGdi ()
 	DeleteDC (memoryDC);
 }
 
-void BitmapContextGdi::Init (HWND hwnd)
+void BitmapContextGdi::Init (void* nativeHandle)
 {
+	HWND hwnd = (HWND) nativeHandle;
+
 	RECT clientRect;
 	GetClientRect (hwnd, &clientRect);
 	width = clientRect.right - clientRect.left;
@@ -63,10 +65,15 @@ void BitmapContextGdi::Init (HWND hwnd)
 	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
 }
 
-void BitmapContextGdi::DrawToHDC (HDC hdc)
+void BitmapContextGdi::Draw (void* nativeHandle)
 {
+	HWND hwnd = (HWND) nativeHandle;
+
+	PAINTSTRUCT ps;
+	HDC hdc = BeginPaint (hwnd, &ps);
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
+	EndPaint (hwnd, &ps);
 }
 
 void BitmapContextGdi::Resize (int newWidth, int newHeight)

@@ -2,10 +2,9 @@
 #define BITMAPCONTEXTGDI_HPP
 
 #include <windows.h>
-#include <gdiplus.h>
 #include <unordered_map>
 
-#include "WinDrawingContext.hpp"
+#include "DrawingContext.hpp"
 #include "DrawingCacheKeys.hpp"
 #include "Drawing.hpp"
 
@@ -44,15 +43,15 @@ private:
 	std::unordered_map<KeyType, HANDLE> cache;
 };
 
-class BitmapContextGdi : public WinDrawingContext
+class BitmapContextGdi : public NUIE::NativeDrawingContext
 {
 public:
 	BitmapContextGdi ();
 	BitmapContextGdi (const BitmapContextGdi& rhs) = delete;
 	virtual ~BitmapContextGdi ();
 
-	virtual void				Init (HWND hwnd) override;
-	virtual void				DrawToHDC (HDC hdc) override;
+	virtual void				Init (void* nativeHandle) override;
+	virtual void				Draw (void* nativeHandle) override;
 
 	virtual void				Resize (int newWidth, int newHeight) override;
 

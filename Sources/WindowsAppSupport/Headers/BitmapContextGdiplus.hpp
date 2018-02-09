@@ -1,19 +1,20 @@
 #ifndef BITMAPCONTEXTGDIPLUS_HPP
 #define BITMAPCONTEXTGDIPLUS_HPP
 
+#include "DrawingContext.hpp"
+
 #include <windows.h>
 #include <gdiplus.h>
 #include <memory>
-#include "WinDrawingContext.hpp"
 
-class BitmapContextGdiplus : public WinDrawingContext
+class BitmapContextGdiplus : public NUIE::NativeDrawingContext
 {
 public:
 	BitmapContextGdiplus ();
 	virtual ~BitmapContextGdiplus ();
 
-	virtual void		Init (HWND hwnd) override;
-	virtual void		DrawToHDC (HDC hdc) override;
+	virtual void		Init (void* nativeHandle) override;
+	virtual void		Draw (void* nativeHandle) override;
 
 	virtual void		Resize (int newWidth, int newHeight) override;
 

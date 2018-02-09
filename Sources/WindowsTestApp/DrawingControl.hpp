@@ -1,8 +1,8 @@
 #ifndef DRAWINGCONTROL_HPP
 #define DRAWINGCONTROL_HPP
 
-#include "ResultImage.hpp"
 #include "BitmapContextGdiplus.hpp"
+#include "ResultImage.hpp"
 #include "ViewBox.hpp"
 #include "ControlUtilities.hpp"
 

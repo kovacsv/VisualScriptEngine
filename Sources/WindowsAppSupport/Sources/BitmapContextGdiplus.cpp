@@ -24,7 +24,7 @@ private:
 static GdiplusInitializer gdiplusInitializer;
 
 BitmapContextGdiplus::BitmapContextGdiplus () :
-	WinDrawingContext (),
+	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
 	bitmap (new Gdiplus::Bitmap (width, height)),
@@ -38,8 +38,10 @@ BitmapContextGdiplus::~BitmapContextGdiplus ()
 
 }
 
-void BitmapContextGdiplus::Init (HWND hwnd)
+void BitmapContextGdiplus::Init (void* nativeHandle)
 {
+	HWND hwnd = (HWND) nativeHandle;
+
 	RECT clientRect;
 	GetClientRect (hwnd, &clientRect);
 	width = clientRect.right - clientRect.left;
@@ -47,8 +49,13 @@ void BitmapContextGdiplus::Init (HWND hwnd)
 	InitGraphics ();
 }
 
-void BitmapContextGdiplus::DrawToHDC (HDC hdc)
+void BitmapContextGdiplus::Draw (void* nativeHandle)
 {
+	HWND hwnd = (HWND) nativeHandle;
+
+	PAINTSTRUCT ps;
+	HDC hdc = BeginPaint (hwnd, &ps);
+
 	HDC memoryDC = CreateCompatibleDC (hdc);
 	HBITMAP memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
 
@@ -61,6 +68,8 @@ void BitmapContextGdiplus::DrawToHDC (HDC hdc)
 
 	DeleteObject (memoryBitmap);
 	DeleteDC (memoryDC);
+
+	EndPaint (hwnd, &ps);
 }
 
 void BitmapContextGdiplus::Resize (int newWidth, int newHeight)

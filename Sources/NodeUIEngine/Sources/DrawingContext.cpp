@@ -79,16 +79,6 @@ Size DrawingContextDecorator::MeasureText (const Font& font, const std::wstring&
 	return decorated.MeasureText (font, text);
 }
 
-NullDrawingContext::NullDrawingContext ()
-{
-
-}
-
-NullDrawingContext::~NullDrawingContext ()
-{
-
-}
-
 void NullDrawingContext::Resize (int, int)
 {
 

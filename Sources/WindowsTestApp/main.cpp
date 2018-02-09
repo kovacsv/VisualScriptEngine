@@ -1,7 +1,5 @@
-#include "BitmapContextGdi.hpp"
-#include "BitmapContextGdiplus.hpp"
-#include "NodeEditorControl.hpp"
 #include "DrawingControl.hpp"
+#include "NodeEditorControl.hpp"
 #include "Debug.hpp"
 #include "ParameterDialog.hpp"
 #include "SingleValues.hpp"

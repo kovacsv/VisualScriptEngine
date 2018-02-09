@@ -65,9 +65,6 @@ protected:
 class NullDrawingContext : public DrawingContext
 {
 public:
-	NullDrawingContext ();
-	virtual ~NullDrawingContext ();
-
 	virtual void	Resize (int newWidth, int newHeight) override;
 
 	virtual double	GetWidth () const override;
@@ -87,6 +84,13 @@ public:
 
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) override;
+};
+
+class NativeDrawingContext : public DrawingContext
+{
+public:
+	virtual void	Init (void* nativeHandle) = 0;
+	virtual void	Draw (void* nativeHandle) = 0;
 };
 
 }

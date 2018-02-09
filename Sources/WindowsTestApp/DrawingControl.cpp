@@ -19,12 +19,7 @@ void DrawingControl::OnPaint (wxPaintEvent& evt)
 	NUIE::ViewBoxContextDecorator viewBoxDecorator (drawingContext, viewBox);
 	resultImage->Draw (viewBoxDecorator);
 	resultImage->Validate ();
-
-	PAINTSTRUCT ps;
-	HWND hwnd = (HWND) GetHandle ();
-	HDC hdc = BeginPaint (hwnd, &ps);
-	drawingContext.DrawToHDC (hdc);
-	EndPaint (hwnd, &ps);
+	drawingContext.Draw (GetHandle ());
 }
 
 void DrawingControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
