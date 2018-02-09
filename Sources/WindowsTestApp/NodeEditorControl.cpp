@@ -1,5 +1,4 @@
 #include "NodeEditorControl.hpp"
-#include "BitmapContextGdi.hpp"
 #include "BitmapContextGdiplus.hpp"
 #include "Direct2DContext.hpp"
 
@@ -122,31 +121,34 @@ bool AppEventHandlers::OnParameterSettings (NUIE::NodeParameterAccessorPtr param
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	evaluationEnv (evaluationEnv),
-	drawingContext (new BitmapContextGdi ()),
+	drawingContext (),
 	skinParams (),
 	eventHandlers (nodeEditorControl)
 {
 	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
-	drawingContext->Init (hwnd);
+	drawingContext.Init (hwnd);
 }
 
-void NodeEditorUIEnvironment::OnPaint ()
+void NodeEditorUIEnvironment::OnPaint (wxPanel* panel, wxPaintEvent& evt)
 {
+	//wxPaintDC dc (panel);
+	//drawingContext.DrawToDC (&dc);
+
 	PAINTSTRUCT ps;
 	HWND hwnd = (HWND) nodeEditorControl->GetHandle ();
 	HDC hdc = BeginPaint (hwnd, &ps);
-	drawingContext->DrawToHDC (hdc);
+	drawingContext.DrawToHDC (hdc);
 	EndPaint (hwnd, &ps);
 }
 
 void NodeEditorUIEnvironment::OnResize (int width, int height)
 {
-	drawingContext->Resize (width, height);
+	drawingContext.Resize (width, height);
 }
 
 NUIE::DrawingContext& NodeEditorUIEnvironment::GetDrawingContext ()
 {
-	return *drawingContext;
+	return drawingContext;
 }
 
 NUIE::SkinParams& NodeEditorUIEnvironment::GetSkinParams ()
@@ -219,7 +221,7 @@ NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateI
 void NodeEditorControl::OnPaint (wxPaintEvent& evt)
 {
 	nodeEditor.Draw ();
-	uiEnvironment.OnPaint ();
+	uiEnvironment.OnPaint (this, evt);
 }
 
 void NodeEditorControl::OnResize (wxSizeEvent& evt)

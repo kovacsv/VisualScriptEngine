@@ -6,6 +6,8 @@
 #include "ControlUtilities.hpp"
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"
+#include "BitmapContextGdi.hpp"
+#include "AppDrawingContext.hpp"
 
 #include "wx/wx.h"
 #include <memory>
@@ -60,7 +62,7 @@ class NodeEditorUIEnvironment : public NUIE::NodeUIEnvironment
 public:
 	NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv);
 
-	void							OnPaint ();
+	void							OnPaint (wxPanel* panel, wxPaintEvent& evt);
 	void							OnResize (int width, int height);
 
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
@@ -75,12 +77,12 @@ private:
 	NodeEditorControl*		nodeEditorControl;
 	NE::EvaluationEnv&		evaluationEnv;
 
-	std::shared_ptr<WinDrawingContext>	drawingContext;
-	NUIE::SkinParams					skinParams;
-	AppEventHandlers					eventHandlers;
+	BitmapContextGdi		drawingContext;
+	NUIE::SkinParams		skinParams;
+	AppEventHandlers		eventHandlers;
 };
 
-class NodeEditorControl :	public wxPanel
+class NodeEditorControl : public wxPanel
 {
 public:
 	NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv);
