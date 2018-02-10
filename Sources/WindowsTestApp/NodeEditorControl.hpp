@@ -5,8 +5,6 @@
 #include "ControlUtilities.hpp"
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"
-#include "BitmapContextGdi.hpp"
-
 #include "wx/wx.h"
 #include <memory>
 
@@ -72,12 +70,12 @@ public:
 	virtual void					OnSelectionChanged () override;
 
 private:
-	NodeEditorControl*		nodeEditorControl;
-	NE::EvaluationEnv&		evaluationEnv;
+	NodeEditorControl*								nodeEditorControl;
+	NE::EvaluationEnv&								evaluationEnv;
 
-	BitmapContextGdi		drawingContext;
-	NUIE::SkinParams		skinParams;
-	AppEventHandlers		eventHandlers;
+	std::shared_ptr<NUIE::NativeDrawingContext>		drawingContext;
+	NUIE::SkinParams								skinParams;
+	AppEventHandlers								eventHandlers;
 };
 
 class NodeEditorControl : public wxPanel

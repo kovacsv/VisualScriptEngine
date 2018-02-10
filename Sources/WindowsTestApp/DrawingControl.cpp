@@ -1,3 +1,4 @@
+#include "BitmapContextGdiplus.hpp"
 #include "DrawingControl.hpp"
 #include "ContextDecorators.hpp"
 
@@ -5,21 +6,21 @@ DrawingControl::DrawingControl (wxWindow *parent, const std::shared_ptr<ResultIm
 	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
 	captureHandler (this),
 	resultImage (resultImage),
-	drawingContext (),
+	drawingContext (new BitmapContextGdiplus ()),
 	viewBox (NUIE::Point (0.0, 0.0), 1.0),
 	lastMousePos (nullptr)
 {
 	HWND hwnd = GetHandle ();
-	drawingContext.Init (hwnd);
+	drawingContext->Init (hwnd);
 }
 
 void DrawingControl::OnPaint (wxPaintEvent& evt)
 {
-	drawingContext.FillRect (NUIE::Rect (-10, -10, drawingContext.GetWidth () + 20, drawingContext.GetHeight () + 20), NUIE::Color (255, 255, 255));
-	NUIE::ViewBoxContextDecorator viewBoxDecorator (drawingContext, viewBox);
+	drawingContext->FillRect (NUIE::Rect (-10, -10, drawingContext->GetWidth () + 20, drawingContext->GetHeight () + 20), NUIE::Color (255, 255, 255));
+	NUIE::ViewBoxContextDecorator viewBoxDecorator (*drawingContext, viewBox);
 	resultImage->Draw (viewBoxDecorator);
 	resultImage->Validate ();
-	drawingContext.Blit (GetHandle ());
+	drawingContext->Blit (GetHandle ());
 }
 
 void DrawingControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
@@ -30,7 +31,7 @@ void DrawingControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
 void DrawingControl::OnResize (wxSizeEvent& evt)
 {
 	wxSize size = evt.GetSize ();
-	drawingContext.Resize (size.GetWidth (), size.GetHeight ());
+	drawingContext->Resize (size.GetWidth (), size.GetHeight ());
 }
 
 void DrawingControl::OnMiddleButtonDown (wxMouseEvent& evt)

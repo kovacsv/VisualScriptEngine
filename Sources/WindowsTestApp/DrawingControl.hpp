@@ -1,7 +1,7 @@
 #ifndef DRAWINGCONTROL_HPP
 #define DRAWINGCONTROL_HPP
 
-#include "BitmapContextGdiplus.hpp"
+#include "DrawingContext.hpp"
 #include "ResultImage.hpp"
 #include "ViewBox.hpp"
 #include "ControlUtilities.hpp"
@@ -30,9 +30,9 @@ private:
 	MouseCaptureHandler					captureHandler;
 	std::shared_ptr<ResultImage>		resultImage;
 
-	BitmapContextGdiplus				drawingContext;
-	NUIE::ViewBox						viewBox;
-	std::unique_ptr<NUIE::Point>		lastMousePos;
+	std::shared_ptr<NUIE::NativeDrawingContext>		drawingContext;
+	NUIE::ViewBox									viewBox;
+	std::unique_ptr<NUIE::Point>					lastMousePos;
 
 	DECLARE_EVENT_TABLE ()
 };
