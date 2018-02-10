@@ -13,9 +13,6 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\BitmapContextGdiplus.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtilities.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Direct2DContext.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -28,9 +25,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdiplus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Direct2DContext.cpp">

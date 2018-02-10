@@ -128,14 +128,12 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\BitmapContextGdiplus.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Direct2DContext.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\DrawingCacheKeys.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtilities.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdi.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdiplus.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Direct2DContext.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\DrawingCacheKeys.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtilities.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
