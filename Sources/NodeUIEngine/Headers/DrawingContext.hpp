@@ -90,7 +90,7 @@ class NativeDrawingContext : public DrawingContext
 {
 public:
 	virtual void	Init (void* nativeHandle) = 0;
-	virtual void	Draw (void* nativeHandle) = 0;
+	virtual void	Blit (void* nativeHandle) = 0;
 };
 
 }

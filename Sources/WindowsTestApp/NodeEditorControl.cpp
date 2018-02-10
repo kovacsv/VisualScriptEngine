@@ -129,7 +129,7 @@ NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorC
 
 void NodeEditorUIEnvironment::OnPaint (wxPanel* panel, wxPaintEvent& evt)
 {
-	drawingContext.Draw (nodeEditorControl->GetHandle ());
+	drawingContext.Blit (nodeEditorControl->GetHandle ());
 }
 
 void NodeEditorUIEnvironment::OnResize (int width, int height)

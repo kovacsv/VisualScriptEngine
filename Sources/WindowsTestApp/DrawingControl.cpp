@@ -19,7 +19,7 @@ void DrawingControl::OnPaint (wxPaintEvent& evt)
 	NUIE::ViewBoxContextDecorator viewBoxDecorator (drawingContext, viewBox);
 	resultImage->Draw (viewBoxDecorator);
 	resultImage->Validate ();
-	drawingContext.Draw (GetHandle ());
+	drawingContext.Blit (GetHandle ());
 }
 
 void DrawingControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)

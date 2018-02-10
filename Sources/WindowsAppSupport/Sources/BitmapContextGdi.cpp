@@ -65,7 +65,7 @@ void BitmapContextGdi::Init (void* nativeHandle)
 	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
 }
 
-void BitmapContextGdi::Draw (void* nativeHandle)
+void BitmapContextGdi::Blit (void* nativeHandle)
 {
 	HWND hwnd = (HWND) nativeHandle;
 

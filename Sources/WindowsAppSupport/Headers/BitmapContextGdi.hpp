@@ -51,7 +51,7 @@ public:
 	virtual ~BitmapContextGdi ();
 
 	virtual void				Init (void* nativeHandle) override;
-	virtual void				Draw (void* nativeHandle) override;
+	virtual void				Blit (void* nativeHandle) override;
 
 	virtual void				Resize (int newWidth, int newHeight) override;
 

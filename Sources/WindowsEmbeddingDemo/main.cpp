@@ -108,7 +108,7 @@ public:
 
 	void DrawContextToWindow ()
 	{
-		bitmapContext.Draw (hwnd);
+		bitmapContext.Blit (hwnd);
 	}
 
 private:
