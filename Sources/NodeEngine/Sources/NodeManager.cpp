@@ -352,26 +352,6 @@ void NodeManager::EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputS
 	connectionManager.EnumerateConnectedOutputSlots (inputSlot, processor);
 }
 
-void NodeManager::EnumerateConnectedOutputSlots (const NodeConstPtr& node, const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
-{
-	node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
-		EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
-			processor (outputSlot, inputSlot);
-		});
-		return true;
-	});
-}
-
-void NodeManager::EnumerateConnectedInputSlots (const NodeConstPtr& node, const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
-{
-	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
-		EnumerateConnectedInputSlots (outputSlot, [&] (const InputSlotConstPtr& inputSlot) {
-			processor (outputSlot, inputSlot);
-		});
-		return true;
-	});
-}
-
 void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 {
 	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
