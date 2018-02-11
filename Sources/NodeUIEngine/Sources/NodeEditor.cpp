@@ -1,6 +1,5 @@
 #include "NodeEditor.hpp"
 #include "MemoryStream.hpp"
-#include "SingleValues.hpp" // TODO: Remove this
 
 #include <fstream>
 #include <locale>
