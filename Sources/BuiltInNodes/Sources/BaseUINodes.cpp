@@ -8,7 +8,7 @@
 namespace NUIE
 {
 
-NE::SerializationInfo NormalUINode::serializationInfo (NE::ObjectId ("{163B3E73-9ACF-40AB-994D-EDD0B1614309}"), NE::ObjectVersion (1));
+NE::SerializationInfo HeaderWithSlotsUINode::serializationInfo (NE::ObjectId ("{163B3E73-9ACF-40AB-994D-EDD0B1614309}"), NE::ObjectVersion (1));
 NE::SerializationInfo CalculatedUINode::serializationInfo (NE::ObjectId ("{C5B07FFF-5F75-4A61-B40A-AA89F6B8A2E7}"), NE::ObjectVersion (1));
 NE::SerializationInfo CombinedValueUINode::serializationInfo (NE::ObjectId ("{737B3D06-CB61-45BA-AB9E-7D7DF9C16B25}"), NE::ObjectVersion (1));
 
@@ -71,38 +71,38 @@ private:
 	NE::ValueCombinationMode combinationMode;
 };
 
-NormalUINode::NormalUINode () :
+HeaderWithSlotsUINode::HeaderWithSlotsUINode () :
 	UINode ()
 {
 
 }
 
-NormalUINode::NormalUINode (const std::wstring& name, const Point& position) :
+HeaderWithSlotsUINode::HeaderWithSlotsUINode (const std::wstring& name, const Point& position) :
 	UINode (name, position)
 {
 
 }
 
-NormalUINode::~NormalUINode ()
+HeaderWithSlotsUINode::~HeaderWithSlotsUINode ()
 {
 
 }
 
-NE::Stream::Status NormalUINode::Read (NE::InputStream& inputStream)
+NE::Stream::Status HeaderWithSlotsUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	UINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status NormalUINode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status HeaderWithSlotsUINode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
-void NormalUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+void HeaderWithSlotsUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
 {
 	DBGASSERT (ValueIsCalculated ());
 	NodeUIStatusHeaderPanel::NodeStatus nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasNoValue;
@@ -116,20 +116,19 @@ void NormalUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDr
 	drawer.Draw (env, drawingImage);
 }
 
-void NormalUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
+void HeaderWithSlotsUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
 {
 
 }
 
 CalculatedUINode::CalculatedUINode () :
-	NormalUINode (),
-	nodeEnabled (false)
+	CalculatedUINode (L"", Point ())
 {
 
 }
 
 CalculatedUINode::CalculatedUINode (const std::wstring& name, const Point& position) :
-	NormalUINode (name, position),
+	HeaderWithSlotsUINode (name, position),
 	nodeEnabled (true)
 {
 
@@ -159,7 +158,7 @@ void CalculatedUINode::SetEnableState (bool isEnabled, NE::EvaluationEnv& env)
 
 void CalculatedUINode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
 {
-	NormalUINode::RegisterCommands (commandRegistrator);
+	HeaderWithSlotsUINode::RegisterCommands (commandRegistrator);
 
 	NodeGroupCommandPtr setNodeStatusGroup (new NodeGroupCommand<NodeCommandPtr> (L"Set Node Status"));
 	setNodeStatusGroup->AddChildCommand (NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", nodeEnabled, true)));
@@ -203,7 +202,7 @@ void CalculatedUINode::CalculationPostProcess (const NE::ValuePtr& value, NE::Ev
 NE::Stream::Status CalculatedUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NormalUINode::Read (inputStream);
+	HeaderWithSlotsUINode::Read (inputStream);
 	inputStream.Read (nodeEnabled);
 	return inputStream.GetStatus ();
 }
@@ -211,7 +210,7 @@ NE::Stream::Status CalculatedUINode::Read (NE::InputStream& inputStream)
 NE::Stream::Status CalculatedUINode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NormalUINode::Write (outputStream);
+	HeaderWithSlotsUINode::Write (outputStream);
 	outputStream.Write (nodeEnabled);
 	return outputStream.GetStatus ();
 }

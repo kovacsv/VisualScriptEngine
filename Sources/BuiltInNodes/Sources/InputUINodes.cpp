@@ -224,13 +224,13 @@ void IntegerUpDownUINode::SetStep (int newStep)
 }
 
 IntegerRangeNode::IntegerRangeNode () :
-	NormalUINode ()
+	IntegerRangeNode (L"", Point ())
 {
 
 }
 
 IntegerRangeNode::IntegerRangeNode (const std::wstring& name, const Point& position) :
-	NormalUINode (name, position)
+	HeaderWithSlotsUINode (name, position)
 {
 
 }
@@ -314,14 +314,14 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 NE::Stream::Status IntegerRangeNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NormalUINode::Read (inputStream);
+	HeaderWithSlotsUINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status IntegerRangeNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NormalUINode::Write (outputStream);
+	HeaderWithSlotsUINode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

@@ -10,15 +10,14 @@
 namespace NUIE
 {
 
-// TODO: better name
-class NormalUINode : public UINode
+class HeaderWithSlotsUINode : public UINode
 {
 	SERIALIZABLE;
 
 public:
-	NormalUINode ();
-	NormalUINode (const std::wstring& name, const Point& position);
-	virtual ~NormalUINode ();
+	HeaderWithSlotsUINode ();
+	HeaderWithSlotsUINode (const std::wstring& name, const Point& position);
+	virtual ~HeaderWithSlotsUINode ();
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
@@ -28,7 +27,7 @@ private:
 	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 };
 
-class CalculatedUINode : public NormalUINode
+class CalculatedUINode : public HeaderWithSlotsUINode
 {
 	SERIALIZABLE;
 

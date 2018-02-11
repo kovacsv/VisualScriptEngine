@@ -61,7 +61,7 @@ private:
 	int step;
 };
 
-class IntegerRangeNode : public NormalUINode
+class IntegerRangeNode : public HeaderWithSlotsUINode
 {
 	DYNAMIC_SERIALIZABLE (IntegerRangeNode);
 
