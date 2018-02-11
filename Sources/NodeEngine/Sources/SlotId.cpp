@@ -27,6 +27,16 @@ size_t SlotId::GenerateHashValue () const
 	return std::hash<std::string> {} (id);
 }
 
+bool SlotId::operator< (const SlotId& rhs) const
+{
+	return id < rhs.id;
+}
+
+bool SlotId::operator> (const SlotId& rhs) const
+{
+	return id > rhs.id;
+}
+
 bool SlotId::operator== (const SlotId& rhs) const
 {
 	return id == rhs.id;

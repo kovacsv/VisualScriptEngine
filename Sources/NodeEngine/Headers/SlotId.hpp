@@ -19,6 +19,8 @@ public:
 
 	size_t					GenerateHashValue () const;
 
+	bool					operator< (const SlotId& rhs) const;
+	bool					operator> (const SlotId& rhs) const;
 	bool					operator== (const SlotId& rhs) const;
 	bool					operator!= (const SlotId& rhs) const;
 

@@ -92,6 +92,34 @@ private:
 	SlotRegistrationMode			slotRegMode;
 };
 
+class ConnectionInfo
+{
+public:
+	ConnectionInfo (const NodeId& outputNodeId, const SlotId& outputSlotId, const NodeId& inputNodeId, const SlotId& inputSlotId) :
+		outputNodeId (outputNodeId),
+		outputSlotId (outputSlotId),
+		inputNodeId (inputNodeId),
+		inputSlotId (inputSlotId)
+	{
+	
+	}
+
+	bool operator< (const ConnectionInfo& rhs) const
+	{
+		return outputNodeId < rhs.outputNodeId && inputNodeId < rhs.inputNodeId && outputSlotId < rhs.outputSlotId && inputSlotId < rhs.inputSlotId;
+	}
+
+	bool operator> (const ConnectionInfo& rhs) const
+	{
+		return outputNodeId > rhs.outputNodeId && inputNodeId > rhs.inputNodeId && outputSlotId > rhs.outputSlotId && inputSlotId > rhs.inputSlotId;
+	}
+
+	NodeId	outputNodeId;
+	SlotId	outputSlotId;
+	NodeId	inputNodeId;
+	SlotId	inputSlotId;
+};
+
 NodeManager::NodeManager () :
 	idGenerator (),
 	nodeIdToNodeTable (),
@@ -527,14 +555,12 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolic
 Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFilter& nodeFilter) const
 {
 	std::vector<NodeConstPtr> nodesToWrite;
-
 	EnumerateNodes ([&] (const NodeConstPtr& node) {
 		if (nodeFilter.NeedToProcessNode (node->GetId ())) {
 			nodesToWrite.push_back (node);
 		}
 		return true;
 	});
-
 	std::sort (nodesToWrite.begin (), nodesToWrite.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) -> bool {
 		return a->GetId () < b->GetId ();
 	});
@@ -544,26 +570,23 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFi
 		WriteDynamicObject (outputStream, node.get ());
 	};
 
-	size_t connectionCount = 0;
-	for (const NodeConstPtr& node : nodesToWrite) {
-		EnumerateConnectedInputSlots (node, [&] (const OutputSlotConstPtr&, const InputSlotConstPtr& inputSlot) {
-			if (nodeFilter.NeedToProcessNode (inputSlot->GetOwnerNodeId ())) {
-				connectionCount++;
-			}
-		});
-	};
+	std::vector<ConnectionInfo> connectionsToWrite;
+	EnumerateConnections ([&] (const NodeId& outputNodeId, const SlotId& outputSlotId, const NodeId& inputNodeId, const SlotId& inputSlotId) {
+		if (nodeFilter.NeedToProcessNode (outputNodeId) && nodeFilter.NeedToProcessNode (inputNodeId)) {
+			connectionsToWrite.push_back ({ outputNodeId, outputSlotId, inputNodeId, inputSlotId });
+		}
+	});
+	std::sort (connectionsToWrite.begin (), connectionsToWrite.end (), [&] (const ConnectionInfo& a, const ConnectionInfo& b) -> bool {
+		return a < b;
+	});
 
-	outputStream.Write (connectionCount);
-	for (const NodeConstPtr& node : nodesToWrite) {
-		EnumerateConnectedInputSlots (node, [&] (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) {
-			if (nodeFilter.NeedToProcessNode (inputSlot->GetOwnerNodeId ())) {
-				node->GetId ().Write (outputStream);
-				outputSlot->GetId ().Write (outputStream);
-				inputSlot->GetOwnerNodeId ().Write (outputStream);
-				inputSlot->GetId ().Write (outputStream);
-			}
-		});
-	};
+	outputStream.Write (connectionsToWrite.size ());
+	for (const ConnectionInfo& connection : connectionsToWrite) {
+		connection.outputNodeId.Write (outputStream);
+		connection.outputSlotId.Write (outputStream);
+		connection.inputNodeId.Write (outputStream);
+		connection.inputSlotId.Write (outputStream);
+	}
 
 	return outputStream.GetStatus ();
 }
