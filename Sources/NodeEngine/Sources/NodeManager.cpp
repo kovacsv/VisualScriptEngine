@@ -324,6 +324,26 @@ void NodeManager::EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputS
 	connectionManager.EnumerateConnectedOutputSlots (inputSlot, processor);
 }
 
+void NodeManager::EnumerateConnectedOutputSlots (const NodeConstPtr& node, const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
+{
+	node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
+		EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
+			processor (outputSlot, inputSlot);
+		});
+		return true;
+	});
+}
+
+void NodeManager::EnumerateConnectedInputSlots (const NodeConstPtr& node, const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
+{
+	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
+		EnumerateConnectedInputSlots (outputSlot, [&] (const InputSlotConstPtr& inputSlot) {
+			processor (outputSlot, inputSlot);
+		});
+		return true;
+	});
+}
+
 void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 {
 	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
@@ -506,38 +526,44 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolic
 
 Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFilter& nodeFilter) const
 {
-	size_t nodeCount = 0;
+	std::vector<NodeConstPtr> nodesToWrite;
+
 	EnumerateNodes ([&] (const NodeConstPtr& node) {
 		if (nodeFilter.NeedToProcessNode (node->GetId ())) {
-			nodeCount++;
+			nodesToWrite.push_back (node);
 		}
 		return true;
 	});
 
-	outputStream.Write (nodeCount);
-	EnumerateNodes ([&] (const NodeConstPtr& node) {
-		if (nodeFilter.NeedToProcessNode (node->GetId ())) {
-			WriteDynamicObject (outputStream, node.get ());
-		}
-		return true;
+	std::sort (nodesToWrite.begin (), nodesToWrite.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) -> bool {
+		return a->GetId () < b->GetId ();
 	});
+
+	outputStream.Write (nodesToWrite.size ());
+	for (const NodeConstPtr& node : nodesToWrite) {
+		WriteDynamicObject (outputStream, node.get ());
+	};
 
 	size_t connectionCount = 0;
-	EnumerateConnections ([&] (const NodeId& outputNodeId, const SlotId&, const NodeId& inputNodeId, const SlotId&) {
-		if (nodeFilter.NeedToProcessNode (outputNodeId) && nodeFilter.NeedToProcessNode (inputNodeId)) {
-			connectionCount++;
-		}
-	});
+	for (const NodeConstPtr& node : nodesToWrite) {
+		EnumerateConnectedInputSlots (node, [&] (const OutputSlotConstPtr&, const InputSlotConstPtr& inputSlot) {
+			if (nodeFilter.NeedToProcessNode (inputSlot->GetOwnerNodeId ())) {
+				connectionCount++;
+			}
+		});
+	};
 
 	outputStream.Write (connectionCount);
-	EnumerateConnections ([&] (const NodeId& outputNodeId, const SlotId& outputSlotId, const NodeId& inputNodeId, const SlotId& inputSlotId) {
-		if (nodeFilter.NeedToProcessNode (outputNodeId) && nodeFilter.NeedToProcessNode (inputNodeId)) {
-			outputNodeId.Write (outputStream);
-			outputSlotId.Write (outputStream);
-			inputNodeId.Write (outputStream);
-			inputSlotId.Write (outputStream);
-		}
-	});
+	for (const NodeConstPtr& node : nodesToWrite) {
+		EnumerateConnectedInputSlots (node, [&] (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) {
+			if (nodeFilter.NeedToProcessNode (inputSlot->GetOwnerNodeId ())) {
+				node->GetId ().Write (outputStream);
+				outputSlot->GetId ().Write (outputStream);
+				inputSlot->GetOwnerNodeId ().Write (outputStream);
+				inputSlot->GetId ().Write (outputStream);
+			}
+		});
+	};
 
 	return outputStream.GetStatus ();
 }

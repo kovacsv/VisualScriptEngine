@@ -66,6 +66,8 @@ public:
 	bool						HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const;
 	void						EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const;
 	void						EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const;
+	void						EnumerateConnectedInputSlots (const NodeConstPtr& node, const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const;
+	void						EnumerateConnectedOutputSlots (const NodeConstPtr& node, const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const;
 
 	void						EvaluateAllNodes (EvaluationEnv& env) const;
 	void						InvalidateNodeValue (const NodeId& nodeId) const;
