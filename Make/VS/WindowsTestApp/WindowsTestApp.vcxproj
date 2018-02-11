@@ -149,6 +149,7 @@
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\ResultImage.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\TestAppValues.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\wxDrawingContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.hpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\ResultImage.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\TestAppValues.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\wxDrawingContext.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
