@@ -22,15 +22,21 @@ public:
 		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new IntegerRangeNode (L"Range", NUIE::Point (300, 400))), uiEnvironment.GetEvaluationEnv ());
 		viewerUINode1 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerUINode (L"Viewer", NUIE::Point (600, 100), 5)), uiEnvironment.GetEvaluationEnv ());
 		viewerUINode2 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerUINode (L"Viewer 2", NUIE::Point (600, 400), 5)), uiEnvironment.GetEvaluationEnv ());
-		nodeEditor.Update ();
 
+		nodeEditor.Update ();
+		RecalcPositions ();
+	}
+
+	void RecalcPositions ()
+	{
 		pointInBackground = Point (5.0, 5.0);
 		integerInputRect = integerInputNode->GetNodeRect (uiEnvironment);
 		rangeInputRect = rangeInputNode->GetNodeRect (uiEnvironment);
 		viewer1InputRect = viewerUINode1->GetNodeRect (uiEnvironment);
 		viewer2InputRect = viewerUINode2->GetNodeRect (uiEnvironment);
 
-		rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);
+		integerInputHeaderPoint = integerInputRect.GetTopCenter () + Point (5.0, 5.0);
+		rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);	
 	}
 
 	UINodePtr	integerInputNode;
@@ -44,6 +50,7 @@ public:
 	Rect		viewer1InputRect;
 	Rect		viewer2InputRect;
 
+	Point		integerInputHeaderPoint;
 	Point		rangeInputHeaderPoint;
 };
 
@@ -54,11 +61,14 @@ public:
 		SimpleNodeEditorTestEnv ()
 	{
 		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
+
 		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("start")));
 		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("step")));
 		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode1->GetUIInputSlot (SlotId ("in")));
 		uiManager.ConnectOutputSlotToInputSlot (rangeInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode2->GetUIInputSlot (SlotId ("in")));
+
 		nodeEditor.Update ();
+		RecalcPositions ();
 	}
 };
 
@@ -271,6 +281,21 @@ TEST (DeleteNodeTest)
 	env.SetNextCommandName (L"Delete Nodes");
 	env.RightClick (env.rangeInputHeaderPoint);
 	ASSERT (env.CheckReference ("04_Delete_RangeDeleted.svg"));
+}
+
+TEST (CopyPasteTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env;
+	ASSERT (env.CheckReference ("05_CopyPaste_Basic.svg"));
+	env.Click (env.rangeInputHeaderPoint);
+	env.CtrlClick (env.integerInputHeaderPoint);
+	ASSERT (env.CheckReference ("05_CopyPaste_TwoNodesSelected.svg"));
+	env.SetNextCommandName (L"Copy Nodes");
+	env.RightClick (env.integerInputHeaderPoint);
+	Point targetPoint = env.integerInputHeaderPoint + Point (120, 20);
+	env.SetNextCommandName (L"Paste Nodes");
+	env.RightClick (targetPoint);
+	ASSERT (env.CheckReference ("05_CopyPaste_TwoNodesPasted.svg"));
 }
 
 }
