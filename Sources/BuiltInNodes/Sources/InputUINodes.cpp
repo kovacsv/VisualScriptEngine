@@ -12,7 +12,6 @@ namespace NUIE
 
 NE::SerializationInfo			NumericUpDownUINode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1));
 NE::DynamicSerializationInfo	IntegerUpDownUINode::serializationInfo (NE::ObjectId ("{53207AEE-8865-4DC0-AA38-B9988E39EDFD}"), NE::ObjectVersion (1), IntegerUpDownUINode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	DoubleUpDownUINode::serializationInfo (NE::ObjectId ("{84797692-0189-4DC6-9731-353B1251DB46}"), NE::ObjectVersion (1), DoubleUpDownUINode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	IntegerRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), IntegerRangeNode::CreateSerializableInstance);
 
 NumericUpDownUINode::NumericUpDownUINode () :
@@ -222,62 +221,6 @@ int IntegerUpDownUINode::GetStep () const
 void IntegerUpDownUINode::SetStep (int newStep)
 {
 	step = newStep;
-}
-
-DoubleUpDownUINode::DoubleUpDownUINode () :
-	NumericUpDownUINode (),
-	val (0),
-	step (0)
-{
-
-}
-
-DoubleUpDownUINode::DoubleUpDownUINode (const std::wstring& name, const Point& position, double val, double step) :
-	NumericUpDownUINode (name, position),
-	val (val),
-	step (step)
-{
-
-}
-
-void DoubleUpDownUINode::RegisterSlots ()
-{
-	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"Output")));
-}
-
-NE::ValuePtr DoubleUpDownUINode::Calculate (NE::EvaluationEnv&) const
-{
-	return NE::ValuePtr (new NE::DoubleValue (val));
-}
-
-void DoubleUpDownUINode::Increase ()
-{
-	val = val + step;
-	InvalidateValue ();
-}
-
-void DoubleUpDownUINode::Decrease ()
-{
-	val = val - step;
-	InvalidateValue ();
-}
-
-NE::Stream::Status DoubleUpDownUINode::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	NumericUpDownUINode::Read (inputStream);
-	inputStream.Read (val);
-	inputStream.Read (step);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status DoubleUpDownUINode::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	NumericUpDownUINode::Write (outputStream);
-	outputStream.Write (val);
-	outputStream.Write (step);
-	return outputStream.GetStatus ();
 }
 
 IntegerRangeNode::IntegerRangeNode () :
