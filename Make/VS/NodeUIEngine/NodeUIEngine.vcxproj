@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\CopyPasteHandler.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeCollection.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\SvgDrawingContext.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeCommonParameters.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\Drawing.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\DrawingContext.hpp" />
@@ -152,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\CopyPasteHandler.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeCollection.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\SvgDrawingContext.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeParameterAccessor.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\Drawing.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\DrawingContext.cpp" />
