@@ -267,34 +267,70 @@ Size SVGDrawingContext::MeasureText (const Font& font, const std::wstring& text)
 	return Size (text.length () * font.GetSize (), font.GetSize () * 1.5);
 }
 
-TestEventHandlers::TestEventHandlers ()
+TestEventHandlers::TestEventHandlers () :
+	commandToSelect ()
 {
 	
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const CommandStructure&)
+CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const CommandStructure& commands)
 {
-	return nullptr;
+	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const CommandStructure&)
+CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const CommandStructure& commands)
 {
-	return nullptr;
+	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::OutputSlotPtr&, const CommandStructure&)
+CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::OutputSlotPtr&, const CommandStructure& commands)
 {
-	return nullptr;
+	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::InputSlotPtr&, const CommandStructure&)
+CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::InputSlotPtr&, const CommandStructure& commands)
 {
-	return nullptr;
+	return SelectCommandByName (commands);
 }
 
 bool TestEventHandlers::OnParameterSettings (NodeParameterAccessorPtr)
 {
+	DBGBREAK ();
 	return false;
+}
+
+void TestEventHandlers::SetNextCommandName (const std::wstring& nextCommandName)
+{
+	DBGASSERT (commandToSelect.empty ());
+	commandToSelect = nextCommandName;
+}
+
+CommandPtr TestEventHandlers::SelectCommandByName (const CommandStructure& commands)
+{
+	DBGASSERT (!commandToSelect.empty ());
+	CommandPtr selectedCommand = nullptr;
+	commands.EnumerateCommands ([&] (const CommandPtr& command) {
+		if (selectedCommand == nullptr) {
+			selectedCommand = SelectCommandByName (command);
+		}
+	});
+	DBGASSERT (selectedCommand != nullptr);
+	commandToSelect.clear ();
+	return selectedCommand;
+}
+
+CommandPtr TestEventHandlers::SelectCommandByName (const CommandPtr& command)
+{
+	if (command->HasChildCommands ()) {
+		command->EnumerateChildCommands ([&] (const CommandPtr& childCommand) {
+			SelectCommandByName (childCommand);
+		});
+	} else {
+		if (command->GetName () == commandToSelect) {
+			return command;
+		}
+	}
+	return nullptr;
 }
 
 TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor) :
@@ -341,6 +377,11 @@ EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
 void TestNodeUIEnvironment::OnSelectionChanged ()
 {
 	
+}
+
+void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
+{
+	eventHandlers.SetNextCommandName (nextCommandName);
 }
 
 const SVGDrawingContext& TestNodeUIEnvironment::GetSVGDrawingContext () const
@@ -398,6 +439,12 @@ void NodeEditorTestEnv::CtrlClick (const Point& point)
 	nodeEditor.OnMouseUp (KeySet ({ KeyCode::Control }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
 }
 
+void NodeEditorTestEnv::RightClick (const Point& point)
+{
+	nodeEditor.OnMouseDown (EmptyKeySet, MouseButton::Right, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseUp (EmptyKeySet, MouseButton::Right, (int) point.GetX (), (int) point.GetY ());
+}
+
 void NodeEditorTestEnv::Wheel (MouseWheelRotation rotation, const Point& point)
 {
 	nodeEditor.OnMouseWheel (EmptyKeySet, rotation, (int) point.GetX (), (int) point.GetY ());
@@ -411,4 +458,9 @@ void NodeEditorTestEnv::DragDrop (const Point& from, const Point& to, const std:
 		beforeMouseUp ();
 	}
 	nodeEditor.OnMouseUp (EmptyKeySet, MouseButton::Left, (int) to.GetX (), (int) to.GetY ());
+}
+
+void NodeEditorTestEnv::SetNextCommandName (const std::wstring& nextCommandName)
+{
+	uiEnvironment.SetNextCommandName (nextCommandName);
 }

@@ -29,6 +29,8 @@ public:
 		rangeInputRect = rangeInputNode->GetNodeRect (uiEnvironment);
 		viewer1InputRect = viewerUINode1->GetNodeRect (uiEnvironment);
 		viewer2InputRect = viewerUINode2->GetNodeRect (uiEnvironment);
+
+		rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);
 	}
 
 	UINodePtr	integerInputNode;
@@ -41,6 +43,23 @@ public:
 	Rect		rangeInputRect;
 	Rect		viewer1InputRect;
 	Rect		viewer2InputRect;
+
+	Point		rangeInputHeaderPoint;
+};
+
+class SimpleNodeEditorTestEnvWithConnections : public SimpleNodeEditorTestEnv
+{
+public:
+	SimpleNodeEditorTestEnvWithConnections () :
+		SimpleNodeEditorTestEnv ()
+	{
+		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
+		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("start")));
+		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("step")));
+		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode1->GetUIInputSlot (SlotId ("in")));
+		uiManager.ConnectOutputSlotToInputSlot (rangeInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode2->GetUIInputSlot (SlotId ("in")));
+		nodeEditor.Update ();
+	}
 };
 
 TEST (SelectionTest)
@@ -127,9 +146,8 @@ TEST (SelectionTest)
 	}
 
 	{ // move the three nodes together
-		Point rangeInputHeaderPoint = env.rangeInputRect.GetTopCenter () + Point (5.0, 5.0);
-		Point targetPoint = rangeInputHeaderPoint + Point (50.0, 70.0);
-		env.DragDrop (rangeInputHeaderPoint, targetPoint);
+		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, 70.0);
+		env.DragDrop (env.rangeInputHeaderPoint, targetPoint);
 		ASSERT (env.CheckReference ("01_Selection_IntegerRangeAndViewer2Moved.svg"));
 	}
 }
@@ -244,6 +262,15 @@ TEST (PanAndZoomTest)
 		env.nodeEditor.OnMouseWheel (EmptyKeySet, MouseWheelRotation::Backward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
 	ASSERT (env.CheckReference ("03_PanAndZoom_ZoomedOut2.svg"));
+}
+
+TEST (DeleteNodeTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env;
+	ASSERT (env.CheckReference ("04_Delete_Basic.svg"));
+	env.SetNextCommandName (L"Delete Nodes");
+	env.RightClick (env.rangeInputHeaderPoint);
+	ASSERT (env.CheckReference ("04_Delete_RangeDeleted.svg"));
 }
 
 }

@@ -81,6 +81,14 @@ public:
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::OutputSlotPtr&, const CommandStructure&) override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::InputSlotPtr&, const CommandStructure&) override;
 	virtual bool		OnParameterSettings (NodeParameterAccessorPtr) override;
+
+	void				SetNextCommandName (const std::wstring& nextCommandName);
+
+private:
+	CommandPtr			SelectCommandByName (const CommandStructure& commands);
+	CommandPtr			SelectCommandByName (const CommandPtr& command);
+
+	std::wstring		commandToSelect;
 };
 
 class TestNodeUIEnvironment : public NodeUIEnvironment
@@ -96,6 +104,7 @@ public:
 	virtual EventHandlers&		GetEventHandlers () override;
 	virtual void				OnSelectionChanged () override;
 
+	void						SetNextCommandName (const std::wstring& nextCommandName);
 	const SVGDrawingContext&	GetSVGDrawingContext () const;
 
 private:
@@ -115,8 +124,10 @@ public:
 	bool	CheckReference (const std::string& referenceFileName);
 	void	Click (const Point& point);
 	void	CtrlClick (const Point& point);
+	void	RightClick (const Point& point);
 	void	Wheel (MouseWheelRotation rotation, const Point& point);
 	void	DragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
+	void	SetNextCommandName (const std::wstring& nextCommandName);
 
 	TestNodeUIEnvironment	uiEnvironment;
 	NodeEditor				nodeEditor;
