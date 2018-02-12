@@ -122,21 +122,16 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 
 		}
 
-		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<IntegerUpDownUINode>& uiNode) const override
 		{
-			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
-			return NE::ValuePtr (new NE::IntValue (upDownNode->GetValue ()));
+			return NE::ValuePtr (new NE::IntValue (uiNode->GetValue ()));
 		}
 
-		virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<IntegerUpDownUINode>& uiNode, const NE::ValuePtr& value) override
 		{
-			if (DBGERROR (!CanSetValue (uiNode, value))) {
-				return false;
-			}
-			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
-			upDownNode->SetValue (NE::IntValue::Get (value));
-			uiManager.InvalidateNodeValue (upDownNode);
-			uiManager.InvalidateNodeDrawing (upDownNode);
+			uiNode->SetValue (NE::IntValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
 		}
 	};
@@ -150,19 +145,14 @@ void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) 
 
 		}
 
-		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<IntegerUpDownUINode>& uiNode) const override
 		{
-			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
-			return NE::ValuePtr (new NE::IntValue (upDownNode->GetStep ()));
+			return NE::ValuePtr (new NE::IntValue (uiNode->GetStep ()));
 		}
 
-		virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<IntegerUpDownUINode>& uiNode, const NE::ValuePtr& value) override
 		{
-			if (DBGERROR (!CanSetValue (uiNode, value))) {
-				return false;
-			}
-			std::shared_ptr<IntegerUpDownUINode> upDownNode = NE::Node::Cast<IntegerUpDownUINode> (uiNode);
-			upDownNode->SetStep (NE::IntValue::Get (value));
+			uiNode->SetStep (NE::IntValue::Get (value));
 			return true;
 		}
 	};

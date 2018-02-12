@@ -23,6 +23,12 @@ public:
 
 	}
 
+	virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+	{
+		std::shared_ptr<NodeType> typedNode = NE::Node::Cast<NodeType> (uiNode);
+		return GetValueInternal (typedNode);
+	}
+
 	virtual bool IsApplicableTo (const UINodePtr& uiNode) const
 	{
 		return NE::Node::IsType<NodeType> (uiNode);
@@ -44,6 +50,18 @@ public:
 	{
 		return true;
 	}
+
+	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) override
+	{
+		if (DBGERROR (!CanSetValue (uiNode, value))) {
+			return false;
+		}
+		std::shared_ptr<NodeType> typedNode = NE::Node::Cast<NodeType> (uiNode);
+		return SetValueInternal (uiManager, evaluationEnv, typedNode, value);
+	}
+
+	virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<NodeType>& uiNode) const = 0;
+	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, std::shared_ptr<NodeType>& uiNode, const NE::ValuePtr& value) = 0;
 };
 
 template <typename NodeType>
@@ -100,7 +118,7 @@ public:
 
 	}
 
-	virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+	virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<NodeType>& uiNode) const override
 	{
 		NE::InputSlotConstPtr inputSlot = uiNode->GetInputSlot (slotId);
 		if (DBGERROR (inputSlot == nullptr)) {
@@ -109,12 +127,8 @@ public:
 		return inputSlot->GetDefaultValue ();
 	}
 
-	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<NodeType>& uiNode, const NE::ValuePtr& value) override
 	{
-		bool canSetValue = TypedNodeParameter<NodeType, ValueType>::CanSetValue (uiNode, value);
-		if (DBGERROR (!canSetValue)) {
-			return false;
-		}
 		uiNode->GetInputSlot (slotId)->SetDefaultValue (value);
 		uiManager.InvalidateNodeValue (uiNode->GetId ());
 		uiManager.InvalidateNodeDrawing (uiNode->GetId ());

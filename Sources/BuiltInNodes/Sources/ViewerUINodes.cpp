@@ -55,20 +55,15 @@ void MultiLineViewerUINode::RegisterParameters (NodeParameterList& parameterList
 
 		}
 
-		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<MultiLineViewerUINode>& uiNode) const override
 		{
-			std::shared_ptr<MultiLineViewerUINode> viewerNode = NE::Node::Cast<MultiLineViewerUINode> (uiNode);
-			return NE::ValuePtr (new NE::IntValue ((int) viewerNode->GetTextsPerPage ()));
+			return NE::ValuePtr (new NE::IntValue ((int) uiNode->GetTextsPerPage ()));
 		}
 
-		virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<MultiLineViewerUINode>& uiNode, const NE::ValuePtr& value) override
 		{
-			if (DBGERROR (!CanSetValue (uiNode, value))) {
-				return false;
-			}
-			std::shared_ptr<MultiLineViewerUINode> viewerNode = NE::Node::Cast<MultiLineViewerUINode> (uiNode);
-			viewerNode->SetTextsPerPage (NE::IntValue::Get (value));
-			uiManager.InvalidateNodeDrawing (viewerNode);
+			uiNode->SetTextsPerPage (NE::IntValue::Get (value));
+			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
 		}
 	};

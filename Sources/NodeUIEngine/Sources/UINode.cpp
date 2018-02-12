@@ -226,16 +226,13 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 		
 		}
 
-		virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<UINode>& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ()));
 		}
 
-		virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<UINode>& uiNode, const NE::ValuePtr& value) override
 		{
-			if (DBGERROR (!CanSetValue (uiNode, value))) {
-				return false;
-			}
 			uiNode->SetNodeName (NE::StringValue::Get (value));
 			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
