@@ -85,6 +85,10 @@ std::wstring ParameterValueToString (const NE::ValuePtr& value, const ParameterT
 		if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 			result = std::to_wstring (NE::IntValue::Get (value));
 		}
+	} else if (type == ParameterType::Double) {
+		if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
+			result = std::to_wstring (NE::DoubleValue::Get (value));
+		}
 	} else {
 		DBGBREAK ();
 	}
@@ -99,6 +103,8 @@ NE::ValuePtr StringToParameterValue (const std::wstring& str, const ParameterTyp
 			result.reset (new NE::StringValue (str));
 		} else if (type == ParameterType::Integer) {
 			result.reset (new NE::IntValue (std::stoi (str)));
+		} else if (type == ParameterType::Double) {
+			result.reset (new NE::DoubleValue (std::stod (str)));
 		} else {
 			DBGBREAK ();
 		}

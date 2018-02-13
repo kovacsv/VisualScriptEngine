@@ -3,6 +3,7 @@
 #include "ValueCombination.hpp"
 #include "UINodeParameters.hpp"
 #include "UINodeCommonParameters.hpp"
+#include "StringUtils.hpp"
 
 NE::DynamicSerializationInfo	ColorValue::serializationInfo (NE::ObjectId ("{E6D2DBDC-6311-4BA5-9B1A-A0FFF8CA2444}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	PointValue::serializationInfo (NE::ObjectId ("{D10E20B6-856A-4AAC-A806-FC60E6D1E82F}"), NE::ObjectVersion (1), PointValue::CreateSerializableInstance);
@@ -72,7 +73,7 @@ Point::Point () :
 
 }
 
-Point::Point (int x, int y, int size, Color color) :
+Point::Point (double x, double y, double size, Color color) :
 	x (x),
 	y (y),
 	size (size),
@@ -85,9 +86,9 @@ std::wstring Point::ToString () const
 {
 	std::wstring result = L"";
 	result += L"Point (";
-	result += std::to_wstring (x);
+	result += NE::DoubleToString (x, 2);
 	result += L", ";
-	result += std::to_wstring (y);
+	result += NE::DoubleToString (y, 2);
 	result += L")";
 	return result;
 }
@@ -123,7 +124,7 @@ Circle::Circle () :
 
 }
 
-Circle::Circle (Point center, int radius, Color color) :
+Circle::Circle (Point center, double radius, Color color) :
 	center (center),
 	radius (radius),
 	color (color)
@@ -137,7 +138,7 @@ std::wstring Circle::ToString () const
 	result += L"Circle (";
 	result += center.ToString ();
 	result += L", ";
-	result += std::to_wstring (radius);
+	result += NE::DoubleToString (radius, 23);
 	result += L")";
 	return result;
 }

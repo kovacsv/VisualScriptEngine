@@ -40,6 +40,7 @@
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NodeEngineUtilities.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Stamp.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Stream.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\StringUtils.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Value.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\GenericValue.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\ValueCombination.hpp" />
@@ -63,6 +64,7 @@
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NodeEngineUtilities.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Stamp.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Stream.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\StringUtils.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Value.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\ValueCombination.cpp" />
   </ItemGroup>

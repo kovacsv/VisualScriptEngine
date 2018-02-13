@@ -18,8 +18,8 @@ public:
 	{
 		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
-		integerInputNode = uiManager.AddNode (NUIE::UINodePtr (new IntegerUpDownUINode (L"Integer", NUIE::Point (100, 200), 20, 10)), uiEnvironment.GetEvaluationEnv ());
-		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new IntegerRangeNode (L"Range", NUIE::Point (300, 400))), uiEnvironment.GetEvaluationEnv ());
+		integerInputNode = uiManager.AddNode (NUIE::UINodePtr (new NumberUpDownUINode (L"Number", NUIE::Point (100, 200), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new NumberRangeUINode (L"Range", NUIE::Point (300, 400))), uiEnvironment.GetEvaluationEnv ());
 		viewerUINode1 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerUINode (L"Viewer", NUIE::Point (600, 100), 5)), uiEnvironment.GetEvaluationEnv ());
 		viewerUINode2 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerUINode (L"Viewer 2", NUIE::Point (600, 400), 5)), uiEnvironment.GetEvaluationEnv ());
 

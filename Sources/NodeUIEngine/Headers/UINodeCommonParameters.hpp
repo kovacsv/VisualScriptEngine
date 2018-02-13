@@ -107,6 +107,17 @@ public:
 	}
 };
 
+template <typename NodeType>
+class DoubleParameter : public TypedNodeParameter<NodeType, NE::DoubleValue>
+{
+public:
+	DoubleParameter (const std::string& paramId, const std::wstring& name) :
+		TypedNodeParameter<NodeType, NE::DoubleValue> (paramId, name, ParameterType::Double)
+	{
+
+	}
+};
+
 template <typename NodeType, typename ValueType>
 class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
 {

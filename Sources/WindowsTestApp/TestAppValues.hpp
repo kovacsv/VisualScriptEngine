@@ -20,13 +20,13 @@ class Point
 {
 public:
 	Point ();
-	Point (int x, int y, int size, Color color);
+	Point (double x, double y, double size, Color color);
 	
 	std::wstring ToString () const;
 
-	int		x;
-	int		y;
-	int		size;
+	double	x;
+	double	y;
+	double	size;
 	Color	color;
 };
 
@@ -47,12 +47,12 @@ class Circle
 {
 public:
 	Circle ();
-	Circle (Point center, int radius, Color color);
+	Circle (Point center, double radius, Color color);
 
 	std::wstring ToString () const;
 
 	Point	center;
-	int		radius;
+	double	radius;
 	Color	color;
 };
 

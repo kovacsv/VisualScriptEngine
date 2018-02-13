@@ -13,8 +13,9 @@ class MyCreateNodeCommand : public NUIE::CreateNodeCommand
 public:
 	enum class NodeType
 	{
-		Integer,
+		Number,
 		IntegerRange,
+		Double,
 		Color,
 		Point,
 		Line,

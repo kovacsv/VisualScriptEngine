@@ -10,28 +10,92 @@
 namespace NUIE
 {
 
-NE::SerializationInfo			NumericUpDownUINode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1));
-NE::DynamicSerializationInfo	IntegerUpDownUINode::serializationInfo (NE::ObjectId ("{53207AEE-8865-4DC0-AA38-B9988E39EDFD}"), NE::ObjectVersion (1), IntegerUpDownUINode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	IntegerRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), IntegerRangeNode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	NumberUpDownUINode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), NumberUpDownUINode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	NumberRangeUINode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), NumberRangeUINode::CreateSerializableInstance);
 
-NumericUpDownUINode::NumericUpDownUINode () :
-	UINode ()
+NumberUpDownUINode::NumberUpDownUINode () :
+	UINode (),
+	val (0.0),
+	step (0.0)
 {
 
 }
 
-NumericUpDownUINode::NumericUpDownUINode (const std::wstring& name, const Point& position) :
-	UINode (name, position)
+NumberUpDownUINode::NumberUpDownUINode (const std::wstring& name, const Point& position, double val, double step) :
+	UINode (name, position),
+	val (val),
+	step (step)
 {
 
 }
 
-NumericUpDownUINode::~NumericUpDownUINode ()
+NumberUpDownUINode::~NumberUpDownUINode ()
 {
 
 }
 
-EventHandlerResult NumericUpDownUINode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
+void NumberUpDownUINode::RegisterSlots ()
+{
+	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"Output")));
+}
+
+NE::ValuePtr NumberUpDownUINode::Calculate (NE::EvaluationEnv&) const
+{
+	return NE::ValuePtr (new NE::DoubleValue (val));
+}
+
+void NumberUpDownUINode::RegisterParameters (NodeParameterList& parameterList) const
+{
+	class ValueParameter : public DoubleParameter<NumberUpDownUINode>
+	{
+	public:
+		ValueParameter () :
+			DoubleParameter<NumberUpDownUINode> ("NumberUpDownUINodeValueParameter", L"Value")
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<NumberUpDownUINode>& uiNode) const override
+		{
+			return NE::ValuePtr (new NE::DoubleValue (uiNode->GetValue ()));
+		}
+
+		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<NumberUpDownUINode>& uiNode, const NE::ValuePtr& value) override
+		{
+			uiNode->SetValue (NE::DoubleValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
+			return true;
+		}
+	};
+
+	class StepParameter : public DoubleParameter<NumberUpDownUINode>
+	{
+	public:
+		StepParameter () :
+			DoubleParameter<NumberUpDownUINode> ("NumberUpDownUINodeStepParameter", L"Step")
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<NumberUpDownUINode>& uiNode) const override
+		{
+			return NE::ValuePtr (new NE::DoubleValue (uiNode->GetStep ()));
+		}
+
+		virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<NumberUpDownUINode>& uiNode, const NE::ValuePtr& value) override
+		{
+			uiNode->SetStep (NE::DoubleValue::Get (value));
+			return true;
+		}
+	};
+
+	UINode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NodeParameterPtr (new ValueParameter ()));
+	parameterList.AddParameter (NodeParameterPtr (new StepParameter ()));
+}
+
+EventHandlerResult NumberUpDownUINode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
 {
 	if (mouseButton != MouseButton::Left) {
 		return EventHandlerResult::EventNotHandled;
@@ -50,7 +114,58 @@ EventHandlerResult NumericUpDownUINode::HandleMouseClick (NodeUIEnvironment& env
 	return EventHandlerResult::EventNotHandled;
 }
 
-void NumericUpDownUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+NE::Stream::Status NumberUpDownUINode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	UINode::Read (inputStream);
+	inputStream.Read (val);
+	inputStream.Read (step);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status NumberUpDownUINode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	UINode::Write (outputStream);
+	outputStream.Write (val);
+	outputStream.Write (step);
+	return outputStream.GetStatus ();
+}
+
+void NumberUpDownUINode::Increase ()
+{
+	val = val + step;
+	InvalidateValue ();
+}
+
+void NumberUpDownUINode::Decrease ()
+{
+	val = val - step;
+	InvalidateValue ();
+}
+
+double NumberUpDownUINode::GetValue () const
+{
+	return val;
+}
+
+void NumberUpDownUINode::SetValue (double newValue)
+{
+	val = newValue;
+	InvalidateValue ();
+}
+
+double NumberUpDownUINode::GetStep () const
+{
+	return step;
+}
+
+void NumberUpDownUINode::SetStep (double newStep)
+{
+	step = newStep;
+}
+
+void NumberUpDownUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
 {
 	std::wstring nodeText = L"<empty>";
 	DBGASSERT (ValueIsCalculated ());
@@ -66,232 +181,90 @@ void NumericUpDownUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env,
 	drawer.Draw (env, drawingImage);
 }
 
-void NumericUpDownUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
+void NumberUpDownUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
 {
 
 }
 
-NE::Stream::Status NumericUpDownUINode::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status NumericUpDownUINode::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
-	return outputStream.GetStatus ();
-}
-
-IntegerUpDownUINode::IntegerUpDownUINode () :
-	NumericUpDownUINode (),
-	val (0),
-	step (0)
+NumberRangeUINode::NumberRangeUINode () :
+	NumberRangeUINode (L"", Point ())
 {
 
 }
 
-IntegerUpDownUINode::IntegerUpDownUINode (const std::wstring& name, const Point& position, int val, int step) :
-	NumericUpDownUINode (name, position),
-	val (val),
-	step (step)
-{
-
-}
-
-void IntegerUpDownUINode::RegisterSlots ()
-{
-	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"Output")));
-}
-
-NE::ValuePtr IntegerUpDownUINode::Calculate (NE::EvaluationEnv&) const
-{
-	return NE::ValuePtr (new NE::IntValue (val));
-}
-
-void IntegerUpDownUINode::RegisterParameters (NodeParameterList& parameterList) const
-{
-	class ValueParameter : public IntegerParameter<IntegerUpDownUINode>
-	{
-	public:
-		ValueParameter () :
-			IntegerParameter<IntegerUpDownUINode> ("IntegerUpDownValueParameter", L"Value")
-		{
-
-		}
-
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<IntegerUpDownUINode>& uiNode) const override
-		{
-			return NE::ValuePtr (new NE::IntValue (uiNode->GetValue ()));
-		}
-
-		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<IntegerUpDownUINode>& uiNode, const NE::ValuePtr& value) override
-		{
-			uiNode->SetValue (NE::IntValue::Get (value));
-			uiManager.InvalidateNodeValue (uiNode);
-			uiManager.InvalidateNodeDrawing (uiNode);
-			return true;
-		}
-	};
-
-	class StepParameter : public IntegerParameter<IntegerUpDownUINode>
-	{
-	public:
-		StepParameter () :
-			IntegerParameter<IntegerUpDownUINode> ("IntegerUpDownStepParameter", L"Step")
-		{
-
-		}
-
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<IntegerUpDownUINode>& uiNode) const override
-		{
-			return NE::ValuePtr (new NE::IntValue (uiNode->GetStep ()));
-		}
-
-		virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<IntegerUpDownUINode>& uiNode, const NE::ValuePtr& value) override
-		{
-			uiNode->SetStep (NE::IntValue::Get (value));
-			return true;
-		}
-	};
-
-	NumericUpDownUINode::RegisterParameters (parameterList);
-	parameterList.AddParameter (NodeParameterPtr (new ValueParameter ()));
-	parameterList.AddParameter (NodeParameterPtr (new StepParameter ()));
-}
-
-void IntegerUpDownUINode::Increase ()
-{
-	val = val + step;
-	InvalidateValue ();
-}
-
-void IntegerUpDownUINode::Decrease ()
-{
-	val = val - step;
-	InvalidateValue ();
-}
-
-NE::Stream::Status IntegerUpDownUINode::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	NumericUpDownUINode::Read (inputStream);
-	inputStream.Read (val);
-	inputStream.Read (step);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status IntegerUpDownUINode::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	NumericUpDownUINode::Write (outputStream);
-	outputStream.Write (val);
-	outputStream.Write (step);
-	return outputStream.GetStatus ();
-}
-
-int IntegerUpDownUINode::GetValue () const
-{
-	return val;
-}
-
-void IntegerUpDownUINode::SetValue (int newValue)
-{
-	val = newValue;
-	InvalidateValue ();
-}
-
-int IntegerUpDownUINode::GetStep () const
-{
-	return step;
-}
-
-void IntegerUpDownUINode::SetStep (int newStep)
-{
-	step = newStep;
-}
-
-IntegerRangeNode::IntegerRangeNode () :
-	IntegerRangeNode (L"", Point ())
-{
-
-}
-
-IntegerRangeNode::IntegerRangeNode (const std::wstring& name, const Point& position) :
+NumberRangeUINode::NumberRangeUINode (const std::wstring& name, const Point& position) :
 	HeaderWithSlotsUINode (name, position)
 {
 
 }
 
-IntegerRangeNode::~IntegerRangeNode ()
+NumberRangeUINode::~NumberRangeUINode ()
 {
 
 }
 
-void IntegerRangeNode::RegisterSlots ()
+void NumberRangeUINode::RegisterSlots ()
 {
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::DoubleValue (10.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"List")));
 }
 
-NE::ValuePtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValuePtr NumberRangeUINode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
 	NE::ValuePtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
 	NE::ValuePtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
-	if (!NE::Value::IsType<NE::IntValue> (start) || !NE::Value::IsType<NE::IntValue> (step) || !NE::Value::IsType<NE::IntValue> (count)) {
+	if (!NE::Value::IsType<NE::DoubleValue> (start) || !NE::Value::IsType<NE::DoubleValue> (step) || !NE::Value::IsType<NE::DoubleValue> (count)) {
 		return nullptr;
 	}
 
-	int startInt = NE::IntValue::Get (start);
-	int stepInt = NE::IntValue::Get (step);
-	int countInt = NE::IntValue::Get (count);
+	double startInt = NE::DoubleValue::Get (start);
+	double stepInt = NE::DoubleValue::Get (step);
+	double countInt = NE::DoubleValue::Get (count);
 	NE::ListValuePtr list (new NE::ListValue ());
 	for (int i = 0; i < countInt; ++i) {
-		list->Push (NE::ValuePtr (new NE::IntValue (startInt + i * stepInt)));
+		list->Push (NE::ValuePtr (new NE::DoubleValue (startInt + i * stepInt)));
 	}
 
 	return list;
 }
 
-void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) const
+void NumberRangeUINode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	class StartParameter : public SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	class StartParameter : public SlotDefaultValueParameter<NumberRangeUINode, NE::DoubleValue>
 	{
 	public:
 		StartParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("IntegerRangeNodeStartParameter", L"Start", ParameterType::Integer, NE::SlotId ("start"))
+			SlotDefaultValueParameter<NumberRangeUINode, NE::DoubleValue> ("NumberRangeUINodeStartParameter", L"Start", ParameterType::Double, NE::SlotId ("start"))
 		{
 
 		}
 	};
 
-	class StepParameter : public SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	class StepParameter : public SlotDefaultValueParameter<NumberRangeUINode, NE::DoubleValue>
 	{
 	public:
 		StepParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("IntegerRangeNodeStepParameter", L"Step", ParameterType::Integer, NE::SlotId ("step"))
+			SlotDefaultValueParameter<NumberRangeUINode, NE::DoubleValue> ("NumberRangeUINodeStepParameter", L"Step", ParameterType::Double, NE::SlotId ("step"))
 		{
 
 		}
 	};
 
-	class CountParameter : public SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	class CountParameter : public SlotDefaultValueParameter<NumberRangeUINode, NE::DoubleValue>
 	{
 	public:
 		CountParameter () :
-			SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> ("IntegerRangeNodeCountParameter", L"Count", ParameterType::Integer, NE::SlotId ("count"))
+			SlotDefaultValueParameter<NumberRangeUINode, NE::DoubleValue> ("NumberRangeUINodeCountParameter", L"Count", ParameterType::Double, NE::SlotId ("count"))
 		{
 
 		}
 
-		virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::DoubleValue>& value) const override
 		{
-			return value->GetValue () >= 0;
+			return value->GetValue () >= 0.0;
 		}
 	};
 
@@ -301,14 +274,14 @@ void IntegerRangeNode::RegisterParameters (NodeParameterList& parameterList) con
 	parameterList.AddParameter (NodeParameterPtr (new CountParameter ()));
 }
 
-NE::Stream::Status IntegerRangeNode::Read (NE::InputStream& inputStream)
+NE::Stream::Status NumberRangeUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	HeaderWithSlotsUINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status IntegerRangeNode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status NumberRangeUINode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	HeaderWithSlotsUINode::Write (outputStream);

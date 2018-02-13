@@ -1,4 +1,5 @@
 #include "SingleValues.hpp"
+#include "StringUtils.hpp"
 
 namespace NE
 {
@@ -109,7 +110,8 @@ DoubleValue::~DoubleValue ()
 
 std::wstring DoubleValue::ToString () const
 {
-	return std::to_wstring (GetValue ());
+	// TODO: Precision
+	return DoubleToString (GetValue (), 2);
 }
 
 double DoubleValue::ToDouble () const

@@ -201,9 +201,9 @@ PointNode::PointNode (const std::wstring& name, const NUIE::Point& position) :
 
 void PointNode::RegisterSlots ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("x"), L"X", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("y"), L"Y", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("size"), L"Size", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("x"), L"X", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("y"), L"Y", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("size"), L"Size", NE::ValuePtr (new NE::DoubleValue (10.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("point"), L"Point")));
 }
@@ -214,7 +214,7 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
 	NE::ValuePtr size = EvaluateSingleInputSlot (NE::SlotId ("size"), env);
 	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
-	if (!NE::IsComplexType<NE::IntValue> (x) || !NE::IsComplexType<NE::IntValue> (y) || !NE::IsComplexType<NE::IntValue> (size) || !NE::IsComplexType<ColorValue> (color)) {
+	if (!NE::IsComplexType<NE::DoubleValue> (x) || !NE::IsComplexType<NE::DoubleValue> (y) || !NE::IsComplexType<NE::DoubleValue> (size) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
 
@@ -222,9 +222,9 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 	CombineValues ({x, y, size, color}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new PointValue (
 			Point (
-				NE::IntValue::Get (combination.GetValue (0)),
-				NE::IntValue::Get (combination.GetValue (1)),
-				NE::IntValue::Get (combination.GetValue (2)),
+				NE::DoubleValue::Get (combination.GetValue (0)),
+				NE::DoubleValue::Get (combination.GetValue (1)),
+				NE::DoubleValue::Get (combination.GetValue (2)),
 				ColorValue::Get (combination.GetValue (3))
 			)
 		)));
@@ -235,38 +235,38 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 
 void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class PositionXParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::IntValue>
+	class PositionXParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::DoubleValue>
 	{
 	public:
 		PositionXParameter () :
-			SlotDefaultValueParameter<PointNode, NE::IntValue> ("PositionXParameter", L"Position X", NUIE::ParameterType::Integer, NE::SlotId ("x"))
+			SlotDefaultValueParameter<PointNode, NE::DoubleValue> ("PositionXParameter", L"Position X", NUIE::ParameterType::Double, NE::SlotId ("x"))
 		{
 
 		}
 	};
 
-	class PositionYParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::IntValue>
+	class PositionYParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::DoubleValue>
 	{
 	public:
 		PositionYParameter () :
-			SlotDefaultValueParameter<PointNode, NE::IntValue> ("PositionYParameter", L"Position Y", NUIE::ParameterType::Integer, NE::SlotId ("y"))
+			SlotDefaultValueParameter<PointNode, NE::DoubleValue> ("PositionYParameter", L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"))
 		{
 
 		}
 	};
 
-	class SizeParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::IntValue>
+	class SizeParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::DoubleValue>
 	{
 	public:
 		SizeParameter () :
-			SlotDefaultValueParameter<PointNode, NE::IntValue> ("SizeParameter", L"Size", NUIE::ParameterType::Integer, NE::SlotId ("size"))
+			SlotDefaultValueParameter<PointNode, NE::DoubleValue> ("SizeParameter", L"Size", NUIE::ParameterType::Double, NE::SlotId ("size"))
 		{
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::DoubleValue>& value) const override
 		{
-			return value->GetValue () >= 0;
+			return value->GetValue () >= 0.0;
 		}
 	};
 
@@ -397,7 +397,7 @@ NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr beg = EvaluateSingleInputSlot (NE::SlotId ("center"), env);
 	NE::ValuePtr end = EvaluateSingleInputSlot (NE::SlotId ("radius"), env);
 	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
-	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::IntValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
+	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::DoubleValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
 
@@ -406,7 +406,7 @@ NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 		result->Push (NE::ValuePtr (new CircleValue (
 			Circle (
 				PointValue::Get (combination.GetValue (0)),
-				NE::IntValue::Get (combination.GetValue (1)),
+				NE::DoubleValue::Get (combination.GetValue (1)),
 				ColorValue::Get (combination.GetValue (2))
 			))));
 	});

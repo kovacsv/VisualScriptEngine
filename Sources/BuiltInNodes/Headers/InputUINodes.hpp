@@ -10,65 +10,49 @@
 namespace NUIE
 {
 
-class NumericUpDownUINode : public UINode
+class NumberUpDownUINode : public UINode
 {
-	SERIALIZABLE;
+	DYNAMIC_SERIALIZABLE (NumberUpDownUINode);
 
 public:
-	NumericUpDownUINode ();
-	NumericUpDownUINode (const std::wstring& name, const Point& position);
-	virtual ~NumericUpDownUINode ();
+	NumberUpDownUINode ();
+	NumberUpDownUINode (const std::wstring& name, const Point& position, double val, double step);
+	virtual ~NumberUpDownUINode ();
 
-	virtual void				Increase () = 0;
-	virtual void				Decrease () = 0;
+	virtual void				RegisterSlots () override;
+	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
+	void		Increase ();
+	void		Decrease ();
+
+	double		GetValue () const;
+	void		SetValue (double newValue);
+
+	double		GetStep () const;
+	void		SetStep (double newStep);
+
 private:
 	virtual void	UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
 	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
+
+	double			val;
+	double			step;
 };
 
-class IntegerUpDownUINode : public NumericUpDownUINode
+class NumberRangeUINode : public HeaderWithSlotsUINode
 {
-	DYNAMIC_SERIALIZABLE (IntegerUpDownUINode);
+	DYNAMIC_SERIALIZABLE (NumberRangeUINode);
 
 public:
-	IntegerUpDownUINode ();
-	IntegerUpDownUINode (const std::wstring& name, const Point& position, int val, int step);
-
-	virtual void				RegisterSlots () override;
-	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
-	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
-
-	virtual void				Increase () override;
-	virtual void				Decrease () override;
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-	int							GetValue () const;
-	void						SetValue (int newValue);
-
-	int							GetStep () const;
-	void						SetStep (int newStep);
-
-private:
-	int val;
-	int step;
-};
-
-class IntegerRangeNode : public HeaderWithSlotsUINode
-{
-	DYNAMIC_SERIALIZABLE (IntegerRangeNode);
-
-public:
-	IntegerRangeNode ();
-	IntegerRangeNode (const std::wstring& name, const Point& position);
-	virtual ~IntegerRangeNode ();
+	NumberRangeUINode ();
+	NumberRangeUINode (const std::wstring& name, const Point& position);
+	virtual ~NumberRangeUINode ();
 	
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;

@@ -79,6 +79,9 @@
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\Checksum.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\StringUtils.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\ConnectionManager.cpp">
@@ -139,6 +142,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\Checksum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -54,10 +54,10 @@ MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager
 NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPosition)
 {
 	switch (nodeType) {
-		case NodeType::Integer:
-			return NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", modelPosition, 0, 5));
+		case NodeType::Number:
+			return NUIE::UINodePtr (new NUIE::NumberUpDownUINode (L"Number", modelPosition, 0, 5));
 		case NodeType::IntegerRange:
-			return NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", modelPosition));
+			return NUIE::UINodePtr (new NUIE::NumberRangeUINode (L"Range", modelPosition));
 		case NodeType::Color:
 			return NUIE::UINodePtr (new ColorNode (L"Color", modelPosition));
 		case NodeType::Point:
@@ -82,7 +82,7 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 {
 	NUIE::CommandStructure actualCommands = commands;
 	NUIE::GroupCommandPtr createCommandGroup (new NUIE::GroupCommand (L"Add Node"));
-	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
+	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Range", position)));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Color, uiManager, uiEnvironment, L"Color", position)));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Point, uiManager, uiEnvironment, L"Point", position)));
@@ -186,15 +186,15 @@ NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateI
 		static int count = 10;
 		for (int i = 0; i < count; i++) {
 			for (int j = 0; j < count; j++) {
-				uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new NUIE::NumberRangeUINode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
 			}
 		}
 		nodeEditor.Update ();
 	} else {
-		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 70), 20, 5)), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (70, 180), 20, 5)), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerRangeNode (L"Range", NUIE::Point (200, 100))), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new NUIE::IntegerUpDownUINode (L"Integer", NUIE::Point (200, 220), 20, 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::NumberUpDownUINode (L"Number", NUIE::Point (70, 70), 20, 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new NUIE::NumberUpDownUINode (L"Number", NUIE::Point (70, 180), 20, 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new NUIE::NumberRangeUINode (L"Range", NUIE::Point (220, 100))), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new NUIE::NumberUpDownUINode (L"Number", NUIE::Point (220, 220), 20, 5)), uiEnvironment.GetEvaluationEnv ());
 		std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
 		uiManager.AddNode (pointNode, uiEnvironment.GetEvaluationEnv ());
 		pointNode->SetValueCombinationMode (NE::ValueCombinationMode::CrossProduct);
