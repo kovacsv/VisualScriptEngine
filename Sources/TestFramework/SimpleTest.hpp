@@ -29,35 +29,25 @@ namespace TESTNAME##TestNamespace {								\
 }																\
 void TESTNAME##TestNamespace::TESTNAME::RunTest ()
 
-#define ASSERT(condition) SimpleTest::Assert (condition, __FILE__, __LINE__)
+#define ASSERT(condition) TestAssert (condition, __FILE__, __LINE__)
 
 namespace SimpleTest
 {
 
-class AssertException
-{
-public:
-	AssertException (const std::string& fileName, int lineNumber);
-	
-	const std::string&	GetFileName () const;
-	int					GetLineNumber () const;
-
-private:
-	std::string fileName;
-	int lineNumber;
-};
-
 class Test
 {
 public:
-	Test (const std::string& name);
+	Test (const std::string& testName);
 	virtual ~Test ();
 	
 	bool			Run ();
+
+protected:
+	void			TestAssert (bool condition, const std::string& fileName, int lineNumber);
 	virtual void	RunTest () = 0;
 
-private:
-	std::string name;
+	std::string		testName;
+	bool			testSuccess;
 };
 
 class Suite
@@ -80,7 +70,6 @@ std::string		GetAppFolderLocation ();
 
 bool			RunTests ();
 void			RegisterTest (Test* test);
-void			Assert (bool condition, const std::string& fileName, int lineNumber);
 
 }
 

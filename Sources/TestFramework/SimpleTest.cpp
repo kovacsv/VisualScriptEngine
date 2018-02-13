@@ -5,25 +5,9 @@ namespace SimpleTest
 
 static std::string appLocation;
 
-AssertException::AssertException (const std::string& fileName, int lineNumber) :
-	fileName (fileName),
-	lineNumber (lineNumber)
-{
-	
-}
-
-const std::string& AssertException::GetFileName () const
-{
-	return fileName;
-}
-
-int AssertException::GetLineNumber () const
-{
-	return lineNumber;
-}
-
-Test::Test (const std::string& name) :
-	name (name)
+Test::Test (const std::string& testName) :
+	testName (testName),
+	testSuccess (true)
 {
 	
 }
@@ -35,16 +19,23 @@ Test::~Test ()
 
 bool Test::Run ()
 {
-	try {
-		std::cout << name << ": ";
-		RunTest ();
-	} catch (const AssertException& ex) {
-		std::cout << "FAILURE" << std::endl;
-		std::cout << "-> " << ex.GetFileName () << " (" << ex.GetLineNumber () << ")" << std::endl;
-		return false;
+	std::cout << testName << ": ";
+	RunTest ();
+	if (testSuccess) {
+		std::cout << "SUCCESS" << std::endl;
 	}
-	std::cout << "SUCCESS" << std::endl;
-	return true;	
+	return testSuccess;	
+}
+
+void Test::TestAssert (bool condition, const std::string& fileName, int lineNumber)
+{
+	if (!condition) {
+		if (testSuccess) {
+			std::cout << std::endl;
+		}
+		std::cout << "Assertion failed: " << fileName << " (" << lineNumber << ")" << std::endl;
+		testSuccess = false;
+	}
 }
 
 Suite::Suite ()
@@ -115,11 +106,13 @@ void RegisterTest (Test* test)
 	Suite::Get ().AddTest (test);
 }
 
-void Assert (bool condition, const std::string& fileName, int lineNumber)
+bool Assert (bool condition, const std::string& fileName, int lineNumber)
 {
 	if (!condition) {
-		throw AssertException (fileName, lineNumber);
+		std::cout << "FAILURE" << std::endl;
+		std::cout << "-> " << fileName << " (" << lineNumber << ")" << std::endl;
 	}
+	return condition;
 }
 
 }
