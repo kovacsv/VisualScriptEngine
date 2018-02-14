@@ -54,8 +54,9 @@ UINodePtr FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironm
 	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) -> bool {
 		Rect nodeRect = viewBox.ModelToView (uiNode->GetNodeRect (env));
 		if (nodeRect.Contains (viewPosition)) {
-			foundNode = uiNode;
-			return false;
+			if (foundNode == nullptr || foundNode->GetId () < uiNode->GetId ()) {
+				foundNode = uiNode;
+			}
 		}
 		return true;
 	});
