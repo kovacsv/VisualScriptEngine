@@ -28,7 +28,8 @@ static NUIE::CommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE
 			command->EnumerateChildCommands (addCommand);
 			currentMenu = oldMenu;
 		} else {
-			currentMenu->Append (currentCommandId, command->GetName ());
+			wxMenuItem* currentMenuItem = currentMenu->AppendCheckItem (currentCommandId, command->GetName ());
+			currentMenuItem->Check (command->IsChecked ());
 			commandTable.insert ({ currentCommandId, command });
 			currentCommandId += 1;
 		}
