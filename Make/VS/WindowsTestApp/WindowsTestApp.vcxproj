@@ -141,6 +141,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ContextFactory.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\DrawingControl.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\main.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\wxDrawingContext.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ContextFactory.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\DrawingControl.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.hpp" />

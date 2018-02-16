@@ -1,8 +1,10 @@
 #include "wxDrawingContext.hpp"
 #include "Debug.hpp"
 
+#include <wx/wx.h>
+
 wxDrawingContext::wxDrawingContext () :
-	NUIE::DrawingContext (),
+	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
 	memoryBitmap (new wxBitmap ()),
@@ -20,6 +22,18 @@ wxDrawingContext::~wxDrawingContext ()
 void wxDrawingContext::DrawToDC (wxDC* targetDC)
 {
 	targetDC->Blit (0, 0, width, height, memoryDC, 0, 0);
+}
+
+void wxDrawingContext::Init (void* nativeHandle)
+{
+
+}
+
+void wxDrawingContext::Blit (void* nativeHandle)
+{
+	wxPanel* panel = (wxPanel*) nativeHandle;
+	wxPaintDC dc (panel);
+	dc.Blit (0, 0, width, height, memoryDC, 0, 0);
 }
 
 void wxDrawingContext::Resize (int newWidth, int newHeight)
@@ -90,12 +104,16 @@ void wxDrawingContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& colo
 
 void wxDrawingContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	
+	memoryDC->SetBrush (*wxTRANSPARENT_BRUSH);
+	memoryDC->SetPen (GetPen (pen));
+	memoryDC->DrawEllipse (GetRect (rect));	
 }
 
 void wxDrawingContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	
+	memoryDC->SetBrush (wxBrush (wxColour (color.GetR (), color.GetG (), color.GetB ())));
+	memoryDC->SetPen (*wxTRANSPARENT_PEN);
+	memoryDC->DrawEllipse (GetRect (rect));	
 }
 
 void wxDrawingContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)

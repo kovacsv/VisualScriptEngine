@@ -3,9 +3,9 @@
 
 #include "DrawingContext.hpp"
 
-#include "wx/dcmemory.h"
+#include <wx/dcmemory.h>
 
-class wxDrawingContext : public NUIE::DrawingContext
+class wxDrawingContext : public NUIE::NativeDrawingContext
 {
 public:
 	wxDrawingContext ();
@@ -13,6 +13,9 @@ public:
 	virtual ~wxDrawingContext ();
 
 	void						DrawToDC (wxDC* target);
+
+	virtual void				Init (void* nativeHandle) override;
+	virtual void				Blit (void* nativeHandle) override;
 
 	virtual void				Resize (int newWidth, int newHeight) override;
 
@@ -44,7 +47,6 @@ private:
 	int							height;
 	wxBitmap*					memoryBitmap;
 	wxMemoryDC*					memoryDC;
-
 };
 
 #endif

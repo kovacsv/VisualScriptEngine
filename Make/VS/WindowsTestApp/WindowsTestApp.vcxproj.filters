@@ -34,6 +34,9 @@
     <ClCompile Include="..\..\..\Sources\WindowsTestApp\wxDrawingContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ContextFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\DrawingControl.hpp">
@@ -58,6 +61,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\WindowsTestApp\wxDrawingContext.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ContextFactory.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,5 @@
 #include "NodeEditorControl.hpp"
-#include "BitmapContextGdi.hpp"
+#include "ContextFactory.hpp"
 
 #include "InputUINodes.hpp"
 #include "ViewerUINodes.hpp"
@@ -121,16 +121,16 @@ bool AppEventHandlers::OnParameterSettings (NUIE::NodeParameterAccessorPtr param
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	evaluationEnv (evaluationEnv),
-	drawingContext (new BitmapContextGdi ()),
+	drawingContext (CreateNativeDrawingContext ()),
 	skinParams (),
 	eventHandlers (nodeEditorControl)
 {
-	drawingContext->Init (nodeEditorControl->GetHandle ());
+	drawingContext->Init (GetNativeHandle (nodeEditorControl));
 }
 
 void NodeEditorUIEnvironment::OnPaint (wxPanel* panel, wxPaintEvent& evt)
 {
-	drawingContext->Blit (nodeEditorControl->GetHandle ());
+	drawingContext->Blit (GetNativeHandle (nodeEditorControl));
 }
 
 void NodeEditorUIEnvironment::OnResize (int width, int height)
