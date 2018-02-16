@@ -207,7 +207,7 @@ void NumberRangeUINode::RegisterSlots ()
 {
 	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::DoubleValue (10.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"List")));
 }
 
@@ -216,16 +216,16 @@ NE::ValuePtr NumberRangeUINode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
 	NE::ValuePtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
 	NE::ValuePtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
-	if (!NE::Value::IsType<NE::DoubleValue> (start) || !NE::Value::IsType<NE::DoubleValue> (step) || !NE::Value::IsType<NE::DoubleValue> (count)) {
+	if (!NE::Value::IsType<NE::NumberValue> (start) || !NE::Value::IsType<NE::NumberValue> (step) || !NE::Value::IsType<NE::NumberValue> (count)) {
 		return nullptr;
 	}
 
-	double startInt = NE::DoubleValue::Get (start);
-	double stepInt = NE::DoubleValue::Get (step);
-	double countInt = NE::DoubleValue::Get (count);
+	double startNum = NE::NumberValue::ToDouble (start);
+	double stepNum = NE::NumberValue::ToDouble (step);
+	int countNum = (int) NE::NumberValue::ToDouble (count);
 	NE::ListValuePtr list (new NE::ListValue ());
-	for (int i = 0; i < countInt; ++i) {
-		list->Push (NE::ValuePtr (new NE::DoubleValue (startInt + i * stepInt)));
+	for (int i = 0; i < countNum; ++i) {
+		list->Push (NE::ValuePtr (new NE::DoubleValue (startNum + i * stepNum)));
 	}
 
 	return list;
@@ -253,16 +253,16 @@ void NumberRangeUINode::RegisterParameters (NodeParameterList& parameterList) co
 		}
 	};
 
-	class CountParameter : public SlotDefaultValueParameter<NumberRangeUINode, NE::DoubleValue>
+	class CountParameter : public SlotDefaultValueParameter<NumberRangeUINode, NE::IntValue>
 	{
 	public:
 		CountParameter () :
-			SlotDefaultValueParameter<NumberRangeUINode, NE::DoubleValue> ("NumberRangeUINodeCountParameter", L"Count", ParameterType::Double, NE::SlotId ("count"))
+			SlotDefaultValueParameter<NumberRangeUINode, NE::IntValue> ("NumberRangeUINodeCountParameter", L"Count", ParameterType::Integer, NE::SlotId ("count"))
 		{
 
 		}
 
-		virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::DoubleValue>& value) const override
+		virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0.0;
 		}
