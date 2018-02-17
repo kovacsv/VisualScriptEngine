@@ -43,6 +43,45 @@ private:
 	virtual double DoOperation (double a, double b) const override;
 };
 
+class SubtractionNode : public BinaryOperationNode
+{
+	DYNAMIC_SERIALIZABLE (SubtractionNode);
+
+public:
+	SubtractionNode ();
+	SubtractionNode (const std::wstring& name, const Point& position);
+	virtual ~SubtractionNode ();
+
+private:
+	virtual double DoOperation (double a, double b) const override;
+};
+
+class MultiplicationNode : public BinaryOperationNode
+{
+	DYNAMIC_SERIALIZABLE (MultiplicationNode);
+
+public:
+	MultiplicationNode ();
+	MultiplicationNode (const std::wstring& name, const Point& position);
+	virtual ~MultiplicationNode ();
+
+private:
+	virtual double DoOperation (double a, double b) const override;
+};
+
+class DivisionNode : public BinaryOperationNode
+{
+	DYNAMIC_SERIALIZABLE (DivisionNode);
+
+public:
+	DivisionNode ();
+	DivisionNode (const std::wstring& name, const Point& position);
+	virtual ~DivisionNode ();
+
+private:
+	virtual double DoOperation (double a, double b) const override;
+};
+
 }
 
 #endif
