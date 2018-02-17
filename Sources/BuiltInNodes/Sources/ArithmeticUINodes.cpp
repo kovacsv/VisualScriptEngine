@@ -1,6 +1,8 @@
 #include "ArithmeticUINodes.hpp"
 #include "UINodeCommonParameters.hpp"
 
+#include <cmath>
+
 namespace NUIE
 {
 
