@@ -270,7 +270,7 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 		}
 	};
 
-	UINode::RegisterParameters (parameterList);
+	GeometricNode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionXParameter ()));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionYParameter ()));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new SizeParameter ()));
@@ -387,7 +387,7 @@ CircleNode::CircleNode (const std::wstring& name, const NUIE::Point& position) :
 void CircleNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("center"), L"Center", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("radius"), L"Radius", nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("radius"), L"Radius", NE::ValuePtr (new NE::DoubleValue (10.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("circle"), L"Circle")));
 }
@@ -414,6 +414,27 @@ NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 	return result;
 }
 
+void CircleNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	class RadiusParameter : public NUIE::SlotDefaultValueParameter<CircleNode, NE::DoubleValue>
+	{
+	public:
+		RadiusParameter () :
+			SlotDefaultValueParameter<CircleNode, NE::DoubleValue> ("RadiusParameter", L"Radius", NUIE::ParameterType::Double, NE::SlotId ("radius"))
+		{
+
+		}
+
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::DoubleValue>& value) const override
+		{
+			return value->GetValue () >= 0.0;
+		}
+	};
+
+	GeometricNode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new RadiusParameter ()));
+}
+
 NUIE::DrawingItemConstPtr CircleNode::CreateDrawingItem (const NE::ValuePtr& value) const
 {
 	if (!NE::Value::IsType<NE::ListValue> (value)) {
@@ -422,7 +443,7 @@ NUIE::DrawingItemConstPtr CircleNode::CreateDrawingItem (const NE::ValuePtr& val
 	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
 	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
 		Circle circle = CircleValue::Get (innerValue);
-		NUIE::Rect rect = NUIE::Rect::FromCenterAndSize (NUIE::Point (circle.center.x, circle.center.y), NUIE::Size (circle.radius / 2.0, circle.radius / 2.0));
+		NUIE::Rect rect = NUIE::Rect::FromCenterAndSize (NUIE::Point (circle.center.x, circle.center.y), NUIE::Size (circle.radius * 2.0, circle.radius * 2.0));
 		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (rect, NUIE::Pen (NUIE::Color (circle.color.r, circle.color.g, circle.color.b), 1.0))));
 	});
 	return result;
