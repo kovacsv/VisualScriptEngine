@@ -5,7 +5,7 @@
 #include "ControlUtilities.hpp"
 #include "NodeEditor.hpp"
 #include "ResultImage.hpp"
-#include "wx/wx.h"
+#include <wx/wx.h>
 #include <memory>
 
 class MyCreateNodeCommand : public NUIE::CreateNodeCommand

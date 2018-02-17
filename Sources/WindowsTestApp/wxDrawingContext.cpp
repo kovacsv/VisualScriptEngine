@@ -7,16 +7,18 @@ wxDrawingContext::wxDrawingContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
-	memoryBitmap (new wxBitmap ()),
+	memoryBitmap (new wxBitmap (wxSize (1, 1))),
 	memoryDC (new wxMemoryDC ())
 {
 	memoryDC->SelectObject (*memoryBitmap);
+	graphicsContext = wxGraphicsContext::Create (*memoryDC);
 }
 
 wxDrawingContext::~wxDrawingContext ()
 {
 	delete memoryBitmap;
 	delete memoryDC;
+	delete graphicsContext;
 }
 
 void wxDrawingContext::DrawToDC (wxDC* targetDC)
@@ -43,10 +45,12 @@ void wxDrawingContext::Resize (int newWidth, int newHeight)
 
 	delete memoryBitmap;
 	delete memoryDC;
+	delete graphicsContext;
 
 	memoryBitmap = new wxBitmap (newWidth, newHeight);
 	memoryDC = new wxMemoryDC ();
 	memoryDC->SelectObject (*memoryBitmap);
+	graphicsContext = wxGraphicsContext::Create (*memoryDC);
 }
 
 double wxDrawingContext::GetWidth () const
@@ -90,30 +94,34 @@ void wxDrawingContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2,
 
 void wxDrawingContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	memoryDC->SetBrush (*wxTRANSPARENT_BRUSH);
-	memoryDC->SetPen (GetPen (pen));
-	memoryDC->DrawRectangle (GetRect (rect));
+	graphicsContext->SetBrush (*wxTRANSPARENT_BRUSH);
+	graphicsContext->SetPen (GetPen (pen));
+	wxRect theRect = GetRect (rect);
+	graphicsContext->DrawRectangle (theRect.GetX (), theRect.GetY (), theRect.GetWidth (), theRect.GetHeight ());	
 }
 
 void wxDrawingContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	memoryDC->SetBrush (wxBrush (wxColour (color.GetR (), color.GetG (), color.GetB ())));
-	memoryDC->SetPen (*wxTRANSPARENT_PEN);
-	memoryDC->DrawRectangle (GetRect (rect));
+	graphicsContext->SetBrush (wxBrush (wxColour (color.GetR (), color.GetG (), color.GetB ())));
+	graphicsContext->SetPen (*wxTRANSPARENT_PEN);
+	wxRect theRect = GetRect (rect);
+	graphicsContext->DrawRectangle (theRect.GetX (), theRect.GetY (), theRect.GetWidth (), theRect.GetHeight ());	
 }
 
 void wxDrawingContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	memoryDC->SetBrush (*wxTRANSPARENT_BRUSH);
-	memoryDC->SetPen (GetPen (pen));
-	memoryDC->DrawEllipse (GetRect (rect));	
+	graphicsContext->SetBrush (*wxTRANSPARENT_BRUSH);
+	graphicsContext->SetPen (GetPen (pen));
+	wxRect theRect = GetRect (rect);
+	graphicsContext->DrawEllipse (theRect.GetX (), theRect.GetY (), theRect.GetWidth (), theRect.GetHeight ());	
 }
 
 void wxDrawingContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	memoryDC->SetBrush (wxBrush (wxColour (color.GetR (), color.GetG (), color.GetB ())));
-	memoryDC->SetPen (*wxTRANSPARENT_PEN);
-	memoryDC->DrawEllipse (GetRect (rect));	
+	graphicsContext->SetBrush (wxBrush (wxColour (color.GetR (), color.GetG (), color.GetB ())));
+	graphicsContext->SetPen (*wxTRANSPARENT_PEN);
+	wxRect theRect = GetRect (rect);
+	graphicsContext->DrawEllipse (theRect.GetX (), theRect.GetY (), theRect.GetWidth (), theRect.GetHeight ());	
 }
 
 void wxDrawingContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)

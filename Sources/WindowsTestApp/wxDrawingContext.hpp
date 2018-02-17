@@ -4,6 +4,7 @@
 #include "DrawingContext.hpp"
 
 #include <wx/dcmemory.h>
+#include <wx/graphics.h>
 
 class wxDrawingContext : public NUIE::NativeDrawingContext
 {
@@ -47,6 +48,7 @@ private:
 	int							height;
 	wxBitmap*					memoryBitmap;
 	wxMemoryDC*					memoryDC;
+	wxGraphicsContext*			graphicsContext;
 };
 
 #endif

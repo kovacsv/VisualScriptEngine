@@ -2,7 +2,7 @@
 #include "UINodeParameters.hpp"
 #include "Debug.hpp"
 
-#include "wx/univ/renderer.h"
+#include <wx/univ/renderer.h>
 
 ParameterList::ParameterList (wxWindow* parent, NUIE::NodeParameterAccessorPtr& paramAccessor) :
 	wxDataViewListCtrl (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),

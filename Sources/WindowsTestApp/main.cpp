@@ -8,8 +8,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "wx/wx.h"
-#include "wx/splitter.h"
+#include <wx/wx.h>
+#include <wx/splitter.h>
 
 class ApplicationState
 {

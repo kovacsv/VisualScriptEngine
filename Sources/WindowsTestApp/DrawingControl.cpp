@@ -1,17 +1,16 @@
-#include "BitmapContextGdiplus.hpp"
 #include "DrawingControl.hpp"
 #include "ContextDecorators.hpp"
+#include "wxDrawingContext.hpp"
 
 DrawingControl::DrawingControl (wxWindow *parent, const std::shared_ptr<ResultImage>& resultImage) :
 	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
 	captureHandler (this),
 	resultImage (resultImage),
-	drawingContext (new BitmapContextGdiplus ()),
+	drawingContext (new wxDrawingContext ()),
 	viewBox (NUIE::Point (0.0, 0.0), 1.0),
 	lastMousePos (nullptr)
 {
-	HWND hwnd = GetHandle ();
-	drawingContext->Init (hwnd);
+	drawingContext->Init (this);
 }
 
 void DrawingControl::OnPaint (wxPaintEvent& evt)
@@ -20,7 +19,7 @@ void DrawingControl::OnPaint (wxPaintEvent& evt)
 	NUIE::ViewBoxContextDecorator viewBoxDecorator (*drawingContext, viewBox);
 	resultImage->Draw (viewBoxDecorator);
 	resultImage->Validate ();
-	drawingContext->Blit (GetHandle ());
+	drawingContext->Blit (this);
 }
 
 void DrawingControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)

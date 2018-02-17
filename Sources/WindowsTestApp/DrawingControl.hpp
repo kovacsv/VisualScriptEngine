@@ -6,7 +6,7 @@
 #include "ViewBox.hpp"
 #include "ControlUtilities.hpp"
 
-#include "wx/wx.h"
+#include <wx/wx.h>
 #include <memory>
 
 class DrawingControl : public wxPanel

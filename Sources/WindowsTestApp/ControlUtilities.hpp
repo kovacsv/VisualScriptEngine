@@ -2,7 +2,7 @@
 #define CONTROLUTILITIES_HPP
 
 #include "MouseEventHandler.hpp"
-#include "wx/wx.h"
+#include <wx/wx.h>
 
 // On double click event the mouse down and up events are not in pair
 class MouseCaptureHandler

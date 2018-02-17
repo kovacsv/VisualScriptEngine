@@ -7,7 +7,7 @@
 
 #include "ParameterDialog.hpp"
 
-#include "wx/menu.h"
+#include <wx/menu.h>
 
 static NUIE::CommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::CommandStructure& commands)
 {

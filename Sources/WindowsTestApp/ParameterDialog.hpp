@@ -3,8 +3,8 @@
 
 #include "UINodeParameterAccessor.hpp"
 
-#include "wx/wx.h"
-#include "wx/dataview.h"
+#include <wx/wx.h>
+#include <wx/dataview.h>
 
 #include <memory>
 
