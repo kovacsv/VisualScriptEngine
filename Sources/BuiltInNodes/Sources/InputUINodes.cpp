@@ -233,26 +233,6 @@ NE::ValuePtr NumberRangeNode::Calculate (NE::EvaluationEnv& env) const
 
 void NumberRangeNode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	class StartParameter : public SlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue>
-	{
-	public:
-		StartParameter () :
-			SlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> ("NumberRangeNodeStartParameter", L"Start", ParameterType::Double, NE::SlotId ("start"))
-		{
-
-		}
-	};
-
-	class StepParameter : public SlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue>
-	{
-	public:
-		StepParameter () :
-			SlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> ("NumberRangeNodeStepParameter", L"Step", ParameterType::Double, NE::SlotId ("step"))
-		{
-
-		}
-	};
-
 	class CountParameter : public SlotDefaultValueParameter<NumberRangeNode, NE::IntValue>
 	{
 	public:
@@ -269,8 +249,8 @@ void NumberRangeNode::RegisterParameters (NodeParameterList& parameterList) cons
 	};
 
 	UINode::RegisterParameters (parameterList);
-	parameterList.AddParameter (NodeParameterPtr (new StartParameter ()));
-	parameterList.AddParameter (NodeParameterPtr (new StepParameter ()));
+	RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, "NumberRangeNodeStartParameter", L"Start", ParameterType::Double, NE::SlotId ("start"));
+	RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, "NumberRangeNodeStepParameter", L"Step", ParameterType::Double, NE::SlotId ("step"));
 	parameterList.AddParameter (NodeParameterPtr (new CountParameter ()));
 }
 

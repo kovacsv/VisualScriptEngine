@@ -238,45 +238,10 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 
 void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class PositionXParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::DoubleValue>
-	{
-	public:
-		PositionXParameter () :
-			SlotDefaultValueParameter<PointNode, NE::DoubleValue> ("PositionXParameter", L"Position X", NUIE::ParameterType::Double, NE::SlotId ("x"))
-		{
-
-		}
-	};
-
-	class PositionYParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::DoubleValue>
-	{
-	public:
-		PositionYParameter () :
-			SlotDefaultValueParameter<PointNode, NE::DoubleValue> ("PositionYParameter", L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"))
-		{
-
-		}
-	};
-
-	class SizeParameter : public NUIE::SlotDefaultValueParameter<PointNode, NE::DoubleValue>
-	{
-	public:
-		SizeParameter () :
-			SlotDefaultValueParameter<PointNode, NE::DoubleValue> ("SizeParameter", L"Size", NUIE::ParameterType::Double, NE::SlotId ("size"))
-		{
-
-		}
-
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::DoubleValue>& value) const override
-		{
-			return value->GetValue () >= 0.0;
-		}
-	};
-
 	GeometricNode::RegisterParameters (parameterList);
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionXParameter ()));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new PositionYParameter ()));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new SizeParameter ()));
+	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, "PositionXParameter", L"Position X", NUIE::ParameterType::Double, NE::SlotId ("x"));
+	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, "PositionYParameter", L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
+	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, "SizeParameter", L"Size", NUIE::ParameterType::Double, NE::SlotId ("size"));
 }
 
 NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& value) const

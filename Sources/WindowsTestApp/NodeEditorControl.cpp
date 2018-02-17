@@ -2,6 +2,7 @@
 #include "ContextFactory.hpp"
 
 #include "InputUINodes.hpp"
+#include "ArithmeticUINodes.hpp"
 #include "ViewerUINodes.hpp"
 #include "TestAppNodes.hpp"
 
@@ -57,8 +58,10 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 	switch (nodeType) {
 		case NodeType::Number:
 			return NUIE::UINodePtr (new NUIE::NumericUpDownNode (L"Number", modelPosition, 0, 5));
-		case NodeType::IntegerRange:
+		case NodeType::Range:
 			return NUIE::UINodePtr (new NUIE::NumberRangeNode (L"Range", modelPosition));
+		case NodeType::Addition:
+			return NUIE::UINodePtr (new NUIE::AdditionNode (L"Addition", modelPosition));
 		case NodeType::Color:
 			return NUIE::UINodePtr (new ColorNode (L"Color", modelPosition));
 		case NodeType::Point:
@@ -84,7 +87,8 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	NUIE::CommandStructure actualCommands = commands;
 	NUIE::GroupCommandPtr createCommandGroup (new NUIE::GroupCommand (L"Add Node"));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
-	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Range", position)));
+	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Range, uiManager, uiEnvironment, L"Range", position)));
+	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Addition", position)));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Color, uiManager, uiEnvironment, L"Color", position)));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Point, uiManager, uiEnvironment, L"Point", position)));
 	createCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Line, uiManager, uiEnvironment, L"Line", position)));

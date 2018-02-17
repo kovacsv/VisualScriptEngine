@@ -150,6 +150,22 @@ private:
 	NE::SlotId slotId;
 };
 
+template <class NodeType, class ValueType>
+void RegisterSlotDefaultValueParameter (NodeParameterList& parameterList, const std::string& paramId, const std::wstring& name, ParameterType type, const NE::SlotId& slotId)
+{
+	class Parameter : public SlotDefaultValueParameter<NodeType, ValueType>
+	{
+	public:
+		Parameter (const std::string& paramId, const std::wstring& name, ParameterType type, const NE::SlotId& slotId) :
+			SlotDefaultValueParameter<NodeType, ValueType> (paramId, name, type, slotId)
+		{
+
+		}
+	};
+
+	parameterList.AddParameter (NodeParameterPtr (new Parameter (paramId, name, type, slotId)));
+}
+
 }
 
 #endif

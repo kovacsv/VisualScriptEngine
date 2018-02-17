@@ -14,7 +14,8 @@ public:
 	enum class NodeType
 	{
 		Number,
-		IntegerRange,
+		Range,
+		Addition,
 		Double,
 		Color,
 		Point,
