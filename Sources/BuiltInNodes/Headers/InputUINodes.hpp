@@ -10,14 +10,14 @@
 namespace NUIE
 {
 
-class NumberUpDownUINode : public UINode
+class NumericUpDownNode : public UINode
 {
-	DYNAMIC_SERIALIZABLE (NumberUpDownUINode);
+	DYNAMIC_SERIALIZABLE (NumericUpDownNode);
 
 public:
-	NumberUpDownUINode ();
-	NumberUpDownUINode (const std::wstring& name, const Point& position, double val, double step);
-	virtual ~NumberUpDownUINode ();
+	NumericUpDownNode ();
+	NumericUpDownNode (const std::wstring& name, const Point& position, double val, double step);
+	virtual ~NumericUpDownNode ();
 
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
@@ -45,14 +45,14 @@ private:
 	double			step;
 };
 
-class NumberRangeUINode : public HeaderWithSlotsUINode
+class NumberRangeNode : public HeaderWithSlotsUINode
 {
-	DYNAMIC_SERIALIZABLE (NumberRangeUINode);
+	DYNAMIC_SERIALIZABLE (NumberRangeNode);
 
 public:
-	NumberRangeUINode ();
-	NumberRangeUINode (const std::wstring& name, const Point& position);
-	virtual ~NumberRangeUINode ();
+	NumberRangeNode ();
+	NumberRangeNode (const std::wstring& name, const Point& position);
+	virtual ~NumberRangeNode ();
 	
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;

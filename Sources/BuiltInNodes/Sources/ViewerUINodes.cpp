@@ -8,9 +8,9 @@
 namespace NUIE
 {
 
-NE::DynamicSerializationInfo MultiLineViewerUINode::serializationInfo (NE::ObjectId ("{2BACB82D-84A6-4472-82CB-786C98A50EF0}"), NE::ObjectVersion (1), MultiLineViewerUINode::CreateSerializableInstance);
+NE::DynamicSerializationInfo MultiLineViewerNode::serializationInfo (NE::ObjectId ("{2BACB82D-84A6-4472-82CB-786C98A50EF0}"), NE::ObjectVersion (1), MultiLineViewerNode::CreateSerializableInstance);
 
-MultiLineViewerUINode::MultiLineViewerUINode () :
+MultiLineViewerNode::MultiLineViewerNode () :
 	UINode (),
 	textsPerPage (0),
 	currentPage (1),
@@ -19,7 +19,7 @@ MultiLineViewerUINode::MultiLineViewerUINode () :
 
 }
 
-MultiLineViewerUINode::MultiLineViewerUINode (const std::wstring& name, const Point& position, size_t textsPerPage) :
+MultiLineViewerNode::MultiLineViewerNode (const std::wstring& name, const Point& position, size_t textsPerPage) :
 	UINode (name, position),
 	textsPerPage (textsPerPage),
 	currentPage (1),
@@ -28,39 +28,39 @@ MultiLineViewerUINode::MultiLineViewerUINode (const std::wstring& name, const Po
 
 }
 
-MultiLineViewerUINode::~MultiLineViewerUINode ()
+MultiLineViewerNode::~MultiLineViewerNode ()
 {
 
 }
 
-void MultiLineViewerUINode::RegisterSlots ()
+void MultiLineViewerNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
-NE::ValuePtr MultiLineViewerUINode::Calculate (NE::EvaluationEnv& env) const
+NE::ValuePtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
 {
 	return EvaluateSingleInputSlot (NE::SlotId ("in"), env);
 }
 
-void MultiLineViewerUINode::RegisterParameters (NodeParameterList& parameterList) const
+void MultiLineViewerNode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	class TextPerPageParameter : public PositiveIntegerParameter<MultiLineViewerUINode>
+	class TextPerPageParameter : public PositiveIntegerParameter<MultiLineViewerNode>
 	{
 	public:
 		TextPerPageParameter () :
-			PositiveIntegerParameter<MultiLineViewerUINode> ("MultiLineViewerUINodeTextPerPageParameter", L"Texts per page")
+			PositiveIntegerParameter<MultiLineViewerNode> ("MultiLineViewerNodeTextPerPageParameter", L"Texts per page")
 		{
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<MultiLineViewerUINode>& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<MultiLineViewerNode>& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::IntValue ((int) uiNode->GetTextsPerPage ()));
 		}
 
-		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<MultiLineViewerUINode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<MultiLineViewerNode>& uiNode, const NE::ValuePtr& value) override
 		{
 			uiNode->SetTextsPerPage (NE::IntValue::Get (value));
 			uiManager.InvalidateNodeDrawing (uiNode);
@@ -72,7 +72,7 @@ void MultiLineViewerUINode::RegisterParameters (NodeParameterList& parameterList
 	parameterList.AddParameter (NodeParameterPtr (new TextPerPageParameter ()));
 }
 
-NUIE::EventHandlerResult MultiLineViewerUINode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
+NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
 {
 	if (mouseButton != MouseButton::Left) {
 		return EventHandlerResult::EventNotHandled;
@@ -98,7 +98,7 @@ NUIE::EventHandlerResult MultiLineViewerUINode::HandleMouseClick (NodeUIEnvironm
 	return EventHandlerResult::EventNotHandled;
 }
 
-void MultiLineViewerUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
 {
 	class NodeUIMultiLineTextViewerPanel : public NodeUIMultiLineTextPanel
 	{
@@ -151,12 +151,12 @@ void MultiLineViewerUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& en
 	drawer.Draw (env, drawingImage);
 }
 
-void MultiLineViewerUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
+void MultiLineViewerNode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
 {
 
 }
 
-size_t MultiLineViewerUINode::GetPageCount () const
+size_t MultiLineViewerNode::GetPageCount () const
 {
 	size_t pageCount = textCount / textsPerPage;
 	if (textCount % textsPerPage != 0) {
@@ -165,7 +165,7 @@ size_t MultiLineViewerUINode::GetPageCount () const
 	return pageCount;
 }
 
-void MultiLineViewerUINode::ValidateCurrentPage () const
+void MultiLineViewerNode::ValidateCurrentPage () const
 {
 	size_t pageCount = GetPageCount ();
 	if (currentPage == 0) {
@@ -176,7 +176,7 @@ void MultiLineViewerUINode::ValidateCurrentPage () const
 	}
 }
 
-NE::Stream::Status MultiLineViewerUINode::Read (NE::InputStream& inputStream)
+NE::Stream::Status MultiLineViewerNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	UINode::Read (inputStream);
@@ -184,7 +184,7 @@ NE::Stream::Status MultiLineViewerUINode::Read (NE::InputStream& inputStream)
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status MultiLineViewerUINode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status MultiLineViewerNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
@@ -192,12 +192,12 @@ NE::Stream::Status MultiLineViewerUINode::Write (NE::OutputStream& outputStream)
 	return outputStream.GetStatus ();
 }
 
-size_t MultiLineViewerUINode::GetTextsPerPage () const
+size_t MultiLineViewerNode::GetTextsPerPage () const
 {
 	return textsPerPage;
 }
 
-void MultiLineViewerUINode::SetTextsPerPage (size_t newTextsPerPage)
+void MultiLineViewerNode::SetTextsPerPage (size_t newTextsPerPage)
 {
 	textsPerPage = newTextsPerPage;
 	InvalidateDrawing ();

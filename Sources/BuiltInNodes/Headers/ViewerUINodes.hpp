@@ -9,14 +9,14 @@
 namespace NUIE
 {
 
-class MultiLineViewerUINode : public UINode
+class MultiLineViewerNode : public UINode
 {
-	DYNAMIC_SERIALIZABLE (MultiLineViewerUINode);
+	DYNAMIC_SERIALIZABLE (MultiLineViewerNode);
 
 public:
-	MultiLineViewerUINode ();
-	MultiLineViewerUINode (const std::wstring& name, const Point& position, size_t textsPerPage);
-	virtual ~MultiLineViewerUINode ();
+	MultiLineViewerNode ();
+	MultiLineViewerNode (const std::wstring& name, const Point& position, size_t textsPerPage);
+	virtual ~MultiLineViewerNode ();
 
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
