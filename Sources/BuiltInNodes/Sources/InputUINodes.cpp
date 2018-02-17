@@ -222,7 +222,7 @@ NE::ValuePtr NumberRangeUINode::Calculate (NE::EvaluationEnv& env) const
 
 	double startNum = NE::NumberValue::ToDouble (start);
 	double stepNum = NE::NumberValue::ToDouble (step);
-	int countNum = (int) NE::NumberValue::ToDouble (count);
+	int countNum = NE::NumberValue::ToInteger (count);
 	NE::ListValuePtr list (new NE::ListValue ());
 	for (int i = 0; i < countNum; ++i) {
 		list->Push (NE::ValuePtr (new NE::DoubleValue (startNum + i * stepNum)));

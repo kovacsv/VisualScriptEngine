@@ -20,6 +20,16 @@ NumberValue::~NumberValue ()
 
 }
 
+int NumberValue::ToInteger (const ValuePtr& val)
+{
+	return Value::Cast<NumberValue> (val)->ToInteger ();
+}
+
+int NumberValue::ToInteger (Value* val)
+{
+	return Value::Cast<NumberValue> (val)->ToInteger ();
+}
+
 double NumberValue::ToDouble (const ValuePtr& val)
 {
 	return Value::Cast<NumberValue> (val)->ToDouble ();
@@ -68,6 +78,11 @@ std::wstring IntValue::ToString () const
 	return std::to_wstring (GetValue ());
 }
 
+int IntValue::ToInteger () const
+{
+	return GetValue ();
+}
+
 double IntValue::ToDouble () const
 {
 	return GetValue ();
@@ -112,6 +127,11 @@ std::wstring DoubleValue::ToString () const
 {
 	// TODO: Precision
 	return DoubleToString (GetValue (), 2);
+}
+
+int DoubleValue::ToInteger () const
+{
+	return (int) GetValue ();
 }
 
 double DoubleValue::ToDouble () const

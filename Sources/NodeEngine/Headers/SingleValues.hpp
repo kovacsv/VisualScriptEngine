@@ -15,11 +15,14 @@ public:
 	NumberValue ();
 	virtual ~NumberValue ();
 
+	virtual int				ToInteger () const = 0;
 	virtual double			ToDouble () const = 0;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 
+	static int				ToInteger (const ValuePtr& val);
+	static int				ToInteger (Value* val);
 	static double			ToDouble (const ValuePtr& val);
 	static double			ToDouble (Value* val);
 };
@@ -35,6 +38,7 @@ public:
 	virtual ~IntValue ();
 
 	virtual std::wstring	ToString () const override;
+	virtual int				ToInteger () const override;
 	virtual double			ToDouble () const override;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
@@ -52,6 +56,7 @@ public:
 	virtual ~DoubleValue ();
 
 	virtual std::wstring	ToString () const override;
+	virtual int				ToInteger () const override;
 	virtual double			ToDouble () const override;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;

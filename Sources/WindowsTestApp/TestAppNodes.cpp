@@ -108,13 +108,16 @@ NE::ValuePtr ColorNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr r = EvaluateSingleInputSlot (NE::SlotId ("r"), env);
 	NE::ValuePtr g = EvaluateSingleInputSlot (NE::SlotId ("g"), env);
 	NE::ValuePtr b = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
-	if (!NE::IsComplexType<NE::IntValue> (r) || !NE::IsComplexType<NE::IntValue> (g) || !NE::IsComplexType<NE::IntValue> (b)) {
+	if (!NE::IsComplexType<NE::NumberValue> (r) || !NE::IsComplexType<NE::NumberValue> (g) || !NE::IsComplexType<NE::NumberValue> (b)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({r, g, b}, [&] (const NE::ValueCombination& combination) {
-		result->Push (NE::ValuePtr (new ColorValue (Color (NE::IntValue::Get (combination.GetValue (0)), NE::IntValue::Get (combination.GetValue (1)), NE::IntValue::Get (combination.GetValue (2))))));
+		unsigned char rColor = NE::NumberValue::ToInteger (combination.GetValue (0));
+		unsigned char gColor = NE::NumberValue::ToInteger (combination.GetValue (1));
+		unsigned char bColor = NE::NumberValue::ToInteger (combination.GetValue (2));
+		result->Push (NE::ValuePtr (new ColorValue (Color (rColor, gColor, bColor))));
 	});
 
 	return result;
