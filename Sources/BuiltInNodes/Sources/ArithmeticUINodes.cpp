@@ -45,6 +45,10 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 	double aDouble = NE::NumberValue::ToDouble (aValue);
 	double bDouble = NE::NumberValue::ToDouble (bValue);
 	double result = DoOperation (aDouble, bDouble);
+	if (std::isnan (result)) {
+		return nullptr;
+	}
+
 	return NE::ValuePtr (new NE::DoubleValue (result));
 }
 
