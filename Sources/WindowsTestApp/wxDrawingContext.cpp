@@ -80,16 +80,17 @@ void wxDrawingContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end,
 
 void wxDrawingContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
-	// TODO: Bezier would be better
-	memoryDC->SetBrush (*wxTRANSPARENT_BRUSH);
-	memoryDC->SetPen (GetPen (pen));
-	wxPoint points[4] = {
-		GetPoint (p1),
-		GetPoint (p2),
-		GetPoint (p3),
-		GetPoint (p4)
-	};
-	memoryDC->DrawSpline (4, points);
+	graphicsContext->SetBrush (*wxTRANSPARENT_BRUSH);
+	graphicsContext->SetPen (GetPen (pen));
+	wxGraphicsPath path = graphicsContext->CreatePath ();
+	wxPoint wxp1 = GetPoint (p1);
+	wxPoint wxp2 = GetPoint (p2);
+	wxPoint wxp3 = GetPoint (p3);
+	wxPoint wxp4 = GetPoint (p4);
+	path.MoveToPoint (wxp1);
+	path.AddCurveToPoint (wxp2.x, wxp2.y, wxp3.x, wxp3.y, wxp4.x, wxp4.y);
+	graphicsContext->DrawPath (path);
+	
 }
 
 void wxDrawingContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
