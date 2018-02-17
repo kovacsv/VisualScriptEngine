@@ -90,7 +90,6 @@ void wxDrawingContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2,
 	path.MoveToPoint (wxp1);
 	path.AddCurveToPoint (wxp2.x, wxp2.y, wxp3.x, wxp3.y, wxp4.x, wxp4.y);
 	graphicsContext->DrawPath (path);
-	
 }
 
 void wxDrawingContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
@@ -103,7 +102,7 @@ void wxDrawingContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 
 void wxDrawingContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	graphicsContext->SetBrush (wxBrush (wxColour (color.GetR (), color.GetG (), color.GetB ())));
+	graphicsContext->SetBrush (wxBrush (GetColor (color)));
 	graphicsContext->SetPen (*wxTRANSPARENT_PEN);
 	wxRect theRect = GetRect (rect);
 	graphicsContext->DrawRectangle (theRect.GetX (), theRect.GetY (), theRect.GetWidth (), theRect.GetHeight ());	
@@ -119,7 +118,7 @@ void wxDrawingContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen
 
 void wxDrawingContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	graphicsContext->SetBrush (wxBrush (wxColour (color.GetR (), color.GetG (), color.GetB ())));
+	graphicsContext->SetBrush (wxBrush (GetColor (color)));
 	graphicsContext->SetPen (*wxTRANSPARENT_PEN);
 	wxRect theRect = GetRect (rect);
 	graphicsContext->DrawEllipse (theRect.GetX (), theRect.GetY (), theRect.GetWidth (), theRect.GetHeight ());	
@@ -127,12 +126,43 @@ void wxDrawingContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& c
 
 void wxDrawingContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
-	
+	memoryDC->SetTextForeground (GetColor (textColor));
+	memoryDC->SetFont (GetFont (font));
+
+	int alignment = 0;
+
+	switch (hAnchor) {
+		case NUIE::HorizontalAnchor::Left:
+			alignment |= wxALIGN_LEFT;
+			break;
+		case NUIE::HorizontalAnchor::Center:
+			alignment |= wxALIGN_CENTER_HORIZONTAL;
+			break;
+		case NUIE::HorizontalAnchor::Right:
+			alignment |= wxALIGN_RIGHT;
+			break;
+	}
+
+	switch (vAnchor) {
+		case NUIE::VerticalAnchor::Top:
+			alignment |= wxALIGN_TOP;
+			break;
+		case NUIE::VerticalAnchor::Center:
+			alignment |= wxALIGN_CENTER_VERTICAL;
+			break;
+		case NUIE::VerticalAnchor::Bottom:
+			alignment |= wxALIGN_BOTTOM;
+			break;
+	}
+
+	memoryDC->DrawLabel (text, GetRect (rect), alignment);
 }
 
 NUIE::Size wxDrawingContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	return NUIE::Size (100, 20);
+	memoryDC->SetFont (GetFont (font));
+	wxSize size = memoryDC->GetTextExtent (text);
+	return NUIE::Size (size.x, size.y);
 }
 
 wxPoint wxDrawingContext::GetPoint (const NUIE::Point& point)
@@ -155,4 +185,14 @@ wxPen wxDrawingContext::GetPen (const NUIE::Pen& pen)
 {
 	int width = (int) pen.GetThickness ();
 	return wxPen (GetColor (pen.GetColor ()), width);
+}
+
+wxFont wxDrawingContext::GetFont (const NUIE::Font& font)
+{
+	int fontSize = (int) font.GetSize ();
+	if (fontSize == wxDEFAULT) {
+		// TODO: wxFont handles font size 70 as the default, so changes it back to default font size
+		fontSize += 1;
+	}
+	return wxFont (fontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 }

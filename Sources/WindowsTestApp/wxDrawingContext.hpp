@@ -43,6 +43,7 @@ private:
 	wxRect						GetRect (const NUIE::Rect& rect);
 	wxColour					GetColor (const NUIE::Color& color);
 	wxPen						GetPen (const NUIE::Pen& pen);
+	wxFont						GetFont (const NUIE::Font& font);
 
 	int							width;
 	int							height;
