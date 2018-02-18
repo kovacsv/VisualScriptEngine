@@ -90,8 +90,8 @@ bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& 
 	UIOutputSlotPtr foundOutputSlot = nullptr;
 	UIInputSlotPtr foundInputSlot = nullptr;
 
-	bool nodeEventsEnabled = !uiManager.IsPreviewMode ();
-	if (nodeEventsEnabled) {
+	bool findItemsInsideNode = !uiManager.IsPreviewMode ();
+	if (findItemsInsideNode) {
 		if (foundNode != nullptr) {
 			foundOutputSlot = FindSlotInNode<UIOutputSlotPtr> (foundNode, uiManager, env, viewPosition);
 			if (foundOutputSlot != nullptr) {
@@ -111,7 +111,7 @@ bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& 
 		return true;
 	}
 
-	if (nodeEventsEnabled) {
+	if (findItemsInsideNode) {
 		if (foundOutputSlot == nullptr) {
 			foundOutputSlot = FindSlotByConnPosition<UIOutputSlotPtr> (uiManager, env, viewPosition);
 		}
