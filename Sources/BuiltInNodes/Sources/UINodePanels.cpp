@@ -144,6 +144,7 @@ void NodeUIStatusHeaderPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& r
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (statusRect, statusColor)));
 }
 
+// TODO: Should not copy all the texts, only the visible ones
 NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage, size_t currentPage) :
 	NodeUIPanel (),
 	nodeTexts (nodeTexts),
