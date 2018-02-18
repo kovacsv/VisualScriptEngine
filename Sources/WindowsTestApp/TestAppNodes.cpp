@@ -13,13 +13,13 @@ NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3
 NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
 
 GeometricNode::GeometricNode () :
-	NUIE::CombinedValueUINode ()
+	NUIE::CalculationObserverNode ()
 {
 
 }
 
 GeometricNode::GeometricNode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::CombinedValueUINode (name, position)
+	NUIE::CalculationObserverNode (name, position)
 {
 
 }
@@ -73,14 +73,14 @@ void GeometricNode::RemoveItem (NE::EvaluationEnv& env) const
 NE::Stream::Status GeometricNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NUIE::CombinedValueUINode::Read (inputStream);
+	NUIE::CalculationObserverNode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status GeometricNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NUIE::CombinedValueUINode::Write (outputStream);
+	NUIE::CalculationObserverNode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

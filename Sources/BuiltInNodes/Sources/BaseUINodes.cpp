@@ -8,37 +8,8 @@
 namespace NUIE
 {
 
-NE::SerializationInfo CalculatedUINode::serializationInfo (NE::ObjectId ("{C5B07FFF-5F75-4A61-B40A-AA89F6B8A2E7}"), NE::ObjectVersion (1));
 NE::SerializationInfo CombinedValueUINode::serializationInfo (NE::ObjectId ("{737B3D06-CB61-45BA-AB9E-7D7DF9C16B25}"), NE::ObjectVersion (1));
-
-class EnableDisableNodeCommand : public NodeCommand
-{
-public:
-	EnableDisableNodeCommand (const std::wstring& name, bool isChecked, bool enable) :
-		NodeCommand (name, isChecked),
-		enable (enable)
-	{
-
-	}
-
-	virtual bool IsApplicableTo (const UINodePtr& uiNode) override
-	{
-		return NE::Node::IsType<CalculatedUINode> (uiNode);
-	}
-
-	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
-	{
-		std::shared_ptr<CalculatedUINode> calcUINode = NE::Node::Cast<CalculatedUINode> (uiNode);
-		if (DBGERROR (calcUINode == nullptr)) {
-			return;
-		}
-		calcUINode->SetEnableState (enable, uiEnvironment.GetEvaluationEnv ());
-		uiManager.RequestRecalculate ();
-	}
-
-private:
-	bool enable;
-};
+NE::SerializationInfo CalculationObserverNode::serializationInfo (NE::ObjectId ("{C5B07FFF-5F75-4A61-B40A-AA89F6B8A2E7}"), NE::ObjectVersion (1));
 
 class SetValueCombinationModeCommand : public NodeCommand
 {
@@ -70,109 +41,44 @@ private:
 	NE::ValueCombinationMode combinationMode;
 };
 
-CalculatedUINode::CalculatedUINode () :
-	CalculatedUINode (L"", Point ())
+class EnableDisableNodeCommand : public NodeCommand
 {
+public:
+	EnableDisableNodeCommand (const std::wstring& name, bool isChecked, bool enable) :
+		NodeCommand (name, isChecked),
+		enable (enable)
+	{
 
-}
-
-CalculatedUINode::CalculatedUINode (const std::wstring& name, const Point& position) :
-	UINode (name, position),
-	nodeEnabled (true)
-{
-
-}
-
-CalculatedUINode::~CalculatedUINode ()
-{
-
-}
-
-bool CalculatedUINode::IsEnabled () const
-{
-	return nodeEnabled;
-}
-
-void CalculatedUINode::SetEnableState (bool isEnabled, NE::EvaluationEnv& env)
-{
-	nodeEnabled = isEnabled;
-	InvalidateDrawing ();
-	if (nodeEnabled) {
-		NE::ValuePtr value = GetCalculatedValue ();
-		OnEnabled (value, env);
-	} else {
-		OnDisabled (env);
 	}
-}
 
-void CalculatedUINode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
-{
-	UINode::RegisterCommands (commandRegistrator);
-
-	NodeGroupCommandPtr setNodeStatusGroup (new NodeGroupCommand<NodeCommandPtr> (L"Set Node Status"));
-	setNodeStatusGroup->AddChildCommand (NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", nodeEnabled, true)));
-	setNodeStatusGroup->AddChildCommand (NodeCommandPtr (new EnableDisableNodeCommand (L"Disable", !nodeEnabled, false)));
-	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
-}
-
-void CalculatedUINode::OnCalculated (const NE::ValuePtr&, NE::EvaluationEnv&) const
-{
-
-}
-
-void CalculatedUINode::OnEnabled (const NE::ValuePtr&, NE::EvaluationEnv&) const
-{
-
-}
-
-void CalculatedUINode::OnDisabled (NE::EvaluationEnv&) const
-{
-
-}
-
-void CalculatedUINode::DrawInplace (NodeUIDrawingEnvironment& env) const
-{
-	if (nodeEnabled) {
-		UINode::DrawInplace (env);
-	} else {
-		ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
-		NodeUIDrawingEnvironmentContextDecorator disabledEnv (env, disabledContext);
-		UINode::DrawInplace (disabledEnv);
+	virtual bool IsApplicableTo (const UINodePtr& uiNode) override
+	{
+		return NE::Node::IsType<CalculationObserverNode> (uiNode);
 	}
-}
 
-void CalculatedUINode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
-{
-	if (nodeEnabled) {
-		OnCalculated (value, env);
+	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
+	{
+		std::shared_ptr<CalculationObserverNode> calcUINode = NE::Node::Cast<CalculationObserverNode> (uiNode);
+		if (DBGERROR (calcUINode == nullptr)) {
+			return;
+		}
+		calcUINode->SetEnableState (enable, uiEnvironment.GetEvaluationEnv ());
+		uiManager.RequestRecalculate ();
 	}
-}
 
-NE::Stream::Status CalculatedUINode::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
-	inputStream.Read (nodeEnabled);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status CalculatedUINode::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
-	outputStream.Write (nodeEnabled);
-	return outputStream.GetStatus ();
-}
+private:
+	bool enable;
+};
 
 CombinedValueUINode::CombinedValueUINode () :
-	CalculatedUINode (),
+	UINode (),
 	valueCombinationMode (NE::ValueCombinationMode::Longest)
 {
 
 }
 
 CombinedValueUINode::CombinedValueUINode (const std::wstring& name, const Point& position) :
-	CalculatedUINode (name, position),
+	UINode (name, position),
 	valueCombinationMode (NE::ValueCombinationMode::Longest)
 {
 
@@ -196,7 +102,7 @@ bool CombinedValueUINode::CombineValues (const std::vector<NE::ValuePtr>& values
 
 void CombinedValueUINode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
 {
-	CalculatedUINode::RegisterCommands (commandRegistrator);
+	UINode::RegisterCommands (commandRegistrator);
 
 	NodeGroupCommandPtr setValueCombinationModeGroup (new NodeGroupCommand<NodeCommandPtr> (L"Set Value Combination"));
 	setValueCombinationModeGroup->AddChildCommand (NodeCommandPtr (new SetValueCombinationModeCommand (L"Shortest", valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
@@ -208,7 +114,7 @@ void CombinedValueUINode::RegisterCommands (NodeCommandRegistrator& commandRegis
 NE::Stream::Status CombinedValueUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	CalculatedUINode::Read (inputStream);
+	UINode::Read (inputStream);
 	size_t valueCombinationModeInt = 0;
 	inputStream.Read (valueCombinationModeInt);
 	valueCombinationMode = (NE::ValueCombinationMode) valueCombinationModeInt;
@@ -218,9 +124,103 @@ NE::Stream::Status CombinedValueUINode::Read (NE::InputStream& inputStream)
 NE::Stream::Status CombinedValueUINode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	CalculatedUINode::Write (outputStream);
+	UINode::Write (outputStream);
 	size_t valueCombinationModeInt = (size_t) valueCombinationMode;
 	outputStream.Write (valueCombinationModeInt);
+	return outputStream.GetStatus ();
+}
+
+CalculationObserverNode::CalculationObserverNode () :
+	CalculationObserverNode (L"", Point ())
+{
+
+}
+
+CalculationObserverNode::CalculationObserverNode (const std::wstring& name, const Point& position) :
+	CombinedValueUINode (name, position),
+	nodeEnabled (true)
+{
+
+}
+
+CalculationObserverNode::~CalculationObserverNode ()
+{
+
+}
+
+bool CalculationObserverNode::IsEnabled () const
+{
+	return nodeEnabled;
+}
+
+void CalculationObserverNode::SetEnableState (bool isEnabled, NE::EvaluationEnv& env)
+{
+	nodeEnabled = isEnabled;
+	InvalidateDrawing ();
+	if (nodeEnabled) {
+		NE::ValuePtr value = GetCalculatedValue ();
+		OnEnabled (value, env);
+	} else {
+		OnDisabled (env);
+	}
+}
+
+void CalculationObserverNode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
+{
+	CombinedValueUINode::RegisterCommands (commandRegistrator);
+
+	NodeGroupCommandPtr setNodeStatusGroup (new NodeGroupCommand<NodeCommandPtr> (L"Set Node Status"));
+	setNodeStatusGroup->AddChildCommand (NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", nodeEnabled, true)));
+	setNodeStatusGroup->AddChildCommand (NodeCommandPtr (new EnableDisableNodeCommand (L"Disable", !nodeEnabled, false)));
+	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
+}
+
+void CalculationObserverNode::OnCalculated (const NE::ValuePtr&, NE::EvaluationEnv&) const
+{
+
+}
+
+void CalculationObserverNode::OnEnabled (const NE::ValuePtr&, NE::EvaluationEnv&) const
+{
+
+}
+
+void CalculationObserverNode::OnDisabled (NE::EvaluationEnv&) const
+{
+
+}
+
+void CalculationObserverNode::DrawInplace (NodeUIDrawingEnvironment& env) const
+{
+	if (nodeEnabled) {
+		UINode::DrawInplace (env);
+	} else {
+		ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
+		NodeUIDrawingEnvironmentContextDecorator disabledEnv (env, disabledContext);
+		UINode::DrawInplace (disabledEnv);
+	}
+}
+
+void CalculationObserverNode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+{
+	if (nodeEnabled) {
+		OnCalculated (value, env);
+	}
+}
+
+NE::Stream::Status CalculationObserverNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	UINode::Read (inputStream);
+	inputStream.Read (nodeEnabled);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status CalculationObserverNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	UINode::Write (outputStream);
+	outputStream.Write (nodeEnabled);
 	return outputStream.GetStatus ();
 }
 

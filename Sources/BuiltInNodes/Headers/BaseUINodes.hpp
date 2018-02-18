@@ -11,35 +11,9 @@
 namespace NUIE
 {
 
-class CalculatedUINode : public UINode
-{
-	SERIALIZABLE;
+// TODO: This is not ok, these are two orthogonal properties, should not inherit from each other
 
-public:
-	CalculatedUINode ();
-	CalculatedUINode (const std::wstring& name, const Point& position);
-	virtual ~CalculatedUINode ();
-
-	bool						IsEnabled () const;
-	void						SetEnableState (bool isEnabled, NE::EvaluationEnv& env);
-
-	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const override;
-
-	virtual void				OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
-	virtual void				OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
-	virtual void				OnDisabled (NE::EvaluationEnv& env) const;
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-private:
-	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const override final;
-	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
-
-	bool nodeEnabled;
-};
-
-class CombinedValueUINode : public CalculatedUINode
+class CombinedValueUINode : public UINode
 {
 	SERIALIZABLE;
 
@@ -58,6 +32,34 @@ public:
 
 private:
 	NE::ValueCombinationMode valueCombinationMode;
+};
+
+class CalculationObserverNode : public CombinedValueUINode
+{
+	SERIALIZABLE;
+
+public:
+	CalculationObserverNode ();
+	CalculationObserverNode (const std::wstring& name, const Point& position);
+	virtual ~CalculationObserverNode ();
+
+	bool						IsEnabled () const;
+	void						SetEnableState (bool isEnabled, NE::EvaluationEnv& env);
+
+	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const override;
+
+	virtual void				OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
+	virtual void				OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
+	virtual void				OnDisabled (NE::EvaluationEnv& env) const;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+private:
+	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const override final;
+	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
+
+	bool nodeEnabled;
 };
 
 }
