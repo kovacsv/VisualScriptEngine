@@ -219,9 +219,11 @@ TEST (DynamicTest)
 	
 	MyInheritedSerializable* serializable2 = dynamic_cast<MyInheritedSerializable*> (serializableObj.get ());
 	ASSERT (serializable2 != nullptr);
-	ASSERT (serializable.intVal == serializable2->intVal);
-	ASSERT (serializable.stringVal == serializable2->stringVal);
-	ASSERT (serializable.inheritedIntVal == serializable2->inheritedIntVal);
+	if (serializable2 != nullptr) {
+		ASSERT (serializable.intVal == serializable2->intVal);
+		ASSERT (serializable.stringVal == serializable2->stringVal);
+		ASSERT (serializable.inheritedIntVal == serializable2->inheritedIntVal);
+	}
 }
 
 TEST (DynamicTest2)
