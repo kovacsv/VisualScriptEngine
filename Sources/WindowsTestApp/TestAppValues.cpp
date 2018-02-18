@@ -28,16 +28,12 @@ static void ReadPoint (NE::InputStream& inputStream, Point& point)
 {
 	inputStream.Read (point.x);
 	inputStream.Read (point.y);
-	inputStream.Read (point.size);
-	ReadColor (inputStream, point.color);
 }
 
 static void WritePoint (NE::OutputStream& outputStream, const Point& point)
 {
 	outputStream.Write (point.x);
 	outputStream.Write (point.y);
-	outputStream.Write (point.size);
-	WriteColor (outputStream, point.color);
 }
 
 Color::Color () :
@@ -68,16 +64,14 @@ std::wstring Color::ToString () const
 }
 
 Point::Point () :
-	Point (0, 0, 0, Color ())
+	Point (0.0, 0.0)
 {
 
 }
 
-Point::Point (double x, double y, double size, Color color) :
+Point::Point (double x, double y) :
 	x (x),
-	y (y),
-	size (size),
-	color (color)
+	y (y)
 {
 
 }

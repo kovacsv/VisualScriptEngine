@@ -50,7 +50,6 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-
 class PointNode : public GeometricNode
 {
 	DYNAMIC_SERIALIZABLE (PointNode);

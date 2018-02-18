@@ -75,7 +75,12 @@ void wxDrawingContext::EndDraw ()
 
 void wxDrawingContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
-	
+	graphicsContext->SetBrush (*wxTRANSPARENT_BRUSH);
+	graphicsContext->SetPen (GetPen (pen));
+	std::vector<wxPoint2DDouble> lines;
+	lines.push_back (wxPoint2DDouble (beg.GetX (), beg.GetY ()));
+	lines.push_back (wxPoint2DDouble (end.GetX (), end.GetY ()));
+	graphicsContext->DrawLines (lines.size (), lines.data ());
 }
 
 void wxDrawingContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)

@@ -20,14 +20,12 @@ class Point
 {
 public:
 	Point ();
-	Point (double x, double y, double size, Color color);
+	Point (double x, double y);
 	
 	std::wstring ToString () const;
 
 	double	x;
 	double	y;
-	double	size;
-	Color	color;
 };
 
 class Line

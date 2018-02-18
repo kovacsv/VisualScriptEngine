@@ -206,8 +206,6 @@ void PointNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("x"), L"X", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("y"), L"Y", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("size"), L"Size", NE::ValuePtr (new NE::DoubleValue (10.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("point"), L"Point")));
 }
 
@@ -215,20 +213,16 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
 	NE::ValuePtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
-	NE::ValuePtr size = EvaluateSingleInputSlot (NE::SlotId ("size"), env);
-	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
-	if (!NE::IsComplexType<NE::DoubleValue> (x) || !NE::IsComplexType<NE::DoubleValue> (y) || !NE::IsComplexType<NE::DoubleValue> (size) || !NE::IsComplexType<ColorValue> (color)) {
+	if (!NE::IsComplexType<NE::DoubleValue> (x) || !NE::IsComplexType<NE::DoubleValue> (y)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
-	CombineValues ({x, y, size, color}, [&] (const NE::ValueCombination& combination) {
+	CombineValues ({x, y}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new PointValue (
 			Point (
 				NE::DoubleValue::Get (combination.GetValue (0)),
-				NE::DoubleValue::Get (combination.GetValue (1)),
-				NE::DoubleValue::Get (combination.GetValue (2)),
-				ColorValue::Get (combination.GetValue (3))
+				NE::DoubleValue::Get (combination.GetValue (1))
 			)
 		)));
 	});
@@ -241,7 +235,6 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	GeometricNode::RegisterParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, "PositionXParameter", L"Position X", NUIE::ParameterType::Double, NE::SlotId ("x"));
 	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, "PositionYParameter", L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
-	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, "SizeParameter", L"Size", NUIE::ParameterType::Double, NE::SlotId ("size"));
 }
 
 NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& value) const
@@ -252,7 +245,11 @@ NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& valu
 	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
 	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
 		Point point = PointValue::Get (innerValue);
-		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (NUIE::Rect (point.x - point.size / 2, point.y - point.size / 2, point.size, point.size), NUIE::Color (point.color.r, point.color.g, point.color.b))));
+		int pointSize = 10;
+		NUIE::Rect pointRect (point.x - pointSize / 2, point.y - pointSize / 2, pointSize, pointSize);
+		NUIE::Pen pointPen (NUIE::Color (80, 80, 80), 1.0);
+		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (pointRect.GetTopLeft (), pointRect.GetBottomRight (), pointPen)));
+		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (pointRect.GetBottomLeft (), pointRect.GetTopRight (), pointPen)));
 	});
 	return result;
 }
