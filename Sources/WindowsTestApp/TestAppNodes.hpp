@@ -37,6 +37,7 @@ private:
 	mutable NUIE::DrawingItemConstPtr	drawingItem;
 };
 
+// TODO: Color node can be enabled/disabled but it doen't make sense
 class ColorNode : public NUIE::CombinedValueUINode
 {
 	DYNAMIC_SERIALIZABLE (ColorNode);
