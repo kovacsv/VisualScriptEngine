@@ -23,6 +23,7 @@
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BaseUINodes.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BuiltInCommands.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\InputUINodes.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\UINodeLayouts.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\UINodePanels.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\ViewerUINodes.hpp" />
   </ItemGroup>
@@ -31,6 +32,7 @@
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BaseUINodes.cpp" />
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BuiltInCommands.cpp" />
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\InputUINodes.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\UINodeLayouts.cpp" />
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\UINodePanels.cpp" />
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\ViewerUINodes.cpp" />
   </ItemGroup>

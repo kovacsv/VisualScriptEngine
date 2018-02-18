@@ -271,19 +271,19 @@ NodeUILeftRightButtonsPanel::NodeUILeftRightButtonsPanel (	const std::string& le
 															const std::wstring& leftButtonText,
 															const std::string& rightButtonId,
 															const std::wstring& rightButtonText,
-															const std::wstring& nodeText,
+															const std::wstring& panelText,
 															NodeUIDrawingEnvironment& env) :
 	NodeUIPanel (),
 	leftButtonId (leftButtonId),
 	leftButtonText (leftButtonText),
 	rightButtonId (rightButtonId),
 	rightButtonText (rightButtonText),
-	nodeText (nodeText)
+	panelText (panelText)
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 	leftButtonSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), leftButtonText).Grow (2.0 * nodePadding, nodePadding);
-	nodeTextSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText).Grow (2.0 * nodePadding, nodePadding);
+	panelTextSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), panelText).Grow (2.0 * nodePadding, nodePadding);
 	rightButtonSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), rightButtonText).Grow (2.0 * nodePadding, nodePadding);
 }
 
@@ -292,8 +292,8 @@ Size NodeUILeftRightButtonsPanel::GetMinSize (NodeUIDrawingEnvironment& env) con
 	const SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 	Size minSize;
-	minSize.SetWidth (leftButtonSize.GetWidth () + nodeTextSize.GetWidth () + rightButtonSize.GetWidth ());
-	minSize.SetHeight (std::max (std::max (leftButtonSize.GetHeight (), rightButtonSize.GetHeight ()), nodeTextSize.GetHeight ()));
+	minSize.SetWidth (leftButtonSize.GetWidth () + panelTextSize.GetWidth () + rightButtonSize.GetWidth ());
+	minSize.SetHeight (std::max (std::max (leftButtonSize.GetHeight (), rightButtonSize.GetHeight ()), panelTextSize.GetHeight ()));
 	minSize = minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 	return minSize;
 }
@@ -311,8 +311,8 @@ void NodeUILeftRightButtonsPanel::Draw (NodeUIDrawingEnvironment& env, const Rec
 
 	Rect leftButtonRect = Rect::FromPositionAndSize (rect.GetTopLeft () + Point (nodePadding, nodePadding), leftButtonSize);
 	Rect rightButtonRect = Rect::FromPositionAndSize (rect.GetTopRight () - Point (rightButtonSize.GetWidth () + nodePadding, -nodePadding), rightButtonSize);
-	Rect textRect = Rect::FromPositionAndSize (leftButtonRect.GetTopRight (), Size (rightButtonRect.GetLeft () - leftButtonRect.GetRight (), nodeTextSize.GetHeight ()));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));
+	Rect textRect = Rect::FromPositionAndSize (leftButtonRect.GetTopRight (), Size (rightButtonRect.GetLeft () - leftButtonRect.GetRight (), panelTextSize.GetHeight ()));
+	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), panelText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));
 
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (leftButtonRect, buttonBackgroundColor)));
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (leftButtonRect, skinParams.GetNodeTextFont (), leftButtonText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));

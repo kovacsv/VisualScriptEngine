@@ -6,6 +6,7 @@
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
 #include "ValueCombination.hpp"
+#include "UINodeLayouts.hpp"
 
 namespace NUIE
 {

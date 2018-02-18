@@ -167,18 +167,7 @@ void NumericUpDownNode::SetStep (double newStep)
 
 void NumericUpDownNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
 {
-	std::wstring nodeText = L"<empty>";
-	DBGASSERT (ValueIsCalculated ());
-	NE::ValuePtr nodeValue = GetCalculatedValue ();
-	if (nodeValue != nullptr) {
-		nodeText = nodeValue->ToString ();
-	}
-
-	NodeUIPanelDrawer drawer;
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUIHeaderPanel (GetNodeName ())));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", nodeText, env)));
-	drawer.Draw (env, drawingImage);
+	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", L"<", "plus", L">", env, drawingImage);
 }
 
 void NumericUpDownNode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const

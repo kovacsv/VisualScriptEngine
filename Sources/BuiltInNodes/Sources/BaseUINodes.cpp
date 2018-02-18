@@ -104,16 +104,7 @@ NE::Stream::Status HeaderWithSlotsUINode::Write (NE::OutputStream& outputStream)
 
 void HeaderWithSlotsUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
 {
-	DBGASSERT (ValueIsCalculated ());
-	NodeUIStatusHeaderPanel::NodeStatus nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasNoValue;
-	if (GetCalculatedValue () != nullptr) {
-		nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasValue;
-	}
-
-	NodeUIPanelDrawer drawer;
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUIStatusHeaderPanel (GetNodeName (), nodeStatus)));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
-	drawer.Draw (env, drawingImage);
+	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 void HeaderWithSlotsUINode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const

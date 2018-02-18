@@ -147,9 +147,9 @@ protected:
 	std::wstring	leftButtonText;
 	std::string		rightButtonId;
 	std::wstring	rightButtonText;
-	std::wstring	nodeText;
+	std::wstring	panelText;
 	Size			leftButtonSize;
-	Size			nodeTextSize;
+	Size			panelTextSize;
 	Size			rightButtonSize;
 };
 

@@ -116,16 +116,6 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env,
 		}
 	};
 
-	class NodeUILeftRightButtonsViewerPanel : public NodeUILeftRightButtonsPanel
-	{
-	public:
-		NodeUILeftRightButtonsViewerPanel (NodeUIDrawingEnvironment& env, size_t currentPage, size_t pageCount, size_t textCount) :
-			NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)
-		{
-		
-		}
-	};
-	
 	std::vector<std::wstring> nodeTexts = { L"<empty>" };
 	DBGASSERT (ValueIsCalculated ());
 	NE::ValuePtr nodeValue = GetCalculatedValue ();
@@ -146,7 +136,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env,
 	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
 	drawer.AddPanel (NodeUIPanelPtr (new NodeUIMultiLineTextViewerPanel (nodeTexts, env, textsPerPage, currentPage)));
 	if (textCount > textsPerPage) {
-		drawer.AddPanel (NodeUIPanelPtr (new NodeUILeftRightButtonsViewerPanel (env, currentPage, pageCount, textCount)));
+		drawer.AddPanel (NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
 	}
 	drawer.Draw (env, drawingImage);
 }
