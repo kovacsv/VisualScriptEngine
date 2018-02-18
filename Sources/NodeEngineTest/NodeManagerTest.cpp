@@ -25,11 +25,6 @@ public:
 	{
 		return nullptr;
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 TEST (NodeManagerTest)

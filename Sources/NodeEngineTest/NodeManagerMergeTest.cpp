@@ -48,11 +48,6 @@ public:
 		return ValuePtr (new IntValue (result));
 	}
 
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
-
 	virtual Stream::Status Read (InputStream& inputStream) override
 	{
 		ObjectHeader header (inputStream);

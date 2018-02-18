@@ -60,11 +60,6 @@ public:
 	{
 	
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 TEST (UINodeDataTest)

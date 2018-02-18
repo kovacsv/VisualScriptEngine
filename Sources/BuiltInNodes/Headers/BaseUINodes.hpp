@@ -11,24 +11,7 @@
 namespace NUIE
 {
 
-class HeaderWithSlotsUINode : public UINode
-{
-	SERIALIZABLE;
-
-public:
-	HeaderWithSlotsUINode ();
-	HeaderWithSlotsUINode (const std::wstring& name, const Point& position);
-	virtual ~HeaderWithSlotsUINode ();
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-private:
-	virtual void	UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
-	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
-};
-
-class CalculatedUINode : public HeaderWithSlotsUINode
+class CalculatedUINode : public UINode
 {
 	SERIALIZABLE;
 
@@ -50,8 +33,8 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
-	virtual void	DrawInplace (NodeUIDrawingEnvironment& env) const override final;
-	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
+	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const override final;
+	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 
 	bool nodeEnabled;
 };
@@ -72,7 +55,6 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
 
 private:
 	NE::ValueCombinationMode valueCombinationMode;

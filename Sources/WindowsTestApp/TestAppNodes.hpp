@@ -26,6 +26,9 @@ public:
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
+protected:
+	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
+
 private:
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValuePtr& value) const = 0;
 	void								AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
@@ -48,6 +51,9 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+protected:
+	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 };
 
 class PointNode : public GeometricNode

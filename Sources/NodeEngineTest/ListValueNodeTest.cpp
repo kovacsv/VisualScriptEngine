@@ -44,11 +44,6 @@ public:
 		return ValuePtr (new IntValue (val));
 	}
 
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-
-	}
-
 	int val;
 };
 
@@ -71,11 +66,6 @@ public:
 	{
 		std::vector<int> result;
 		return EvaluateInputSlot (SlotId ("in"), env);
-	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
 	}
 };
 
@@ -103,11 +93,6 @@ public:
 			result += IntValue::Get (value);
 		});
 		return ValuePtr (new IntValue (result));
-	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
 	}
 };
 

@@ -141,11 +141,6 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env,
 	drawer.Draw (env, drawingImage);
 }
 
-void MultiLineViewerNode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
-{
-
-}
-
 size_t MultiLineViewerNode::GetPageCount () const
 {
 	size_t pageCount = textCount / textsPerPage;

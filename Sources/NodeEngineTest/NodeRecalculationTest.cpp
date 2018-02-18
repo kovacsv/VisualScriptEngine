@@ -32,11 +32,6 @@ public:
 		return ValuePtr (new IntValue (IntValue::Get (in) + 1));
 	}
 
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
-
 	mutable int calculationCounter = 0;
 };
 

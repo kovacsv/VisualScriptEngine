@@ -44,11 +44,6 @@ public:
 		return result;
 	}
 
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-
-	}
-
 private:
 	NE::ValueCombinationMode	combinationMode;
 	ValuePtr					aValue;

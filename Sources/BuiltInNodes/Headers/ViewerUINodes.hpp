@@ -32,7 +32,6 @@ public:
 
 private:
 	virtual void	UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
-	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 
 	size_t			GetPageCount () const;
 	void			ValidateCurrentPage () const;

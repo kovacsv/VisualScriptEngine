@@ -3,6 +3,7 @@
 #include "ValueCombination.hpp"
 #include "UINodeParameters.hpp"
 #include "UINodeCommonParameters.hpp"
+#include "UINodeLayouts.hpp"
 #include "TestAppValues.hpp"
 
 NE::SerializationInfo			GeometricNode::serializationInfo (NE::ObjectId ("{74700C2B-6587-4850-A2F6-9DAB38896F41}"), NE::ObjectVersion (1));
@@ -81,6 +82,11 @@ NE::Stream::Status GeometricNode::Write (NE::OutputStream& outputStream) const
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NUIE::CombinedValueUINode::Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+void GeometricNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+{
+	NUIE::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 ColorNode::ColorNode () :
@@ -188,6 +194,11 @@ NE::Stream::Status ColorNode::Write (NE::OutputStream& outputStream) const
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NUIE::CombinedValueUINode::Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+void ColorNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+{
+	NUIE::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 PointNode::PointNode () :

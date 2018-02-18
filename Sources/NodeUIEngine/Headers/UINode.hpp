@@ -100,7 +100,6 @@ private:
 
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
-	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
 
 	std::wstring				nodeName;
 	Point						nodePosition;

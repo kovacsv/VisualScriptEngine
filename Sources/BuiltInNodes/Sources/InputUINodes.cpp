@@ -170,11 +170,6 @@ void NumericUpDownNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, N
 	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", L"<", "plus", L">", env, drawingImage);
 }
 
-void NumericUpDownNode::CalculationPostProcess (const NE::ValuePtr&, NE::EvaluationEnv&) const
-{
-
-}
-
 NumberRangeNode::NumberRangeNode () :
 	NumberRangeNode (L"", Point ())
 {
@@ -182,7 +177,7 @@ NumberRangeNode::NumberRangeNode () :
 }
 
 NumberRangeNode::NumberRangeNode (const std::wstring& name, const Point& position) :
-	HeaderWithSlotsUINode (name, position)
+	UINode (name, position)
 {
 
 }
@@ -246,15 +241,20 @@ void NumberRangeNode::RegisterParameters (NodeParameterList& parameterList) cons
 NE::Stream::Status NumberRangeNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	HeaderWithSlotsUINode::Read (inputStream);
+	UINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status NumberRangeNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	HeaderWithSlotsUINode::Write (outputStream);
+	UINode::Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+void NumberRangeNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+{
+	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 }

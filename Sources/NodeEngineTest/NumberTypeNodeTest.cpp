@@ -28,11 +28,6 @@ public:
 	{
 		return ValuePtr (new IntValue (5));
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 class DoubleNode : public Node
@@ -52,11 +47,6 @@ public:
 	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
 	{
 		return ValuePtr (new DoubleValue (6.0));
-	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
 	}
 };
 
@@ -91,11 +81,6 @@ public:
 		ValuePtr b = EvaluateSingleInputSlot (SlotId ("second"), env);
 		double result = NumberValue::ToDouble (a) + NumberValue::ToDouble (b);
 		return ValuePtr (new DoubleValue (result));
-	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
 	}
 };
 

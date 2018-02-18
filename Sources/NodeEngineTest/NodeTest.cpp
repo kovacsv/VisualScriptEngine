@@ -50,11 +50,6 @@ public:
 	{
 		return nullptr;
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 class DummyEvaluationData : public EvaluationData

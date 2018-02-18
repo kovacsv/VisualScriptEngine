@@ -39,13 +39,12 @@ public:
 
 private:
 	virtual void	UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
-	virtual void	CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 
 	double			val;
 	double			step;
 };
 
-class NumberRangeNode : public HeaderWithSlotsUINode
+class NumberRangeNode : public UINode
 {
 	DYNAMIC_SERIALIZABLE (NumberRangeNode);
 
@@ -60,6 +59,9 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+protected:
+	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
 };
 
 }

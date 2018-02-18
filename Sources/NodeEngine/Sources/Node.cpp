@@ -270,6 +270,11 @@ ListValuePtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) 
 	return EvaluateInputSlot (inputSlot, env);
 }
 
+void Node::CalculationPostProcess (const ValuePtr&, EvaluationEnv&) const
+{
+
+}
+
 ListValuePtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const
 {
 	if (DBGERROR (nodeEvaluator == nullptr)) {

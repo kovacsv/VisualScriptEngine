@@ -13,13 +13,13 @@ NE::DynamicSerializationInfo	MultiplicationNode::serializationInfo (NE::ObjectId
 NE::DynamicSerializationInfo	DivisionNode::serializationInfo (NE::ObjectId ("{652DDDFC-A441-40B1-87AC-0BED247F35E7}"), NE::ObjectVersion (1), DivisionNode::CreateSerializableInstance);
 
 BinaryOperationNode::BinaryOperationNode () :
-	HeaderWithSlotsUINode ()
+	UINode ()
 {
 
 }
 
 BinaryOperationNode::BinaryOperationNode (const std::wstring& name, const Point& position) :
-	HeaderWithSlotsUINode (name, position)
+	UINode (name, position)
 {
 
 }
@@ -56,7 +56,7 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 
 void BinaryOperationNode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	HeaderWithSlotsUINode::RegisterParameters (parameterList);
+	UINode::RegisterParameters (parameterList);
 	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, "BinaryOperationNodeAParameter", L"A", ParameterType::Double, NE::SlotId ("a"));
 	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, "BinaryOperationNodeBParameter", L"B", ParameterType::Double, NE::SlotId ("b"));
 }
@@ -64,15 +64,20 @@ void BinaryOperationNode::RegisterParameters (NodeParameterList& parameterList) 
 NE::Stream::Status BinaryOperationNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	HeaderWithSlotsUINode::Read (inputStream);
+	UINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status BinaryOperationNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	HeaderWithSlotsUINode::Write (outputStream);
+	UINode::Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+void BinaryOperationNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+{
+	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 AdditionNode::AdditionNode () :

@@ -58,11 +58,6 @@ public:
 		return ValuePtr (new IntValue (val));
 	}
 
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
-
 private:
 	int val;
 };
@@ -86,11 +81,6 @@ public:
 	{
 		return ValuePtr (new IntValue (5));
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 class InputNode3 : public Node
@@ -111,11 +101,6 @@ public:
 	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
 	{
 		return ValuePtr (new IntValue (5));
-	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
 	}
 };
 
@@ -161,11 +146,6 @@ public:
 		ValuePtr secondResult = EvaluateSingleInputSlot (SlotId ("second"), env);
 		return ValuePtr (new IntValue (IntValue::Get (firstResult) + IntValue::Get (secondResult)));
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 class MultiAdditionNode : public Node
@@ -192,11 +172,6 @@ public:
 		});
 		return ValuePtr (new IntValue (sum));
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 class DisabledAdditionNode : public Node
@@ -221,11 +196,6 @@ public:
 		ValuePtr secondResult = EvaluateSingleInputSlot (SlotId ("second"), env);
 		return ValuePtr (new IntValue (IntValue::Get (firstResult) + IntValue::Get (secondResult)));
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 class AdderInputOutputNode : public Node
@@ -248,11 +218,6 @@ public:
 	{
 		ValuePtr inputVal = EvaluateSingleInputSlot (SlotId ("in"), env);
 		return ValuePtr (new IntValue (IntValue::Get (inputVal) + toAdd));
-	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
 	}
 
 	void SetToAdd (int newToAdd)

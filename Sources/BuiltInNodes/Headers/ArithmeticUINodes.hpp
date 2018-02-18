@@ -10,7 +10,7 @@
 namespace NUIE
 {
 
-class BinaryOperationNode : public HeaderWithSlotsUINode
+class BinaryOperationNode : public UINode
 {
 	SERIALIZABLE;
 
@@ -25,6 +25,9 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+protected:
+	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
 
 private:
 	virtual double				DoOperation (double a, double b) const = 0;

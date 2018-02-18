@@ -131,11 +131,6 @@ public:
 		pair.b.x = 6;
 		return ValuePtr (new ABPairValue (pair));
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 class OutputNodeA : public Node
@@ -166,11 +161,6 @@ public:
 	{
 		return EvaluateSingleInputSlot (SlotId ("inA"), env);
 	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
-	}
 };
 
 class OutputNodeB : public Node
@@ -200,11 +190,6 @@ public:
 	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		return EvaluateSingleInputSlot (SlotId ("inB"), env);
-	}
-
-	virtual void CalculationPostProcess (const ValuePtr&, NE::EvaluationEnv&) const override
-	{
-	
 	}
 };
 
