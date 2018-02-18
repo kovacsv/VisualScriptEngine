@@ -12,7 +12,7 @@ template <typename NodeType, typename ValueType>
 class TypedNodeParameter : public NodeParameter
 {
 public:
-	TypedNodeParameter (const std::string& paramId, const std::wstring& name, ParameterType type) :
+	TypedNodeParameter (const std::string& paramId, const std::wstring& name, const ParameterType& type) :
 		NodeParameter (paramId, name, type)
 	{
 
@@ -122,7 +122,7 @@ template <typename NodeType, typename ValueType>
 class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
 {
 public:
-	SlotDefaultValueParameter (const std::string& paramId, const std::wstring& name, ParameterType type, const NE::SlotId& slotId) :
+	SlotDefaultValueParameter (const std::string& paramId, const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId) :
 		TypedNodeParameter<NodeType, ValueType> (paramId, name, type),
 		slotId (slotId)
 	{
@@ -151,12 +151,12 @@ private:
 };
 
 template <class NodeType, class ValueType>
-void RegisterSlotDefaultValueParameter (NodeParameterList& parameterList, const std::string& paramId, const std::wstring& name, ParameterType type, const NE::SlotId& slotId)
+void RegisterSlotDefaultValueParameter (NodeParameterList& parameterList, const std::string& paramId, const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId)
 {
 	class Parameter : public SlotDefaultValueParameter<NodeType, ValueType>
 	{
 	public:
-		Parameter (const std::string& paramId, const std::wstring& name, ParameterType type, const NE::SlotId& slotId) :
+		Parameter (const std::string& paramId, const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId) :
 			SlotDefaultValueParameter<NodeType, ValueType> (paramId, name, type, slotId)
 		{
 
