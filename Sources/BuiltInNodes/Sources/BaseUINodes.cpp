@@ -8,7 +8,7 @@
 namespace NUIE
 {
 
-NE::SerializationInfo CombinedValueUINode::serializationInfo (NE::ObjectId ("{737B3D06-CB61-45BA-AB9E-7D7DF9C16B25}"), NE::ObjectVersion (1));
+NE::SerializationInfo CombinedValueNode::serializationInfo (NE::ObjectId ("{737B3D06-CB61-45BA-AB9E-7D7DF9C16B25}"), NE::ObjectVersion (1));
 NE::SerializationInfo CalculationObserverNode::serializationInfo (NE::ObjectId ("{C5B07FFF-5F75-4A61-B40A-AA89F6B8A2E7}"), NE::ObjectVersion (1));
 
 class SetValueCombinationModeCommand : public NodeCommand
@@ -23,12 +23,12 @@ public:
 
 	virtual bool IsApplicableTo (const UINodePtr& uiNode) override
 	{
-		return NE::Node::IsType<CombinedValueUINode> (uiNode);
+		return NE::Node::IsType<CombinedValueNode> (uiNode);
 	}
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UINodePtr& uiNode) override
 	{
-		std::shared_ptr<CombinedValueUINode> combValueUINode = NE::Node::Cast<CombinedValueUINode> (uiNode);
+		std::shared_ptr<CombinedValueNode> combValueUINode = NE::Node::Cast<CombinedValueNode> (uiNode);
 		if (DBGERROR (combValueUINode == nullptr)) {
 			return;
 		}
@@ -70,37 +70,37 @@ private:
 	bool enable;
 };
 
-CombinedValueUINode::CombinedValueUINode () :
+CombinedValueNode::CombinedValueNode () :
 	UINode (),
 	valueCombinationMode (NE::ValueCombinationMode::Longest)
 {
 
 }
 
-CombinedValueUINode::CombinedValueUINode (const std::wstring& name, const Point& position) :
+CombinedValueNode::CombinedValueNode (const std::wstring& name, const Point& position) :
 	UINode (name, position),
 	valueCombinationMode (NE::ValueCombinationMode::Longest)
 {
 
 }
 
-CombinedValueUINode::~CombinedValueUINode ()
+CombinedValueNode::~CombinedValueNode ()
 {
 
 }
 
-void CombinedValueUINode::SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode)
+void CombinedValueNode::SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode)
 {
 	valueCombinationMode = newValueCombinationMode;
 	InvalidateValue ();
 }
 
-bool CombinedValueUINode::CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const
+bool CombinedValueNode::CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const
 {
 	return NE::CombineValues (valueCombinationMode, values, processor);
 }
 
-void CombinedValueUINode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
+void CombinedValueNode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
 {
 	UINode::RegisterCommands (commandRegistrator);
 
@@ -111,7 +111,7 @@ void CombinedValueUINode::RegisterCommands (NodeCommandRegistrator& commandRegis
 	commandRegistrator.RegisterNodeGroupCommand (setValueCombinationModeGroup);
 }
 
-NE::Stream::Status CombinedValueUINode::Read (NE::InputStream& inputStream)
+NE::Stream::Status CombinedValueNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	UINode::Read (inputStream);
@@ -121,7 +121,7 @@ NE::Stream::Status CombinedValueUINode::Read (NE::InputStream& inputStream)
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status CombinedValueUINode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status CombinedValueNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
@@ -137,7 +137,7 @@ CalculationObserverNode::CalculationObserverNode () :
 }
 
 CalculationObserverNode::CalculationObserverNode (const std::wstring& name, const Point& position) :
-	CombinedValueUINode (name, position),
+	CombinedValueNode (name, position),
 	nodeEnabled (true)
 {
 
@@ -167,7 +167,7 @@ void CalculationObserverNode::SetEnableState (bool isEnabled, NE::EvaluationEnv&
 
 void CalculationObserverNode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
 {
-	CombinedValueUINode::RegisterCommands (commandRegistrator);
+	CombinedValueNode::RegisterCommands (commandRegistrator);
 
 	NodeGroupCommandPtr setNodeStatusGroup (new NodeGroupCommand<NodeCommandPtr> (L"Set Node Status"));
 	setNodeStatusGroup->AddChildCommand (NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", nodeEnabled, true)));

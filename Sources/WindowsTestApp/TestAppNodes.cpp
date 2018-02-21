@@ -90,13 +90,13 @@ void GeometricNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env,
 }
 
 ColorNode::ColorNode () :
-	NUIE::CombinedValueUINode ()
+	NUIE::CombinedValueNode ()
 {
 
 }
 
 ColorNode::ColorNode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::CombinedValueUINode (name, position)
+	NUIE::CombinedValueNode (name, position)
 {
 
 }
@@ -185,14 +185,14 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 NE::Stream::Status ColorNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NUIE::CombinedValueUINode::Read (inputStream);
+	NUIE::CombinedValueNode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status ColorNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NUIE::CombinedValueUINode::Write (outputStream);
+	NUIE::CombinedValueNode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

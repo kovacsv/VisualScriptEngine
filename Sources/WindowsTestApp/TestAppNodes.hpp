@@ -37,7 +37,7 @@ private:
 	mutable NUIE::DrawingItemConstPtr	drawingItem;
 };
 
-class ColorNode : public NUIE::CombinedValueUINode
+class ColorNode : public NUIE::CombinedValueNode
 {
 	DYNAMIC_SERIALIZABLE (ColorNode);
 

@@ -13,14 +13,14 @@ namespace NUIE
 
 // TODO: This is not ok, these are two orthogonal properties, should not inherit from each other
 
-class CombinedValueUINode : public UINode
+class CombinedValueNode : public UINode
 {
 	SERIALIZABLE;
 
 public:
-	CombinedValueUINode ();
-	CombinedValueUINode (const std::wstring& name, const Point& position);
-	virtual ~CombinedValueUINode ();
+	CombinedValueNode ();
+	CombinedValueNode (const std::wstring& name, const Point& position);
+	virtual ~CombinedValueNode ();
 
 	void						SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode);
 	bool						CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const;
@@ -34,7 +34,7 @@ private:
 	NE::ValueCombinationMode valueCombinationMode;
 };
 
-class CalculationObserverNode : public CombinedValueUINode
+class CalculationObserverNode : public CombinedValueNode
 {
 	SERIALIZABLE;
 
