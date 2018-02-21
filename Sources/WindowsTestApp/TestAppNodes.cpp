@@ -224,7 +224,7 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
 	NE::ValuePtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
-	if (!NE::IsComplexType<NE::DoubleValue> (x) || !NE::IsComplexType<NE::DoubleValue> (y)) {
+	if (!NE::IsComplexType<NE::NumberValue> (x) || !NE::IsComplexType<NE::NumberValue> (y)) {
 		return nullptr;
 	}
 
@@ -232,8 +232,8 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 	CombineValues ({x, y}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new PointValue (
 			Point (
-				NE::DoubleValue::Get (combination.GetValue (0)),
-				NE::DoubleValue::Get (combination.GetValue (1))
+				NE::NumberValue::ToDouble (combination.GetValue (0)),
+				NE::NumberValue::ToDouble (combination.GetValue (1))
 			)
 		)));
 	});
@@ -373,7 +373,7 @@ NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr beg = EvaluateSingleInputSlot (NE::SlotId ("center"), env);
 	NE::ValuePtr end = EvaluateSingleInputSlot (NE::SlotId ("radius"), env);
 	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
-	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::DoubleValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
+	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::NumberValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
 
@@ -382,7 +382,7 @@ NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 		result->Push (NE::ValuePtr (new CircleValue (
 			Circle (
 				PointValue::Get (combination.GetValue (0)),
-				NE::DoubleValue::Get (combination.GetValue (1)),
+				NE::NumberValue::ToDouble (combination.GetValue (1)),
 				ColorValue::Get (combination.GetValue (2))
 			))));
 	});
