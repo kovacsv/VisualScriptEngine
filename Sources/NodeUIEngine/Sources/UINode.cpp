@@ -356,16 +356,6 @@ bool UINode::RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot)
 	return true;
 }
 
-bool UINode::RegisterInputSlot (const NE::InputSlotPtr& newInputSlot)
-{
-	return Node::RegisterInputSlot (newInputSlot);
-}
-
-bool UINode::RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot)
-{
-	return Node::RegisterOutputSlot (newOutputSlot);
-}
-
 const NodeDrawingImage& UINode::GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const
 {
 	if (nodeDrawingImage.IsEmpty ()) {

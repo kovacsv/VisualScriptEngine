@@ -95,9 +95,6 @@ protected:
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
 
 private:
-	virtual bool				RegisterInputSlot (const NE::InputSlotPtr& newInputSlot) override;
-	virtual bool				RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot) override;
-
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
 
