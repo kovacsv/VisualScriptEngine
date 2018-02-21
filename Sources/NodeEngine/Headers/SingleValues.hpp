@@ -7,28 +7,20 @@
 namespace NE
 {
 
-class NumberValue : public SingleValue
+class NumberValue
 {
-	SERIALIZABLE;
-
 public:
-	NumberValue ();
-	virtual ~NumberValue ();
+	virtual int		ToInteger () const = 0;
+	virtual double	ToDouble () const = 0;
 
-	virtual int				ToInteger () const = 0;
-	virtual double			ToDouble () const = 0;
-
-	virtual Stream::Status	Read (InputStream& inputStream) override;
-	virtual Stream::Status	Write (OutputStream& outputStream) const override;
-
-	static int				ToInteger (const ValuePtr& val);
-	static int				ToInteger (Value* val);
-	static double			ToDouble (const ValuePtr& val);
-	static double			ToDouble (Value* val);
+	static int		ToInteger (const ValuePtr& val);
+	static int		ToInteger (Value* val);
+	static double	ToDouble (const ValuePtr& val);
+	static double	ToDouble (Value* val);
 };
 
 class IntValue : public NumberValue,
-				 public GenericValueBase<int>
+				 public GenericValue<int>
 {
 	DYNAMIC_SERIALIZABLE (IntValue);
 
@@ -46,7 +38,7 @@ public:
 };
 
 class DoubleValue : public NumberValue,
-					public GenericValueBase<double>
+					public GenericValue<double>
 {
 	DYNAMIC_SERIALIZABLE (DoubleValue);
 
@@ -63,8 +55,7 @@ public:
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 };
 
-class StringValue : public SingleValue,
-					public GenericValueBase<std::wstring>
+class StringValue : public GenericValue<std::wstring>
 {
 	DYNAMIC_SERIALIZABLE (StringValue);
 
@@ -78,29 +69,6 @@ public:
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 };
-
-template <class Type>
-class GenericValue : public SingleValue,
-					 public GenericValueBase<Type>
-{
-public:
-	GenericValue (const Type& val);
-	virtual ~GenericValue ();
-};
-
-template <class Type>
-GenericValue<Type>::GenericValue (const Type& val) :
-	SingleValue (),
-	GenericValueBase<Type> (val)
-{
-
-}
-
-template <class Type>
-GenericValue<Type>::~GenericValue ()
-{
-
-}
 
 }
 

@@ -50,8 +50,8 @@ TEST (ValueTest)
 	ASSERT (IntValue::Get (intValuePtr) == 6);
 	ASSERT (intValue.ToString () == L"5");
 	ASSERT (intValue.ToDouble () == 5.0);
-	ASSERT (GenericValueBase<int>::Get (&intValue) == 5);
-	ASSERT (GenericValueBase<int>::Get (intValuePtr) == 6);
+	ASSERT (GenericValue<int>::Get (&intValue) == 5);
+	ASSERT (GenericValue<int>::Get (intValuePtr) == 6);
 	ASSERT (NumberValue::ToDouble (&intValue) == 5.0);
 	ASSERT (NumberValue::ToDouble (intValuePtr) == 6.0);
 }
@@ -62,7 +62,7 @@ TEST (StringValueTest)
 	ASSERT (Value::IsType<StringValue> (&val));
 	ASSERT (StringValue::Get (&val) == L"Example");
 	ASSERT (val.ToString () == L"Example");
-	ASSERT (GenericValueBase<std::wstring>::Get (&val) == L"Example");
+	ASSERT (GenericValue<std::wstring>::Get (&val) == L"Example");
 }
 
 TEST (CustomValueTest)

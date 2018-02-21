@@ -4,21 +4,9 @@
 namespace NE
 {
 
-SerializationInfo			NumberValue::serializationInfo (ObjectId ("{05039AA5-7422-43DE-9770-F729B805CDA3}"), ObjectVersion (1));
 DynamicSerializationInfo	IntValue::serializationInfo (ObjectId ("{FE348A6B-C5B8-42E2-9AD1-167BE291AEE8}"), ObjectVersion (1), IntValue::CreateSerializableInstance);
 DynamicSerializationInfo	DoubleValue::serializationInfo (ObjectId ("{4D6581DC-7A20-4F2A-A1A3-95BF6DDFFDB6}"), ObjectVersion (1), DoubleValue::CreateSerializableInstance);
 DynamicSerializationInfo	StringValue::serializationInfo (ObjectId ("{FABFAA20-48F4-4F15-A9FB-FD8F05581F31}"), ObjectVersion (1), StringValue::CreateSerializableInstance);
-
-NumberValue::NumberValue () :
-	SingleValue ()
-{
-
-}
-
-NumberValue::~NumberValue ()
-{
-
-}
 
 int NumberValue::ToInteger (const ValuePtr& val)
 {
@@ -40,30 +28,15 @@ double NumberValue::ToDouble (Value* val)
 	return Value::Cast<NumberValue> (val)->ToDouble ();
 }
 
-Stream::Status NumberValue::Read (InputStream& inputStream)
-{
-	ObjectHeader header (inputStream);
-	SingleValue::Read (inputStream);
-	return inputStream.GetStatus ();
-}
-
-Stream::Status NumberValue::Write (OutputStream& outputStream) const
-{
-	ObjectHeader header (outputStream, serializationInfo);
-	SingleValue::Write (outputStream);
-	return outputStream.GetStatus ();
-}
-
 IntValue::IntValue () :
-	NumberValue (),
-	GenericValueBase (0)
+	IntValue (0)
 {
 
 }
 
 IntValue::IntValue (int val) :
 	NumberValue (),
-	GenericValueBase (val)
+	GenericValue<int> (val)
 {
 
 }
@@ -91,7 +64,7 @@ double IntValue::ToDouble () const
 Stream::Status IntValue::Read (InputStream& inputStream)
 {
 	ObjectHeader header (inputStream);
-	NumberValue::Read (inputStream);
+	SingleValue::Read (inputStream);
 	inputStream.Read (val);
 	return inputStream.GetStatus ();
 }
@@ -99,21 +72,20 @@ Stream::Status IntValue::Read (InputStream& inputStream)
 Stream::Status IntValue::Write (OutputStream& outputStream) const
 {
 	ObjectHeader header (outputStream, serializationInfo);
-	NumberValue::Write (outputStream);
+	SingleValue::Write (outputStream);
 	outputStream.Write (val);
 	return outputStream.GetStatus ();
 }
 
 DoubleValue::DoubleValue () :
-	NumberValue (),
-	GenericValueBase (0.0)
+	DoubleValue (0.0)
 {
 
 }
 
 DoubleValue::DoubleValue (double val) :
 	NumberValue (),
-	GenericValueBase (val)
+	GenericValue<double> (val)
 {
 
 }
@@ -142,7 +114,7 @@ double DoubleValue::ToDouble () const
 Stream::Status DoubleValue::Read (InputStream& inputStream)
 {
 	ObjectHeader header (inputStream);
-	NumberValue::Read (inputStream);
+	SingleValue::Read (inputStream);
 	inputStream.Read (val);
 	return inputStream.GetStatus ();
 }
@@ -150,21 +122,19 @@ Stream::Status DoubleValue::Read (InputStream& inputStream)
 Stream::Status DoubleValue::Write (OutputStream& outputStream) const
 {
 	ObjectHeader header (outputStream, serializationInfo);
-	NumberValue::Write (outputStream);
+	SingleValue::Write (outputStream);
 	outputStream.Write (val);
 	return outputStream.GetStatus ();
 }
 
 StringValue::StringValue () :
-	SingleValue (),
-	GenericValueBase (L"")
+	StringValue (L"")
 {
 
 }
 
 StringValue::StringValue (const std::wstring& val) :
-	SingleValue (),
-	GenericValueBase (val)
+	GenericValue<std::wstring> (val)
 {
 
 }

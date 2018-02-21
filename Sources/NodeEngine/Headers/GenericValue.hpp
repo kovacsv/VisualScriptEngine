@@ -9,61 +9,61 @@ namespace NE
 {
 
 template <class Type>
-class GenericValueBase
+class GenericValue : public SingleValue
 {
 public:
-	GenericValueBase (const Type& val);
-	virtual ~GenericValueBase ();
+	GenericValue (const Type& val);
+	virtual ~GenericValue ();
 
-	void				SetValue (const Type& newVal);
-	const Type&			GetValue () const;
+	void					SetValue (const Type& newVal);
+	const Type&				GetValue () const;
 
-	static const Type&	Get (const ValuePtr& val);
-	static const Type&	Get (Value* val);
+	static const Type&		Get (const ValuePtr& val);
+	static const Type&		Get (Value* val);
 
 private:
-	GenericValueBase (const GenericValueBase&) = delete;
-	GenericValueBase& operator= (const GenericValueBase&) = delete;
+	GenericValue (const GenericValue&) = delete;
+	GenericValue& operator= (const GenericValue&) = delete;
 
 protected:
 	Type val;
 };
 
 template <class Type>
-GenericValueBase<Type>::GenericValueBase (const Type& val) :
+GenericValue<Type>::GenericValue (const Type& val) :
 	val (val)
 {
 
 }
 
 template <class Type>
-GenericValueBase<Type>::~GenericValueBase ()
+GenericValue<Type>::~GenericValue ()
 {
 
 }
 
 template <class Type>
-void GenericValueBase<Type>::SetValue (const Type& newVal)
+void GenericValue<Type>::SetValue (const Type& newVal)
 {
 	val = newVal;
 }
 
 template <class Type>
-const Type& GenericValueBase<Type>::GetValue () const
+const Type& GenericValue<Type>::GetValue () const
 {
 	return val;
 }
 
 template <class Type>
-const Type& GenericValueBase<Type>::Get (const ValuePtr& val)
+const Type& GenericValue<Type>::Get (const ValuePtr& val)
 {
-	return Value::Cast<GenericValueBase<Type>> (val.get ())->GetValue ();
+	return Value::Cast<GenericValue<Type>> (val.get ())->GetValue ();
 }
 
 template <class Type>
-const Type& GenericValueBase<Type>::Get (Value* val)
+const Type& GenericValue<Type>::Get (Value* val)
 {
-	return Value::Cast<GenericValueBase<Type>> (val)->GetValue ();
+	return Value::Cast<GenericValue<Type>> (val)->GetValue ();
 }
 
 }
