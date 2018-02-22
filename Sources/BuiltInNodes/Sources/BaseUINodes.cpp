@@ -193,11 +193,11 @@ void CalculationObserverNode::OnDisabled (NE::EvaluationEnv&) const
 void CalculationObserverNode::DrawInplace (NodeUIDrawingEnvironment& env) const
 {
 	if (nodeEnabled) {
-		UINode::DrawInplace (env);
+		CombinedValueNode::DrawInplace (env);
 	} else {
 		ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
 		NodeUIDrawingEnvironmentContextDecorator disabledEnv (env, disabledContext);
-		UINode::DrawInplace (disabledEnv);
+		CombinedValueNode::DrawInplace (disabledEnv);
 	}
 }
 
