@@ -250,12 +250,7 @@ void NodeUIManager::InvalidateNodeDrawing (const UINodePtr& uiNode)
 void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 {
 	if (status.NeedToRecalculate ()) {
-		EnumerateUINodes ([&] (const UINodePtr& uiNode) {
-			if (!uiNode->ValueIsCalculated ()) {
-				uiNode->Evaluate (env.GetEvaluationEnv ());
-			}
-			return true;
-		});
+		nodeManager.EvaluateAllNodes (env.GetEvaluationEnv ());
 		env.OnValuesRecalculated ();
 		status.RequestRedraw ();
 	}
