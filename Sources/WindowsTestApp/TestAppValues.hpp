@@ -2,6 +2,7 @@
 #define TESTAPPVALUES_HPP
 
 #include "SingleValues.hpp"
+#include "Geometry.hpp"
 
 class Color
 {
@@ -16,42 +17,30 @@ public:
 	unsigned char b;
 };
 
-class Point
-{
-public:
-	Point ();
-	Point (double x, double y);
-	
-	std::wstring ToString () const;
-
-	double	x;
-	double	y;
-};
-
 class Line
 {
 public:
 	Line ();
-	Line (Point beg, Point end, Color color);
+	Line (NUIE::Point beg, NUIE::Point end, Color color);
 
 	std::wstring ToString () const;
 
-	Point	beg;
-	Point	end;
-	Color	color;
+	NUIE::Point		beg;
+	NUIE::Point		end;
+	Color			color;
 };
 
 class Circle
 {
 public:
 	Circle ();
-	Circle (Point center, double radius, Color color);
+	Circle (NUIE::Point center, double radius, Color color);
 
 	std::wstring ToString () const;
 
-	Point	center;
-	double	radius;
-	Color	color;
+	NUIE::Point		center;
+	double			radius;
+	Color			color;
 };
 
 class ColorValue : public NE::GenericValue<Color>
@@ -67,13 +56,13 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class PointValue : public NE::GenericValue<Point>
+class PointValue : public NE::GenericValue<NUIE::Point>
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
 
 public:
 	PointValue ();
-	PointValue (const Point& val);
+	PointValue (const NUIE::Point& val);
 	virtual std::wstring ToString () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;

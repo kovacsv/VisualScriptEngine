@@ -24,16 +24,15 @@ static void WriteColor (NE::OutputStream& outputStream, const Color& color)
 	outputStream.Write (color.b);
 }
 
-static void ReadPoint (NE::InputStream& inputStream, Point& point)
+static std::wstring PointToString (const NUIE::Point& point)
 {
-	inputStream.Read (point.x);
-	inputStream.Read (point.y);
-}
-
-static void WritePoint (NE::OutputStream& outputStream, const Point& point)
-{
-	outputStream.Write (point.x);
-	outputStream.Write (point.y);
+	std::wstring result = L"";
+	result += L"Point (";
+	result += NE::DoubleToString (point.GetX (), 2);
+	result += L", ";
+	result += NE::DoubleToString (point.GetY (), 2);
+	result += L")";
+	return result;
 }
 
 Color::Color () :
@@ -63,37 +62,13 @@ std::wstring Color::ToString () const
 	return result;
 }
 
-Point::Point () :
-	Point (0.0, 0.0)
-{
-
-}
-
-Point::Point (double x, double y) :
-	x (x),
-	y (y)
-{
-
-}
-
-std::wstring Point::ToString () const
-{
-	std::wstring result = L"";
-	result += L"Point (";
-	result += NE::DoubleToString (x, 2);
-	result += L", ";
-	result += NE::DoubleToString (y, 2);
-	result += L")";
-	return result;
-}
-
 Line::Line () :
-	Line (Point (), Point (), Color ())
+	Line (NUIE::Point (), NUIE::Point (), Color ())
 {
 
 }
 
-Line::Line (Point beg, Point end, Color color) :
+Line::Line (NUIE::Point beg, NUIE::Point end, Color color) :
 	beg (beg),
 	end (end),
 	color (color)
@@ -105,20 +80,20 @@ std::wstring Line::ToString () const
 {
 	std::wstring result = L"";
 	result += L"Line (";
-	result += beg.ToString ();
+	result += PointToString (beg);
 	result += L" - ";
-	result += end.ToString ();
+	result += PointToString (end);
 	result += L")";
 	return result;
 }
 
 Circle::Circle () :
-	Circle (Point (), 0, Color ())
+	Circle (NUIE::Point (), 0, Color ())
 {
 
 }
 
-Circle::Circle (Point center, double radius, Color color) :
+Circle::Circle (NUIE::Point center, double radius, Color color) :
 	center (center),
 	radius (radius),
 	color (color)
@@ -130,7 +105,7 @@ std::wstring Circle::ToString () const
 {
 	std::wstring result = L"";
 	result += L"Circle (";
-	result += center.ToString ();
+	result += PointToString (center);
 	result += L", ";
 	result += NE::DoubleToString (radius, 23);
 	result += L")";
@@ -169,20 +144,21 @@ NE::Stream::Status ColorValue::Write (NE::OutputStream& outputStream) const
 }
 
 PointValue::PointValue () :
-	NE::GenericValue<Point> (Point ())
+	NE::GenericValue<NUIE::Point> (NUIE::Point ())
 {
 
 }
 
-PointValue::PointValue (const Point& val) :
-	NE::GenericValue<Point> (val)
+PointValue::PointValue (const NUIE::Point& val) :
+	NE::GenericValue<NUIE::Point> (val)
 {
 
 }
 
 std::wstring PointValue::ToString () const
 {
-	return GetValue ().ToString ();
+	const NUIE::Point& point = GetValue ();
+	return PointToString (point);
 }
 
 NE::Stream::Status PointValue::Read (NE::InputStream& inputStream)
