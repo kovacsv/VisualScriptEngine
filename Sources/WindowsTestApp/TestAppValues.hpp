@@ -3,53 +3,41 @@
 
 #include "SingleValues.hpp"
 #include "Geometry.hpp"
-
-class Color
-{
-public:
-	Color ();
-	Color (unsigned char r, unsigned char g, unsigned char b);
-
-	std::wstring ToString () const;
-
-	unsigned char r;
-	unsigned char g;
-	unsigned char b;
-};
+#include "Drawing.hpp"
 
 class Line
 {
 public:
 	Line ();
-	Line (NUIE::Point beg, NUIE::Point end, Color color);
+	Line (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Color& color);
 
 	std::wstring ToString () const;
 
 	NUIE::Point		beg;
 	NUIE::Point		end;
-	Color			color;
+	NUIE::Color		color;
 };
 
 class Circle
 {
 public:
 	Circle ();
-	Circle (NUIE::Point center, double radius, Color color);
+	Circle (const NUIE::Point& center, double radius, const NUIE::Color& color);
 
 	std::wstring ToString () const;
 
 	NUIE::Point		center;
 	double			radius;
-	Color			color;
+	NUIE::Color		color;
 };
 
-class ColorValue : public NE::GenericValue<Color>
+class ColorValue : public NE::GenericValue<NUIE::Color>
 {
 	DYNAMIC_SERIALIZABLE (ColorValue);
 
 public:
 	ColorValue ();
-	ColorValue (const Color& val);
+	ColorValue (const NUIE::Color& val);
 	virtual std::wstring ToString () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;

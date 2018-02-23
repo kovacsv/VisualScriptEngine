@@ -123,7 +123,7 @@ NE::ValuePtr ColorNode::Calculate (NE::EvaluationEnv& env) const
 		unsigned char rColor = NE::NumberValue::ToInteger (combination.GetValue (0));
 		unsigned char gColor = NE::NumberValue::ToInteger (combination.GetValue (1));
 		unsigned char bColor = NE::NumberValue::ToInteger (combination.GetValue (2));
-		result->Push (NE::ValuePtr (new ColorValue (Color (rColor, gColor, bColor))));
+		result->Push (NE::ValuePtr (new ColorValue (NUIE::Color (rColor, gColor, bColor))));
 	});
 
 	return result;
@@ -295,7 +295,7 @@ void LineNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("beg"), L"Beg", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("end"), L"End", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (NUIE::Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("line"), L"Line")));
 }
 
@@ -332,7 +332,7 @@ NUIE::DrawingItemConstPtr LineNode::CreateDrawingItem (const NE::ValuePtr& value
 		result->AddItem (
 			NUIE::DrawingItemConstPtr (
 				new NUIE::DrawingLine (line.beg, line.end,
-					NUIE::Pen (NUIE::Color (line.color.r, line.color.g, line.color.b), 1.0)
+					NUIE::Pen (line.color, 1.0)
 				)
 			)
 		);
@@ -370,7 +370,7 @@ void CircleNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("center"), L"Center", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("radius"), L"Radius", NE::ValuePtr (new NE::DoubleValue (10.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (NUIE::Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("circle"), L"Circle")));
 }
 
@@ -426,7 +426,7 @@ NUIE::DrawingItemConstPtr CircleNode::CreateDrawingItem (const NE::ValuePtr& val
 	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
 		Circle circle = CircleValue::Get (innerValue);
 		NUIE::Rect rect = NUIE::Rect::FromCenterAndSize (circle.center, NUIE::Size (circle.radius * 2.0, circle.radius * 2.0));
-		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (rect, NUIE::Pen (NUIE::Color (circle.color.r, circle.color.g, circle.color.b), 1.0))));
+		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (rect, NUIE::Pen (circle.color, 1.0))));
 	});
 	return result;
 }

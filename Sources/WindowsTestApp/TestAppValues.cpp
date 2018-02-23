@@ -10,20 +10,6 @@ NE::DynamicSerializationInfo	PointValue::serializationInfo (NE::ObjectId ("{D10E
 NE::DynamicSerializationInfo	LineValue::serializationInfo (NE::ObjectId ("{E899A12E-F87F-4B6B-ACD8-5C86573C382F}"), NE::ObjectVersion (1), LineValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleValue::serializationInfo (NE::ObjectId ("{82190020-867B-4260-94BA-49D8FE94418E}"), NE::ObjectVersion (1), CircleValue::CreateSerializableInstance);
 
-static void ReadColor (NE::InputStream& inputStream, Color& color)
-{
-	inputStream.Read (color.r);
-	inputStream.Read (color.g);
-	inputStream.Read (color.b);
-}
-
-static void WriteColor (NE::OutputStream& outputStream, const Color& color)
-{
-	outputStream.Write (color.r);
-	outputStream.Write (color.g);
-	outputStream.Write (color.b);
-}
-
 static std::wstring PointToString (const NUIE::Point& point)
 {
 	std::wstring result = L"";
@@ -35,40 +21,26 @@ static std::wstring PointToString (const NUIE::Point& point)
 	return result;
 }
 
-Color::Color () :
-	Color (0, 0, 0)
-{
-
-}
-
-Color::Color (unsigned char r, unsigned char g, unsigned char b) :
-	r (r),
-	g (g),
-	b (b)
-{
-
-}
-
-std::wstring Color::ToString () const
+static std::wstring ColorToString (const NUIE::Color& color)
 {
 	std::wstring result = L"";
 	result += L"Color (";
-	result += std::to_wstring (r);
+	result += std::to_wstring (color.GetR ());
 	result += L", ";
-	result += std::to_wstring (g);
+	result += std::to_wstring (color.GetG ());
 	result += L", ";
-	result += std::to_wstring (b);
+	result += std::to_wstring (color.GetB ());
 	result += L")";
 	return result;
 }
 
 Line::Line () :
-	Line (NUIE::Point (), NUIE::Point (), Color ())
+	Line (NUIE::Point (), NUIE::Point (), NUIE::Color ())
 {
 
 }
 
-Line::Line (NUIE::Point beg, NUIE::Point end, Color color) :
+Line::Line (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Color& color) :
 	beg (beg),
 	end (end),
 	color (color)
@@ -88,12 +60,12 @@ std::wstring Line::ToString () const
 }
 
 Circle::Circle () :
-	Circle (NUIE::Point (), 0, Color ())
+	Circle (NUIE::Point (), 0, NUIE::Color ())
 {
 
 }
 
-Circle::Circle (NUIE::Point center, double radius, Color color) :
+Circle::Circle (const NUIE::Point& center, double radius, const NUIE::Color& color) :
 	center (center),
 	radius (radius),
 	color (color)
@@ -113,33 +85,33 @@ std::wstring Circle::ToString () const
 }
 
 ColorValue::ColorValue () :
-	NE::GenericValue<Color> (Color ())
+	ColorValue (NUIE::Color ())
 {
 
 }
 
-ColorValue::ColorValue (const Color& val) :
-	NE::GenericValue<Color> (val)
+ColorValue::ColorValue (const NUIE::Color& val) :
+	NE::GenericValue<NUIE::Color> (val)
 {
 
 }
 
 std::wstring ColorValue::ToString () const
 {
-	return GetValue ().ToString ();
+	return ColorToString (GetValue ());
 }
 
 NE::Stream::Status ColorValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	ReadColor (inputStream, val);
+	NUIE::ReadColor (inputStream, val);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status ColorValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	WriteColor (outputStream, val);
+	NUIE::WriteColor (outputStream, val);
 	return outputStream.GetStatus ();
 }
 

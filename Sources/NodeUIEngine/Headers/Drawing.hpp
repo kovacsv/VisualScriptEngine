@@ -1,6 +1,7 @@
 #ifndef DRAWING_HPP
 #define DRAWING_HPP
 
+#include "Serializable.hpp"
 #include "Checksum.hpp"
 #include <string>
 
@@ -24,14 +25,16 @@ enum class VerticalAnchor
 class Color
 {
 public:
+	Color ();
 	Color (unsigned char r, unsigned char g, unsigned char b);
 
-	unsigned char GetR () const;
-	unsigned char GetG () const;
-	unsigned char GetB () const;
+	void			Set (unsigned char newR, unsigned char newG, unsigned char newB);
+	unsigned char	GetR () const;
+	unsigned char	GetG () const;
+	unsigned char	GetB () const;
 
-	bool	operator== (const Color& rhs) const;
-	bool	operator!= (const Color& rhs) const;
+	bool				operator== (const Color& rhs) const;
+	bool				operator!= (const Color& rhs) const;
 
 private:
 	unsigned char r;
@@ -74,6 +77,9 @@ private:
 void AddColorToChecksum (NE::Checksum& checksum, const Color& color);
 void AddPenToChecksum (NE::Checksum& checksum, const Pen& pen);
 void AddFontToChecksum (NE::Checksum& checksum, const Font& font);
+
+NE::Stream::Status ReadColor (NE::InputStream& inputStream, Color& color);
+NE::Stream::Status WriteColor (NE::OutputStream& outputStream, const Color& color);
 
 }
 

@@ -3,12 +3,26 @@
 namespace NUIE
 {
 
+Color::Color () :
+	Color (0, 0, 0)
+{
+
+}
+
+
 Color::Color (unsigned char r, unsigned char g, unsigned char b) :
 	r (r),
 	g (g),
 	b (b)
 {
 
+}
+
+void Color::Set (unsigned char newR, unsigned char newG, unsigned char newB)
+{
+	r = newR;
+	g = newG;
+	b = newB;
 }
 
 unsigned char Color::GetR () const
@@ -107,6 +121,27 @@ void AddFontToChecksum (NE::Checksum& checksum, const Font& font)
 {
 	checksum.Add (font.GetFamily ());
 	checksum.Add (font.GetSize ());
+}
+
+NE::Stream::Status ReadColor (NE::InputStream& inputStream, Color& color)
+{
+	unsigned char r = 0;
+	unsigned char g = 0;
+	unsigned char b = 0;
+	inputStream.Read (r);
+	inputStream.Read (g);
+	inputStream.Read (b);
+	color.Set (r, g, b);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status WriteColor (NE::OutputStream& outputStream, const Color& color)
+{
+
+	outputStream.Write (color.GetR ());
+	outputStream.Write (color.GetG ());
+	outputStream.Write (color.GetB ());
+	return outputStream.GetStatus ();
 }
 
 }
