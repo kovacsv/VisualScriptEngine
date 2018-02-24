@@ -9,7 +9,7 @@ namespace NUIE
 {
 
 NE::SerializationInfo CombinedValueNode::serializationInfo (NE::ObjectId ("{737B3D06-CB61-45BA-AB9E-7D7DF9C16B25}"), NE::ObjectVersion (1));
-NE::SerializationInfo CalculationObserverNode::serializationInfo (NE::ObjectId ("{C5B07FFF-5F75-4A61-B40A-AA89F6B8A2E7}"), NE::ObjectVersion (1));
+NE::SerializationInfo EnableDisableNode::serializationInfo (NE::ObjectId ("{C5B07FFF-5F75-4A61-B40A-AA89F6B8A2E7}"), NE::ObjectVersion (1));
 
 class SetValueCombinationModeCommand : public NodeCommand
 {
@@ -53,12 +53,12 @@ public:
 
 	virtual bool IsApplicableTo (const UINodePtr& uiNode) override
 	{
-		return NE::Node::IsType<CalculationObserverNode> (uiNode);
+		return NE::Node::IsType<EnableDisableNode> (uiNode);
 	}
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
 	{
-		std::shared_ptr<CalculationObserverNode> calcUINode = NE::Node::Cast<CalculationObserverNode> (uiNode);
+		std::shared_ptr<EnableDisableNode> calcUINode = NE::Node::Cast<EnableDisableNode> (uiNode);
 		if (DBGERROR (calcUINode == nullptr)) {
 			return;
 		}
@@ -130,30 +130,30 @@ NE::Stream::Status CombinedValueNode::Write (NE::OutputStream& outputStream) con
 	return outputStream.GetStatus ();
 }
 
-CalculationObserverNode::CalculationObserverNode () :
-	CalculationObserverNode (L"", Point ())
+EnableDisableNode::EnableDisableNode () :
+	EnableDisableNode (L"", Point ())
 {
 
 }
 
-CalculationObserverNode::CalculationObserverNode (const std::wstring& name, const Point& position) :
+EnableDisableNode::EnableDisableNode (const std::wstring& name, const Point& position) :
 	CombinedValueNode (name, position),
 	nodeEnabled (true)
 {
 
 }
 
-CalculationObserverNode::~CalculationObserverNode ()
+EnableDisableNode::~EnableDisableNode ()
 {
 
 }
 
-bool CalculationObserverNode::IsEnabled () const
+bool EnableDisableNode::IsEnabled () const
 {
 	return nodeEnabled;
 }
 
-void CalculationObserverNode::SetEnableState (bool isEnabled, NE::EvaluationEnv& env)
+void EnableDisableNode::SetEnableState (bool isEnabled, NE::EvaluationEnv& env)
 {
 	nodeEnabled = isEnabled;
 	InvalidateDrawing ();
@@ -165,7 +165,7 @@ void CalculationObserverNode::SetEnableState (bool isEnabled, NE::EvaluationEnv&
 	}
 }
 
-void CalculationObserverNode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
+void EnableDisableNode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
 {
 	CombinedValueNode::RegisterCommands (commandRegistrator);
 
@@ -175,22 +175,22 @@ void CalculationObserverNode::RegisterCommands (NodeCommandRegistrator& commandR
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
 }
 
-void CalculationObserverNode::OnCalculated (const NE::ValuePtr&, NE::EvaluationEnv&) const
+void EnableDisableNode::OnCalculated (const NE::ValuePtr&, NE::EvaluationEnv&) const
 {
 
 }
 
-void CalculationObserverNode::OnEnabled (const NE::ValuePtr&, NE::EvaluationEnv&) const
+void EnableDisableNode::OnEnabled (const NE::ValuePtr&, NE::EvaluationEnv&) const
 {
 
 }
 
-void CalculationObserverNode::OnDisabled (NE::EvaluationEnv&) const
+void EnableDisableNode::OnDisabled (NE::EvaluationEnv&) const
 {
 
 }
 
-void CalculationObserverNode::DrawInplace (NodeUIDrawingEnvironment& env) const
+void EnableDisableNode::DrawInplace (NodeUIDrawingEnvironment& env) const
 {
 	if (nodeEnabled) {
 		CombinedValueNode::DrawInplace (env);
@@ -201,25 +201,25 @@ void CalculationObserverNode::DrawInplace (NodeUIDrawingEnvironment& env) const
 	}
 }
 
-void CalculationObserverNode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void EnableDisableNode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
 {
 	if (nodeEnabled) {
 		OnCalculated (value, env);
 	}
 }
 
-NE::Stream::Status CalculationObserverNode::Read (NE::InputStream& inputStream)
+NE::Stream::Status EnableDisableNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
+	CombinedValueNode::Read (inputStream);
 	inputStream.Read (nodeEnabled);
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status CalculationObserverNode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status EnableDisableNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
+	CombinedValueNode::Write (outputStream);
 	outputStream.Write (nodeEnabled);
 	return outputStream.GetStatus ();
 }

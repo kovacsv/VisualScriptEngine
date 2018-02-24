@@ -10,7 +10,7 @@
 #include "UINodeCommands.hpp"
 #include "BaseUINodes.hpp"
 
-class GeometricNode : public NUIE::CalculationObserverNode
+class GeometricNode : public NUIE::EnableDisableNode
 {
 	SERIALIZABLE;
 

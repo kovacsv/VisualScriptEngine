@@ -34,14 +34,14 @@ private:
 	NE::ValueCombinationMode valueCombinationMode;
 };
 
-class CalculationObserverNode : public CombinedValueNode
+class EnableDisableNode : public CombinedValueNode
 {
 	SERIALIZABLE;
 
 public:
-	CalculationObserverNode ();
-	CalculationObserverNode (const std::wstring& name, const Point& position);
-	virtual ~CalculationObserverNode ();
+	EnableDisableNode ();
+	EnableDisableNode (const std::wstring& name, const Point& position);
+	virtual ~EnableDisableNode ();
 
 	bool						IsEnabled () const;
 	void						SetEnableState (bool isEnabled, NE::EvaluationEnv& env);
