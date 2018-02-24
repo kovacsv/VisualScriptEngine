@@ -57,8 +57,8 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 void BinaryOperationNode::RegisterParameters (NodeParameterList& parameterList) const
 {
 	UINode::RegisterParameters (parameterList);
-	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, "BinaryOperationNodeAParameter", L"A", ParameterType::Double, NE::SlotId ("a"));
-	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, "BinaryOperationNodeBParameter", L"B", ParameterType::Double, NE::SlotId ("b"));
+	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", ParameterType::Double, NE::SlotId ("a"));
+	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", ParameterType::Double, NE::SlotId ("b"));
 }
 
 NE::Stream::Status BinaryOperationNode::Read (NE::InputStream& inputStream)

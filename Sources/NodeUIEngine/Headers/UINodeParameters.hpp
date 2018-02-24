@@ -15,10 +15,9 @@ class NodeUIEnvironment;
 class NodeParameter
 {
 public:
-	NodeParameter (const std::string& paramId, const std::wstring& name, const ParameterType& type);
+	NodeParameter (const std::wstring& name, const ParameterType& type);
 	virtual ~NodeParameter ();
 
-	const std::string&		GetId () const;
 	const std::wstring&		GetName () const;
 	const ParameterType&	GetType () const;
 
@@ -28,7 +27,6 @@ public:
 	virtual bool			SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
 
 private:
-	std::string		paramId;
 	std::wstring	name;
 	ParameterType	type;
 };

@@ -6,8 +6,7 @@
 namespace NUIE
 {
 
-NodeParameter::NodeParameter (const std::string& paramId, const std::wstring& name, const ParameterType& type) :
-	paramId (paramId),
+NodeParameter::NodeParameter (const std::wstring& name, const ParameterType& type) :
 	name (name),
 	type (type)
 {
@@ -17,11 +16,6 @@ NodeParameter::NodeParameter (const std::string& paramId, const std::wstring& na
 NodeParameter::~NodeParameter ()
 {
 
-}
-
-const std::string& NodeParameter::GetId () const
-{
-	return paramId;
 }
 
 const std::wstring& NodeParameter::GetName () const
@@ -125,16 +119,16 @@ void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& n
 		return true;
 	});
 
-	std::unordered_set<std::string> registeredParameters;
+	std::unordered_set<std::wstring> registeredParameterNames;
 	for (const UINodePtr& uiNode : uiNodes) {
 		NodeParameterList parameters;
 		uiNode->RegisterParameters (parameters);
 		for (size_t paramIndex = 0; paramIndex < parameters.GetParameterCount (); ++paramIndex) {
 			NodeParameterPtr& parameter = parameters.GetParameter (paramIndex);
-			if (registeredParameters.find (parameter->GetId ()) != registeredParameters.end ()) {
+			if (registeredParameterNames.find (parameter->GetName ()) != registeredParameterNames.end ()) {
 				return;
 			}
-			registeredParameters.insert (parameter->GetId ());
+			registeredParameterNames.insert (parameter->GetName ());
 			if (IsParameterApplicableTo (parameter, uiNodes)) {
 				parameterList.AddParameter (parameter);
 			}

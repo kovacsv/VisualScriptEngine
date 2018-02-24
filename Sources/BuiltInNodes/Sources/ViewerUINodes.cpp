@@ -50,7 +50,7 @@ void MultiLineViewerNode::RegisterParameters (NodeParameterList& parameterList) 
 	{
 	public:
 		TextPerPageParameter () :
-			PositiveIntegerParameter<MultiLineViewerNode> ("MultiLineViewerNodeTextPerPageParameter", L"Texts per page")
+			PositiveIntegerParameter<MultiLineViewerNode> (L"Texts per page")
 		{
 
 		}

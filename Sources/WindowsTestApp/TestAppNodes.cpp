@@ -135,7 +135,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	{
 	public:
 		RedParameter () :
-			SlotDefaultValueParameter<ColorNode, NE::IntValue> ("RedParameter", L"Red", NUIE::ParameterType::Integer, NE::SlotId ("r"))
+			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Red", NUIE::ParameterType::Integer, NE::SlotId ("r"))
 		{
 
 		}
@@ -150,7 +150,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	{
 	public:
 		GreenParameter () :
-			SlotDefaultValueParameter<ColorNode, NE::IntValue> ("GreenParameter", L"Green", NUIE::ParameterType::Integer, NE::SlotId ("g"))
+			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Green", NUIE::ParameterType::Integer, NE::SlotId ("g"))
 		{
 
 		}
@@ -165,7 +165,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	{
 	public:
 		BlueParameter () :
-			SlotDefaultValueParameter<ColorNode, NE::IntValue> ("BlueParameter", L"Blue", NUIE::ParameterType::Integer, NE::SlotId ("b"))
+			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Blue", NUIE::ParameterType::Integer, NE::SlotId ("b"))
 		{
 
 		}
@@ -244,8 +244,8 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	GeometricNode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, "PositionXParameter", L"Position X", NUIE::ParameterType::Double, NE::SlotId ("x"));
-	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, "PositionYParameter", L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
+	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, L"Position X", NUIE::ParameterType::Double, NE::SlotId ("x"));
+	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
 }
 
 NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& value) const
@@ -402,7 +402,7 @@ void CircleNode::RegisterParameters (NUIE::NodeParameterList& parameterList) con
 	{
 	public:
 		RadiusParameter () :
-			SlotDefaultValueParameter<CircleNode, NE::DoubleValue> ("RadiusParameter", L"Radius", NUIE::ParameterType::Double, NE::SlotId ("radius"))
+			SlotDefaultValueParameter<CircleNode, NE::DoubleValue> (L"Radius", NUIE::ParameterType::Double, NE::SlotId ("radius"))
 		{
 
 		}

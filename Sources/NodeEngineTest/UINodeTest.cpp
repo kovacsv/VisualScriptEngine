@@ -44,7 +44,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				NodeParameter ("in1", L"In1", ParameterType::String)
+				NodeParameter (L"In1", ParameterType::String)
 			{
 			
 			}
@@ -96,7 +96,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				NodeParameter ("in2", L"In2", ParameterType::String)
+				NodeParameter (L"In2", ParameterType::String)
 			{
 			
 			}
@@ -144,14 +144,12 @@ TEST (NodeParametersTest)
 	
 	ASSERT (node->GetNodeName () == L"TestNode");
 	NodeParameterPtr nameParam = paramList.GetParameter (0);
-	ASSERT (nameParam->GetId () == "NodeNameParameter");
 	ASSERT (nameParam->GetName () == L"Name");
 	ValuePtr newNameValue (new StringValue (L"NewNodeName"));
 	nameParam->SetValue (uiManager, NE::EmptyEvaluationEnv, node, newNameValue);
 	ASSERT (node->GetNodeName () == L"NewNodeName");
 
 	NodeParameterPtr in1DefParam = paramList.GetParameter (1);
-	ASSERT (in1DefParam->GetId () == "in1");
 	ASSERT (in1DefParam->GetName () == L"In1");
 	ASSERT (IntValue::Get (in1DefParam->GetValue (node)) == 1);
 	ValuePtr newIn1Value (new IntValue (5));
@@ -180,16 +178,16 @@ TEST (NodeParametersTest2)
 		NodeParameterList paramList;
 		RegisterCommonParameters (uiManager, NodeCollection (node->GetId ()), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
-		paramList.GetParameter (1)->GetId () == "in1";
+		paramList.GetParameter (0)->GetName () == L"Name";
+		paramList.GetParameter (1)->GetName () == L"In1";
 	}
 
 	{
 		NodeParameterList paramList;
 		RegisterCommonParameters (uiManager, NodeCollection (node2->GetId ()), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
-		paramList.GetParameter (1)->GetId () == "in2";
+		paramList.GetParameter (0)->GetName () == L"Name";
+		paramList.GetParameter (1)->GetName () == L"In2";
 	}
 
 	{
@@ -199,8 +197,8 @@ TEST (NodeParametersTest2)
 		nodeCollection.Insert (node2->GetId ());
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
-		paramList.GetParameter (1)->GetId () == "in1";
+		paramList.GetParameter (0)->GetName () == L"Name";
+		paramList.GetParameter (1)->GetName () == L"In1";
 	}
 }
 
@@ -220,8 +218,8 @@ TEST (NodeParametersTest3)
 		nodeCollection.Insert (node2->GetId ());
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		paramList.GetParameter (0)->GetId () == "NodeNameParameter";
-		paramList.GetParameter (1)->GetId () == "in1";
+		paramList.GetParameter (0)->GetName () == L"Name";
+		paramList.GetParameter (1)->GetName () == L"In1";
 		ValuePtr newName (new StringValue (L"NewName"));
 		ApplyCommonParameter (uiManager, EmptyEvaluationEnv, nodeCollection, paramList.GetParameter (0), newName);
 		ASSERT (node->GetNodeName () == L"NewName");

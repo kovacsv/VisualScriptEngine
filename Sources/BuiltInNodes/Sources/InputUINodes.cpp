@@ -50,7 +50,7 @@ void NumericUpDownNode::RegisterParameters (NodeParameterList& parameterList) co
 	{
 	public:
 		ValueParameter () :
-			DoubleParameter<NumericUpDownNode> ("NumericUpDownNodeValueParameter", L"Value")
+			DoubleParameter<NumericUpDownNode> (L"Value")
 		{
 
 		}
@@ -73,7 +73,7 @@ void NumericUpDownNode::RegisterParameters (NodeParameterList& parameterList) co
 	{
 	public:
 		StepParameter () :
-			DoubleParameter<NumericUpDownNode> ("NumericUpDownNodeStepParameter", L"Step")
+			DoubleParameter<NumericUpDownNode> (L"Step")
 		{
 
 		}
@@ -221,7 +221,7 @@ void NumberRangeNode::RegisterParameters (NodeParameterList& parameterList) cons
 	{
 	public:
 		CountParameter () :
-			SlotDefaultValueParameter<NumberRangeNode, NE::IntValue> ("NumberRangeNodeCountParameter", L"Count", ParameterType::Integer, NE::SlotId ("count"))
+			SlotDefaultValueParameter<NumberRangeNode, NE::IntValue> (L"Count", ParameterType::Integer, NE::SlotId ("count"))
 		{
 
 		}
@@ -233,8 +233,8 @@ void NumberRangeNode::RegisterParameters (NodeParameterList& parameterList) cons
 	};
 
 	UINode::RegisterParameters (parameterList);
-	RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, "NumberRangeNodeStartParameter", L"Start", ParameterType::Double, NE::SlotId ("start"));
-	RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, "NumberRangeNodeStepParameter", L"Step", ParameterType::Double, NE::SlotId ("step"));
+	RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, L"Start", ParameterType::Double, NE::SlotId ("start"));
+	RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, L"Step", ParameterType::Double, NE::SlotId ("step"));
 	parameterList.AddParameter (NodeParameterPtr (new CountParameter ()));
 }
 
