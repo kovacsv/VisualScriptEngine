@@ -303,20 +303,12 @@ public:
 			return true;
 		});
 
-		Point centerPosition;
+		NodeCollection newSelection;
 		for (UINodePtr& uiNode : newNodes) {
 			Point nodePosition = uiNode->GetNodePosition ();
-			centerPosition = centerPosition + nodePosition;
-		}
-
-		NodeCollection newSelection;
-		centerPosition = centerPosition / (double) newNodes.size ();
-		Point nodeOffset = position - centerPosition;
-		for (UINodePtr& uiNode : newNodes) {
-			uiNode->SetNodePosition (uiNode->GetNodePosition () + nodeOffset);
+			uiNode->SetNodePosition (nodePosition + Point (20.0, 20.0));
 			newSelection.Insert (uiNode->GetId ());
 		}
-
 		uiManager.SetSelectedNodes (newSelection);
 	}
 
