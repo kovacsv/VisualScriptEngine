@@ -63,10 +63,10 @@ private:
 class NodeManagerNodeEvaluatorSetter : public NodeEvaluatorSetter
 {
 public:
-	NodeManagerNodeEvaluatorSetter (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator, SlotRegistrationMode slotRegMode) :
+	NodeManagerNodeEvaluatorSetter (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator, InitializationMode initMode) :
 		newNodeId (newNodeId),
 		newNodeEvaluator (newNodeEvaluator),
-		slotRegMode (slotRegMode)
+		initMode (initMode)
 	{
 		
 	}
@@ -81,15 +81,15 @@ public:
 		return newNodeEvaluator;
 	}
 
-	virtual SlotRegistrationMode GetSlotRegistrationMode () const override
+	virtual InitializationMode GetInitializationMode () const override
 	{
-		return slotRegMode;
+		return initMode;
 	}
 
 private:
 	const NodeId&					newNodeId;
 	const NodeEvaluatorConstPtr&	newNodeEvaluator;
-	SlotRegistrationMode			slotRegMode;
+	InitializationMode				initMode;
 };
 
 class ConnectionInfo
@@ -205,7 +205,7 @@ NodePtr NodeManager::AddNode (const NodePtr& node)
 	}
 
 	NodeId newNodeId (idGenerator.GenerateUniqueId ());
-	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, SlotRegistrationMode::RegisterSlots);
+	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::Initialize);
 	return AddNode (node, setter);
 }
 
@@ -500,7 +500,7 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolic
 		}
 		oldToNewNodeIdTable.insert ({ node->GetId (), newNodeId });
 
-		NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, SlotRegistrationMode::DoNotRegisterSlots);
+		NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::DoNotInitialize);
 		if (DBGERROR (AddNode (node, setter) == nullptr)) {
 			return Stream::Status::Error;
 		}

@@ -190,8 +190,8 @@ void Node::SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter)
 {
 	nodeId = evaluatorSetter.GetNodeId ();
 	nodeEvaluator = evaluatorSetter.GetNodeEvaluator ();
-	if (evaluatorSetter.GetSlotRegistrationMode () == SlotRegistrationMode::RegisterSlots) {
-		RegisterSlots ();
+	if (evaluatorSetter.GetInitializationMode () == InitializationMode::Initialize) {
+		Initialize ();
 	}
 }
 
@@ -268,6 +268,11 @@ ListValuePtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) 
 	}
 
 	return EvaluateInputSlot (inputSlot, env);
+}
+
+void Node::Initialize ()
+{
+	RegisterSlots ();
 }
 
 void Node::CalculationPostProcess (const ValuePtr&, EvaluationEnv&) const

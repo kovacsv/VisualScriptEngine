@@ -28,10 +28,10 @@ public:
 	virtual void		SetCalculatedNodeValue (const NodeId& nodeId, const ValuePtr& valuePtr) const = 0;
 };
 
-enum class SlotRegistrationMode
+enum class InitializationMode
 {
-	RegisterSlots,
-	DoNotRegisterSlots
+	Initialize,
+	DoNotInitialize
 };
 
 class NodeEvaluatorSetter
@@ -39,7 +39,7 @@ class NodeEvaluatorSetter
 public:
 	virtual const NodeId&					GetNodeId () const = 0;
 	virtual const NodeEvaluatorConstPtr&	GetNodeEvaluator () const = 0;
-	virtual SlotRegistrationMode			GetSlotRegistrationMode () const = 0;
+	virtual InitializationMode				GetInitializationMode () const = 0;
 };
 
 class Node : public Serializable
@@ -110,6 +110,7 @@ protected:
 	ListValuePtr			EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
 
 private:
+	virtual void			Initialize ();
 	virtual void			RegisterSlots () = 0;
 	virtual ValuePtr		Calculate (EvaluationEnv& env) const = 0;
 	virtual void			CalculationPostProcess (const ValuePtr& value, EvaluationEnv& env) const;
