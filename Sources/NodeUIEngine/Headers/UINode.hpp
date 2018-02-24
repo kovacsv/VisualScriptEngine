@@ -3,6 +3,7 @@
 
 #include "Node.hpp"
 #include "NodeDrawingImage.hpp"
+#include "NodeUIEnvironment.hpp"
 #include "MouseEventHandler.hpp"
 #include "UIInputSlot.hpp"
 #include "UIOutputSlot.hpp"
@@ -15,8 +16,7 @@ class NodeUIEnvironment;
 class NodeParameterList;
 class NodeCommandRegistrator;
 
-class UINode :	public NE::Node,
-				public MouseEventHandler
+class UINode :	public NE::Node
 {
 	SERIALIZABLE;
 
@@ -60,11 +60,11 @@ public:
 	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const;
 	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
 
-	virtual EventHandlerResult	HandleMouseDragStart (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) override;
-	virtual EventHandlerResult	HandleMouseDragStop (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) override;
-	virtual EventHandlerResult	HandleMouseDrag (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position) override;
-	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) override;
-	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position) override;
+	virtual EventHandlerResult	HandleMouseDragStart (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
+	virtual EventHandlerResult	HandleMouseDragStop (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
+	virtual EventHandlerResult	HandleMouseDrag (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position);
+	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
+	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position);
 
 	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const;
