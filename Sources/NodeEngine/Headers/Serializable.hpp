@@ -45,9 +45,6 @@ private:
 	size_t	versionNumber;
 };
 
-class Serializable;
-typedef Serializable* (*CreatorFunction)();
-
 class SerializationInfo
 {
 public:
@@ -61,6 +58,9 @@ private:
 	ObjectId			objectId;
 	ObjectVersion		objectVersion;
 };
+
+class Serializable;
+typedef Serializable* (*CreatorFunction)();
 
 class DynamicSerializationInfo : public SerializationInfo
 {
