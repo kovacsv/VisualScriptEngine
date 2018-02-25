@@ -12,7 +12,7 @@ public:
 	
 	}
 	
-	void RegisterSerializationInfo (const SerializationInfo* serializationInfo)
+	void RegisterSerializationInfo (const DynamicSerializationInfo* serializationInfo)
 	{
 		if (DBGERROR (serializationInfo == nullptr)) {
 			return;
@@ -24,7 +24,7 @@ public:
 		objectMap.insert ({ objectId, serializationInfo });
 	}
 
-	const SerializationInfo* GetSerializationInfo (const ObjectId& objectId)
+	const DynamicSerializationInfo* GetSerializationInfo (const ObjectId& objectId)
 	{
 		if (DBGERROR (objectMap.find (objectId) == objectMap.end ())) {
 			return nullptr;
@@ -33,7 +33,7 @@ public:
 	}
 
 private:
-	std::unordered_map<ObjectId, const SerializationInfo*> objectMap;
+	std::unordered_map<ObjectId, const DynamicSerializationInfo*> objectMap;
 };
 
 static ObjectRegistry& GetObjectRegistry ()
@@ -131,21 +131,15 @@ bool ObjectVersion::operator!= (const ObjectVersion& rhs) const
 	return !operator== (rhs);
 }
 
-SerializationInfo::SerializationInfo (const ObjectId& objectId, const ObjectVersion& objectVersion) :
-	objectId (objectId),
+SerializationInfo::SerializationInfo (const ObjectVersion& objectVersion) :
 	objectVersion (objectVersion)
 {
-	GetObjectRegistry ().RegisterSerializationInfo (this);
+	
 }
 
 SerializationInfo::~SerializationInfo ()
 {
 
-}
-
-const ObjectId& SerializationInfo::GetObjectId () const
-{
-	return objectId;
 }
 
 const ObjectVersion& SerializationInfo::GetObjectVersion () const
@@ -154,15 +148,21 @@ const ObjectVersion& SerializationInfo::GetObjectVersion () const
 }
 
 DynamicSerializationInfo::DynamicSerializationInfo (const ObjectId& objectId, const ObjectVersion& objectVersion, CreatorFunction creatorFunction) :
-	SerializationInfo (objectId, objectVersion),
+	SerializationInfo (objectVersion),
+	objectId (objectId),
 	creatorFunction (creatorFunction)
 {
-	
+	GetObjectRegistry ().RegisterSerializationInfo (this);
 }
 
 DynamicSerializationInfo::~DynamicSerializationInfo ()
 {
 
+}
+
+const ObjectId& DynamicSerializationInfo::GetObjectId () const
+{
+	return objectId;
 }
 
 Serializable* DynamicSerializationInfo::CreateInstance () const
@@ -201,8 +201,7 @@ Serializable::~Serializable ()
 
 Serializable* CreateDynamicObject (const ObjectId& objectId)
 {
-	const SerializationInfo* serializationInfo = GetObjectRegistry ().GetSerializationInfo (objectId);
-	const DynamicSerializationInfo* dynamicSerializationInfo = dynamic_cast<const DynamicSerializationInfo*> (serializationInfo);
+	const DynamicSerializationInfo* dynamicSerializationInfo = GetObjectRegistry ().GetSerializationInfo (objectId);
 	if (DBGERROR (dynamicSerializationInfo == nullptr)) {
 		return nullptr;
 	}
@@ -226,7 +225,11 @@ Serializable* ReadDynamicObject (InputStream& inputStream)
 
 void WriteDynamicObject (OutputStream& outputStream, const Serializable* object)
 {
-	object->GetSerializationInfo ().GetObjectId ().Write (outputStream);
+	const DynamicSerializationInfo* serializationInfo = object->GetDynamicSerializationInfo ();
+	if (DBGERROR (serializationInfo == nullptr)) {
+		return;
+	}
+	serializationInfo->GetObjectId ().Write (outputStream);
 	object->Write (outputStream);
 }
 

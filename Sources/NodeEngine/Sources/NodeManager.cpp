@@ -8,7 +8,7 @@
 namespace NE
 {
 
-SerializationInfo NodeManager::serializationInfo (ObjectId ("{89708300-2783-452E-89A1-D842283C3B3F}"), ObjectVersion (1));
+SerializationInfo NodeManager::serializationInfo (ObjectVersion (1));
 
 bool AllNodesFilter::NeedToProcessNode (const NodeId&) const
 {

@@ -42,7 +42,7 @@ public:
 	std::string		stringVal;
 };
 
-SerializationInfo MySerializable::serializationInfo (ObjectId ("{F93BB315-4FF7-4740-9634-24D9EF313055}"), ObjectVersion (2));
+SerializationInfo MySerializable::serializationInfo (ObjectVersion (2));
 
 class MyInheritedSerializable : public MySerializable
 {
@@ -126,8 +126,8 @@ namespace SerializableTest
 TEST (BasicTest)
 {
 	MyInheritedSerializable serializable;
-	const SerializationInfo& info = serializable.GetSerializationInfo ();
-	ASSERT (info.GetObjectId () == ObjectId ("{7CB03170-3A8D-43EC-9806-F423A39F07DA}"));
+	const DynamicSerializationInfo* info = serializable.GetDynamicSerializationInfo ();
+	ASSERT (info->GetObjectId () == ObjectId ("{7CB03170-3A8D-43EC-9806-F423A39F07DA}"));
 
 	Serializable* createdSerializable = CreateDynamicObject (ObjectId ("{7CB03170-3A8D-43EC-9806-F423A39F07DA}"));
 	ASSERT (createdSerializable != nullptr);
@@ -138,8 +138,8 @@ TEST (BasicTest)
 TEST (BasicTest2)
 {
 	MyInheritedSerializable2 serializable;
-	const SerializationInfo& info = serializable.GetSerializationInfo ();
-	ASSERT (info.GetObjectId () == ObjectId ("{C25B8A4C-9DAB-4FFF-9F13-28D9FF6A3190}"));
+	const DynamicSerializationInfo* info = serializable.GetDynamicSerializationInfo ();
+	ASSERT (info->GetObjectId () == ObjectId ("{C25B8A4C-9DAB-4FFF-9F13-28D9FF6A3190}"));
 
 	Serializable* createdSerializable = CreateDynamicObject (ObjectId ("{C25B8A4C-9DAB-4FFF-9F13-28D9FF6A3190}"));
 	ASSERT (createdSerializable != nullptr);

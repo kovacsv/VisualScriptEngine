@@ -48,14 +48,12 @@ private:
 class SerializationInfo
 {
 public:
-	SerializationInfo (const ObjectId& objectId, const ObjectVersion& objectVersion);
+	SerializationInfo (const ObjectVersion& objectVersion);
 	virtual ~SerializationInfo ();
 	
-	const ObjectId&			GetObjectId () const;
 	const ObjectVersion&	GetObjectVersion () const;
 
 private:
-	ObjectId			objectId;
 	ObjectVersion		objectVersion;
 };
 
@@ -68,9 +66,11 @@ public:
 	DynamicSerializationInfo (const ObjectId& objectId, const ObjectVersion& objectVersion, CreatorFunction creatorFunction);
 	virtual ~DynamicSerializationInfo ();
 	
+	const ObjectId&		GetObjectId () const;
 	Serializable*		CreateInstance () const;
 
 private:
+	ObjectId			objectId;
 	CreatorFunction		creatorFunction;
 };
 
@@ -92,9 +92,9 @@ public:
 	Serializable ();
 	virtual ~Serializable ();
 
-	virtual const SerializationInfo&	GetSerializationInfo () const = 0;
-	virtual Stream::Status				Read (InputStream& inputStream) = 0;
-	virtual Stream::Status				Write (OutputStream& outputStream) const = 0;
+	virtual const DynamicSerializationInfo*		GetDynamicSerializationInfo () const = 0;
+	virtual Stream::Status						Read (InputStream& inputStream) = 0;
+	virtual Stream::Status						Write (OutputStream& outputStream) const = 0;
 };
 
 Serializable*	CreateDynamicObject (const ObjectId& objectId);
@@ -127,28 +127,28 @@ namespace std
 	};
 }
 
-#define SERIALIZABLE															\
-public:																			\
-virtual const NE::SerializationInfo& GetSerializationInfo () const override		\
-{																				\
-	return serializationInfo;													\
-}																				\
-private:																		\
-static NE::SerializationInfo serializationInfo;									\
-private:																		\
+#define SERIALIZABLE																		\
+public:																						\
+virtual const NE::DynamicSerializationInfo* GetDynamicSerializationInfo () const override	\
+{																							\
+	return nullptr;																			\
+}																							\
+private:																					\
+static NE::SerializationInfo serializationInfo;												\
+private:																					\
 
-#define DYNAMIC_SERIALIZABLE(ClassName)											\
-public:																			\
-virtual const NE::SerializationInfo& GetSerializationInfo () const override		\
-{																				\
-	return serializationInfo;													\
-}																				\
-static NE::Serializable* CreateSerializableInstance ()							\
-{																				\
-	return new ClassName ();													\
-}																				\
-private:																		\
-static NE::DynamicSerializationInfo serializationInfo;							\
-private:																		\
+#define DYNAMIC_SERIALIZABLE(ClassName)														\
+public:																						\
+virtual const NE::DynamicSerializationInfo* GetDynamicSerializationInfo () const override	\
+{																							\
+	return &serializationInfo;																\
+}																							\
+static NE::Serializable* CreateSerializableInstance ()										\
+{																							\
+	return new ClassName ();																\
+}																							\
+private:																					\
+static NE::DynamicSerializationInfo serializationInfo;										\
+private:																					\
 
 #endif

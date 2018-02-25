@@ -12,7 +12,7 @@
 namespace NUIE
 {
 
-NE::SerializationInfo UINode::serializationInfo (NE::ObjectId ("{26A833A1-8FFD-48BA-8A4C-94BD02084BEA}"), NE::ObjectVersion (1));
+NE::SerializationInfo UINode::serializationInfo (NE::ObjectVersion (1));
 
 UINode::UINode () :
 	Node ()

@@ -6,7 +6,7 @@
 namespace NE
 {
 
-SerializationInfo Node::serializationInfo (ObjectId ("{01D7C15C-7B6E-4842-905E-B43EF8E0EA33}"), ObjectVersion (1));
+SerializationInfo Node::serializationInfo (ObjectVersion (1));
 
 Node::Node () :
 	nodeId (NullNodeId),

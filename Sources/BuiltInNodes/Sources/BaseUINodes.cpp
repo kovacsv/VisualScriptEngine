@@ -8,8 +8,8 @@
 namespace NUIE
 {
 
-NE::SerializationInfo CombinedValueNode::serializationInfo (NE::ObjectId ("{737B3D06-CB61-45BA-AB9E-7D7DF9C16B25}"), NE::ObjectVersion (1));
-NE::SerializationInfo EnableDisableNode::serializationInfo (NE::ObjectId ("{C5B07FFF-5F75-4A61-B40A-AA89F6B8A2E7}"), NE::ObjectVersion (1));
+NE::SerializationInfo CombinedValueNode::serializationInfo (NE::ObjectVersion (1));
+NE::SerializationInfo EnableDisableNode::serializationInfo (NE::ObjectVersion (1));
 
 class SetValueCombinationModeCommand : public NodeCommand
 {

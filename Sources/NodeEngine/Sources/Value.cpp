@@ -4,9 +4,9 @@
 namespace NE
 {
 
-SerializationInfo			Value::serializationInfo			(ObjectId ("{524DAC7F-9CAA-4D23-A067-0DB47EF36316}"), ObjectVersion (1));
-SerializationInfo			SingleValue::serializationInfo		(ObjectId ("{0F90CFD1-5619-469B-8677-6AEB6D1610A8}"), ObjectVersion (1));
-SerializationInfo			IListValue::serializationInfo		(ObjectId ("{4AF05211-8150-460B-BA50-C70841657853}"), ObjectVersion (1));
+SerializationInfo			Value::serializationInfo			(ObjectVersion (1));
+SerializationInfo			SingleValue::serializationInfo		(ObjectVersion (1));
+SerializationInfo			IListValue::serializationInfo		(ObjectVersion (1));
 DynamicSerializationInfo	ListValue::serializationInfo		(ObjectId ("{95418CFC-BAE7-4FB3-8ED5-E6EC3AB930AC}"), ObjectVersion (1), ListValue::CreateSerializableInstance);
 
 Value::Value ()
