@@ -71,8 +71,7 @@ private:
 };
 
 CombinedValueNode::CombinedValueNode () :
-	UINode (),
-	valueCombinationMode (NE::ValueCombinationMode::Longest)
+	CombinedValueNode (L"", NUIE::Point ())
 {
 
 }
