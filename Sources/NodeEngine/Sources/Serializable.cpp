@@ -165,7 +165,7 @@ const ObjectId& DynamicSerializationInfo::GetObjectId () const
 	return objectId;
 }
 
-Serializable* DynamicSerializationInfo::CreateInstance () const
+DynamicSerializable* DynamicSerializationInfo::CreateInstance () const
 {
 	if (DBGERROR (creatorFunction == nullptr)) {
 		return nullptr;
@@ -199,7 +199,17 @@ Serializable::~Serializable ()
 
 }
 
-Serializable* CreateDynamicObject (const ObjectId& objectId)
+DynamicSerializable::DynamicSerializable ()
+{
+
+}
+
+DynamicSerializable::~DynamicSerializable ()
+{
+
+}
+
+DynamicSerializable* CreateDynamicObject (const ObjectId& objectId)
 {
 	const DynamicSerializationInfo* dynamicSerializationInfo = GetObjectRegistry ().GetSerializationInfo (objectId);
 	if (DBGERROR (dynamicSerializationInfo == nullptr)) {
@@ -208,14 +218,14 @@ Serializable* CreateDynamicObject (const ObjectId& objectId)
 	return dynamicSerializationInfo->CreateInstance ();
 }
 
-Serializable* ReadDynamicObject (InputStream& inputStream)
+DynamicSerializable* ReadDynamicObject (InputStream& inputStream)
 {
 	ObjectId objectId;
 	objectId.Read (inputStream);
 	if (inputStream.GetStatus () != Stream::Status::NoError) {
 		return nullptr;
 	}
-	Serializable* serializable = CreateDynamicObject (objectId);
+	DynamicSerializable* serializable = CreateDynamicObject (objectId);
 	if (DBGERROR (serializable == nullptr)) {
 		return nullptr;
 	}
@@ -223,7 +233,7 @@ Serializable* ReadDynamicObject (InputStream& inputStream)
 	return serializable;
 }
 
-void WriteDynamicObject (OutputStream& outputStream, const Serializable* object)
+void WriteDynamicObject (OutputStream& outputStream, const DynamicSerializable* object)
 {
 	const DynamicSerializationInfo* serializationInfo = object->GetDynamicSerializationInfo ();
 	if (DBGERROR (serializationInfo == nullptr)) {

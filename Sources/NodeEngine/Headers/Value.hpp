@@ -23,7 +23,7 @@ typedef std::shared_ptr<ListValue> ListValuePtr;
 class IListValue;
 typedef std::shared_ptr<IListValue> IListValuePtr;
 
-class Value : public Serializable
+class Value : public DynamicSerializable
 {
 	SERIALIZABLE;
 
@@ -85,10 +85,8 @@ public:
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 };
 
-class IListValue : public Value
+class IListValue
 {
-	SERIALIZABLE;
-
 public:
 	IListValue ();
 	virtual ~IListValue ();
@@ -96,13 +94,10 @@ public:
 	virtual size_t				GetSize () const = 0;
 	virtual const ValuePtr&		GetValue (size_t index) const = 0;
 	virtual void				Enumerate (const std::function<void (const ValuePtr&)>& processor) const = 0;
-
-	virtual std::wstring		ToString () const override;
-	virtual Stream::Status		Read (InputStream& inputStream) override;
-	virtual Stream::Status		Write (OutputStream& outputStream) const override;
 };
 
-class ListValue : public IListValue
+class ListValue :	public Value,
+					public IListValue
 {
 	DYNAMIC_SERIALIZABLE (ListValue);
 
@@ -116,6 +111,8 @@ public:
 	virtual void				Enumerate (const std::function<void (const ValuePtr&)>& processor) const override;
 
 	void						Push (const ValuePtr& value);
+	
+	virtual std::wstring		ToString () const override;
 	virtual Stream::Status		Read (InputStream& inputStream) override;
 	virtual Stream::Status		Write (OutputStream& outputStream) const override;
 

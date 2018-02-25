@@ -10,7 +10,7 @@
 namespace NE
 {
 
-class Slot : public Serializable
+class Slot : public DynamicSerializable
 {
 	SERIALIZABLE;
 

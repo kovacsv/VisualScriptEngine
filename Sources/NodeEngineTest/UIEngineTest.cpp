@@ -4,6 +4,7 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
+#include "TestNodes.hpp"
 
 #include "NodeUIManager.hpp"
 #include "DrawingContext.hpp"
@@ -35,11 +36,11 @@ public:
 };
 
 
-class TestNode : public UINode
+class TestNode : public SerializableTestUINode
 {
 public:
 	TestNode (const Point& position) :
-		UINode (L"Test Node", position)
+		SerializableTestUINode (L"Test Node", position)
 	{
 		
 	}

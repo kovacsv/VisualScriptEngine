@@ -42,7 +42,7 @@ public:
 	virtual InitializationMode				GetInitializationMode () const = 0;
 };
 
-class Node : public Serializable
+class Node : public DynamicSerializable
 {
 	SERIALIZABLE;
 

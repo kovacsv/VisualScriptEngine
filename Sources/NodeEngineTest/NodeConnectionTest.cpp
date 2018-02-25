@@ -4,6 +4,7 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
+#include "TestNodes.hpp"
 
 using namespace NE;
 
@@ -38,11 +39,11 @@ public:
 	}
 };
 
-class InputNode : public Node
+class InputNode : public SerializableTestNode
 {
 public:
 	InputNode (int val) :
-		Node (),
+		SerializableTestNode (),
 		val (val)
 	{
 		
@@ -62,11 +63,11 @@ private:
 	int val;
 };
 
-class InputNode2 : public Node
+class InputNode2 : public SerializableTestNode
 {
 public:
 	InputNode2 () :
-		Node ()
+		SerializableTestNode ()
 	{
 	
 	}
@@ -83,11 +84,11 @@ public:
 	}
 };
 
-class InputNode3 : public Node
+class InputNode3 : public SerializableTestNode
 {
 public:
 	InputNode3 () :
-		Node ()
+		SerializableTestNode ()
 	{
 	
 	}
@@ -124,11 +125,11 @@ public:
 	}
 };
 
-class AdditionNode : public Node
+class AdditionNode : public SerializableTestNode
 {
 public:
 	AdditionNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 
 	}
@@ -148,11 +149,11 @@ public:
 	}
 };
 
-class MultiAdditionNode : public Node
+class MultiAdditionNode : public SerializableTestNode
 {
 public:
 	MultiAdditionNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 
 	}
@@ -174,11 +175,11 @@ public:
 	}
 };
 
-class DisabledAdditionNode : public Node
+class DisabledAdditionNode : public SerializableTestNode
 {
 public:
 	DisabledAdditionNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 
 	}
@@ -198,11 +199,11 @@ public:
 	}
 };
 
-class AdderInputOutputNode : public Node
+class AdderInputOutputNode : public SerializableTestNode
 {
 public:
 	AdderInputOutputNode (int toAdd = 1) :
-		Node (),
+		SerializableTestNode (),
 		toAdd (toAdd)
 	{
 

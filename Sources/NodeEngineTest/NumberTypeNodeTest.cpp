@@ -4,17 +4,18 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
+#include "TestNodes.hpp"
 
 using namespace NE;
 
 namespace NumberTypeNodeTest
 {
 
-class IntNode : public Node
+class IntNode : public SerializableTestNode
 {
 public:
 	IntNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 		
 	}
@@ -30,11 +31,11 @@ public:
 	}
 };
 
-class DoubleNode : public Node
+class DoubleNode : public SerializableTestNode
 {
 public:
 	DoubleNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 		
 	}
@@ -60,11 +61,11 @@ public:
 	}
 };
 
-class NumberAdderNode : public Node
+class NumberAdderNode : public SerializableTestNode
 {
 public:
 	NumberAdderNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 		
 	}

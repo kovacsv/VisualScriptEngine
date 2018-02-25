@@ -4,6 +4,7 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
+#include "TestNodes.hpp"
 
 #include "NodeUIManager.hpp"
 #include "UINodeParameters.hpp"
@@ -14,11 +15,11 @@ using namespace NUIE;
 namespace UINodeTest
 {
 
-class TestNode : public UINode
+class TestNode : public SerializableTestUINode
 {
 public:
 	TestNode (const std::wstring& name, const Point& position) :
-		UINode (name, position)
+		SerializableTestUINode (name, position)
 	{
 		
 	}

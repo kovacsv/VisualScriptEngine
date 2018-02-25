@@ -4,17 +4,18 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
+#include "TestNodes.hpp"
 
 using namespace NE;
 
 namespace NodeRecalculationTest
 {
 
-class TestNode : public Node
+class TestNode : public SerializableTestNode
 {
 public:
 	TestNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 	
 	}

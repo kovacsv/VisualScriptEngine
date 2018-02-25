@@ -4,10 +4,9 @@
 namespace NE
 {
 
-SerializationInfo			Value::serializationInfo			(ObjectVersion (1));
-SerializationInfo			SingleValue::serializationInfo		(ObjectVersion (1));
-SerializationInfo			IListValue::serializationInfo		(ObjectVersion (1));
-DynamicSerializationInfo	ListValue::serializationInfo		(ObjectId ("{95418CFC-BAE7-4FB3-8ED5-E6EC3AB930AC}"), ObjectVersion (1), ListValue::CreateSerializableInstance);
+SerializationInfo			Value::serializationInfo					(ObjectVersion (1));
+SerializationInfo			SingleValue::serializationInfo				(ObjectVersion (1));
+DynamicSerializationInfo	ListValue::serializationInfo				(ObjectId ("{95418CFC-BAE7-4FB3-8ED5-E6EC3AB930AC}"), ObjectVersion (1), ListValue::CreateSerializableInstance);
 
 Value::Value ()
 {
@@ -65,33 +64,6 @@ IListValue::~IListValue ()
 
 }
 
-Stream::Status IListValue::Read (InputStream& inputStream)
-{
-	ObjectHeader header (inputStream);
-	Value::Read (inputStream);
-	return inputStream.GetStatus ();
-}
-
-Stream::Status IListValue::Write (OutputStream& outputStream) const
-{
-	ObjectHeader header (outputStream, serializationInfo);
-	Value::Write (outputStream);
-	return outputStream.GetStatus ();
-}
-
-std::wstring IListValue::ToString () const
-{
-	// TODO: separator
-	std::wstring result = L"";
-	for (size_t i = 0; i < GetSize (); ++i) {
-		result += GetValue (i)->ToString ();
-		if (i < GetSize () - 1) {
-			result += L", ";
-		}
-	}
-	return result;
-}
-
 ListValue::ListValue ()
 {
 
@@ -130,10 +102,23 @@ void ListValue::Enumerate (const std::function<void (const ValuePtr&)>& processo
 	}
 }
 
+std::wstring ListValue::ToString () const
+{
+	// TODO: separator
+	std::wstring result = L"";
+	for (size_t i = 0; i < GetSize (); ++i) {
+		result += GetValue (i)->ToString ();
+		if (i < GetSize () - 1) {
+			result += L", ";
+		}
+	}
+	return result;
+}
+
 Stream::Status ListValue::Read (InputStream& inputStream)
 {
 	ObjectHeader header (inputStream);
-	IListValue::Read (inputStream);
+	Value::Read (inputStream);
 	size_t valueCount = 0;
 	inputStream.Read (valueCount);
 	for (size_t i = 0; i < valueCount; i++) {
@@ -148,7 +133,7 @@ Stream::Status ListValue::Read (InputStream& inputStream)
 Stream::Status ListValue::Write (OutputStream& outputStream) const
 {
 	ObjectHeader header (outputStream, serializationInfo);
-	IListValue::Write (outputStream);
+	Value::Write (outputStream);
 	outputStream.Write (values.size ());
 	for (const ValuePtr& value : values) {
 		WriteDynamicObject (outputStream, value.get ());

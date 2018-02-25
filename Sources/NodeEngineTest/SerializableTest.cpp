@@ -7,7 +7,7 @@
 
 using namespace NE;
 
-class MySerializable : public Serializable
+class MySerializable : public DynamicSerializable
 {
 	SERIALIZABLE;
 

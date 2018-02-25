@@ -57,8 +57,8 @@ private:
 	ObjectVersion		objectVersion;
 };
 
-class Serializable;
-typedef Serializable* (*CreatorFunction)();
+class DynamicSerializable;
+typedef DynamicSerializable* (*CreatorFunction)();
 
 class DynamicSerializationInfo : public SerializationInfo
 {
@@ -66,12 +66,12 @@ public:
 	DynamicSerializationInfo (const ObjectId& objectId, const ObjectVersion& objectVersion, CreatorFunction creatorFunction);
 	virtual ~DynamicSerializationInfo ();
 	
-	const ObjectId&		GetObjectId () const;
-	Serializable*		CreateInstance () const;
+	const ObjectId&			GetObjectId () const;
+	DynamicSerializable*	CreateInstance () const;
 
 private:
-	ObjectId			objectId;
-	CreatorFunction		creatorFunction;
+	ObjectId				objectId;
+	CreatorFunction			creatorFunction;
 };
 
 class ObjectHeader
@@ -92,19 +92,27 @@ public:
 	Serializable ();
 	virtual ~Serializable ();
 
-	virtual const DynamicSerializationInfo*		GetDynamicSerializationInfo () const = 0;
-	virtual Stream::Status						Read (InputStream& inputStream) = 0;
-	virtual Stream::Status						Write (OutputStream& outputStream) const = 0;
+	virtual Stream::Status	Read (InputStream& inputStream) = 0;
+	virtual Stream::Status	Write (OutputStream& outputStream) const = 0;
 };
 
-Serializable*	CreateDynamicObject (const ObjectId& objectId);
-Serializable*	ReadDynamicObject (InputStream& inputStream);
-void			WriteDynamicObject (OutputStream& outputStream, const Serializable* object);
+class DynamicSerializable : public Serializable
+{
+public:
+	DynamicSerializable ();
+	virtual ~DynamicSerializable ();
+
+	virtual const DynamicSerializationInfo*		GetDynamicSerializationInfo () const = 0;
+};
+
+DynamicSerializable*	CreateDynamicObject (const ObjectId& objectId);
+DynamicSerializable*	ReadDynamicObject (InputStream& inputStream);
+void					WriteDynamicObject (OutputStream& outputStream, const DynamicSerializable* object);
 
 template <class ObjectType>
 ObjectType* ReadDynamicObject (InputStream& inputStream)
 {
-	Serializable* obj = ReadDynamicObject (inputStream);
+	DynamicSerializable* obj = ReadDynamicObject (inputStream);
 	ObjectType* typedObj = dynamic_cast<ObjectType*> (obj);
 	if (DBGERROR (typedObj == nullptr)) {
 		delete obj;
@@ -128,11 +136,6 @@ namespace std
 }
 
 #define SERIALIZABLE																		\
-public:																						\
-virtual const NE::DynamicSerializationInfo* GetDynamicSerializationInfo () const override	\
-{																							\
-	return nullptr;																			\
-}																							\
 private:																					\
 static NE::SerializationInfo serializationInfo;												\
 private:																					\
@@ -143,7 +146,7 @@ virtual const NE::DynamicSerializationInfo* GetDynamicSerializationInfo () const
 {																							\
 	return &serializationInfo;																\
 }																							\
-static NE::Serializable* CreateSerializableInstance ()										\
+static NE::DynamicSerializable* CreateSerializableInstance ()								\
 {																							\
 	return new ClassName ();																\
 }																							\

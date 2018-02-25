@@ -16,7 +16,15 @@ public:
 
 class AValue : public GenericValue<A>
 {
+	DYNAMIC_SERIALIZABLE (AValue);
+
 public:
+	AValue () :
+		AValue (A (0))
+	{
+
+	}
+
 	AValue (const A& val) :
 		GenericValue<A> (val)
 	{
@@ -31,6 +39,8 @@ public:
 
 class AListValue : public ListValue
 {
+	DYNAMIC_SERIALIZABLE (AListValue);
+
 public:
 	AListValue () :
 		ListValue ()
@@ -38,6 +48,9 @@ public:
 
 	}
 };
+
+DynamicSerializationInfo AValue::serializationInfo (ObjectId ("{789CD6F8-A998-4A94-8B0A-96B5FD0925F4}"), ObjectVersion (1), AValue::CreateSerializableInstance);
+DynamicSerializationInfo AListValue::serializationInfo (ObjectId ("{7427D535-508F-44E5-A076-3FAF1A35A413}"), ObjectVersion (1), AListValue::CreateSerializableInstance);
 
 TEST (ValueTest)
 {

@@ -5,17 +5,18 @@
 #include "Node.hpp"
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
+#include "TestNodes.hpp"
 
 using namespace NE;
 
 namespace NodeValueCombinationTest
 {
 
-class TestNode : public Node
+class TestNode : public SerializableTestNode
 {
 public:
 	TestNode (NE::ValueCombinationMode combinationMode, ValuePtr aValue, ValuePtr bValue) :
-		Node (),
+		SerializableTestNode (),
 		combinationMode (combinationMode),
 		aValue (aValue),
 		bValue (bValue)

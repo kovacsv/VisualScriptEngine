@@ -4,6 +4,7 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
+#include "TestNodes.hpp"
 
 using namespace NE;
 
@@ -24,11 +25,11 @@ public:
 	}
 };
 
-class IntegerInputNode : public Node
+class IntegerInputNode : public SerializableTestNode
 {
 public:
 	IntegerInputNode (int val) :
-		Node (),
+		SerializableTestNode (),
 		val (val)
 	{
 	
@@ -47,11 +48,11 @@ public:
 	int val;
 };
 
-class ListMakerNode : public Node
+class ListMakerNode : public SerializableTestNode
 {
 public:
 	ListMakerNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 	
 	}
@@ -69,11 +70,11 @@ public:
 	}
 };
 
-class ListSummer : public Node
+class ListSummer : public SerializableTestNode
 {
 public:
 	ListSummer () :
-		Node ()
+		SerializableTestNode ()
 	{
 	
 	}

@@ -5,6 +5,7 @@
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
 #include "GenericValue.hpp"
+#include "TestNodes.hpp"
 
 using namespace NE;
 
@@ -32,7 +33,15 @@ public:
 
 class AValue : public GenericValue<A>
 {
+	DYNAMIC_SERIALIZABLE (AValue);
+
 public:
+	AValue () :
+		AValue (A ())
+	{
+
+	}
+
 	AValue (const A& val) :
 		GenericValue<A> (val)
 	{
@@ -47,7 +56,15 @@ public:
 
 class BValue : public GenericValue<B>
 {
+	DYNAMIC_SERIALIZABLE (BValue);
+
 public:
+	BValue () :
+		BValue (B ())
+	{
+
+	}
+
 	BValue (const B& val) :
 		GenericValue<B> (val)
 	{
@@ -60,9 +77,18 @@ public:
 	}
 };
 
+
 class ABPairValue : public GenericValue<ABPair>
 {
+	DYNAMIC_SERIALIZABLE (ABPairValue);
+
 public:
+	ABPairValue () :
+		ABPairValue (ABPair ())
+	{
+
+	}
+
 	ABPairValue (const ABPair& val) :
 		GenericValue<ABPair> (val)
 	{
@@ -75,7 +101,11 @@ public:
 	}
 };
 
-class NodeWithDifferentTypes : public Node
+DynamicSerializationInfo AValue::serializationInfo (ObjectId ("{F1B3A71F-EAD2-4732-8814-38344F7F40EB}"), ObjectVersion (1), AValue::CreateSerializableInstance);
+DynamicSerializationInfo BValue::serializationInfo (ObjectId ("{9A2698D6-A78B-4C59-BA0A-63171A9152D8}"), ObjectVersion (1), BValue::CreateSerializableInstance);
+DynamicSerializationInfo ABPairValue::serializationInfo (ObjectId ("{D88A8420-6F72-4A88-A1AA-DCA827ABD2E8}"), ObjectVersion (1), ABPairValue::CreateSerializableInstance);
+
+class NodeWithDifferentTypes : public SerializableTestNode
 {
 public:
 	class OutputSlotA : public OutputSlot
@@ -113,7 +143,7 @@ public:
 	};
 
 	NodeWithDifferentTypes () :
-		Node ()
+		SerializableTestNode ()
 	{
 	
 	}
@@ -133,7 +163,7 @@ public:
 	}
 };
 
-class OutputNodeA : public Node
+class OutputNodeA : public SerializableTestNode
 {
 public:
 	class InputSlotA : public InputSlot
@@ -147,7 +177,7 @@ public:
 	};
 
 	OutputNodeA () :
-		Node ()
+		SerializableTestNode ()
 	{
 
 	}
@@ -163,7 +193,7 @@ public:
 	}
 };
 
-class OutputNodeB : public Node
+class OutputNodeB : public SerializableTestNode
 {
 public:
 	class InputSlotB : public InputSlot
@@ -177,7 +207,7 @@ public:
 	};
 
 	OutputNodeB () :
-		Node ()
+		SerializableTestNode ()
 	{
 
 	}

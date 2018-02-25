@@ -4,6 +4,7 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "EvaluationEnv.hpp"
+#include "TestNodes.hpp"
 
 using namespace NE;
 
@@ -30,11 +31,11 @@ public:
 	}
 };
 
-class TestNode : public Node
+class TestNode : public SerializableTestNode
 {
 public:
 	TestNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 
 	}

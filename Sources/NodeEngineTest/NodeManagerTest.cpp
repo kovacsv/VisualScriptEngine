@@ -1,17 +1,18 @@
 #include "SimpleTest.hpp"
 #include "NodeManager.hpp"
 #include "Node.hpp"
+#include "TestNodes.hpp"
 
 using namespace NE;
 
 namespace NodeManagerTest
 {
 
-class TestNode : public Node
+class TestNode : public SerializableTestNode
 {
 public:
 	TestNode () :
-		Node ()
+		SerializableTestNode ()
 	{
 	
 	}

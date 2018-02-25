@@ -82,12 +82,18 @@
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\ArithmeticNodesTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngineTest\TestNodes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\TestFramework\SimpleTest.hpp">
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\NodeEngineTest\VisualTestFramework.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeEngineTest\TestNodes.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
