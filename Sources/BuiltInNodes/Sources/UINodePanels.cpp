@@ -144,22 +144,17 @@ void NodeUIStatusHeaderPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& r
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (statusRect, statusColor)));
 }
 
-// TODO: Should not copy all the texts, only the visible ones
-NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage, size_t currentPage) :
+NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage) :
 	NodeUIPanel (),
 	nodeTexts (nodeTexts),
-	textsPerPage (textsPerPage),
-	currentPage (currentPage)
+	textsPerPage (textsPerPage)
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
-	for (size_t i = 0; i < textsPerPage; ++i) {
-		size_t textIndex = (currentPage - 1) * textsPerPage + i;
-		if (textIndex < nodeTexts.size ()) {
-			Size textSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeTexts[i]);
-			textSize = textSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
-			maxTextSize.SetWidth (std::max (maxTextSize.GetWidth (), textSize.GetWidth ()));
-			maxTextSize.SetHeight (std::max (maxTextSize.GetHeight (), textSize.GetHeight ()));
-		}
+	for (const std::wstring& nodeText : nodeTexts) {
+		Size textSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText);
+		textSize = textSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
+		maxTextSize.SetWidth (std::max (maxTextSize.GetWidth (), textSize.GetWidth ()));
+		maxTextSize.SetHeight (std::max (maxTextSize.GetHeight (), textSize.GetHeight ()));
 	}
 }
 
@@ -180,15 +175,11 @@ void NodeUIMultiLineTextPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& 
 	double xOffset = nodePadding;
 	double yOffset = nodePadding;
 	double textRectWidth = std::max (maxTextSize.GetWidth (), rect.GetWidth () - 2.0 * nodePadding);
-	for (size_t i = 0; i < textsPerPage; ++i) {
-		size_t textIndex = (currentPage - 1) * textsPerPage + i;
-		if (textIndex < nodeTexts.size ()) {
-			const std::wstring& nodeText = nodeTexts[textIndex];
-			Point textRectPosition (rect.GetLeft () + xOffset, rect.GetTop () + yOffset);
-			Size textRectSize (textRectWidth, maxTextSize.GetHeight ());
-			Rect textRect = Rect::FromPositionAndSize (textRectPosition, textRectSize);
-			drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, GetTextColor (env))));
-		}
+	for (const std::wstring& nodeText : nodeTexts) {
+		Point textRectPosition (rect.GetLeft () + xOffset, rect.GetTop () + yOffset);
+		Size textRectSize (textRectWidth, maxTextSize.GetHeight ());
+		Rect textRect = Rect::FromPositionAndSize (textRectPosition, textRectSize);
+		drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, GetTextColor (env))));
 		yOffset += maxTextSize.GetHeight ();
 	}
 }

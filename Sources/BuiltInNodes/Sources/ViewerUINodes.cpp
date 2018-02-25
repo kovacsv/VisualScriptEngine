@@ -103,8 +103,8 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env,
 	class NodeUIMultiLineTextViewerPanel : public NodeUIMultiLineTextPanel
 	{
 	public:
-		NodeUIMultiLineTextViewerPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage, size_t currentPage) :
-			NodeUIMultiLineTextPanel (nodeTexts, env, textsPerPage, currentPage)
+		NodeUIMultiLineTextViewerPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage) :
+			NodeUIMultiLineTextPanel (nodeTexts, env, textsPerPage)
 		{
 		
 		}
@@ -116,7 +116,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env,
 		}
 	};
 
-	std::vector<std::wstring> nodeTexts = { L"<empty>" };
+	std::vector<std::wstring> nodeTexts;
 	DBGASSERT (ValueIsCalculated ());
 	NE::ValuePtr nodeValue = GetCalculatedValue ();
 	if (nodeValue != nullptr) {
@@ -131,10 +131,22 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env,
 	size_t pageCount = GetPageCount ();
 	ValidateCurrentPage ();
 
+	std::vector<std::wstring> nodeTextsToShow;
+	for (size_t i = 0; i < textsPerPage; ++i) {
+		size_t textIndex = (currentPage - 1) * textsPerPage + i;
+		if (textIndex < nodeTexts.size ()) {
+			nodeTextsToShow.push_back (nodeTexts[textIndex]);
+		}
+	}
+
+	if (nodeTextsToShow.empty ()) {
+		nodeTextsToShow.push_back (L"<empty>");
+	}
+
 	NodeUIPanelDrawer drawer;
 	drawer.AddPanel (NodeUIPanelPtr (new NodeUIHeaderPanel (GetNodeName ())));
 	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUIMultiLineTextViewerPanel (nodeTexts, env, textsPerPage, currentPage)));
+	drawer.AddPanel (NodeUIPanelPtr (new NodeUIMultiLineTextViewerPanel (nodeTextsToShow, env, textsPerPage)));
 	if (textCount > textsPerPage) {
 		drawer.AddPanel (NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
 	}

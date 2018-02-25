@@ -90,7 +90,7 @@ private:
 class NodeUIMultiLineTextPanel : public NodeUIPanel
 {
 public:
-	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage, size_t currentPage);
+	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage);
 
 	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
 	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
@@ -103,7 +103,6 @@ private:
 	std::vector<std::wstring>	nodeTexts;
 	Size						maxTextSize;
 	size_t						textsPerPage;
-	size_t						currentPage;
 };
 
 class NodeUISlotPanel : public NodeUIPanel
