@@ -133,10 +133,6 @@ virtual const NE::SerializationInfo& GetSerializationInfo () const override		\
 {																				\
 	return serializationInfo;													\
 }																				\
-static const NE::SerializationInfo& GetStaticSerializationInfo ()				\
-{																				\
-	return serializationInfo;													\
-}																				\
 private:																		\
 static NE::SerializationInfo serializationInfo;									\
 private:																		\
@@ -144,10 +140,6 @@ private:																		\
 #define DYNAMIC_SERIALIZABLE(ClassName)											\
 public:																			\
 virtual const NE::SerializationInfo& GetSerializationInfo () const override		\
-{																				\
-	return serializationInfo;													\
-}																				\
-static const NE::SerializationInfo& GetStaticSerializationInfo ()				\
 {																				\
 	return serializationInfo;													\
 }																				\
