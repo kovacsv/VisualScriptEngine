@@ -11,7 +11,7 @@ namespace NE
 
 typedef size_t NodeIdType;
 
-class NodeIdGenerator : public Serializable
+class NodeIdGenerator
 {
 	SERIALIZABLE;
 
@@ -19,16 +19,16 @@ public:
 	NodeIdGenerator ();
 	~NodeIdGenerator ();
 
-	NodeIdType				GenerateUniqueId ();
+	NodeIdType		GenerateUniqueId ();
 
-	virtual Stream::Status	Read (InputStream& inputStream) override;
-	virtual Stream::Status	Write (OutputStream& outputStream) const override;
+	Stream::Status	Read (InputStream& inputStream);
+	Stream::Status	Write (OutputStream& outputStream) const;
 
 private:
 	std::atomic<size_t> nextId;
 };
 
-class NodeId : public Serializable
+class NodeId
 {
 	SERIALIZABLE;
 
@@ -37,16 +37,16 @@ public:
 	NodeId (const NodeIdType& uniqueId);
 	~NodeId ();
 
-	void					SetUniqueId (const NodeIdType& uniqueId);
-	size_t					GenerateHashValue () const;
+	void			SetUniqueId (const NodeIdType& uniqueId);
+	size_t			GenerateHashValue () const;
 
-	bool					operator< (const NodeId& rhs) const;
-	bool					operator> (const NodeId& rhs) const;
-	bool					operator== (const NodeId& rhs) const;
-	bool					operator!= (const NodeId& rhs) const;
+	bool			operator< (const NodeId& rhs) const;
+	bool			operator> (const NodeId& rhs) const;
+	bool			operator== (const NodeId& rhs) const;
+	bool			operator!= (const NodeId& rhs) const;
 
-	virtual Stream::Status	Read (InputStream& inputStream) override;
-	virtual Stream::Status	Write (OutputStream& outputStream) const override;
+	Stream::Status	Read (InputStream& inputStream);
+	Stream::Status	Write (OutputStream& outputStream) const;
 
 private:
 	NodeIdType	id;

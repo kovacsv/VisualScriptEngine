@@ -129,7 +129,7 @@ TEST (BasicTest)
 	const DynamicSerializationInfo* info = serializable.GetDynamicSerializationInfo ();
 	ASSERT (info->GetObjectId () == ObjectId ("{7CB03170-3A8D-43EC-9806-F423A39F07DA}"));
 
-	Serializable* createdSerializable = CreateDynamicObject (ObjectId ("{7CB03170-3A8D-43EC-9806-F423A39F07DA}"));
+	DynamicSerializable* createdSerializable = CreateDynamicObject (ObjectId ("{7CB03170-3A8D-43EC-9806-F423A39F07DA}"));
 	ASSERT (createdSerializable != nullptr);
 	ASSERT (dynamic_cast<MyInheritedSerializable*> (createdSerializable) != nullptr);
 	delete createdSerializable;
@@ -141,7 +141,7 @@ TEST (BasicTest2)
 	const DynamicSerializationInfo* info = serializable.GetDynamicSerializationInfo ();
 	ASSERT (info->GetObjectId () == ObjectId ("{C25B8A4C-9DAB-4FFF-9F13-28D9FF6A3190}"));
 
-	Serializable* createdSerializable = CreateDynamicObject (ObjectId ("{C25B8A4C-9DAB-4FFF-9F13-28D9FF6A3190}"));
+	DynamicSerializable* createdSerializable = CreateDynamicObject (ObjectId ("{C25B8A4C-9DAB-4FFF-9F13-28D9FF6A3190}"));
 	ASSERT (createdSerializable != nullptr);
 	ASSERT (dynamic_cast<MyInheritedSerializable2*> (createdSerializable) != nullptr);
 	delete createdSerializable;
@@ -215,7 +215,7 @@ TEST (DynamicTest)
 	WriteDynamicObject (outputStream, &serializable);
 
 	MemoryInputStream inputStream (outputStream.GetBuffer ());
-	std::shared_ptr<Serializable> serializableObj (ReadDynamicObject (inputStream));
+	std::shared_ptr<DynamicSerializable> serializableObj (ReadDynamicObject (inputStream));
 	
 	MyInheritedSerializable* serializable2 = dynamic_cast<MyInheritedSerializable*> (serializableObj.get ());
 	ASSERT (serializable2 != nullptr);

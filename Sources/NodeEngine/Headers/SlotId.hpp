@@ -8,7 +8,7 @@
 namespace NE
 {
 
-class SlotId : public Serializable
+class SlotId
 {
 	SERIALIZABLE;
 
@@ -17,15 +17,15 @@ public:
 	SlotId (const std::string& id);
 	~SlotId ();
 
-	size_t					GenerateHashValue () const;
+	size_t			GenerateHashValue () const;
 
-	bool					operator< (const SlotId& rhs) const;
-	bool					operator> (const SlotId& rhs) const;
-	bool					operator== (const SlotId& rhs) const;
-	bool					operator!= (const SlotId& rhs) const;
+	bool			operator< (const SlotId& rhs) const;
+	bool			operator> (const SlotId& rhs) const;
+	bool			operator== (const SlotId& rhs) const;
+	bool			operator!= (const SlotId& rhs) const;
 
-	virtual Stream::Status	Read (InputStream& inputStream) override;
-	virtual Stream::Status	Write (OutputStream& outputStream) const override;
+	Stream::Status	Read (InputStream& inputStream);
+	Stream::Status	Write (OutputStream& outputStream) const;
 
 private:
 	std::string id;

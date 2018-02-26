@@ -189,16 +189,6 @@ const ObjectVersion& ObjectHeader::GetVersion () const
 	return version;
 }
 
-Serializable::Serializable ()
-{
-
-}
-
-Serializable::~Serializable ()
-{
-
-}
-
 DynamicSerializable::DynamicSerializable ()
 {
 

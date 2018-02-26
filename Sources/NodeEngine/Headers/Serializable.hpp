@@ -86,23 +86,15 @@ private:
 	ObjectVersion version;
 };
 
-class Serializable
-{
-public:
-	Serializable ();
-	virtual ~Serializable ();
-
-	virtual Stream::Status	Read (InputStream& inputStream) = 0;
-	virtual Stream::Status	Write (OutputStream& outputStream) const = 0;
-};
-
-class DynamicSerializable : public Serializable
+class DynamicSerializable
 {
 public:
 	DynamicSerializable ();
 	virtual ~DynamicSerializable ();
 
 	virtual const DynamicSerializationInfo*		GetDynamicSerializationInfo () const = 0;
+	virtual Stream::Status						Read (InputStream& inputStream) = 0;
+	virtual Stream::Status						Write (OutputStream& outputStream) const = 0;
 };
 
 DynamicSerializable*	CreateDynamicObject (const ObjectId& objectId);
