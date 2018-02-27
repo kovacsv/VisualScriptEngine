@@ -1,5 +1,6 @@
 #include "ArithmeticUINodes.hpp"
 #include "UINodeCommonParameters.hpp"
+#include "UINodeLayouts.hpp"
 
 #include <cmath>
 

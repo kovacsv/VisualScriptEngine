@@ -5,7 +5,6 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
-#include "BaseUINodes.hpp"
 
 namespace NUIE
 {

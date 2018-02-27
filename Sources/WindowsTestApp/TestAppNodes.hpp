@@ -8,16 +8,20 @@
 #include "SingleValues.hpp"
 #include "NodeUIManager.hpp"
 #include "UINodeCommands.hpp"
-#include "BaseUINodes.hpp"
 #include "BuiltInFeatures.hpp"
 
-class GeometricNode : public NUIE::EnableDisableNode
+class GeometricNode :	public NUIE::UINode,
+						public NUIE::ValueCombinationFeature,
+						public NUIE::EnableDisableFeature
 {
 	SERIALIZABLE;
 
 public:
 	GeometricNode ();
 	GeometricNode (const std::wstring& name, const NUIE::Point& position);
+
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 
 	virtual void				OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 	virtual void				OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
@@ -28,6 +32,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 protected:
+	virtual void				DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:

@@ -13,15 +13,28 @@ NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3
 NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
 
 GeometricNode::GeometricNode () :
-	NUIE::EnableDisableNode ()
+	GeometricNode (L"", NUIE::Point ())
 {
 
 }
 
 GeometricNode::GeometricNode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::EnableDisableNode (name, position)
+	NUIE::UINode (name, position),
+	NUIE::ValueCombinationFeature (NE::ValueCombinationMode::Longest),
+	NUIE::EnableDisableFeature (true)
 {
 
+}
+
+void GeometricNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+{
+	NUIE::ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
+	NUIE::EnableDisableFeature::RegisterFeatureCommands (commandRegistrator);
+}
+
+void GeometricNode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+{
+	EnableDisableFeature::FeatureCalculationPostProcess (value, env);
 }
 
 void GeometricNode::OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
@@ -73,15 +86,26 @@ void GeometricNode::RemoveItem (NE::EvaluationEnv& env) const
 NE::Stream::Status GeometricNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NUIE::EnableDisableNode::Read (inputStream);
+	UINode::Read (inputStream);
+	NUIE::ValueCombinationFeature::Read (inputStream);
+	NUIE::EnableDisableFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status GeometricNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NUIE::EnableDisableNode::Write (outputStream);
+	UINode::Write (outputStream);
+	NUIE::ValueCombinationFeature::Write (outputStream);
+	NUIE::EnableDisableFeature::Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+void GeometricNode::DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const
+{
+	EnableDisableFeature::CreateDrawingEnvironment (env, [&] (NUIE::NodeUIDrawingEnvironment& newEnv) {
+		UINode::DrawInplace (newEnv);
+	});
 }
 
 void GeometricNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const

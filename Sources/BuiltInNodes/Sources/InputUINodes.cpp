@@ -2,6 +2,7 @@
 #include "UINodePanels.hpp"
 #include "UINodeParameters.hpp"
 #include "UINodeCommonParameters.hpp"
+#include "UINodeLayouts.hpp"
 #include "NodeUIManager.hpp"
 #include "SkinParams.hpp"
 
