@@ -9,6 +9,7 @@
 #include "NodeUIManager.hpp"
 #include "UINodeCommands.hpp"
 #include "BaseUINodes.hpp"
+#include "BuiltInFeatures.hpp"
 
 class GeometricNode : public NUIE::EnableDisableNode
 {
@@ -37,7 +38,8 @@ private:
 	mutable NUIE::DrawingItemConstPtr	drawingItem;
 };
 
-class ColorNode : public NUIE::CombinedValueNode
+class ColorNode :	public NUIE::UINode,
+					public NUIE::ValueCombinationFeature
 {
 	DYNAMIC_SERIALIZABLE (ColorNode);
 
@@ -48,6 +50,7 @@ public:
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;

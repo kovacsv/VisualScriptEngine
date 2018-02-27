@@ -90,13 +90,14 @@ void GeometricNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env,
 }
 
 ColorNode::ColorNode () :
-	NUIE::CombinedValueNode ()
+	ColorNode (L"", NUIE::Point ())
 {
 
 }
 
 ColorNode::ColorNode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::CombinedValueNode (name, position)
+	NUIE::UINode (name, position),
+	NUIE::ValueCombinationFeature (NE::ValueCombinationMode::Longest)
 {
 
 }
@@ -182,17 +183,24 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new BlueParameter ()));
 }
 
+void ColorNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+{
+	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
+}
+
 NE::Stream::Status ColorNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NUIE::CombinedValueNode::Read (inputStream);
+	NUIE::UINode::Read (inputStream);
+	NUIE::ValueCombinationFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status ColorNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NUIE::CombinedValueNode::Write (outputStream);
+	NUIE::UINode::Write (outputStream);
+	NUIE::ValueCombinationFeature::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
