@@ -5,16 +5,32 @@
 #include "Geometry.hpp"
 #include "Drawing.hpp"
 
+class Point
+{
+public:
+	Point ();
+	Point (double x, double y);
+
+	std::wstring		ToString () const;
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+
+	double	x;
+	double	y;
+};
+
 class Line
 {
 public:
 	Line ();
-	Line (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Color& color);
+	Line (const Point& beg, const Point& end, const NUIE::Color& color);
 
-	std::wstring ToString () const;
+	std::wstring		ToString () const;
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
-	NUIE::Point		beg;
-	NUIE::Point		end;
+	Point			beg;
+	Point			end;
 	NUIE::Color		color;
 };
 
@@ -22,11 +38,13 @@ class Circle
 {
 public:
 	Circle ();
-	Circle (const NUIE::Point& center, double radius, const NUIE::Color& color);
+	Circle (const Point& center, double radius, const NUIE::Color& color);
 
-	std::wstring ToString () const;
+	std::wstring		ToString () const;
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
-	NUIE::Point		center;
+	Point			center;
 	double			radius;
 	NUIE::Color		color;
 };
@@ -44,13 +62,13 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class PointValue : public NE::GenericValue<NUIE::Point>
+class PointValue : public NE::GenericValue<Point>
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
 
 public:
 	PointValue ();
-	PointValue (const NUIE::Point& val);
+	PointValue (const Point& val);
 	virtual std::wstring ToString () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;

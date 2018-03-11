@@ -263,7 +263,7 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({x, y}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new PointValue (
-			NUIE::Point (
+			Point (
 				NE::NumberValue::ToDouble (combination.GetValue (0)),
 				NE::NumberValue::ToDouble (combination.GetValue (1))
 			)
@@ -287,9 +287,9 @@ NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& valu
 	}
 	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
 	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
-		NUIE::Point point = PointValue::Get (innerValue);
+		Point point = PointValue::Get (innerValue);
 		int pointSize = 10;
-		NUIE::Rect pointRect (point.GetX () - pointSize / 2, point.GetY () - pointSize / 2, pointSize, pointSize);
+		NUIE::Rect pointRect (point.x - pointSize / 2, point.y - pointSize / 2, pointSize, pointSize);
 		NUIE::Pen pointPen (NUIE::Color (80, 80, 80), 1.0);
 		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (pointRect.GetTopLeft (), pointRect.GetBottomRight (), pointPen)));
 		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (pointRect.GetBottomLeft (), pointRect.GetTopRight (), pointPen)));
@@ -363,7 +363,9 @@ NUIE::DrawingItemConstPtr LineNode::CreateDrawingItem (const NE::ValuePtr& value
 		Line line = LineValue::Get (innerValue);
 		result->AddItem (
 			NUIE::DrawingItemConstPtr (
-				new NUIE::DrawingLine (line.beg, line.end,
+				new NUIE::DrawingLine (
+					NUIE::Point (line.beg.x, line.beg.y),
+					NUIE::Point (line.end.x, line.end.y),
 					NUIE::Pen (line.color, 1.0)
 				)
 			)
@@ -457,7 +459,7 @@ NUIE::DrawingItemConstPtr CircleNode::CreateDrawingItem (const NE::ValuePtr& val
 	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
 	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
 		Circle circle = CircleValue::Get (innerValue);
-		NUIE::Rect rect = NUIE::Rect::FromCenterAndSize (circle.center, NUIE::Size (circle.radius * 2.0, circle.radius * 2.0));
+		NUIE::Rect rect = NUIE::Rect::FromCenterAndSize (NUIE::Point (circle.center.x, circle.center.y), NUIE::Size (circle.radius * 2.0, circle.radius * 2.0));
 		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (rect, NUIE::Pen (circle.color, 1.0))));
 	});
 	return result;
