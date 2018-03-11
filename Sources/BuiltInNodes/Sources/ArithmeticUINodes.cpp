@@ -14,13 +14,14 @@ NE::DynamicSerializationInfo	MultiplicationNode::serializationInfo (NE::ObjectId
 NE::DynamicSerializationInfo	DivisionNode::serializationInfo (NE::ObjectId ("{652DDDFC-A441-40B1-87AC-0BED247F35E7}"), NE::ObjectVersion (1), DivisionNode::CreateSerializableInstance);
 
 BinaryOperationNode::BinaryOperationNode () :
-	UINode ()
+	BinaryOperationNode (L"", Point ())
 {
 
 }
 
 BinaryOperationNode::BinaryOperationNode (const std::wstring& name, const Point& position) :
-	UINode (name, position)
+	UINode (name, position),
+	ValueCombinationFeature (NE::ValueCombinationMode::Longest)
 {
 
 }
@@ -41,18 +42,27 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr aValue = EvaluateSingleInputSlot (NE::SlotId ("a"), env);
 	NE::ValuePtr bValue = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
-	if (!NE::Value::IsType<NE::NumberValue> (aValue) || !NE::Value::IsType<NE::NumberValue> (bValue)) {
+	if (!NE::IsComplexType<NE::NumberValue> (aValue) || !NE::IsComplexType<NE::NumberValue> (bValue)) {
 		return nullptr;
 	}
 
-	double aDouble = NE::NumberValue::ToDouble (aValue);
-	double bDouble = NE::NumberValue::ToDouble (bValue);
-	double result = DoOperation (aDouble, bDouble);
-	if (std::isnan (result)) {
+	bool isValid = true;
+	NE::ListValuePtr resultListValue (new NE::ListValue ());
+	CombineValues ({aValue, bValue}, [&] (const NE::ValueCombination& combination) {
+		double aDouble = NE::NumberValue::ToDouble (combination.GetValue (0));
+		double bDouble = NE::NumberValue::ToDouble (combination.GetValue (1));
+		double result = DoOperation (aDouble, bDouble);
+		if (std::isnan (result)) {
+			isValid = false;
+			return;
+		}
+		resultListValue->Push (NE::ValuePtr (new NE::DoubleValue (result)));
+	});
+
+	if (!isValid) {
 		return nullptr;
 	}
-
-	return NE::ValuePtr (new NE::DoubleValue (result));
+	return resultListValue;
 }
 
 void BinaryOperationNode::RegisterParameters (NodeParameterList& parameterList) const
@@ -62,10 +72,16 @@ void BinaryOperationNode::RegisterParameters (NodeParameterList& parameterList) 
 	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", ParameterType::Double, NE::SlotId ("b"));
 }
 
+void BinaryOperationNode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
+{
+	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
+}
+
 NE::Stream::Status BinaryOperationNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	UINode::Read (inputStream);
+	ValueCombinationFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -73,6 +89,7 @@ NE::Stream::Status BinaryOperationNode::Write (NE::OutputStream& outputStream) c
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
+	ValueCombinationFeature::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

@@ -201,13 +201,13 @@ NE::ValuePtr NumberRangeNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
 	NE::ValuePtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
 	NE::ValuePtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
-	if (!NE::Value::IsType<NE::NumberValue> (start) || !NE::Value::IsType<NE::NumberValue> (step) || !NE::Value::IsType<NE::NumberValue> (count)) {
+	if (!NE::IsSingleType<NE::NumberValue> (start) || !NE::IsSingleType<NE::NumberValue> (step) || !NE::IsSingleType<NE::NumberValue> (count)) {
 		return nullptr;
 	}
 
-	double startNum = NE::NumberValue::ToDouble (start);
-	double stepNum = NE::NumberValue::ToDouble (step);
-	int countNum = NE::NumberValue::ToInteger (count);
+	double startNum = NE::NumberValue::ToDouble (NE::CreateSingleValue (start));
+	double stepNum = NE::NumberValue::ToDouble (NE::CreateSingleValue (step));
+	int countNum = NE::NumberValue::ToInteger (NE::CreateSingleValue (count));
 	NE::ListValuePtr list (new NE::ListValue ());
 	for (int i = 0; i < countNum; ++i) {
 		list->Push (NE::ValuePtr (new NE::DoubleValue (startNum + i * stepNum)));

@@ -33,8 +33,8 @@ TEST (TestAllArithmeticNodes)
 	uiManager.ConnectOutputSlotToInputSlot (val3->GetUIOutputSlot (NE::SlotId ("out")), div->GetUIInputSlot (NE::SlotId ("b")));
 
 	ValuePtr val = div->Evaluate (EmptyEvaluationEnv);
-	ASSERT (Value::IsType<DoubleValue> (val));
-	ASSERT (IsEqualNum (DoubleValue::Get (val), -1.0));
+	ASSERT (IsSingleType<DoubleValue> (val));
+	ASSERT (IsEqualNum (DoubleValue::Get (CreateSingleValue (val)), -1.0));
 }
 
 }

@@ -162,6 +162,23 @@ void ValueToListValueAdapter::Enumerate (const std::function<void (const ValuePt
 	processor (val);
 }
 
+ValuePtr CreateSingleValue (const ValuePtr& value)
+{
+	if (Value::IsType<SingleValue> (value)) {
+		return value;
+	} else if (Value::IsType<ListValue> (value)) {
+		ListValuePtr listVal = Value::Cast<ListValue> (value);
+		if (listVal->GetSize () != 1) {
+			return nullptr;
+		}
+		return listVal->GetValue (0);
+	}
+
+	DBGBREAK ();
+	return nullptr;
+
+}
+
 IListValuePtr CreateListValue (const ValuePtr& value)
 {
 	if (Value::IsType<SingleValue> (value)) {

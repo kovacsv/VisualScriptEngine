@@ -134,13 +134,28 @@ private:
 };
 
 template <class Type>
-bool IsComplexType (const ValuePtr& val)
+bool IsSingleType (const ValuePtr& val)
 {
 	if (Value::IsType<Type> (val)) {
 		return true;
 	}
 	if (Value::IsType<ListValue> (val)) {
 		ListValue* listVal = Value::Cast<ListValue> (val.get ());
+		if (listVal->GetSize () == 1) {
+			return true;
+		}
+	}
+	return false;
+}
+
+template <class Type>
+bool IsComplexType (const ValuePtr& val)
+{
+	if (Value::IsType<Type> (val)) {
+		return true;
+	}
+	if (Value::IsType<ListValue> (val)) {
+		ListValuePtr listVal = Value::Cast<ListValue> (val);
 		if (listVal->GetSize () == 0) {
 			return false;
 		}
@@ -155,7 +170,8 @@ bool IsComplexType (const ValuePtr& val)
 	return false;
 }
 
-IListValuePtr CreateListValue (const ValuePtr& value);
+ValuePtr		CreateSingleValue (const ValuePtr& value);
+IListValuePtr	CreateListValue (const ValuePtr& value);
 
 }
 

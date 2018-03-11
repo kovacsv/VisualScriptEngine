@@ -5,11 +5,13 @@
 #include "InputSlot.hpp"
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
+#include "BuiltInFeatures.hpp"
 
 namespace NUIE
 {
 
-class BinaryOperationNode : public UINode
+class BinaryOperationNode : public UINode,
+							public ValueCombinationFeature
 {
 	SERIALIZABLE;
 
@@ -20,7 +22,9 @@ public:
 
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
-	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
+		
+	virtual void				RegisterParameters (NodeParameterList& parameterList) const override;
+	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
