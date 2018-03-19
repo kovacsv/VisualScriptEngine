@@ -5,6 +5,21 @@
 #include "Geometry.hpp"
 #include "Drawing.hpp"
 
+class Color
+{
+public:
+	Color ();
+	Color (unsigned char r, unsigned char g, unsigned char b);
+
+	std::wstring		ToString () const;
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+};
+
 class Point
 {
 public:
@@ -23,79 +38,91 @@ class Line
 {
 public:
 	Line ();
-	Line (const Point& beg, const Point& end, const NUIE::Color& color);
+	Line (const Point& beg, const Point& end, const Color& color);
 
 	std::wstring		ToString () const;
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
-	Point			beg;
-	Point			end;
-	NUIE::Color		color;
+	Point	beg;
+	Point	end;
+	Color	color;
 };
 
 class Circle
 {
 public:
 	Circle ();
-	Circle (const Point& center, double radius, const NUIE::Color& color);
+	Circle (const Point& center, double radius, const Color& color);
 
 	std::wstring		ToString () const;
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
-	Point			center;
-	double			radius;
-	NUIE::Color		color;
+	Point	center;
+	double	radius;
+	Color	color;
 };
 
-class ColorValue : public NE::GenericValue<NUIE::Color>
+template <class Type>
+class GeometricValue : public NE::GenericValue<Type>
+{
+public:
+	GeometricValue (const Type& val) :
+		NE::GenericValue<Type> (val)
+	{
+	
+	}
+
+	virtual std::wstring ToString () const override
+	{
+		return val.ToString ();
+	}
+};
+
+class ColorValue : public GeometricValue<Color>
 {
 	DYNAMIC_SERIALIZABLE (ColorValue);
 
 public:
 	ColorValue ();
-	ColorValue (const NUIE::Color& val);
-	virtual std::wstring ToString () const override;
+	ColorValue (const Color& val);
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class PointValue : public NE::GenericValue<Point>
+class PointValue : public GeometricValue<Point>
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
 
 public:
 	PointValue ();
 	PointValue (const Point& val);
-	virtual std::wstring ToString () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class LineValue : public NE::GenericValue<Line>
+class LineValue : public GeometricValue<Line>
 {
 	DYNAMIC_SERIALIZABLE (LineValue);
 
 public:
 	LineValue ();
 	LineValue (const Line& val);
-	virtual std::wstring ToString () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 }; 
 
-class CircleValue : public NE::GenericValue<Circle>
+class CircleValue : public GeometricValue<Circle>
 {
 	DYNAMIC_SERIALIZABLE (CircleValue);
 
 public:
 	CircleValue ();
 	CircleValue (const Circle& val);
-	virtual std::wstring ToString () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
