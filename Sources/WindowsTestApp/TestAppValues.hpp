@@ -4,6 +4,7 @@
 #include "SingleValues.hpp"
 #include "Geometry.hpp"
 #include "Drawing.hpp"
+#include "DrawingImage.hpp"
 
 class Color
 {
@@ -80,7 +81,7 @@ public:
 	}
 };
 
-class ColorValue : public GeometricValue<Color>
+class ColorValue : public NE::GenericValue<Color>
 {
 	DYNAMIC_SERIALIZABLE (ColorValue);
 
@@ -88,6 +89,7 @@ public:
 	ColorValue ();
 	ColorValue (const Color& val);
 
+	virtual std::wstring		ToString () const override;
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };

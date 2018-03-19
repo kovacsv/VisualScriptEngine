@@ -180,9 +180,14 @@ ColorValue::ColorValue () :
 }
 
 ColorValue::ColorValue (const Color& val) :
-	GeometricValue<Color> (val)
+	NE::GenericValue<Color> (val)
 {
 
+}
+
+std::wstring ColorValue::ToString () const
+{
+	return val.ToString ();
 }
 
 NE::Stream::Status ColorValue::Read (NE::InputStream& inputStream)
