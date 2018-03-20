@@ -216,7 +216,7 @@ PointValue::PointValue () :
 }
 
 PointValue::PointValue (const Point& val) :
-	GeometricValue<Point> (val)
+	NE::GenericValue<Point> (val)
 {
 
 }
@@ -246,13 +246,13 @@ NE::Stream::Status PointValue::Write (NE::OutputStream& outputStream) const
 }
 
 LineValue::LineValue () :
-	GeometricValue<Line> (Line ())
+	LineValue (Line ())
 {
 
 }
 
 LineValue::LineValue (const Line& val) :
-	GeometricValue<Line> (val)
+	NE::GenericValue<Line> (val)
 {
 
 }
@@ -282,13 +282,13 @@ NE::Stream::Status LineValue::Write (NE::OutputStream& outputStream) const
 }
 
 CircleValue::CircleValue () :
-	GeometricValue<Circle> (Circle ())
+	CircleValue (Circle ())
 {
 
 }
 
 CircleValue::CircleValue (const Circle& val) :
-	GeometricValue<Circle> (val)
+	NE::GenericValue<Circle> (val)
 {
 
 }

@@ -65,15 +65,10 @@ public:
 	Color	color;
 };
 
-template <class Type>
-class GeometricValue : public NE::GenericValue<Type>
+class GeometricValue
 {
 public:
-	GeometricValue (const Type& val) :
-		NE::GenericValue<Type> (val)
-	{
 	
-	}
 };
 
 class ColorValue : public NE::GenericValue<Color>
@@ -91,7 +86,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class PointValue : public GeometricValue<Point>
+class PointValue : public NE::GenericValue<Point>
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
 
@@ -106,7 +101,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class LineValue : public GeometricValue<Line>
+class LineValue : public NE::GenericValue<Line>
 {
 	DYNAMIC_SERIALIZABLE (LineValue);
 
@@ -121,7 +116,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 }; 
 
-class CircleValue : public GeometricValue<Circle>
+class CircleValue : public NE::GenericValue<Circle>
 {
 	DYNAMIC_SERIALIZABLE (CircleValue);
 
