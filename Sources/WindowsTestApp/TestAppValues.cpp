@@ -245,6 +245,17 @@ NE::Stream::Status PointValue::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+NUIE::DrawingItemConstPtr PointValue::CreateDrawingItem () const
+{
+	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
+	static const int pointSize = 10;
+	NUIE::Rect pointRect (val.x - pointSize / 2, val.y - pointSize / 2, pointSize, pointSize);
+	NUIE::Pen pointPen (NUIE::Color (80, 80, 80), 1.0);
+	result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (pointRect.GetTopLeft (), pointRect.GetBottomRight (), pointPen)));
+	result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (pointRect.GetBottomLeft (), pointRect.GetTopRight (), pointPen)));
+	return result;
+}
+
 LineValue::LineValue () :
 	LineValue (Line ())
 {
@@ -281,6 +292,17 @@ NE::Stream::Status LineValue::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+NUIE::DrawingItemConstPtr LineValue::CreateDrawingItem () const
+{
+	return NUIE::DrawingItemConstPtr (
+		new NUIE::DrawingLine (
+			NUIE::Point (val.beg.x, val.beg.y),
+			NUIE::Point (val.end.x, val.end.y),
+			NUIE::Pen (NUIE::Color (val.color.r, val.color.g, val.color.b), 1.0)
+		)
+	);
+}
+
 CircleValue::CircleValue () :
 	CircleValue (Circle ())
 {
@@ -315,4 +337,10 @@ NE::Stream::Status CircleValue::Write (NE::OutputStream& outputStream) const
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	val.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+NUIE::DrawingItemConstPtr CircleValue::CreateDrawingItem () const
+{
+	NUIE::Rect rect = NUIE::Rect::FromCenterAndSize (NUIE::Point (val.center.x, val.center.y), NUIE::Size (val.radius * 2.0, val.radius * 2.0));
+	return NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (rect, NUIE::Pen (NUIE::Color (val.color.r, val.color.g, val.color.b), 1.0)));
 }

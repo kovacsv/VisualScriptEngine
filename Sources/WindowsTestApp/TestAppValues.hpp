@@ -68,7 +68,7 @@ public:
 class GeometricValue
 {
 public:
-	
+	virtual NUIE::DrawingItemConstPtr CreateDrawingItem () const = 0;
 };
 
 class ColorValue : public NE::GenericValue<Color>
@@ -86,7 +86,8 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class PointValue : public NE::GenericValue<Point>
+class PointValue :	public GeometricValue,
+					public NE::GenericValue<Point>
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
 
@@ -99,9 +100,12 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+	virtual NUIE::DrawingItemConstPtr CreateDrawingItem () const override;
 };
 
-class LineValue : public NE::GenericValue<Line>
+class LineValue :	public GeometricValue,
+					public NE::GenericValue<Line>
 {
 	DYNAMIC_SERIALIZABLE (LineValue);
 
@@ -114,9 +118,12 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+	virtual NUIE::DrawingItemConstPtr CreateDrawingItem () const override;
 }; 
 
-class CircleValue : public NE::GenericValue<Circle>
+class CircleValue : public GeometricValue,
+					public NE::GenericValue<Circle>
 {
 	DYNAMIC_SERIALIZABLE (CircleValue);
 
@@ -129,6 +136,8 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+	virtual NUIE::DrawingItemConstPtr CreateDrawingItem () const override;
 }; 
 
 #endif

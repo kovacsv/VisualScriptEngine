@@ -36,9 +36,9 @@ protected:
 	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
-	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValuePtr& value) const = 0;
-	void								AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
-	void								RemoveItem (NE::EvaluationEnv& env) const;
+	NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValuePtr& value) const;
+	void						AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
+	void						RemoveItem (NE::EvaluationEnv& env) const;
 
 	mutable NUIE::DrawingItemConstPtr	drawingItem;
 };
@@ -78,9 +78,6 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-private:
-	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValuePtr& value) const override;
 };
 
 class LineNode : public GeometricNode
@@ -96,9 +93,6 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-private:
-	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValuePtr& value) const override;
 };
 
 class CircleNode : public GeometricNode
@@ -115,9 +109,6 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-private:
-	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValuePtr& value) const override;
 };
 
 #endif

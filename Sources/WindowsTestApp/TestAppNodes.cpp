@@ -59,6 +59,21 @@ void GeometricNode::OnDeleted (NE::EvaluationEnv& env) const
 	RemoveItem (env);
 }
 
+NUIE::DrawingItemConstPtr GeometricNode::CreateDrawingItem (const NE::ValuePtr& value) const
+{
+	if (!NE::Value::IsType<NE::ListValue> (value)) {
+		return nullptr;
+	}
+	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
+	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
+		GeometricValue* geomValue = NE::Value::Cast<GeometricValue> (innerValue.get ());
+		if (DBGVERIFY (geomValue != nullptr)) {
+			result->AddItem (geomValue->CreateDrawingItem ());
+		}
+	});
+	return result;
+}
+
 void GeometricNode::AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
 {
 	if (DBGERROR (!env.IsDataType<ResultImageEvaluationData> ())) {
@@ -280,23 +295,6 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
 }
 
-NUIE::DrawingItemConstPtr PointNode::CreateDrawingItem (const NE::ValuePtr& value) const
-{
-	if (!NE::Value::IsType<NE::ListValue> (value)) {
-		return nullptr;
-	}
-	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
-	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
-		Point point = PointValue::Get (innerValue);
-		int pointSize = 10;
-		NUIE::Rect pointRect (point.x - pointSize / 2, point.y - pointSize / 2, pointSize, pointSize);
-		NUIE::Pen pointPen (NUIE::Color (80, 80, 80), 1.0);
-		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (pointRect.GetTopLeft (), pointRect.GetBottomRight (), pointPen)));
-		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (pointRect.GetBottomLeft (), pointRect.GetTopRight (), pointPen)));
-	});
-	return result;
-}
-
 NE::Stream::Status PointNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
@@ -350,27 +348,6 @@ NE::ValuePtr LineNode::Calculate (NE::EvaluationEnv& env) const
 			))));
 	});
 
-	return result;
-}
-
-NUIE::DrawingItemConstPtr LineNode::CreateDrawingItem (const NE::ValuePtr& value) const
-{
-	if (!NE::Value::IsType<NE::ListValue> (value)) {
-		return nullptr;
-	}
-	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
-	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
-		Line line = LineValue::Get (innerValue);
-		result->AddItem (
-			NUIE::DrawingItemConstPtr (
-				new NUIE::DrawingLine (
-					NUIE::Point (line.beg.x, line.beg.y),
-					NUIE::Point (line.end.x, line.end.y),
-					NUIE::Pen (NUIE::Color (line.color.r, line.color.g, line.color.b), 1.0)
-				)
-			)
-		);
-	});
 	return result;
 }
 
@@ -449,20 +426,6 @@ void CircleNode::RegisterParameters (NUIE::NodeParameterList& parameterList) con
 
 	GeometricNode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new RadiusParameter ()));
-}
-
-NUIE::DrawingItemConstPtr CircleNode::CreateDrawingItem (const NE::ValuePtr& value) const
-{
-	if (!NE::Value::IsType<NE::ListValue> (value)) {
-		return nullptr;
-	}
-	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
-	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
-		Circle circle = CircleValue::Get (innerValue);
-		NUIE::Rect rect = NUIE::Rect::FromCenterAndSize (NUIE::Point (circle.center.x, circle.center.y), NUIE::Size (circle.radius * 2.0, circle.radius * 2.0));
-		result->AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (rect, NUIE::Pen (NUIE::Color (circle.color.r, circle.color.g, circle.color.b), 1.0))));
-	});
-	return result;
 }
 
 NE::Stream::Status CircleNode::Read (NE::InputStream& inputStream)
