@@ -29,7 +29,9 @@ public:
 	IntValue (int val);
 	virtual ~IntValue ();
 
+	virtual ValuePtr		Clone () const override;
 	virtual std::wstring	ToString () const override;
+
 	virtual int				ToInteger () const override;
 	virtual double			ToDouble () const override;
 
@@ -47,7 +49,9 @@ public:
 	DoubleValue (double val);
 	virtual ~DoubleValue ();
 
+	virtual ValuePtr		Clone () const override;
 	virtual std::wstring	ToString () const override;
+
 	virtual int				ToInteger () const override;
 	virtual double			ToDouble () const override;
 
@@ -64,6 +68,7 @@ public:
 	StringValue (const std::wstring& val);
 	virtual ~StringValue ();
 
+	virtual ValuePtr		Clone () const override;
 	virtual std::wstring	ToString () const override;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;

@@ -74,11 +74,6 @@ public:
 	{
 	
 	}
-
-	virtual std::wstring ToString () const override
-	{
-		return val.ToString ();
-	}
 };
 
 class ColorValue : public NE::GenericValue<Color>
@@ -89,7 +84,9 @@ public:
 	ColorValue ();
 	ColorValue (const Color& val);
 
+	virtual NE::ValuePtr		Clone () const override;
 	virtual std::wstring		ToString () const override;
+
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
@@ -101,6 +98,9 @@ class PointValue : public GeometricValue<Point>
 public:
 	PointValue ();
 	PointValue (const Point& val);
+
+	virtual NE::ValuePtr		Clone () const override;
+	virtual std::wstring		ToString () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
@@ -114,6 +114,9 @@ public:
 	LineValue ();
 	LineValue (const Line& val);
 
+	virtual NE::ValuePtr		Clone () const override;
+	virtual std::wstring		ToString () const override;
+
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 }; 
@@ -125,6 +128,9 @@ class CircleValue : public GeometricValue<Circle>
 public:
 	CircleValue ();
 	CircleValue (const Circle& val);
+
+	virtual NE::ValuePtr		Clone () const override;
+	virtual std::wstring		ToString () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;

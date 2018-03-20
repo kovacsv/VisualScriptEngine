@@ -10,7 +10,22 @@ namespace ValueTest
 class A
 {
 public:
-	A (int x) : x (x) {}
+	A (const A& rhs) :
+		x (rhs.x)
+	{
+
+	}
+
+	A (int x) :
+		x (x)
+	{
+	}
+
+	bool operator== (const A& rhs) const
+	{
+		return x == rhs.x;
+	}
+
 	int x;
 };
 
@@ -29,6 +44,11 @@ public:
 		GenericValue<A> (val)
 	{
 
+	}
+
+	virtual ValuePtr Clone () const override
+	{
+		return ValuePtr (new AValue (val));
 	}
 
 	virtual std::wstring ToString () const override
@@ -87,6 +107,17 @@ TEST (CustomValueTest)
 	ASSERT (aListVal.GetValue (0)->ToString () == L"1");
 	ASSERT (aListVal.GetValue (1)->ToString () == L"2");
 	ASSERT (aListVal.GetValue (2)->ToString () == L"3");
+}
+
+TEST (CloneTest)
+{
+	std::shared_ptr<AValue> original (new AValue (A (1)));
+	ValuePtr cloned = original->Clone ();
+	std::shared_ptr<AValue> typedCloned = Value::Cast<AValue> (cloned);
+	ASSERT (AValue::Get (typedCloned) == A (1));
+	typedCloned->SetValue (2);
+	ASSERT (AValue::Get (typedCloned) == A (2));
+	ASSERT (AValue::Get (original) == A (1));
 }
 
 }

@@ -185,6 +185,11 @@ ColorValue::ColorValue (const Color& val) :
 
 }
 
+NE::ValuePtr ColorValue::Clone () const
+{
+	return NE::ValuePtr (new ColorValue (val));
+}
+
 std::wstring ColorValue::ToString () const
 {
 	return val.ToString ();
@@ -216,6 +221,16 @@ PointValue::PointValue (const Point& val) :
 
 }
 
+NE::ValuePtr PointValue::Clone () const
+{
+	return NE::ValuePtr (new PointValue (val));
+}
+
+std::wstring PointValue::ToString () const
+{
+	return val.ToString ();
+}
+
 NE::Stream::Status PointValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
@@ -242,6 +257,16 @@ LineValue::LineValue (const Line& val) :
 
 }
 
+NE::ValuePtr LineValue::Clone () const
+{
+	return NE::ValuePtr (new LineValue (val));
+}
+
+std::wstring LineValue::ToString () const
+{
+	return val.ToString ();
+}
+
 NE::Stream::Status LineValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
@@ -266,6 +291,16 @@ CircleValue::CircleValue (const Circle& val) :
 	GeometricValue<Circle> (val)
 {
 
+}
+
+NE::ValuePtr CircleValue::Clone () const
+{
+	return NE::ValuePtr (new CircleValue (val));
+}
+
+std::wstring CircleValue::ToString () const
+{
+	return val.ToString ();
 }
 
 NE::Stream::Status CircleValue::Read (NE::InputStream& inputStream)

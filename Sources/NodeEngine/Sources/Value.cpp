@@ -80,6 +80,55 @@ ListValue::~ListValue ()
 
 }
 
+ValuePtr ListValue::Clone () const
+{
+	ListValuePtr result (new ListValue ());
+	for (const ValuePtr& value : values) {
+		result->Push (value->Clone ());
+	}
+	return result;
+}
+
+std::wstring ListValue::ToString () const
+{
+	// TODO: separator
+	std::wstring result = L"";
+	for (size_t i = 0; i < GetSize (); ++i) {
+		result += values[i]->ToString ();
+		if (i < GetSize () - 1) {
+			result += L", ";
+		}
+	}
+	return result;
+}
+
+Stream::Status ListValue::Read (InputStream& inputStream)
+{
+	ObjectHeader header (inputStream);
+	Value::Read (inputStream);
+	size_t valueCount = 0;
+	inputStream.Read (valueCount);
+	for (size_t i = 0; i < valueCount; i++) {
+		ValuePtr value (ReadDynamicObject<Value> (inputStream));
+		if (DBGVERIFY (value != nullptr)) {
+			values.push_back (value);
+		}
+	}
+	return inputStream.GetStatus ();
+}
+
+Stream::Status ListValue::Write (OutputStream& outputStream) const
+{
+	ObjectHeader header (outputStream, serializationInfo);
+	Value::Write (outputStream);
+	outputStream.Write (values.size ());
+	for (const ValuePtr& value : values) {
+		WriteDynamicObject (outputStream, value.get ());
+	}
+	return outputStream.GetStatus ();
+}
+
+
 void ListValue::Push (const ValuePtr& value)
 {
 	values.push_back (value);
@@ -100,45 +149,6 @@ void ListValue::Enumerate (const std::function<void (const ValuePtr&)>& processo
 	for (const ValuePtr& value : values) {
 		processor (value);
 	}
-}
-
-std::wstring ListValue::ToString () const
-{
-	// TODO: separator
-	std::wstring result = L"";
-	for (size_t i = 0; i < GetSize (); ++i) {
-		result += GetValue (i)->ToString ();
-		if (i < GetSize () - 1) {
-			result += L", ";
-		}
-	}
-	return result;
-}
-
-Stream::Status ListValue::Read (InputStream& inputStream)
-{
-	ObjectHeader header (inputStream);
-	Value::Read (inputStream);
-	size_t valueCount = 0;
-	inputStream.Read (valueCount);
-	for (size_t i = 0; i < valueCount; i++) {
-		ValuePtr value (ReadDynamicObject<Value> (inputStream));
-		if (DBGVERIFY (value != nullptr)) {
-			values.push_back (value);
-		}
-	}	
-	return inputStream.GetStatus ();
-}
-
-Stream::Status ListValue::Write (OutputStream& outputStream) const
-{
-	ObjectHeader header (outputStream, serializationInfo);
-	Value::Write (outputStream);
-	outputStream.Write (values.size ());
-	for (const ValuePtr& value : values) {
-		WriteDynamicObject (outputStream, value.get ());
-	}
-	return outputStream.GetStatus ();
 }
 
 ValueToListValueAdapter::ValueToListValueAdapter (const ValuePtr& val) :

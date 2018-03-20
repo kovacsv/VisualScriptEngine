@@ -32,7 +32,9 @@ public:
 	Value (const Value& src) = delete;
 	virtual ~Value ();
 
+	virtual ValuePtr		Clone () const = 0;
 	virtual std::wstring	ToString () const = 0;
+
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 
@@ -106,16 +108,17 @@ public:
 	ListValue (const std::vector<ValuePtr>& values);
 	virtual ~ListValue ();
 
+	virtual ValuePtr			Clone () const override;
+	virtual std::wstring		ToString () const override;
+	virtual Stream::Status		Read (InputStream& inputStream) override;
+	virtual Stream::Status		Write (OutputStream& outputStream) const override;
+
 	virtual size_t				GetSize () const override;
 	virtual const ValuePtr&		GetValue (size_t index) const override;
 	virtual void				Enumerate (const std::function<void (const ValuePtr&)>& processor) const override;
 
 	void						Push (const ValuePtr& value);
 	
-	virtual std::wstring		ToString () const override;
-	virtual Stream::Status		Read (InputStream& inputStream) override;
-	virtual Stream::Status		Write (OutputStream& outputStream) const override;
-
 private:
 	std::vector<ValuePtr> values;
 };

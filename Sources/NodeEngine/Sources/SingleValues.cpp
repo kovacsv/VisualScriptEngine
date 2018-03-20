@@ -46,19 +46,24 @@ IntValue::~IntValue ()
 
 }
 
+ValuePtr IntValue::Clone () const
+{
+	return ValuePtr (new IntValue (val));
+}
+
 std::wstring IntValue::ToString () const
 {
-	return std::to_wstring (GetValue ());
+	return std::to_wstring (val);
 }
 
 int IntValue::ToInteger () const
 {
-	return GetValue ();
+	return val;
 }
 
 double IntValue::ToDouble () const
 {
-	return GetValue ();
+	return val;
 }
 
 Stream::Status IntValue::Read (InputStream& inputStream)
@@ -95,20 +100,25 @@ DoubleValue::~DoubleValue ()
 
 }
 
+ValuePtr DoubleValue::Clone () const
+{
+	return ValuePtr (new DoubleValue (val));
+}
+
 std::wstring DoubleValue::ToString () const
 {
 	// TODO: Precision
-	return DoubleToString (GetValue (), 2);
+	return DoubleToString (val, 2);
 }
 
 int DoubleValue::ToInteger () const
 {
-	return (int) GetValue ();
+	return (int) val;
 }
 
 double DoubleValue::ToDouble () const
 {
-	return GetValue ();
+	return val;
 }
 
 Stream::Status DoubleValue::Read (InputStream& inputStream)
@@ -144,9 +154,14 @@ StringValue::~StringValue ()
 
 }
 
+ValuePtr StringValue::Clone () const
+{
+	return ValuePtr (new StringValue (val));
+}
+
 std::wstring StringValue::ToString () const
 {
-	return GetValue ();
+	return val;
 }
 
 Stream::Status StringValue::Read (InputStream& inputStream)

@@ -48,6 +48,11 @@ public:
 
 	}
 
+	virtual ValuePtr Clone () const override
+	{
+		return ValuePtr (new AValue (val));
+	}
+
 	virtual std::wstring ToString () const override
 	{
 		return std::to_wstring (GetValue ().x);
@@ -69,6 +74,11 @@ public:
 		GenericValue<B> (val)
 	{
 
+	}
+
+	virtual ValuePtr Clone () const override
+	{
+		return ValuePtr (new BValue (val));
 	}
 
 	virtual std::wstring ToString () const override
@@ -93,6 +103,11 @@ public:
 		GenericValue<ABPair> (val)
 	{
 
+	}
+
+	virtual ValuePtr Clone () const override
+	{
+		return ValuePtr (new ABPairValue (val));
 	}
 
 	virtual std::wstring ToString () const override
