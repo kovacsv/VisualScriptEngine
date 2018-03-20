@@ -128,12 +128,6 @@ Stream::Status ListValue::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-
-void ListValue::Push (const ValuePtr& value)
-{
-	values.push_back (value);
-}
-
 size_t ListValue::GetSize () const
 {
 	return values.size ();
@@ -149,6 +143,11 @@ void ListValue::Enumerate (const std::function<void (const ValuePtr&)>& processo
 	for (const ValuePtr& value : values) {
 		processor (value);
 	}
+}
+
+void ListValue::Push (const ValuePtr& value)
+{
+	values.push_back (value);
 }
 
 ValueToListValueAdapter::ValueToListValueAdapter (const ValuePtr& val) :

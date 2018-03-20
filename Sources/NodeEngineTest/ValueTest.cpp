@@ -115,9 +115,26 @@ TEST (CloneTest)
 	ValuePtr cloned = original->Clone ();
 	std::shared_ptr<AValue> typedCloned = Value::Cast<AValue> (cloned);
 	ASSERT (AValue::Get (typedCloned) == A (1));
-	typedCloned->SetValue (2);
-	ASSERT (AValue::Get (typedCloned) == A (2));
-	ASSERT (AValue::Get (original) == A (1));
+	original->SetValue (A (2));
+	ASSERT (AValue::Get (original) == A (2));
+	ASSERT (AValue::Get (typedCloned) == A (1));
+}
+
+TEST (ListCloneTest)
+{
+	ListValuePtr original (new ListValue ());
+	original->Push (ValuePtr (new AValue (A (1))));
+	original->Push (ValuePtr (new AValue (A (2))));
+	original->Push (ValuePtr (new AValue (A (3))));
+	ValuePtr cloned = original->Clone ();
+	ListValuePtr typedCloned = Value::Cast<ListValue> (cloned);
+	ASSERT (typedCloned->GetSize () == 3);
+	ASSERT (AValue::Get (typedCloned->GetValue (0)) == A (1));
+	ASSERT (AValue::Get (typedCloned->GetValue (1)) == A (2));
+	ASSERT (AValue::Get (typedCloned->GetValue (2)) == A (3));
+	Value::Cast<AValue> (original->GetValue (0))->SetValue (A (2));
+	ASSERT (AValue::Get (original->GetValue (0)) == A (2));
+	ASSERT (AValue::Get (typedCloned->GetValue (0)) == A (1));
 }
 
 }
