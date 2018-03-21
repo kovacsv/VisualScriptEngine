@@ -152,7 +152,7 @@ std::wstring Circle::ToString () const
 	result += L"Circle (";
 	result += center.ToString ();
 	result += L", ";
-	result += NE::DoubleToString (radius, 23);
+	result += NE::DoubleToString (radius, 2);
 	result += L")";
 	return result;
 }
