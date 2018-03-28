@@ -5,7 +5,7 @@
 #include "NodeUIManager.hpp"
 #include "NodeUIEnvironment.hpp"
 
-namespace BIN
+namespace BI
 {
 
 class CreateNodeCommand : public NUIE::SingleCommand

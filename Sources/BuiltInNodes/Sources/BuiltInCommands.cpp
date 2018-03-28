@@ -1,6 +1,6 @@
 #include "BuiltInCommands.hpp"
 
-namespace BIN
+namespace BI
 {
 
 CreateNodeCommand::CreateNodeCommand (const std::wstring& name, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& viewPosition) :

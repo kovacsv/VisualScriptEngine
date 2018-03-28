@@ -223,9 +223,9 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			{
 				uiEnvironment.SetWindowHandle (hwnd);
 				NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
-				uiManager.AddNode (NUIE::UINodePtr (new BIN::NumericUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10)), uiEnvironment.GetEvaluationEnv ());
-				uiManager.AddNode (NUIE::UINodePtr (new BIN::NumericUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10)), uiEnvironment.GetEvaluationEnv ());
-				uiManager.AddNode (NUIE::UINodePtr (new BIN::MultiLineViewerNode (L"Viewer", NUIE::Point (300, 200), 5)), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new BI::NumericUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new BI::NumericUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (300, 200), 5)), uiEnvironment.GetEvaluationEnv ());
 				nodeEditor.Update ();
 			}
 			break;

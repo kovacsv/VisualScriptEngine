@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-namespace BIN
+namespace BI
 {
 
 NE::DynamicSerializationInfo	NumericUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), NumericUpDownNode::CreateSerializableInstance);

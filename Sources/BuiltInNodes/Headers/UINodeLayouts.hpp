@@ -5,7 +5,7 @@
 #include "NodeUIEnvironment.hpp"
 #include "NodeDrawingImage.hpp"
 
-namespace BIN
+namespace BI
 {
 
 void DrawStatusHeaderWithSlotsLayout (	const NUIE::UINode& uiNode,

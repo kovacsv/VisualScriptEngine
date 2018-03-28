@@ -6,7 +6,7 @@
 #include "OutputSlot.hpp"
 #include "SingleValues.hpp"
 
-namespace BIN
+namespace BI
 {
 
 class NumericUpDownNode : public NUIE::UINode

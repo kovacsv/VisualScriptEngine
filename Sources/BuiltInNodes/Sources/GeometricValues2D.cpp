@@ -1,7 +1,7 @@
 #include "GeometricValues2D.hpp"
 #include "StringUtils.hpp"
 
-namespace BIN
+namespace BI
 {
 
 NE::DynamicSerializationInfo	ColorValue::serializationInfo (NE::ObjectId ("{E6D2DBDC-6311-4BA5-9B1A-A0FFF8CA2444}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);

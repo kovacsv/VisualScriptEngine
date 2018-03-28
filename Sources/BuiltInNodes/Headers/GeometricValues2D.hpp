@@ -5,7 +5,7 @@
 #include "GenericValue.hpp"
 #include <string>
 
-namespace BIN
+namespace BI
 {
 
 class Color

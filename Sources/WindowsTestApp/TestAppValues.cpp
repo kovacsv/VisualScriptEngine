@@ -10,13 +10,13 @@ NE::DynamicSerializationInfo	LineValue::serializationInfo (NE::ObjectId ("{E899A
 NE::DynamicSerializationInfo	CircleValue::serializationInfo (NE::ObjectId ("{82190020-867B-4260-94BA-49D8FE94418E}"), NE::ObjectVersion (1), CircleValue::CreateSerializableInstance);
 
 PointValue::PointValue () :
-	PointValue (BIN::Point ())
+	PointValue (BI::Point ())
 {
 
 }
 
-PointValue::PointValue (const BIN::Point& val) :
-	NE::GenericValue<BIN::Point> (val)
+PointValue::PointValue (const BI::Point& val) :
+	NE::GenericValue<BI::Point> (val)
 {
 
 }
@@ -47,7 +47,7 @@ NE::Stream::Status PointValue::Write (NE::OutputStream& outputStream) const
 
 NE::ValuePtr PointValue::Transform () const
 {
-	return NE::ValuePtr (new PointValue (BIN::Point (val.x + 10, val.y + 10)));
+	return NE::ValuePtr (new PointValue (BI::Point (val.x + 10, val.y + 10)));
 }
 
 NUIE::DrawingItemConstPtr PointValue::CreateDrawingItem () const
@@ -62,13 +62,13 @@ NUIE::DrawingItemConstPtr PointValue::CreateDrawingItem () const
 }
 
 LineValue::LineValue () :
-	LineValue (BIN::Line ())
+	LineValue (BI::Line ())
 {
 
 }
 
-LineValue::LineValue (const BIN::Line& val) :
-	NE::GenericValue<BIN::Line> (val)
+LineValue::LineValue (const BI::Line& val) :
+	NE::GenericValue<BI::Line> (val)
 {
 
 }
@@ -114,13 +114,13 @@ NUIE::DrawingItemConstPtr LineValue::CreateDrawingItem () const
 }
 
 CircleValue::CircleValue () :
-	CircleValue (BIN::Circle ())
+	CircleValue (BI::Circle ())
 {
 
 }
 
-CircleValue::CircleValue (const BIN::Circle& val) :
-	NE::GenericValue<BIN::Circle> (val)
+CircleValue::CircleValue (const BI::Circle& val) :
+	NE::GenericValue<BI::Circle> (val)
 {
 
 }

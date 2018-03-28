@@ -4,7 +4,7 @@
 #include "SkinParams.hpp"
 #include <algorithm>
 
-namespace BIN
+namespace BI
 {
 
 SlotRectCollection::SlotRectCollection ()

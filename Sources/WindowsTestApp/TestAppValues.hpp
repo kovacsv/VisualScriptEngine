@@ -21,13 +21,13 @@ public:
 
 class PointValue :	public GeometricValue,
 					public DrawableValue,
-					public NE::GenericValue<BIN::Point>
+					public NE::GenericValue<BI::Point>
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
 
 public:
 	PointValue ();
-	PointValue (const BIN::Point& val);
+	PointValue (const BI::Point& val);
 
 	virtual NE::ValuePtr		Clone () const override;
 	virtual std::wstring		ToString () const override;
@@ -41,13 +41,13 @@ public:
 
 class LineValue :	public GeometricValue,
 					public DrawableValue,
-					public NE::GenericValue<BIN::Line>
+					public NE::GenericValue<BI::Line>
 {
 	DYNAMIC_SERIALIZABLE (LineValue);
 
 public:
 	LineValue ();
-	LineValue (const BIN::Line& val);
+	LineValue (const BI::Line& val);
 
 	virtual NE::ValuePtr		Clone () const override;
 	virtual std::wstring		ToString () const override;
@@ -61,13 +61,13 @@ public:
 
 class CircleValue : public GeometricValue,
 					public DrawableValue,
-					public NE::GenericValue<BIN::Circle>
+					public NE::GenericValue<BI::Circle>
 {
 	DYNAMIC_SERIALIZABLE (CircleValue);
 
 public:
 	CircleValue ();
-	CircleValue (const BIN::Circle& val);
+	CircleValue (const BI::Circle& val);
 
 	virtual NE::ValuePtr		Clone () const override;
 	virtual std::wstring		ToString () const override;

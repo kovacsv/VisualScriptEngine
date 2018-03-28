@@ -47,7 +47,7 @@ static NUIE::CommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE
 }
 
 MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
-	BIN::CreateNodeCommand (name, uiManager, uiEnvironment, position),
+	BI::CreateNodeCommand (name, uiManager, uiEnvironment, position),
 	nodeType (nodeType)
 {
 
@@ -57,17 +57,17 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 {
 	switch (nodeType) {
 		case NodeType::Number:
-			return NUIE::UINodePtr (new BIN::NumericUpDownNode (L"Number", modelPosition, 0, 5));
+			return NUIE::UINodePtr (new BI::NumericUpDownNode (L"Number", modelPosition, 0, 5));
 		case NodeType::Range:
-			return NUIE::UINodePtr (new BIN::NumberRangeNode (L"Range", modelPosition));
+			return NUIE::UINodePtr (new BI::NumberRangeNode (L"Range", modelPosition));
 		case NodeType::Addition:
-			return NUIE::UINodePtr (new BIN::AdditionNode (L"Addition", modelPosition));
+			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
 		case NodeType::Subtraction:
-			return NUIE::UINodePtr (new BIN::SubtractionNode (L"Subtraction", modelPosition));
+			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", modelPosition));
 		case NodeType::Multiplication:
-			return NUIE::UINodePtr (new BIN::MultiplicationNode (L"Multiplication", modelPosition));
+			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", modelPosition));
 		case NodeType::Division:
-			return NUIE::UINodePtr (new BIN::DivisionNode (L"Division", modelPosition));
+			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", modelPosition));
 		case NodeType::Color:
 			return NUIE::UINodePtr (new ColorNode (L"Color", modelPosition));
 		case NodeType::Point:
@@ -79,7 +79,7 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 		case NodeType::Transform:
 			return NUIE::UINodePtr (new TransformNode (L"Transform", modelPosition));
 		case NodeType::Viewer:
-			return NUIE::UINodePtr (new BIN::MultiLineViewerNode (L"Viewer", modelPosition, 5));
+			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
 	}
 	return nullptr;
 }
@@ -216,19 +216,19 @@ NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateI
 		static int count = 10;
 		for (int i = 0; i < count; i++) {
 			for (int j = 0; j < count; j++) {
-				uiManager.AddNode (NUIE::UINodePtr (new BIN::NumberRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
+				uiManager.AddNode (NUIE::UINodePtr (new BI::NumberRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
 			}
 		}
 		nodeEditor.Update ();
 	} else {
-		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new BIN::NumericUpDownNode (L"Number", NUIE::Point (70, 70), 20, 5)), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new BIN::NumericUpDownNode (L"Number", NUIE::Point (70, 180), 20, 5)), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new BIN::NumberRangeNode (L"Range", NUIE::Point (220, 100))), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new BIN::NumericUpDownNode (L"Number", NUIE::Point (220, 220), 20, 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new BI::NumericUpDownNode (L"Number", NUIE::Point (70, 70), 20, 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new BI::NumericUpDownNode (L"Number", NUIE::Point (70, 180), 20, 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new BI::NumberRangeNode (L"Range", NUIE::Point (220, 100))), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new BI::NumericUpDownNode (L"Number", NUIE::Point (220, 220), 20, 5)), uiEnvironment.GetEvaluationEnv ());
 		std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
 		uiManager.AddNode (pointNode, uiEnvironment.GetEvaluationEnv ());
 		pointNode->SetValueCombinationMode (NE::ValueCombinationMode::CrossProduct);
-		NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new BIN::MultiLineViewerNode (L"Viewer", NUIE::Point (600, 150), 5)), uiEnvironment.GetEvaluationEnv ());
+		NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (600, 150), 5)), uiEnvironment.GetEvaluationEnv ());
 
 		uiManager.ConnectOutputSlotToInputSlot (startInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("start")));
 		uiManager.ConnectOutputSlotToInputSlot (stepInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("step")));

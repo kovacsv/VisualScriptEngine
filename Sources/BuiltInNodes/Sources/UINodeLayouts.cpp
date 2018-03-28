@@ -2,7 +2,7 @@
 #include "UINodePanels.hpp"
 #include "UINode.hpp"
 
-namespace BIN
+namespace BI
 {
 
 void DrawStatusHeaderWithSlotsLayout (	const NUIE::UINode& uiNode,

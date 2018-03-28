@@ -6,7 +6,7 @@
 
 using namespace NE;
 using namespace NUIE;
-using namespace BIN;
+using namespace BI;
 
 namespace ArithmeticNodesTest
 {

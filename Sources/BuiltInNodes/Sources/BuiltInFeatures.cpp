@@ -3,7 +3,7 @@
 #include "ContextDecorators.hpp"
 #include "SkinParams.hpp"
 
-namespace BIN
+namespace BI
 {
 
 NE::SerializationInfo ValueCombinationFeature::serializationInfo (NE::ObjectVersion (1));

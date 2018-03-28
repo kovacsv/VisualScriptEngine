@@ -5,7 +5,7 @@
 
 #include <algorithm>
 
-namespace BIN
+namespace BI
 {
 
 NE::DynamicSerializationInfo MultiLineViewerNode::serializationInfo (NE::ObjectId ("{2BACB82D-84A6-4472-82CB-786C98A50EF0}"), NE::ObjectVersion (1), MultiLineViewerNode::CreateSerializableInstance);

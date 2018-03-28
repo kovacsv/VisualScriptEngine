@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-namespace BIN
+namespace BI
 {
 
 NE::SerializationInfo			BinaryOperationNode::serializationInfo (NE::ObjectVersion (1));

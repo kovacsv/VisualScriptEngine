@@ -7,7 +7,7 @@
 #include "UINode.hpp"
 #include <memory>
 
-namespace BIN
+namespace BI
 {
 
 class SlotRectCollection

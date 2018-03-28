@@ -7,7 +7,7 @@
 #include "SingleValues.hpp"
 #include "BuiltInFeatures.hpp"
 
-namespace BIN
+namespace BI
 {
 
 class BinaryOperationNode : public NUIE::UINode,

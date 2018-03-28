@@ -4,7 +4,7 @@
 #include "UINodeCommands.hpp"
 #include "ValueCombination.hpp"
 
-namespace BIN
+namespace BI
 {
 
 class Feature
