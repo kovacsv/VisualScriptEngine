@@ -1,9 +1,9 @@
 #include "BuiltInCommands.hpp"
 
-namespace NUIE
+namespace BIN
 {
 
-CreateNodeCommand::CreateNodeCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& viewPosition) :
+CreateNodeCommand::CreateNodeCommand (const std::wstring& name, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& viewPosition) :
 	SingleCommand (name, false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
@@ -19,7 +19,7 @@ CreateNodeCommand::~CreateNodeCommand ()
 
 void CreateNodeCommand::Do ()
 {
-	const ViewBox& viewBox = uiManager.GetViewBox ();
+	const NUIE::ViewBox& viewBox = uiManager.GetViewBox ();
 	uiManager.AddNode (CreateNode (viewBox.ViewToModel (viewPosition)), uiEnvironment.GetEvaluationEnv ());
 }
 

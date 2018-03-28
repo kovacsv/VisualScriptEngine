@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-namespace NUIE
+namespace BIN
 {
 
 NE::DynamicSerializationInfo	NumericUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), NumericUpDownNode::CreateSerializableInstance);
@@ -22,7 +22,7 @@ NumericUpDownNode::NumericUpDownNode () :
 
 }
 
-NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const Point& position, double val, double step) :
+NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const NUIE::Point& position, double val, double step) :
 	UINode (name, position),
 	val (val),
 	step (step)
@@ -37,7 +37,7 @@ NumericUpDownNode::~NumericUpDownNode ()
 
 void NumericUpDownNode::RegisterSlots ()
 {
-	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"Output")));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
 NE::ValuePtr NumericUpDownNode::Calculate (NE::EvaluationEnv&) const
@@ -45,13 +45,13 @@ NE::ValuePtr NumericUpDownNode::Calculate (NE::EvaluationEnv&) const
 	return NE::ValuePtr (new NE::DoubleValue (val));
 }
 
-void NumericUpDownNode::RegisterParameters (NodeParameterList& parameterList) const
+void NumericUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class ValueParameter : public DoubleParameter<NumericUpDownNode>
+	class ValueParameter : public NUIE::DoubleParameter<NumericUpDownNode>
 	{
 	public:
 		ValueParameter () :
-			DoubleParameter<NumericUpDownNode> (L"Value")
+			NUIE::DoubleParameter<NumericUpDownNode> (L"Value")
 		{
 
 		}
@@ -61,7 +61,7 @@ void NumericUpDownNode::RegisterParameters (NodeParameterList& parameterList) co
 			return NE::ValuePtr (new NE::DoubleValue (uiNode->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<NumericUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<NumericUpDownNode>& uiNode, const NE::ValuePtr& value) override
 		{
 			uiNode->SetValue (NE::DoubleValue::Get (value));
 			uiManager.InvalidateNodeValue (uiNode);
@@ -70,11 +70,11 @@ void NumericUpDownNode::RegisterParameters (NodeParameterList& parameterList) co
 		}
 	};
 
-	class StepParameter : public DoubleParameter<NumericUpDownNode>
+	class StepParameter : public NUIE::DoubleParameter<NumericUpDownNode>
 	{
 	public:
 		StepParameter () :
-			DoubleParameter<NumericUpDownNode> (L"Step")
+			NUIE::DoubleParameter<NumericUpDownNode> (L"Step")
 		{
 
 		}
@@ -84,7 +84,7 @@ void NumericUpDownNode::RegisterParameters (NodeParameterList& parameterList) co
 			return NE::ValuePtr (new NE::DoubleValue (uiNode->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<NumericUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<NumericUpDownNode>& uiNode, const NE::ValuePtr& value) override
 		{
 			uiNode->SetStep (NE::DoubleValue::Get (value));
 			return true;
@@ -92,27 +92,27 @@ void NumericUpDownNode::RegisterParameters (NodeParameterList& parameterList) co
 	};
 
 	UINode::RegisterParameters (parameterList);
-	parameterList.AddParameter (NodeParameterPtr (new ValueParameter ()));
-	parameterList.AddParameter (NodeParameterPtr (new StepParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new ValueParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new StepParameter ()));
 }
 
-EventHandlerResult NumericUpDownNode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
+NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::KeySet&, NUIE::MouseButton mouseButton, const NUIE::Point& position)
 {
-	if (mouseButton != MouseButton::Left) {
-		return EventHandlerResult::EventNotHandled;
+	if (mouseButton != NUIE::MouseButton::Left) {
+		return NUIE::EventHandlerResult::EventNotHandled;
 	}
 
-	Rect minusButtonRect = GetSpecialRect (env, "minus");
-	Rect plusButtonRect = GetSpecialRect (env, "plus");
+	NUIE::Rect minusButtonRect = GetSpecialRect (env, "minus");
+	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
 
 	if (minusButtonRect.Contains (position)) {
 		Decrease ();
-		return EventHandlerResult::EventHandled;
+		return NUIE::EventHandlerResult::EventHandled;
 	} else if (plusButtonRect.Contains (position)) {
 		Increase ();
-		return EventHandlerResult::EventHandled;
+		return NUIE::EventHandlerResult::EventHandled;
 	}
-	return EventHandlerResult::EventNotHandled;
+	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
 NE::Stream::Status NumericUpDownNode::Read (NE::InputStream& inputStream)
@@ -166,18 +166,18 @@ void NumericUpDownNode::SetStep (double newStep)
 	step = newStep;
 }
 
-void NumericUpDownNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+void NumericUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", L"<", "plus", L">", env, drawingImage);
 }
 
 NumberRangeNode::NumberRangeNode () :
-	NumberRangeNode (L"", Point ())
+	NumberRangeNode (L"", NUIE::Point ())
 {
 
 }
 
-NumberRangeNode::NumberRangeNode (const std::wstring& name, const Point& position) :
+NumberRangeNode::NumberRangeNode (const std::wstring& name, const NUIE::Point& position) :
 	UINode (name, position)
 {
 
@@ -190,10 +190,10 @@ NumberRangeNode::~NumberRangeNode ()
 
 void NumberRangeNode::RegisterSlots ()
 {
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"List")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
 }
 
 NE::ValuePtr NumberRangeNode::Calculate (NE::EvaluationEnv& env) const
@@ -216,27 +216,27 @@ NE::ValuePtr NumberRangeNode::Calculate (NE::EvaluationEnv& env) const
 	return list;
 }
 
-void NumberRangeNode::RegisterParameters (NodeParameterList& parameterList) const
+void NumberRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class CountParameter : public SlotDefaultValueParameter<NumberRangeNode, NE::IntValue>
+	class CountParameter : public NUIE::SlotDefaultValueParameter<NumberRangeNode, NE::IntValue>
 	{
 	public:
 		CountParameter () :
-			SlotDefaultValueParameter<NumberRangeNode, NE::IntValue> (L"Count", ParameterType::Integer, NE::SlotId ("count"))
+			NUIE::SlotDefaultValueParameter<NumberRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
 		{
 
 		}
 
-		virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0.0;
 		}
 	};
 
 	UINode::RegisterParameters (parameterList);
-	RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, L"Start", ParameterType::Double, NE::SlotId ("start"));
-	RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, L"Step", ParameterType::Double, NE::SlotId ("step"));
-	parameterList.AddParameter (NodeParameterPtr (new CountParameter ()));
+	NUIE::RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
 }
 
 NE::Stream::Status NumberRangeNode::Read (NE::InputStream& inputStream)
@@ -253,7 +253,7 @@ NE::Stream::Status NumberRangeNode::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-void NumberRangeNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+void NumberRangeNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }

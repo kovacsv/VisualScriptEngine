@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-namespace NUIE
+namespace BIN
 {
 
 NE::SerializationInfo			BinaryOperationNode::serializationInfo (NE::ObjectVersion (1));
@@ -14,12 +14,12 @@ NE::DynamicSerializationInfo	MultiplicationNode::serializationInfo (NE::ObjectId
 NE::DynamicSerializationInfo	DivisionNode::serializationInfo (NE::ObjectId ("{652DDDFC-A441-40B1-87AC-0BED247F35E7}"), NE::ObjectVersion (1), DivisionNode::CreateSerializableInstance);
 
 BinaryOperationNode::BinaryOperationNode () :
-	BinaryOperationNode (L"", Point ())
+	BinaryOperationNode (L"", NUIE::Point ())
 {
 
 }
 
-BinaryOperationNode::BinaryOperationNode (const std::wstring& name, const Point& position) :
+BinaryOperationNode::BinaryOperationNode (const std::wstring& name, const NUIE::Point& position) :
 	UINode (name, position),
 	ValueCombinationFeature (NE::ValueCombinationMode::Longest)
 {
@@ -33,9 +33,9 @@ BinaryOperationNode::~BinaryOperationNode ()
 
 void BinaryOperationNode::RegisterSlots ()
 {
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("a"), L"A", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("b"), L"B", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("result"), L"Result")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), L"A", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), L"B", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), L"Result")));
 }
 
 NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
@@ -65,14 +65,14 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 	return resultListValue;
 }
 
-void BinaryOperationNode::RegisterParameters (NodeParameterList& parameterList) const
+void BinaryOperationNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	UINode::RegisterParameters (parameterList);
-	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", ParameterType::Double, NE::SlotId ("a"));
-	RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", ParameterType::Double, NE::SlotId ("b"));
+	NUIE::RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", NUIE::ParameterType::Double, NE::SlotId ("a"));
+	NUIE::RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", NUIE::ParameterType::Double, NE::SlotId ("b"));
 }
 
-void BinaryOperationNode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
+void BinaryOperationNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
 	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
 }
@@ -93,7 +93,7 @@ NE::Stream::Status BinaryOperationNode::Write (NE::OutputStream& outputStream) c
 	return outputStream.GetStatus ();
 }
 
-void BinaryOperationNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+void BinaryOperationNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
@@ -104,7 +104,7 @@ AdditionNode::AdditionNode () :
 
 }
 
-AdditionNode::AdditionNode (const std::wstring& name, const Point& position) :
+AdditionNode::AdditionNode (const std::wstring& name, const NUIE::Point& position) :
 	BinaryOperationNode (name, position)
 {
 
@@ -126,7 +126,7 @@ SubtractionNode::SubtractionNode () :
 
 }
 
-SubtractionNode::SubtractionNode (const std::wstring& name, const Point& position) :
+SubtractionNode::SubtractionNode (const std::wstring& name, const NUIE::Point& position) :
 	BinaryOperationNode (name, position)
 {
 
@@ -148,7 +148,7 @@ MultiplicationNode::MultiplicationNode () :
 
 }
 
-MultiplicationNode::MultiplicationNode (const std::wstring& name, const Point& position) :
+MultiplicationNode::MultiplicationNode (const std::wstring& name, const NUIE::Point& position) :
 	BinaryOperationNode (name, position)
 {
 
@@ -170,7 +170,7 @@ DivisionNode::DivisionNode () :
 
 }
 
-DivisionNode::DivisionNode (const std::wstring& name, const Point& position) :
+DivisionNode::DivisionNode (const std::wstring& name, const NUIE::Point& position) :
 	BinaryOperationNode (name, position)
 {
 

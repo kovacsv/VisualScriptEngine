@@ -21,16 +21,16 @@ GeometricNode::GeometricNode () :
 
 GeometricNode::GeometricNode (const std::wstring& name, const NUIE::Point& position) :
 	NUIE::UINode (name, position),
-	NUIE::ValueCombinationFeature (NE::ValueCombinationMode::Longest),
-	NUIE::EnableDisableFeature (true)
+	BIN::ValueCombinationFeature (NE::ValueCombinationMode::Longest),
+	BIN::EnableDisableFeature (true)
 {
 
 }
 
 void GeometricNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NUIE::ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
-	NUIE::EnableDisableFeature::RegisterFeatureCommands (commandRegistrator);
+	BIN::ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
+	BIN::EnableDisableFeature::RegisterFeatureCommands (commandRegistrator);
 }
 
 void GeometricNode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
@@ -103,8 +103,8 @@ NE::Stream::Status GeometricNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	UINode::Read (inputStream);
-	NUIE::ValueCombinationFeature::Read (inputStream);
-	NUIE::EnableDisableFeature::Read (inputStream);
+	BIN::ValueCombinationFeature::Read (inputStream);
+	BIN::EnableDisableFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -112,8 +112,8 @@ NE::Stream::Status GeometricNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
-	NUIE::ValueCombinationFeature::Write (outputStream);
-	NUIE::EnableDisableFeature::Write (outputStream);
+	BIN::ValueCombinationFeature::Write (outputStream);
+	BIN::EnableDisableFeature::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
@@ -126,7 +126,7 @@ void GeometricNode::DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const
 
 void GeometricNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
-	NUIE::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
+	BIN::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 ColorNode::ColorNode () :
@@ -137,7 +137,7 @@ ColorNode::ColorNode () :
 
 ColorNode::ColorNode (const std::wstring& name, const NUIE::Point& position) :
 	NUIE::UINode (name, position),
-	NUIE::ValueCombinationFeature (NE::ValueCombinationMode::Longest)
+	BIN::ValueCombinationFeature (NE::ValueCombinationMode::Longest)
 {
 
 }
@@ -232,7 +232,7 @@ NE::Stream::Status ColorNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NUIE::UINode::Read (inputStream);
-	NUIE::ValueCombinationFeature::Read (inputStream);
+	BIN::ValueCombinationFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -240,13 +240,13 @@ NE::Stream::Status ColorNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NUIE::UINode::Write (outputStream);
-	NUIE::ValueCombinationFeature::Write (outputStream);
+	BIN::ValueCombinationFeature::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
 void ColorNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
-	NUIE::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
+	BIN::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 PointNode::PointNode () :

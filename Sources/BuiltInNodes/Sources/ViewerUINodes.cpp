@@ -5,22 +5,19 @@
 
 #include <algorithm>
 
-namespace NUIE
+namespace BIN
 {
 
 NE::DynamicSerializationInfo MultiLineViewerNode::serializationInfo (NE::ObjectId ("{2BACB82D-84A6-4472-82CB-786C98A50EF0}"), NE::ObjectVersion (1), MultiLineViewerNode::CreateSerializableInstance);
 
 MultiLineViewerNode::MultiLineViewerNode () :
-	UINode (),
-	textsPerPage (0),
-	currentPage (1),
-	textCount (0)
+	MultiLineViewerNode (L"", NUIE::Point (), 0)
 {
 
 }
 
-MultiLineViewerNode::MultiLineViewerNode (const std::wstring& name, const Point& position, size_t textsPerPage) :
-	UINode (name, position),
+MultiLineViewerNode::MultiLineViewerNode (const std::wstring& name, const NUIE::Point& position, size_t textsPerPage) :
+	NUIE::UINode (name, position),
 	textsPerPage (textsPerPage),
 	currentPage (1),
 	textCount (0)
@@ -35,8 +32,8 @@ MultiLineViewerNode::~MultiLineViewerNode ()
 
 void MultiLineViewerNode::RegisterSlots ()
 {
-	RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (NE::SlotId ("out"), L"Output")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
 NE::ValuePtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
@@ -44,9 +41,9 @@ NE::ValuePtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
 	return EvaluateSingleInputSlot (NE::SlotId ("in"), env);
 }
 
-void MultiLineViewerNode::RegisterParameters (NodeParameterList& parameterList) const
+void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class TextPerPageParameter : public PositiveIntegerParameter<MultiLineViewerNode>
+	class TextPerPageParameter : public NUIE::PositiveIntegerParameter<MultiLineViewerNode>
 	{
 	public:
 		TextPerPageParameter () :
@@ -60,7 +57,7 @@ void MultiLineViewerNode::RegisterParameters (NodeParameterList& parameterList) 
 			return NE::ValuePtr (new NE::IntValue ((int) uiNode->GetTextsPerPage ()));
 		}
 
-		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<MultiLineViewerNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<MultiLineViewerNode>& uiNode, const NE::ValuePtr& value) override
 		{
 			uiNode->SetTextsPerPage (NE::IntValue::Get (value));
 			uiManager.InvalidateNodeDrawing (uiNode);
@@ -69,50 +66,50 @@ void MultiLineViewerNode::RegisterParameters (NodeParameterList& parameterList) 
 	};
 
 	UINode::RegisterParameters (parameterList);
-	parameterList.AddParameter (NodeParameterPtr (new TextPerPageParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new TextPerPageParameter ()));
 }
 
-NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseClick (NodeUIEnvironment& env, const KeySet&, MouseButton mouseButton, const Point& position)
+NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::KeySet&, NUIE::MouseButton mouseButton, const NUIE::Point& position)
 {
-	if (mouseButton != MouseButton::Left) {
-		return EventHandlerResult::EventNotHandled;
+	if (mouseButton != NUIE::MouseButton::Left) {
+		return NUIE::EventHandlerResult::EventNotHandled;
 	}
 
 	if (!HasSpecialRect (env, "minus") || !HasSpecialRect (env, "plus")) {
-		return EventHandlerResult::EventNotHandled;
+		return NUIE::EventHandlerResult::EventNotHandled;
 	}
 
-	Rect minusButtonRect = GetSpecialRect (env, "minus");
-	Rect plusButtonRect = GetSpecialRect (env, "plus");
+	NUIE::Rect minusButtonRect = GetSpecialRect (env, "minus");
+	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
 
 	if (minusButtonRect.Contains (position)) {
 		currentPage = currentPage - 1;
 		ValidateCurrentPage ();
-		return EventHandlerResult::EventHandled;
+		return NUIE::EventHandlerResult::EventHandled;
 	} else if (plusButtonRect.Contains (position)) {
 		currentPage = currentPage + 1;
 		ValidateCurrentPage ();
-		return EventHandlerResult::EventHandled;
+		return NUIE::EventHandlerResult::EventHandled;
 	}
 
-	return EventHandlerResult::EventNotHandled;
+	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
-void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	class NodeUIMultiLineTextViewerPanel : public NodeUIMultiLineTextPanel
 	{
 	public:
-		NodeUIMultiLineTextViewerPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage) :
+		NodeUIMultiLineTextViewerPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t textsPerPage) :
 			NodeUIMultiLineTextPanel (nodeTexts, env, textsPerPage)
 		{
 		
 		}
 
 	private:
-		virtual Color GetBackgroundColor (NodeUIDrawingEnvironment&) const override
+		virtual NUIE::Color GetBackgroundColor (NUIE::NodeUIDrawingEnvironment&) const override
 		{
-			return Color (255, 255, 100);
+			return NUIE::Color (255, 255, 100);
 		}
 	};
 
@@ -143,12 +140,12 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env,
 		nodeTextsToShow.push_back (L"<empty>");
 	}
 
-	NodeUIPanelDrawer drawer;
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUIHeaderPanel (GetNodeName ())));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUIMultiLineTextViewerPanel (nodeTextsToShow, env, textsPerPage)));
+	NUIE::NodeUIPanelDrawer drawer;
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (GetNodeName ())));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextViewerPanel (nodeTextsToShow, env, textsPerPage)));
 	if (textCount > textsPerPage) {
-		drawer.AddPanel (NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
+		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
 	}
 	drawer.Draw (env, drawingImage);
 }

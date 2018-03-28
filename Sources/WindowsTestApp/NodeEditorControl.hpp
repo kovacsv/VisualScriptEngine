@@ -8,7 +8,7 @@
 #include <wx/wx.h>
 #include <memory>
 
-class MyCreateNodeCommand : public NUIE::CreateNodeCommand
+class MyCreateNodeCommand : public BIN::CreateNodeCommand
 {
 public:
 	enum class NodeType

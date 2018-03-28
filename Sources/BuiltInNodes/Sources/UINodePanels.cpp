@@ -4,7 +4,7 @@
 #include "SkinParams.hpp"
 #include <algorithm>
 
-namespace NUIE
+namespace BIN
 {
 
 SlotRectCollection::SlotRectCollection ()
@@ -12,9 +12,9 @@ SlotRectCollection::SlotRectCollection ()
 
 }
 
-void SlotRectCollection::AddSlotSize (const NE::SlotId& slotId, const Size& size)
+void SlotRectCollection::AddSlotSize (const NE::SlotId& slotId, const NUIE::Size& size)
 {
-	slotSizes.push_back (std::pair<NE::SlotId, Size> (slotId, size));
+	slotSizes.push_back (std::pair<NE::SlotId, NUIE::Size> (slotId, size));
 }
 
 double SlotRectCollection::GetWidth () const
@@ -41,24 +41,24 @@ double SlotRectCollection::GetHeight (double padding) const
 	return height;
 }
 
-void SlotRectCollection::Enumerate (RefPointMode refPointMode, const Point& refPoint, double padding, const std::function<void (const NE::SlotId&, const Rect&)>& processor) const
+void SlotRectCollection::Enumerate (RefPointMode refPointMode, const NUIE::Point& refPoint, double padding, const std::function<void (const NE::SlotId&, const NUIE::Rect&)>& processor) const
 {
-	Point currentPosition = refPoint;
+	NUIE::Point currentPosition = refPoint;
 	double width = GetWidth ();
 	for (const auto& it : slotSizes) {
-		Size slotSize = it.second;
+		NUIE::Size slotSize = it.second;
 		slotSize.SetWidth (width);
-		Rect rect;
+		NUIE::Rect rect;
 		if (refPointMode == RefPointMode::TopLeft) {
-			rect = Rect::FromPositionAndSize (currentPosition, slotSize);
+			rect = NUIE::Rect::FromPositionAndSize (currentPosition, slotSize);
 		} else if (refPointMode == RefPointMode::TopRight) {
-			Point leftPosition = currentPosition - Point (slotSize.GetWidth (), 0.0);
-			rect = Rect::FromPositionAndSize (leftPosition, slotSize);
+			NUIE::Point leftPosition = currentPosition - NUIE::Point (slotSize.GetWidth (), 0.0);
+			rect = NUIE::Rect::FromPositionAndSize (leftPosition, slotSize);
 		} else {
 			DBGBREAK ();
 		}
 		processor (it.first, rect);
-		currentPosition = currentPosition + Point (0.0, slotSize.GetHeight () + padding);
+		currentPosition = currentPosition + NUIE::Point (0.0, slotSize.GetHeight () + padding);
 	}
 }
 
@@ -69,19 +69,19 @@ NodeUITextPanelBase::NodeUITextPanelBase (const std::wstring& nodeText) :
 	
 }
 
-Size NodeUITextPanelBase::GetMinSize (NodeUIDrawingEnvironment& env) const
+NUIE::Size NodeUITextPanelBase::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
-	Size minSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText);
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
+	NUIE::Size minSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText);
 	minSize = minSize.Grow (2.0 * skinParams.GetNodePadding (), 2.0 * skinParams.GetNodePadding ());
 	return minSize;
 }
 
-void NodeUITextPanelBase::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUITextPanelBase::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, GetBackgroundColor (env))));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (rect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, GetTextColor (env))));
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, GetBackgroundColor (env))));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rect, skinParams.GetNodeTextFont (), nodeText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env))));
 }
 
 NodeUITextPanel::NodeUITextPanel (const std::wstring& nodeText) :
@@ -90,12 +90,12 @@ NodeUITextPanel::NodeUITextPanel (const std::wstring& nodeText) :
 	
 }
 
-Color NodeUITextPanel::GetTextColor (NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUITextPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentTextColor ();
 }
 
-Color NodeUITextPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUITextPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentBackgroundColor ();
 }
@@ -106,12 +106,12 @@ NodeUIHeaderPanel::NodeUIHeaderPanel (const std::wstring& headerText) :
 	
 }
 
-Color NodeUIHeaderPanel::GetTextColor (NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUIHeaderPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeHeaderTextColor ();
 }
 
-Color NodeUIHeaderPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUIHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
 }
@@ -124,147 +124,147 @@ NodeUIStatusHeaderPanel::NodeUIStatusHeaderPanel (const std::wstring& headerText
 	
 }
 
-Size NodeUIStatusHeaderPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
+NUIE::Size NodeUIStatusHeaderPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
-	Size minSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), headerText);
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
+	NUIE::Size minSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), headerText);
 	minSize = minSize.Grow (2.0 * skinParams.GetNodePadding (), 2.0 * skinParams.GetNodePadding ());
 	minSize = minSize.Grow (StatusRectSize * 2, 0);
 	return minSize;
 }
 
-void NodeUIStatusHeaderPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUIStatusHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, skinParams.GetNodeHeaderBackgroundColor ())));
-	Rect textRect = Rect::FromPositionAndSize (Point (rect.GetLeft () + StatusRectSize * 2, rect.GetTop ()), Size (rect.GetWidth () - StatusRectSize * 2, rect.GetHeight ()));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), headerText, HorizontalAnchor::Center, VerticalAnchor::Center, skinParams.GetNodeHeaderTextColor ())));
-	Rect statusRect = Rect::FromPositionAndSize (Point (rect.GetLeft () + StatusRectSize, rect.GetTop () + StatusRectSize), Size (StatusRectSize, rect.GetHeight () - StatusRectSize * 2));
-	Color statusColor = (nodeStatus == NodeStatus::HasValue ? skinParams.GetHasValueStatusColor () : skinParams.GetHasNoValueStatusColor ());
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (statusRect, statusColor)));
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, skinParams.GetNodeHeaderBackgroundColor ())));
+	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + StatusRectSize * 2, rect.GetTop ()), NUIE::Size (rect.GetWidth () - StatusRectSize * 2, rect.GetHeight ()));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, skinParams.GetNodeHeaderTextColor ())));
+	NUIE::Rect statusRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + StatusRectSize, rect.GetTop () + StatusRectSize), NUIE::Size (StatusRectSize, rect.GetHeight () - StatusRectSize * 2));
+	NUIE::Color statusColor = (nodeStatus == NodeStatus::HasValue ? skinParams.GetHasValueStatusColor () : skinParams.GetHasNoValueStatusColor ());
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (statusRect, statusColor)));
 }
 
-NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage) :
+NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t textsPerPage) :
 	NodeUIPanel (),
 	nodeTexts (nodeTexts),
 	textsPerPage (textsPerPage)
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	for (const std::wstring& nodeText : nodeTexts) {
-		Size textSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText);
+		NUIE::Size textSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), nodeText);
 		textSize = textSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
 		maxTextSize.SetWidth (std::max (maxTextSize.GetWidth (), textSize.GetWidth ()));
 		maxTextSize.SetHeight (std::max (maxTextSize.GetHeight (), textSize.GetHeight ()));
 	}
 }
 
-Size NodeUIMultiLineTextPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
+NUIE::Size NodeUIMultiLineTextPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
-	Size minSize (maxTextSize.GetWidth (), maxTextSize.GetHeight () * std::min (nodeTexts.size (), textsPerPage));
+	NUIE::Size minSize (maxTextSize.GetWidth (), maxTextSize.GetHeight () * std::min (nodeTexts.size (), textsPerPage));
 	return minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 }
 
-void NodeUIMultiLineTextPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUIMultiLineTextPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, GetBackgroundColor (env))));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, GetBackgroundColor (env))));
 	
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 	double xOffset = nodePadding;
 	double yOffset = nodePadding;
 	double textRectWidth = std::max (maxTextSize.GetWidth (), rect.GetWidth () - 2.0 * nodePadding);
 	for (const std::wstring& nodeText : nodeTexts) {
-		Point textRectPosition (rect.GetLeft () + xOffset, rect.GetTop () + yOffset);
-		Size textRectSize (textRectWidth, maxTextSize.GetHeight ());
-		Rect textRect = Rect::FromPositionAndSize (textRectPosition, textRectSize);
-		drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, HorizontalAnchor::Center, VerticalAnchor::Center, GetTextColor (env))));
+		NUIE::Point textRectPosition (rect.GetLeft () + xOffset, rect.GetTop () + yOffset);
+		NUIE::Size textRectSize (textRectWidth, maxTextSize.GetHeight ());
+		NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (textRectPosition, textRectSize);
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), nodeText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env))));
 		yOffset += maxTextSize.GetHeight ();
 	}
 }
 
-Color NodeUIMultiLineTextPanel::GetTextColor (NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUIMultiLineTextPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentTextColor ();
 }
 
-Color NodeUIMultiLineTextPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUIMultiLineTextPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentBackgroundColor ();
 }
 
-NodeUISlotPanel::NodeUISlotPanel (const UINode& node, NodeUIDrawingEnvironment& env) :
+NodeUISlotPanel::NodeUISlotPanel (const NUIE::UINode& node, NUIE::NodeUIDrawingEnvironment& env) :
 	NodeUIPanel (),
 	node (node)
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 
-	node.EnumerateUIInputSlots ([&] (const UIInputSlotConstPtr& slot) -> bool {
-		Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), slot->GetName ());
+	node.EnumerateUIInputSlots ([&] (const NUIE::UIInputSlotConstPtr& slot) -> bool {
+		NUIE::Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), slot->GetName ());
 		slotRectSize = slotRectSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
 		inputSlots.AddSlotSize (slot->GetId (), slotRectSize);
 		return true;
 	});
 
-	node.EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& slot) -> bool {
-		Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), slot->GetName ());
+	node.EnumerateUIOutputSlots ([&] (const NUIE::UIOutputSlotConstPtr& slot) -> bool {
+		NUIE::Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), slot->GetName ());
 		slotRectSize = slotRectSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
 		outputSlots.AddSlotSize (slot->GetId (), slotRectSize);
 		return true;
 	});
 }
 
-Size NodeUISlotPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
+NUIE::Size NodeUISlotPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 	double inputSlotsWidth = inputSlots.GetWidth ();
 	double outputSlotsWidth = outputSlots.GetWidth ();
 	double inputSlotsHeight = inputSlots.GetHeight (nodePadding);
 	double outputSlotsHeight = outputSlots.GetHeight (nodePadding);
-	Size minSize (inputSlotsWidth + outputSlotsWidth, std::max (inputSlotsHeight, outputSlotsHeight));
+	NUIE::Size minSize (inputSlotsWidth + outputSlotsWidth, std::max (inputSlotsHeight, outputSlotsHeight));
 	minSize = minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 	return minSize;
 }
 
-void NodeUISlotPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, skinParams.GetNodeContentBackgroundColor ())));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, skinParams.GetNodeContentBackgroundColor ())));
 
-	Point inputSlotsStartPoint = rect.GetTopLeft () + Point (0.0, nodePadding);
-	inputSlots.Enumerate (SlotRectCollection::RefPointMode::TopLeft, inputSlotsStartPoint, nodePadding, [&] (const NE::SlotId& slotId, const Rect& slotRect) {
-		UIInputSlotConstPtr uiSlot = node.GetUIInputSlot (slotId);
-		Rect textRect = Rect::FromCenterAndSize (slotRect.GetCenter (), slotRect.GetSize ().Grow (2.0 * -nodePadding, -nodePadding));
+	NUIE::Point inputSlotsStartPoint = rect.GetTopLeft () + NUIE::Point (0.0, nodePadding);
+	inputSlots.Enumerate (SlotRectCollection::RefPointMode::TopLeft, inputSlotsStartPoint, nodePadding, [&] (const NE::SlotId& slotId, const NUIE::Rect& slotRect) {
+		NUIE::UIInputSlotConstPtr uiSlot = node.GetUIInputSlot (slotId);
+		NUIE::Rect textRect = NUIE::Rect::FromCenterAndSize (slotRect.GetCenter (), slotRect.GetSize ().Grow (2.0 * -nodePadding, -nodePadding));
 		drawingImage.AddInputSlotConnPosition (slotId, slotRect.GetLeftCenter ());
 		drawingImage.AddInputSlotRect (slotId, slotRect);
-		drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
-		drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetSlotTextColor ())));
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), NUIE::HorizontalAnchor::Left, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())));
 	});
 
-	Point outputSlotsStartPoint = rect.GetTopRight () + Point (0.0, nodePadding);
-	outputSlots.Enumerate (SlotRectCollection::RefPointMode::TopRight, outputSlotsStartPoint, nodePadding, [&] (const NE::SlotId& slotId, const Rect& slotRect) {
-		UIOutputSlotConstPtr uiSlot = node.GetUIOutputSlot (slotId);
-		Rect textRect = Rect::FromCenterAndSize (slotRect.GetCenter (), slotRect.GetSize ().Grow (2.0 * -nodePadding, -nodePadding));
+	NUIE::Point outputSlotsStartPoint = rect.GetTopRight () + NUIE::Point (0.0, nodePadding);
+	outputSlots.Enumerate (SlotRectCollection::RefPointMode::TopRight, outputSlotsStartPoint, nodePadding, [&] (const NE::SlotId& slotId, const NUIE::Rect& slotRect) {
+		NUIE::UIOutputSlotConstPtr uiSlot = node.GetUIOutputSlot (slotId);
+		NUIE::Rect textRect = NUIE::Rect::FromCenterAndSize (slotRect.GetCenter (), slotRect.GetSize ().Grow (2.0 * -nodePadding, -nodePadding));
 		drawingImage.AddOutputSlotConnPosition (slotId, slotRect.GetRightCenter ());
 		drawingImage.AddOutputSlotRect (slotId, slotRect);
-		drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
-		drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), HorizontalAnchor::Right, VerticalAnchor::Center, skinParams.GetSlotTextColor ())));
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), NUIE::HorizontalAnchor::Right, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())));
 	});
 }
 
-const Pen NodeUILeftRightButtonsPanel::DefaultButtonBorderPen = Pen (Color (50, 75, 100), 1.0);
-const Color NodeUILeftRightButtonsPanel::DefaultButtonBackgroundColor = Color (150, 175, 200);
+const NUIE::Pen NodeUILeftRightButtonsPanel::DefaultButtonBorderPen = NUIE::Pen (NUIE::Color (50, 75, 100), 1.0);
+const NUIE::Color NodeUILeftRightButtonsPanel::DefaultButtonBackgroundColor = NUIE::Color (150, 175, 200);
 
 NodeUILeftRightButtonsPanel::NodeUILeftRightButtonsPanel (	const std::string& leftButtonId,
 															const std::wstring& leftButtonText,
 															const std::string& rightButtonId,
 															const std::wstring& rightButtonText,
 															const std::wstring& panelText,
-															NodeUIDrawingEnvironment& env) :
+															NUIE::NodeUIDrawingEnvironment& env) :
 	NodeUIPanel (),
 	leftButtonId (leftButtonId),
 	leftButtonText (leftButtonText),
@@ -272,67 +272,67 @@ NodeUILeftRightButtonsPanel::NodeUILeftRightButtonsPanel (	const std::string& le
 	rightButtonText (rightButtonText),
 	panelText (panelText)
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 	leftButtonSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), leftButtonText).Grow (2.0 * nodePadding, nodePadding);
 	panelTextSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), panelText).Grow (2.0 * nodePadding, nodePadding);
 	rightButtonSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), rightButtonText).Grow (2.0 * nodePadding, nodePadding);
 }
 
-Size NodeUILeftRightButtonsPanel::GetMinSize (NodeUIDrawingEnvironment& env) const
+NUIE::Size NodeUILeftRightButtonsPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
-	Size minSize;
+	NUIE::Size minSize;
 	minSize.SetWidth (leftButtonSize.GetWidth () + panelTextSize.GetWidth () + rightButtonSize.GetWidth ());
 	minSize.SetHeight (std::max (std::max (leftButtonSize.GetHeight (), rightButtonSize.GetHeight ()), panelTextSize.GetHeight ()));
 	minSize = minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 	return minSize;
 }
 
-void NodeUILeftRightButtonsPanel::Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const
+void NodeUILeftRightButtonsPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
-	const SkinParams& skinParams = env.GetSkinParams ();
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 	
-	const Color backgroundColor = GetBackgroundColor (env);
-	const Color buttonBackgroundColor = GetButtonBackgroundColor (env);
-	const Color textColor = GetTextColor (env);
+	const NUIE::Color backgroundColor = GetBackgroundColor (env);
+	const NUIE::Color buttonBackgroundColor = GetButtonBackgroundColor (env);
+	const NUIE::Color textColor = GetTextColor (env);
 
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rect, backgroundColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, backgroundColor)));
 
-	Rect leftButtonRect = Rect::FromPositionAndSize (rect.GetTopLeft () + Point (nodePadding, nodePadding), leftButtonSize);
-	Rect rightButtonRect = Rect::FromPositionAndSize (rect.GetTopRight () - Point (rightButtonSize.GetWidth () + nodePadding, -nodePadding), rightButtonSize);
-	Rect textRect = Rect::FromPositionAndSize (leftButtonRect.GetTopRight (), Size (rightButtonRect.GetLeft () - leftButtonRect.GetRight (), panelTextSize.GetHeight ()));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (textRect, skinParams.GetNodeTextFont (), panelText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));
+	NUIE::Rect leftButtonRect = NUIE::Rect::FromPositionAndSize (rect.GetTopLeft () + NUIE::Point (nodePadding, nodePadding), leftButtonSize);
+	NUIE::Rect rightButtonRect = NUIE::Rect::FromPositionAndSize (rect.GetTopRight () - NUIE::Point (rightButtonSize.GetWidth () + nodePadding, -nodePadding), rightButtonSize);
+	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (leftButtonRect.GetTopRight (), NUIE::Size (rightButtonRect.GetLeft () - leftButtonRect.GetRight (), panelTextSize.GetHeight ()));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), panelText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
 
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (leftButtonRect, buttonBackgroundColor)));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (leftButtonRect, skinParams.GetNodeTextFont (), leftButtonText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingRect (leftButtonRect, GetButtonBorderPen (env))));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (leftButtonRect, buttonBackgroundColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (leftButtonRect, skinParams.GetNodeTextFont (), leftButtonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (leftButtonRect, GetButtonBorderPen (env))));
 	drawingImage.AddSpecialRect (leftButtonId, leftButtonRect);
 
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingFillRect (rightButtonRect, buttonBackgroundColor)));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingText (rightButtonRect, skinParams.GetNodeTextFont (), rightButtonText, HorizontalAnchor::Center, VerticalAnchor::Center, textColor)));
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingRect (rightButtonRect, GetButtonBorderPen (env))));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rightButtonRect, buttonBackgroundColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rightButtonRect, skinParams.GetNodeTextFont (), rightButtonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (rightButtonRect, GetButtonBorderPen (env))));
 	drawingImage.AddSpecialRect (rightButtonId, rightButtonRect);
 }
 
-Color NodeUILeftRightButtonsPanel::GetTextColor (NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUILeftRightButtonsPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentTextColor ();
 }
 
-Color NodeUILeftRightButtonsPanel::GetBackgroundColor (NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUILeftRightButtonsPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	return env.GetSkinParams ().GetNodeContentBackgroundColor ();
 }
 
-Pen NodeUILeftRightButtonsPanel::GetButtonBorderPen (NodeUIDrawingEnvironment&) const
+NUIE::Pen NodeUILeftRightButtonsPanel::GetButtonBorderPen (NUIE::NodeUIDrawingEnvironment&) const
 {
 	return DefaultButtonBorderPen;
 }
 
-Color NodeUILeftRightButtonsPanel::GetButtonBackgroundColor (NodeUIDrawingEnvironment&) const
+NUIE::Color NodeUILeftRightButtonsPanel::GetButtonBackgroundColor (NUIE::NodeUIDrawingEnvironment&) const
 {
 	return DefaultButtonBackgroundColor;
 }

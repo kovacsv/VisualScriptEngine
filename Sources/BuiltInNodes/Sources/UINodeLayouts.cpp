@@ -2,12 +2,12 @@
 #include "UINodePanels.hpp"
 #include "UINode.hpp"
 
-namespace NUIE
+namespace BIN
 {
 
-void DrawStatusHeaderWithSlotsLayout (	const UINode& uiNode,
-										NodeUIDrawingEnvironment& env,
-										NodeDrawingImage& drawingImage)
+void DrawStatusHeaderWithSlotsLayout (	const NUIE::UINode& uiNode,
+										NUIE::NodeUIDrawingEnvironment& env,
+										NUIE::NodeDrawingImage& drawingImage)
 {
 	DBGASSERT (uiNode.ValueIsCalculated ());
 	NodeUIStatusHeaderPanel::NodeStatus nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasNoValue;
@@ -15,19 +15,19 @@ void DrawStatusHeaderWithSlotsLayout (	const UINode& uiNode,
 		nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasValue;
 	}
 
-	NodeUIPanelDrawer drawer;
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUIStatusHeaderPanel (uiNode.GetNodeName (), nodeStatus)));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
+	NUIE::NodeUIPanelDrawer drawer;
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIStatusHeaderPanel (uiNode.GetNodeName (), nodeStatus)));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
 	drawer.Draw (env, drawingImage);
 }
 
-void DrawHeaderWithSlotsAndButtonsLayout (	const UINode& uiNode,
+void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 											const std::string& leftButtonId,
 											const std::wstring& leftButtonText,
 											const std::string& rightButtonId,
 											const std::wstring& rightButtonText,
-											NodeUIDrawingEnvironment& env,
-											NodeDrawingImage& drawingImage)
+											NUIE::NodeUIDrawingEnvironment& env,
+											NUIE::NodeDrawingImage& drawingImage)
 {
 	std::wstring nodeText = L"<empty>";
 	DBGASSERT (uiNode.ValueIsCalculated ());
@@ -36,10 +36,10 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const UINode& uiNode,
 		nodeText = nodeValue->ToString ();
 	}
 
-	NodeUIPanelDrawer drawer;
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName ())));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
-	drawer.AddPanel (NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, nodeText, env)));
+	NUIE::NodeUIPanelDrawer drawer;
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName ())));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, nodeText, env)));
 	drawer.Draw (env, drawingImage);
 }
 

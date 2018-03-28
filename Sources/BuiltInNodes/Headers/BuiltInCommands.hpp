@@ -5,23 +5,23 @@
 #include "NodeUIManager.hpp"
 #include "NodeUIEnvironment.hpp"
 
-namespace NUIE
+namespace BIN
 {
 
-class CreateNodeCommand : public SingleCommand
+class CreateNodeCommand : public NUIE::SingleCommand
 {
 public:
-	CreateNodeCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& viewPosition);
+	CreateNodeCommand (const std::wstring& name, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& viewPosition);
 	virtual ~CreateNodeCommand ();
 
 	virtual void Do () override;
 
-	virtual UINodePtr CreateNode (const Point& modelPosition) = 0;
+	virtual NUIE::UINodePtr CreateNode (const NUIE::Point& modelPosition) = 0;
 
 private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
-	Point				viewPosition;
+	NUIE::NodeUIManager&		uiManager;
+	NUIE::NodeUIEnvironment&	uiEnvironment;
+	NUIE::Point					viewPosition;
 };
 
 }

@@ -4,7 +4,7 @@
 #include "UINodeCommands.hpp"
 #include "ValueCombination.hpp"
 
-namespace NUIE
+namespace BIN
 {
 
 class Feature
@@ -24,7 +24,7 @@ public:
 
 	void				SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode);
 	bool				CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const;
-	void				RegisterFeatureCommands (NodeCommandRegistrator& commandRegistrator) const;
+	void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const;
 
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
@@ -43,8 +43,8 @@ public:
 	virtual ~EnableDisableFeature ();
 
 	void				SetEnableState (bool isNodeEnabled, const NE::ValuePtr& value, NE::EvaluationEnv& env);
-	void				RegisterFeatureCommands (NodeCommandRegistrator& commandRegistrator) const;
-	void				CreateDrawingEnvironment (NodeUIDrawingEnvironment& env, const std::function<void (NodeUIDrawingEnvironment&)>& drawer) const;
+	void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const;
+	void				CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
 	void				FeatureCalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
 
 	virtual void		OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;

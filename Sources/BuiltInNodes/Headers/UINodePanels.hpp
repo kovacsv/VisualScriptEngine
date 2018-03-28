@@ -7,7 +7,7 @@
 #include "UINode.hpp"
 #include <memory>
 
-namespace NUIE
+namespace BIN
 {
 
 class SlotRectCollection
@@ -21,26 +21,26 @@ public:
 
 	SlotRectCollection ();
 
-	void		AddSlotSize (const NE::SlotId& slotId, const Size& size);
+	void		AddSlotSize (const NE::SlotId& slotId, const NUIE::Size& size);
 	double		GetWidth () const;
 	double		GetHeight (double padding) const;
-	void		Enumerate (RefPointMode refPointMode, const Point& refPoint, double padding, const std::function<void (const NE::SlotId&, const Rect&)>& processor) const;
+	void		Enumerate (RefPointMode refPointMode, const NUIE::Point& refPoint, double padding, const std::function<void (const NE::SlotId&, const NUIE::Rect&)>& processor) const;
 
 private:
-	std::vector<std::pair<NE::SlotId, Size>> slotSizes;
+	std::vector<std::pair<NE::SlotId, NUIE::Size>> slotSizes;
 };
 
-class NodeUITextPanelBase : public NodeUIPanel
+class NodeUITextPanelBase : public NUIE::NodeUIPanel
 {
 public:
 	NodeUITextPanelBase (const std::wstring& nodeText);
 
-	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
-	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual NUIE::Size		GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual void			Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 protected:
-	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const = 0;
-	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const = 0;
+	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const = 0;
+	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const = 0;
 
 private:
 	std::wstring nodeText;
@@ -52,8 +52,8 @@ public:
 	NodeUITextPanel (const std::wstring& nodeText);
 
 private:
-	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const override;
-	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const override;
+	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
 };
 
 class NodeUIHeaderPanel : public NodeUITextPanelBase
@@ -62,11 +62,11 @@ public:
 	NodeUIHeaderPanel (const std::wstring& headerText);
 
 private:
-	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const override;
-	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const override;
+	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
 };
 
-class NodeUIStatusHeaderPanel : public NodeUIPanel
+class NodeUIStatusHeaderPanel : public NUIE::NodeUIPanel
 {
 public:
 	enum class NodeStatus
@@ -77,8 +77,8 @@ public:
 
 	NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus);
 
-	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
-	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
 	static const int StatusRectSize = 4;
@@ -87,39 +87,39 @@ private:
 	NodeStatus		nodeStatus;
 };
 
-class NodeUIMultiLineTextPanel : public NodeUIPanel
+class NodeUIMultiLineTextPanel : public NUIE::NodeUIPanel
 {
 public:
-	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NodeUIDrawingEnvironment& env, size_t textsPerPage);
+	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts,NUIE:: NodeUIDrawingEnvironment& env, size_t textsPerPage);
 
-	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
-	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual NUIE::Size		GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual void			Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 protected:
-	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const;
-	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const;
+	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const;
+	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const;
 
 private:
 	std::vector<std::wstring>	nodeTexts;
-	Size						maxTextSize;
+	NUIE::Size					maxTextSize;
 	size_t						textsPerPage;
 };
 
-class NodeUISlotPanel : public NodeUIPanel
+class NodeUISlotPanel : public NUIE::NodeUIPanel
 {
 public:
-	NodeUISlotPanel (const UINode& node, NodeUIDrawingEnvironment& env);
+	NodeUISlotPanel (const NUIE::UINode& node, NUIE::NodeUIDrawingEnvironment& env);
 
-	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
-	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
-	const UINode&		node;
-	SlotRectCollection	inputSlots;
-	SlotRectCollection	outputSlots;
+	const NUIE::UINode&		node;
+	SlotRectCollection		inputSlots;
+	SlotRectCollection		outputSlots;
 };
 
-class NodeUILeftRightButtonsPanel : public NodeUIPanel
+class NodeUILeftRightButtonsPanel : public NUIE::NodeUIPanel
 {
 public:
 	NodeUILeftRightButtonsPanel (	const std::string& leftButtonId,
@@ -127,29 +127,29 @@ public:
 									const std::string& rightButtonId,
 									const std::wstring& rightButtonText,
 									const std::wstring& nodeText,
-									NodeUIDrawingEnvironment& env);
+									NUIE::NodeUIDrawingEnvironment& env);
 
-	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const override;
-	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const override;
+	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 protected:
-	static const Pen	DefaultButtonBorderPen;
-	static const Color	DefaultButtonBackgroundColor;
+	static const NUIE::Pen		DefaultButtonBorderPen;
+	static const NUIE::Color	DefaultButtonBackgroundColor;
 
-	virtual Color	GetTextColor (NodeUIDrawingEnvironment& env) const;
-	virtual Color	GetBackgroundColor (NodeUIDrawingEnvironment& env) const;
+	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const;
+	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const;
 
-	virtual Pen		GetButtonBorderPen (NodeUIDrawingEnvironment& env) const;
-	virtual Color	GetButtonBackgroundColor (NodeUIDrawingEnvironment& env) const;
+	virtual NUIE::Pen		GetButtonBorderPen (NUIE::NodeUIDrawingEnvironment& env) const;
+	virtual NUIE::Color		GetButtonBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const;
 
 	std::string		leftButtonId;
 	std::wstring	leftButtonText;
 	std::string		rightButtonId;
 	std::wstring	rightButtonText;
 	std::wstring	panelText;
-	Size			leftButtonSize;
-	Size			panelTextSize;
-	Size			rightButtonSize;
+	NUIE::Size		leftButtonSize;
+	NUIE::Size		panelTextSize;
+	NUIE::Size		rightButtonSize;
 };
 
 }

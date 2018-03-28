@@ -7,30 +7,30 @@
 #include "SingleValues.hpp"
 #include "BuiltInFeatures.hpp"
 
-namespace NUIE
+namespace BIN
 {
 
-class BinaryOperationNode : public UINode,
+class BinaryOperationNode : public NUIE::UINode,
 							public ValueCombinationFeature
 {
 	SERIALIZABLE;
 
 public:
 	BinaryOperationNode ();
-	BinaryOperationNode (const std::wstring& name, const Point& position);
+	BinaryOperationNode (const std::wstring& name, const NUIE::Point& position);
 	virtual ~BinaryOperationNode ();
 
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
 		
-	virtual void				RegisterParameters (NodeParameterList& parameterList) const override;
-	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 protected:
-	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
+	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
 	virtual double				DoOperation (double a, double b) const = 0;
@@ -42,7 +42,7 @@ class AdditionNode : public BinaryOperationNode
 
 public:
 	AdditionNode ();
-	AdditionNode (const std::wstring& name, const Point& position);
+	AdditionNode (const std::wstring& name, const NUIE::Point& position);
 	virtual ~AdditionNode ();
 
 private:
@@ -55,7 +55,7 @@ class SubtractionNode : public BinaryOperationNode
 
 public:
 	SubtractionNode ();
-	SubtractionNode (const std::wstring& name, const Point& position);
+	SubtractionNode (const std::wstring& name, const NUIE::Point& position);
 	virtual ~SubtractionNode ();
 
 private:
@@ -68,7 +68,7 @@ class MultiplicationNode : public BinaryOperationNode
 
 public:
 	MultiplicationNode ();
-	MultiplicationNode (const std::wstring& name, const Point& position);
+	MultiplicationNode (const std::wstring& name, const NUIE::Point& position);
 	virtual ~MultiplicationNode ();
 
 private:
@@ -81,7 +81,7 @@ class DivisionNode : public BinaryOperationNode
 
 public:
 	DivisionNode ();
-	DivisionNode (const std::wstring& name, const Point& position);
+	DivisionNode (const std::wstring& name, const NUIE::Point& position);
 	virtual ~DivisionNode ();
 
 private:

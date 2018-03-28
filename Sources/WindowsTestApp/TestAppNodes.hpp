@@ -11,8 +11,8 @@
 #include "BuiltInFeatures.hpp"
 
 class GeometricNode :	public NUIE::UINode,
-						public NUIE::ValueCombinationFeature,
-						public NUIE::EnableDisableFeature
+						public BIN::ValueCombinationFeature,
+						public BIN::EnableDisableFeature
 {
 	SERIALIZABLE;
 
@@ -44,7 +44,7 @@ private:
 };
 
 class ColorNode :	public NUIE::UINode,
-					public NUIE::ValueCombinationFeature
+					public BIN::ValueCombinationFeature
 {
 	DYNAMIC_SERIALIZABLE (ColorNode);
 

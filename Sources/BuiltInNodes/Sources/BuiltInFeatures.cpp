@@ -3,28 +3,28 @@
 #include "ContextDecorators.hpp"
 #include "SkinParams.hpp"
 
-namespace NUIE
+namespace BIN
 {
 
 NE::SerializationInfo ValueCombinationFeature::serializationInfo (NE::ObjectVersion (1));
 NE::SerializationInfo EnableDisableFeature::serializationInfo (NE::ObjectVersion (1));
 
-class SetValueCombinationModeCommand : public NodeCommand
+class SetValueCombinationModeCommand : public NUIE::NodeCommand
 {
 public:
 	SetValueCombinationModeCommand (const std::wstring& name, bool isChecked, NE::ValueCombinationMode combinationMode) :
-		NodeCommand (name, isChecked),
+		NUIE::NodeCommand (name, isChecked),
 		combinationMode (combinationMode)
 	{
 
 	}
 
-	virtual bool IsApplicableTo (const UINodePtr& uiNode) override
+	virtual bool IsApplicableTo (const NUIE::UINodePtr& uiNode) override
 	{
 		return NE::Node::IsType<ValueCombinationFeature> (uiNode);
 	}
 
-	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UINodePtr& uiNode) override
+	virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment&, NUIE::UINodePtr& uiNode) override
 	{
 		std::shared_ptr<ValueCombinationFeature> featureNode = NE::Node::Cast<ValueCombinationFeature> (uiNode);
 		if (DBGERROR (featureNode == nullptr)) {
@@ -40,22 +40,22 @@ private:
 	NE::ValueCombinationMode combinationMode;
 };
 
-class EnableDisableNodeCommand : public NodeCommand
+class EnableDisableNodeCommand : public NUIE::NodeCommand
 {
 public:
 	EnableDisableNodeCommand (const std::wstring& name, bool isChecked, bool enable) :
-		NodeCommand (name, isChecked),
+		NUIE::NodeCommand (name, isChecked),
 		enable (enable)
 	{
 
 	}
 
-	virtual bool IsApplicableTo (const UINodePtr& uiNode) override
+	virtual bool IsApplicableTo (const NUIE::UINodePtr& uiNode) override
 	{
 		return NE::Node::IsType<EnableDisableFeature> (uiNode);
 	}
 
-	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) override
+	virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, NUIE::UINodePtr& uiNode) override
 	{
 		std::shared_ptr<EnableDisableFeature> featureNode = NE::Node::Cast<EnableDisableFeature> (uiNode);
 		if (DBGERROR (featureNode == nullptr)) {
@@ -92,12 +92,12 @@ bool ValueCombinationFeature::CombineValues (const std::vector<NE::ValuePtr>& va
 	return NE::CombineValues (valueCombinationMode, values, processor);
 }
 
-void ValueCombinationFeature::RegisterFeatureCommands (NodeCommandRegistrator& commandRegistrator) const
+void ValueCombinationFeature::RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NodeGroupCommandPtr setValueCombinationModeGroup (new NodeGroupCommand<NodeCommandPtr> (L"Set Value Combination"));
-	setValueCombinationModeGroup->AddChildCommand (NodeCommandPtr (new SetValueCombinationModeCommand (L"Shortest", valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
-	setValueCombinationModeGroup->AddChildCommand (NodeCommandPtr (new SetValueCombinationModeCommand (L"Longest", valueCombinationMode == NE::ValueCombinationMode::Longest, NE::ValueCombinationMode::Longest)));
-	setValueCombinationModeGroup->AddChildCommand (NodeCommandPtr (new SetValueCombinationModeCommand (L"Cross Product", valueCombinationMode == NE::ValueCombinationMode::CrossProduct, NE::ValueCombinationMode::CrossProduct)));
+	NUIE::NodeGroupCommandPtr setValueCombinationModeGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (L"Set Value Combination"));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Shortest", valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Longest", valueCombinationMode == NE::ValueCombinationMode::Longest, NE::ValueCombinationMode::Longest)));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Cross Product", valueCombinationMode == NE::ValueCombinationMode::CrossProduct, NE::ValueCombinationMode::CrossProduct)));
 	commandRegistrator.RegisterNodeGroupCommand (setValueCombinationModeGroup);
 }
 
@@ -139,21 +139,21 @@ void EnableDisableFeature::SetEnableState (bool isNodeEnabled, const NE::ValuePt
 	}
 }
 
-void EnableDisableFeature::RegisterFeatureCommands (NodeCommandRegistrator& commandRegistrator) const
+void EnableDisableFeature::RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NodeGroupCommandPtr setNodeStatusGroup (new NodeGroupCommand<NodeCommandPtr> (L"Set Node Status"));
-	setNodeStatusGroup->AddChildCommand (NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", nodeEnabled, true)));
-	setNodeStatusGroup->AddChildCommand (NodeCommandPtr (new EnableDisableNodeCommand (L"Disable", !nodeEnabled, false)));
+	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (L"Set Node Status"));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", nodeEnabled, true)));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Disable", !nodeEnabled, false)));
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
 }
 
-void EnableDisableFeature::CreateDrawingEnvironment (NodeUIDrawingEnvironment& env, const std::function<void (NodeUIDrawingEnvironment&)>& drawer) const
+void EnableDisableFeature::CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const
 {
 	if (nodeEnabled) {
 		drawer (env);
 	} else {
-		ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
-		NodeUIDrawingEnvironmentContextDecorator disabledEnv (env, disabledContext);
+		NUIE::ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
+		NUIE::NodeUIDrawingEnvironmentContextDecorator disabledEnv (env, disabledContext);
 		drawer (disabledEnv);
 	}
 }
