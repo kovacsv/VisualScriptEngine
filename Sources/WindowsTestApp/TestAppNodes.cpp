@@ -164,7 +164,7 @@ NE::ValuePtr ColorNode::Calculate (NE::EvaluationEnv& env) const
 		unsigned char rColor = NE::NumberValue::ToInteger (combination.GetValue (0));
 		unsigned char gColor = NE::NumberValue::ToInteger (combination.GetValue (1));
 		unsigned char bColor = NE::NumberValue::ToInteger (combination.GetValue (2));
-		result->Push (NE::ValuePtr (new ColorValue (Color (rColor, gColor, bColor))));
+		result->Push (NE::ValuePtr (new BIN::ColorValue (BIN::Color (rColor, gColor, bColor))));
 	});
 
 	return result;
@@ -279,7 +279,7 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({x, y}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new PointValue (
-			Point (
+			BIN::Point (
 				NE::NumberValue::ToDouble (combination.GetValue (0)),
 				NE::NumberValue::ToDouble (combination.GetValue (1))
 			)
@@ -326,7 +326,7 @@ void LineNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("beg"), L"Beg", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("end"), L"End", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new BIN::ColorValue (BIN::Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("line"), L"Line")));
 }
 
@@ -335,17 +335,17 @@ NE::ValuePtr LineNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr beg = EvaluateSingleInputSlot (NE::SlotId ("beg"), env);
 	NE::ValuePtr end = EvaluateSingleInputSlot (NE::SlotId ("end"), env);
 	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
-	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<PointValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
+	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<PointValue> (end) || !NE::IsComplexType<BIN::ColorValue> (color)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({beg, end, color}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new LineValue (
-			Line (
+			BIN::Line (
 				PointValue::Get (combination.GetValue (0)),
 				PointValue::Get (combination.GetValue (1)),
-				ColorValue::Get (combination.GetValue (2))
+				BIN::ColorValue::Get (combination.GetValue (2))
 			))));
 	});
 
@@ -382,7 +382,7 @@ void CircleNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("center"), L"Center", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("radius"), L"Radius", NE::ValuePtr (new NE::DoubleValue (10.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new BIN::ColorValue (BIN::Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("circle"), L"Circle")));
 }
 
@@ -391,17 +391,17 @@ NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr beg = EvaluateSingleInputSlot (NE::SlotId ("center"), env);
 	NE::ValuePtr end = EvaluateSingleInputSlot (NE::SlotId ("radius"), env);
 	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
-	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::NumberValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
+	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::NumberValue> (end) || !NE::IsComplexType<BIN::ColorValue> (color)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({beg, end, color}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new CircleValue (
-			Circle (
+			BIN::Circle (
 				PointValue::Get (combination.GetValue (0)),
 				NE::NumberValue::ToDouble (combination.GetValue (1)),
-				ColorValue::Get (combination.GetValue (2))
+				BIN::ColorValue::Get (combination.GetValue (2))
 			))));
 	});
 
@@ -466,7 +466,7 @@ NE::ValuePtr TransformNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
 	NE::ValuePtr transformation = EvaluateSingleInputSlot (NE::SlotId ("transformation"), env);
-	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<TransformationValue> (transformation)) {
+	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<BIN::TransformationValue> (transformation)) {
 		return nullptr;
 	}
 
