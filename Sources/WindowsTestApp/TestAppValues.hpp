@@ -80,6 +80,11 @@ class GeometricValue
 {
 public:
 	virtual NE::ValuePtr				Transform () const = 0;
+};
+
+class DrawableValue
+{
+public:
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const = 0;
 };
 
@@ -100,7 +105,7 @@ public:
 
 class TransformationValue : public NE::GenericValue<Transformation>
 {
-	DYNAMIC_SERIALIZABLE (ColorValue);
+	DYNAMIC_SERIALIZABLE (TransformationValue);
 
 public:
 	TransformationValue ();
@@ -114,6 +119,7 @@ public:
 };
 
 class PointValue :	public GeometricValue,
+					public DrawableValue,
 					public NE::GenericValue<Point>
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
@@ -133,6 +139,7 @@ public:
 };
 
 class LineValue :	public GeometricValue,
+					public DrawableValue,
 					public NE::GenericValue<Line>
 {
 	DYNAMIC_SERIALIZABLE (LineValue);
@@ -152,6 +159,7 @@ public:
 }; 
 
 class CircleValue : public GeometricValue,
+					public DrawableValue,
 					public NE::GenericValue<Circle>
 {
 	DYNAMIC_SERIALIZABLE (CircleValue);

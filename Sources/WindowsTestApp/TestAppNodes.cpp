@@ -67,9 +67,9 @@ NUIE::DrawingItemConstPtr GeometricNode::CreateDrawingItem (const NE::ValuePtr& 
 	}
 	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
 	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
-		GeometricValue* geomValue = NE::Value::Cast<GeometricValue> (innerValue.get ());
-		if (DBGVERIFY (geomValue != nullptr)) {
-			result->AddItem (geomValue->CreateDrawingItem ());
+		DrawableValue* drawableValue = NE::Value::Cast<DrawableValue> (innerValue.get ());
+		if (DBGVERIFY (drawableValue != nullptr)) {
+			result->AddItem (drawableValue->CreateDrawingItem ());
 		}
 	});
 	return result;
