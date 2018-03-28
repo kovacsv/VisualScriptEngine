@@ -11,6 +11,7 @@ NE::DynamicSerializationInfo	ColorNode::serializationInfo (NE::ObjectId ("{CBB0B
 NE::DynamicSerializationInfo	PointNode::serializationInfo (NE::ObjectId ("{E19AC155-90A7-43EA-9406-8E0876BAE05F}"), NE::ObjectVersion (1), PointNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3D1-7D67-4513-9F29-60E2D7B5DE2B}"), NE::ObjectVersion (1), LineNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	TransformNode::serializationInfo (NE::ObjectId ("{76B41F97-8819-4F7E-8377-BD0FC0491C1A}"), NE::ObjectVersion (1), TransformNode::CreateSerializableInstance);
 
 GeometricNode::GeometricNode () :
 	GeometricNode (L"", NUIE::Point ())
@@ -436,6 +437,58 @@ NE::Stream::Status CircleNode::Read (NE::InputStream& inputStream)
 }
 
 NE::Stream::Status CircleNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	GeometricNode::Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+TransformNode::TransformNode () :
+	GeometricNode ()
+{
+
+}
+
+TransformNode::TransformNode (const std::wstring& name, const NUIE::Point& position) :
+	GeometricNode (name, position)
+{
+
+}
+
+void TransformNode::RegisterSlots ()
+{
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("geometry"), L"Geometry", nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("transformation"), L"Transformation", nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("geometry"), L"Geometry")));
+}
+
+NE::ValuePtr TransformNode::Calculate (NE::EvaluationEnv& env) const
+{
+	NE::ValuePtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
+	NE::ValuePtr transformation = EvaluateSingleInputSlot (NE::SlotId ("transformation"), env);
+	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<TransformationValue> (transformation)) {
+		return nullptr;
+	}
+
+	NE::ListValuePtr result (new NE::ListValue ());
+	CombineValues ({ geometry, transformation }, [&] (const NE::ValueCombination& combination) {
+		GeometricValue* geomValue = NE::Value::Cast<GeometricValue> (combination.GetValue (0).get ());
+		if (DBGVERIFY (geomValue != nullptr)) {
+			result->Push (geomValue->Transform ());
+		}
+	});
+
+	return result;
+}
+
+NE::Stream::Status TransformNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	GeometricNode::Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status TransformNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	GeometricNode::Write (outputStream);

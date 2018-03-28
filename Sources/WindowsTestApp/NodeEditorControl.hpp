@@ -24,6 +24,7 @@ public:
 		Point,
 		Line,
 		Circle,
+		Transform,
 		Viewer
 	};
 

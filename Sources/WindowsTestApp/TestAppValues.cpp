@@ -6,6 +6,7 @@
 #include "StringUtils.hpp"
 
 NE::DynamicSerializationInfo	ColorValue::serializationInfo (NE::ObjectId ("{E6D2DBDC-6311-4BA5-9B1A-A0FFF8CA2444}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
+NE::DynamicSerializationInfo	TransformationValue::serializationInfo (NE::ObjectId ("{D90233EC-EFC9-4B18-BA45-DA1DB9C0EF63}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	PointValue::serializationInfo (NE::ObjectId ("{D10E20B6-856A-4AAC-A806-FC60E6D1E82F}"), NE::ObjectVersion (1), PointValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	LineValue::serializationInfo (NE::ObjectId ("{E899A12E-F87F-4B6B-ACD8-5C86573C382F}"), NE::ObjectVersion (1), LineValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleValue::serializationInfo (NE::ObjectId ("{82190020-867B-4260-94BA-49D8FE94418E}"), NE::ObjectVersion (1), CircleValue::CreateSerializableInstance);
@@ -50,6 +51,36 @@ NE::Stream::Status Color::Write (NE::OutputStream& outputStream) const
 	outputStream.Write (r);
 	outputStream.Write (g);
 	outputStream.Write (b);
+	return outputStream.GetStatus ();
+}
+
+Transformation::Transformation ()
+{
+
+}
+
+Transformation::~Transformation ()
+{
+
+}
+
+
+std::wstring Transformation::ToString () const
+{
+	// TODO
+	std::wstring result = L"";
+	return result;
+}
+
+NE::Stream::Status Transformation::Read (NE::InputStream& inputStream)
+{
+	// TODO
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status Transformation::Write (NE::OutputStream& outputStream) const
+{
+	// TODO
 	return outputStream.GetStatus ();
 }
 
@@ -209,6 +240,43 @@ NE::Stream::Status ColorValue::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+TransformationValue::TransformationValue () :
+	TransformationValue (Transformation ())
+{
+
+}
+
+TransformationValue::TransformationValue (const Transformation& val) :
+	NE::GenericValue<Transformation> (val)
+{
+
+}
+
+NE::ValuePtr TransformationValue::Clone () const
+{
+	return NE::ValuePtr (new TransformationValue (val));
+}
+
+std::wstring TransformationValue::ToString () const
+{
+	return val.ToString ();
+}
+
+NE::Stream::Status TransformationValue::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	val.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status TransformationValue::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	val.Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+
 PointValue::PointValue () :
 	PointValue (Point ())
 {
@@ -243,6 +311,11 @@ NE::Stream::Status PointValue::Write (NE::OutputStream& outputStream) const
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	val.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr PointValue::Transform () const
+{
+	return NE::ValuePtr (new PointValue (Point (val.x + 10, val.y + 10)));
 }
 
 NUIE::DrawingItemConstPtr PointValue::CreateDrawingItem () const
@@ -292,6 +365,11 @@ NE::Stream::Status LineValue::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+NE::ValuePtr LineValue::Transform () const
+{
+	return nullptr;
+}
+
 NUIE::DrawingItemConstPtr LineValue::CreateDrawingItem () const
 {
 	return NUIE::DrawingItemConstPtr (
@@ -337,6 +415,11 @@ NE::Stream::Status CircleValue::Write (NE::OutputStream& outputStream) const
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	val.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr CircleValue::Transform () const
+{
+	return nullptr;
 }
 
 NUIE::DrawingItemConstPtr CircleValue::CreateDrawingItem () const
