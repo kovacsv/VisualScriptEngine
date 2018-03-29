@@ -84,8 +84,15 @@ Transformation Transformation::Translation (double x, double y)
 
 std::wstring Transformation::ToString () const
 {
-	// TODO
 	std::wstring result = L"";
+	result += L"Matrix (";
+	for (int i = 0; i < 9; i++) {
+		result += NE::DoubleToString (matrix[i], 2);
+		if (i < 9 - 1) {
+			result += L", ";
+		}
+	}
+	result += L")";
 	return result;
 }
 
@@ -105,11 +112,12 @@ NE::Stream::Status Transformation::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-Point Transformation::Apply (const Point& p) const
+void Transformation::Apply (double& x, double& y) const
 {
-	double x = p.x * matrix[0] + p.y * matrix[1] + 1.0 * matrix[2];
-	double y = p.x * matrix[3] + p.y * matrix[4] + 1.0 * matrix[5];
-	return Point (x, y);
+	double oX = x;
+	double oY = y;
+	x = oX * matrix[0] + oY * matrix[1] + 1.0 * matrix[2];
+	y = oX * matrix[3] + oY * matrix[4] + 1.0 * matrix[5];
 }
 
 Point::Point () :
@@ -152,7 +160,9 @@ NE::Stream::Status Point::Write (NE::OutputStream& outputStream) const
 
 Point Point::Transform (const Transformation& transformation) const
 {
-	return transformation.Apply (*this);
+	Point result (x, y);
+	transformation.Apply (result.x, result.y);
+	return result;
 }
 
 Line::Line () :
@@ -196,10 +206,9 @@ NE::Stream::Status Line::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-Line Line::Transform (const Transformation&) const
+Line Line::Transform (const Transformation& transformation) const
 {
-	// TODO
-	return Line ();
+	return Line (beg.Transform (transformation), end.Transform (transformation), color);
 }
 
 Circle::Circle () :
@@ -243,10 +252,9 @@ NE::Stream::Status Circle::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-Circle Circle::Transform (const Transformation&) const
+Circle Circle::Transform (const Transformation& transformation) const
 {
-	// TODO
-	return Circle ();
+	return Circle (center.Transform (transformation), radius, color);
 }
 
 ColorValue::ColorValue () :
@@ -480,6 +488,18 @@ NE::ValuePtr TranslationMatrixNode::Calculate (NE::EvaluationEnv& env) const
 	});
 
 	return result;
+}
+
+void TranslationMatrixNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	UINode::RegisterParameters (parameterList);
+	NUIE::RegisterSlotDefaultValueParameter<TranslationMatrixNode, NE::DoubleValue> (parameterList, L"X", NUIE::ParameterType::Double, NE::SlotId ("x"));
+	NUIE::RegisterSlotDefaultValueParameter<TranslationMatrixNode, NE::DoubleValue> (parameterList, L"Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
+}
+
+void TranslationMatrixNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+{
+	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
 }
 
 NE::Stream::Status TranslationMatrixNode::Read (NE::InputStream& inputStream)

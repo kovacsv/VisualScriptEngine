@@ -8,8 +8,6 @@
 namespace BI
 {
 
-class Point;
-
 class Color
 {
 public:
@@ -36,7 +34,7 @@ public:
 	NE::Stream::Status		Read (NE::InputStream& inputStream);
 	NE::Stream::Status		Write (NE::OutputStream& outputStream) const;
 
-	Point					Apply (const Point& p) const;
+	void					Apply (double& x, double& y) const;
 
 	static Transformation	Translation (double x, double y);
 
@@ -162,7 +160,8 @@ public:
 
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
-	// TODO: RegisterParameters
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
