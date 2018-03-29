@@ -5,7 +5,7 @@
 #include "Geometry.hpp"
 #include "Drawing.hpp"
 #include "DrawingImage.hpp"
-#include "GeometricValues2D.hpp"
+#include "GeometricNodes2D.hpp"
 
 class DrawableValue
 {

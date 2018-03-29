@@ -4,6 +4,7 @@
 #include "InputUINodes.hpp"
 #include "ArithmeticUINodes.hpp"
 #include "ViewerUINodes.hpp"
+#include "GeometricNodes2D.hpp"
 #include "TestAppNodes.hpp"
 
 #include "ParameterDialog.hpp"
@@ -69,7 +70,7 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 		case NodeType::Division:
 			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", modelPosition));
 		case NodeType::Color:
-			return NUIE::UINodePtr (new ColorNode (L"Color", modelPosition));
+			return NUIE::UINodePtr (new BI::ColorNode (L"Color", modelPosition));
 		case NodeType::Point:
 			return NUIE::UINodePtr (new PointNode (L"Point", modelPosition));
 		case NodeType::Line:
@@ -77,7 +78,7 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 		case NodeType::Circle:
 			return NUIE::UINodePtr (new CircleNode (L"Circle", modelPosition));
 		case NodeType::Transform:
-			return NUIE::UINodePtr (new TransformNode (L"Transform", modelPosition));
+			return NUIE::UINodePtr (new BI::TransformNode (L"Transform", modelPosition));
 		case NodeType::Viewer:
 			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
 	}

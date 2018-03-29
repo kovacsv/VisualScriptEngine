@@ -1,9 +1,9 @@
-#ifndef GEOMETRICVALUES2D_HPP
-#define GEOMETRICVALUES2D_HPP
+#ifndef GEOMETRICNODES2D_HPP
+#define GEOMETRICNODES2D_HPP
 
-#include "Stream.hpp"
 #include "GenericValue.hpp"
-#include <string>
+#include "UINode.hpp"
+#include "BuiltInFeatures.hpp"
 
 namespace BI
 {
@@ -118,6 +118,46 @@ class GeometricValue
 {
 public:
 	virtual NE::ValuePtr Transform (const Transformation& transformation) const = 0;
+};
+
+class ColorNode :	public NUIE::UINode,
+					public BI::ValueCombinationFeature
+{
+	DYNAMIC_SERIALIZABLE (ColorNode);
+
+public:
+	ColorNode ();
+	ColorNode (const std::wstring& name, const NUIE::Point& position);
+
+	virtual void				RegisterSlots () override;
+	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+protected:
+	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
+};
+
+class TransformNode :	public NUIE::UINode,
+						public BI::ValueCombinationFeature
+{
+	DYNAMIC_SERIALIZABLE (TransformNode);
+
+public:
+	TransformNode ();
+	TransformNode (const std::wstring& name, const NUIE::Point& position);
+
+	virtual void				RegisterSlots () override;
+	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+protected:
+	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 };
 
 }

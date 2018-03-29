@@ -7,11 +7,9 @@
 #include "TestAppValues.hpp"
 
 NE::SerializationInfo			GeometricNode::serializationInfo (NE::ObjectVersion (1));
-NE::DynamicSerializationInfo	ColorNode::serializationInfo (NE::ObjectId ("{CBB0BCBD-488B-4A35-A796-9A7FED2E9420}"), NE::ObjectVersion (1), ColorNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	PointNode::serializationInfo (NE::ObjectId ("{E19AC155-90A7-43EA-9406-8E0876BAE05F}"), NE::ObjectVersion (1), PointNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3D1-7D67-4513-9F29-60E2D7B5DE2B}"), NE::ObjectVersion (1), LineNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	TransformNode::serializationInfo (NE::ObjectId ("{76B41F97-8819-4F7E-8377-BD0FC0491C1A}"), NE::ObjectVersion (1), TransformNode::CreateSerializableInstance);
 
 GeometricNode::GeometricNode () :
 	GeometricNode (L"", NUIE::Point ())
@@ -125,126 +123,6 @@ void GeometricNode::DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const
 }
 
 void GeometricNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
-{
-	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
-}
-
-ColorNode::ColorNode () :
-	ColorNode (L"", NUIE::Point ())
-{
-
-}
-
-ColorNode::ColorNode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::UINode (name, position),
-	BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)
-{
-
-}
-
-void ColorNode::RegisterSlots ()
-{
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("r"), L"Red", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("g"), L"Green", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), L"Blue", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("color"), L"Color")));
-}
-
-NE::ValuePtr ColorNode::Calculate (NE::EvaluationEnv& env) const
-{
-	NE::ValuePtr r = EvaluateSingleInputSlot (NE::SlotId ("r"), env);
-	NE::ValuePtr g = EvaluateSingleInputSlot (NE::SlotId ("g"), env);
-	NE::ValuePtr b = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
-	if (!NE::IsComplexType<NE::NumberValue> (r) || !NE::IsComplexType<NE::NumberValue> (g) || !NE::IsComplexType<NE::NumberValue> (b)) {
-		return nullptr;
-	}
-
-	NE::ListValuePtr result (new NE::ListValue ());
-	CombineValues ({r, g, b}, [&] (const NE::ValueCombination& combination) {
-		unsigned char rColor = NE::NumberValue::ToInteger (combination.GetValue (0));
-		unsigned char gColor = NE::NumberValue::ToInteger (combination.GetValue (1));
-		unsigned char bColor = NE::NumberValue::ToInteger (combination.GetValue (2));
-		result->Push (NE::ValuePtr (new BI::ColorValue (BI::Color (rColor, gColor, bColor))));
-	});
-
-	return result;
-}
-
-void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
-{
-	class RedParameter : public NUIE::SlotDefaultValueParameter<ColorNode, NE::IntValue>
-	{
-	public:
-		RedParameter () :
-			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Red", NUIE::ParameterType::Integer, NE::SlotId ("r"))
-		{
-
-		}
-
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
-		{
-			return value->GetValue () >= 0 && value->GetValue () <= 255;
-		}
-	};
-
-	class GreenParameter : public NUIE::SlotDefaultValueParameter<ColorNode, NE::IntValue>
-	{
-	public:
-		GreenParameter () :
-			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Green", NUIE::ParameterType::Integer, NE::SlotId ("g"))
-		{
-
-		}
-
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
-		{
-			return value->GetValue () >= 0 && value->GetValue () <= 255;
-		}
-	};
-
-	class BlueParameter : public NUIE::SlotDefaultValueParameter<ColorNode, NE::IntValue>
-	{
-	public:
-		BlueParameter () :
-			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Blue", NUIE::ParameterType::Integer, NE::SlotId ("b"))
-		{
-
-		}
-
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
-		{
-			return value->GetValue () >= 0 && value->GetValue () <= 255;
-		}
-	};
-
-	UINode::RegisterParameters (parameterList);
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new RedParameter ()));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new GreenParameter ()));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new BlueParameter ()));
-}
-
-void ColorNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
-{
-	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
-}
-
-NE::Stream::Status ColorNode::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	NUIE::UINode::Read (inputStream);
-	BI::ValueCombinationFeature::Read (inputStream);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status ColorNode::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	NUIE::UINode::Write (outputStream);
-	BI::ValueCombinationFeature::Write (outputStream);
-	return outputStream.GetStatus ();
-}
-
-void ColorNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
@@ -437,59 +315,6 @@ NE::Stream::Status CircleNode::Read (NE::InputStream& inputStream)
 }
 
 NE::Stream::Status CircleNode::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	GeometricNode::Write (outputStream);
-	return outputStream.GetStatus ();
-}
-
-TransformNode::TransformNode () :
-	GeometricNode ()
-{
-
-}
-
-TransformNode::TransformNode (const std::wstring& name, const NUIE::Point& position) :
-	GeometricNode (name, position)
-{
-
-}
-
-void TransformNode::RegisterSlots ()
-{
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("geometry"), L"Geometry", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("transformation"), L"Transformation", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("geometry"), L"Geometry")));
-}
-
-NE::ValuePtr TransformNode::Calculate (NE::EvaluationEnv& env) const
-{
-	NE::ValuePtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
-	NE::ValuePtr transformation = EvaluateSingleInputSlot (NE::SlotId ("transformation"), env);
-	if (!NE::IsComplexType<BI::GeometricValue> (geometry) || !NE::IsComplexType<BI::TransformationValue> (transformation)) {
-		return nullptr;
-	}
-
-	NE::ListValuePtr result (new NE::ListValue ());
-	CombineValues ({ geometry, transformation }, [&] (const NE::ValueCombination& combination) {
-		BI::GeometricValue* geomValue = NE::Value::Cast<BI::GeometricValue> (combination.GetValue (0).get ());
-		const BI::Transformation& transformation = BI::TransformationValue::Get (combination.GetValue (1));
-		if (DBGVERIFY (geomValue != nullptr)) {
-			result->Push (geomValue->Transform (transformation));
-		}
-	});
-
-	return result;
-}
-
-NE::Stream::Status TransformNode::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	GeometricNode::Read (inputStream);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status TransformNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	GeometricNode::Write (outputStream);

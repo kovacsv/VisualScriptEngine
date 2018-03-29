@@ -43,27 +43,6 @@ private:
 	mutable NUIE::DrawingItemConstPtr	drawingItem;
 };
 
-class ColorNode :	public NUIE::UINode,
-					public BI::ValueCombinationFeature
-{
-	DYNAMIC_SERIALIZABLE (ColorNode);
-
-public:
-	ColorNode ();
-	ColorNode (const std::wstring& name, const NUIE::Point& position);
-
-	virtual void				RegisterSlots () override;
-	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
-	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
-	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-protected:
-	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
-};
-
 class PointNode : public GeometricNode
 {
 	DYNAMIC_SERIALIZABLE (PointNode);
@@ -106,21 +85,6 @@ public:
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-};
-
-class TransformNode : public GeometricNode
-{
-	DYNAMIC_SERIALIZABLE (CircleNode);
-
-public:
-	TransformNode ();
-	TransformNode (const std::wstring& name, const NUIE::Point& position);
-
-	virtual void				RegisterSlots () override;
-	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
