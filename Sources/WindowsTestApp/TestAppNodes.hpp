@@ -10,15 +10,15 @@
 #include "UINodeCommands.hpp"
 #include "BuiltInFeatures.hpp"
 
-class GeometricNode :	public NUIE::UINode,
+class DrawableNode :	public NUIE::UINode,
 						public BI::ValueCombinationFeature,
 						public BI::EnableDisableFeature
 {
 	SERIALIZABLE;
 
 public:
-	GeometricNode ();
-	GeometricNode (const std::wstring& name, const NUIE::Point& position);
+	DrawableNode ();
+	DrawableNode (const std::wstring& name, const NUIE::Point& position);
 
 	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
 	virtual void				CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
@@ -43,7 +43,7 @@ private:
 	mutable NUIE::DrawingItemConstPtr	drawingItem;
 };
 
-class PointNode : public GeometricNode
+class PointNode : public DrawableNode
 {
 	DYNAMIC_SERIALIZABLE (PointNode);
 
@@ -59,7 +59,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class LineNode : public GeometricNode
+class LineNode : public DrawableNode
 {
 	DYNAMIC_SERIALIZABLE (LineNode);
 
@@ -74,7 +74,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class CircleNode : public GeometricNode
+class CircleNode : public DrawableNode
 {
 	DYNAMIC_SERIALIZABLE (CircleNode);
 

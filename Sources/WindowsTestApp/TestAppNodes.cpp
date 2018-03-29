@@ -6,18 +6,18 @@
 #include "UINodeLayouts.hpp"
 #include "TestAppValues.hpp"
 
-NE::SerializationInfo			GeometricNode::serializationInfo (NE::ObjectVersion (1));
+NE::SerializationInfo			DrawableNode::serializationInfo (NE::ObjectVersion (1));
 NE::DynamicSerializationInfo	PointNode::serializationInfo (NE::ObjectId ("{E19AC155-90A7-43EA-9406-8E0876BAE05F}"), NE::ObjectVersion (1), PointNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3D1-7D67-4513-9F29-60E2D7B5DE2B}"), NE::ObjectVersion (1), LineNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
 
-GeometricNode::GeometricNode () :
-	GeometricNode (L"", NUIE::Point ())
+DrawableNode::DrawableNode () :
+	DrawableNode (L"", NUIE::Point ())
 {
 
 }
 
-GeometricNode::GeometricNode (const std::wstring& name, const NUIE::Point& position) :
+DrawableNode::DrawableNode (const std::wstring& name, const NUIE::Point& position) :
 	NUIE::UINode (name, position),
 	BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest),
 	BI::EnableDisableFeature (true)
@@ -25,40 +25,40 @@ GeometricNode::GeometricNode (const std::wstring& name, const NUIE::Point& posit
 
 }
 
-void GeometricNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+void DrawableNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
 	BI::ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
 	BI::EnableDisableFeature::RegisterFeatureCommands (commandRegistrator);
 }
 
-void GeometricNode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::CalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
 {
 	EnableDisableFeature::FeatureCalculationPostProcess (value, env);
 }
 
-void GeometricNode::OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
 {
 	RemoveItem (env);
 	AddItem (value, env);
 }
 
-void GeometricNode::OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
 {
 	RemoveItem (env);
 	AddItem (value, env);
 }
 
-void GeometricNode::OnDisabled (NE::EvaluationEnv& env) const
+void DrawableNode::OnDisabled (NE::EvaluationEnv& env) const
 {
 	RemoveItem (env);
 }
 
-void GeometricNode::OnDeleted (NE::EvaluationEnv& env) const
+void DrawableNode::OnDeleted (NE::EvaluationEnv& env) const
 {
 	RemoveItem (env);
 }
 
-NUIE::DrawingItemConstPtr GeometricNode::CreateDrawingItem (const NE::ValuePtr& value) const
+NUIE::DrawingItemConstPtr DrawableNode::CreateDrawingItem (const NE::ValuePtr& value) const
 {
 	if (!NE::Value::IsType<NE::ListValue> (value)) {
 		return nullptr;
@@ -73,7 +73,7 @@ NUIE::DrawingItemConstPtr GeometricNode::CreateDrawingItem (const NE::ValuePtr& 
 	return result;
 }
 
-void GeometricNode::AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
 {
 	if (DBGERROR (!env.IsDataType<ResultImageEvaluationData> ())) {
 		return;
@@ -85,7 +85,7 @@ void GeometricNode::AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) 
 	}
 }
 
-void GeometricNode::RemoveItem (NE::EvaluationEnv& env) const
+void DrawableNode::RemoveItem (NE::EvaluationEnv& env) const
 {
 	if (DBGERROR (!env.IsDataType<ResultImageEvaluationData> ())) {
 		return;
@@ -97,7 +97,7 @@ void GeometricNode::RemoveItem (NE::EvaluationEnv& env) const
 	}
 }
 
-NE::Stream::Status GeometricNode::Read (NE::InputStream& inputStream)
+NE::Stream::Status DrawableNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	UINode::Read (inputStream);
@@ -106,7 +106,7 @@ NE::Stream::Status GeometricNode::Read (NE::InputStream& inputStream)
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status GeometricNode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status DrawableNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
@@ -115,26 +115,26 @@ NE::Stream::Status GeometricNode::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-void GeometricNode::DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const
+void DrawableNode::DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	EnableDisableFeature::CreateDrawingEnvironment (env, [&] (NUIE::NodeUIDrawingEnvironment& newEnv) {
 		UINode::DrawInplace (newEnv);
 	});
 }
 
-void GeometricNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+void DrawableNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 PointNode::PointNode () :
-	GeometricNode ()
+	DrawableNode ()
 {
 
 }
 
 PointNode::PointNode (const std::wstring& name, const NUIE::Point& position) :
-	GeometricNode (name, position)
+	DrawableNode (name, position)
 {
 
 }
@@ -169,7 +169,7 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 
 void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	GeometricNode::RegisterParameters (parameterList);
+	DrawableNode::RegisterParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, L"Position X", NUIE::ParameterType::Double, NE::SlotId ("x"));
 	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
 }
@@ -177,25 +177,25 @@ void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 NE::Stream::Status PointNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	GeometricNode::Read (inputStream);
+	DrawableNode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status PointNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	GeometricNode::Write (outputStream);
+	DrawableNode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
 LineNode::LineNode () :
-	GeometricNode ()
+	DrawableNode ()
 {
 
 }
 
 LineNode::LineNode (const std::wstring& name, const NUIE::Point& position) :
-	GeometricNode (name, position)
+	DrawableNode (name, position)
 {
 
 }
@@ -233,25 +233,25 @@ NE::ValuePtr LineNode::Calculate (NE::EvaluationEnv& env) const
 NE::Stream::Status LineNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	GeometricNode::Read (inputStream);
+	DrawableNode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status LineNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	GeometricNode::Write (outputStream);
+	DrawableNode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
 CircleNode::CircleNode () :
-	GeometricNode ()
+	DrawableNode ()
 {
 
 }
 
 CircleNode::CircleNode (const std::wstring& name, const NUIE::Point& position) :
-	GeometricNode (name, position)
+	DrawableNode (name, position)
 {
 
 }
@@ -303,20 +303,20 @@ void CircleNode::RegisterParameters (NUIE::NodeParameterList& parameterList) con
 		}
 	};
 
-	GeometricNode::RegisterParameters (parameterList);
+	DrawableNode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new RadiusParameter ()));
 }
 
 NE::Stream::Status CircleNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	GeometricNode::Read (inputStream);
+	DrawableNode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status CircleNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	GeometricNode::Write (outputStream);
+	DrawableNode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
