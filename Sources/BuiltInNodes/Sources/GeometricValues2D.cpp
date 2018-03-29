@@ -6,6 +6,9 @@ namespace BI
 
 NE::DynamicSerializationInfo	ColorValue::serializationInfo (NE::ObjectId ("{E6D2DBDC-6311-4BA5-9B1A-A0FFF8CA2444}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	TransformationValue::serializationInfo (NE::ObjectId ("{D90233EC-EFC9-4B18-BA45-DA1DB9C0EF63}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
+NE::DynamicSerializationInfo	PointValue::serializationInfo (NE::ObjectId ("{D10E20B6-856A-4AAC-A806-FC60E6D1E82F}"), NE::ObjectVersion (1), PointValue::CreateSerializableInstance);
+NE::DynamicSerializationInfo	LineValue::serializationInfo (NE::ObjectId ("{E899A12E-F87F-4B6B-ACD8-5C86573C382F}"), NE::ObjectVersion (1), LineValue::CreateSerializableInstance);
+NE::DynamicSerializationInfo	CircleValue::serializationInfo (NE::ObjectId ("{82190020-867B-4260-94BA-49D8FE94418E}"), NE::ObjectVersion (1), CircleValue::CreateSerializableInstance);
 
 Color::Color () :
 	Color (0, 0, 0)
@@ -270,6 +273,129 @@ NE::Stream::Status TransformationValue::Write (NE::OutputStream& outputStream) c
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	val.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+PointValue::PointValue () :
+	PointValue (BI::Point ())
+{
+
+}
+
+PointValue::PointValue (const BI::Point& val) :
+	NE::GenericValue<BI::Point> (val)
+{
+
+}
+
+NE::ValuePtr PointValue::Clone () const
+{
+	return NE::ValuePtr (new PointValue (val));
+}
+
+std::wstring PointValue::ToString () const
+{
+	return val.ToString ();
+}
+
+NE::Stream::Status PointValue::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	val.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status PointValue::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	val.Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr PointValue::Transform () const
+{
+	return NE::ValuePtr (new PointValue (BI::Point (val.x + 10, val.y + 10)));
+}
+
+LineValue::LineValue () :
+	LineValue (BI::Line ())
+{
+
+}
+
+LineValue::LineValue (const BI::Line& val) :
+	NE::GenericValue<BI::Line> (val)
+{
+
+}
+
+NE::ValuePtr LineValue::Clone () const
+{
+	return NE::ValuePtr (new LineValue (val));
+}
+
+std::wstring LineValue::ToString () const
+{
+	return val.ToString ();
+}
+
+NE::Stream::Status LineValue::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	val.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status LineValue::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	val.Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr LineValue::Transform () const
+{
+	return nullptr;
+}
+
+CircleValue::CircleValue () :
+	CircleValue (BI::Circle ())
+{
+
+}
+
+CircleValue::CircleValue (const BI::Circle& val) :
+	NE::GenericValue<BI::Circle> (val)
+{
+
+}
+
+NE::ValuePtr CircleValue::Clone () const
+{
+	return NE::ValuePtr (new CircleValue (val));
+}
+
+std::wstring CircleValue::ToString () const
+{
+	return val.ToString ();
+}
+
+NE::Stream::Status CircleValue::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	val.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status CircleValue::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	val.Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr CircleValue::Transform () const
+{
+	return nullptr;
 }
 
 }

@@ -19,9 +19,8 @@ public:
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const = 0;
 };
 
-class PointValue :	public GeometricValue,
-					public DrawableValue,
-					public NE::GenericValue<BI::Point>
+class PointValue :	public BI::PointValue,
+					public DrawableValue
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
 
@@ -30,18 +29,14 @@ public:
 	PointValue (const BI::Point& val);
 
 	virtual NE::ValuePtr		Clone () const override;
-	virtual std::wstring		ToString () const override;
-
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
-	virtual NE::ValuePtr				Transform () const override;
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const override;
 };
 
-class LineValue :	public GeometricValue,
-					public DrawableValue,
-					public NE::GenericValue<BI::Line>
+class LineValue :	public BI::LineValue,
+					public DrawableValue
 {
 	DYNAMIC_SERIALIZABLE (LineValue);
 
@@ -50,18 +45,14 @@ public:
 	LineValue (const BI::Line& val);
 
 	virtual NE::ValuePtr		Clone () const override;
-	virtual std::wstring		ToString () const override;
-
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
-	virtual NE::ValuePtr				Transform () const override;
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const override;
 }; 
 
-class CircleValue : public GeometricValue,
-					public DrawableValue,
-					public NE::GenericValue<BI::Circle>
+class CircleValue : public BI::CircleValue,
+					public DrawableValue
 {
 	DYNAMIC_SERIALIZABLE (CircleValue);
 
@@ -70,12 +61,9 @@ public:
 	CircleValue (const BI::Circle& val);
 
 	virtual NE::ValuePtr		Clone () const override;
-	virtual std::wstring		ToString () const override;
-
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
-	virtual NE::ValuePtr				Transform () const override;
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const override;
 }; 
 
