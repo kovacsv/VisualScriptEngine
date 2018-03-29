@@ -11,7 +11,7 @@ NE::DynamicSerializationInfo	ColorValue::serializationInfo (NE::ObjectId ("{E6D2
 NE::DynamicSerializationInfo	TransformationValue::serializationInfo (NE::ObjectId ("{D90233EC-EFC9-4B18-BA45-DA1DB9C0EF63}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
 
 NE::DynamicSerializationInfo	ColorNode::serializationInfo (NE::ObjectId ("{CBB0BCBD-488B-4A35-A796-9A7FED2E9420}"), NE::ObjectVersion (1), ColorNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	TransformNode::serializationInfo (NE::ObjectId ("{76B41F97-8819-4F7E-8377-BD0FC0491C1A}"), NE::ObjectVersion (1), TransformNode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	TranslationMatrixNode::serializationInfo (NE::ObjectId ("{C59400B2-87DA-4CDC-84A0-07F40E26B23E}"), NE::ObjectVersion (1), TranslationMatrixNode::CreateSerializableInstance);
 
 Color::Color () :
 	Color (0, 0, 0)
@@ -56,7 +56,14 @@ NE::Stream::Status Color::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-Transformation::Transformation ()
+Transformation::Transformation () :
+	matrix { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 }
+{
+
+}
+
+Transformation::Transformation (double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33) :
+	matrix { m11, m12, m13, m21, m22, m23, m31, m32, m33 }
 {
 
 }
@@ -66,6 +73,14 @@ Transformation::~Transformation ()
 
 }
 
+Transformation Transformation::Translation (double x, double y)
+{
+	return Transformation (
+		1.0, 0.0, x,
+		0.0, 1.0, y,
+		0.0, 0.0, 1.0
+	);
+}
 
 std::wstring Transformation::ToString () const
 {
@@ -76,14 +91,25 @@ std::wstring Transformation::ToString () const
 
 NE::Stream::Status Transformation::Read (NE::InputStream& inputStream)
 {
-	// TODO
+	for (int i = 0; i < 9; i++) {
+		inputStream.Read (matrix[i]);
+	}
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status Transformation::Write (NE::OutputStream& outputStream) const
 {
-	// TODO
+	for (int i = 0; i < 9; i++) {
+		outputStream.Write (matrix[i]);
+	}
 	return outputStream.GetStatus ();
+}
+
+Point Transformation::Apply (const Point& p) const
+{
+	double x = p.x * matrix[0] + p.y * matrix[1] + 1.0 * matrix[2];
+	double y = p.x * matrix[3] + p.y * matrix[4] + 1.0 * matrix[5];
+	return Point (x, y);
 }
 
 Point::Point () :
@@ -124,10 +150,9 @@ NE::Stream::Status Point::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-Point Point::Transform (const Transformation&) const
+Point Point::Transform (const Transformation& transformation) const
 {
-	// TODO
-	return Point (x + 10.0, y + 10.0);
+	return transformation.Apply (*this);
 }
 
 Line::Line () :
@@ -416,47 +441,48 @@ void ColorNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUI
 	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
-TransformNode::TransformNode () :
-	TransformNode (L"", NUIE::Point ())
+TranslationMatrixNode::TranslationMatrixNode () :
+	TranslationMatrixNode (L"", NUIE::Point ())
 {
 
 }
 
-TransformNode::TransformNode (const std::wstring& name, const NUIE::Point& position) :
+TranslationMatrixNode::TranslationMatrixNode (const std::wstring& name, const NUIE::Point& position) :
 	NUIE::UINode (name, position),
 	BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)
 {
 
 }
 
-void TransformNode::RegisterSlots ()
+void TranslationMatrixNode::RegisterSlots ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("geometry"), L"Geometry", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("transformation"), L"Transformation", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("geometry"), L"Geometry")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("x"), L"X", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("y"), L"Y", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), L"Transformation")));
 }
 
-NE::ValuePtr TransformNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValuePtr TranslationMatrixNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
-	NE::ValuePtr transformation = EvaluateSingleInputSlot (NE::SlotId ("transformation"), env);
-	if (!NE::IsComplexType<BI::GeometricValue> (geometry) || !NE::IsComplexType<BI::TransformationValue> (transformation)) {
+	NE::ValuePtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
+	NE::ValuePtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
+	if (!NE::IsComplexType<NE::NumberValue> (x) || !NE::IsComplexType<NE::NumberValue> (y)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
-	CombineValues ({ geometry, transformation }, [&] (const NE::ValueCombination& combination) {
-		BI::GeometricValue* geomValue = NE::Value::Cast<BI::GeometricValue> (combination.GetValue (0).get ());
-		const BI::Transformation& transformation = BI::TransformationValue::Get (combination.GetValue (1));
-		if (DBGVERIFY (geomValue != nullptr)) {
-			result->Push (geomValue->Transform (transformation));
-		}
+	CombineValues ({ x, y }, [&] (const NE::ValueCombination& combination) {
+		result->Push (NE::ValuePtr (new TransformationValue (
+			Transformation::Translation (
+				NE::NumberValue::ToDouble (combination.GetValue (0)),
+				NE::NumberValue::ToDouble (combination.GetValue (1))
+			)
+		)));
 	});
 
 	return result;
 }
 
-NE::Stream::Status TransformNode::Read (NE::InputStream& inputStream)
+NE::Stream::Status TranslationMatrixNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NUIE::UINode::Read (inputStream);
@@ -464,7 +490,7 @@ NE::Stream::Status TransformNode::Read (NE::InputStream& inputStream)
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status TransformNode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status TranslationMatrixNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NUIE::UINode::Write (outputStream);
@@ -472,7 +498,7 @@ NE::Stream::Status TransformNode::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-void TransformNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+void TranslationMatrixNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }

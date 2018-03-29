@@ -78,7 +78,9 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 		case NodeType::Circle:
 			return NUIE::UINodePtr (new CircleNode (L"Circle", modelPosition));
 		case NodeType::Transform:
-			return NUIE::UINodePtr (new BI::TransformNode (L"Transform", modelPosition));
+			return NUIE::UINodePtr (new TransformNode (L"Transform", modelPosition));
+		case NodeType::Translation:
+			return NUIE::UINodePtr (new BI::TranslationMatrixNode (L"Translation", modelPosition));
 		case NodeType::Viewer:
 			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
 	}
@@ -114,6 +116,7 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	drawingCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Line, uiManager, uiEnvironment, L"Line", position)));
 	drawingCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Circle, uiManager, uiEnvironment, L"Circle", position)));
 	drawingCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Transform, uiManager, uiEnvironment, L"Transform", position)));
+	drawingCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Translation, uiManager, uiEnvironment, L"Translation", position)));
 	createCommandGroup->AddChildCommand (drawingCommandGroup);
 
 	NUIE::GroupCommandPtr otherCommandGroup (new NUIE::GroupCommand (L"Other Nodes"));

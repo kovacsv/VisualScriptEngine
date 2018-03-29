@@ -25,6 +25,7 @@ public:
 		Line,
 		Circle,
 		Transform,
+		Translation,
 		Viewer
 	};
 

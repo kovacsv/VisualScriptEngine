@@ -8,6 +8,8 @@
 namespace BI
 {
 
+class Point;
+
 class Color
 {
 public:
@@ -27,11 +29,19 @@ class Transformation
 {
 public:
 	Transformation ();
+	Transformation (double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33);
 	~Transformation ();
 
 	std::wstring			ToString () const;
 	NE::Stream::Status		Read (NE::InputStream& inputStream);
 	NE::Stream::Status		Write (NE::OutputStream& outputStream) const;
+
+	Point					Apply (const Point& p) const;
+
+	static Transformation	Translation (double x, double y);
+
+private:
+	double matrix[9];
 };
 
 class Point
@@ -141,17 +151,18 @@ protected:
 	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 };
 
-class TransformNode :	public NUIE::UINode,
-						public BI::ValueCombinationFeature
+class TranslationMatrixNode :	public NUIE::UINode,
+								public BI::ValueCombinationFeature
 {
-	DYNAMIC_SERIALIZABLE (TransformNode);
+	DYNAMIC_SERIALIZABLE (TranslationMatrixNode);
 
 public:
-	TransformNode ();
-	TransformNode (const std::wstring& name, const NUIE::Point& position);
+	TranslationMatrixNode ();
+	TranslationMatrixNode (const std::wstring& name, const NUIE::Point& position);
 
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	// TODO: RegisterParameters
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
