@@ -44,6 +44,8 @@ public:
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
+	Point				Transform (const Transformation& transformation) const;
+
 	double	x;
 	double	y;
 };
@@ -57,6 +59,8 @@ public:
 	std::wstring		ToString () const;
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+
+	Line				Transform (const Transformation& transformation) const;
 
 	Point	beg;
 	Point	end;
@@ -72,6 +76,8 @@ public:
 	std::wstring		ToString () const;
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+
+	Circle				Transform (const Transformation& transformation) const;
 
 	Point	center;
 	double	radius;
@@ -111,63 +117,8 @@ public:
 class GeometricValue
 {
 public:
-	virtual NE::ValuePtr		Transform () const = 0;
+	virtual NE::ValuePtr Transform (const Transformation& transformation) const = 0;
 };
-
-class PointValue :	public NE::GenericValue<BI::Point>,
-					public GeometricValue
-{
-	DYNAMIC_SERIALIZABLE (PointValue);
-
-public:
-	PointValue ();
-	PointValue (const BI::Point& val);
-
-	virtual NE::ValuePtr		Clone () const override;
-	virtual std::wstring		ToString () const override;
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-	virtual NE::ValuePtr		Transform () const override;
-};
-
-class LineValue :	public NE::GenericValue<BI::Line>,
-					public GeometricValue
-					
-{
-	DYNAMIC_SERIALIZABLE (LineValue);
-
-public:
-	LineValue ();
-	LineValue (const BI::Line& val);
-
-	virtual NE::ValuePtr		Clone () const override;
-	virtual std::wstring		ToString () const override;
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-	virtual NE::ValuePtr		Transform () const override;
-}; 
-
-class CircleValue : public NE::GenericValue<BI::Circle>,
-					public GeometricValue					
-{
-	DYNAMIC_SERIALIZABLE (CircleValue);
-
-public:
-	CircleValue ();
-	CircleValue (const BI::Circle& val);
-
-	virtual NE::ValuePtr		Clone () const override;
-	virtual std::wstring		ToString () const override;
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-	virtual NE::ValuePtr		Transform () const override;
-}; 
 
 }
 

@@ -16,7 +16,7 @@ PointValue::PointValue () :
 }
 
 PointValue::PointValue (const BI::Point& val) :
-	BI::PointValue (val)
+	NE::GenericValue<BI::Point> (val)
 {
 
 }
@@ -26,18 +26,30 @@ NE::ValuePtr PointValue::Clone () const
 	return NE::ValuePtr (new PointValue (val));
 }
 
+std::wstring PointValue::ToString () const
+{
+	return val.ToString ();
+}
+
 NE::Stream::Status PointValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	BI::PointValue::Read (inputStream);
+	NE::GenericValue<BI::Point>::Read (inputStream);
+	val.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status PointValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	BI::PointValue::Write (outputStream);
+	NE::GenericValue<BI::Point>::Write (outputStream);
+	val.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr PointValue::Transform (const BI::Transformation& transformation) const
+{
+	return NE::ValuePtr (new PointValue (val.Transform (transformation)));
 }
 
 NUIE::DrawingItemConstPtr PointValue::CreateDrawingItem () const
@@ -58,7 +70,7 @@ LineValue::LineValue () :
 }
 
 LineValue::LineValue (const BI::Line& val) :
-	BI::LineValue (val)
+	NE::GenericValue<BI::Line> (val)
 {
 
 }
@@ -68,18 +80,30 @@ NE::ValuePtr LineValue::Clone () const
 	return NE::ValuePtr (new LineValue (val));
 }
 
+std::wstring LineValue::ToString () const
+{
+	return val.ToString ();
+}
+
 NE::Stream::Status LineValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	BI::LineValue::Read (inputStream);
+	NE::GenericValue<BI::Line>::Read (inputStream);
+	val.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status LineValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	BI::LineValue::Write (outputStream);
+	NE::GenericValue<BI::Line>::Write (outputStream);
+	val.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr LineValue::Transform (const BI::Transformation& transformation) const
+{
+	return NE::ValuePtr (new LineValue (val.Transform (transformation)));
 }
 
 NUIE::DrawingItemConstPtr LineValue::CreateDrawingItem () const
@@ -100,7 +124,7 @@ CircleValue::CircleValue () :
 }
 
 CircleValue::CircleValue (const BI::Circle& val) :
-	BI::CircleValue (val)
+	NE::GenericValue<BI::Circle> (val)
 {
 
 }
@@ -110,18 +134,30 @@ NE::ValuePtr CircleValue::Clone () const
 	return NE::ValuePtr (new CircleValue (val));
 }
 
+std::wstring CircleValue::ToString () const
+{
+	return val.ToString ();
+}
+
 NE::Stream::Status CircleValue::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	BI::CircleValue::Read (inputStream);
+	NE::GenericValue<BI::Circle>::Read (inputStream);
+	val.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status CircleValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	BI::CircleValue::Write (outputStream);
+	NE::GenericValue<BI::Circle>::Write (outputStream);
+	val.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr CircleValue::Transform (const BI::Transformation& transformation) const
+{
+	return NE::ValuePtr (new CircleValue (val.Transform (transformation)));
 }
 
 NUIE::DrawingItemConstPtr CircleValue::CreateDrawingItem () const
