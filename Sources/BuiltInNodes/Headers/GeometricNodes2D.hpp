@@ -122,12 +122,6 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class GeometricValue
-{
-public:
-	virtual NE::ValuePtr Transform (const Transformation& transformation) const = 0;
-};
-
 class ColorNode :	public NUIE::UINode,
 					public BI::ValueCombinationFeature
 {

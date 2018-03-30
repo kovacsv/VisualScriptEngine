@@ -7,6 +7,12 @@
 #include "DrawingImage.hpp"
 #include "GeometricNodes2D.hpp"
 
+class GeometricValue
+{
+public:
+	virtual NE::ValuePtr Transform (const BI::Transformation& transformation) const = 0;
+};
+
 class DrawableValue
 {
 public:
@@ -14,7 +20,7 @@ public:
 };
 
 class PointValue :	public NE::GenericValue<BI::Point>,
-					public BI::GeometricValue,
+					public GeometricValue,
 					public DrawableValue
 {
 	DYNAMIC_SERIALIZABLE (PointValue);
@@ -33,7 +39,7 @@ public:
 };
 
 class LineValue :	public NE::GenericValue<BI::Line>,
-					public BI::GeometricValue,
+					public GeometricValue,
 					public DrawableValue
 {
 	DYNAMIC_SERIALIZABLE (LineValue);
@@ -52,7 +58,7 @@ public:
 }; 
 
 class CircleValue : public NE::GenericValue<BI::Circle>,
-					public BI::GeometricValue,
+					public GeometricValue,
 					public DrawableValue
 {
 	DYNAMIC_SERIALIZABLE (CircleValue);

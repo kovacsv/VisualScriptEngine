@@ -345,13 +345,13 @@ NE::ValuePtr TransformNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
 	NE::ValuePtr transformation = EvaluateSingleInputSlot (NE::SlotId ("transformation"), env);
-	if (!NE::IsComplexType<BI::GeometricValue> (geometry) || !NE::IsComplexType<BI::TransformationValue> (transformation)) {
+	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<BI::TransformationValue> (transformation)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({ geometry, transformation }, [&] (const NE::ValueCombination& combination) {
-		BI::GeometricValue* geomValue = NE::Value::Cast<BI::GeometricValue> (combination.GetValue (0).get ());
+		GeometricValue* geomValue = NE::Value::Cast<GeometricValue> (combination.GetValue (0).get ());
 		const BI::Transformation& transformation = BI::TransformationValue::Get (combination.GetValue (1));
 		if (DBGVERIFY (geomValue != nullptr)) {
 			result->Push (geomValue->Transform (transformation));
