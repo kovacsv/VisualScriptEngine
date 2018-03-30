@@ -176,9 +176,6 @@ private:
 	HWND				hwnd;
 };
 
-static MyNodeUIEnvironment uiEnvironment;
-static NUIE::NodeEditor nodeEditor (uiEnvironment);
-
 class SetCaptureHandler
 {
 public:
@@ -208,6 +205,9 @@ public:
 private:
 	int counter;
 };
+
+static MyNodeUIEnvironment uiEnvironment;
+static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
