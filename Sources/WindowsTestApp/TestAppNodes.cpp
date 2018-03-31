@@ -337,14 +337,14 @@ TransformNode::TransformNode (const std::wstring& name, const NUIE::Point& posit
 void TransformNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("geometry"), L"Geometry", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("transformation"), L"Transformation", nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("matrix"), L"Matrix", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("geometry"), L"Geometry")));
 }
 
 NE::ValuePtr TransformNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
-	NE::ValuePtr transformation = EvaluateSingleInputSlot (NE::SlotId ("transformation"), env);
+	NE::ValuePtr transformation = EvaluateSingleInputSlot (NE::SlotId ("matrix"), env);
 	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<BI::TransformationValue> (transformation)) {
 		return nullptr;
 	}
