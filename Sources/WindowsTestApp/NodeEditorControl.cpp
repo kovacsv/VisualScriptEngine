@@ -4,7 +4,6 @@
 #include "InputUINodes.hpp"
 #include "ArithmeticUINodes.hpp"
 #include "ViewerUINodes.hpp"
-#include "GeometricNodes2D.hpp"
 #include "TestAppNodes.hpp"
 
 #include "ParameterDialog.hpp"
