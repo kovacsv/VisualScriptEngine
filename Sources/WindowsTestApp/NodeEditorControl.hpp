@@ -81,7 +81,7 @@ private:
 	NE::EvaluationEnv&								evaluationEnv;
 
 	std::shared_ptr<NUIE::NativeDrawingContext>		drawingContext;
-	NUIE::SkinParams								skinParams;
+	NUIE::DefaultSkinParams							skinParams;
 	AppEventHandlers								eventHandlers;
 };
 

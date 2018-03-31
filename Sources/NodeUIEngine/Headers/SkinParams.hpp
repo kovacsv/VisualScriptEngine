@@ -10,28 +10,52 @@ namespace NUIE
 class SkinParams
 {
 public:
-	SkinParams ();
-	virtual ~SkinParams ();
+	virtual const Color&	GetBackgroundColor () const = 0;
+	virtual const Pen&		GetConnectionLinePen () const = 0;
 
-	const Color&	GetBackgroundColor () const;
-	const Pen&		GetConnectionLinePen () const;
+	virtual double			GetNodePadding () const = 0;
+	virtual const Font&		GetNodeTextFont () const = 0;
+	virtual const Color&	GetNodeHeaderTextColor () const = 0;
+	virtual const Color&	GetNodeContentTextColor () const = 0;
+	virtual const Color&	GetNodeHeaderBackgroundColor () const = 0;
+	virtual const Color&	GetNodeContentBackgroundColor () const = 0;
+	virtual const Pen&		GetNodeBorderPen () const = 0;
 
-	double			GetNodePadding () const;
-	const Font&		GetNodeTextFont () const;
-	const Color&	GetNodeHeaderTextColor () const;
-	const Color&	GetNodeContentTextColor () const;
-	const Color&	GetNodeHeaderBackgroundColor () const;
-	const Color&	GetNodeContentBackgroundColor () const;
-	const Pen&		GetNodeBorderPen () const;
+	virtual const Color&	GetSlotTextColor () const = 0;
+	virtual const Color&	GetSlotTextBackgroundColor () const = 0;
 
-	const Color&	GetSlotTextColor () const;
-	const Color&	GetSlotTextBackgroundColor () const;
+	virtual const Color&	GetSelectionBlendColor () const = 0;
+	virtual const Pen&		GetSelectionRectPen () const = 0;
 
-	const Color&	GetSelectionBlendColor () const;
-	const Pen&		GetSelectionRectPen () const;
+	virtual const Color&	GetHasValueStatusColor () const = 0;
+	virtual const Color&	GetHasNoValueStatusColor () const = 0;
+};
 
-	const Color&	GetHasValueStatusColor () const;
-	const Color&	GetHasNoValueStatusColor () const;
+class DefaultSkinParams : public SkinParams
+{
+public:
+	DefaultSkinParams ();
+	virtual ~DefaultSkinParams ();
+
+	virtual const Color&	GetBackgroundColor () const override;
+	virtual const Pen&		GetConnectionLinePen () const override;
+
+	virtual double			GetNodePadding () const override;
+	virtual const Font&		GetNodeTextFont () const override;
+	virtual const Color&	GetNodeHeaderTextColor () const override;
+	virtual const Color&	GetNodeContentTextColor () const override;
+	virtual const Color&	GetNodeHeaderBackgroundColor () const override;
+	virtual const Color&	GetNodeContentBackgroundColor () const override;
+	virtual const Pen&		GetNodeBorderPen () const override;
+
+	virtual const Color&	GetSlotTextColor () const override;
+	virtual const Color&	GetSlotTextBackgroundColor () const override;
+
+	virtual const Color&	GetSelectionBlendColor () const override;
+	virtual const Pen&		GetSelectionRectPen () const override;
+
+	virtual const Color&	GetHasValueStatusColor () const override;
+	virtual const Color&	GetHasNoValueStatusColor () const override;
 
 protected:
 	Color	backgroundColor;

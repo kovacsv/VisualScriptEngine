@@ -169,11 +169,11 @@ public:
 	}
 
 private:
-	BitmapContextGdi	bitmapContext;
-	NUIE::SkinParams	skinParams;
-	MyEventHandlers		eventHandlers;
-	NE::EvaluationEnv	evaluationEnv;
-	HWND				hwnd;
+	BitmapContextGdi			bitmapContext;
+	NUIE::DefaultSkinParams		skinParams;
+	MyEventHandlers				eventHandlers;
+	NE::EvaluationEnv			evaluationEnv;
+	HWND						hwnd;
 };
 
 class SetCaptureHandler

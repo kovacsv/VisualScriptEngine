@@ -49,7 +49,7 @@ private:
 	NodeEditor&			nodeEditor;
 
 	SvgDrawingContext	drawingContext;
-	SkinParams			skinParams;
+	DefaultSkinParams	skinParams;
 	TestEventHandlers	eventHandlers;
 	EvaluationEnv		evaluationEnv;
 };

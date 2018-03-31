@@ -3,7 +3,7 @@
 namespace NUIE
 {
 
-SkinParams::SkinParams () :
+DefaultSkinParams::DefaultSkinParams () :
 	backgroundColor (240, 240, 240),
 	connectionLinePen (Color (0, 0, 0), 1.0),
 	nodePadding (5.0),
@@ -23,82 +23,82 @@ SkinParams::SkinParams () :
 
 }
 
-SkinParams::~SkinParams ()
+DefaultSkinParams::~DefaultSkinParams ()
 {
 
 }
 
-const Color& SkinParams::GetBackgroundColor () const
+const Color& DefaultSkinParams::GetBackgroundColor () const
 {
 	return backgroundColor;
 }
 
-const Pen& SkinParams::GetConnectionLinePen () const
+const Pen& DefaultSkinParams::GetConnectionLinePen () const
 {
 	return connectionLinePen;
 }
 
-double SkinParams::GetNodePadding () const
+double DefaultSkinParams::GetNodePadding () const
 {
 	return nodePadding;
 }
 
-const Font& SkinParams::GetNodeTextFont () const
+const Font& DefaultSkinParams::GetNodeTextFont () const
 {
 	return nodeTextFont;
 }
 
-const Color& SkinParams::GetNodeHeaderTextColor () const
+const Color& DefaultSkinParams::GetNodeHeaderTextColor () const
 {
 	return nodeHeaderTextColor;
 }
 
-const Color& SkinParams::GetNodeContentTextColor () const
+const Color& DefaultSkinParams::GetNodeContentTextColor () const
 {
 	return nodeContentTextColor;
 }
 
-const Color& SkinParams::GetNodeHeaderBackgroundColor () const
+const Color& DefaultSkinParams::GetNodeHeaderBackgroundColor () const
 {
 	return nodeHeaderBackgroundColor;
 }
 
-const Color& SkinParams::GetNodeContentBackgroundColor () const
+const Color& DefaultSkinParams::GetNodeContentBackgroundColor () const
 {
 	return nodeContentBackgroundColor;
 }
 
-const Pen& SkinParams::GetNodeBorderPen () const
+const Pen& DefaultSkinParams::GetNodeBorderPen () const
 {
 	return nodeBorderPen;
 }
 
-const Color& SkinParams::GetSlotTextColor () const
+const Color& DefaultSkinParams::GetSlotTextColor () const
 {
 	return slotTextColor;
 }
 
-const Color& SkinParams::GetSlotTextBackgroundColor () const
+const Color& DefaultSkinParams::GetSlotTextBackgroundColor () const
 {
 	return slotTextBackgroundColor;
 }
 
-const NUIE::Color& SkinParams::GetSelectionBlendColor () const
+const NUIE::Color& DefaultSkinParams::GetSelectionBlendColor () const
 {
 	return selectionBlendColor;
 }
 
-const NUIE::Pen& SkinParams::GetSelectionRectPen () const
+const NUIE::Pen& DefaultSkinParams::GetSelectionRectPen () const
 {
 	return selectionRectPen;
 }
 
-const Color& SkinParams::GetHasValueStatusColor () const
+const Color& DefaultSkinParams::GetHasValueStatusColor () const
 {
 	return hasValueStatusColor;
 }
 
-const Color& SkinParams::GetHasNoValueStatusColor () const
+const Color& DefaultSkinParams::GetHasNoValueStatusColor () const
 {
 	return hasNoValueStatusColor;
 }
