@@ -6,11 +6,236 @@
 #include "UINodeLayouts.hpp"
 #include "TestAppValues.hpp"
 
+NE::DynamicSerializationInfo	ColorNode::serializationInfo (NE::ObjectId ("{CBB0BCBD-488B-4A35-A796-9A7FED2E9420}"), NE::ObjectVersion (1), ColorNode::CreateSerializableInstance);
+
+NE::SerializationInfo			TransformationMatrixNode::serializationInfo (NE::ObjectVersion (1));
+NE::DynamicSerializationInfo	TranslationMatrixNode::serializationInfo (NE::ObjectId ("{C59400B2-87DA-4CDC-84A0-07F40E26B23E}"), NE::ObjectVersion (1), TranslationMatrixNode::CreateSerializableInstance);
+
 NE::SerializationInfo			DrawableNode::serializationInfo (NE::ObjectVersion (1));
 NE::DynamicSerializationInfo	PointNode::serializationInfo (NE::ObjectId ("{E19AC155-90A7-43EA-9406-8E0876BAE05F}"), NE::ObjectVersion (1), PointNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3D1-7D67-4513-9F29-60E2D7B5DE2B}"), NE::ObjectVersion (1), LineNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	TransformNode::serializationInfo (NE::ObjectId ("{76B41F97-8819-4F7E-8377-BD0FC0491C1A}"), NE::ObjectVersion (1), TransformNode::CreateSerializableInstance);
+
+ColorNode::ColorNode () :
+	ColorNode (L"", NUIE::Point ())
+{
+
+}
+
+ColorNode::ColorNode (const std::wstring& name, const NUIE::Point& position) :
+	NUIE::UINode (name, position),
+	BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)
+{
+
+}
+
+void ColorNode::RegisterSlots ()
+{
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("r"), L"Red", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("g"), L"Green", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), L"Blue", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("color"), L"Color")));
+}
+
+NE::ValuePtr ColorNode::Calculate (NE::EvaluationEnv& env) const
+{
+	NE::ValuePtr r = EvaluateSingleInputSlot (NE::SlotId ("r"), env);
+	NE::ValuePtr g = EvaluateSingleInputSlot (NE::SlotId ("g"), env);
+	NE::ValuePtr b = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
+	if (!NE::IsComplexType<NE::NumberValue> (r) || !NE::IsComplexType<NE::NumberValue> (g) || !NE::IsComplexType<NE::NumberValue> (b)) {
+		return nullptr;
+	}
+
+	NE::ListValuePtr result (new NE::ListValue ());
+	CombineValues ({ r, g, b }, [&] (const NE::ValueCombination& combination) {
+		unsigned char rColor = (unsigned char) NE::NumberValue::ToInteger (combination.GetValue (0));
+		unsigned char gColor = (unsigned char) NE::NumberValue::ToInteger (combination.GetValue (1));
+		unsigned char bColor = (unsigned char) NE::NumberValue::ToInteger (combination.GetValue (2));
+		result->Push (NE::ValuePtr (new ColorValue (Color (rColor, gColor, bColor))));
+	});
+
+	return result;
+}
+
+void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	class RedParameter : public NUIE::SlotDefaultValueParameter<ColorNode, NE::IntValue>
+	{
+	public:
+		RedParameter () :
+			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Red", NUIE::ParameterType::Integer, NE::SlotId ("r"))
+		{
+
+		}
+
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		{
+			return value->GetValue () >= 0 && value->GetValue () <= 255;
+		}
+	};
+
+	class GreenParameter : public NUIE::SlotDefaultValueParameter<ColorNode, NE::IntValue>
+	{
+	public:
+		GreenParameter () :
+			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Green", NUIE::ParameterType::Integer, NE::SlotId ("g"))
+		{
+
+		}
+
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		{
+			return value->GetValue () >= 0 && value->GetValue () <= 255;
+		}
+	};
+
+	class BlueParameter : public NUIE::SlotDefaultValueParameter<ColorNode, NE::IntValue>
+	{
+	public:
+		BlueParameter () :
+			SlotDefaultValueParameter<ColorNode, NE::IntValue> (L"Blue", NUIE::ParameterType::Integer, NE::SlotId ("b"))
+		{
+
+		}
+
+		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		{
+			return value->GetValue () >= 0 && value->GetValue () <= 255;
+		}
+	};
+
+	UINode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new RedParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new GreenParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new BlueParameter ()));
+}
+
+void ColorNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+{
+	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
+}
+
+NE::Stream::Status ColorNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	NUIE::UINode::Read (inputStream);
+	BI::ValueCombinationFeature::Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status ColorNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	NUIE::UINode::Write (outputStream);
+	BI::ValueCombinationFeature::Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+void ColorNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+{
+	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
+}
+
+TransformationMatrixNode::TransformationMatrixNode () :
+	TransformationMatrixNode (L"", NUIE::Point ())
+{
+
+}
+
+TransformationMatrixNode::TransformationMatrixNode (const std::wstring& name, const NUIE::Point& position) :
+	NUIE::UINode (name, position),
+	BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)
+{
+
+}
+
+void TransformationMatrixNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+{
+	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
+}
+
+NE::Stream::Status TransformationMatrixNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	NUIE::UINode::Read (inputStream);
+	BI::ValueCombinationFeature::Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status TransformationMatrixNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	NUIE::UINode::Write (outputStream);
+	BI::ValueCombinationFeature::Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+void TransformationMatrixNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+{
+	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
+}
+
+TranslationMatrixNode::TranslationMatrixNode () :
+	TranslationMatrixNode (L"", NUIE::Point ())
+{
+
+}
+
+TranslationMatrixNode::TranslationMatrixNode (const std::wstring& name, const NUIE::Point& position) :
+	TransformationMatrixNode (name, position)
+{
+
+}
+
+void TranslationMatrixNode::RegisterSlots ()
+{
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("x"), L"X", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("y"), L"Y", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("matrix"), L"Matrix")));
+}
+
+NE::ValuePtr TranslationMatrixNode::Calculate (NE::EvaluationEnv& env) const
+{
+	NE::ValuePtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
+	NE::ValuePtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
+	if (!NE::IsComplexType<NE::NumberValue> (x) || !NE::IsComplexType<NE::NumberValue> (y)) {
+		return nullptr;
+	}
+
+	NE::ListValuePtr result (new NE::ListValue ());
+	CombineValues ({ x, y }, [&] (const NE::ValueCombination& combination) {
+		result->Push (NE::ValuePtr (new TransformationValue (
+			Transformation::Translation (
+				NE::NumberValue::ToDouble (combination.GetValue (0)),
+				NE::NumberValue::ToDouble (combination.GetValue (1))
+			)
+		)));
+	});
+
+	return result;
+}
+
+void TranslationMatrixNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	UINode::RegisterParameters (parameterList);
+	NUIE::RegisterSlotDefaultValueParameter<TranslationMatrixNode, NE::DoubleValue> (parameterList, L"X", NUIE::ParameterType::Double, NE::SlotId ("x"));
+	NUIE::RegisterSlotDefaultValueParameter<TranslationMatrixNode, NE::DoubleValue> (parameterList, L"Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
+}
+
+NE::Stream::Status TranslationMatrixNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	TransformationMatrixNode::Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status TranslationMatrixNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	TransformationMatrixNode::Write (outputStream);
+	return outputStream.GetStatus ();
+}
 
 DrawableNode::DrawableNode () :
 	DrawableNode (L"", NUIE::Point ())
@@ -158,7 +383,7 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({x, y}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new PointValue (
-			BI::Point (
+			Point (
 				NE::NumberValue::ToDouble (combination.GetValue (0)),
 				NE::NumberValue::ToDouble (combination.GetValue (1))
 			)
@@ -205,7 +430,7 @@ void LineNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("beg"), L"Beg", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("end"), L"End", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new BI::ColorValue (BI::Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("line"), L"Line")));
 }
 
@@ -214,17 +439,17 @@ NE::ValuePtr LineNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr beg = EvaluateSingleInputSlot (NE::SlotId ("beg"), env);
 	NE::ValuePtr end = EvaluateSingleInputSlot (NE::SlotId ("end"), env);
 	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
-	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<PointValue> (end) || !NE::IsComplexType<BI::ColorValue> (color)) {
+	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<PointValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({beg, end, color}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new LineValue (
-			BI::Line (
+			Line (
 				PointValue::Get (combination.GetValue (0)),
 				PointValue::Get (combination.GetValue (1)),
-				BI::ColorValue::Get (combination.GetValue (2))
+				ColorValue::Get (combination.GetValue (2))
 			))));
 	});
 
@@ -261,7 +486,7 @@ void CircleNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("center"), L"Center", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("radius"), L"Radius", NE::ValuePtr (new NE::DoubleValue (10.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new BI::ColorValue (BI::Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("color"), L"Color", NE::ValuePtr (new ColorValue (Color (0, 0, 0))), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("circle"), L"Circle")));
 }
 
@@ -270,17 +495,17 @@ NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ValuePtr beg = EvaluateSingleInputSlot (NE::SlotId ("center"), env);
 	NE::ValuePtr end = EvaluateSingleInputSlot (NE::SlotId ("radius"), env);
 	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
-	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::NumberValue> (end) || !NE::IsComplexType<BI::ColorValue> (color)) {
+	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::NumberValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({beg, end, color}, [&] (const NE::ValueCombination& combination) {
 		result->Push (NE::ValuePtr (new CircleValue (
-			BI::Circle (
+			Circle (
 				PointValue::Get (combination.GetValue (0)),
 				NE::NumberValue::ToDouble (combination.GetValue (1)),
-				BI::ColorValue::Get (combination.GetValue (2))
+				ColorValue::Get (combination.GetValue (2))
 			))));
 	});
 
@@ -345,14 +570,14 @@ NE::ValuePtr TransformNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
 	NE::ValuePtr transformation = EvaluateSingleInputSlot (NE::SlotId ("matrix"), env);
-	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<BI::TransformationValue> (transformation)) {
+	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<TransformationValue> (transformation)) {
 		return nullptr;
 	}
 
 	NE::ListValuePtr result (new NE::ListValue ());
 	CombineValues ({ geometry, transformation }, [&] (const NE::ValueCombination& combination) {
 		GeometricValue* geomValue = NE::Value::Cast<GeometricValue> (combination.GetValue (0).get ());
-		const BI::Transformation& transformation = BI::TransformationValue::Get (combination.GetValue (1));
+		const Transformation& transformation = TransformationValue::Get (combination.GetValue (1));
 		if (DBGVERIFY (geomValue != nullptr)) {
 			result->Push (geomValue->Transform (transformation));
 		}

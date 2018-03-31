@@ -28,9 +28,6 @@
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BuiltInFeatures.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\GeometricNodes2D.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\InputUINodes.cpp">
@@ -52,9 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BuiltInFeatures.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\GeometricNodes2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

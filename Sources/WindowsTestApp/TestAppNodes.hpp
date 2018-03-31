@@ -10,6 +10,61 @@
 #include "UINodeCommands.hpp"
 #include "BuiltInFeatures.hpp"
 
+class ColorNode :	public NUIE::UINode,
+					public BI::ValueCombinationFeature
+{
+	DYNAMIC_SERIALIZABLE (ColorNode);
+
+public:
+	ColorNode ();
+	ColorNode (const std::wstring& name, const NUIE::Point& position);
+
+	virtual void				RegisterSlots () override;
+	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+protected:
+	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
+};
+
+class TransformationMatrixNode :	public NUIE::UINode,
+									public BI::ValueCombinationFeature
+{
+	SERIALIZABLE;
+
+public:
+	TransformationMatrixNode ();
+	TransformationMatrixNode (const std::wstring& name, const NUIE::Point& position);
+
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+protected:
+	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
+};
+
+class TranslationMatrixNode :	public TransformationMatrixNode
+{
+	DYNAMIC_SERIALIZABLE (TranslationMatrixNode);
+
+public:
+	TranslationMatrixNode ();
+	TranslationMatrixNode (const std::wstring& name, const NUIE::Point& position);
+
+	virtual void				RegisterSlots () override;
+	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+};
+
 class DrawableNode :	public NUIE::UINode,
 						public BI::ValueCombinationFeature,
 						public BI::EnableDisableFeature

@@ -70,7 +70,7 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 		case NodeType::Division:
 			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", modelPosition));
 		case NodeType::Color:
-			return NUIE::UINodePtr (new BI::ColorNode (L"Color", modelPosition));
+			return NUIE::UINodePtr (new ColorNode (L"Color", modelPosition));
 		case NodeType::Point:
 			return NUIE::UINodePtr (new PointNode (L"Point", modelPosition));
 		case NodeType::Line:
@@ -80,7 +80,7 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 		case NodeType::Transform:
 			return NUIE::UINodePtr (new TransformNode (L"Transform", modelPosition));
 		case NodeType::Translation:
-			return NUIE::UINodePtr (new BI::TranslationMatrixNode (L"Translation", modelPosition));
+			return NUIE::UINodePtr (new TranslationMatrixNode (L"Translation", modelPosition));
 		case NodeType::Viewer:
 			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
 	}

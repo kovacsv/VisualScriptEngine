@@ -7,10 +7,124 @@
 #include "DrawingImage.hpp"
 #include "GeometricNodes2D.hpp"
 
+class Color
+{
+public:
+	Color ();
+	Color (unsigned char r, unsigned char g, unsigned char b);
+
+	std::wstring		ToString () const;
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+};
+
+class Transformation
+{
+public:
+	Transformation ();
+	Transformation (double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33);
+	~Transformation ();
+
+	std::wstring			ToString () const;
+	NE::Stream::Status		Read (NE::InputStream& inputStream);
+	NE::Stream::Status		Write (NE::OutputStream& outputStream) const;
+
+	void					Apply (double& x, double& y) const;
+
+	static Transformation	Translation (double x, double y);
+
+private:
+	double matrix[9];
+};
+
+class Point
+{
+public:
+	Point ();
+	Point (double x, double y);
+
+	std::wstring		ToString () const;
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+
+	Point				Transform (const Transformation& transformation) const;
+
+	double	x;
+	double	y;
+};
+
+class Line
+{
+public:
+	Line ();
+	Line (const Point& beg, const Point& end, const Color& color);
+
+	std::wstring		ToString () const;
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+
+	Line				Transform (const Transformation& transformation) const;
+
+	Point	beg;
+	Point	end;
+	Color	color;
+};
+
+class Circle
+{
+public:
+	Circle ();
+	Circle (const Point& center, double radius, const Color& color);
+
+	std::wstring		ToString () const;
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+
+	Circle				Transform (const Transformation& transformation) const;
+
+	Point	center;
+	double	radius;
+	Color	color;
+};
+
+class ColorValue : public NE::GenericValue<Color>
+{
+	DYNAMIC_SERIALIZABLE (ColorValue);
+
+public:
+	ColorValue ();
+	ColorValue (const Color& val);
+
+	virtual NE::ValuePtr		Clone () const override;
+	virtual std::wstring		ToString () const override;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+};
+
+class TransformationValue : public NE::GenericValue<Transformation>
+{
+	DYNAMIC_SERIALIZABLE (TransformationValue);
+
+public:
+	TransformationValue ();
+	TransformationValue (const Transformation& val);
+
+	virtual NE::ValuePtr		Clone () const override;
+	virtual std::wstring		ToString () const override;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+};
+
 class GeometricValue
 {
 public:
-	virtual NE::ValuePtr Transform (const BI::Transformation& transformation) const = 0;
+	virtual NE::ValuePtr Transform (const Transformation& transformation) const = 0;
 };
 
 class DrawableValue
@@ -19,7 +133,7 @@ public:
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const = 0;
 };
 
-class PointValue :	public NE::GenericValue<BI::Point>,
+class PointValue :	public NE::GenericValue<Point>,
 					public GeometricValue,
 					public DrawableValue
 {
@@ -27,18 +141,18 @@ class PointValue :	public NE::GenericValue<BI::Point>,
 
 public:
 	PointValue ();
-	PointValue (const BI::Point& val);
+	PointValue (const Point& val);
 
 	virtual NE::ValuePtr		Clone () const override;
 	virtual std::wstring		ToString () const override;
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
-	virtual NE::ValuePtr				Transform (const BI::Transformation& transformation) const override;
+	virtual NE::ValuePtr				Transform (const Transformation& transformation) const override;
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const override;
 };
 
-class LineValue :	public NE::GenericValue<BI::Line>,
+class LineValue :	public NE::GenericValue<Line>,
 					public GeometricValue,
 					public DrawableValue
 {
@@ -46,18 +160,18 @@ class LineValue :	public NE::GenericValue<BI::Line>,
 
 public:
 	LineValue ();
-	LineValue (const BI::Line& val);
+	LineValue (const Line& val);
 
 	virtual NE::ValuePtr		Clone () const override;
 	virtual std::wstring		ToString () const override;
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
-	virtual NE::ValuePtr				Transform (const BI::Transformation& transformation) const override;
+	virtual NE::ValuePtr				Transform (const Transformation& transformation) const override;
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const override;
 }; 
 
-class CircleValue : public NE::GenericValue<BI::Circle>,
+class CircleValue : public NE::GenericValue<Circle>,
 					public GeometricValue,
 					public DrawableValue
 {
@@ -65,14 +179,14 @@ class CircleValue : public NE::GenericValue<BI::Circle>,
 
 public:
 	CircleValue ();
-	CircleValue (const BI::Circle& val);
+	CircleValue (const Circle& val);
 
 	virtual NE::ValuePtr		Clone () const override;
 	virtual std::wstring		ToString () const override;
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
-	virtual NE::ValuePtr				Transform (const BI::Transformation& transformation) const override;
+	virtual NE::ValuePtr				Transform (const Transformation& transformation) const override;
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const override;
 }; 
 
