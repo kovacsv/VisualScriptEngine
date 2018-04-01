@@ -112,11 +112,6 @@ EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
 	return eventHandlers;
 }
 
-void TestNodeUIEnvironment::OnSelectionChanged ()
-{
-	
-}
-
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	eventHandlers.SetNextCommandName (nextCommandName);

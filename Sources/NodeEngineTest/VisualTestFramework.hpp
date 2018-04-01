@@ -40,7 +40,6 @@ public:
 	virtual void				OnValuesRecalculated () override;
 	virtual void				OnRedrawRequest () override;
 	virtual EventHandlers&		GetEventHandlers () override;
-	virtual void				OnSelectionChanged () override;
 
 	void						SetNextCommandName (const std::wstring& nextCommandName);
 	const SvgDrawingContext&	GetSvgDrawingContext () const;

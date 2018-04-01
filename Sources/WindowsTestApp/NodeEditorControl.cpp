@@ -203,11 +203,6 @@ NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
 	return eventHandlers;
 }
 
-void NodeEditorUIEnvironment::OnSelectionChanged ()
-{
-
-}
-
 NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
 	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
 	updateInterface (updateInterface),

@@ -172,11 +172,6 @@ public:
 		return eventHandlers;
 	}
 
-	virtual void OnSelectionChanged () override
-	{
-		
-	}
-
 	void SetWindowHandle (HWND newHwnd)
 	{
 		eventHandlers.SetWindowHandle (newHwnd);

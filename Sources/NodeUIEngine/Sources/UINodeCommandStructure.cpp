@@ -79,12 +79,8 @@ public:
 		if (DBGERROR (nodeCommand == nullptr)) {
 			return;
 		}
-		NodeCollection oldSelection = uiManager.GetSelectedNodes ();
 		for (UINodePtr& uiNode : uiNodes) {
 			nodeCommand->Do (uiManager, uiEnvironment, uiNode);
-		}
-		if (oldSelection != uiManager.GetSelectedNodes ()) {
-			uiEnvironment.OnSelectionChanged ();
 		}
 	}
 
