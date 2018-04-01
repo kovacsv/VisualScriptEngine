@@ -68,27 +68,47 @@ class MyEventHandlers : public NUIE::EventHandlers
 {
 public:
 	MyEventHandlers () :
+		NUIE::EventHandlers (),
 		hwnd (NULL)
 	{
 	
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::CommandStructure& commands) override
+	virtual NUIE::CommandPtr OnContextMenu (
+		NUIE::NodeUIManager& uiManager,
+		NUIE::NodeUIEnvironment& uiEnvironment,
+		const NUIE::Point& position,
+		const NUIE::CommandStructure& commands) override
 	{
 		return SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::CommandStructure& commands) override
+	virtual NUIE::CommandPtr OnContextMenu (
+		NUIE::NodeUIManager& uiManager,
+		NUIE::NodeUIEnvironment& env,
+		const NUIE::Point& position,
+		const NUIE::UINodePtr& uiNode,
+		const NUIE::CommandStructure& commands) override
 	{
 		return SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands) override
+	virtual NUIE::CommandPtr OnContextMenu (
+		NUIE::NodeUIManager& uiManager,
+		NUIE::NodeUIEnvironment& env,
+		const NUIE::Point& position,
+		const NE::OutputSlotPtr& outputSlot,
+		const NUIE::CommandStructure& commands) override
 	{
 		return SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::InputSlotPtr& inputSlot, const NUIE::CommandStructure& commands) override
+	virtual NUIE::CommandPtr OnContextMenu (
+		NUIE::NodeUIManager& uiManager,
+		NUIE::NodeUIEnvironment& env,
+		const NUIE::Point& position,
+		const NE::InputSlotPtr& inputSlot,
+		const NUIE::CommandStructure& commands) override
 	{
 		return SelectCommandFromContextMenu (hwnd, position, commands);
 	}
