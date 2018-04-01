@@ -22,10 +22,10 @@ public:
 private:
 	struct ParamUIData
 	{
-		ParamUIData (wxControl* control);
+		ParamUIData (wxTextCtrl* control);
 
-		wxControl*	control;
-		bool		isChanged;
+		wxTextCtrl*		control;
+		bool			isChanged;
 	};
 
 	NUIE::NodeParameterAccessorPtr	paramAccessor;

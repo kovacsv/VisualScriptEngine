@@ -5,6 +5,18 @@
 
 #include <wx/spinctrl.h>
 
+void SetTextValidator (wxTextCtrl* textCtrl, const std::wstring& validChars)
+{
+	wxTextValidator validator (wxFILTER_INCLUDE_CHAR_LIST);
+	wxArrayString includeList;
+
+	for (const wchar_t& character : validChars) {
+		includeList.Add (character);
+	}
+	validator.SetIncludes (includeList);
+	textCtrl->SetValidator (validator);
+}
+
 ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::NodeParameterAccessorPtr& paramAccessor) :
 	wxDialog (parent, wxID_ANY, L"Set Parameters", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE),
 	paramAccessor (paramAccessor),
@@ -14,40 +26,36 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::NodeParameterAccessorP
 {
 	gridSizer->SetRows (paramAccessor->GetParameterCount ());
 	for (size_t i = 0; i < paramAccessor->GetParameterCount (); ++i) {
-		wxStaticText* paramNameText = new wxStaticText (this, wxID_ANY, paramAccessor->GetParameterName (i));
-		gridSizer->Add (paramNameText, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL);
-
 		NUIE::ParameterType type = paramAccessor->GetParameterType (i);
 		NE::ValuePtr value = paramAccessor->GetParameterValue (i);
 
 		int controlId = 1000 + i;
-		wxControl* editorControl = nullptr;
+		wxTextCtrl* textControl = nullptr;
 		if (type == NUIE::ParameterType::String) {
 			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
-				editorControl = new wxTextCtrl (this, controlId, NE::StringValue::Get (value));
+				textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
 			}
 		} else if (type == NUIE::ParameterType::Integer) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
-				wxSpinCtrl* spinCtrl = new wxSpinCtrl (this, controlId);
-				spinCtrl->SetRange (std::numeric_limits<int>::min (), std::numeric_limits<int>::max ());
-				spinCtrl->SetValue (NE::IntValue::Get (value));
-				editorControl = spinCtrl;
+				textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
+				SetTextValidator (textControl, L"0123456789");
 			}
 		} else if (type == NUIE::ParameterType::Double) {
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
-				wxSpinCtrlDouble* spinCtrl = new wxSpinCtrlDouble (this, controlId);
-				spinCtrl->SetRange (-std::numeric_limits<double>::max (), std::numeric_limits<double>::max ());
-				spinCtrl->SetValue (NE::DoubleValue::Get (value));
-				editorControl = spinCtrl;
+				textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
+				SetTextValidator (textControl, L"0123456789.");
 			}
 		}
 		
-		if (DBGERROR (editorControl == nullptr)) {
-			editorControl = new wxStaticText (this, wxID_ANY, "N/A");
+		if (DBGERROR (textControl == nullptr)) {
+			continue;
 		}
 
-		gridSizer->Add (editorControl, 1, wxEXPAND);
-		paramUIDataList.push_back (ParamUIData (editorControl));
+		wxStaticText* paramNameText = new wxStaticText (this, wxID_ANY, paramAccessor->GetParameterName (i));
+		gridSizer->Add (paramNameText, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL);
+
+		gridSizer->Add (textControl, 1, wxEXPAND);
+		paramUIDataList.push_back (ParamUIData (textControl));
 	}
 
 	boxSizer->Add (gridSizer, 1, wxEXPAND | wxALL, 5);
@@ -66,18 +74,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 
 		// TODO: veto event, and write back correct value in case of failure
 		NUIE::ParameterType type = paramAccessor->GetParameterType (i);
-		if (type == NUIE::ParameterType::String) {
-			wxTextCtrl* textCtrl = dynamic_cast<wxTextCtrl*> (uiData.control);
-			paramAccessor->SetParameterValue (i, NE::ValuePtr (new NE::StringValue (textCtrl->GetValue ().ToStdWstring ())));
-		} else if (type == NUIE::ParameterType::Integer) {
-			wxSpinCtrl* spinCtrl = dynamic_cast<wxSpinCtrl*> (uiData.control);
-			paramAccessor->SetParameterValue (i, NE::ValuePtr (new NE::IntValue (spinCtrl->GetValue ())));
-		} else if (type == NUIE::ParameterType::Double) {
-			wxSpinCtrlDouble* spinCtrl = dynamic_cast<wxSpinCtrlDouble*> (uiData.control);
-			paramAccessor->SetParameterValue (i, NE::ValuePtr (new NE::DoubleValue (spinCtrl->GetValue ())));
-		} else {
-			DBGBREAK ();
-		}
+		paramAccessor->SetParameterValue (i, NUIE::StringToParameterValue (uiData.control->GetValue ().ToStdWstring (), type));
 	}
 
 	EndModal (DialogIds::OkButtonId);
@@ -89,7 +86,7 @@ void ParameterDialog::OnTextChanged (wxCommandEvent& evt)
 	paramUIDataList[paramIndex].isChanged = true;
 }
 
-ParameterDialog::ParamUIData::ParamUIData (wxControl* control) :
+ParameterDialog::ParamUIData::ParamUIData (wxTextCtrl* control) :
 	control (control),
 	isChanged (false)
 {
