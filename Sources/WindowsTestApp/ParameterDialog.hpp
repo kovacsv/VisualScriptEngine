@@ -4,25 +4,7 @@
 #include "UINodeParameterAccessor.hpp"
 
 #include <wx/wx.h>
-#include <wx/dataview.h>
-
 #include <memory>
-
-class ParameterList : public wxDataViewListCtrl
-{
-public:
-	ParameterList (wxWindow* parent, NUIE::NodeParameterAccessorPtr& paramAccessor);
-
-	void	OnEditingDone (wxDataViewEvent& evt);
-
-private:
-	void	FillParameters ();
-	void	ClearList ();
-
-	NUIE::NodeParameterAccessorPtr paramAccessor;
-
-	DECLARE_EVENT_TABLE ();
-};
 
 class ParameterDialog : public wxDialog
 {
@@ -35,11 +17,23 @@ public:
 	ParameterDialog (wxWindow* parent, NUIE::NodeParameterAccessorPtr& paramAccessor);
 
 	void	OnOkButtonClick (wxCommandEvent& evt);
+	void	OnTextChanged (wxCommandEvent& evt);
 
 private:
-	ParameterList*	parameterList;
-	wxButton*		okButton;
-	wxBoxSizer*		sizer;
+	struct ParamUIData
+	{
+		ParamUIData (wxControl* control);
+
+		wxControl*	control;
+		bool		isChanged;
+	};
+
+	NUIE::NodeParameterAccessorPtr	paramAccessor;
+	std::vector<ParamUIData>		paramUIDataList;
+
+	wxGridSizer*					gridSizer;
+	wxBoxSizer*						boxSizer;
+	wxButton*						okButton;
 
 	DECLARE_EVENT_TABLE ();
 };
