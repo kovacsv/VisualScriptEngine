@@ -6,7 +6,6 @@
 #include "StringUtils.hpp"
 
 NE::DynamicSerializationInfo	ColorValue::serializationInfo (NE::ObjectId ("{E6D2DBDC-6311-4BA5-9B1A-A0FFF8CA2444}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
-NE::DynamicSerializationInfo	TransformationValue::serializationInfo (NE::ObjectId ("{D90233EC-EFC9-4B18-BA45-DA1DB9C0EF63}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	PointValue::serializationInfo (NE::ObjectId ("{2C242A9E-1054-4E16-82C1-759C006097C9}"), NE::ObjectVersion (1), PointValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	LineValue::serializationInfo (NE::ObjectId ("{2C860493-09EE-4EA2-8BC4-7FD8DE97BBC8}"), NE::ObjectVersion (1), LineValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	CircleValue::serializationInfo (NE::ObjectId ("{88E71F51-D47D-4DE5-9182-D608E7E71741}"), NE::ObjectVersion (1), CircleValue::CreateSerializableInstance);
@@ -285,42 +284,6 @@ NE::Stream::Status ColorValue::Read (NE::InputStream& inputStream)
 }
 
 NE::Stream::Status ColorValue::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	val.Write (outputStream);
-	return outputStream.GetStatus ();
-}
-
-TransformationValue::TransformationValue () :
-	TransformationValue (Transformation ())
-{
-
-}
-
-TransformationValue::TransformationValue (const Transformation& val) :
-	NE::GenericValue<Transformation> (val)
-{
-
-}
-
-NE::ValuePtr TransformationValue::Clone () const
-{
-	return NE::ValuePtr (new TransformationValue (val));
-}
-
-std::wstring TransformationValue::ToString () const
-{
-	return val.ToString ();
-}
-
-NE::Stream::Status TransformationValue::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	val.Read (inputStream);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status TransformationValue::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	val.Write (outputStream);

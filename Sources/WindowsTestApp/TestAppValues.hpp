@@ -105,21 +105,6 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class TransformationValue : public NE::GenericValue<Transformation>
-{
-	DYNAMIC_SERIALIZABLE (TransformationValue);
-
-public:
-	TransformationValue ();
-	TransformationValue (const Transformation& val);
-
-	virtual NE::ValuePtr		Clone () const override;
-	virtual std::wstring		ToString () const override;
-
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-};
-
 class GeometricValue
 {
 public:
