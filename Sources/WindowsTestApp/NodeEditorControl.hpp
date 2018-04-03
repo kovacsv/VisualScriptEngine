@@ -13,13 +13,13 @@ class MyCreateNodeCommand : public BI::CreateNodeCommand
 public:
 	enum class NodeType
 	{
+		Integer,
 		Number,
 		Range,
 		Addition,
 		Subtraction,
 		Multiplication,
 		Division,
-		Double,
 		Color,
 		Point,
 		Line,

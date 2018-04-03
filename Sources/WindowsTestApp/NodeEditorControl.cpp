@@ -56,8 +56,10 @@ MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager
 NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPosition)
 {
 	switch (nodeType) {
+		case NodeType::Integer:
+			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", modelPosition, 0, 5));
 		case NodeType::Number:
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0, 5));
+			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0.0, 5.0));
 		case NodeType::Range:
 			return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Range", modelPosition));
 		case NodeType::Addition:
@@ -96,6 +98,7 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	NUIE::GroupCommandPtr createCommandGroup (new NUIE::GroupCommand (L"Add Node"));
 
 	NUIE::GroupCommandPtr inputCommandGroup (new NUIE::GroupCommand (L"Input Nodes"));
+	inputCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
 	inputCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
 	inputCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Range, uiManager, uiEnvironment, L"Range", position)));
 	createCommandGroup->AddChildCommand (inputCommandGroup);

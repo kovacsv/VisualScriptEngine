@@ -11,19 +11,205 @@
 namespace BI
 {
 
+NE::SerializationInfo			NumericUpDownNode::serializationInfo (NE::ObjectVersion (1));
+NE::DynamicSerializationInfo	IntegerUpDownNode::serializationInfo (NE::ObjectId ("{98ADBB4A-8E55-4FE5-B0F9-EC5DD776C000}"), NE::ObjectVersion (1), IntegerUpDownNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	DoubleUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), DoubleUpDownNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	DoubleRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), DoubleRangeNode::CreateSerializableInstance);
 
+NumericUpDownNode::NumericUpDownNode () :
+	NumericUpDownNode (L"", NUIE::Point ())
+{
+
+}
+
+NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const NUIE::Point& position) :
+	UINode (name, position)
+{
+
+}
+
+NumericUpDownNode::~NumericUpDownNode ()
+{
+
+}
+
+void NumericUpDownNode::RegisterSlots ()
+{
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
+}
+
+NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::KeySet&, NUIE::MouseButton mouseButton, const NUIE::Point& position)
+{
+	if (mouseButton != NUIE::MouseButton::Left) {
+		return NUIE::EventHandlerResult::EventNotHandled;
+	}
+
+	NUIE::Rect minusButtonRect = GetSpecialRect (env, "minus");
+	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
+
+	if (minusButtonRect.Contains (position)) {
+		Decrease ();
+		return NUIE::EventHandlerResult::EventHandled;
+	} else if (plusButtonRect.Contains (position)) {
+		Increase ();
+		return NUIE::EventHandlerResult::EventHandled;
+	}
+	return NUIE::EventHandlerResult::EventNotHandled;
+}
+
+NE::Stream::Status NumericUpDownNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	UINode::Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status NumericUpDownNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	UINode::Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+void NumericUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+{
+	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", L"<", "plus", L">", env, drawingImage);
+}
+
+IntegerUpDownNode::IntegerUpDownNode () :
+	IntegerUpDownNode (L"", NUIE::Point (), 0, 0)
+{
+
+}
+
+IntegerUpDownNode::IntegerUpDownNode (const std::wstring& name, const NUIE::Point& position, int val, int step) :
+	NumericUpDownNode (name, position),
+	val (val),
+	step (step)
+{
+
+}
+
+IntegerUpDownNode::~IntegerUpDownNode ()
+{
+
+}
+
+NE::ValuePtr IntegerUpDownNode::Calculate (NE::EvaluationEnv&) const
+{
+	return NE::ValuePtr (new NE::IntValue (val));
+}
+
+void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	class ValueParameter : public NUIE::IntegerParameter<IntegerUpDownNode>
+	{
+	public:
+		ValueParameter () :
+			NUIE::IntegerParameter<IntegerUpDownNode> (L"Value")
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<IntegerUpDownNode>& uiNode) const override
+		{
+			return NE::ValuePtr (new NE::IntValue (uiNode->GetValue ()));
+		}
+
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<IntegerUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		{
+			uiNode->SetValue (NE::IntValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
+			return true;
+		}
+	};
+
+	class StepParameter : public NUIE::IntegerParameter<IntegerUpDownNode>
+	{
+	public:
+		StepParameter () :
+			NUIE::IntegerParameter<IntegerUpDownNode> (L"Step")
+		{
+
+		}
+
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<IntegerUpDownNode>& uiNode) const override
+		{
+			return NE::ValuePtr (new NE::IntValue (uiNode->GetStep ()));
+		}
+
+		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<IntegerUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		{
+			uiNode->SetStep (NE::IntValue::Get (value));
+			return true;
+		}
+	};
+
+	UINode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new ValueParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new StepParameter ()));
+}
+
+NE::Stream::Status IntegerUpDownNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	NumericUpDownNode::Read (inputStream);
+	inputStream.Read (val);
+	inputStream.Read (step);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status IntegerUpDownNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	NumericUpDownNode::Write (outputStream);
+	outputStream.Write (val);
+	outputStream.Write (step);
+	return outputStream.GetStatus ();
+}
+
+void IntegerUpDownNode::Increase ()
+{
+	val = val + step;
+	InvalidateValue ();
+}
+
+void IntegerUpDownNode::Decrease ()
+{
+	val = val - step;
+	InvalidateValue ();
+}
+
+int IntegerUpDownNode::GetValue () const
+{
+	return val;
+}
+
+void IntegerUpDownNode::SetValue (int newValue)
+{
+	val = newValue;
+	InvalidateValue ();
+}
+
+int IntegerUpDownNode::GetStep () const
+{
+	return step;
+}
+
+void IntegerUpDownNode::SetStep (int newStep)
+{
+	step = newStep;
+}
+
 DoubleUpDownNode::DoubleUpDownNode () :
-	UINode (),
-	val (0.0),
-	step (0.0)
+	DoubleUpDownNode (L"", NUIE::Point (), 0.0, 0.0)
 {
 
 }
 
 DoubleUpDownNode::DoubleUpDownNode (const std::wstring& name, const NUIE::Point& position, double val, double step) :
-	UINode (name, position),
+	NumericUpDownNode (name, position),
 	val (val),
 	step (step)
 {
@@ -33,11 +219,6 @@ DoubleUpDownNode::DoubleUpDownNode (const std::wstring& name, const NUIE::Point&
 DoubleUpDownNode::~DoubleUpDownNode ()
 {
 
-}
-
-void DoubleUpDownNode::RegisterSlots ()
-{
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
 NE::ValuePtr DoubleUpDownNode::Calculate (NE::EvaluationEnv&) const
@@ -96,29 +277,10 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new StepParameter ()));
 }
 
-NUIE::EventHandlerResult DoubleUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::KeySet&, NUIE::MouseButton mouseButton, const NUIE::Point& position)
-{
-	if (mouseButton != NUIE::MouseButton::Left) {
-		return NUIE::EventHandlerResult::EventNotHandled;
-	}
-
-	NUIE::Rect minusButtonRect = GetSpecialRect (env, "minus");
-	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
-
-	if (minusButtonRect.Contains (position)) {
-		Decrease ();
-		return NUIE::EventHandlerResult::EventHandled;
-	} else if (plusButtonRect.Contains (position)) {
-		Increase ();
-		return NUIE::EventHandlerResult::EventHandled;
-	}
-	return NUIE::EventHandlerResult::EventNotHandled;
-}
-
 NE::Stream::Status DoubleUpDownNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
+	NumericUpDownNode::Read (inputStream);
 	inputStream.Read (val);
 	inputStream.Read (step);
 	return inputStream.GetStatus ();
@@ -127,7 +289,7 @@ NE::Stream::Status DoubleUpDownNode::Read (NE::InputStream& inputStream)
 NE::Stream::Status DoubleUpDownNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
+	NumericUpDownNode::Write (outputStream);
 	outputStream.Write (val);
 	outputStream.Write (step);
 	return outputStream.GetStatus ();
@@ -164,11 +326,6 @@ double DoubleUpDownNode::GetStep () const
 void DoubleUpDownNode::SetStep (double newStep)
 {
 	step = newStep;
-}
-
-void DoubleUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
-{
-	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", L"<", "plus", L">", env, drawingImage);
 }
 
 DoubleRangeNode::DoubleRangeNode () :
