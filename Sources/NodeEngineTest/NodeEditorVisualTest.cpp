@@ -20,7 +20,7 @@ public:
 		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
 		doubleUpDownNode = uiManager.AddNode (NUIE::UINodePtr (new DoubleUpDownNode (L"Number", NUIE::Point (100, 200), 20, 10)), uiEnvironment.GetEvaluationEnv ());
-		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new NumberRangeNode (L"Range", NUIE::Point (300, 400))), uiEnvironment.GetEvaluationEnv ());
+		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new DoubleRangeNode (L"Range", NUIE::Point (300, 400))), uiEnvironment.GetEvaluationEnv ());
 		viewerUINode1 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerNode (L"Viewer", NUIE::Point (600, 100), 5)), uiEnvironment.GetEvaluationEnv ());
 		viewerUINode2 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerNode (L"Viewer 2", NUIE::Point (600, 400), 5)), uiEnvironment.GetEvaluationEnv ());
 

@@ -12,7 +12,7 @@ namespace BI
 {
 
 NE::DynamicSerializationInfo	DoubleUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), DoubleUpDownNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	NumberRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), NumberRangeNode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	DoubleRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), DoubleRangeNode::CreateSerializableInstance);
 
 DoubleUpDownNode::DoubleUpDownNode () :
 	UINode (),
@@ -171,24 +171,24 @@ void DoubleUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& e
 	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", L"<", "plus", L">", env, drawingImage);
 }
 
-NumberRangeNode::NumberRangeNode () :
-	NumberRangeNode (L"", NUIE::Point ())
+DoubleRangeNode::DoubleRangeNode () :
+	DoubleRangeNode (L"", NUIE::Point ())
 {
 
 }
 
-NumberRangeNode::NumberRangeNode (const std::wstring& name, const NUIE::Point& position) :
+DoubleRangeNode::DoubleRangeNode (const std::wstring& name, const NUIE::Point& position) :
 	UINode (name, position)
 {
 
 }
 
-NumberRangeNode::~NumberRangeNode ()
+DoubleRangeNode::~DoubleRangeNode ()
 {
 
 }
 
-void NumberRangeNode::RegisterSlots ()
+void DoubleRangeNode::RegisterSlots ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
@@ -196,7 +196,7 @@ void NumberRangeNode::RegisterSlots ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
 }
 
-NE::ValuePtr NumberRangeNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValuePtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValuePtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
 	NE::ValuePtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
@@ -216,13 +216,13 @@ NE::ValuePtr NumberRangeNode::Calculate (NE::EvaluationEnv& env) const
 	return list;
 }
 
-void NumberRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+void DoubleRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class CountParameter : public NUIE::SlotDefaultValueParameter<NumberRangeNode, NE::IntValue>
+	class CountParameter : public NUIE::SlotDefaultValueParameter<DoubleRangeNode, NE::IntValue>
 	{
 	public:
 		CountParameter () :
-			NUIE::SlotDefaultValueParameter<NumberRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
+			NUIE::SlotDefaultValueParameter<DoubleRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
 		{
 
 		}
@@ -234,26 +234,26 @@ void NumberRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList
 	};
 
 	UINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueParameter<NumberRangeNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
+	NUIE::RegisterSlotDefaultValueParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
 }
 
-NE::Stream::Status NumberRangeNode::Read (NE::InputStream& inputStream)
+NE::Stream::Status DoubleRangeNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	UINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status NumberRangeNode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status DoubleRangeNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
-void NumberRangeNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+void DoubleRangeNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }

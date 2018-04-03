@@ -43,14 +43,14 @@ private:
 	double			step;
 };
 
-class NumberRangeNode : public NUIE::UINode
+class DoubleRangeNode : public NUIE::UINode
 {
-	DYNAMIC_SERIALIZABLE (NumberRangeNode);
+	DYNAMIC_SERIALIZABLE (DoubleRangeNode);
 
 public:
-	NumberRangeNode ();
-	NumberRangeNode (const std::wstring& name, const NUIE::Point& position);
-	virtual ~NumberRangeNode ();
+	DoubleRangeNode ();
+	DoubleRangeNode (const std::wstring& name, const NUIE::Point& position);
+	virtual ~DoubleRangeNode ();
 	
 	virtual void				RegisterSlots () override;
 	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
