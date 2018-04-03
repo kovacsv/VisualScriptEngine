@@ -89,7 +89,40 @@ private:
 	double			step;
 };
 
-class DoubleRangeNode : public NUIE::UINode
+class NumericRangeNode : public NUIE::UINode
+{
+	SERIALIZABLE;
+
+public:
+	NumericRangeNode ();
+	NumericRangeNode (const std::wstring& name, const NUIE::Point& position);
+	virtual ~NumericRangeNode ();
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+protected:
+	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
+};
+
+class IntegerRangeNode : public NumericRangeNode
+{
+	DYNAMIC_SERIALIZABLE (IntegerRangeNode);
+
+public:
+	IntegerRangeNode ();
+	IntegerRangeNode (const std::wstring& name, const NUIE::Point& position);
+	virtual ~IntegerRangeNode ();
+	
+	virtual void				RegisterSlots () override;
+	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+};
+
+class DoubleRangeNode : public NumericRangeNode
 {
 	DYNAMIC_SERIALIZABLE (DoubleRangeNode);
 
@@ -104,9 +137,6 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-protected:
-	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 };
 
 }

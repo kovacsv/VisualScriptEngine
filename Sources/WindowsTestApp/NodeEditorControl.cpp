@@ -60,8 +60,10 @@ NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPositio
 			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", modelPosition, 0, 5));
 		case NodeType::Number:
 			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0.0, 5.0));
-		case NodeType::Range:
-			return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Range", modelPosition));
+		case NodeType::IntegerRange:
+			return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", modelPosition));
+		case NodeType::NumberRange:
+			return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", modelPosition));
 		case NodeType::Addition:
 			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
 		case NodeType::Subtraction:
@@ -100,7 +102,8 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	NUIE::GroupCommandPtr inputCommandGroup (new NUIE::GroupCommand (L"Input Nodes"));
 	inputCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
 	inputCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
-	inputCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Range, uiManager, uiEnvironment, L"Range", position)));
+	inputCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));
+	inputCommandGroup->AddChildCommand (NUIE::CommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberRange, uiManager, uiEnvironment, L"Number Range", position)));
 	createCommandGroup->AddChildCommand (inputCommandGroup);
 
 	NUIE::GroupCommandPtr arithmeticCommandGroup (new NUIE::GroupCommand (L"Arithmetic Nodes"));

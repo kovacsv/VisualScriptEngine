@@ -15,7 +15,8 @@ public:
 	{
 		Integer,
 		Number,
-		Range,
+		IntegerRange,
+		NumberRange,
 		Addition,
 		Subtraction,
 		Multiplication,
