@@ -267,11 +267,10 @@ private:
 class PasteNodesCommand : public SingleCommand
 {
 public:
-	PasteNodesCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position) :
+	PasteNodesCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
 		SingleCommand (name, false),
 		uiManager (uiManager),
-		uiEnvironment (uiEnvironment),
-		position (position)
+		uiEnvironment (uiEnvironment)
 	{
 
 	}
@@ -311,7 +310,6 @@ public:
 private:
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
-	Point				position;
 };
 
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
@@ -461,11 +459,11 @@ NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodeP
 	return NodeCollection (uiNode->GetId ());
 }
 
-CommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position)
+CommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point&)
 {
 	CommandStructure commandStructure;
 	if (uiManager.CanPaste ()) {
-		commandStructure.AddCommand (CommandPtr (new PasteNodesCommand (L"Paste Nodes", uiManager, uiEnvironment, position)));
+		commandStructure.AddCommand (CommandPtr (new PasteNodesCommand (L"Paste Nodes", uiManager, uiEnvironment)));
 	}
 	return commandStructure;
 }
