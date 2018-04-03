@@ -15,6 +15,7 @@ public:
 
 	virtual void		Init (void* nativeHandle) override;
 	virtual void		BlitToWindow (void* nativeHandle) override;
+	virtual void		BlitToContext (void* nativeContext) override;
 
 	virtual void		Resize (int newWidth, int newHeight) override;
 

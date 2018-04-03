@@ -55,6 +55,13 @@ void BitmapContextGdiplus::BlitToWindow (void* nativeHandle)
 
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint (hwnd, &ps);
+	BlitToContext (hdc);
+	EndPaint (hwnd, &ps);
+}
+
+void BitmapContextGdiplus::BlitToContext (void* nativeContext)
+{
+	HDC hdc = (HDC) nativeContext;
 
 	HDC memoryDC = CreateCompatibleDC (hdc);
 	HBITMAP memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
@@ -68,8 +75,6 @@ void BitmapContextGdiplus::BlitToWindow (void* nativeHandle)
 
 	DeleteObject (memoryBitmap);
 	DeleteDC (memoryDC);
-
-	EndPaint (hwnd, &ps);
 }
 
 void BitmapContextGdiplus::Resize (int newWidth, int newHeight)
