@@ -31,11 +31,17 @@ void wxDrawingContext::Init (void* nativeHandle)
 
 }
 
-void wxDrawingContext::Blit (void* nativeHandle)
+void wxDrawingContext::BlitToWindow (void* nativeHandle)
 {
 	wxPanel* panel = (wxPanel*) nativeHandle;
 	wxPaintDC dc (panel);
-	dc.Blit (0, 0, width, height, memoryDC, 0, 0);
+	BlitToContext (&dc);
+}
+
+void wxDrawingContext::BlitToContext (void* nativeContext)
+{
+	wxPaintDC* dc = (wxPaintDC*) nativeContext;
+	dc->Blit (0, 0, width, height, memoryDC, 0, 0);
 }
 
 void wxDrawingContext::Resize (int newWidth, int newHeight)

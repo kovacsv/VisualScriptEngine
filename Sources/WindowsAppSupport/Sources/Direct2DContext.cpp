@@ -115,7 +115,12 @@ void Direct2DContext::Init (void* nativeHandle)
 	renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
 }
 
-void Direct2DContext::Blit (void*)
+void Direct2DContext::BlitToWindow (void*)
+{
+
+}
+
+void Direct2DContext::BlitToContext (void*)
 {
 
 }

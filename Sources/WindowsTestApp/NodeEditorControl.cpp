@@ -162,7 +162,7 @@ NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorC
 
 void NodeEditorUIEnvironment::OnPaint (wxPanel* panel, wxPaintEvent& evt)
 {
-	drawingContext->Blit (GetNativeHandle (nodeEditorControl));
+	drawingContext->BlitToWindow (GetNativeHandle (nodeEditorControl));
 }
 
 void NodeEditorUIEnvironment::OnResize (int width, int height)

@@ -180,7 +180,7 @@ public:
 
 	void DrawContextToWindow ()
 	{
-		bitmapContext.Blit (hwnd);
+		bitmapContext.BlitToWindow (hwnd);
 	}
 
 private:

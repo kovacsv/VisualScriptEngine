@@ -16,7 +16,8 @@ public:
 	void						DrawToDC (wxDC* target);
 
 	virtual void				Init (void* nativeHandle) override;
-	virtual void				Blit (void* nativeHandle) override;
+	virtual void				BlitToWindow (void* nativeHandle) override;
+	virtual void				BlitToContext (void* nativeContext) override;
 
 	virtual void				Resize (int newWidth, int newHeight) override;
 

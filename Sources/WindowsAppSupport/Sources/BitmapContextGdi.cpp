@@ -65,15 +65,21 @@ void BitmapContextGdi::Init (void* nativeHandle)
 	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
 }
 
-void BitmapContextGdi::Blit (void* nativeHandle)
+void BitmapContextGdi::BlitToWindow (void* nativeHandle)
 {
 	HWND hwnd = (HWND) nativeHandle;
 
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint (hwnd, &ps);
+	BlitToContext (hdc);
+	EndPaint (hwnd, &ps);
+}
+
+void BitmapContextGdi::BlitToContext (void* nativeContext)
+{
+	HDC hdc = (HDC) nativeContext;
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
-	EndPaint (hwnd, &ps);
 }
 
 void BitmapContextGdi::Resize (int newWidth, int newHeight)

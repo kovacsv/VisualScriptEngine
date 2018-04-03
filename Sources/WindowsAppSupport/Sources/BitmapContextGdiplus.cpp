@@ -49,7 +49,7 @@ void BitmapContextGdiplus::Init (void* nativeHandle)
 	InitGraphics ();
 }
 
-void BitmapContextGdiplus::Blit (void* nativeHandle)
+void BitmapContextGdiplus::BlitToWindow (void* nativeHandle)
 {
 	HWND hwnd = (HWND) nativeHandle;
 
