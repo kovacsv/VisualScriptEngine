@@ -190,7 +190,7 @@ void NodeEditorUIEnvironment::OnValuesRecalculated ()
 	nodeEditorControl->RedrawResultImage ();
 }
 
-void NodeEditorUIEnvironment::OnRedrawRequest ()
+void NodeEditorUIEnvironment::OnRedrawRequested ()
 {
 	nodeEditorControl->Refresh (false);
 }

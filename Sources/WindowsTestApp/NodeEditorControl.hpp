@@ -71,7 +71,7 @@ public:
 	virtual NUIE::SkinParams&		GetSkinParams () override;
 	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
 	virtual void					OnValuesRecalculated () override;
-	virtual void					OnRedrawRequest () override;
+	virtual void					OnRedrawRequested () override;
 	virtual NUIE::EventHandlers&	GetEventHandlers () override;
 
 private:

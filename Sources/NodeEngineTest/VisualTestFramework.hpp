@@ -38,7 +38,7 @@ public:
 	virtual SkinParams&			GetSkinParams () override;
 	virtual EvaluationEnv&		GetEvaluationEnv () override;
 	virtual void				OnValuesRecalculated () override;
-	virtual void				OnRedrawRequest () override;
+	virtual void				OnRedrawRequested () override;
 	virtual EventHandlers&		GetEventHandlers () override;
 
 	void						SetNextCommandName (const std::wstring& nextCommandName);

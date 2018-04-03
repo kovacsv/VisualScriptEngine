@@ -106,7 +106,7 @@ public:
 		
 	}
 
-	virtual void OnRedrawRequest () override
+	virtual void OnRedrawRequested () override
 	{
 		InvalidateRect (hwnd, NULL, FALSE);
 	}

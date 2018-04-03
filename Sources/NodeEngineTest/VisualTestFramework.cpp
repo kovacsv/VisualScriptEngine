@@ -102,7 +102,7 @@ void TestNodeUIEnvironment::OnValuesRecalculated ()
 
 }
 
-void TestNodeUIEnvironment::OnRedrawRequest ()
+void TestNodeUIEnvironment::OnRedrawRequested ()
 {
 	nodeEditor.Draw ();
 }

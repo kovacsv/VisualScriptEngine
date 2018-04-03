@@ -29,7 +29,7 @@ class NodeUICalculationEnvironment
 public:
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
 	virtual void				OnValuesRecalculated () = 0;
-	virtual void				OnRedrawRequest () = 0;
+	virtual void				OnRedrawRequested () = 0;
 };
 
 class NodeUIInteractionEnvironment

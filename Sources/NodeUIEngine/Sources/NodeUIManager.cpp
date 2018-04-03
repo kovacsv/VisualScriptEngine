@@ -255,7 +255,7 @@ void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 		status.RequestRedraw ();
 	}
 	if (status.NeedToRedraw ()) {
-		env.OnRedrawRequest ();
+		env.OnRedrawRequested ();
 	}
 	status.Reset ();
 }
