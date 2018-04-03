@@ -38,12 +38,12 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::NodeParameterAccessorP
 		} else if (type == NUIE::ParameterType::Integer) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 				textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
-				SetTextValidator (textControl, L"0123456789");
+				SetTextValidator (textControl, L"0123456789-");
 			}
 		} else if (type == NUIE::ParameterType::Double) {
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
 				textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
-				SetTextValidator (textControl, L"0123456789.");
+				SetTextValidator (textControl, L"0123456789.-");
 			}
 		}
 		
