@@ -9,14 +9,14 @@
 namespace BI
 {
 
-class NumericUpDownNode : public NUIE::UINode
+class DoubleUpDownNode : public NUIE::UINode
 {
-	DYNAMIC_SERIALIZABLE (NumericUpDownNode);
+	DYNAMIC_SERIALIZABLE (DoubleUpDownNode);
 
 public:
-	NumericUpDownNode ();
-	NumericUpDownNode (const std::wstring& name, const NUIE::Point& position, double val, double step);
-	virtual ~NumericUpDownNode ();
+	DoubleUpDownNode ();
+	DoubleUpDownNode (const std::wstring& name, const NUIE::Point& position, double val, double step);
+	virtual ~DoubleUpDownNode ();
 
 	virtual void						RegisterSlots () override;
 	virtual NE::ValuePtr				Calculate (NE::EvaluationEnv& env) const override;

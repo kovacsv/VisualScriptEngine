@@ -11,10 +11,10 @@
 namespace BI
 {
 
-NE::DynamicSerializationInfo	NumericUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), NumericUpDownNode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	DoubleUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), DoubleUpDownNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	NumberRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), NumberRangeNode::CreateSerializableInstance);
 
-NumericUpDownNode::NumericUpDownNode () :
+DoubleUpDownNode::DoubleUpDownNode () :
 	UINode (),
 	val (0.0),
 	step (0.0)
@@ -22,7 +22,7 @@ NumericUpDownNode::NumericUpDownNode () :
 
 }
 
-NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const NUIE::Point& position, double val, double step) :
+DoubleUpDownNode::DoubleUpDownNode (const std::wstring& name, const NUIE::Point& position, double val, double step) :
 	UINode (name, position),
 	val (val),
 	step (step)
@@ -30,38 +30,38 @@ NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const NUIE::Poin
 
 }
 
-NumericUpDownNode::~NumericUpDownNode ()
+DoubleUpDownNode::~DoubleUpDownNode ()
 {
 
 }
 
-void NumericUpDownNode::RegisterSlots ()
+void DoubleUpDownNode::RegisterSlots ()
 {
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
-NE::ValuePtr NumericUpDownNode::Calculate (NE::EvaluationEnv&) const
+NE::ValuePtr DoubleUpDownNode::Calculate (NE::EvaluationEnv&) const
 {
 	return NE::ValuePtr (new NE::DoubleValue (val));
 }
 
-void NumericUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class ValueParameter : public NUIE::DoubleParameter<NumericUpDownNode>
+	class ValueParameter : public NUIE::DoubleParameter<DoubleUpDownNode>
 	{
 	public:
 		ValueParameter () :
-			NUIE::DoubleParameter<NumericUpDownNode> (L"Value")
+			NUIE::DoubleParameter<DoubleUpDownNode> (L"Value")
 		{
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<NumericUpDownNode>& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<DoubleUpDownNode>& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::DoubleValue (uiNode->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<NumericUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<DoubleUpDownNode>& uiNode, const NE::ValuePtr& value) override
 		{
 			uiNode->SetValue (NE::DoubleValue::Get (value));
 			uiManager.InvalidateNodeValue (uiNode);
@@ -70,21 +70,21 @@ void NumericUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 		}
 	};
 
-	class StepParameter : public NUIE::DoubleParameter<NumericUpDownNode>
+	class StepParameter : public NUIE::DoubleParameter<DoubleUpDownNode>
 	{
 	public:
 		StepParameter () :
-			NUIE::DoubleParameter<NumericUpDownNode> (L"Step")
+			NUIE::DoubleParameter<DoubleUpDownNode> (L"Step")
 		{
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<NumericUpDownNode>& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<DoubleUpDownNode>& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::DoubleValue (uiNode->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<NumericUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<DoubleUpDownNode>& uiNode, const NE::ValuePtr& value) override
 		{
 			uiNode->SetStep (NE::DoubleValue::Get (value));
 			return true;
@@ -96,7 +96,7 @@ void NumericUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new StepParameter ()));
 }
 
-NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::KeySet&, NUIE::MouseButton mouseButton, const NUIE::Point& position)
+NUIE::EventHandlerResult DoubleUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::KeySet&, NUIE::MouseButton mouseButton, const NUIE::Point& position)
 {
 	if (mouseButton != NUIE::MouseButton::Left) {
 		return NUIE::EventHandlerResult::EventNotHandled;
@@ -115,7 +115,7 @@ NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnviro
 	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
-NE::Stream::Status NumericUpDownNode::Read (NE::InputStream& inputStream)
+NE::Stream::Status DoubleUpDownNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	UINode::Read (inputStream);
@@ -124,7 +124,7 @@ NE::Stream::Status NumericUpDownNode::Read (NE::InputStream& inputStream)
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status NumericUpDownNode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status DoubleUpDownNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	UINode::Write (outputStream);
@@ -133,40 +133,40 @@ NE::Stream::Status NumericUpDownNode::Write (NE::OutputStream& outputStream) con
 	return outputStream.GetStatus ();
 }
 
-void NumericUpDownNode::Increase ()
+void DoubleUpDownNode::Increase ()
 {
 	val = val + step;
 	InvalidateValue ();
 }
 
-void NumericUpDownNode::Decrease ()
+void DoubleUpDownNode::Decrease ()
 {
 	val = val - step;
 	InvalidateValue ();
 }
 
-double NumericUpDownNode::GetValue () const
+double DoubleUpDownNode::GetValue () const
 {
 	return val;
 }
 
-void NumericUpDownNode::SetValue (double newValue)
+void DoubleUpDownNode::SetValue (double newValue)
 {
 	val = newValue;
 	InvalidateValue ();
 }
 
-double NumericUpDownNode::GetStep () const
+double DoubleUpDownNode::GetStep () const
 {
 	return step;
 }
 
-void NumericUpDownNode::SetStep (double newStep)
+void DoubleUpDownNode::SetStep (double newStep)
 {
 	step = newStep;
 }
 
-void NumericUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+void DoubleUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", L"<", "plus", L">", env, drawingImage);
 }

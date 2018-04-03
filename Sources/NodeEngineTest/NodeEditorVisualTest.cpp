@@ -19,7 +19,7 @@ public:
 	{
 		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
-		integerInputNode = uiManager.AddNode (NUIE::UINodePtr (new NumericUpDownNode (L"Number", NUIE::Point (100, 200), 20, 10)), uiEnvironment.GetEvaluationEnv ());
+		doubleUpDownNode = uiManager.AddNode (NUIE::UINodePtr (new DoubleUpDownNode (L"Number", NUIE::Point (100, 200), 20, 10)), uiEnvironment.GetEvaluationEnv ());
 		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new NumberRangeNode (L"Range", NUIE::Point (300, 400))), uiEnvironment.GetEvaluationEnv ());
 		viewerUINode1 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerNode (L"Viewer", NUIE::Point (600, 100), 5)), uiEnvironment.GetEvaluationEnv ());
 		viewerUINode2 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerNode (L"Viewer 2", NUIE::Point (600, 400), 5)), uiEnvironment.GetEvaluationEnv ());
@@ -31,27 +31,27 @@ public:
 	void RecalcPositions ()
 	{
 		pointInBackground = Point (5.0, 5.0);
-		integerInputRect = integerInputNode->GetNodeRect (uiEnvironment);
+		doubleInputRect = doubleUpDownNode->GetNodeRect (uiEnvironment);
 		rangeInputRect = rangeInputNode->GetNodeRect (uiEnvironment);
 		viewer1InputRect = viewerUINode1->GetNodeRect (uiEnvironment);
 		viewer2InputRect = viewerUINode2->GetNodeRect (uiEnvironment);
 
-		integerInputHeaderPoint = integerInputRect.GetTopCenter () + Point (5.0, 5.0);
+		doubleInputHeaderPoint = doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
 		rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);	
 	}
 
-	UINodePtr	integerInputNode;
+	UINodePtr	doubleUpDownNode;
 	UINodePtr	rangeInputNode;
 	UINodePtr	viewerUINode1;
 	UINodePtr	viewerUINode2;
 
 	Point		pointInBackground;
-	Rect		integerInputRect;
+	Rect		doubleInputRect;
 	Rect		rangeInputRect;
 	Rect		viewer1InputRect;
 	Rect		viewer2InputRect;
 
-	Point		integerInputHeaderPoint;
+	Point		doubleInputHeaderPoint;
 	Point		rangeInputHeaderPoint;
 };
 
@@ -63,9 +63,9 @@ public:
 	{
 		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
-		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("start")));
-		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("step")));
-		uiManager.ConnectOutputSlotToInputSlot (integerInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode1->GetUIInputSlot (SlotId ("in")));
+		uiManager.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("start")));
+		uiManager.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("step")));
+		uiManager.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), viewerUINode1->GetUIInputSlot (SlotId ("in")));
 		uiManager.ConnectOutputSlotToInputSlot (rangeInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode2->GetUIInputSlot (SlotId ("in")));
 
 		nodeEditor.Update ();
@@ -83,14 +83,14 @@ TEST (SelectionTest)
 	}
 
 	{ // select one node by clicking on the header
-		Point integerInputHeaderPoint = env.integerInputRect.GetTopCenter () + Point (5.0, 5.0);
-		env.Click (integerInputHeaderPoint);
-		ASSERT (env.CheckReference ("01_Selection_IntegerNodeSelected.svg"));
+		Point doubleInputHeaderPoint = env.doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
+		env.Click (doubleInputHeaderPoint);
+		ASSERT (env.CheckReference ("01_Selection_DoubleNodeSelected.svg"));
 	}
 
 	{ // deselect one node by clicking on the header again
-		Point integerInputHeaderPoint = env.integerInputRect.GetTopCenter () + Point (5.0, 5.0);
-		env.Click (integerInputHeaderPoint);
+		Point doubleInputHeaderPoint = env.doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
+		env.Click (doubleInputHeaderPoint);
 		ASSERT (env.CheckReference ("01_Selection_NoSelection.svg"));
 	}
 	
@@ -118,21 +118,21 @@ TEST (SelectionTest)
 	}
 
 	{ // select another node by clicking on the header
-		Point integerInputHeaderPoint = env.integerInputRect.GetTopCenter () + Point (5.0, 5.0);
-		env.Click (integerInputHeaderPoint);
-		ASSERT (env.CheckReference ("01_Selection_IntegerNodeSelected.svg"));
+		Point doubleInputHeaderPoint = env.doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
+		env.Click (doubleInputHeaderPoint);
+		ASSERT (env.CheckReference ("01_Selection_DoubleNodeSelected.svg"));
 	}
 
 	{ // append another node to selection
 		Point viewer1InputHeaderPoint = env.viewer1InputRect.GetTopCenter () + Point (5.0, 5.0);
 		env.CtrlClick (viewer1InputHeaderPoint);
-		ASSERT (env.CheckReference ("01_Selection_IntegerAndViewer1Selected.svg"));
+		ASSERT (env.CheckReference ("01_Selection_DoubleAndViewer1Selected.svg"));
 	}
 
 	{ // remove the other node from selection
 		Point viewer1InputHeaderPoint = env.viewer1InputRect.GetTopCenter () + Point (5.0, 5.0);
 		env.CtrlClick (viewer1InputHeaderPoint);
-		ASSERT (env.CheckReference ("01_Selection_IntegerNodeSelected.svg"));
+		ASSERT (env.CheckReference ("01_Selection_DoubleNodeSelected.svg"));
 	}
 
 	{ // deselect all
@@ -148,18 +148,18 @@ TEST (SelectionTest)
 	}
 
 	{ // select node with selection rect
-		Point rectSelectStart = env.integerInputRect.GetTopLeft () - Point (10.0, 10.0);
-		Point rectSelectEnd = env.integerInputRect.GetBottomRight () + Point (10.0, 10.0);
+		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
+		Point rectSelectEnd = env.doubleInputRect.GetBottomRight () + Point (10.0, 10.0);
 		env.nodeEditor.OnMouseDown (KeySet ({ KeyCode::Control }), MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
 		env.nodeEditor.OnMouseMove (KeySet ({ KeyCode::Control }), (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
 		env.nodeEditor.OnMouseUp (KeySet ({ KeyCode::Control }), MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
-		ASSERT (env.CheckReference ("01_Selection_IntegerRangeAndViewer2Selected.svg"));
+		ASSERT (env.CheckReference ("01_Selection_DoubleRangeAndViewer2Selected.svg"));
 	}
 
 	{ // move the three nodes together
 		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, 70.0);
 		env.DragDrop (env.rangeInputHeaderPoint, targetPoint);
-		ASSERT (env.CheckReference ("01_Selection_IntegerRangeAndViewer2Moved.svg"));
+		ASSERT (env.CheckReference ("01_Selection_DoubleRangeAndViewer2Moved.svg"));
 	}
 }
 
@@ -167,7 +167,7 @@ TEST (SlotConnectionTest)
 {
 	SimpleNodeEditorTestEnv env;
 
-	Point integerOutputSlotPosition = env.integerInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
 	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
 	Rect viewer1InputSlotRect = env.viewerUINode1->GetInputSlotRect (env.uiEnvironment, SlotId ("in"));
 	Point viewer1InputSlotPosition = viewer1InputSlotRect.GetCenter ();
@@ -176,10 +176,10 @@ TEST (SlotConnectionTest)
 
 	ASSERT (env.CheckReference ("02_SlotConnection_Basic.svg"));
 
-	{ // start connecting integer output slot without target
-		Point targetPosition = integerOutputSlotPosition + Point (200.0, -100.0);
-		env.DragDrop (integerOutputSlotPosition, targetPosition, [&] () {
-			ASSERT (env.CheckReference ("02_SlotConnection_DraggingIntegerOutput.svg"));
+	{ // start connecting double output slot without target
+		Point targetPosition = doubleOutputSlotPosition + Point (200.0, -100.0);
+		env.DragDrop (doubleOutputSlotPosition, targetPosition, [&] () {
+			ASSERT (env.CheckReference ("02_SlotConnection_DraggingDoubleOutput.svg"));
 		});
 		ASSERT (env.CheckReference ("02_SlotConnection_Basic.svg"));
 	}
@@ -192,20 +192,20 @@ TEST (SlotConnectionTest)
 		ASSERT (env.CheckReference ("02_SlotConnection_Basic.svg"));
 	}
 
-	{ // connect integer output slot to viewer1 input slot
+	{ // connect double output slot to viewer1 input slot
 		Point targetPos = viewer1InputSlotRect.GetLeftCenter () - Point (5.0, 0.0);
-		env.DragDrop (integerOutputSlotPosition, targetPos, [&] () {
-			ASSERT (env.CheckReference ("02_SlotConnection_ConnectingIntegerToViewer1.svg"));
+		env.DragDrop (doubleOutputSlotPosition, targetPos, [&] () {
+			ASSERT (env.CheckReference ("02_SlotConnection_ConnectingDoubleToViewer1.svg"));
 		});
-		ASSERT (env.CheckReference ("02_SlotConnection_IntegerConnectedToViewer1.svg"));
+		ASSERT (env.CheckReference ("02_SlotConnection_DoubleConnectedToViewer1.svg"));
 	}
 
-	{ // start connecting integer output slot without target again
-		Point targetPosition = integerOutputSlotPosition + Point (200.0, -100.0);
-		env.DragDrop (integerOutputSlotPosition, targetPosition, [&] () {
+	{ // start connecting double output slot without target again
+		Point targetPosition = doubleOutputSlotPosition + Point (200.0, -100.0);
+		env.DragDrop (doubleOutputSlotPosition, targetPosition, [&] () {
 			ASSERT (env.CheckReference ("02_SlotConnection_DraggingConnectedViewer1Input.svg"));
 		});
-		ASSERT (env.CheckReference ("02_SlotConnection_IntegerConnectedToViewer1.svg"));
+		ASSERT (env.CheckReference ("02_SlotConnection_DoubleConnectedToViewer1.svg"));
 	}
 
 	{ // connect viewer2 input slot to range output slot
@@ -215,17 +215,17 @@ TEST (SlotConnectionTest)
 		ASSERT (env.CheckReference ("02_SlotConnection_AllViewersConnected.svg"));
 	}
 
-	{ // connect integer output slot to range start slot
-		env.DragDrop (integerOutputSlotPosition, rangeStartInputSlotPosition);
+	{ // connect double output slot to range start slot
+		env.DragDrop (doubleOutputSlotPosition, rangeStartInputSlotPosition);
 		ASSERT (env.CheckReference ("02_SlotConnection_AllConnected.svg"));
 	}
 
 	viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
-	{ // connect integer output slot to viewer2 input slot
-		env.DragDrop (integerOutputSlotPosition, viewer2InputSlotPosition, [&] () {
-			ASSERT (env.CheckReference ("02_SlotConnection_ConnectingIntegerToViewer2.svg"));
+	{ // connect double output slot to viewer2 input slot
+		env.DragDrop (doubleOutputSlotPosition, viewer2InputSlotPosition, [&] () {
+			ASSERT (env.CheckReference ("02_SlotConnection_ConnectingDoubleToViewer2.svg"));
 		});
-		ASSERT (env.CheckReference ("02_SlotConnection_IntegerToViewer2Connected.svg"));
+		ASSERT (env.CheckReference ("02_SlotConnection_DoubleToViewer2Connected.svg"));
 	}
 }
 
@@ -234,12 +234,12 @@ TEST (PanAndZoomTest)
 	SimpleNodeEditorTestEnv env;
 	ASSERT (env.CheckReference ("03_PanAndZoom_Basic.svg"));
 
-	Point integerOutputSlotPosition = env.integerInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
 	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.uiEnvironment, SlotId ("start")).GetCenter ();
 	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
 	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
 	{
-		env.DragDrop (integerOutputSlotPosition, rangeStartInputSlotPosition);	
+		env.DragDrop (doubleOutputSlotPosition, rangeStartInputSlotPosition);	
 		env.DragDrop (rangeOutputSlotPosition, viewer2InputSlotPosition);
 		ASSERT (env.CheckReference ("03_PanAndZoom_Connections.svg"));
 	}
@@ -289,11 +289,11 @@ TEST (CopyPasteTest)
 	SimpleNodeEditorTestEnvWithConnections env;
 	ASSERT (env.CheckReference ("05_CopyPaste_Basic.svg"));
 	env.Click (env.rangeInputHeaderPoint);
-	env.CtrlClick (env.integerInputHeaderPoint);
+	env.CtrlClick (env.doubleInputHeaderPoint);
 	ASSERT (env.CheckReference ("05_CopyPaste_TwoNodesSelected.svg"));
 	env.SetNextCommandName (L"Copy Nodes");
-	env.RightClick (env.integerInputHeaderPoint);
-	Point targetPoint = env.integerInputHeaderPoint + Point (120, 20);
+	env.RightClick (env.doubleInputHeaderPoint);
+	Point targetPoint = env.doubleInputHeaderPoint + Point (120, 20);
 	env.SetNextCommandName (L"Paste Nodes");
 	env.RightClick (targetPoint);
 	ASSERT (env.CheckReference ("05_CopyPaste_TwoNodesPasted.svg"));
