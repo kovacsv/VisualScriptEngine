@@ -252,7 +252,7 @@ void NodeEditorControl::OnPaint (wxPaintEvent& evt)
 void NodeEditorControl::OnResize (wxSizeEvent& evt)
 {
 	wxSize size = evt.GetSize ();
-	uiEnvironment.OnResize (size.GetWidth (), size.GetHeight ());
+	nodeEditor.OnResize (size.GetWidth (), size.GetHeight ());
 }
 
 void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
