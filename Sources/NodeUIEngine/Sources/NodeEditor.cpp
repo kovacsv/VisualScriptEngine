@@ -64,6 +64,7 @@ void NodeEditor::OnMouseDoubleClick (const KeySet& keys, MouseButton button, int
 void NodeEditor::OnResize (int newWidth, int newHeight)
 {
 	uiManager.ResizeContext (uiEnvironment, newWidth, newHeight);
+	uiManager.Update (uiEnvironment);
 }
 
 void NodeEditor::InvalidateAllNodesDrawing ()
