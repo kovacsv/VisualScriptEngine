@@ -1,5 +1,8 @@
 #include "WAS_DrawingCacheKeys.hpp"
 
+namespace WAS
+{
+
 PenCacheKey::PenCacheKey () :
 	thickness (0),
 	r (0),
@@ -76,4 +79,6 @@ bool FontCacheKey::operator== (const FontCacheKey& rhs) const
 bool FontCacheKey::operator!= (const FontCacheKey& rhs) const
 {
 	return !operator== (rhs);
+}
+
 }

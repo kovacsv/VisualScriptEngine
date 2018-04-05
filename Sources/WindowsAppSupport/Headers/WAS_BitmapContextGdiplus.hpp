@@ -7,6 +7,9 @@
 #include <gdiplus.h>
 #include <memory>
 
+namespace WAS
+{
+
 class BitmapContextGdiplus : public NUIE::NativeDrawingContext
 {
 public:
@@ -48,5 +51,7 @@ private:
 	std::unique_ptr<Gdiplus::Bitmap>	bitmap;
 	std::unique_ptr<Gdiplus::Graphics>	graphics;
 };
+
+}
 
 #endif

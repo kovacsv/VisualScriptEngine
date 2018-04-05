@@ -8,6 +8,9 @@
 #include "NUIE_Drawing.hpp"
 #include "WAS_DrawingCacheKeys.hpp"
 
+namespace WAS
+{
+
 template <typename KeyType>
 HANDLE CreateHandle (const KeyType& key);
 
@@ -88,5 +91,7 @@ private:
 	HandleCache<BrushCacheKey>	brushCache;
 	HandleCache<FontCacheKey>	fontCache;
 };
+
+}
 
 #endif

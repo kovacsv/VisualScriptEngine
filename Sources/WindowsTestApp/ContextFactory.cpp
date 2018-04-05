@@ -25,6 +25,6 @@ std::shared_ptr<NUIE::NativeDrawingContext> CreateNativeDrawingContext ()
 #if defined(USE_WX_CONTEXT)
 	return std::shared_ptr<NUIE::NativeDrawingContext> (new wxDrawingContext ());
 #else
-	return std::shared_ptr<NUIE::NativeDrawingContext> (new BitmapContextGdi ());
+	return std::shared_ptr<NUIE::NativeDrawingContext> (new WAS::BitmapContextGdi ());
 #endif
 }

@@ -1,6 +1,9 @@
 #include "WAS_Direct2DContext.hpp"
 #include "NE_Debug.hpp"
 
+namespace WAS
+{
+
 class Direct2DHandler
 {
 public:
@@ -259,4 +262,6 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 	textLayout->GetMetrics (&metrics);
 	SafeRelease (&textLayout);
 	return NUIE::Size (metrics.width, metrics.height);
+}
+
 }

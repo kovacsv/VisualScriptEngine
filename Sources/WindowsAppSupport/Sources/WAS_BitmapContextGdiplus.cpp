@@ -1,6 +1,9 @@
 #include "WAS_BitmapContextGdiplus.hpp"
 #include "NE_Debug.hpp"
 
+namespace WAS
+{
+
 class GdiplusInitializer
 {
 public:
@@ -215,4 +218,6 @@ void BitmapContextGdiplus::InitGraphics ()
 	bitmap.reset (new Gdiplus::Bitmap (width, height));
 	graphics.reset (new Gdiplus::Graphics (bitmap.get ()));
 	graphics->SetSmoothingMode (Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
+}
+
 }

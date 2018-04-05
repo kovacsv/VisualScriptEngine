@@ -9,6 +9,9 @@
 #include <dwrite.h>
 #include <unordered_map>
 
+namespace WAS
+{
+
 template<class Interface>
 inline void SafeRelease (Interface** interfaceToRelease)
 {
@@ -92,5 +95,7 @@ private:
 	ObjectCache<BrushCacheKey, ID2D1SolidColorBrush>	brushCache;
 	ObjectCache<FontCacheKey, IDWriteTextFormat>		textFormatCache;
 };
+
+}
 
 #endif

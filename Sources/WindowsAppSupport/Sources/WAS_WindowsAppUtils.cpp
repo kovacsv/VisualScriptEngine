@@ -2,6 +2,9 @@
 
 #include <unordered_map>
 
+namespace WAS
+{
+
 NUIE::KeySet GetKeysFromEvent (WPARAM wParam)
 {
 	std::unordered_set<NUIE::KeyCode> keys;
@@ -57,4 +60,6 @@ NUIE::CommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& pos
 	}
 
 	return commandTable[selectedItem];
+}
+
 }

@@ -1,6 +1,9 @@
 #include "WAS_BitmapContextGdi.hpp"
 #include "NE_Debug.hpp"
 
+namespace WAS
+{
+
 HANDLE CreateHandle (const PenCacheKey& key)
 {
 	return ::CreatePen (PS_SOLID, key.thickness, RGB (key.r, key.g, key.b));
@@ -251,4 +254,6 @@ RECT BitmapContextGdi::CreateRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 		gdiRect.bottom -= rightDiff;
 	}
 	return gdiRect;
+}
+
 }
