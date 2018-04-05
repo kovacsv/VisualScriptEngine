@@ -1,10 +1,10 @@
 #include "SimpleTest.hpp"
-#include "ValueCombination.hpp"
-#include "SingleValues.hpp"
-#include "NodeManager.hpp"
-#include "Node.hpp"
-#include "InputSlot.hpp"
-#include "OutputSlot.hpp"
+#include "NE_ValueCombination.hpp"
+#include "NE_SingleValues.hpp"
+#include "NE_NodeManager.hpp"
+#include "NE_Node.hpp"
+#include "NE_InputSlot.hpp"
+#include "NE_OutputSlot.hpp"
 #include "TestNodes.hpp"
 
 using namespace NE;

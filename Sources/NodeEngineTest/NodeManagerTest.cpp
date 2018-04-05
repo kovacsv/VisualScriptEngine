@@ -1,6 +1,6 @@
 #include "SimpleTest.hpp"
-#include "NodeManager.hpp"
-#include "Node.hpp"
+#include "NE_NodeManager.hpp"
+#include "NE_Node.hpp"
 #include "TestNodes.hpp"
 
 using namespace NE;

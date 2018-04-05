@@ -1,5 +1,5 @@
 #include "Direct2DContext.hpp"
-#include "Debug.hpp"
+#include "NE_Debug.hpp"
 
 class Direct2DHandler
 {

@@ -3,9 +3,9 @@
 
 #include <windows.h>
 
-#include "Geometry.hpp"
-#include "CommandStructure.hpp"
-#include "MouseEventHandler.hpp"
+#include "NUIE_Geometry.hpp"
+#include "NUIE_CommandStructure.hpp"
+#include "NUIE_MouseEventHandler.hpp"
 
 NUIE::KeySet		GetKeysFromEvent (WPARAM wParam);
 NUIE::CommandPtr	SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::CommandStructure& commands);

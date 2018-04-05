@@ -1,10 +1,10 @@
 #ifndef VISUALTESTFRAMEWORK_HPP
 #define VISUALTESTFRAMEWORK_HPP
 
-#include "EvaluationEnv.hpp"
-#include "EventHandlers.hpp"
-#include "NodeEditor.hpp"
-#include "SvgDrawingContext.hpp"
+#include "NE_EvaluationEnv.hpp"
+#include "NUIE_EventHandlers.hpp"
+#include "NUIE_NodeEditor.hpp"
+#include "NUIE_SvgDrawingContext.hpp"
 
 using namespace NE;
 using namespace NUIE;

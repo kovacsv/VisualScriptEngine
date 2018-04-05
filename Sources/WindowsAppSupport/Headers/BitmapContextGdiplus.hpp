@@ -1,7 +1,7 @@
 #ifndef BITMAPCONTEXTGDIPLUS_HPP
 #define BITMAPCONTEXTGDIPLUS_HPP
 
-#include "DrawingContext.hpp"
+#include "NUIE_DrawingContext.hpp"
 
 #include <windows.h>
 #include <gdiplus.h>

@@ -1,7 +1,7 @@
 #include "SimpleTest.hpp"
-#include "Serializable.hpp"
-#include "SingleValues.hpp"
-#include "MemoryStream.hpp"
+#include "NE_Serializable.hpp"
+#include "NE_SingleValues.hpp"
+#include "NE_MemoryStream.hpp"
 
 #include <memory>
 

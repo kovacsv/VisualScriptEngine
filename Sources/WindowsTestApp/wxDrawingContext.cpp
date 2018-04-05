@@ -1,5 +1,5 @@
 #include "wxDrawingContext.hpp"
-#include "Debug.hpp"
+#include "NE_Debug.hpp"
 
 #include <wx/wx.h>
 

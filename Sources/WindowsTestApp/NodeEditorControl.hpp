@@ -1,9 +1,9 @@
 #ifndef NODEEDITORCONTROL_HPP
 #define NODEEDITORCONTROL_HPP
 
-#include "BuiltInCommands.hpp"
+#include "NUIE_NodeEditor.hpp"
+#include "BI_BuiltInCommands.hpp"
 #include "ControlUtilities.hpp"
-#include "NodeEditor.hpp"
 #include "ResultImage.hpp"
 #include <wx/wx.h>
 #include <memory>

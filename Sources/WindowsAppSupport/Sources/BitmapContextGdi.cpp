@@ -1,5 +1,5 @@
 #include "BitmapContextGdi.hpp"
-#include "Debug.hpp"
+#include "NE_Debug.hpp"
 
 HANDLE CreateHandle (const PenCacheKey& key)
 {

@@ -1,9 +1,9 @@
 #include "NodeEditorControl.hpp"
 #include "ContextFactory.hpp"
 
-#include "InputUINodes.hpp"
-#include "ArithmeticUINodes.hpp"
-#include "ViewerUINodes.hpp"
+#include "BI_InputUINodes.hpp"
+#include "BI_ArithmeticUINodes.hpp"
+#include "BI_ViewerUINodes.hpp"
 #include "TestAppNodes.hpp"
 
 #include "ParameterDialog.hpp"

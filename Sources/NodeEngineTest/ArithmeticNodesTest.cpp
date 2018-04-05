@@ -1,8 +1,7 @@
 #include "SimpleTest.hpp"
-#include "NodeUIManager.hpp"
-
-#include "InputUINodes.hpp"
-#include "ArithmeticUINodes.hpp"
+#include "NUIE_NodeUIManager.hpp"
+#include "BI_ArithmeticUINodes.hpp"
+#include "BI_InputUINodes.hpp"
 
 using namespace NE;
 using namespace NUIE;

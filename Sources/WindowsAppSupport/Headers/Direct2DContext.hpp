@@ -1,7 +1,7 @@
 #ifndef DIRECT2DCONTEXT_HPP
 #define DIRECT2DCONTEXT_HPP
 
-#include "DrawingContext.hpp"
+#include "NUIE_DrawingContext.hpp"
 #include "DrawingCacheKeys.hpp"
 
 #include <windows.h>

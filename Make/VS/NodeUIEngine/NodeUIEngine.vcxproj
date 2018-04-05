@@ -118,72 +118,72 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\CopyPasteHandler.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeCollection.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\SvgDrawingContext.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeCommonParameters.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\Drawing.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\DrawingContext.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\DrawingImage.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\Geometry.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\MouseEventHandler.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeDrawingExtension.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeDrawingImage.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeEditor.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeUIManagerDrawer.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeCommands.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeUIPanelDrawer.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\EventHandlers.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\CommandStructure.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeUIEnvironment.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeUIInteractionHandler.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NodeUIManager.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\SkinParams.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UIEventHandlers.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UIInputSlot.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UIItemFinder.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINode.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeCommandStructure.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeParameterAccessor.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UINodeParameters.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\UIOutputSlot.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\ViewBox.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\ContextDecorators.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\CopyPasteHandler.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeCollection.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\SvgDrawingContext.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeParameterAccessor.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\Drawing.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\DrawingContext.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\DrawingImage.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\Geometry.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\MouseEventHandler.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeDrawingImage.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\CommandStructure.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeEditor.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeUIManagerDrawer.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeCommands.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeUIPanelDrawer.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeUIEnvironment.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeUIInteractionHandler.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NodeUIManager.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\SkinParams.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UIEventHandlers.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UIInputSlot.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UIItemFinder.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINode.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeCommandStructure.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UINodeParameters.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\UIOutputSlot.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\ViewBox.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\ContextDecorators.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NodeEngine\NodeEngine.vcxproj">
       <Project>{ac633fde-c8dd-4a56-8434-1eb1aa220358}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_CommandStructure.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_ContextDecorators.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_CopyPasteHandler.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_Drawing.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_DrawingContext.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_DrawingImage.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_EventHandlers.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_Geometry.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_MouseEventHandler.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeCollection.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingExtension.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingImage.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeEditor.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeUIEnvironment.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeUIInteractionHandler.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeUIManager.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeUIManagerDrawer.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeUIPanelDrawer.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_SkinParams.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_SvgDrawingContext.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UIEventHandlers.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UIInputSlot.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UIItemFinder.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINode.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommands.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommandStructure.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommonParameters.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeParameterAccessor.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeParameters.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UIOutputSlot.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_ViewBox.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_CommandStructure.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_ContextDecorators.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_CopyPasteHandler.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_Drawing.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_DrawingContext.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_DrawingImage.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_Geometry.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_MouseEventHandler.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeCollection.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeDrawingImage.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeEditor.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeUIEnvironment.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeUIInteractionHandler.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeUIManager.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeUIManagerDrawer.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeUIPanelDrawer.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_SkinParams.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_SvgDrawingContext.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UIEventHandlers.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UIInputSlot.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UIItemFinder.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINode.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommands.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommandStructure.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeParameterAccessor.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeParameters.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UIOutputSlot.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_ViewBox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

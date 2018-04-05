@@ -1,8 +1,8 @@
 #ifndef RESULTIMAGE_HPP
 #define RESULTIMAGE_HPP
 
-#include "EvaluationEnv.hpp"
-#include "DrawingImage.hpp"
+#include "NE_EvaluationEnv.hpp"
+#include "NUIE_DrawingImage.hpp"
 
 class ResultImage
 {

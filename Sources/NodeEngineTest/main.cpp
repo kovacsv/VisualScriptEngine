@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "SimpleTest.hpp"
-#include "Debug.hpp"
+#include "NE_Debug.hpp"
 
 int main (int, char* argv[])
 {

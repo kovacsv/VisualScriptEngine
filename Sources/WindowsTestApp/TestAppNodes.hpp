@@ -1,14 +1,11 @@
 #ifndef TESTAPPNODES_HPP
 #define TESTAPPNODES_HPP
 
-#include "Node.hpp"
-#include "UINode.hpp"
-#include "InputSlot.hpp"
-#include "OutputSlot.hpp"
-#include "SingleValues.hpp"
-#include "NodeUIManager.hpp"
-#include "UINodeCommands.hpp"
-#include "BuiltInFeatures.hpp"
+#include "NE_SingleValues.hpp"
+#include "NUIE_UINode.hpp"
+#include "NUIE_NodeUIManager.hpp"
+#include "NUIE_UINodeCommands.hpp"
+#include "BI_BuiltInFeatures.hpp"
 
 class ColorNode :	public NUIE::UINode,
 					public BI::ValueCombinationFeature

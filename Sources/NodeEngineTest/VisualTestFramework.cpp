@@ -1,5 +1,5 @@
 #include "VisualTestFramework.hpp"
-#include "MouseEventHandler.hpp"
+#include "NUIE_MouseEventHandler.hpp"
 #include "SimpleTest.hpp"
 
 #include <iostream>

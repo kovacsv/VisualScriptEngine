@@ -1,6 +1,6 @@
 #include "SimpleTest.hpp"
-#include "Value.hpp"
-#include "SingleValues.hpp"
+#include "NE_Value.hpp"
+#include "NE_SingleValues.hpp"
 
 using namespace NE;
 

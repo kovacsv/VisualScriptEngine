@@ -1,8 +1,8 @@
 #include "SimpleTest.hpp"
-#include "NodeManager.hpp"
-#include "Node.hpp"
-#include "MemoryStream.hpp"
-#include "SingleValues.hpp"
+#include "NE_NodeManager.hpp"
+#include "NE_Node.hpp"
+#include "NE_MemoryStream.hpp"
+#include "NE_SingleValues.hpp"
 
 #include <memory>
 

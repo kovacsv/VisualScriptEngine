@@ -19,22 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\ArithmeticUINodes.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BuiltInCommands.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BuiltInFeatures.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\InputUINodes.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\UINodeLayouts.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\UINodePanels.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\ViewerUINodes.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ArithmeticUINodes.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInCommands.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInFeatures.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInParameters.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_InputUINodes.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_UINodeLayouts.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_UINodePanels.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ViewerUINodes.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\ArithmeticUINodes.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BuiltInCommands.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BuiltInFeatures.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\InputUINodes.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\UINodeLayouts.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\UINodePanels.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\ViewerUINodes.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ArithmeticUINodes.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BuiltInCommands.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BuiltInFeatures.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_InputUINodes.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_UINodeLayouts.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_UINodePanels.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ViewerUINodes.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{30E0BDD6-57D1-4C26-8C50-61F0BE438685}</ProjectGuid>

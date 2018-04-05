@@ -1,7 +1,7 @@
 #ifndef CONTEXTFACTORY_HPP
 #define CONTEXTFACTORY_HPP
 
-#include "DrawingContext.hpp"
+#include "NUIE_DrawingContext.hpp"
 
 #include <memory>
 #include <wx/wx.h>

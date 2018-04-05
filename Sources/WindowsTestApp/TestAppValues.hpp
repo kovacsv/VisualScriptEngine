@@ -1,10 +1,10 @@
 #ifndef TESTAPPVALUES_HPP
 #define TESTAPPVALUES_HPP
 
-#include "SingleValues.hpp"
-#include "Geometry.hpp"
-#include "Drawing.hpp"
-#include "DrawingImage.hpp"
+#include "NE_SingleValues.hpp"
+#include "NUIE_Geometry.hpp"
+#include "NUIE_Drawing.hpp"
+#include "NUIE_DrawingImage.hpp"
 
 class Color
 {

@@ -1,9 +1,9 @@
 #include "TestAppValues.hpp"
 #include "ResultImage.hpp"
-#include "ValueCombination.hpp"
-#include "UINodeParameters.hpp"
-#include "UINodeCommonParameters.hpp"
-#include "StringUtils.hpp"
+#include "NE_StringUtils.hpp"
+#include "NE_ValueCombination.hpp"
+#include "NUIE_UINodeParameters.hpp"
+#include "NUIE_UINodeCommonParameters.hpp"
 
 NE::DynamicSerializationInfo	ColorValue::serializationInfo (NE::ObjectId ("{E6D2DBDC-6311-4BA5-9B1A-A0FFF8CA2444}"), NE::ObjectVersion (1), ColorValue::CreateSerializableInstance);
 NE::DynamicSerializationInfo	PointValue::serializationInfo (NE::ObjectId ("{2C242A9E-1054-4E16-82C1-759C006097C9}"), NE::ObjectVersion (1), PointValue::CreateSerializableInstance);

@@ -1,7 +1,7 @@
 #include "ParameterDialog.hpp"
-#include "UINodeParameters.hpp"
-#include "SingleValues.hpp"
-#include "Debug.hpp"
+#include "NUIE_UINodeParameters.hpp"
+#include "NE_SingleValues.hpp"
+#include "NE_Debug.hpp"
 
 #include <wx/spinctrl.h>
 

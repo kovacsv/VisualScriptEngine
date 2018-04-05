@@ -1,7 +1,7 @@
 #include "SimpleTest.hpp"
-#include "NodeEditor.hpp"
-#include "InputUINodes.hpp"
-#include "ViewerUINodes.hpp"
+#include "NUIE_NodeEditor.hpp"
+#include "BI_InputUINodes.hpp"
+#include "BI_ViewerUINodes.hpp"
 #include "VisualTestFramework.hpp"
 
 using namespace NE;

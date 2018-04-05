@@ -1,9 +1,9 @@
 #ifndef DRAWINGCONTROL_HPP
 #define DRAWINGCONTROL_HPP
 
-#include "DrawingContext.hpp"
+#include "NUIE_DrawingContext.hpp"
+#include "NUIE_ViewBox.hpp"
 #include "ResultImage.hpp"
-#include "ViewBox.hpp"
 #include "ControlUtilities.hpp"
 
 #include <wx/wx.h>

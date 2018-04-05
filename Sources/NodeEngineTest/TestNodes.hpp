@@ -1,7 +1,7 @@
 #ifndef TESTNODES_HPP
 #define TESTNODES_HPP
 
-#include "UINode.hpp"
+#include "NUIE_UINode.hpp"
 
 using namespace NE;
 using namespace NUIE;

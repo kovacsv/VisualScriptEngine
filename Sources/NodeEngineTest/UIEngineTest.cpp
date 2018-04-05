@@ -1,13 +1,13 @@
 #include "SimpleTest.hpp"
-#include "NodeManager.hpp"
-#include "Node.hpp"
-#include "InputSlot.hpp"
-#include "OutputSlot.hpp"
-#include "SingleValues.hpp"
+#include "NE_NodeManager.hpp"
+#include "NE_Node.hpp"
+#include "NE_InputSlot.hpp"
+#include "NE_OutputSlot.hpp"
+#include "NE_SingleValues.hpp"
 #include "TestNodes.hpp"
 
-#include "NodeUIManager.hpp"
-#include "DrawingContext.hpp"
+#include "NUIE_NodeUIManager.hpp"
+#include "NUIE_DrawingContext.hpp"
 
 using namespace NE;
 using namespace NUIE;

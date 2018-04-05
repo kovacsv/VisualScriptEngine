@@ -1,5 +1,5 @@
 #include "SimpleTest.hpp"
-#include "Checksum.hpp"
+#include "NE_Checksum.hpp"
 
 using namespace NE;
 

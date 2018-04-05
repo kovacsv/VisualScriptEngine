@@ -4,9 +4,9 @@
 #include <windows.h>
 #include <unordered_map>
 
-#include "DrawingContext.hpp"
+#include "NUIE_DrawingContext.hpp"
+#include "NUIE_Drawing.hpp"
 #include "DrawingCacheKeys.hpp"
-#include "Drawing.hpp"
 
 template <typename KeyType>
 HANDLE CreateHandle (const KeyType& key);

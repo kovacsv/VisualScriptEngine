@@ -1,7 +1,7 @@
 #ifndef PARAMETERDIALOG_HPP
 #define PARAMETERDIALOG_HPP
 
-#include "UINodeParameterAccessor.hpp"
+#include "NUIE_UINodeParameterAccessor.hpp"
 
 #include <wx/wx.h>
 #include <memory>

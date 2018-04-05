@@ -1,7 +1,7 @@
 #ifndef DRAWINGCACHEKEYS_HPP
 #define DRAWINGCACHEKEYS_HPP
 
-#include "Drawing.hpp"
+#include "NUIE_Drawing.hpp"
 
 class PenCacheKey
 {

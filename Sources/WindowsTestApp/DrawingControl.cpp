@@ -1,5 +1,5 @@
 #include "DrawingControl.hpp"
-#include "ContextDecorators.hpp"
+#include "NUIE_ContextDecorators.hpp"
 #include "wxDrawingContext.hpp"
 
 DrawingControl::DrawingControl (wxWindow *parent, const std::shared_ptr<ResultImage>& resultImage) :

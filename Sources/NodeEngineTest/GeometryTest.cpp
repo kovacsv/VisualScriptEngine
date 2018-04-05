@@ -1,5 +1,5 @@
 #include "SimpleTest.hpp"
-#include "Geometry.hpp"
+#include "NUIE_Geometry.hpp"
 
 using namespace NUIE;
 

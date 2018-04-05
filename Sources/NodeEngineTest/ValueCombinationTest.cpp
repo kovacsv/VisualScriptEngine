@@ -1,7 +1,7 @@
 #include "SimpleTest.hpp"
-#include "NodeEngineUtilities.hpp"
-#include "ValueCombination.hpp"
-#include "SingleValues.hpp"
+#include "NE_NodeEngineUtilities.hpp"
+#include "NE_ValueCombination.hpp"
+#include "NE_SingleValues.hpp"
 
 using namespace NE;
 

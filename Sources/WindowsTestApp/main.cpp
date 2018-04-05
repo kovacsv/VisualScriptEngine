@@ -1,8 +1,8 @@
 #include "DrawingControl.hpp"
+#include "NE_SingleValues.hpp"
+#include "NE_Debug.hpp"
 #include "NodeEditorControl.hpp"
-#include "Debug.hpp"
 #include "ParameterDialog.hpp"
-#include "SingleValues.hpp"
 
 #include <CommCtrl.h>
 #include <iostream>

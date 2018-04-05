@@ -1,7 +1,7 @@
 #ifndef WXDRAWINGCONTEXT_HPP
 #define WXDRAWINGCONTEXT_HPP
 
-#include "DrawingContext.hpp"
+#include "NUIE_DrawingContext.hpp"
 
 #include <wx/dcmemory.h>
 #include <wx/graphics.h>

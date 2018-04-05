@@ -1,9 +1,9 @@
-#include "NodeEditor.hpp"
+#include "NUIE_NodeEditor.hpp"
 #include "BitmapContextGdi.hpp"
 #include "WindowsAppUtils.hpp"
 
-#include "InputUINodes.hpp"
-#include "ViewerUINodes.hpp"
+#include "BI_InputUINodes.hpp"
+#include "BI_ViewerUINodes.hpp"
 
 #include <windows.h>
 #include <windowsx.h>

@@ -1,10 +1,10 @@
 #include "TestAppNodes.hpp"
-#include "ResultImage.hpp"
-#include "ValueCombination.hpp"
-#include "UINodeParameters.hpp"
-#include "UINodeCommonParameters.hpp"
-#include "UINodeLayouts.hpp"
+#include "NE_ValueCombination.hpp"
+#include "NUIE_UINodeParameters.hpp"
+#include "NUIE_UINodeCommonParameters.hpp"
+#include "BI_UINodeLayouts.hpp"
 #include "TestAppValues.hpp"
+#include "ResultImage.hpp"
 
 NE::DynamicSerializationInfo	ColorNode::serializationInfo (NE::ObjectId ("{CBB0BCBD-488B-4A35-A796-9A7FED2E9420}"), NE::ObjectVersion (1), ColorNode::CreateSerializableInstance);
 
