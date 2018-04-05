@@ -37,6 +37,14 @@
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_UINodePanels.cpp" />
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ViewerUINodes.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NodeEngine\NodeEngine.vcxproj">
+      <Project>{ac633fde-c8dd-4a56-8434-1eb1aa220358}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NodeUIEngine\NodeUIEngine.vcxproj">
+      <Project>{62847b7a-aaf0-4eb7-b975-829609141c57}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{30E0BDD6-57D1-4C26-8C50-61F0BE438685}</ProjectGuid>
     <RootNamespace>BuiltInNodes</RootNamespace>
