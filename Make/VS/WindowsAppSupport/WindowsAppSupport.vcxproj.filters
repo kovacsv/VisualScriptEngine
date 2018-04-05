@@ -22,6 +22,9 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_WindowsAppUtils.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_NodeEditorHwndControl.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdi.cpp">
@@ -37,6 +40,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_WindowsAppUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_NodeEditorHwndControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

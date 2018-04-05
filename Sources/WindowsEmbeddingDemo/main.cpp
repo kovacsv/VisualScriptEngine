@@ -1,6 +1,7 @@
 #include "NUIE_NodeEditor.hpp"
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
+#include "WAS_NodeEditorHwndControl.hpp"
 
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
@@ -16,6 +17,11 @@ public:
 		hwnd (NULL)
 	{
 	
+	}
+
+	void Init (HWND newHwnd)
+	{
+		hwnd = newHwnd;
 	}
 
 	virtual NUIE::CommandPtr OnContextMenu (
@@ -63,11 +69,6 @@ public:
 		return false;
 	}
 
-	void SetWindowHandle (HWND newHwnd)
-	{
-		hwnd = newHwnd;
-	}
-
 private:
 	HWND hwnd;
 };
@@ -77,18 +78,28 @@ class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 public:
 	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
-		bitmapContext (),
 		skinParams (),
 		eventHandlers (),
 		evaluationEnv (nullptr),
-		hwnd (NULL)
+		nodeEditorControl ()
 	{
 	
 	}
 
+	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height)
+	{
+		nodeEditorControl.Init (nodeEditorPtr, parentHandle, x, y, width, height);
+		eventHandlers.Init (nodeEditorControl.GetWindowHandle ());
+	}
+
+	void OnResize (int x, int y, int width, int height)
+	{
+		nodeEditorControl.Resize (x, y, width, height);
+	}
+
 	virtual NUIE::DrawingContext& GetDrawingContext () override
 	{
-		return bitmapContext;
+		return nodeEditorControl.GetDrawingContext ();
 	}
 
 	virtual NUIE::SkinParams& GetSkinParams () override
@@ -108,7 +119,7 @@ public:
 
 	virtual void OnRedrawRequested () override
 	{
-		InvalidateRect (hwnd, NULL, FALSE);
+		nodeEditorControl.Invalidate ();
 	}
 
 	virtual NUIE::EventHandlers& GetEventHandlers () override
@@ -116,54 +127,11 @@ public:
 		return eventHandlers;
 	}
 
-	void SetWindowHandle (HWND newHwnd)
-	{
-		hwnd = newHwnd;
-		eventHandlers.SetWindowHandle (hwnd);
-		bitmapContext.Init (hwnd);
-	}
-
-	void DrawContextToWindow ()
-	{
-		bitmapContext.BlitToWindow (hwnd);
-	}
-
 private:
-	WAS::BitmapContextGdi		bitmapContext;
-	NUIE::DefaultSkinParams		skinParams;
-	MyEventHandlers				eventHandlers;
-	NE::EvaluationEnv			evaluationEnv;
-	HWND						hwnd;
-};
-
-class SetCaptureHandler
-{
-public:
-	SetCaptureHandler () :
-		counter (0)
-	{
-	
-	}
-
-	void HandleMouseDown (HWND hwnd)
-	{
-		if (counter == 0) {
-			SetCapture (hwnd);
-		}
-		counter += 1;
-	}
-
-	void HandleMouseUp ()
-	{
-		counter -= 1;
-		if (counter <= 0) { // sometimes down and up are not in pair
-			ReleaseCapture ();
-			counter = 0;
-		}
-	}
-
-private:
-	int counter;
+	NUIE::DefaultSkinParams			skinParams;
+	MyEventHandlers					eventHandlers;
+	NE::EvaluationEnv				evaluationEnv;
+	WAS::NodeEditorHwndControl		nodeEditorControl;
 };
 
 static MyNodeUIEnvironment uiEnvironment;
@@ -171,17 +139,15 @@ static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	static SetCaptureHandler setCaptureHandler;
-
-	if (msg == WM_CREATE) {
-		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
-		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
-	}
-
 	switch (msg) {
 		case WM_CREATE:
 			{
-				uiEnvironment.SetWindowHandle (hwnd);
+				RECT clientRect;
+				GetClientRect (hwnd, &clientRect);
+				int width = clientRect.right - clientRect.left;
+				int height = clientRect.bottom - clientRect.top;
+				uiEnvironment.Init (&nodeEditor, hwnd, 0, 0, width, height);
+
 				NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 				uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10)), uiEnvironment.GetEvaluationEnv ());
 				uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10)), uiEnvironment.GetEvaluationEnv ());
@@ -189,110 +155,18 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				nodeEditor.Update ();
 			}
 			break;
-		case WM_PAINT:
-			nodeEditor.Draw ();
-			uiEnvironment.DrawContextToWindow ();
-			break;
 		case WM_CLOSE:
 			DestroyWindow (hwnd);
-			break;
-		case WM_DESTROY:
-			PostQuitMessage (0);
-		case WM_LBUTTONDOWN:
-			{
-				setCaptureHandler.HandleMouseDown (hwnd);
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseDown (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
-			}
-			break;
-		case WM_MBUTTONDOWN:
-			{
-				setCaptureHandler.HandleMouseDown (hwnd);
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseDown (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
-			}
-			break;
-		case WM_RBUTTONDOWN:
-			{
-				setCaptureHandler.HandleMouseDown (hwnd);
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseDown (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
-			}
-			break;
-		case WM_LBUTTONUP:
-			{
-				setCaptureHandler.HandleMouseUp ();
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseUp (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
-			}
-			break;
-		case WM_MBUTTONUP:
-			{
-				setCaptureHandler.HandleMouseUp ();
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseUp (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
-			}
-			break;
-		case WM_RBUTTONUP:
-			{
-				setCaptureHandler.HandleMouseUp ();
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseUp (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
-			}
-			break;
-		case WM_MOUSEMOVE:
-			{
-				SetFocus (hwnd); // before Windows 10 only the focused window catches the mouse wheel message
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseMove (WAS::GetKeysFromEvent (wParam), x, y);
-			}
-			break;
-		case WM_MOUSEWHEEL:
-			{
-				POINT mousePos;
-				mousePos.x = GET_X_LPARAM (lParam);
-				mousePos.y = GET_Y_LPARAM (lParam);
-				ScreenToClient (hwnd, &mousePos);
-				int delta = GET_WHEEL_DELTA_WPARAM (wParam);
-				NUIE::MouseWheelRotation rotation = delta > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
-				nodeEditor.OnMouseWheel (WAS::GetKeysFromEvent (wParam), rotation, mousePos.x, mousePos.y);
-			}
-			break;
-		case WM_LBUTTONDBLCLK:
-			{
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseDoubleClick (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
-			}
-			break;
-		case WM_MBUTTONDBLCLK:
-			{
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseDoubleClick (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
-			}
-			break;
-		case WM_RBUTTONDBLCLK:
-			{
-				int x = GET_X_LPARAM (lParam);
-				int y = GET_Y_LPARAM (lParam);
-				nodeEditor.OnMouseDoubleClick (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
-			}
 			break;
 		case WM_SIZE:
 			{
 				int newWidth = LOWORD (lParam);
 				int newHeight = HIWORD (lParam);
-				nodeEditor.OnResize (newWidth, newHeight);
+				uiEnvironment.OnResize (0, 0, newWidth, newHeight);
 			}
 			break;
+		case WM_DESTROY:
+			PostQuitMessage (0);
 	}
 
 	return DefWindowProc (hwnd, msg, wParam, lParam);
