@@ -1,4 +1,4 @@
-#include "DrawingCacheKeys.hpp"
+#include "WAS_DrawingCacheKeys.hpp"
 
 PenCacheKey::PenCacheKey () :
 	thickness (0),

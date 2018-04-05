@@ -2,7 +2,7 @@
 #include "wxDrawingContext.hpp"
 
 #if defined(_WIN32)
-#include "BitmapContextGdi.hpp"
+#include "WAS_BitmapContextGdi.hpp"
 #endif
 
 //#define FORCE_USE_WX_CONTEXT

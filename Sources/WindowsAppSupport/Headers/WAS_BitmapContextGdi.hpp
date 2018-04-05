@@ -1,64 +1,54 @@
-#ifndef DIRECT2DCONTEXT_HPP
-#define DIRECT2DCONTEXT_HPP
-
-#include "NUIE_DrawingContext.hpp"
-#include "DrawingCacheKeys.hpp"
+#ifndef BITMAPCONTEXTGDI_HPP
+#define BITMAPCONTEXTGDI_HPP
 
 #include <windows.h>
-#include <d2d1.h>
-#include <dwrite.h>
 #include <unordered_map>
 
-template<class Interface>
-inline void SafeRelease (Interface** interfaceToRelease)
-{
-	if (*interfaceToRelease != NULL) {
-		(*interfaceToRelease)->Release ();
-		(*interfaceToRelease) = NULL;
-	}
-}
+#include "NUIE_DrawingContext.hpp"
+#include "NUIE_Drawing.hpp"
+#include "WAS_DrawingCacheKeys.hpp"
 
-template <typename KeyType, typename ValueType>
-ValueType* CreateValue (ID2D1RenderTarget* renderTarget, const KeyType& key);
+template <typename KeyType>
+HANDLE CreateHandle (const KeyType& key);
 
-template <typename KeyType, typename ValueType>
-class ObjectCache
+template <typename KeyType>
+class HandleCache
 {
 public:
-	ObjectCache ()
+	HandleCache ()
 	{
 	
 	}
 
-	~ObjectCache ()
+	~HandleCache ()
 	{
 		for (auto it : cache) {
-			SafeRelease (&it.second);
+			DeleteObject (it.second);
 		}	
 	}
 
-	ValueType* Get (ID2D1RenderTarget* renderTarget, const KeyType& key)
+	HANDLE Get (const KeyType& key)
 	{
 		KeyType cacheKey (key);
 		auto found = cache.find (cacheKey);
 		if (found != cache.end ()) {
 			return found->second;
 		}
-		ValueType* value = CreateValue<KeyType, ValueType> (renderTarget, key);
-		cache.insert ({ cacheKey, value });
-		return value;
+		HANDLE keyHandle = CreateHandle (cacheKey);
+		cache.insert ({ cacheKey, keyHandle });
+		return keyHandle;
 	}
 
 private:
-	std::unordered_map<KeyType, ValueType*> cache;
+	std::unordered_map<KeyType, HANDLE> cache;
 };
 
-class Direct2DContext : public NUIE::NativeDrawingContext
+class BitmapContextGdi : public NUIE::NativeDrawingContext
 {
 public:
-	Direct2DContext ();
-	Direct2DContext (const Direct2DContext& rhs) = delete;
-	virtual ~Direct2DContext ();
+	BitmapContextGdi ();
+	BitmapContextGdi (const BitmapContextGdi& rhs) = delete;
+	virtual ~BitmapContextGdi ();
 
 	virtual void				Init (void* nativeHandle) override;
 	virtual void				BlitToWindow (void* nativeHandle) override;
@@ -85,12 +75,18 @@ public:
 	virtual NUIE::Size			MeasureText (const NUIE::Font& font, const std::wstring& text) override;
 
 private:
+	POINT						CreatePoint (const NUIE::Point& point) const;
+	RECT						CreateRect (const NUIE::Rect& rect) const;
+	RECT						CreateRect (const NUIE::Rect& rect, const NUIE::Pen& pen) const;
+
 	int							width;
 	int							height;
-	ID2D1HwndRenderTarget*		renderTarget;
+	HDC							memoryDC;
+	HBITMAP						memoryBitmap;
 
-	ObjectCache<BrushCacheKey, ID2D1SolidColorBrush>	brushCache;
-	ObjectCache<FontCacheKey, IDWriteTextFormat>		textFormatCache;
+	HandleCache<PenCacheKey>	penCache;
+	HandleCache<BrushCacheKey>	brushCache;
+	HandleCache<FontCacheKey>	fontCache;
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include "Direct2DContext.hpp"
+#include "WAS_Direct2DContext.hpp"
 #include "NE_Debug.hpp"
 
 class Direct2DHandler

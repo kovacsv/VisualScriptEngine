@@ -7,36 +7,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\BitmapContextGdi.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_BitmapContextGdi.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\BitmapContextGdiplus.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_BitmapContextGdiplus.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\Direct2DContext.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_Direct2DContext.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\DrawingCacheKeys.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_DrawingCacheKeys.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WindowsAppUtils.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_WindowsAppUtils.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdi.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\BitmapContextGdiplus.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdiplus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\Direct2DContext.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_Direct2DContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\DrawingCacheKeys.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_DrawingCacheKeys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WindowsAppUtils.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_WindowsAppUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

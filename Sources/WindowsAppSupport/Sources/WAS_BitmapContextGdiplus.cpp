@@ -1,4 +1,4 @@
-#include "BitmapContextGdiplus.hpp"
+#include "WAS_BitmapContextGdiplus.hpp"
 #include "NE_Debug.hpp"
 
 class GdiplusInitializer

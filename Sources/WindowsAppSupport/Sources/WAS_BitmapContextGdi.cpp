@@ -1,4 +1,4 @@
-#include "BitmapContextGdi.hpp"
+#include "WAS_BitmapContextGdi.hpp"
 #include "NE_Debug.hpp"
 
 HANDLE CreateHandle (const PenCacheKey& key)

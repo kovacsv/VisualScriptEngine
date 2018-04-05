@@ -1,6 +1,6 @@
 #include "NUIE_NodeEditor.hpp"
-#include "BitmapContextGdi.hpp"
-#include "WindowsAppUtils.hpp"
+#include "WAS_BitmapContextGdi.hpp"
+#include "WAS_WindowsAppUtils.hpp"
 
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
