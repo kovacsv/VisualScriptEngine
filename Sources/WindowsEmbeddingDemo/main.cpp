@@ -163,6 +163,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				int newWidth = LOWORD (lParam);
 				int newHeight = HIWORD (lParam);
 				uiEnvironment.OnResize (0, 0, newWidth, newHeight);
+				nodeEditor.OnResize (newWidth, newHeight);
 			}
 			break;
 		case WM_DESTROY:
