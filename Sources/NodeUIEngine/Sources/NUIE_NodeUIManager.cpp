@@ -135,6 +135,20 @@ bool NodeUIManager::DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPt
 	return nodeManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
 }
 
+bool NodeUIManager::DisconnectAllInputSlotsFromOutputSlot (const UIOutputSlotConstPtr& outputSlot)
+{
+	status.RequestRecalculate ();
+	InvalidateNodeDrawing (outputSlot->GetOwnerNodeId ());
+	return nodeManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
+}
+
+bool NodeUIManager::DisconnectAllOutputSlotsFromInputSlot (const UIInputSlotConstPtr& inputSlot)
+{
+	status.RequestRecalculate ();
+	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
+	return nodeManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
+}
+
 bool NodeUIManager::HasConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot) const
 {
 	return nodeManager.HasConnectedInputSlots (outputSlot);

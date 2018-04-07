@@ -35,6 +35,8 @@ public:
 	bool					CanConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
 	bool					ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
 	bool					DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
+	bool					DisconnectAllInputSlotsFromOutputSlot (const UIOutputSlotConstPtr& outputSlot);
+	bool					DisconnectAllOutputSlotsFromInputSlot (const UIInputSlotConstPtr& inputSlot);
 
 	bool					HasConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot) const;
 	bool					HasConnectedOutputSlots (const UIInputSlotConstPtr& inputSlot) const;

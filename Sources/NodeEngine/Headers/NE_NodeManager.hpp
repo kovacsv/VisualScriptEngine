@@ -57,6 +57,8 @@ public:
 	
 	bool				ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
 	bool				DisconnectOutputSlotFromInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
+	bool				DisconnectAllInputSlotsFromOutputSlot (const OutputSlotConstPtr& outputSlot);
+	bool				DisconnectAllOutputSlotsFromInputSlot (const InputSlotConstPtr& inputSlot);
 
 	void				EnumerateConnections (const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const;
 	void				EnumerateConnections (const std::function<void (const NodeConstPtr&, const OutputSlotConstPtr&, const NodeConstPtr&, const InputSlotConstPtr&)>& processor) const;

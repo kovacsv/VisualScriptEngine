@@ -308,6 +308,18 @@ bool NodeManager::DisconnectOutputSlotFromInputSlot (const OutputSlotConstPtr& o
 	return connectionManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
 }
 
+bool NodeManager::DisconnectAllInputSlotsFromOutputSlot (const OutputSlotConstPtr& outputSlot)
+{
+	InvalidateNodeValue (GetNode (outputSlot->GetOwnerNodeId ()));
+	return connectionManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
+}
+
+bool NodeManager::DisconnectAllOutputSlotsFromInputSlot (const InputSlotConstPtr& inputSlot)
+{
+	InvalidateNodeValue (GetNode (inputSlot->GetOwnerNodeId ()));
+	return connectionManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
+}
+
 void NodeManager::EnumerateConnections (const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
 {
 	connectionManager.EnumerateConnections (processor);
