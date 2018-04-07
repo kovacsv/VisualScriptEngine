@@ -2,6 +2,7 @@
 #define NODEEDITORHWNDCONTROL_HPP
 
 #include <windows.h>
+
 #include "NUIE_NodeEditor.hpp"
 #include "WAS_BitmapContextGdi.hpp"
 

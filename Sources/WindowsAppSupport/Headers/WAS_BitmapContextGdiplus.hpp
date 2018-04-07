@@ -1,11 +1,11 @@
 #ifndef BITMAPCONTEXTGDIPLUS_HPP
 #define BITMAPCONTEXTGDIPLUS_HPP
 
-#include "NUIE_DrawingContext.hpp"
-
 #include <windows.h>
 #include <gdiplus.h>
 #include <memory>
+
+#include "NUIE_DrawingContext.hpp"
 
 namespace WAS
 {
