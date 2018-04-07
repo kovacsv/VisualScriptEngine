@@ -1,8 +1,7 @@
 #ifndef WINDOWSAPPUTILS_HPP
 #define WINDOWSAPPUTILS_HPP
 
-#include <windows.h>
-
+#include "WAS_IncludeWindowsHeaders.hpp"
 #include "NUIE_Geometry.hpp"
 #include "NUIE_CommandStructure.hpp"
 #include "NUIE_MouseEventHandler.hpp"

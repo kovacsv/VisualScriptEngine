@@ -1,9 +1,8 @@
 #ifndef NODEEDITORHWNDCONTROL_HPP
 #define NODEEDITORHWNDCONTROL_HPP
 
-#include <windows.h>
-
 #include "NUIE_NodeEditor.hpp"
+#include "WAS_IncludeWindowsHeaders.hpp"
 #include "WAS_BitmapContextGdi.hpp"
 
 namespace WAS

@@ -1,11 +1,11 @@
 #ifndef BITMAPCONTEXTGDI_HPP
 #define BITMAPCONTEXTGDI_HPP
 
-#include <windows.h>
 #include <unordered_map>
 
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_Drawing.hpp"
+#include "WAS_IncludeWindowsHeaders.hpp"
 #include "WAS_DrawingCacheKeys.hpp"
 
 namespace WAS

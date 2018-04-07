@@ -1,13 +1,14 @@
 #ifndef DIRECT2DCONTEXT_HPP
 #define DIRECT2DCONTEXT_HPP
 
-#include <windows.h>
 #include <d2d1.h>
 #include <dwrite.h>
-#include <unordered_map>
 
 #include "NUIE_DrawingContext.hpp"
+#include "WAS_IncludeWindowsHeaders.hpp"
 #include "WAS_DrawingCacheKeys.hpp"
+
+#include <unordered_map>
 
 namespace WAS
 {

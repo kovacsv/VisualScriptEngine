@@ -129,6 +129,7 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_BitmapContextGdiplus.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_Direct2DContext.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_DrawingCacheKeys.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_IncludeWindowsHeaders.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_NodeEditorHwndControl.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_WindowsAppUtils.hpp" />
   </ItemGroup>

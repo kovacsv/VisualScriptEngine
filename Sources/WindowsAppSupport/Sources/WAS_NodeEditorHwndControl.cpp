@@ -2,8 +2,6 @@
 #include "WAS_WindowsAppUtils.hpp"
 #include "NE_Debug.hpp"
 
-#include <windowsx.h>
-
 namespace WAS
 {
 
