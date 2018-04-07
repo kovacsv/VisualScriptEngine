@@ -17,11 +17,11 @@ public:
 	NodeEditor (NodeUIEnvironment& uiEnvironment);
 	virtual ~NodeEditor ();
 
-	void						OnMouseDown (const KeySet& pressedKeys, MouseButton button, int x, int y);
-	void						OnMouseUp (const KeySet& pressedKeys, MouseButton button, int x, int y);
-	void						OnMouseMove (const KeySet& pressedKeys, int x, int y);
-	void						OnMouseWheel (const KeySet& pressedKeys, MouseWheelRotation rotation, int x, int y);
-	void						OnMouseDoubleClick (const KeySet& pressedKeys, MouseButton button, int x, int y);
+	void						OnMouseDown (const ModifierKeys& pressedKeys, MouseButton button, int x, int y);
+	void						OnMouseUp (const ModifierKeys& pressedKeys, MouseButton button, int x, int y);
+	void						OnMouseMove (const ModifierKeys& pressedKeys, int x, int y);
+	void						OnMouseWheel (const ModifierKeys& pressedKeys, MouseWheelRotation rotation, int x, int y);
+	void						OnMouseDoubleClick (const ModifierKeys& pressedKeys, MouseButton button, int x, int y);
 	void						OnResize (int newWidth, int newHeight);
 	
 	void						InvalidateAllNodesDrawing ();

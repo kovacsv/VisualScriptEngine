@@ -150,9 +150,9 @@ TEST (SelectionTest)
 	{ // select node with selection rect
 		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd = env.doubleInputRect.GetBottomRight () + Point (10.0, 10.0);
-		env.nodeEditor.OnMouseDown (KeySet ({ KeyCode::Control }), MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
-		env.nodeEditor.OnMouseMove (KeySet ({ KeyCode::Control }), (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
-		env.nodeEditor.OnMouseUp (KeySet ({ KeyCode::Control }), MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
+		env.nodeEditor.OnMouseDown (ModifierKeys ({ KeyCode::Control }), MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
+		env.nodeEditor.OnMouseMove (ModifierKeys ({ KeyCode::Control }), (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
+		env.nodeEditor.OnMouseUp (ModifierKeys ({ KeyCode::Control }), MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
 		ASSERT (env.CheckReference ("01_Selection_DoubleRangeAndViewer2Selected.svg"));
 	}
 
@@ -248,29 +248,29 @@ TEST (PanAndZoomTest)
 	Point panEndPoint = panStartPoint + Point (50.0, -50.0);
 
 	{
-		env.nodeEditor.OnMouseDown (EmptyKeySet, MouseButton::Middle, (int) panStartPoint.GetX (), (int) panStartPoint.GetY ());
-		env.nodeEditor.OnMouseMove (EmptyKeySet, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
-		env.nodeEditor.OnMouseUp (EmptyKeySet, MouseButton::Middle, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
+		env.nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Middle, (int) panStartPoint.GetX (), (int) panStartPoint.GetY ());
+		env.nodeEditor.OnMouseMove (EmptyModifierKeys, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
+		env.nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Middle, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 		ASSERT (env.CheckReference ("03_PanAndZoom_Panned.svg"));
 	}
 
 	for (size_t i = 0; i < 5; i++) {
-		env.nodeEditor.OnMouseWheel (EmptyKeySet, MouseWheelRotation::Forward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
+		env.nodeEditor.OnMouseWheel (EmptyModifierKeys, MouseWheelRotation::Forward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
 	ASSERT (env.CheckReference ("03_PanAndZoom_ZoomedIn.svg"));
 
 	for (size_t i = 0; i < 10; i++) {
-		env.nodeEditor.OnMouseWheel (EmptyKeySet, MouseWheelRotation::Forward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
+		env.nodeEditor.OnMouseWheel (EmptyModifierKeys, MouseWheelRotation::Forward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
 	ASSERT (env.CheckReference ("03_PanAndZoom_ZoomedIn2.svg"));
 
 	for (size_t i = 0; i < 20; i++) {
-		env.nodeEditor.OnMouseWheel (EmptyKeySet, MouseWheelRotation::Backward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
+		env.nodeEditor.OnMouseWheel (EmptyModifierKeys, MouseWheelRotation::Backward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
 	ASSERT (env.CheckReference ("03_PanAndZoom_ZoomedOut.svg"));
 
 	for (size_t i = 0; i < 10; i++) {
-		env.nodeEditor.OnMouseWheel (EmptyKeySet, MouseWheelRotation::Backward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
+		env.nodeEditor.OnMouseWheel (EmptyModifierKeys, MouseWheelRotation::Backward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
 	ASSERT (env.CheckReference ("03_PanAndZoom_ZoomedOut2.svg"));
 }

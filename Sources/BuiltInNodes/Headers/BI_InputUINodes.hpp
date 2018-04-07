@@ -17,7 +17,7 @@ public:
 	virtual ~NumericUpDownNode ();
 
 	virtual void						RegisterSlots () override;
-	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::KeySet& pressedKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position) override;
+	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& pressedKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position) override;
 
 	virtual NE::Stream::Status			Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status			Write (NE::OutputStream& outputStream) const override;

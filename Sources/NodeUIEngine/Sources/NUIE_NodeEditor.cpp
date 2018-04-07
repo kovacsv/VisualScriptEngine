@@ -31,31 +31,31 @@ NodeEditor::~NodeEditor ()
 
 }
 
-void NodeEditor::OnMouseDown (const KeySet& keys, MouseButton button, int x, int y)
+void NodeEditor::OnMouseDown (const ModifierKeys& keys, MouseButton button, int x, int y)
 {
 	mouseEventTranslator.OnMouseDown (uiEnvironment, keys, button, Point (x, y));
 	uiManager.Update (uiEnvironment);
 }
 
-void NodeEditor::OnMouseUp (const KeySet& keys, MouseButton button, int x, int y)
+void NodeEditor::OnMouseUp (const ModifierKeys& keys, MouseButton button, int x, int y)
 {
 	mouseEventTranslator.OnMouseUp (uiEnvironment, keys, button, Point (x, y));
 	uiManager.Update (uiEnvironment);
 }
 
-void NodeEditor::OnMouseMove (const KeySet& keys, int x, int y)
+void NodeEditor::OnMouseMove (const ModifierKeys& keys, int x, int y)
 {
 	mouseEventTranslator.OnMouseMove (uiEnvironment, keys, Point (x, y));
 	uiManager.Update (uiEnvironment);
 }
 
-void NodeEditor::OnMouseWheel (const KeySet& keys, MouseWheelRotation rotation, int x, int y)
+void NodeEditor::OnMouseWheel (const ModifierKeys& keys, MouseWheelRotation rotation, int x, int y)
 {
 	mouseEventTranslator.OnMouseWheel (uiEnvironment, keys, rotation, Point (x, y));
 	uiManager.Update (uiEnvironment);
 }
 
-void NodeEditor::OnMouseDoubleClick (const KeySet& keys, MouseButton button, int x, int y)
+void NodeEditor::OnMouseDoubleClick (const ModifierKeys& keys, MouseButton button, int x, int y)
 {
 	mouseEventTranslator.OnMouseDoubleClick (uiEnvironment, keys, button, Point (x, y));
 	uiManager.Update (uiEnvironment);

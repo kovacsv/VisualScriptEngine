@@ -24,7 +24,7 @@ public:
 		return false;
 	}
 
-	virtual void HandleMouseMove (NodeUIEnvironment&, const KeySet&, const Point& position) override
+	virtual void HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
 	{
 		Point diff = (position - prevPosition);
 		ViewBox viewBox = uiManager.GetViewBox ();
@@ -51,14 +51,14 @@ public:
 		return false;
 	}
 
-	virtual void HandleMouseMove (NodeUIEnvironment& env, const KeySet&, const Point& position) override
+	virtual void HandleMouseMove (NodeUIEnvironment& env, const ModifierKeys&, const Point& position) override
 	{
 		Point clientPosition = FitMousePositionToClient (env, position);
 		selectionRect = Rect::FromTwoPoints (startPosition, clientPosition);
 		uiManager.RequestRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point&) override
+	virtual void HandleMouseUp (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point&) override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Rect modelSelectionRect = viewBox.ViewToModel (selectionRect);
@@ -118,7 +118,7 @@ public:
 		return false;
 	}
 
-	virtual void HandleMouseMove (NodeUIEnvironment&, const KeySet&, const Point& position) override
+	virtual void HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = (position - prevPosition) / viewBox.GetScale ();
@@ -152,7 +152,7 @@ public:
 	
 	}
 
-	virtual void HandleMouseDown (NodeUIEnvironment&, const KeySet&, const Point& position) override
+	virtual void HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
 	{
 		currentPosition = position;
 	}
@@ -181,7 +181,7 @@ public:
 		processor (sourceNodePosition, position);
 	}
 
-	virtual void HandleMouseMove (NodeUIEnvironment& env, const KeySet&, const Point& position) override
+	virtual void HandleMouseMove (NodeUIEnvironment& env, const ModifierKeys&, const Point& position) override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		currentPosition = position;
@@ -197,7 +197,7 @@ public:
 		uiManager.RequestRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const KeySet&, const Point&) override
+	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
 			std::vector<UIOutputSlotConstPtr> existingOutputSlots;
@@ -226,7 +226,7 @@ public:
 		processor (position, sourceNodePosition);
 	}
 
-	virtual void HandleMouseMove (NodeUIEnvironment& env, const KeySet&, const Point& position) override
+	virtual void HandleMouseMove (NodeUIEnvironment& env, const ModifierKeys&, const Point& position) override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		currentPosition = position;
@@ -242,7 +242,7 @@ public:
 		uiManager.RequestRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const KeySet&, const Point&) override
+	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
 			uiManager.ConnectOutputSlotToInputSlot (endSlot, startSlot);
@@ -257,22 +257,22 @@ NodeMouseEventHandler::NodeMouseEventHandler (NodeUIManager& uiManager) :
 
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseDragStart (NodeUIEnvironment&, const KeySet&, MouseButton, const Point&)
+EventHandlerResult NodeMouseEventHandler::HandleMouseDragStart (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseDragStop (NodeUIEnvironment&, const KeySet&, MouseButton, const Point&)
+EventHandlerResult NodeMouseEventHandler::HandleMouseDragStop (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseDrag (NodeUIEnvironment&, const KeySet&, const Point&)
+EventHandlerResult NodeMouseEventHandler::HandleMouseDrag (NodeUIEnvironment&, const ModifierKeys&, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeMouseEventHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (uiManager.IsPreviewMode ()) {
@@ -292,7 +292,7 @@ EventHandlerResult NodeMouseEventHandler::HandleMouseClick (NodeUIEnvironment& e
 	return handlerResult;
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseWheel (NodeUIEnvironment&, const KeySet&, MouseWheelRotation, const Point&)
+EventHandlerResult NodeMouseEventHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
@@ -316,7 +316,7 @@ const NodeDrawingExtension* NodeUIInteractionHandler::GetDrawingExtension ()
 	return &multiMouseMoveHandler;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (!multiMouseMoveHandler.AreOtherHandlersAllowed ()) {
@@ -356,7 +356,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnviron
 	return handlerResult;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStop (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	if (multiMouseMoveHandler.HasHandler (mouseButton)) {
 		multiMouseMoveHandler.GetHandler (mouseButton)->OnMouseUp (env, pressedKeys, position);
@@ -366,7 +366,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStop (NodeUIEnvironm
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position)
 {
 	if (multiMouseMoveHandler.HasHandler ()) {
 		multiMouseMoveHandler.EnumerateHandlers ([&] (const std::shared_ptr<MouseMoveHandler>& handler) {
@@ -377,7 +377,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment&
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = nodeMouseEventHandler.HandleMouseClick (env, pressedKeys, mouseButton, position);
 	if (handlerResult == EventHandlerResult::EventHandled) {
@@ -437,7 +437,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 	return handlerResult;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment&, const KeySet&, MouseWheelRotation rotation, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation rotation, const Point& position)
 {
 	ViewBox viewBox = uiManager.GetViewBox ();
 	double scaleRatio = (rotation == MouseWheelRotation::Forward ? 1.1 : 0.9);

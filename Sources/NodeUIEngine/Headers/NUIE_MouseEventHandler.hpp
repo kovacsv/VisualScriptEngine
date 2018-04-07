@@ -55,11 +55,11 @@ namespace std
 namespace NUIE
 {
 
-class KeySet
+class ModifierKeys
 {
 public:
-	KeySet (const std::unordered_set<KeyCode>& keys);
-	~KeySet ();
+	ModifierKeys (const std::unordered_set<KeyCode>& keys);
+	~ModifierKeys ();
 
 	bool Contains (KeyCode keyCode) const;
 
@@ -67,7 +67,7 @@ private:
 	std::unordered_set<KeyCode> keys;
 };
 
-extern KeySet EmptyKeySet;
+extern ModifierKeys EmptyModifierKeys;
 
 enum class EventHandlerResult
 {
@@ -78,11 +78,11 @@ enum class EventHandlerResult
 class MouseEventHandler
 {
 public:
-	virtual EventHandlerResult	HandleMouseDragStart (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
-	virtual EventHandlerResult	HandleMouseDragStop (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
-	virtual EventHandlerResult	HandleMouseDrag (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position) = 0;
-	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
-	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position) = 0;
+	virtual EventHandlerResult	HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
+	virtual EventHandlerResult	HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
+	virtual EventHandlerResult	HandleMouseDrag (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position) = 0;
+	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
+	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseWheelRotation rotation, const Point& position) = 0;
 };
 
 class MouseEventTranslator
@@ -91,11 +91,11 @@ public:
 	MouseEventTranslator (MouseEventHandler& handler);
 	virtual ~MouseEventTranslator ();
 
-	void	OnMouseDown (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
-	void	OnMouseUp (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
-	void	OnMouseMove (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position);
-	void	OnMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position);
-	void	OnMouseDoubleClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position);
+	void	OnMouseDown (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position);
+	void	OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position);
+	void	OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position);
+	void	OnMouseWheel (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseWheelRotation rotation, const Point& position);
+	void	OnMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position);
 
 private:
 	MouseEventHandler&						handler;

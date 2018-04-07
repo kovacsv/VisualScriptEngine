@@ -186,30 +186,30 @@ void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlo
 	});
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseDragStart (NodeUIEnvironment&, const KeySet&, MouseButton, const Point&)
+NUIE::EventHandlerResult UINode::HandleMouseDragStart (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
 {
 	// TODO: Never called
 	return EventHandlerResult::EventNotHandled;
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseDragStop (NodeUIEnvironment&, const KeySet&, MouseButton, const Point&)
+NUIE::EventHandlerResult UINode::HandleMouseDragStop (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
 {
 	// TODO: Never called
 	return EventHandlerResult::EventNotHandled;
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseDrag (NodeUIEnvironment&, const KeySet&, const Point&)
+NUIE::EventHandlerResult UINode::HandleMouseDrag (NodeUIEnvironment&, const ModifierKeys&, const Point&)
 {
 	// TODO: Never called
 	return EventHandlerResult::EventNotHandled;
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const KeySet&, MouseButton, const Point&)
+NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseWheel (NodeUIEnvironment&, const KeySet&, MouseWheelRotation, const Point&)
+NUIE::EventHandlerResult UINode::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation, const Point&)
 {
 	// TODO: Never called
 	return EventHandlerResult::EventNotHandled;

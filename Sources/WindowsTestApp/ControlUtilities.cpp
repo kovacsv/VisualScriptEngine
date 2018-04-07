@@ -31,7 +31,7 @@ void MouseCaptureHandler::OnCaptureLost ()
 	counter--;
 }
 
-NUIE::KeySet GetKeysFromEvent (wxMouseEvent& evt)
+NUIE::ModifierKeys GetKeysFromEvent (wxMouseEvent& evt)
 {
 	std::unordered_set<NUIE::KeyCode> keys;
 	if (evt.ControlDown ()) {
@@ -40,5 +40,5 @@ NUIE::KeySet GetKeysFromEvent (wxMouseEvent& evt)
 	if (evt.ShiftDown ()) {
 		keys.insert (NUIE::KeyCode::Shift);
 	}
-	return NUIE::KeySet (keys);
+	return NUIE::ModifierKeys (keys);
 }

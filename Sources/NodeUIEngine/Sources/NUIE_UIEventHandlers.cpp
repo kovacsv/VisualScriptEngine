@@ -19,35 +19,35 @@ bool MouseMoveHandler::AreOtherHandlersAllowed () const
 	return true;
 }
 
-void MouseMoveHandler::OnMouseDown (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position)
+void MouseMoveHandler::OnMouseDown (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position)
 {
 	startPosition = position;
 	prevPosition = startPosition;
 	HandleMouseDown (env, pressedKeys, position);
 }
 
-void MouseMoveHandler::OnMouseMove (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position)
+void MouseMoveHandler::OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position)
 {
 	HandleMouseMove (env, pressedKeys, position);
 	prevPosition = position;
 }
 
-void MouseMoveHandler::OnMouseUp (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position)
+void MouseMoveHandler::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position)
 {
 	HandleMouseUp (env, pressedKeys, position);
 }
 
-void MouseMoveHandler::HandleMouseDown (NodeUIEnvironment&, const KeySet&, const Point&)
+void MouseMoveHandler::HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point&)
 {
 	
 }
 
-void MouseMoveHandler::HandleMouseMove (NodeUIEnvironment&, const KeySet&, const Point&)
+void MouseMoveHandler::HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&, const Point&)
 {
 
 }
 
-void MouseMoveHandler::HandleMouseUp (NodeUIEnvironment&, const KeySet&, const Point&)
+void MouseMoveHandler::HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&)
 {
 
 }

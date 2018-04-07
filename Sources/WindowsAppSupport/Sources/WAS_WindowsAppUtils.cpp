@@ -5,7 +5,7 @@
 namespace WAS
 {
 
-NUIE::KeySet GetKeysFromEvent (WPARAM wParam)
+NUIE::ModifierKeys GetKeysFromEvent (WPARAM wParam)
 {
 	std::unordered_set<NUIE::KeyCode> keys;
 	if (wParam & MK_CONTROL) {
@@ -14,7 +14,7 @@ NUIE::KeySet GetKeysFromEvent (WPARAM wParam)
 	if (wParam & MK_SHIFT) {
 		keys.insert (NUIE::KeyCode::Shift);
 	}
-	return NUIE::KeySet (keys);
+	return NUIE::ModifierKeys (keys);
 }
 
 NUIE::CommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::CommandStructure& commands)

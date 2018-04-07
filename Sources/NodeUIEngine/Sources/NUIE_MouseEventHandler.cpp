@@ -3,21 +3,21 @@
 namespace NUIE
 {
 
-KeySet EmptyKeySet ({});
+ModifierKeys EmptyModifierKeys ({});
 
-KeySet::KeySet (const std::unordered_set<KeyCode>& keys) :
+ModifierKeys::ModifierKeys (const std::unordered_set<KeyCode>& keys) :
 	keys (keys)
 {
 
 }
 
-KeySet::~KeySet ()
+ModifierKeys::~ModifierKeys ()
 {
 
 }
 
 
-bool KeySet::Contains (KeyCode keyCode) const
+bool ModifierKeys::Contains (KeyCode keyCode) const
 {
 	return keys.find (keyCode) != keys.end ();
 }
@@ -33,12 +33,12 @@ MouseEventTranslator::~MouseEventTranslator ()
 
 }
 
-void MouseEventTranslator::OnMouseDown (NodeUIEnvironment&, const KeySet&, MouseButton mouseButton, const Point& position)
+void MouseEventTranslator::OnMouseDown (NodeUIEnvironment&, const ModifierKeys&, MouseButton mouseButton, const Point& position)
 {
 	downMouseButtons.insert ({ mouseButton, position });
 }
 
-void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
+void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	if (movingMouseButtons.find (mouseButton) != movingMouseButtons.end ()) {
 		handler.HandleMouseDragStop (env, pressedKeys, mouseButton, position);
@@ -51,7 +51,7 @@ void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const KeySet& pres
 	}
 }
 
-void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const KeySet& pressedKeys, const Point& position)
+void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position)
 {
 	for (const auto& it : downMouseButtons) {
 		handler.HandleMouseDragStart (env, pressedKeys, it.first, it.second);
@@ -64,12 +64,12 @@ void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const KeySet& pr
 	}
 }
 
-void MouseEventTranslator::OnMouseWheel (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseWheelRotation rotation, const Point& position)
+void MouseEventTranslator::OnMouseWheel (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseWheelRotation rotation, const Point& position)
 {
 	handler.HandleMouseWheel (env, pressedKeys, rotation, position);
 }
 
-void MouseEventTranslator::OnMouseDoubleClick (NodeUIEnvironment& env, const KeySet& pressedKeys, MouseButton mouseButton, const Point& position)
+void MouseEventTranslator::OnMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	// TODO: this is a hack
 	handler.HandleMouseClick (env, pressedKeys, mouseButton, position);

@@ -162,35 +162,35 @@ bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 
 void NodeEditorTestEnv::Click (const Point& point)
 {
-	nodeEditor.OnMouseDown (EmptyKeySet, MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
-	nodeEditor.OnMouseUp (EmptyKeySet, MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
 }
 
 void NodeEditorTestEnv::CtrlClick (const Point& point)
 {
-	nodeEditor.OnMouseDown (KeySet ({ KeyCode::Control }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
-	nodeEditor.OnMouseUp (KeySet ({ KeyCode::Control }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseDown (ModifierKeys ({ KeyCode::Control }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseUp (ModifierKeys ({ KeyCode::Control }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
 }
 
 void NodeEditorTestEnv::RightClick (const Point& point)
 {
-	nodeEditor.OnMouseDown (EmptyKeySet, MouseButton::Right, (int) point.GetX (), (int) point.GetY ());
-	nodeEditor.OnMouseUp (EmptyKeySet, MouseButton::Right, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Right, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Right, (int) point.GetX (), (int) point.GetY ());
 }
 
 void NodeEditorTestEnv::Wheel (MouseWheelRotation rotation, const Point& point)
 {
-	nodeEditor.OnMouseWheel (EmptyKeySet, rotation, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseWheel (EmptyModifierKeys, rotation, (int) point.GetX (), (int) point.GetY ());
 }
 
 void NodeEditorTestEnv::DragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp)
 {
-	nodeEditor.OnMouseDown (EmptyKeySet, MouseButton::Left, (int) from.GetX (), (int) from.GetY ());
-	nodeEditor.OnMouseMove (EmptyKeySet, (int) to.GetX (), (int) to.GetY ());
+	nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Left, (int) from.GetX (), (int) from.GetY ());
+	nodeEditor.OnMouseMove (EmptyModifierKeys, (int) to.GetX (), (int) to.GetY ());
 	if (beforeMouseUp != nullptr) {
 		beforeMouseUp ();
 	}
-	nodeEditor.OnMouseUp (EmptyKeySet, MouseButton::Left, (int) to.GetX (), (int) to.GetY ());
+	nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Left, (int) to.GetX (), (int) to.GetY ());
 }
 
 void NodeEditorTestEnv::SetNextCommandName (const std::wstring& nextCommandName)
