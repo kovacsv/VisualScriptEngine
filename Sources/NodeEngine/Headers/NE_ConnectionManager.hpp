@@ -23,7 +23,7 @@ public:
 	bool	HasConnectedInputSlots (const OutputSlotConstPtr& outputSlot) const;
 
 	size_t	GetConnectedOutputSlotCount (const InputSlotConstPtr& inputSlot) const;
-	size_t	GetConnectedInputSlotsCount (const OutputSlotConstPtr& outputSlot) const;
+	size_t	GetConnectedInputSlotCount (const OutputSlotConstPtr& outputSlot) const;
 
 	void	EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const;
 	void	EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const;

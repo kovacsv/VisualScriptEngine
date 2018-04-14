@@ -264,6 +264,12 @@ TEST (MultiInputSlotConnectionTest)
 	ASSERT (!manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
 	ASSERT (manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
 	ASSERT (!manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
+
+	ASSERT (manager.HasConnectedInputSlots (firstNode->GetOutputSlot (SlotId ("out"))));
+	ASSERT (manager.GetConnectedInputSlotCount (firstNode->GetOutputSlot (SlotId ("out"))) == 1);
+
+	ASSERT (manager.HasConnectedOutputSlots (additionNode->GetInputSlot (SlotId ("in"))));
+	ASSERT (manager.GetConnectedOutputSlotCount (additionNode->GetInputSlot (SlotId ("in"))) == 2);
 }
 
 TEST (MultiInputSlotEvaluation)

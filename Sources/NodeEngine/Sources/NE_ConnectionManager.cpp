@@ -44,7 +44,7 @@ size_t ConnectionManager::GetConnectedOutputSlotCount (const InputSlotConstPtr& 
 	return inputToOutputConnections.GetConnectionCount (inputSlot);
 }
 
-size_t ConnectionManager::GetConnectedInputSlotsCount (const OutputSlotConstPtr& outputSlot) const
+size_t ConnectionManager::GetConnectedInputSlotCount (const OutputSlotConstPtr& outputSlot) const
 {
 	return outputToInputConnections.GetConnectionCount (outputSlot);
 }
