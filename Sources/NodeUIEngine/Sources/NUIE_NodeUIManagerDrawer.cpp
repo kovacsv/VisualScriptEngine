@@ -71,9 +71,9 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIDrawingEnvironment& env) const
 void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const
 {
 	for (const UINode* uiNode : sortedNodeList) {
-		uiNode->EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
+		uiNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
 			Point beg = uiNode->GetOutputSlotConnPosition (env, outputSlot->GetId ());
-			uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const NE::InputSlotConstPtr& inputSlot) {
+			uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
 				const UINode* endNode = nodeIdToNodeMap.GetUINode (inputSlot->GetOwnerNodeId ());
 				if (DBGERROR (endNode == nullptr)) {
 					return;

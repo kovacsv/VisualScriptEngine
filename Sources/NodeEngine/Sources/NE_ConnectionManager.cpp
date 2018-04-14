@@ -87,6 +87,10 @@ bool ConnectionManager::CanConnectMoreOutputSlotToInputSlot (const InputSlotCons
 			canConnect = false;
 			break;
 		case OutputSlotConnectionMode::Single:
+			// you can always connect to single input slot
+			// the previous connection will be disconnected
+			canConnect = true;
+			break;
 		case OutputSlotConnectionMode::Multiple:
 			canConnect = true;
 			break;

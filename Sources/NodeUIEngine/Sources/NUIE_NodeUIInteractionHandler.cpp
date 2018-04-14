@@ -165,11 +165,11 @@ protected:
 	Point			currentPosition;
 };
 
-class NodeOutputToInputConnectionHandler : public NodeConnectionHandler<UIOutputSlotPtr, UIInputSlotPtr>
+class NodeOutputToInputConnectionHandler : public NodeConnectionHandler<UIOutputSlotConstPtr, UIInputSlotConstPtr>
 {
 public:
-	NodeOutputToInputConnectionHandler (NodeUIManager& uiManager, UIOutputSlotPtr startSlot, const Point& sourceNodePosition) :
-		NodeConnectionHandler<UIOutputSlotPtr, UIInputSlotPtr> (uiManager, startSlot, sourceNodePosition)
+	NodeOutputToInputConnectionHandler (NodeUIManager& uiManager, UIOutputSlotConstPtr startSlot, const Point& sourceNodePosition) :
+		NodeConnectionHandler<UIOutputSlotConstPtr, UIInputSlotConstPtr> (uiManager, startSlot, sourceNodePosition)
 	{
 	
 	}
@@ -210,11 +210,11 @@ public:
 	}
 };
 
-class NodeInputToOutputConnectionHandler : public NodeConnectionHandler<UIInputSlotPtr, UIOutputSlotPtr>
+class NodeInputToOutputConnectionHandler : public NodeConnectionHandler<UIInputSlotConstPtr, UIOutputSlotConstPtr>
 {
 public:
-	NodeInputToOutputConnectionHandler (NodeUIManager& uiManager, UIInputSlotPtr startSlot, const Point& sourceNodePosition) :
-		NodeConnectionHandler<UIInputSlotPtr, UIOutputSlotPtr> (uiManager, startSlot, sourceNodePosition)
+	NodeInputToOutputConnectionHandler (NodeUIManager& uiManager, UIInputSlotConstPtr startSlot, const Point& sourceNodePosition) :
+		NodeConnectionHandler<UIInputSlotConstPtr, UIOutputSlotConstPtr> (uiManager, startSlot, sourceNodePosition)
 	{
 	
 	}
