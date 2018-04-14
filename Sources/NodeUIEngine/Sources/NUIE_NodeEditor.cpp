@@ -79,7 +79,7 @@ void NodeEditor::Update ()
 
 void NodeEditor::Draw ()
 {
-	uiManager.Draw (uiEnvironment, uiInteractionHandler.GetDrawingExtension ());
+	uiManager.Draw (uiEnvironment, uiInteractionHandler.GetDrawingModifier ());
 }
 
 NodeUIManager& NodeEditor::GetNodeUIManager ()

@@ -133,7 +133,7 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_Geometry.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_MouseEventHandler.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeCollection.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingExtension.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingModifier.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingImage.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeEditor.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeUIEnvironment.hpp" />

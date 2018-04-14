@@ -24,15 +24,15 @@ class NodeUIManagerDrawer
 public:
 	NodeUIManagerDrawer (const NodeUIManager& uiManager);
 	
-	void Draw (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const;
+	void Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
 
 private:
 	void				DrawBackground (NodeUIDrawingEnvironment& env) const;
-	void				DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const;
+	void				DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
 	void				DrawConnection (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;
 	void				DrawNodes (NodeUIDrawingEnvironment& env) const;
 	void				DrawNode (NodeUIDrawingEnvironment& env, const UINode* uiNode) const;
-	void				DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const;
+	void				DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
 
 	void				InitSortedNodeList () const;
 	bool				IsConnectionVisible (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;

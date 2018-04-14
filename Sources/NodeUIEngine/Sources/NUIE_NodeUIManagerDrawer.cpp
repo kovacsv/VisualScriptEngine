@@ -1,5 +1,5 @@
 #include "NUIE_NodeUIManagerDrawer.hpp"
-#include "NUIE_NodeDrawingExtension.hpp"
+#include "NUIE_NodeDrawingModifier.hpp"
 #include "NUIE_ContextDecorators.hpp"
 #include "NUIE_SkinParams.hpp"
 
@@ -43,7 +43,7 @@ NodeUIManagerDrawer::NodeUIManagerDrawer (const NodeUIManager& uiManager) :
 	InitSortedNodeList ();
 }
 	
-void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const
+void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
 	drawingContext.BeginDraw ();
@@ -53,10 +53,10 @@ void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawing
 		TextSkipperContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
 		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
 		NodeUIDrawingEnvironmentContextDecorator drawEnv (env, viewBoxContext);
-		DrawConnections (drawEnv, drawExt);
+		DrawConnections (drawEnv, drawModifier);
 		DrawNodes (drawEnv);
 	}
-	DrawSelectionRect (env, drawExt);
+	DrawSelectionRect (env, drawModifier);
 
 	drawingContext.EndDraw ();
 }
@@ -68,7 +68,7 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIDrawingEnvironment& env) const
 	drawingContext.FillRect (contextRect, env.GetSkinParams ().GetBackgroundColor ());
 }
 
-void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const
+void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const
 {
 	for (const UINode* uiNode : sortedNodeList) {
 		uiNode->EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
@@ -87,8 +87,8 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& env, const 
 		});
 	}
 
-	if (drawExt != nullptr) {
-		drawExt->EnumerateTemporaryConnections ([&] (const Point& beg, const Point& end) {
+	if (drawModifier != nullptr) {
+		drawModifier->EnumerateTemporaryConnections ([&] (const Point& beg, const Point& end) {
 			DrawConnection (env, beg, end);
 		});
 	}
@@ -127,10 +127,10 @@ void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& env, const UINode*
 	}
 }
 
-void NodeUIManagerDrawer::DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawExt) const
+void NodeUIManagerDrawer::DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const
 {
-	if (drawExt != nullptr) {
-		drawExt->EnumerateSelectionRectangles ([&] (const Rect& viewRect) {
+	if (drawModifier != nullptr) {
+		drawModifier->EnumerateSelectionRectangles ([&] (const Rect& viewRect) {
 			env.GetDrawingContext ().DrawRect (viewRect, env.GetSkinParams ().GetSelectionRectPen ());
 		});
 	}

@@ -35,7 +35,7 @@ public:
 	NodeUIInteractionHandler (NodeUIManager& uiManager);
 	~NodeUIInteractionHandler ();
 
-	const NodeDrawingExtension*		GetDrawingExtension ();
+	const NodeDrawingModfier*		GetDrawingModifier ();
 
 private:
 	virtual EventHandlerResult		HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position) override;

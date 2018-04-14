@@ -311,7 +311,7 @@ NodeUIInteractionHandler::~NodeUIInteractionHandler ()
 
 }
 
-const NodeDrawingExtension* NodeUIInteractionHandler::GetDrawingExtension ()
+const NodeDrawingModfier* NodeUIInteractionHandler::GetDrawingModifier ()
 {
 	return &multiMouseMoveHandler;
 }

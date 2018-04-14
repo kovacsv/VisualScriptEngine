@@ -2,7 +2,7 @@
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NE_Debug.hpp"
-#include "NUIE_NodeDrawingExtension.hpp"
+#include "NUIE_NodeDrawingModifier.hpp"
 #include "NUIE_NodeUIManagerDrawer.hpp"
 
 namespace NUIE
@@ -273,10 +273,10 @@ void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 	status.Reset ();
 }
 
-void NodeUIManager::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingExtension* drawingExtension)
+void NodeUIManager::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawingModifier)
 {
 	NodeUIManagerDrawer drawer (*this);
-	drawer.Draw (env, drawingExtension);
+	drawer.Draw (env, drawingModifier);
 }
 
 void NodeUIManager::ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight)

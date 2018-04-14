@@ -1,5 +1,5 @@
-#ifndef NODEDRAWINGEXTENSION_HPP
-#define NODEDRAWINGEXTENSION_HPP
+#ifndef NODEDRAWINGMODIFIER_HPP
+#define NODEDRAWINGMODIFIER_HPP
 
 #include "NUIE_Geometry.hpp"
 #include <functional>
@@ -7,7 +7,7 @@
 namespace NUIE
 {
 
-class NodeDrawingExtension
+class NodeDrawingModfier
 {
 public:
 	virtual void EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const = 0;

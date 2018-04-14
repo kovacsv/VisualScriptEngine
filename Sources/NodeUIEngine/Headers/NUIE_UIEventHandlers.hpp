@@ -4,7 +4,7 @@
 #include "NUIE_Geometry.hpp"
 #include "NUIE_MouseEventHandler.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
-#include "NUIE_NodeDrawingExtension.hpp"
+#include "NUIE_NodeDrawingModifier.hpp"
 #include <unordered_map>
 #include <memory>
 #include <functional>
@@ -12,7 +12,7 @@
 namespace NUIE
 {
 
-class MouseMoveHandler : public NodeDrawingExtension
+class MouseMoveHandler : public NodeDrawingModfier
 {
 public:
 	MouseMoveHandler ();
@@ -36,7 +36,7 @@ protected:
 	Point	prevPosition;
 };
 
-class MultiMouseMoveHandler : public NodeDrawingExtension
+class MultiMouseMoveHandler : public NodeDrawingModfier
 {
 public:
 	MultiMouseMoveHandler ();

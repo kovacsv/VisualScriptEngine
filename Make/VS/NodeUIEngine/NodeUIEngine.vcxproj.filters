@@ -37,9 +37,6 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeCollection.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingExtension.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingImage.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -98,6 +95,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_ViewBox.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingModifier.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
