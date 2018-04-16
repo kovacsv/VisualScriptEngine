@@ -106,7 +106,7 @@ public:
 	
 	}
 
-	void OnNew (wxCommandEvent& event)
+	void OnNew (wxCommandEvent& evt)
 	{
 		nodeEditorControl->New ();
 		drawingControl->ClearImage ();
@@ -114,7 +114,7 @@ public:
 		UpdateStatusBar ();
 	}
 
-	void OnOpen (wxCommandEvent& event)
+	void OnOpen (wxCommandEvent& evt)
 	{
 		wxFileDialog fileDialog (this, L"Open", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 		if (fileDialog.ShowModal () == wxID_OK) {
@@ -128,7 +128,7 @@ public:
 		UpdateStatusBar ();
 	}
 
-	void OnSave (wxCommandEvent& event)
+	void OnSave (wxCommandEvent& evt)
 	{
 		wxFileDialog fileDialog (this, L"Save", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
 		if (applicationState.HasCurrentFileName ()) {
@@ -141,7 +141,7 @@ public:
 		UpdateStatusBar ();
 	}
 
-	void OnSaveAs (wxCommandEvent& event)
+	void OnSaveAs (wxCommandEvent& evt)
 	{
 		wxFileDialog fileDialog (this, L"Save As", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
 		if (fileDialog.ShowModal () == wxID_OK) {
@@ -152,9 +152,14 @@ public:
 		UpdateStatusBar ();
 	}
 
-	void OnExit (wxCommandEvent& event)
+	void OnExit (wxCommandEvent& evt)
 	{
 		Close (true);
+	}
+
+	void OnKeyDown (wxKeyEvent& evt)
+	{
+		
 	}
 
 	void UpdateStatusBar ()
@@ -186,6 +191,7 @@ EVT_MENU (MainFrame::CommandId::File_Open, MainFrame::OnOpen)
 EVT_MENU (MainFrame::CommandId::File_Save, MainFrame::OnSave)
 EVT_MENU (MainFrame::CommandId::File_SaveAs, MainFrame::OnSaveAs)
 EVT_MENU (MainFrame::CommandId::File_Exit, MainFrame::OnExit)
+EVT_CHAR_HOOK (MainFrame::OnKeyDown)
 END_EVENT_TABLE ()
 
 class NodeEngineTestApplication : public wxApp
