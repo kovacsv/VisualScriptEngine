@@ -19,6 +19,6 @@ private:
 	int			counter;
 };
 
-NUIE::ModifierKeys GetKeysFromEvent (wxMouseEvent& evt);
+NUIE::ModifierKeys GetKeysFromEvent (wxKeyboardState& evt);
 
 #endif
