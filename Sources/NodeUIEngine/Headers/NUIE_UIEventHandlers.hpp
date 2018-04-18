@@ -18,9 +18,9 @@ public:
 	MouseMoveHandler ();
 	virtual ~MouseMoveHandler ();
 
-	void			OnMouseDown (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position);
-	void			OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position);
-	void			OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position);
+	void			OnMouseDown (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
+	void			OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
+	void			OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
 
 	virtual bool	AreOtherHandlersAllowed () const;
 
@@ -28,9 +28,9 @@ public:
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>&) const override;
 
 protected:
-	virtual void	HandleMouseDown (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position);
-	virtual void	HandleMouseMove (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position);
-	virtual void	HandleMouseUp (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position);
+	virtual void	HandleMouseDown (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
+	virtual void	HandleMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
+	virtual void	HandleMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
 
 	Point	startPosition;
 	Point	prevPosition;

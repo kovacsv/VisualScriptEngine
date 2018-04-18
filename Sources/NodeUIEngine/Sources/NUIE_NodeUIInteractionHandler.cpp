@@ -58,12 +58,12 @@ public:
 		uiManager.RequestRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point&) override
+	virtual void HandleMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point&) override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Rect modelSelectionRect = viewBox.ViewToModel (selectionRect);
 		NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
-		if (!pressedKeys.Contains (KeyCode::Control)) {
+		if (!modifierKeys.Contains (KeyCode::Control)) {
 			selectedNodes.Clear ();
 		}
 		std::unordered_set<UINodePtr> nodesToSelect;
@@ -272,7 +272,7 @@ EventHandlerResult NodeInputEventHandler::HandleMouseDrag (NodeUIEnvironment&, c
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (uiManager.IsPreviewMode ()) {
@@ -282,7 +282,7 @@ EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& e
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
 	if (foundNode != nullptr) {
-		handlerResult = foundNode->HandleMouseClick (env, pressedKeys, mouseButton, viewBox.ViewToModel (position));
+		handlerResult = foundNode->HandleMouseClick (env, modifierKeys, mouseButton, viewBox.ViewToModel (position));
 		if (handlerResult == EventHandlerResult::EventHandled) {
 			uiManager.RequestRecalculate ();
 			uiManager.InvalidateNodeDrawing (foundNode);
@@ -293,6 +293,11 @@ EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& e
 }
 
 EventHandlerResult NodeInputEventHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation, const Point&)
+{
+	return EventHandlerResult::EventNotHandled;
+}
+
+EventHandlerResult NodeInputEventHandler::HandleKeyPress (NodeUIEnvironment&, const ModifierKeys&, const Key&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
@@ -316,7 +321,7 @@ const NodeDrawingModfier* NodeUIInteractionHandler::GetDrawingModifier ()
 	return &multiMouseMoveHandler;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (!multiMouseMoveHandler.AreOtherHandlersAllowed ()) {
@@ -349,37 +354,37 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnviron
 	}
 
 	multiMouseMoveHandler.EnumerateHandlers ([&] (const std::shared_ptr<MouseMoveHandler>& handler) {
-		handler->OnMouseDown (env, pressedKeys, position);
+		handler->OnMouseDown (env, modifierKeys, position);
 		handlerResult = EventHandlerResult::EventHandled;
 	});
 
 	return handlerResult;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	if (multiMouseMoveHandler.HasHandler (mouseButton)) {
-		multiMouseMoveHandler.GetHandler (mouseButton)->OnMouseUp (env, pressedKeys, position);
+		multiMouseMoveHandler.GetHandler (mouseButton)->OnMouseUp (env, modifierKeys, position);
 		multiMouseMoveHandler.RemoveHandler (mouseButton);
 		return EventHandlerResult::EventHandled;
 	}
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
 {
 	if (multiMouseMoveHandler.HasHandler ()) {
 		multiMouseMoveHandler.EnumerateHandlers ([&] (const std::shared_ptr<MouseMoveHandler>& handler) {
-			handler->OnMouseMove (env, pressedKeys, position);
+			handler->OnMouseMove (env, modifierKeys, position);
 		});
 		return EventHandlerResult::EventHandled;
 	}
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
-	EventHandlerResult handlerResult = nodeInputEventHandler.HandleMouseClick (env, pressedKeys, mouseButton, position);
+	EventHandlerResult handlerResult = nodeInputEventHandler.HandleMouseClick (env, modifierKeys, mouseButton, position);
 	if (handlerResult == EventHandlerResult::EventHandled) {
 		return handlerResult;
 	}
@@ -390,7 +395,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 		if (foundNode != nullptr) {
 			const NE::NodeId& foundNodeId = foundNode->GetId ();
 			selectedNodes = uiManager.GetSelectedNodes ();
-			if (pressedKeys.Contains (KeyCode::Control)) {
+			if (modifierKeys.Contains (KeyCode::Control)) {
 				if (selectedNodes.Contains (foundNodeId)) {
 					selectedNodes.Erase (foundNodeId);
 				} else {
@@ -443,6 +448,12 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment
 	double scaleRatio = (rotation == MouseWheelRotation::Forward ? 1.1 : 0.9);
 	viewBox.SetScale (viewBox.GetScale () * scaleRatio, position);
 	uiManager.SetViewBox (viewBox);
+	return EventHandlerResult::EventHandled;
+}
+
+EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& /*env*/, const ModifierKeys& /*modifierKeys*/, const Key& /*pressedKey*/)
+{
+	// TODO
 	return EventHandlerResult::EventHandled;
 }
 
