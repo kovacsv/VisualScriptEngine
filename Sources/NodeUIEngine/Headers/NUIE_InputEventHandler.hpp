@@ -1,5 +1,5 @@
-#ifndef MOUSEEVENTHANDLER_HPP
-#define MOUSEEVENTHANDLER_HPP
+#ifndef INPUTEVENTHANDLER_HPP
+#define INPUTEVENTHANDLER_HPP
 
 #include "NUIE_Geometry.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
@@ -69,13 +69,37 @@ private:
 
 extern ModifierKeys EmptyModifierKeys;
 
+class Key
+{
+public:
+	enum class SpecialKey
+	{
+		Undefined,
+		Left,
+		Top,
+		Right,
+		Bottom
+	};
+
+	Key (int keyCode);
+	Key (SpecialKey specialKeyCode);
+
+	bool		IsSpecialKey () const;
+	int			GetKeyCode () const;
+	SpecialKey	GetSpecialKeyCode () const;
+
+private:
+	int			keyCode;
+	SpecialKey	specialKeyCode;
+};
+
 enum class EventHandlerResult
 {
 	EventHandled,
 	EventNotHandled
 };
 
-class MouseEventHandler
+class InputEventHandler
 {
 public:
 	virtual EventHandlerResult	HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position) = 0;
@@ -88,7 +112,7 @@ public:
 class MouseEventTranslator
 {
 public:
-	MouseEventTranslator (MouseEventHandler& handler);
+	MouseEventTranslator (InputEventHandler& handler);
 	virtual ~MouseEventTranslator ();
 
 	void	OnMouseDown (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position);
@@ -98,7 +122,7 @@ public:
 	void	OnMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position);
 
 private:
-	MouseEventHandler&						handler;
+	InputEventHandler&						handler;
 	std::unordered_map<MouseButton, Point>	downMouseButtons;
 	std::unordered_set<MouseButton>			movingMouseButtons;
 };

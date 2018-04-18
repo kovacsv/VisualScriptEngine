@@ -131,7 +131,7 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_DrawingImage.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_EventHandlers.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_Geometry.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_MouseEventHandler.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_InputEventHandler.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeCollection.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingModifier.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingImage.hpp" />
@@ -163,7 +163,7 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_DrawingContext.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_DrawingImage.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_Geometry.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_MouseEventHandler.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_InputEventHandler.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeCollection.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeDrawingImage.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeEditor.cpp" />

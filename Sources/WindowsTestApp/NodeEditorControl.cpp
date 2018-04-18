@@ -263,63 +263,63 @@ void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
 void NodeEditorControl::OnLeftButtonDown (wxMouseEvent& evt)
 {
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (GetKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnLeftButtonUp (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseUp (GetKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 void NodeEditorControl::OnLeftButtonDoubleClick (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseDoubleClick (GetKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnRightButtonDown (wxMouseEvent& evt)
 {
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (GetKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnRightButtonUp (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseUp (GetKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 void NodeEditorControl::OnRightButtonDoubleClick (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseDoubleClick (GetKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMiddleButtonDown (wxMouseEvent& evt)
 {
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (GetKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMiddleButtonUp (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseUp (GetKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 void NodeEditorControl::OnMiddleButtonDoubleClick (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseDoubleClick (GetKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMouseMove (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseMove (GetKeysFromEvent (evt), evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseMove (GetModiferKeysFromEvent (evt), evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMouseWheel (wxMouseEvent& evt)
 {
 	NUIE::MouseWheelRotation rotation = evt.GetWheelRotation () > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
-	nodeEditor.OnMouseWheel (GetKeysFromEvent (evt), rotation, evt.GetX (), evt.GetY ());
+	nodeEditor.OnMouseWheel (GetModiferKeysFromEvent (evt), rotation, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::New ()

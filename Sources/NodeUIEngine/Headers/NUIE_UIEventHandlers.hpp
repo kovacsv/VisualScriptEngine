@@ -2,7 +2,7 @@
 #define UIEVENTHANDLERS_HPP
 
 #include "NUIE_Geometry.hpp"
-#include "NUIE_MouseEventHandler.hpp"
+#include "NUIE_InputEventHandler.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeDrawingModifier.hpp"
 #include <unordered_map>

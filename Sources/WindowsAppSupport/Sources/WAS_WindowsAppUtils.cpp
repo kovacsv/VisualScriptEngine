@@ -5,7 +5,7 @@
 namespace WAS
 {
 
-NUIE::ModifierKeys GetKeysFromEvent (WPARAM wParam)
+NUIE::ModifierKeys GetModiferKeysFromEvent (WPARAM wParam)
 {
 	std::unordered_set<NUIE::KeyCode> keys;
 	if (wParam & MK_CONTROL) {

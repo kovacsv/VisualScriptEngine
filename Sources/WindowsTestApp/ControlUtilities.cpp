@@ -31,7 +31,7 @@ void MouseCaptureHandler::OnCaptureLost ()
 	counter--;
 }
 
-NUIE::ModifierKeys GetKeysFromEvent (wxKeyboardState& evt)
+NUIE::ModifierKeys GetModiferKeysFromEvent (wxKeyboardState& evt)
 {
 	std::unordered_set<NUIE::KeyCode> keys;
 	if (evt.ControlDown ()) {

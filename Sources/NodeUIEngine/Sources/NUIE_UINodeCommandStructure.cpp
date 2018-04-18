@@ -340,7 +340,7 @@ public:
 		Point nodeOffset = position - centerPosition;
 		for (UINodePtr& uiNode : newNodes) {
 			Point nodePosition = uiNode->GetNodePosition ();
-			uiNode->SetNodePosition (uiNode->GetNodePosition () + nodeOffset);
+			uiNode->SetNodePosition (nodePosition + nodeOffset);
 			newSelection.Insert (uiNode->GetId ());
 		}
 

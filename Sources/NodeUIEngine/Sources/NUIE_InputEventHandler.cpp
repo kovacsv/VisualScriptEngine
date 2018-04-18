@@ -1,4 +1,4 @@
-#include "NUIE_MouseEventHandler.hpp"
+#include "NUIE_InputEventHandler.hpp"
 
 namespace NUIE
 {
@@ -22,7 +22,38 @@ bool ModifierKeys::Contains (KeyCode keyCode) const
 	return keys.find (keyCode) != keys.end ();
 }
 
-MouseEventTranslator::MouseEventTranslator (MouseEventHandler& handler) :
+Key::Key (int keyCode) :
+	keyCode (keyCode),
+	specialKeyCode (SpecialKey::Undefined)
+{
+
+}
+
+Key::Key (SpecialKey specialKeyCode) :
+	keyCode (-1),
+	specialKeyCode (specialKeyCode)
+{
+
+}
+
+bool Key::IsSpecialKey () const
+{
+	return specialKeyCode != SpecialKey::Undefined;
+}
+
+int Key::GetKeyCode () const
+{
+	DBGASSERT (keyCode != -1);
+	return keyCode;
+}
+
+Key::SpecialKey Key::GetSpecialKeyCode () const
+{
+	DBGASSERT (specialKeyCode != SpecialKey::Undefined);
+	return specialKeyCode;
+}
+
+MouseEventTranslator::MouseEventTranslator (InputEventHandler& handler) :
 	handler (handler)
 {
 

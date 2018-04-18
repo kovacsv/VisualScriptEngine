@@ -65,7 +65,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDown (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+				nodeEditor->OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
 			}
 			break;
 		case WM_MBUTTONDOWN:
@@ -73,7 +73,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDown (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+				nodeEditor->OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
 			}
 			break;
 		case WM_RBUTTONDOWN:
@@ -81,7 +81,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDown (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+				nodeEditor->OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
 			}
 			break;
 		case WM_LBUTTONUP:
@@ -89,7 +89,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseUp (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+				nodeEditor->OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
 			}
 			break;
 		case WM_MBUTTONUP:
@@ -97,7 +97,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseUp (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+				nodeEditor->OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
 			}
 			break;
 		case WM_RBUTTONUP:
@@ -105,7 +105,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseUp (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+				nodeEditor->OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
 			}
 			break;
 		case WM_MOUSEMOVE:
@@ -113,7 +113,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				SetFocus (hwnd); // before Windows 10 only the focused window catches the mouse wheel message
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseMove (WAS::GetKeysFromEvent (wParam), x, y);
+				nodeEditor->OnMouseMove (WAS::GetModiferKeysFromEvent (wParam), x, y);
 			}
 			break;
 		case WM_MOUSEWHEEL:
@@ -124,28 +124,28 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				ScreenToClient (hwnd, &mousePos);
 				int delta = GET_WHEEL_DELTA_WPARAM (wParam);
 				NUIE::MouseWheelRotation rotation = delta > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
-				nodeEditor->OnMouseWheel (WAS::GetKeysFromEvent (wParam), rotation, mousePos.x, mousePos.y);
+				nodeEditor->OnMouseWheel (WAS::GetModiferKeysFromEvent (wParam), rotation, mousePos.x, mousePos.y);
 			}
 			break;
 		case WM_LBUTTONDBLCLK:
 			{
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDoubleClick (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+				nodeEditor->OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
 			}
 			break;
 		case WM_MBUTTONDBLCLK:
 			{
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDoubleClick (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+				nodeEditor->OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
 			}
 			break;
 		case WM_RBUTTONDBLCLK:
 			{
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDoubleClick (WAS::GetKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+				nodeEditor->OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
 			}
 			break;
 		case WM_SIZE:

@@ -4,7 +4,7 @@
 #include "NE_Node.hpp"
 #include "NUIE_NodeDrawingImage.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
-#include "NUIE_MouseEventHandler.hpp"
+#include "NUIE_InputEventHandler.hpp"
 #include "NUIE_UIInputSlot.hpp"
 #include "NUIE_UIOutputSlot.hpp"
 #include <string>

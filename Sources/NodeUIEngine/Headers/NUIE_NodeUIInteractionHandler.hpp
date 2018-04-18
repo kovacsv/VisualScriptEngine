@@ -13,10 +13,10 @@ namespace NUIE
 
 class NodeUIManager;
 
-class NodeMouseEventHandler : public MouseEventHandler
+class NodeInputEventHandler : public InputEventHandler
 {
 public:
-	NodeMouseEventHandler (NodeUIManager& uiManager);
+	NodeInputEventHandler (NodeUIManager& uiManager);
 
 	virtual EventHandlerResult	HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult	HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position) override;
@@ -29,7 +29,7 @@ private:
 	UINodePtr		currentNode;
 };
 
-class NodeUIInteractionHandler : public MouseEventHandler
+class NodeUIInteractionHandler : public InputEventHandler
 {
 public:
 	NodeUIInteractionHandler (NodeUIManager& uiManager);
@@ -46,7 +46,7 @@ private:
 
 	NodeUIManager&					uiManager;
 	MultiMouseMoveHandler			multiMouseMoveHandler;
-	NodeMouseEventHandler			nodeMouseEventHandler;
+	NodeInputEventHandler			nodeInputEventHandler;
 };
 
 }

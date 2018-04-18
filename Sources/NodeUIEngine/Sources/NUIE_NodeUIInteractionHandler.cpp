@@ -251,28 +251,28 @@ public:
 	}
 };
 
-NodeMouseEventHandler::NodeMouseEventHandler (NodeUIManager& uiManager) :
+NodeInputEventHandler::NodeInputEventHandler (NodeUIManager& uiManager) :
 	uiManager (uiManager)
 {
 
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseDragStart (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
+EventHandlerResult NodeInputEventHandler::HandleMouseDragStart (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseDragStop (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
+EventHandlerResult NodeInputEventHandler::HandleMouseDragStop (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseDrag (NodeUIEnvironment&, const ModifierKeys&, const Point&)
+EventHandlerResult NodeInputEventHandler::HandleMouseDrag (NodeUIEnvironment&, const ModifierKeys&, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (uiManager.IsPreviewMode ()) {
@@ -292,16 +292,16 @@ EventHandlerResult NodeMouseEventHandler::HandleMouseClick (NodeUIEnvironment& e
 	return handlerResult;
 }
 
-EventHandlerResult NodeMouseEventHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation, const Point&)
+EventHandlerResult NodeInputEventHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation, const Point&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
 NodeUIInteractionHandler::NodeUIInteractionHandler (NodeUIManager& uiManager) :
-	MouseEventHandler (),
+	InputEventHandler (),
 	uiManager (uiManager),
 	multiMouseMoveHandler (),
-	nodeMouseEventHandler (uiManager)
+	nodeInputEventHandler (uiManager)
 {
 
 }
@@ -379,7 +379,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment&
 
 EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& pressedKeys, MouseButton mouseButton, const Point& position)
 {
-	EventHandlerResult handlerResult = nodeMouseEventHandler.HandleMouseClick (env, pressedKeys, mouseButton, position);
+	EventHandlerResult handlerResult = nodeInputEventHandler.HandleMouseClick (env, pressedKeys, mouseButton, position);
 	if (handlerResult == EventHandlerResult::EventHandled) {
 		return handlerResult;
 	}

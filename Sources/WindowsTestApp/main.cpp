@@ -159,6 +159,12 @@ public:
 
 	void OnKeyDown (wxKeyEvent& evt)
 	{
+		wxChar ch = evt.GetKeyCode ();
+		if (ch < 32) {
+			return;
+		}
+		
+		NUIE::ModifierKeys modifiers = GetModiferKeysFromEvent (evt);
 		
 	}
 
