@@ -160,6 +160,13 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
+static HHOOK keyboardHook = NULL;
+
+static LRESULT CALLBACK StaticKeyboardProc (int code, WPARAM wParam, LPARAM lParam)
+{
+	return CallNextHookEx (keyboardHook, code, wParam, lParam);
+}
+
 NodeEditorHwndControl::NodeEditorHwndControl () :
 	nodeEditor (nullptr),
 	hwnd (NULL)
@@ -207,6 +214,7 @@ bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 	UpdateWindow (hwnd);
 	MoveWindow (hwnd, x, y, width, height, TRUE);
 
+	keyboardHook = SetWindowsHookEx (WH_KEYBOARD, StaticKeyboardProc, GetModuleHandle (NULL), GetCurrentThreadId ());
 	return true;
 }
 
