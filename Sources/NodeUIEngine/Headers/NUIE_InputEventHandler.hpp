@@ -23,10 +23,16 @@ enum class MouseWheelRotation
 	Backward
 };
 
-enum class KeyCode
+enum class ModifierKeyCode
 {
 	Control		= 1,
 	Shift		= 2
+};
+
+enum class SpecialKeyCode
+{
+	Undefined,
+	Delete
 };
 
 }
@@ -43,9 +49,9 @@ namespace std
 	};
 
 	template <>
-	struct hash<NUIE::KeyCode>
+	struct hash<NUIE::ModifierKeyCode>
 	{
-		size_t operator() (const NUIE::KeyCode& keyCode) const noexcept
+		size_t operator() (const NUIE::ModifierKeyCode& keyCode) const noexcept
 		{
 			return (size_t) keyCode;
 		}
@@ -58,13 +64,13 @@ namespace NUIE
 class ModifierKeys
 {
 public:
-	ModifierKeys (const std::unordered_set<KeyCode>& keys);
+	ModifierKeys (const std::unordered_set<ModifierKeyCode>& keys);
 	~ModifierKeys ();
 
-	bool Contains (KeyCode keyCode) const;
+	bool Contains (ModifierKeyCode keyCode) const;
 
 private:
-	std::unordered_set<KeyCode> keys;
+	std::unordered_set<ModifierKeyCode> keys;
 };
 
 extern ModifierKeys EmptyModifierKeys;
@@ -72,25 +78,19 @@ extern ModifierKeys EmptyModifierKeys;
 class Key
 {
 public:
-	enum class SpecialKey
-	{
-		Undefined,
-		Delete
-	};
-
 	Key ();
 	Key (wchar_t unicodeKey);
-	Key (SpecialKey specialKeyCode);
+	Key (SpecialKeyCode specialKeyCode);
 
-	bool		IsValid () const;
-	bool		IsSpecialKey () const;
-	wchar_t		GetUnicodeKey () const;
-	SpecialKey	GetSpecialKeyCode () const;
+	bool			IsValid () const;
+	bool			IsSpecialKey () const;
+	wchar_t			GetUnicodeKey () const;
+	SpecialKeyCode	GetSpecialKeyCode () const;
 
 private:
-	bool		isValid;
-	wchar_t		unicodeKey;
-	SpecialKey	specialKeyCode;
+	bool			isValid;
+	wchar_t			unicodeKey;
+	SpecialKeyCode	specialKeyCode;
 };
 
 extern Key InvalidKey;

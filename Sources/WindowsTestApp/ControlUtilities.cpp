@@ -33,12 +33,12 @@ void MouseCaptureHandler::OnCaptureLost ()
 
 NUIE::ModifierKeys GetModiferKeysFromEvent (wxKeyboardState& evt)
 {
-	std::unordered_set<NUIE::KeyCode> keys;
+	std::unordered_set<NUIE::ModifierKeyCode> keys;
 	if (evt.ControlDown ()) {
-		keys.insert (NUIE::KeyCode::Control);
+		keys.insert (NUIE::ModifierKeyCode::Control);
 	}
 	if (evt.ShiftDown ()) {
-		keys.insert (NUIE::KeyCode::Shift);
+		keys.insert (NUIE::ModifierKeyCode::Shift);
 	}
 	return NUIE::ModifierKeys (keys);
 }
@@ -50,7 +50,7 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 		int key = evt.GetKeyCode ();
 		switch (key) {
 			case WXK_DELETE:
-				return NUIE::Key (NUIE::Key::SpecialKey::Delete);
+				return NUIE::Key (NUIE::SpecialKeyCode::Delete);
 		}
 		return NUIE::InvalidKey;
 	}

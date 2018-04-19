@@ -147,7 +147,7 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UIInputSlot.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UIItemFinder.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINode.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommands.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommandRegistration.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommandStructure.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommonParameters.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeParameterAccessor.hpp" />
@@ -178,7 +178,7 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UIInputSlot.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UIItemFinder.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINode.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommands.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommandRegistration.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommandStructure.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeParameterAccessor.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeParameters.cpp" />

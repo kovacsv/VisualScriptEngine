@@ -63,7 +63,7 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Rect modelSelectionRect = viewBox.ViewToModel (selectionRect);
 		NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
-		if (!modifierKeys.Contains (KeyCode::Control)) {
+		if (!modifierKeys.Contains (ModifierKeyCode::Control)) {
 			selectedNodes.Clear ();
 		}
 		std::unordered_set<UINodePtr> nodesToSelect;
@@ -395,7 +395,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 		if (foundNode != nullptr) {
 			const NE::NodeId& foundNodeId = foundNode->GetId ();
 			selectedNodes = uiManager.GetSelectedNodes ();
-			if (modifierKeys.Contains (KeyCode::Control)) {
+			if (modifierKeys.Contains (ModifierKeyCode::Control)) {
 				if (selectedNodes.Contains (foundNodeId)) {
 					selectedNodes.Erase (foundNodeId);
 				} else {
@@ -451,9 +451,20 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment
 	return EventHandlerResult::EventHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& /*env*/, const ModifierKeys& /*modifierKeys*/, const Key& /*pressedKey*/)
+EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const ModifierKeys& /*modifierKeys*/, const Key& pressedKey)
 {
-	// TODO
+	if (pressedKey.IsSpecialKey ()) {
+		switch (pressedKey.GetSpecialKeyCode ()) {
+			case NUIE::SpecialKeyCode::Delete:
+			{
+				const NUIE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+				DeleteNodesCommand command (uiManager, env, selectedNodes);
+				command.Do ();
+			}
+			break;
+		}
+	}
+
 	return EventHandlerResult::EventHandled;
 }
 

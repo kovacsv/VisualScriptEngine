@@ -150,9 +150,9 @@ TEST (SelectionTest)
 	{ // select node with selection rect
 		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd = env.doubleInputRect.GetBottomRight () + Point (10.0, 10.0);
-		env.nodeEditor.OnMouseDown (ModifierKeys ({ KeyCode::Control }), MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
-		env.nodeEditor.OnMouseMove (ModifierKeys ({ KeyCode::Control }), (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
-		env.nodeEditor.OnMouseUp (ModifierKeys ({ KeyCode::Control }), MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
+		env.nodeEditor.OnMouseDown (ModifierKeys ({ ModifierKeyCode::Control }), MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
+		env.nodeEditor.OnMouseMove (ModifierKeys ({ ModifierKeyCode::Control }), (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
+		env.nodeEditor.OnMouseUp (ModifierKeys ({ ModifierKeyCode::Control }), MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
 		ASSERT (env.CheckReference ("01_Selection_DoubleRangeAndViewer2Selected.svg"));
 	}
 

@@ -73,9 +73,6 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINode.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommands.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommandStructure.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -98,6 +95,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_InputEventHandler.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommandRegistration.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -165,12 +165,6 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommands.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommandStructure.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeParameterAccessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -184,6 +178,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_InputEventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommandRegistration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommandStructure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

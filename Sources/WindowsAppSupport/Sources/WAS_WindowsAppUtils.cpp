@@ -7,12 +7,12 @@ namespace WAS
 
 NUIE::ModifierKeys GetModiferKeysFromEvent (WPARAM wParam)
 {
-	std::unordered_set<NUIE::KeyCode> keys;
+	std::unordered_set<NUIE::ModifierKeyCode> keys;
 	if (wParam & MK_CONTROL) {
-		keys.insert (NUIE::KeyCode::Control);
+		keys.insert (NUIE::ModifierKeyCode::Control);
 	}
 	if (wParam & MK_SHIFT) {
-		keys.insert (NUIE::KeyCode::Shift);
+		keys.insert (NUIE::ModifierKeyCode::Shift);
 	}
 	return NUIE::ModifierKeys (keys);
 }

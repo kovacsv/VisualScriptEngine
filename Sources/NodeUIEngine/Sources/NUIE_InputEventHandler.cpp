@@ -6,7 +6,7 @@ namespace NUIE
 ModifierKeys EmptyModifierKeys ({});
 Key InvalidKey;
 
-ModifierKeys::ModifierKeys (const std::unordered_set<KeyCode>& keys) :
+ModifierKeys::ModifierKeys (const std::unordered_set<ModifierKeyCode>& keys) :
 	keys (keys)
 {
 
@@ -18,7 +18,7 @@ ModifierKeys::~ModifierKeys ()
 }
 
 
-bool ModifierKeys::Contains (KeyCode keyCode) const
+bool ModifierKeys::Contains (ModifierKeyCode keyCode) const
 {
 	return keys.find (keyCode) != keys.end ();
 }
@@ -26,7 +26,7 @@ bool ModifierKeys::Contains (KeyCode keyCode) const
 Key::Key () :
 	isValid (false),
 	unicodeKey (0),
-	specialKeyCode (SpecialKey::Undefined)
+	specialKeyCode (SpecialKeyCode::Undefined)
 {
 
 }
@@ -34,12 +34,12 @@ Key::Key () :
 Key::Key (wchar_t unicodeKey) :
 	isValid (true),
 	unicodeKey (unicodeKey),
-	specialKeyCode (SpecialKey::Undefined)
+	specialKeyCode (SpecialKeyCode::Undefined)
 {
 
 }
 
-Key::Key (SpecialKey specialKeyCode) :
+Key::Key (SpecialKeyCode specialKeyCode) :
 	isValid (true),
 	unicodeKey (0),
 	specialKeyCode (specialKeyCode)
@@ -54,7 +54,7 @@ bool Key::IsValid () const
 
 bool Key::IsSpecialKey () const
 {
-	return specialKeyCode != SpecialKey::Undefined;
+	return specialKeyCode != SpecialKeyCode::Undefined;
 }
 
 wchar_t Key::GetUnicodeKey () const
@@ -63,9 +63,9 @@ wchar_t Key::GetUnicodeKey () const
 	return unicodeKey;
 }
 
-Key::SpecialKey Key::GetSpecialKeyCode () const
+SpecialKeyCode Key::GetSpecialKeyCode () const
 {
-	DBGASSERT (specialKeyCode != SpecialKey::Undefined);
+	DBGASSERT (specialKeyCode != SpecialKeyCode::Undefined);
 	return specialKeyCode;
 }
 

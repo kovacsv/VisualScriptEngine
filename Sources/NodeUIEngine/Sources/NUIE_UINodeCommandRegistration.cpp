@@ -1,4 +1,4 @@
-#include "NUIE_UINodeCommands.hpp"
+#include "NUIE_UINodeCommandRegistration.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_UIItemFinder.hpp"
 #include "NE_Debug.hpp"

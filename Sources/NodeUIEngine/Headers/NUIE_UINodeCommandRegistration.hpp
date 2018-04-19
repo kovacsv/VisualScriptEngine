@@ -1,5 +1,5 @@
-#ifndef UINODECOMMANDS_HPP
-#define UINODECOMMANDS_HPP
+#ifndef UINODECOMMANDREGISTRATION_HPP
+#define UINODECOMMANDREGISTRATION_HPP
 
 #include "NUIE_UINode.hpp"
 #include "NUIE_CommandStructure.hpp"

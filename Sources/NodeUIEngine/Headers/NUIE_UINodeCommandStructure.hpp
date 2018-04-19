@@ -8,6 +8,47 @@
 namespace NUIE
 {
 
+class DeleteNodesCommand : public SingleCommand
+{
+public:
+	DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes);
+	virtual ~DeleteNodesCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	NodeCollection		relevantNodes;
+};
+
+class CopyNodesCommand : public SingleCommand
+{
+public:
+	CopyNodesCommand (NodeUIManager& uiManager, const NodeCollection& relevantNodes);
+	virtual ~CopyNodesCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NodeCollection		relevantNodes;
+};
+
+class PasteNodesCommand : public SingleCommand
+{
+public:
+	PasteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
+	virtual ~PasteNodesCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	Point				position;
+};
+
 NodeCollection		GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
 
 CommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);

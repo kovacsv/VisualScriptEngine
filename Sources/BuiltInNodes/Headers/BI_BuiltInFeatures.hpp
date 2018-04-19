@@ -2,7 +2,7 @@
 #define BUILTINFEATURES_HPP
 
 #include "NE_ValueCombination.hpp"
-#include "NUIE_UINodeCommands.hpp"
+#include "NUIE_UINodeCommandRegistration.hpp"
 
 namespace BI
 {

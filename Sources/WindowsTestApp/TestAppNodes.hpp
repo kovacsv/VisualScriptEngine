@@ -4,7 +4,7 @@
 #include "NE_SingleValues.hpp"
 #include "NUIE_UINode.hpp"
 #include "NUIE_NodeUIManager.hpp"
-#include "NUIE_UINodeCommands.hpp"
+#include "NUIE_UINodeCommandRegistration.hpp"
 #include "BI_BuiltInFeatures.hpp"
 
 class ColorNode :	public NUIE::UINode,
