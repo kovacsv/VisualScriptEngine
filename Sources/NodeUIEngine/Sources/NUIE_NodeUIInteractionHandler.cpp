@@ -251,6 +251,31 @@ public:
 	}
 };
 
+PastePositionCalculator::PastePositionCalculator () :
+	lastPastePosition (),
+	samePositionPasteCounter (0)
+{
+
+}
+
+Point PastePositionCalculator::CalculatePastePosition (NodeUIManager& uiManager, NodeUIEnvironment& env)
+{
+	static Point pasteOffset (20.0, 20.0);
+	const ViewBox& viewBox = uiManager.GetViewBox ();
+	const DrawingContext& drawingContext = env.GetDrawingContext ();
+	Size screenSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
+	Rect screenRect = Rect::FromPositionAndSize (Point (0, 0), screenSize);
+	Point modelPastePosition = viewBox.ViewToModel (screenRect.GetCenter ());
+	if (modelPastePosition == lastPastePosition) {
+		modelPastePosition = modelPastePosition + pasteOffset * samePositionPasteCounter;
+		samePositionPasteCounter += 1;
+	} else {
+		lastPastePosition = modelPastePosition;
+		samePositionPasteCounter = 1;
+	}
+	return modelPastePosition;
+}
+
 NodeInputEventHandler::NodeInputEventHandler (NodeUIManager& uiManager) :
 	uiManager (uiManager)
 {
@@ -451,21 +476,40 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment
 	return EventHandlerResult::EventHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const ModifierKeys& /*modifierKeys*/, const Key& pressedKey)
+EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Key& pressedKey)
 {
+	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+	CommandPtr command = nullptr;
+
 	if (pressedKey.IsSpecialKey ()) {
 		switch (pressedKey.GetSpecialKeyCode ()) {
-			case NUIE::SpecialKeyCode::Delete:
-			{
-				const NUIE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
-				DeleteNodesCommand command (uiManager, env, selectedNodes);
-				command.Do ();
-			}
-			break;
+			case SpecialKeyCode::Delete:
+				{
+					command.reset (new DeleteNodesCommand (uiManager, env, selectedNodes));
+				}
+				break;
+		}
+	} else if (modifierKeys.Contains (ModifierKeyCode::Control)) {
+		switch (pressedKey.GetUnicodeKey ()) {
+			case L'C':
+				{
+					command.reset (new CopyNodesCommand (uiManager, selectedNodes));
+				}
+				break;
+			case L'V':
+				{
+					Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
+					command.reset (new PasteNodesCommand (uiManager, env, modelPastePosition));
+				}
+				break;
 		}
 	}
 
-	return EventHandlerResult::EventHandled;
+	if (command != nullptr) {
+		command->Do ();
+		return EventHandlerResult::EventHandled;
+	}
+	return EventHandlerResult::EventNotHandled;
 }
 
 }

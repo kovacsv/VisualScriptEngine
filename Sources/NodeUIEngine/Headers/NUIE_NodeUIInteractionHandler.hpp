@@ -13,6 +13,18 @@ namespace NUIE
 
 class NodeUIManager;
 
+class PastePositionCalculator
+{
+public:
+	PastePositionCalculator ();
+
+	Point	CalculatePastePosition (NodeUIManager& uiManager, NodeUIEnvironment& env);
+
+private:
+	Point	lastPastePosition;
+	int		samePositionPasteCounter;
+};
+
 class NodeInputEventHandler : public InputEventHandler
 {
 public:
@@ -49,6 +61,7 @@ private:
 	NodeUIManager&					uiManager;
 	MultiMouseMoveHandler			multiMouseMoveHandler;
 	NodeInputEventHandler			nodeInputEventHandler;
+	PastePositionCalculator			pastePositionCalculator;
 };
 
 }

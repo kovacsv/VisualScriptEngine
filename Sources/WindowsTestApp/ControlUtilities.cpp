@@ -46,7 +46,7 @@ NUIE::ModifierKeys GetModiferKeysFromEvent (wxKeyboardState& evt)
 NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 {
 	wxChar unicodeKey = evt.GetUnicodeKey ();
-	if (unicodeKey < WXK_START) {
+	if (unicodeKey <= WXK_ESCAPE || unicodeKey == WXK_SPACE ||unicodeKey == WXK_DELETE ||unicodeKey >= WXK_START) {
 		int key = evt.GetKeyCode ();
 		switch (key) {
 			case WXK_DELETE:
