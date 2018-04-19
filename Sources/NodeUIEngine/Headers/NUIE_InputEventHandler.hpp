@@ -75,23 +75,25 @@ public:
 	enum class SpecialKey
 	{
 		Undefined,
-		Left,
-		Top,
-		Right,
-		Bottom
+		Delete
 	};
 
-	Key (int keyCode);
+	Key ();
+	Key (wchar_t unicodeKey);
 	Key (SpecialKey specialKeyCode);
 
+	bool		IsValid () const;
 	bool		IsSpecialKey () const;
-	int			GetKeyCode () const;
+	wchar_t		GetUnicodeKey () const;
 	SpecialKey	GetSpecialKeyCode () const;
 
 private:
-	int			keyCode;
+	bool		isValid;
+	wchar_t		unicodeKey;
 	SpecialKey	specialKeyCode;
 };
+
+extern Key InvalidKey;
 
 enum class EventHandlerResult
 {

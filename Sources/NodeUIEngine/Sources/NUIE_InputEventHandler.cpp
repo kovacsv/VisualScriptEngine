@@ -4,6 +4,7 @@ namespace NUIE
 {
 
 ModifierKeys EmptyModifierKeys ({});
+Key InvalidKey;
 
 ModifierKeys::ModifierKeys (const std::unordered_set<KeyCode>& keys) :
 	keys (keys)
@@ -22,18 +23,33 @@ bool ModifierKeys::Contains (KeyCode keyCode) const
 	return keys.find (keyCode) != keys.end ();
 }
 
-Key::Key (int keyCode) :
-	keyCode (keyCode),
+Key::Key () :
+	isValid (false),
+	unicodeKey (0),
+	specialKeyCode (SpecialKey::Undefined)
+{
+
+}
+
+Key::Key (wchar_t unicodeKey) :
+	isValid (true),
+	unicodeKey (unicodeKey),
 	specialKeyCode (SpecialKey::Undefined)
 {
 
 }
 
 Key::Key (SpecialKey specialKeyCode) :
-	keyCode (-1),
+	isValid (true),
+	unicodeKey (0),
 	specialKeyCode (specialKeyCode)
 {
 
+}
+
+bool Key::IsValid () const
+{
+	return isValid;
 }
 
 bool Key::IsSpecialKey () const
@@ -41,10 +57,10 @@ bool Key::IsSpecialKey () const
 	return specialKeyCode != SpecialKey::Undefined;
 }
 
-int Key::GetKeyCode () const
+wchar_t Key::GetUnicodeKey () const
 {
-	DBGASSERT (keyCode != -1);
-	return keyCode;
+	DBGASSERT (unicodeKey != 0);
+	return unicodeKey;
 }
 
 Key::SpecialKey Key::GetSpecialKeyCode () const

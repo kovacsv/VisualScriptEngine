@@ -20,5 +20,6 @@ private:
 };
 
 NUIE::ModifierKeys GetModiferKeysFromEvent (wxKeyboardState& evt);
+NUIE::Key GetKeyFromEvent (wxKeyEvent& evt);
 
 #endif

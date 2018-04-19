@@ -159,13 +159,12 @@ public:
 
 	void OnKeyDown (wxKeyEvent& evt)
 	{
-		wxChar ch = evt.GetKeyCode ();
-		if (ch < 32) {
+		NUIE::ModifierKeys modifiers = GetModiferKeysFromEvent (evt);
+		NUIE::Key key = GetKeyFromEvent (evt);
+		if (!key.IsValid ()) {
 			return;
 		}
-		
-		NUIE::ModifierKeys modifiers = GetModiferKeysFromEvent (evt);
-		
+		nodeEditorControl->OnKeyPress (modifiers, key);
 	}
 
 	void UpdateStatusBar ()
