@@ -236,6 +236,7 @@ HWND NodeEditorHwndControl::GetWindowHandle ()
 void NodeEditorHwndControl::Resize (int x, int y, int width, int height)
 {
 	MoveWindow (hwnd, x, y, width, height, TRUE);
+	nodeEditor->OnResize (width, height);
 }
 
 void NodeEditorHwndControl::Invalidate ()
