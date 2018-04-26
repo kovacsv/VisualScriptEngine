@@ -5,6 +5,59 @@
 namespace WAS
 {
 
+class KeyboardEventHandler
+{
+public:
+	static void RegisterNodeEditorControl (NodeEditorHwndControl* control)
+	{
+		KeyboardEventHandler& keyboardEventHandler = GetInstance ();
+		keyboardEventHandler.controls.push_back (control);
+	}
+
+private:
+	KeyboardEventHandler ()
+	{
+		keyboardHook = SetWindowsHookEx (WH_KEYBOARD, StaticKeyboardProc, GetModuleHandle (NULL), GetCurrentThreadId ());
+	}
+
+	~KeyboardEventHandler ()
+	{
+		UnhookWindowsHookEx (keyboardHook);
+	}
+
+	void OnKeyPress (const NUIE::ModifierKeys& modifierKeys, const NUIE::Key& pressedKey)
+	{
+		for (NodeEditorHwndControl* control : controls) {
+			NUIE::NodeEditor* nodeEditor = control->GetNodeEditor ();
+			nodeEditor->OnKeyPress (modifierKeys, pressedKey);
+		}
+	}
+
+	HHOOK GetKeyboardHook ()
+	{
+		return keyboardHook;
+	}
+
+	static LRESULT CALLBACK StaticKeyboardProc (int code, WPARAM wParam, LPARAM lParam)
+	{
+		KeyboardEventHandler& keyboardEventHandler = GetInstance ();
+		HHOOK keyboardHook = keyboardEventHandler.GetKeyboardHook ();
+		// TODO: Determine modifier keys and pressed key
+		keyboardEventHandler.OnKeyPress (NUIE::EmptyModifierKeys, NUIE::InvalidKey);
+		return CallNextHookEx (keyboardHook, code, wParam, lParam);
+	}
+
+	static KeyboardEventHandler& GetInstance ()
+	{
+		static KeyboardEventHandler eventHandler;
+		return eventHandler;
+	}
+
+private:
+	HHOOK									keyboardHook;
+	std::vector<NodeEditorHwndControl*>		controls;
+};
+
 class SetCaptureHandler
 {
 public:
@@ -160,13 +213,6 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
-static HHOOK keyboardHook = NULL;
-
-static LRESULT CALLBACK StaticKeyboardProc (int code, WPARAM wParam, LPARAM lParam)
-{
-	return CallNextHookEx (keyboardHook, code, wParam, lParam);
-}
-
 NodeEditorHwndControl::NodeEditorHwndControl () :
 	nodeEditor (nullptr),
 	hwnd (NULL)
@@ -214,7 +260,7 @@ bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 	UpdateWindow (hwnd);
 	MoveWindow (hwnd, x, y, width, height, TRUE);
 
-	keyboardHook = SetWindowsHookEx (WH_KEYBOARD, StaticKeyboardProc, GetModuleHandle (NULL), GetCurrentThreadId ());
+	KeyboardEventHandler::RegisterNodeEditorControl (this);
 	return true;
 }
 
