@@ -32,7 +32,9 @@ enum class ModifierKeyCode
 enum class SpecialKeyCode
 {
 	Undefined,
-	Delete
+	Delete,
+	Copy,
+	Paste
 };
 
 }
@@ -79,17 +81,12 @@ class Key
 {
 public:
 	Key ();
-	Key (wchar_t unicodeKey);
 	Key (SpecialKeyCode specialKeyCode);
 
 	bool			IsValid () const;
-	bool			IsSpecialKey () const;
-	wchar_t			GetUnicodeKey () const;
 	SpecialKeyCode	GetSpecialKeyCode () const;
 
 private:
-	bool			isValid;
-	wchar_t			unicodeKey;
 	SpecialKeyCode	specialKeyCode;
 };
 
@@ -109,7 +106,7 @@ public:
 	virtual EventHandlerResult	HandleMouseDrag (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position) = 0;
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) = 0;
 	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseWheelRotation rotation, const Point& position) = 0;
-	virtual EventHandlerResult	HandleKeyPress (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Key& pressedKey) = 0;
+	virtual EventHandlerResult	HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey) = 0;
 };
 
 class MouseEventTranslator

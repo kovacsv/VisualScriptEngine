@@ -22,7 +22,7 @@ public:
 	void						OnMouseMove (const ModifierKeys& modifierKeys, int x, int y);
 	void						OnMouseWheel (const ModifierKeys& modifierKeys, MouseWheelRotation rotation, int x, int y);
 	void						OnMouseDoubleClick (const ModifierKeys& modifierKeys, MouseButton button, int x, int y);
-	void						OnKeyPress (const ModifierKeys& modifierKeys, const Key& pressedKey);
+	void						OnKeyPress (const Key& pressedKey);
 	void						OnResize (int newWidth, int newHeight);
 	
 	void						InvalidateAllNodesDrawing ();

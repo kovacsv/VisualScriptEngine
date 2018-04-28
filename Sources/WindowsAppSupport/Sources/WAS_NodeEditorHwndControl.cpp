@@ -5,59 +5,6 @@
 namespace WAS
 {
 
-class KeyboardEventHandler
-{
-public:
-	static void RegisterNodeEditorControl (NodeEditorHwndControl* control)
-	{
-		KeyboardEventHandler& keyboardEventHandler = GetInstance ();
-		keyboardEventHandler.controls.push_back (control);
-	}
-
-private:
-	KeyboardEventHandler ()
-	{
-		keyboardHook = SetWindowsHookEx (WH_KEYBOARD, StaticKeyboardProc, GetModuleHandle (NULL), GetCurrentThreadId ());
-	}
-
-	~KeyboardEventHandler ()
-	{
-		UnhookWindowsHookEx (keyboardHook);
-	}
-
-	void OnKeyPress (const NUIE::ModifierKeys& modifierKeys, const NUIE::Key& pressedKey)
-	{
-		for (NodeEditorHwndControl* control : controls) {
-			NUIE::NodeEditor* nodeEditor = control->GetNodeEditor ();
-			nodeEditor->OnKeyPress (modifierKeys, pressedKey);
-		}
-	}
-
-	HHOOK GetKeyboardHook ()
-	{
-		return keyboardHook;
-	}
-
-	static LRESULT CALLBACK StaticKeyboardProc (int code, WPARAM wParam, LPARAM lParam)
-	{
-		KeyboardEventHandler& keyboardEventHandler = GetInstance ();
-		HHOOK keyboardHook = keyboardEventHandler.GetKeyboardHook ();
-		// TODO: Determine modifier keys and pressed key
-		keyboardEventHandler.OnKeyPress (NUIE::EmptyModifierKeys, NUIE::InvalidKey);
-		return CallNextHookEx (keyboardHook, code, wParam, lParam);
-	}
-
-	static KeyboardEventHandler& GetInstance ()
-	{
-		static KeyboardEventHandler eventHandler;
-		return eventHandler;
-	}
-
-private:
-	HHOOK									keyboardHook;
-	std::vector<NodeEditorHwndControl*>		controls;
-};
-
 class SetCaptureHandler
 {
 public:
@@ -208,6 +155,32 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				nodeEditor->OnResize (newWidth, newHeight);
 			}
 			break;
+		case WM_KEYDOWN:
+			switch (wParam) {
+				case VK_DELETE:
+				{
+					NUIE::Key pressedKey (NUIE::SpecialKeyCode::Delete);
+					nodeEditor->OnKeyPress (pressedKey);
+				}
+				break;
+			}
+			break;
+		case WM_CHAR:
+			switch (wParam) {
+				case 3: // TODO: Remove magic number
+					{
+						NUIE::Key pressedKey (NUIE::SpecialKeyCode::Copy);
+						nodeEditor->OnKeyPress (pressedKey);
+					}
+					break;
+				case 22: // TODO: Remove magic number
+					{
+						NUIE::Key pressedKey (NUIE::SpecialKeyCode::Paste);
+						nodeEditor->OnKeyPress (pressedKey);
+					}
+					break;
+			}
+			break;
 	}
 
 	return DefWindowProc (hwnd, msg, wParam, lParam);
@@ -260,7 +233,6 @@ bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 	UpdateWindow (hwnd);
 	MoveWindow (hwnd, x, y, width, height, TRUE);
 
-	KeyboardEventHandler::RegisterNodeEditorControl (this);
 	return true;
 }
 

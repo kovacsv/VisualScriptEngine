@@ -46,13 +46,21 @@ NUIE::ModifierKeys GetModiferKeysFromEvent (wxKeyboardState& evt)
 NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 {
 	wxChar unicodeKey = evt.GetUnicodeKey ();
-	if (unicodeKey <= WXK_ESCAPE || unicodeKey == WXK_SPACE ||unicodeKey == WXK_DELETE ||unicodeKey >= WXK_START) {
+	if (unicodeKey <= WXK_ESCAPE || unicodeKey == WXK_SPACE || unicodeKey == WXK_DELETE || unicodeKey >= WXK_START) {
 		int key = evt.GetKeyCode ();
 		switch (key) {
 			case WXK_DELETE:
 				return NUIE::Key (NUIE::SpecialKeyCode::Delete);
 		}
-		return NUIE::InvalidKey;
 	}
-	return NUIE::Key (unicodeKey);
+	
+	NUIE::ModifierKeys modifierKeys = GetModiferKeysFromEvent (evt);
+	switch (unicodeKey) {
+		case L'C':
+			return NUIE::Key (NUIE::SpecialKeyCode::Copy);
+		case L'V':
+			return NUIE::Key (NUIE::SpecialKeyCode::Paste);
+	}
+
+	return NUIE::InvalidKey;
 }

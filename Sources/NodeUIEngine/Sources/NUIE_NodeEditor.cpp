@@ -61,9 +61,9 @@ void NodeEditor::OnMouseDoubleClick (const ModifierKeys& keys, MouseButton butto
 	uiManager.Update (uiEnvironment);
 }
 
-void NodeEditor::OnKeyPress (const ModifierKeys& modifierKeys, const Key& pressedKey)
+void NodeEditor::OnKeyPress (const Key& pressedKey)
 {
-	uiInteractionHandler.HandleKeyPress (uiEnvironment, modifierKeys, pressedKey);
+	uiInteractionHandler.HandleKeyPress (uiEnvironment, pressedKey);
 	uiManager.Update (uiEnvironment);
 }
 

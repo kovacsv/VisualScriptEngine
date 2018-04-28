@@ -24,24 +24,12 @@ bool ModifierKeys::Contains (ModifierKeyCode keyCode) const
 }
 
 Key::Key () :
-	isValid (false),
-	unicodeKey (0),
-	specialKeyCode (SpecialKeyCode::Undefined)
-{
-
-}
-
-Key::Key (wchar_t unicodeKey) :
-	isValid (true),
-	unicodeKey (unicodeKey),
 	specialKeyCode (SpecialKeyCode::Undefined)
 {
 
 }
 
 Key::Key (SpecialKeyCode specialKeyCode) :
-	isValid (true),
-	unicodeKey (0),
 	specialKeyCode (specialKeyCode)
 {
 
@@ -49,18 +37,7 @@ Key::Key (SpecialKeyCode specialKeyCode) :
 
 bool Key::IsValid () const
 {
-	return isValid;
-}
-
-bool Key::IsSpecialKey () const
-{
 	return specialKeyCode != SpecialKeyCode::Undefined;
-}
-
-wchar_t Key::GetUnicodeKey () const
-{
-	DBGASSERT (unicodeKey != 0);
-	return unicodeKey;
 }
 
 SpecialKeyCode Key::GetSpecialKeyCode () const

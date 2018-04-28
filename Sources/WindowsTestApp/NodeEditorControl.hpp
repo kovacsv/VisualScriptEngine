@@ -108,7 +108,7 @@ public:
 	void							OnMouseMove (wxMouseEvent& evt);
 	void							OnMouseWheel (wxMouseEvent& evt);
 
-	void							OnKeyPress (const NUIE::ModifierKeys& modifierKeys, const NUIE::Key& pressedKey);
+	void							OnKeyPress (const NUIE::Key& pressedKey);
 
 	void							New ();
 	bool							Open (const std::wstring& fileName);

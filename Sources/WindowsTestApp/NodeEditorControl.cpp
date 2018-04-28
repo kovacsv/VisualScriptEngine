@@ -322,9 +322,9 @@ void NodeEditorControl::OnMouseWheel (wxMouseEvent& evt)
 	nodeEditor.OnMouseWheel (GetModiferKeysFromEvent (evt), rotation, evt.GetX (), evt.GetY ());
 }
 
-void NodeEditorControl::OnKeyPress (const NUIE::ModifierKeys& modifierKeys, const NUIE::Key& pressedKey)
+void NodeEditorControl::OnKeyPress (const NUIE::Key& pressedKey)
 {
-	nodeEditor.OnKeyPress (modifierKeys, pressedKey);
+	nodeEditor.OnKeyPress (pressedKey);
 }
 
 void NodeEditorControl::New ()

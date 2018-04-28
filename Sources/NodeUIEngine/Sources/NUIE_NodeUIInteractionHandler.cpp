@@ -322,7 +322,7 @@ EventHandlerResult NodeInputEventHandler::HandleMouseWheel (NodeUIEnvironment&, 
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeInputEventHandler::HandleKeyPress (NodeUIEnvironment&, const ModifierKeys&, const Key&)
+EventHandlerResult NodeInputEventHandler::HandleKeyPress (NodeUIEnvironment&, const Key&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
@@ -476,33 +476,28 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment
 	return EventHandlerResult::EventHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Key& pressedKey)
+EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey)
 {
 	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
 	CommandPtr command = nullptr;
 
-	if (pressedKey.IsSpecialKey ()) {
-		switch (pressedKey.GetSpecialKeyCode ()) {
-			case SpecialKeyCode::Delete:
-				{
-					command.reset (new DeleteNodesCommand (uiManager, env, selectedNodes));
-				}
-				break;
-		}
-	} else if (modifierKeys.Contains (ModifierKeyCode::Control)) {
-		switch (pressedKey.GetUnicodeKey ()) {
-			case L'C':
-				{
-					command.reset (new CopyNodesCommand (uiManager, selectedNodes));
-				}
-				break;
-			case L'V':
-				{
-					Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
-					command.reset (new PasteNodesCommand (uiManager, env, modelPastePosition));
-				}
-				break;
-		}
+	switch (pressedKey.GetSpecialKeyCode ()) {
+		case SpecialKeyCode::Delete:
+			{
+				command.reset (new DeleteNodesCommand (uiManager, env, selectedNodes));
+			}
+			break;
+		case SpecialKeyCode::Copy:
+			{
+				command.reset (new CopyNodesCommand (uiManager, selectedNodes));
+			}
+			break;
+		case SpecialKeyCode::Paste:
+			{
+				Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
+				command.reset (new PasteNodesCommand (uiManager, env, modelPastePosition));
+			}
+			break;
 	}
 
 	if (command != nullptr) {
