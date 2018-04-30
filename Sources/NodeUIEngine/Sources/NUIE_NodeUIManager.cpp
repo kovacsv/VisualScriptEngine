@@ -326,6 +326,7 @@ bool NodeUIManager::IsPreviewMode () const
 
 void NodeUIManager::Clear ()
 {
+	nodeGroups.Clear ();
 	nodeManager.Clear ();
 	viewBox.Reset ();
 	selectedNodes.Clear ();

@@ -210,4 +210,10 @@ void UINodeGroupList::InvalidateNodeGroupDrawing (const UINodePtr& node)
 	found->second->InvalidateGroupDrawing ();
 }
 
+void UINodeGroupList::Clear ()
+{
+	groups.clear ();
+	nodeToGroup.clear ();
+}
+
 }

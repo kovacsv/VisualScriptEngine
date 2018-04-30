@@ -61,6 +61,7 @@ public:
 	void	DeleteGroup (const UINodeGroupPtr& group);
 	void	RemoveNodeFromGroup (const UINodePtr& node);
 	void	InvalidateNodeGroupDrawing (const UINodePtr& node);
+	void	Clear ();
 
 private:
 	std::vector<UINodeGroupPtr>						groups;
