@@ -299,4 +299,36 @@ TEST (CopyPasteTest)
 	ASSERT (env.CheckReference ("05_CopyPaste_TwoNodesPasted.svg"));
 }
 
+TEST (NodeGroupingTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env;
+	ASSERT (env.CheckReference ("06_NodeGrouping_Basic.svg"));
+
+	Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.uiEnvironment, SlotId ("start")).GetCenter ();
+	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
+	
+	{ // select nodes with selection rect
+		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
+		Point rectSelectEnd = env.rangeInputRect.GetBottomRight () + Point (10.0, 10.0);
+		env.nodeEditor.OnMouseDown (NUIE::EmptyModifierKeys, MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
+		env.nodeEditor.OnMouseMove (NUIE::EmptyModifierKeys, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
+		env.nodeEditor.OnMouseUp (NUIE::EmptyModifierKeys, MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
+		ASSERT (env.CheckReference ("06_NodeGrouping_DoubleAndRangeSelected.svg"));
+	}
+
+	{ // group the selected nodes, and deselect all
+		env.SetNextCommandName (L"Create New Group");
+		env.RightClick (env.rangeInputHeaderPoint);
+		env.Click (env.pointInBackground);
+		ASSERT (env.CheckReference ("06_NodeGrouping_DoubleAndRangeGrouped.svg"));
+	}
+
+	{ // move the group
+		env.DragDrop (env.doubleInputRect.GetTopRight () + Point (10.0, 0.0), env.doubleInputRect.GetTopRight () + Point (20.0, 10.0));
+		ASSERT (env.CheckReference ("06_NodeGrouping_GroupMoved.svg"));
+	}
+}
+
 }

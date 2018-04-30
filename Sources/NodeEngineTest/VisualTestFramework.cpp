@@ -60,9 +60,11 @@ CommandPtr TestEventHandlers::SelectCommandByName (const CommandStructure& comma
 CommandPtr TestEventHandlers::SelectCommandByName (const CommandPtr& command)
 {
 	if (command->HasChildCommands ()) {
+		CommandPtr foundCommand = nullptr;
 		command->EnumerateChildCommands ([&] (const CommandPtr& childCommand) {
-			SelectCommandByName (childCommand);
+			foundCommand = SelectCommandByName (childCommand);
 		});
+		return foundCommand;
 	} else {
 		if (command->GetName () == commandToSelect) {
 			return command;
