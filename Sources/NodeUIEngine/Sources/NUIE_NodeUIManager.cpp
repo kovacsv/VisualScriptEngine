@@ -334,6 +334,7 @@ void NodeUIManager::Clear ()
 
 bool NodeUIManager::Load (NE::InputStream& inputStream)
 {
+	// TODO: Serialize groups
 	bool success = true;
 	Clear ();
 

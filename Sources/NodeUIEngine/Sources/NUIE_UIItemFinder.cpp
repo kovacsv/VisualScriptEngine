@@ -86,6 +86,7 @@ bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& 
 							const std::function<void (UIOutputSlotPtr&)>& outputSlotFound,
 							const std::function<void (UIInputSlotPtr&)>& inputSlotFound)
 {
+	// TODO: Find groups
 	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, viewPosition);
 	UIOutputSlotPtr foundOutputSlot = nullptr;
 	UIInputSlotPtr foundInputSlot = nullptr;
