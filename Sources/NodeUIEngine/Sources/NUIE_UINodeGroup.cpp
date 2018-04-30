@@ -72,6 +72,11 @@ bool UINodeGroup::DeleteNode (const UINodePtr& node)
 	return true;
 }
 
+Rect UINodeGroup::GetRect (NodeUIDrawingEnvironment& env) const
+{
+	return GetDrawingImage (env).GetRect ();
+}
+
 void UINodeGroup::Draw (NodeUIDrawingEnvironment& env) const
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
@@ -83,7 +88,7 @@ void UINodeGroup::InvalidateGroupDrawing ()
 	drawingImage.Reset ();
 }
 
-const DrawingImage& UINodeGroup::GetDrawingImage (NodeUIDrawingEnvironment& env) const
+const GroupDrawingImage& UINodeGroup::GetDrawingImage (NodeUIDrawingEnvironment& env) const
 {
 	if (drawingImage.IsEmpty ()) {
 		UpdateDrawingImage (env);

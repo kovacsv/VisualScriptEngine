@@ -33,11 +33,12 @@ public:
 	bool	AddNode (const UINodePtr& node);
 	bool	DeleteNode (const UINodePtr& node);
 
+	Rect	GetRect (NodeUIDrawingEnvironment& env) const;
 	void	Draw (NodeUIDrawingEnvironment& env) const;
 	void	InvalidateGroupDrawing ();
 
 private:
-	const DrawingImage&				GetDrawingImage (NodeUIDrawingEnvironment& env) const;
+	const GroupDrawingImage&		GetDrawingImage (NodeUIDrawingEnvironment& env) const;
 	void							UpdateDrawingImage (NodeUIDrawingEnvironment& env) const;
 
 	std::wstring					name;
