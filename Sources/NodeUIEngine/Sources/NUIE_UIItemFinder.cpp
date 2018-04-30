@@ -63,12 +63,26 @@ UINodePtr FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironm
 	return foundNode;
 }
 
+UINodeGroupPtr FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
+{
+	const ViewBox& viewBox = uiManager.GetViewBox ();
+	UINodeGroupPtr foundGroup = nullptr;
+	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) -> bool {
+		Rect groupRect = viewBox.ModelToView (group->GetRect (env));
+		if (groupRect.Contains (viewPosition)) {
+			foundGroup = group;
+		}
+		return true;
+	});
+	return foundGroup;
+}
+
 UIInputSlotPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	UIInputSlotPtr foundSlot = nullptr;
 	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, nullptr, [&] (const UIInputSlotPtr& inputSlot) {
 		foundSlot = inputSlot;
-	});
+	}, nullptr);
 	return foundSlot;
 }
 
@@ -77,14 +91,15 @@ UIOutputSlotPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDra
 	UIOutputSlotPtr foundSlot = nullptr;
 	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, [&] (const UIOutputSlotPtr& inputSlot) {
 		foundSlot = inputSlot;
-	}, nullptr);
+	}, nullptr, nullptr);
 	return foundSlot;
 }
 
 bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition,
 							const std::function<void (UINodePtr&)>& nodeFound,
 							const std::function<void (UIOutputSlotPtr&)>& outputSlotFound,
-							const std::function<void (UIInputSlotPtr&)>& inputSlotFound)
+							const std::function<void (UIInputSlotPtr&)>& inputSlotFound,
+							const std::function<void (UINodeGroupPtr&)>& nodeGroupFound)
 {
 	// TODO: Find groups
 	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, viewPosition);
@@ -128,6 +143,14 @@ bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& 
 	
 		if (foundInputSlot != nullptr && inputSlotFound != nullptr) {
 			inputSlotFound (foundInputSlot);
+			return true;
+		}
+	}
+
+	if (nodeGroupFound != nullptr) {
+		UINodeGroupPtr foundGroup = FindNodeGroupUnderPosition (uiManager, env, viewPosition);
+		if (foundGroup != nullptr) {
+			nodeGroupFound (foundGroup);
 			return true;
 		}
 	}

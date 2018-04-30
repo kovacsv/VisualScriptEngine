@@ -72,6 +72,15 @@ bool UINodeGroup::DeleteNode (const UINodePtr& node)
 	return true;
 }
 
+NodeCollection UINodeGroup::GetNodes () const
+{
+	NodeCollection nodeCollection;
+	for (const UINodePtr& node : nodes) {
+		nodeCollection.Insert (node->GetId ());
+	}
+	return nodeCollection;
+}
+
 Rect UINodeGroup::GetRect (NodeUIDrawingEnvironment& env) const
 {
 	return GetDrawingImage (env).GetRect ();

@@ -28,14 +28,15 @@ public:
 	UINodeGroup (const std::wstring& name);
 	~UINodeGroup ();
 
-	bool	IsEmpty () const;
-	bool	ContainsNode (const UINodePtr& node) const;
-	bool	AddNode (const UINodePtr& node);
-	bool	DeleteNode (const UINodePtr& node);
+	bool			IsEmpty () const;
+	bool			ContainsNode (const UINodePtr& node) const;
+	bool			AddNode (const UINodePtr& node);
+	bool			DeleteNode (const UINodePtr& node);
+	NodeCollection	GetNodes () const;
 
-	Rect	GetRect (NodeUIDrawingEnvironment& env) const;
-	void	Draw (NodeUIDrawingEnvironment& env) const;
-	void	InvalidateGroupDrawing ();
+	Rect			GetRect (NodeUIDrawingEnvironment& env) const;
+	void			Draw (NodeUIDrawingEnvironment& env) const;
+	void			InvalidateGroupDrawing ();
 
 private:
 	const GroupDrawingImage&		GetDrawingImage (NodeUIDrawingEnvironment& env) const;

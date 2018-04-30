@@ -105,10 +105,10 @@ private:
 class NodeMovingHandler : public MouseMoveHandler
 {
 public:
-	NodeMovingHandler (NodeUIManager& uiManager, UINodePtr& currentNode) :
+	NodeMovingHandler (NodeUIManager& uiManager, const NodeCollection& relevantNodes) :
 		MouseMoveHandler (),
 		uiManager (uiManager),
-		currentNode (currentNode)
+		relevantNodes (relevantNodes)
 	{
 	
 	}
@@ -123,8 +123,7 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = (position - prevPosition) / viewBox.GetScale ();
 
-		NodeCollection nodesToMove = GetNodesForCommand (uiManager, currentNode);
-		nodesToMove.Enumerate ([&] (const NE::NodeId& nodeId) {
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			uiNode->SetNodePosition (uiNode->GetNodePosition () + diff);
 			uiManager.InvalidateNodeGroupDrawing (uiNode);
@@ -136,7 +135,7 @@ public:
 
 private:
 	NodeUIManager&	uiManager;
-	UINodePtr		currentNode;
+	NodeCollection	relevantNodes;
 };
 
 template <class StartSlotType, class EndSlotType>
@@ -357,7 +356,8 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnviron
 	if (mouseButton == MouseButton::Left) {
 		bool found = FindItemUnderPosition (uiManager, env, position,
 			[&] (UINodePtr& foundNode) {
-				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, foundNode));
+				NodeCollection nodesToMove = GetNodesForCommand (uiManager, foundNode);
+				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			},
 			[&] (UIOutputSlotPtr& foundOutputSlot) {
 				UINodePtr uiNode = uiManager.GetUINode (foundOutputSlot->GetOwnerNodeId ());
@@ -370,6 +370,10 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnviron
 					Point startNodePosition = uiNode->GetInputSlotConnPosition (env, foundInputSlot->GetId ());
 					multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputConnectionHandler (uiManager, foundInputSlot, startNodePosition));
 				}
+			},
+			[&] (UINodeGroupPtr& foundGroup) {
+				NodeCollection nodesToMove = foundGroup->GetNodes ();
+				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			}
 		);
 		if (!found) {
@@ -452,6 +456,9 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 			[&] (UIInputSlotPtr& foundInputSlot) {
 				CommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundInputSlot, commands);
+			},
+			[&] (UINodeGroupPtr& /*foundGroup*/) {
+				// TODO: Create group command structure
 			}
 		);
 		if (!found) {
