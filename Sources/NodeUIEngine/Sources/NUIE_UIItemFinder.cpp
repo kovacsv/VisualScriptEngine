@@ -68,7 +68,7 @@ UINodeGroupPtr FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawi
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	UINodeGroupPtr foundGroup = nullptr;
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) -> bool {
-		Rect groupRect = viewBox.ModelToView (group->GetRect (env));
+		Rect groupRect = viewBox.ModelToView (group->GetRect (uiManager, env));
 		if (groupRect.Contains (viewPosition)) {
 			foundGroup = group;
 		}

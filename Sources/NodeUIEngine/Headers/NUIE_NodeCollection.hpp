@@ -16,6 +16,7 @@ public:
 	NodeCollection (const NE::NodeId& nodeId);
 	~NodeCollection ();
 
+	bool		IsEmpty () const;
 	bool		Contains (const NE::NodeId& nodeId) const;
 	size_t		Count () const;
 	NE::NodeId	GetLast () const;

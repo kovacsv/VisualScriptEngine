@@ -7,6 +7,8 @@
 namespace NUIE
 {
 
+class NodeUIManager;
+
 class GroupDrawingImage : public DrawingImage
 {
 public:
@@ -28,22 +30,22 @@ public:
 	UINodeGroup (const std::wstring& name);
 	~UINodeGroup ();
 
-	bool			IsEmpty () const;
-	bool			ContainsNode (const UINodePtr& node) const;
-	bool			AddNode (const UINodePtr& node);
-	bool			DeleteNode (const UINodePtr& node);
-	NodeCollection	GetNodes () const;
+	bool					IsEmpty () const;
+	bool					ContainsNode (const NE::NodeId& nodeId) const;
+	bool					AddNode (const NE::NodeId& nodeId);
+	bool					DeleteNode (const NE::NodeId& nodeId);
+	const NodeCollection&	GetNodes () const;
 
-	Rect			GetRect (NodeUIDrawingEnvironment& env) const;
-	void			Draw (NodeUIDrawingEnvironment& env) const;
-	void			InvalidateGroupDrawing ();
+	Rect					GetRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
+	void					Draw (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
+	void					InvalidateGroupDrawing ();
 
 private:
-	const GroupDrawingImage&		GetDrawingImage (NodeUIDrawingEnvironment& env) const;
-	void							UpdateDrawingImage (NodeUIDrawingEnvironment& env) const;
+	const GroupDrawingImage&		GetDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
+	void							UpdateDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
 
 	std::wstring					name;
-	std::unordered_set<UINodePtr>	nodes;
+	NodeCollection					nodes;
 	mutable GroupDrawingImage		drawingImage;
 };
 
@@ -57,10 +59,10 @@ public:
 	~UINodeGroupList ();
 
 	void	Enumerate (const std::function<bool (const UINodeGroupPtr&)>& processor) const;
-	bool	CreateGroup (const std::wstring& name, const std::vector<UINodePtr>& nodes);
+	bool	CreateGroup (const std::wstring& name, const NodeCollection& nodes);
 	void	DeleteGroup (const UINodeGroupPtr& group);
-	void	RemoveNodeFromGroup (const UINodePtr& node);
-	void	InvalidateNodeGroupDrawing (const UINodePtr& node);
+	void	RemoveNodeFromGroup (const NE::NodeId& nodeId);
+	void	InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
 	void	Clear ();
 
 private:

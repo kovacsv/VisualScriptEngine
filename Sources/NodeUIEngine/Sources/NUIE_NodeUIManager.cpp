@@ -76,9 +76,9 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 		return false;
 	}
 	selectedNodes.Erase (uiNode->GetId ());
+	nodeGroups.RemoveNodeFromGroup (uiNode->GetId ());
 	uiNode->OnDeleted (env);
 	InvalidateNodeDrawing (uiNode);
-	nodeGroups.RemoveNodeFromGroup (uiNode);
 	if (!nodeManager.DeleteNode (uiNode)) {
 		return false;
 	}
@@ -274,13 +274,12 @@ void NodeUIManager::InvalidateNodeDrawing (const UINodePtr& uiNode)
 
 void NodeUIManager::InvalidateNodeGroupDrawing (const NE::NodeId& nodeId)
 {
-	UINodePtr uiNode = GetUINode (nodeId);
-	InvalidateNodeGroupDrawing (uiNode);
+	nodeGroups.InvalidateNodeGroupDrawing (nodeId);
 }
 
 void NodeUIManager::InvalidateNodeGroupDrawing (const UINodePtr& uiNode)
 {
-	nodeGroups.InvalidateNodeGroupDrawing (uiNode);
+	InvalidateNodeGroupDrawing (uiNode->GetId ());
 }
 
 void NodeUIManager::Update (NodeUICalculationEnvironment& env)
@@ -387,7 +386,7 @@ bool NodeUIManager::RemoveNodesFromGroup (const NodeCollection& nodeCollection)
 {
 	std::vector<UINodePtr> nodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
-		nodeGroups.RemoveNodeFromGroup (GetUINode (nodeId));
+		nodeGroups.RemoveNodeFromGroup (nodeId);
 		return true;	
 	});
 	return true;
@@ -395,12 +394,7 @@ bool NodeUIManager::RemoveNodesFromGroup (const NodeCollection& nodeCollection)
 
 bool NodeUIManager::CreateUINodeGroup (const std::wstring& name, const NodeCollection& nodeCollection)
 {
-	std::vector<UINodePtr> nodes;
-	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
-		nodes.push_back (GetUINode (nodeId));
-		return true;	
-	});
-	return nodeGroups.CreateGroup (name, nodes);
+	return nodeGroups.CreateGroup (name, nodeCollection);
 }
 
 }

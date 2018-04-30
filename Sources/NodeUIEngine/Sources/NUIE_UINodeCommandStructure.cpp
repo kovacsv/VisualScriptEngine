@@ -549,7 +549,7 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 	groupingCommandGroup->AddChildCommand (CommandPtr (new CreateGroupCommand (uiManager, relevantNodes)));
 	bool isNodeGrouped = false;
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
-		if (group->ContainsNode (uiNode)) {
+		if (group->ContainsNode (uiNode->GetId ())) {
 			isNodeGrouped = true;
 		}
 		return !isNodeGrouped;

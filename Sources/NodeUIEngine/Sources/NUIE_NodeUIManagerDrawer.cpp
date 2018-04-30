@@ -72,9 +72,9 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIDrawingEnvironment& env) const
 void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& env) const
 {
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
-		Rect groupRect = group->GetRect (env);
+		Rect groupRect = group->GetRect (uiManager, env);
 		if (IsRectVisible (env, groupRect)) {
-			group->Draw (env);
+			group->Draw (uiManager, env);
 		}
 		return true;
 	});

@@ -22,6 +22,12 @@ NodeCollection::~NodeCollection ()
 
 }
 
+bool NodeCollection::IsEmpty () const
+{
+	DBGASSERT (nodes.empty () == nodeSet.empty ());
+	return nodes.empty ();
+}
+
 bool NodeCollection::Contains (const NE::NodeId& nodeId) const
 {
 	return nodeSet.find (nodeId) != nodeSet.end ();

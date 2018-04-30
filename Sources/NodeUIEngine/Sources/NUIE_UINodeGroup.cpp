@@ -1,5 +1,6 @@
 #include "NUIE_UINodeGroup.hpp"
 #include "NUIE_SkinParams.hpp"
+#include "NUIE_NodeUIManager.hpp"
 
 #include <algorithm>
 
@@ -45,51 +46,47 @@ UINodeGroup::~UINodeGroup ()
 
 bool UINodeGroup::IsEmpty () const
 {
-	return nodes.empty ();
+	return nodes.IsEmpty ();
 }
 
-bool UINodeGroup::ContainsNode (const UINodePtr& node) const
+bool UINodeGroup::ContainsNode (const NE::NodeId& nodeId) const
 {
-	return nodes.find (node) != nodes.end ();
+	return nodes.Contains (nodeId);
 }
 
-bool UINodeGroup::AddNode (const UINodePtr& node)
+bool UINodeGroup::AddNode (const NE::NodeId& nodeId)
 {
-	if (nodes.find (node) != nodes.end ()) {
+	if (nodes.Contains (nodeId)) {
 		return false;
 	}
-	nodes.insert (node);
+	nodes.Insert (nodeId);
 	return true;
 }
 
-bool UINodeGroup::DeleteNode (const UINodePtr& node)
+bool UINodeGroup::DeleteNode (const NE::NodeId& nodeId)
 {
-	if (nodes.find (node) == nodes.end ()) {
+	if (!nodes.Contains (nodeId)) {
 		return false;
 	}
-	nodes.erase (node);
+	nodes.Erase (nodeId);
 	InvalidateGroupDrawing ();
 	return true;
 }
 
-NodeCollection UINodeGroup::GetNodes () const
+const NodeCollection& UINodeGroup::GetNodes () const
 {
-	NodeCollection nodeCollection;
-	for (const UINodePtr& node : nodes) {
-		nodeCollection.Insert (node->GetId ());
-	}
-	return nodeCollection;
+	return nodes;
 }
 
-Rect UINodeGroup::GetRect (NodeUIDrawingEnvironment& env) const
+Rect UINodeGroup::GetRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
 {
-	return GetDrawingImage (env).GetRect ();
+	return GetDrawingImage (uiManager, env).GetRect ();
 }
 
-void UINodeGroup::Draw (NodeUIDrawingEnvironment& env) const
+void UINodeGroup::Draw (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
-	GetDrawingImage (env).Draw (drawingContext);
+	GetDrawingImage (uiManager, env).Draw (drawingContext);
 }
 
 void UINodeGroup::InvalidateGroupDrawing ()
@@ -97,23 +94,24 @@ void UINodeGroup::InvalidateGroupDrawing ()
 	drawingImage.Reset ();
 }
 
-const GroupDrawingImage& UINodeGroup::GetDrawingImage (NodeUIDrawingEnvironment& env) const
+const GroupDrawingImage& UINodeGroup::GetDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
 {
 	if (drawingImage.IsEmpty ()) {
-		UpdateDrawingImage (env);
+		UpdateDrawingImage (uiManager, env);
 	}
 	return drawingImage;
 }
 
-void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env) const
+void UINodeGroup::UpdateDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
 	SkinParams& skinParams = env.GetSkinParams ();
 
 	Rect boundingRect;
 	bool isEmptyRect = true;
-	for (const UINodePtr& node : nodes) {
-		Rect nodeRect = node->GetNodeRect (env);
+	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+		UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
+		Rect nodeRect = uiNode->GetNodeRect (env);
 		if (isEmptyRect) {
 			boundingRect = nodeRect;
 			isEmptyRect = false;
@@ -123,7 +121,8 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env) const
 				Point (std::max (nodeRect.GetRight (), boundingRect.GetRight ()), std::max (nodeRect.GetBottom (), boundingRect.GetBottom ()))
 			);
 		}
-	}
+		return true;
+	});
 
 	double groupPadding = skinParams.GetGroupPadding ();
 
@@ -163,18 +162,19 @@ void UINodeGroupList::Enumerate (const std::function<bool (const UINodeGroupPtr&
 	}
 }
 
-bool UINodeGroupList::CreateGroup (const std::wstring& name, const std::vector<UINodePtr>& nodes)
+bool UINodeGroupList::CreateGroup (const std::wstring& name, const NodeCollection& nodes)
 {
-	if (DBGERROR (nodes.empty ())) {
+	if (DBGERROR (nodes.IsEmpty ())) {
 		return false;
 	}
 
 	UINodeGroupPtr group (new UINodeGroup (name));
-	for (const UINodePtr& node : nodes) {
-		RemoveNodeFromGroup (node);
-		group->AddNode (node);
-		nodeToGroup.insert ({ node->GetId (), group });
-	}
+	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+		RemoveNodeFromGroup (nodeId);
+		group->AddNode (nodeId);
+		nodeToGroup.insert ({ nodeId, group });
+		return true;
+	});
 
 	groups.push_back (group);
 	return true;
@@ -187,23 +187,23 @@ void UINodeGroupList::DeleteGroup (const UINodeGroupPtr& group)
 	groups.erase (foundInGroups);
 }
 
-void UINodeGroupList::RemoveNodeFromGroup (const UINodePtr& node)
+void UINodeGroupList::RemoveNodeFromGroup (const NE::NodeId& nodeId)
 {
-	auto found = nodeToGroup.find (node->GetId ());
+	auto found = nodeToGroup.find (nodeId);
 	if (found == nodeToGroup.end ()) {
 		return;
 	}
 	UINodeGroupPtr group = found->second;
-	group->DeleteNode (node);
+	group->DeleteNode (nodeId);
 	if (group->IsEmpty ()) {
 		DeleteGroup (group);
 	}
-	nodeToGroup.erase (node->GetId ());
+	nodeToGroup.erase (nodeId);
 }
 
-void UINodeGroupList::InvalidateNodeGroupDrawing (const UINodePtr& node)
+void UINodeGroupList::InvalidateNodeGroupDrawing (const NE::NodeId& nodeId)
 {
-	auto found = nodeToGroup.find (node->GetId ());
+	auto found = nodeToGroup.find (nodeId);
 	if (found == nodeToGroup.end ()) {
 		return;
 	}
