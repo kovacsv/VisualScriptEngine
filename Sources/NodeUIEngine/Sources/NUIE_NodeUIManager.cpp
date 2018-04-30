@@ -326,10 +326,10 @@ bool NodeUIManager::IsPreviewMode () const
 
 void NodeUIManager::Clear ()
 {
+	selectedNodes.Clear ();
 	nodeGroups.Clear ();
 	nodeManager.Clear ();
 	viewBox.Reset ();
-	selectedNodes.Clear ();
 	status.RequestRecalculate ();
 }
 
