@@ -194,7 +194,6 @@ size_t MultiLineViewerNode::GetTextsPerPage () const
 void MultiLineViewerNode::SetTextsPerPage (size_t newTextsPerPage)
 {
 	textsPerPage = newTextsPerPage;
-	InvalidateDrawing ();
 }
 
 }

@@ -100,6 +100,9 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommandRegistration.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeGroup.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_CommandStructure.cpp">
@@ -184,6 +187,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeCommandStructure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeGroup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

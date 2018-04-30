@@ -3,6 +3,7 @@
 
 #include "NE_NodeManager.hpp"
 #include "NUIE_UINode.hpp"
+#include "NUIE_UINodeGroup.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeCollection.hpp"
 #include "NUIE_CopyPasteHandler.hpp"
@@ -63,6 +64,8 @@ public:
 	void					InvalidateNodeValue (const UINodePtr& uiNode);
 	void					InvalidateNodeDrawing (const NE::NodeId& nodeId);
 	void					InvalidateNodeDrawing (const UINodePtr& uiNode);
+	void					InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
+	void					InvalidateNodeGroupDrawing (const UINodePtr& uiNode);
 
 	void					Update (NodeUICalculationEnvironment& env);
 	void					Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawingModifier);
@@ -79,6 +82,10 @@ public:
 	bool					CanPaste () const;
 	bool					Copy (const NodeCollection& nodeCollection);
 	bool					Paste ();
+
+	void					EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor) const;
+	bool					RemoveNodesFromGroup (const NodeCollection& nodeCollection);
+	bool					CreateUINodeGroup (const std::wstring& name, const NodeCollection& nodeCollection);
 
 private:
 	class Status
@@ -100,6 +107,7 @@ private:
 	};
 
 	NE::NodeManager		nodeManager;
+	UINodeGroupList		nodeGroups;
 	NodeCollection		selectedNodes;
 	CopyPasteHandler	copyPasteHandler;
 	ViewBox				viewBox;

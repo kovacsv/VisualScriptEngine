@@ -78,6 +78,7 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 	selectedNodes.Erase (uiNode->GetId ());
 	uiNode->OnDeleted (env);
 	InvalidateNodeDrawing (uiNode);
+	nodeGroups.RemoveNodeFromGroup (uiNode);
 	if (!nodeManager.DeleteNode (uiNode)) {
 		return false;
 	}
@@ -263,11 +264,23 @@ void NodeUIManager::InvalidateNodeDrawing (const NE::NodeId& nodeId)
 void NodeUIManager::InvalidateNodeDrawing (const UINodePtr& uiNode)
 {
 	uiNode->InvalidateDrawing ();
+	InvalidateNodeGroupDrawing (uiNode);
 	nodeManager.EnumerateDependentNodes (uiNode, [&] (const NE::NodeId& dependentNodeId) {
 		UINodePtr dependentNode = GetUINode (dependentNodeId);
 		InvalidateNodeDrawing (dependentNode);
 	});
 	status.RequestRedraw ();
+}
+
+void NodeUIManager::InvalidateNodeGroupDrawing (const NE::NodeId& nodeId)
+{
+	UINodePtr uiNode = GetUINode (nodeId);
+	InvalidateNodeGroupDrawing (uiNode);
+}
+
+void NodeUIManager::InvalidateNodeGroupDrawing (const UINodePtr& uiNode)
+{
+	nodeGroups.InvalidateNodeGroupDrawing (uiNode);
 }
 
 void NodeUIManager::Update (NodeUICalculationEnvironment& env)
@@ -361,6 +374,31 @@ bool NodeUIManager::Paste ()
 	RequestRecalculate ();
 	RequestRedraw ();
 	return success;
+}
+
+void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor) const
+{
+	nodeGroups.Enumerate (processor);
+}
+
+bool NodeUIManager::RemoveNodesFromGroup (const NodeCollection& nodeCollection)
+{
+	std::vector<UINodePtr> nodes;
+	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
+		nodeGroups.RemoveNodeFromGroup (GetUINode (nodeId));
+		return true;	
+	});
+	return true;
+}
+
+bool NodeUIManager::CreateUINodeGroup (const std::wstring& name, const NodeCollection& nodeCollection)
+{
+	std::vector<UINodePtr> nodes;
+	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
+		nodes.push_back (GetUINode (nodeId));
+		return true;	
+	});
+	return nodeGroups.CreateGroup (name, nodes);
 }
 
 }

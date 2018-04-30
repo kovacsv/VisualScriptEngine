@@ -29,6 +29,11 @@ public:
 
 	virtual const Color&	GetHasValueStatusColor () const = 0;
 	virtual const Color&	GetHasNoValueStatusColor () const = 0;
+
+	virtual const Font&		GetGroupNameFont () const = 0;
+	virtual const Color&	GetGroupNameColor () const = 0;
+	virtual const Color&	GetGroupBackgroundColor () const = 0;
+	virtual double			GetGroupPadding () const = 0;
 };
 
 class DefaultSkinParams : public SkinParams
@@ -57,6 +62,11 @@ public:
 	virtual const Color&	GetHasValueStatusColor () const override;
 	virtual const Color&	GetHasNoValueStatusColor () const override;
 
+	virtual const Font&		GetGroupNameFont () const override;
+	virtual const Color&	GetGroupNameColor () const override;
+	virtual const Color&	GetGroupBackgroundColor () const override;
+	virtual double			GetGroupPadding () const override;
+
 protected:
 	Color	backgroundColor;
 	Pen		connectionLinePen;
@@ -77,6 +87,11 @@ protected:
 
 	Color	hasValueStatusColor;
 	Color	hasNoValueStatusColor;
+
+	Font	groupNameFont;
+	Color	groupNameColor;
+	Color	groupBackgroundColor;
+	double	groupPadding;
 };
 
 }

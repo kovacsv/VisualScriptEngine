@@ -53,6 +53,7 @@ void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawing
 		TextSkipperContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
 		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
 		NodeUIDrawingEnvironmentContextDecorator drawEnv (env, viewBoxContext);
+		DrawGroups (drawEnv);
 		DrawConnections (drawEnv, drawModifier);
 		DrawNodes (drawEnv);
 	}
@@ -66,6 +67,15 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIDrawingEnvironment& env) const
 	DrawingContext& drawingContext = env.GetDrawingContext ();
 	Rect contextRect (0.0, 0.0, drawingContext.GetWidth (), drawingContext.GetHeight ());
 	drawingContext.FillRect (contextRect, env.GetSkinParams ().GetBackgroundColor ());
+}
+
+void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& env) const
+{
+	// TODO: is rect visible
+	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
+		group->Draw (env);
+		return true;
+	});
 }
 
 void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const

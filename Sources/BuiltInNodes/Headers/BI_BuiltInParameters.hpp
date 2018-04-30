@@ -88,7 +88,7 @@ public:
 			return false;
 		}
 		uiNode->SetNodeName (NE::StringValue::Get (value));
-		uiNode->InvalidateDrawing ();
+		uiManager.InvalidateNodeDrawing (uiNode);
 		uiManager.RequestRedraw ();
 		return true;
 	}

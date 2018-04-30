@@ -41,7 +41,6 @@ const std::wstring& UINode::GetNodeName () const
 void UINode::SetNodeName (const std::wstring& newNodeName)
 {
 	nodeName = newNodeName;
-	InvalidateDrawing ();
 }
 
 const Point& UINode::GetNodePosition () const

@@ -464,6 +464,60 @@ private:
 	CommandStructure	commandStructure;
 };
 
+class CreateGroupCommand : public SingleCommand
+{
+public:
+	CreateGroupCommand (NodeUIManager& uiManager, const NodeCollection& relevantNodes) :
+		SingleCommand (L"Create New Group", false),
+		uiManager (uiManager),
+		relevantNodes (relevantNodes)
+	{
+	
+	}
+
+	virtual ~CreateGroupCommand ()
+	{
+	
+	}
+
+	virtual void Do () override
+	{
+		uiManager.CreateUINodeGroup (L"Group", relevantNodes);
+		uiManager.RequestRedraw ();
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NodeCollection		relevantNodes;
+};
+
+class RemoveNodesFromGroupCommand : public SingleCommand
+{
+public:
+	RemoveNodesFromGroupCommand (NodeUIManager& uiManager, const NodeCollection& relevantNodes) :
+		SingleCommand (L"Remove From Group", false),
+		uiManager (uiManager),
+		relevantNodes (relevantNodes)
+	{
+	
+	}
+
+	virtual ~RemoveNodesFromGroupCommand ()
+	{
+	
+	}
+
+	virtual void Do () override
+	{
+		uiManager.RemoveNodesFromGroup (relevantNodes);
+		uiManager.RequestRedraw ();
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NodeCollection		relevantNodes;
+};
+
 NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode)
 {
 	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
@@ -486,9 +540,25 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 {
 	NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
+
 	commandStructureBuilder.RegisterCommand (CommandPtr (new SetParametersCommand (uiManager, uiEnvironment, uiNode, relevantNodes)));
 	commandStructureBuilder.RegisterCommand (CommandPtr (new CopyNodesCommand (uiManager, relevantNodes)));
 	commandStructureBuilder.RegisterCommand (CommandPtr (new DeleteNodesCommand (uiManager, uiEnvironment, relevantNodes)));
+
+	GroupCommandPtr groupingCommandGroup (new GroupCommand (L"Grouping"));
+	groupingCommandGroup->AddChildCommand (CommandPtr (new CreateGroupCommand (uiManager, relevantNodes)));
+	bool isNodeGrouped = false;
+	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
+		if (group->ContainsNode (uiNode)) {
+			isNodeGrouped = true;
+		}
+		return !isNodeGrouped;
+	});
+	if (isNodeGrouped) {
+		groupingCommandGroup->AddChildCommand (CommandPtr (new RemoveNodesFromGroupCommand (uiManager, relevantNodes)));
+	}
+	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
+
 	uiNode->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();
 }

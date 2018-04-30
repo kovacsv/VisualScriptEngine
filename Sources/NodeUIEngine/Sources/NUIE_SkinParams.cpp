@@ -18,7 +18,11 @@ DefaultSkinParams::DefaultSkinParams () :
 	selectionBlendColor (0, 255, 0),
 	selectionRectPen (Color (0, 138, 184), 1.0),
 	hasValueStatusColor (Color (0, 255, 0)),
-	hasNoValueStatusColor (Color (255, 0, 0))
+	hasNoValueStatusColor (Color (255, 0, 0)),
+	groupNameFont (L"Arial", 18.0),
+	groupNameColor (Color (0, 0, 0)),
+	groupBackgroundColor (Color (160, 200, 240)),
+	groupPadding (10.0)
 {
 
 }
@@ -101,6 +105,26 @@ const Color& DefaultSkinParams::GetHasValueStatusColor () const
 const Color& DefaultSkinParams::GetHasNoValueStatusColor () const
 {
 	return hasNoValueStatusColor;
+}
+
+const Font& DefaultSkinParams::GetGroupNameFont () const
+{
+	return groupNameFont;
+}
+
+const Color& DefaultSkinParams::GetGroupNameColor () const
+{
+	return groupNameColor;
+}
+
+const Color& DefaultSkinParams::GetGroupBackgroundColor () const
+{
+	return groupBackgroundColor;
+}
+
+double DefaultSkinParams::GetGroupPadding () const
+{
+	return groupPadding;
 }
 
 }

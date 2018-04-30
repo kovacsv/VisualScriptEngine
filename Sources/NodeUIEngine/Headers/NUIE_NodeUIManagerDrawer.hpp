@@ -28,6 +28,7 @@ public:
 
 private:
 	void				DrawBackground (NodeUIDrawingEnvironment& env) const;
+	void				DrawGroups (NodeUIDrawingEnvironment& env) const;
 	void				DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
 	void				DrawConnection (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;
 	void				DrawNodes (NodeUIDrawingEnvironment& env) const;

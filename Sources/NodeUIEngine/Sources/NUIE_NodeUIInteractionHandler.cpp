@@ -127,6 +127,7 @@ public:
 		nodesToMove.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			uiNode->SetNodePosition (uiNode->GetNodePosition () + diff);
+			uiManager.InvalidateNodeGroupDrawing (uiNode);
 			return true;
 		});
 
