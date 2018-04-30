@@ -24,26 +24,26 @@ bool ModifierKeys::Contains (ModifierKeyCode keyCode) const
 }
 
 Key::Key () :
-	specialKeyCode (SpecialKeyCode::Undefined)
+	pressedKeyCode (PressedKeyCode::Undefined)
 {
 
 }
 
-Key::Key (SpecialKeyCode specialKeyCode) :
-	specialKeyCode (specialKeyCode)
+Key::Key (PressedKeyCode pressedKeyCode) :
+	pressedKeyCode (pressedKeyCode)
 {
 
 }
 
 bool Key::IsValid () const
 {
-	return specialKeyCode != SpecialKeyCode::Undefined;
+	return pressedKeyCode != PressedKeyCode::Undefined;
 }
 
-SpecialKeyCode Key::GetSpecialKeyCode () const
+PressedKeyCode Key::GetKeyCode () const
 {
-	DBGASSERT (specialKeyCode != SpecialKeyCode::Undefined);
-	return specialKeyCode;
+	DBGASSERT (pressedKeyCode != PressedKeyCode::Undefined);
+	return pressedKeyCode;
 }
 
 MouseEventTranslator::MouseEventTranslator (InputEventHandler& handler) :

@@ -50,16 +50,16 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 		int key = evt.GetKeyCode ();
 		switch (key) {
 			case WXK_DELETE:
-				return NUIE::Key (NUIE::SpecialKeyCode::Delete);
+				return NUIE::Key (NUIE::PressedKeyCode::Delete);
 		}
 	}
 	
 	NUIE::ModifierKeys modifierKeys = GetModiferKeysFromEvent (evt);
 	switch (unicodeKey) {
 		case L'C':
-			return NUIE::Key (NUIE::SpecialKeyCode::Copy);
+			return NUIE::Key (NUIE::PressedKeyCode::Copy);
 		case L'V':
-			return NUIE::Key (NUIE::SpecialKeyCode::Paste);
+			return NUIE::Key (NUIE::PressedKeyCode::Paste);
 	}
 
 	return NUIE::InvalidKey;

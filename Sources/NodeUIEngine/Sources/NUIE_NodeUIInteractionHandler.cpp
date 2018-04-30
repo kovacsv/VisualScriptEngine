@@ -481,18 +481,18 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
 	CommandPtr command = nullptr;
 
-	switch (pressedKey.GetSpecialKeyCode ()) {
-		case SpecialKeyCode::Delete:
+	switch (pressedKey.GetKeyCode ()) {
+		case PressedKeyCode::Delete:
 			{
 				command.reset (new DeleteNodesCommand (uiManager, env, selectedNodes));
 			}
 			break;
-		case SpecialKeyCode::Copy:
+		case PressedKeyCode::Copy:
 			{
 				command.reset (new CopyNodesCommand (uiManager, selectedNodes));
 			}
 			break;
-		case SpecialKeyCode::Paste:
+		case PressedKeyCode::Paste:
 			{
 				Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
 				command.reset (new PasteNodesCommand (uiManager, env, modelPastePosition));

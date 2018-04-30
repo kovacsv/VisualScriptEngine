@@ -159,7 +159,7 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			switch (wParam) {
 				case VK_DELETE:
 				{
-					NUIE::Key pressedKey (NUIE::SpecialKeyCode::Delete);
+					NUIE::Key pressedKey (NUIE::PressedKeyCode::Delete);
 					nodeEditor->OnKeyPress (pressedKey);
 				}
 				break;
@@ -169,13 +169,13 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			switch (wParam) {
 				case 3: // TODO: Remove magic number
 					{
-						NUIE::Key pressedKey (NUIE::SpecialKeyCode::Copy);
+						NUIE::Key pressedKey (NUIE::PressedKeyCode::Copy);
 						nodeEditor->OnKeyPress (pressedKey);
 					}
 					break;
 				case 22: // TODO: Remove magic number
 					{
-						NUIE::Key pressedKey (NUIE::SpecialKeyCode::Paste);
+						NUIE::Key pressedKey (NUIE::PressedKeyCode::Paste);
 						nodeEditor->OnKeyPress (pressedKey);
 					}
 					break;
