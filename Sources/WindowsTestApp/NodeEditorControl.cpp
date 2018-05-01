@@ -147,6 +147,11 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
+NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::CommandStructure& commands)
+{
+	return SelectCommandFromContextMenu (panel, position, commands);
+}
+
 bool AppEventHandlers::OnParameterSettings (NUIE::NodeParameterAccessorPtr paramAccessor)
 {
 	ParameterDialog paramDialog (panel, paramAccessor);

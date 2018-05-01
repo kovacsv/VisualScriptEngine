@@ -457,8 +457,9 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 				CommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundInputSlot, commands);
 			},
-			[&] (UINodeGroupPtr& /*foundGroup*/) {
-				// TODO: Create group command structure
+			[&] (UINodeGroupPtr& foundGroup) {
+				CommandStructure commands = CreateNodeGroupCommandStructure (uiManager, env, foundGroup);
+				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundGroup, commands);
 			}
 		);
 		if (!found) {

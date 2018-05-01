@@ -491,6 +491,33 @@ private:
 	NodeCollection		relevantNodes;
 };
 
+class DeleteGroupCommand : public SingleCommand
+{
+public:
+	DeleteGroupCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
+		SingleCommand (L"Delete Group", false),
+		uiManager (uiManager),
+		group (group)
+	{
+	
+	}
+
+	virtual ~DeleteGroupCommand ()
+	{
+	
+	}
+
+	virtual void Do () override
+	{
+		uiManager.DeleteUINodeGroup (group);
+		uiManager.RequestRedraw ();
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	UINodeGroupPtr		group;
+};
+
 class RemoveNodesFromGroupCommand : public SingleCommand
 {
 public:
@@ -597,6 +624,13 @@ CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, Node
 
 	inputSlot->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();
+}
+
+CommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& /*uiEnvironment*/, const UINodeGroupPtr& group)
+{
+	CommandStructure commandStructure;
+	commandStructure.AddCommand (CommandPtr (new DeleteGroupCommand (uiManager, group)));
+	return commandStructure;
 }
 
 }

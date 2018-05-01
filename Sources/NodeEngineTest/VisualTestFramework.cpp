@@ -31,6 +31,11 @@ CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&,
 	return SelectCommandByName (commands);
 }
 
+CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const CommandStructure& commands)
+{
+	return SelectCommandByName (commands);
+}
+
 bool TestEventHandlers::OnParameterSettings (NodeParameterAccessorPtr)
 {
 	DBGBREAK ();

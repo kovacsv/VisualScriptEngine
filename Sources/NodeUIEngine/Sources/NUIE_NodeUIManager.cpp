@@ -394,4 +394,9 @@ bool NodeUIManager::CreateUINodeGroup (const std::wstring& name, const NodeColle
 	return nodeGroups.CreateGroup (name, nodeCollection);
 }
 
+void NodeUIManager::DeleteUINodeGroup (const UINodeGroupPtr& group)
+{
+	nodeGroups.DeleteGroup (group);
+}
+
 }

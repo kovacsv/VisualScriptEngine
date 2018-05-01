@@ -63,6 +63,16 @@ public:
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
+	virtual NUIE::CommandPtr OnContextMenu (
+		NUIE::NodeUIManager& uiManager,
+		NUIE::NodeUIEnvironment& env,
+		const NUIE::Point& position,
+		const NUIE::UINodeGroupPtr& group,
+		const NUIE::CommandStructure& commands) override
+	{
+		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
+	}
+
 	virtual bool OnParameterSettings (NUIE::NodeParameterAccessorPtr) override
 	{
 		// TODO
