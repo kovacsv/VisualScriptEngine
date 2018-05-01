@@ -253,9 +253,14 @@ NE::Stream::Status UINodeGroupList::Read (NE::InputStream& inputStream)
 	size_t groupCount = 0;
 	inputStream.Read (groupCount);
 	for (size_t i = 0; i < groupCount; i++) {
-		UINodeGroup tempGroup;
-		tempGroup.Read (inputStream);
-		CreateGroup (tempGroup.GetName (), tempGroup.GetNodes ());
+		UINodeGroupPtr group (new UINodeGroup ());
+		group->Read (inputStream);
+		const NodeCollection& nodes = group->GetNodes ();
+		groups.push_back (group);
+		nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+			nodeToGroup.insert ({ nodeId, group });
+			return true;
+		});
 	}
 	return inputStream.GetStatus ();
 }
