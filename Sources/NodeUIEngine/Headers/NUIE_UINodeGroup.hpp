@@ -26,12 +26,18 @@ private:
 
 class UINodeGroup
 {
+	SERIALIZABLE;
+
 public:
+	UINodeGroup ();
 	UINodeGroup (const std::wstring& name);
 	~UINodeGroup ();
 
+	const std::wstring&		GetName () const;
+
 	bool					IsEmpty () const;
 	bool					ContainsNode (const NE::NodeId& nodeId) const;
+
 	bool					AddNode (const NE::NodeId& nodeId);
 	bool					DeleteNode (const NE::NodeId& nodeId);
 	const NodeCollection&	GetNodes () const;
@@ -39,6 +45,9 @@ public:
 	Rect					GetRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
 	void					Draw (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
 	void					InvalidateGroupDrawing ();
+
+	NE::Stream::Status		Read (NE::InputStream& inputStream);
+	NE::Stream::Status		Write (NE::OutputStream& outputStream) const;
 
 private:
 	const GroupDrawingImage&		GetDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
@@ -54,16 +63,21 @@ typedef std::shared_ptr<const UINodeGroup> UINodeGroupConstPtr;
 
 class UINodeGroupList
 {
+	SERIALIZABLE;
+
 public:
 	UINodeGroupList ();
 	~UINodeGroupList ();
 
-	void	Enumerate (const std::function<bool (const UINodeGroupPtr&)>& processor) const;
-	bool	CreateGroup (const std::wstring& name, const NodeCollection& nodes);
-	void	DeleteGroup (const UINodeGroupPtr& group);
-	void	RemoveNodeFromGroup (const NE::NodeId& nodeId);
-	void	InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
-	void	Clear ();
+	void				Enumerate (const std::function<bool (const UINodeGroupPtr&)>& processor) const;
+	bool				CreateGroup (const std::wstring& name, const NodeCollection& nodes);
+	void				DeleteGroup (const UINodeGroupPtr& group);
+	void				RemoveNodeFromGroup (const NE::NodeId& nodeId);
+	void				InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
+	void				Clear ();
+
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
 private:
 	std::vector<UINodeGroupPtr>						groups;

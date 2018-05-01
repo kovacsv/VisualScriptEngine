@@ -5,6 +5,8 @@
 namespace NUIE
 {
 
+NE::SerializationInfo NodeCollection::serializationInfo (NE::ObjectVersion (1));
+
 NodeCollection::NodeCollection ()
 {
 
@@ -83,6 +85,30 @@ bool NodeCollection::operator== (const NodeCollection& rhs) const
 bool NodeCollection::operator!= (const NodeCollection& rhs) const
 {
 	return !operator== (rhs);
+}
+
+NE::Stream::Status NodeCollection::Read (NE::InputStream& inputStream)
+{
+	DBGASSERT (IsEmpty ());
+	NE::ObjectHeader header (inputStream);
+	size_t nodeCount = 0;
+	inputStream.Read (nodeCount);
+	for (size_t i = 0; i < nodeCount; i++) {
+		NE::NodeId nodeId;
+		nodeId.Read (inputStream);
+		Insert (nodeId);
+	}
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status NodeCollection::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	outputStream.Write (nodes.size ());
+	for (const NE::NodeId& nodeId : nodes) {
+		nodeId.Write (outputStream);
+	}
+	return outputStream.GetStatus ();
 }
 
 }

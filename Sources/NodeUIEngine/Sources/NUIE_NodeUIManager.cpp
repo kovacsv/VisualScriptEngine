@@ -334,28 +334,25 @@ void NodeUIManager::Clear ()
 
 bool NodeUIManager::Load (NE::InputStream& inputStream)
 {
-	// TODO: Serialize groups
-	bool success = true;
 	Clear ();
 
 	size_t version;
 	inputStream.Read (version);
 	ReadViewBox (inputStream, viewBox);
-	if (nodeManager.Read (inputStream) != NE::Stream::Status::NoError) {
-		success = false;
-	}
+	nodeManager.Read (inputStream);
+	nodeGroups.Read (inputStream);
 	status.RequestRecalculate ();
+	bool success = (inputStream.GetStatus () == NE::Stream::Status::NoError);
 	return success;
 }
 
 bool NodeUIManager::Save (NE::OutputStream& outputStream) const
 {
-	bool success = true;
 	outputStream.Write (NodeUIManagerVersion);
 	WriteViewBox (outputStream, viewBox);
-	if (nodeManager.Write (outputStream) != NE::Stream::Status::NoError) {
-		success = false;
-	}
+	nodeManager.Write (outputStream);
+	nodeGroups.Write (outputStream);
+	bool success = (outputStream.GetStatus () == NE::Stream::Status::NoError);
 	return success;
 }
 

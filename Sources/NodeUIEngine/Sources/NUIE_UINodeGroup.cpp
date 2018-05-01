@@ -7,6 +7,9 @@
 namespace NUIE
 {
 
+NE::SerializationInfo UINodeGroup::serializationInfo (NE::ObjectVersion (1));
+NE::SerializationInfo UINodeGroupList::serializationInfo (NE::ObjectVersion (1));
+
 GroupDrawingImage::GroupDrawingImage ()
 {
 
@@ -33,6 +36,12 @@ void GroupDrawingImage::SetRect (const Rect& newRect)
 	rect = newRect;
 }
 
+UINodeGroup::UINodeGroup () :
+	UINodeGroup (L"")
+{
+
+}
+
 UINodeGroup::UINodeGroup (const std::wstring& name) :
 	name (name)
 {
@@ -42,6 +51,11 @@ UINodeGroup::UINodeGroup (const std::wstring& name) :
 UINodeGroup::~UINodeGroup ()
 {
 
+}
+
+const std::wstring& UINodeGroup::GetName () const
+{
+	return name;
 }
 
 bool UINodeGroup::IsEmpty () const
@@ -92,6 +106,22 @@ void UINodeGroup::Draw (const NodeUIManager& uiManager, NodeUIDrawingEnvironment
 void UINodeGroup::InvalidateGroupDrawing ()
 {
 	drawingImage.Reset ();
+}
+
+NE::Stream::Status UINodeGroup::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	inputStream.Read (name);
+	nodes.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status UINodeGroup::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	outputStream.Write (name);
+	nodes.Write (outputStream);
+	return outputStream.GetStatus ();
 }
 
 const GroupDrawingImage& UINodeGroup::GetDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
@@ -214,6 +244,30 @@ void UINodeGroupList::Clear ()
 {
 	groups.clear ();
 	nodeToGroup.clear ();
+}
+
+NE::Stream::Status UINodeGroupList::Read (NE::InputStream& inputStream)
+{
+	DBGASSERT (groups.empty ());
+	NE::ObjectHeader header (inputStream);
+	size_t groupCount = 0;
+	inputStream.Read (groupCount);
+	for (size_t i = 0; i < groupCount; i++) {
+		UINodeGroup tempGroup;
+		tempGroup.Read (inputStream);
+		CreateGroup (tempGroup.GetName (), tempGroup.GetNodes ());
+	}
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status UINodeGroupList::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	outputStream.Write (groups.size ());
+	for (const UINodeGroupPtr& group : groups) {
+		group->Write (outputStream);
+	}
+	return outputStream.GetStatus ();
 }
 
 }
