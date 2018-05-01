@@ -304,11 +304,6 @@ TEST (NodeGroupingTest)
 	SimpleNodeEditorTestEnvWithConnections env;
 	ASSERT (env.CheckReference ("06_NodeGrouping_Basic.svg"));
 
-	Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
-	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.uiEnvironment, SlotId ("start")).GetCenter ();
-	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
-	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
-	
 	{ // select nodes with selection rect
 		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd = env.rangeInputRect.GetBottomRight () + Point (10.0, 10.0);
