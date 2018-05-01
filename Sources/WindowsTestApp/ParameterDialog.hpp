@@ -1,7 +1,7 @@
 #ifndef PARAMETERDIALOG_HPP
 #define PARAMETERDIALOG_HPP
 
-#include "NUIE_UINodeParameterAccessor.hpp"
+#include "NUIE_ParameterInterface.hpp"
 
 #include <wx/wx.h>
 #include <memory>
@@ -14,7 +14,7 @@ public:
 		OkButtonId = 1001
 	};
 
-	ParameterDialog (wxWindow* parent, NUIE::NodeParameterAccessorPtr& paramAccessor);
+	ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr& paramInterface);
 
 	void	OnOkButtonClick (wxCommandEvent& evt);
 	void	OnTextChanged (wxCommandEvent& evt);
@@ -28,7 +28,7 @@ private:
 		bool			isChanged;
 	};
 
-	NUIE::NodeParameterAccessorPtr	paramAccessor;
+	NUIE::ParameterInterfacePtr		paramInterface;
 	std::vector<ParamUIData>		paramUIDataList;
 
 	wxGridSizer*					gridSizer;

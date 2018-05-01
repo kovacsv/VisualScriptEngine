@@ -36,7 +36,7 @@ CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&,
 	return SelectCommandByName (commands);
 }
 
-bool TestEventHandlers::OnParameterSettings (NodeParameterAccessorPtr)
+bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr)
 {
 	DBGBREAK ();
 	return false;

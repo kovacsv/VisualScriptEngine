@@ -2,7 +2,7 @@
 #define UINODEPARAMETERS_HPP
 
 #include "NUIE_UINode.hpp"
-#include "NUIE_UINodeParameterAccessor.hpp"
+#include "NUIE_ParameterInterface.hpp"
 #include "NE_Value.hpp"
 
 namespace NUIE

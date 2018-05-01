@@ -73,7 +73,7 @@ public:
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual bool OnParameterSettings (NUIE::NodeParameterAccessorPtr) override
+	virtual bool OnParameterSettings (NUIE::ParameterInterfacePtr) override
 	{
 		// TODO
 		return false;

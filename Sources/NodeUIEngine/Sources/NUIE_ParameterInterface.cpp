@@ -1,4 +1,4 @@
-#include "NUIE_UINodeParameterAccessor.hpp"
+#include "NUIE_ParameterInterface.hpp"
 
 namespace NUIE
 {

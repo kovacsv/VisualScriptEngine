@@ -17,17 +17,17 @@ void SetTextValidator (wxTextCtrl* textCtrl, const std::wstring& validChars)
 	textCtrl->SetValidator (validator);
 }
 
-ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::NodeParameterAccessorPtr& paramAccessor) :
+ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr& paramInterface) :
 	wxDialog (parent, wxID_ANY, L"Set Parameters", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE),
-	paramAccessor (paramAccessor),
+	paramInterface (paramInterface),
 	gridSizer (new wxGridSizer (2, 5, 5)),
 	boxSizer (new wxBoxSizer (wxVERTICAL)),
 	okButton (new wxButton (this, DialogIds::OkButtonId, L"OK"))
 {
-	gridSizer->SetRows (paramAccessor->GetParameterCount ());
-	for (size_t i = 0; i < paramAccessor->GetParameterCount (); ++i) {
-		NUIE::ParameterType type = paramAccessor->GetParameterType (i);
-		NE::ValuePtr value = paramAccessor->GetParameterValue (i);
+	gridSizer->SetRows (paramInterface->GetParameterCount ());
+	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
+		NUIE::ParameterType type = paramInterface->GetParameterType (i);
+		NE::ValuePtr value = paramInterface->GetParameterValue (i);
 
 		int controlId = 1000 + i;
 		wxTextCtrl* textControl = nullptr;
@@ -51,7 +51,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::NodeParameterAccessorP
 			continue;
 		}
 
-		wxStaticText* paramNameText = new wxStaticText (this, wxID_ANY, paramAccessor->GetParameterName (i));
+		wxStaticText* paramNameText = new wxStaticText (this, wxID_ANY, paramInterface->GetParameterName (i));
 		gridSizer->Add (paramNameText, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL);
 
 		gridSizer->Add (textControl, 1, wxEXPAND);
@@ -66,15 +66,15 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::NodeParameterAccessorP
 
 void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 {
-	for (size_t i = 0; i < paramAccessor->GetParameterCount (); ++i) {
+	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
 		const ParamUIData& uiData = paramUIDataList[i];
 		if (!uiData.isChanged) {
 			continue;
 		}
 
 		// TODO: veto event, and write back correct value in case of failure
-		NUIE::ParameterType type = paramAccessor->GetParameterType (i);
-		paramAccessor->SetParameterValue (i, NUIE::StringToParameterValue (uiData.control->GetValue ().ToStdWstring (), type));
+		NUIE::ParameterType type = paramInterface->GetParameterType (i);
+		paramInterface->SetParameterValue (i, NUIE::StringToParameterValue (uiData.control->GetValue ().ToStdWstring (), type));
 	}
 
 	EndModal (DialogIds::OkButtonId);

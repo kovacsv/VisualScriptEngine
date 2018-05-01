@@ -19,7 +19,7 @@ public:
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::OutputSlotPtr&, const CommandStructure&) override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::InputSlotPtr&, const CommandStructure&) override;
 	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const CommandStructure&) override;
-	virtual bool		OnParameterSettings (NodeParameterAccessorPtr) override;
+	virtual bool		OnParameterSettings (ParameterInterfacePtr) override;
 
 	void				SetNextCommandName (const std::wstring& nextCommandName);
 

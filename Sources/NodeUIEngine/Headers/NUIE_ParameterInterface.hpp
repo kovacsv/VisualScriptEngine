@@ -1,5 +1,5 @@
-#ifndef UINODEPARAMETERACCESSOR_HPP
-#define UINODEPARAMETERACCESSOR_HPP
+#ifndef PARAMETERINTERFACE_HPP
+#define PARAMETERINTERFACE_HPP
 
 #include "NE_Value.hpp"
 
@@ -24,7 +24,7 @@ private:
 	std::string id;
 };
 
-class NodeParameterAccessor
+class ParameterInterface
 {
 public:
 	virtual size_t					GetParameterCount () const = 0;
@@ -34,8 +34,8 @@ public:
 	virtual bool					SetParameterValue (size_t index, const NE::ValuePtr& value) = 0;
 };
 
-typedef std::shared_ptr<NodeParameterAccessor> NodeParameterAccessorPtr;
-typedef std::shared_ptr<const NodeParameterAccessor> NodeParameterAccessorConstPtr;
+typedef std::shared_ptr<ParameterInterface> ParameterInterfacePtr;
+typedef std::shared_ptr<const ParameterInterface> ParameterInterfaceConstPtr;
 
 }
 

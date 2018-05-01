@@ -152,9 +152,9 @@ NUIE::CommandPtr AppEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-bool AppEventHandlers::OnParameterSettings (NUIE::NodeParameterAccessorPtr paramAccessor)
+bool AppEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface)
 {
-	ParameterDialog paramDialog (panel, paramAccessor);
+	ParameterDialog paramDialog (panel, paramInterface);
 	if (paramDialog.ShowModal () == ParameterDialog::DialogIds::OkButtonId) {
 		return true;
 	}

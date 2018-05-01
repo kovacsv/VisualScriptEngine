@@ -79,9 +79,6 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeCommonParameters.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeParameterAccessor.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeParameters.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -101,6 +98,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeGroup.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_ParameterInterface.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -168,9 +168,6 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeParameterAccessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeParameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -190,6 +187,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_ParameterInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

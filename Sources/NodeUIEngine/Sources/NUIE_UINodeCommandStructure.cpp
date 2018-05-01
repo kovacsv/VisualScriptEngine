@@ -232,7 +232,7 @@ public:
 
 	virtual void Do () override
 	{
-		class SelectionParameterAccessor : public NodeParameterAccessor
+		class SelectionParameterAccessor : public ParameterInterface
 		{
 		public:
 			SelectionParameterAccessor (NodeParameterList& paramList, const UINodePtr& currentNode) :

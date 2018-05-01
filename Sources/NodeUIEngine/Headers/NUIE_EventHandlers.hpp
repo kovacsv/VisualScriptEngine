@@ -4,7 +4,7 @@
 #include "NUIE_UINode.hpp"
 #include "NUIE_UINodeGroup.hpp"
 #include "NUIE_CommandStructure.hpp"
-#include "NUIE_UINodeParameterAccessor.hpp"
+#include "NUIE_ParameterInterface.hpp"
 #include <vector>
 
 namespace NUIE
@@ -21,7 +21,7 @@ public:
 	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const NE::InputSlotPtr& inputSlot, const CommandStructure& commands) = 0;
 	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UINodeGroupPtr& group, const CommandStructure& commands) = 0;
 
-	virtual bool				OnParameterSettings (NodeParameterAccessorPtr paramAccessor) = 0;
+	virtual bool				OnParameterSettings (ParameterInterfacePtr paramAccessor) = 0;
 };
 
 }

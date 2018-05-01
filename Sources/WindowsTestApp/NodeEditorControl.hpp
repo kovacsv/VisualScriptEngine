@@ -47,7 +47,7 @@ public:
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::OutputSlotPtr& outputSlot, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NE::InputSlotPtr& inputSlot, const NUIE::CommandStructure& commands) override;
 	virtual NUIE::CommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::CommandStructure& commands) override;
-	virtual bool				OnParameterSettings (NUIE::NodeParameterAccessorPtr paramAccessor) override;
+	virtual bool				OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface) override;
 
 private:
 	wxPanel* panel;
