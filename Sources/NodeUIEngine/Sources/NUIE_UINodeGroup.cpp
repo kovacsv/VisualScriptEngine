@@ -58,6 +58,12 @@ const std::wstring& UINodeGroup::GetName () const
 	return name;
 }
 
+void UINodeGroup::SetName (const std::wstring& newName)
+{
+	name = newName;
+	InvalidateGroupDrawing ();
+}
+
 bool UINodeGroup::IsEmpty () const
 {
 	return nodes.IsEmpty ();

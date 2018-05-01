@@ -2,6 +2,7 @@
 #include "NUIE_UINodeCommandRegistration.hpp"
 #include "NUIE_UINodeParameters.hpp"
 #include "NUIE_EventHandlers.hpp"
+#include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"
 
 #include <limits>
@@ -232,10 +233,10 @@ public:
 
 	virtual void Do () override
 	{
-		class SelectionParameterAccessor : public ParameterInterface
+		class NodeSelectionParameterInterface : public ParameterInterface
 		{
 		public:
-			SelectionParameterAccessor (NodeParameterList& paramList, const UINodePtr& currentNode) :
+			NodeSelectionParameterInterface (NodeParameterList& paramList, const UINodePtr& currentNode) :
 				paramList (paramList),
 				currentNode (currentNode)
 			{
@@ -312,9 +313,9 @@ public:
 		};
 
 		RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
-		std::shared_ptr<SelectionParameterAccessor> paramAccessor (new SelectionParameterAccessor (relevantParameters, currentNode));
-		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramAccessor)) {
-			paramAccessor->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
+		std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
+		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
+			paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
 		}
 	}
 
@@ -324,6 +325,114 @@ private:
 	UINodePtr			currentNode;
 	NodeCollection		relevantNodes;
 	NodeParameterList	relevantParameters;
+};
+
+class SetGroupParametersCommand : public SingleCommand
+{
+public:
+	SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
+		SingleCommand (L"Set Parameters", false),
+		uiManager (uiManager),
+		uiEnvironment (uiEnvironment),
+		group (group)
+	{
+
+	}
+
+	virtual ~SetGroupParametersCommand ()
+	{
+
+	}
+
+	virtual void Do () override
+	{
+		class GroupParameterInterface : public ParameterInterface
+		{
+		public:
+			struct GroupParameter
+			{
+				std::wstring	name;
+				ParameterType	type;
+			};
+
+			GroupParameterInterface (const UINodeGroupPtr& currentGroup) :
+				currentGroup (currentGroup),
+				groupParameters ({
+					{ L"Name", ParameterType::String }
+				})
+			{
+			
+			}
+
+			void ApplyChanges (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment)
+			{
+				for (const auto& it : changedParameterValues) {
+					switch (it.first) {
+						case 0:
+							currentGroup->SetName (NE::StringValue::Get (it.second));
+							break;
+						default:
+							DBGBREAK ();
+							break;
+					}
+				}
+				uiManager.RequestRedraw ();
+				uiManager.Update (uiEnvironment);
+			}
+
+			virtual size_t GetParameterCount () const override
+			{
+				return groupParameters.size ();
+			}
+
+			virtual const std::wstring& GetParameterName (size_t index) const override
+			{
+				return groupParameters[index].name;
+			}
+
+			virtual NE::ValuePtr GetParameterValue (size_t index) const override
+			{
+				switch (index) {
+					case 0:
+						return NE::ValuePtr (new NE::StringValue (currentGroup->GetName ()));
+					default:
+						DBGBREAK ();
+						return nullptr;
+				}
+			}
+
+			virtual const ParameterType& GetParameterType (size_t index) const override
+			{
+				return groupParameters[index].type;
+			}
+
+			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+			{
+				auto found = changedParameterValues.find (index);
+				if (found != changedParameterValues.end ()) {
+					found->second = value;
+				} else {
+					changedParameterValues.insert ({ index, value });
+				}
+				return true;
+			}
+
+		private:
+			const UINodeGroupPtr&						currentGroup;
+			std::vector<GroupParameter>					groupParameters;
+			std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
+		};
+
+		std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group));
+		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
+			paramInterface->ApplyChanges (uiManager, uiEnvironment);
+		}
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	UINodeGroupPtr		group;
 };
 
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
@@ -626,9 +735,10 @@ CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, Node
 	return commandStructureBuilder.GetCommandStructure ();
 }
 
-CommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& /*uiEnvironment*/, const UINodeGroupPtr& group)
+CommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group)
 {
 	CommandStructure commandStructure;
+	commandStructure.AddCommand (CommandPtr (new SetGroupParametersCommand (uiManager, uiEnvironment, group)));
 	commandStructure.AddCommand (CommandPtr (new DeleteGroupCommand (uiManager, group)));
 	return commandStructure;
 }

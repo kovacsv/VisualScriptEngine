@@ -34,6 +34,7 @@ public:
 	~UINodeGroup ();
 
 	const std::wstring&		GetName () const;
+	void					SetName (const std::wstring& newName);
 
 	bool					IsEmpty () const;
 	bool					ContainsNode (const NE::NodeId& nodeId) const;
