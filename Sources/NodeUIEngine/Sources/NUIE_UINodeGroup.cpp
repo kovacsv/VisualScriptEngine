@@ -218,9 +218,11 @@ bool UINodeGroupList::CreateGroup (const std::wstring& name, const NodeCollectio
 
 void UINodeGroupList::DeleteGroup (const UINodeGroupPtr& group)
 {
-	auto foundInGroups = std::find (groups.begin (), groups.end (), group);
-	DBGASSERT (foundInGroups != groups.end ());
-	groups.erase (foundInGroups);
+	NodeCollection nodes = group->GetNodes ();
+	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+		RemoveNodeFromGroup (nodeId);
+		return true;
+	});
 }
 
 void UINodeGroupList::RemoveNodeFromGroup (const NE::NodeId& nodeId)
@@ -232,7 +234,9 @@ void UINodeGroupList::RemoveNodeFromGroup (const NE::NodeId& nodeId)
 	UINodeGroupPtr group = found->second;
 	group->DeleteNode (nodeId);
 	if (group->IsEmpty ()) {
-		DeleteGroup (group);
+		auto foundInGroups = std::find (groups.begin (), groups.end (), group);
+		DBGASSERT (foundInGroups != groups.end ());
+		groups.erase (foundInGroups);
 	}
 	nodeToGroup.erase (nodeId);
 }
