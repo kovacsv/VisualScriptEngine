@@ -276,8 +276,9 @@ Point PastePositionCalculator::CalculatePastePosition (NodeUIManager& uiManager,
 	return modelPastePosition;
 }
 
-NodeInputEventHandler::NodeInputEventHandler (NodeUIManager& uiManager) :
-	uiManager (uiManager)
+NodeInputEventHandler::NodeInputEventHandler (NodeUIManager& uiManager, UINodePtr& uiNode) :
+	uiManager (uiManager),
+	uiNode (uiNode)
 {
 
 }
@@ -305,12 +306,12 @@ EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& e
 	}
 
 	const ViewBox& viewBox = uiManager.GetViewBox ();
-	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
-	if (foundNode != nullptr) {
-		handlerResult = foundNode->HandleMouseClick (env, modifierKeys, mouseButton, viewBox.ViewToModel (position));
+	Point modelPosition = viewBox.ViewToModel (position);
+	if (DBGVERIFY (uiNode != nullptr)) {
+		handlerResult = uiNode->HandleMouseClick (env, modifierKeys, mouseButton, modelPosition);
 		if (handlerResult == EventHandlerResult::EventHandled) {
 			uiManager.RequestRecalculate ();
-			uiManager.InvalidateNodeDrawing (foundNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
 		}	
 	}
 	
@@ -330,8 +331,7 @@ EventHandlerResult NodeInputEventHandler::HandleKeyPress (NodeUIEnvironment&, co
 NodeUIInteractionHandler::NodeUIInteractionHandler (NodeUIManager& uiManager) :
 	InputEventHandler (),
 	uiManager (uiManager),
-	multiMouseMoveHandler (),
-	nodeInputEventHandler (uiManager)
+	multiMouseMoveHandler ()
 {
 
 }
@@ -414,15 +414,18 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment&
 
 EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
-	EventHandlerResult handlerResult = nodeInputEventHandler.HandleMouseClick (env, modifierKeys, mouseButton, position);
-	if (handlerResult == EventHandlerResult::EventHandled) {
-		return handlerResult;
-	}
+	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 
 	if (mouseButton == MouseButton::Left) {
 		NodeCollection selectedNodes;
 		UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
 		if (foundNode != nullptr) {
+			NodeInputEventHandler nodeInputEventHandler (uiManager, foundNode);
+			handlerResult = nodeInputEventHandler.HandleMouseClick (env, modifierKeys, mouseButton, position);
+			if (handlerResult == EventHandlerResult::EventHandled) {
+				return handlerResult;
+			}
+
 			const NE::NodeId& foundNodeId = foundNode->GetId ();
 			selectedNodes = uiManager.GetSelectedNodes ();
 			if (modifierKeys.Contains (ModifierKeyCode::Control)) {

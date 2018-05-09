@@ -28,7 +28,7 @@ private:
 class NodeInputEventHandler : public InputEventHandler
 {
 public:
-	NodeInputEventHandler (NodeUIManager& uiManager);
+	NodeInputEventHandler (NodeUIManager& uiManager, UINodePtr& uiNode);
 
 	virtual EventHandlerResult	HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult	HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
@@ -39,7 +39,7 @@ public:
 
 private:
 	NodeUIManager&	uiManager;
-	UINodePtr		currentNode;
+	UINodePtr&		uiNode;
 };
 
 class NodeUIInteractionHandler : public InputEventHandler
@@ -60,7 +60,6 @@ public:
 private:
 	NodeUIManager&					uiManager;
 	MultiMouseMoveHandler			multiMouseMoveHandler;
-	NodeInputEventHandler			nodeInputEventHandler;
 	PastePositionCalculator			pastePositionCalculator;
 };
 
