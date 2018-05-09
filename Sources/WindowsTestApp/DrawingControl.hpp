@@ -18,8 +18,8 @@ public:
 	void	OnResize (wxSizeEvent& evt);
 	void	OnMouseCaptureLost (wxMouseCaptureLostEvent& evt);
 
-	void	OnMiddleButtonDown (wxMouseEvent& evt);
-	void	OnMiddleButtonUp (wxMouseEvent& evt);
+	void	OnRightButtonDown (wxMouseEvent& evt);
+	void	OnRightButtonUp (wxMouseEvent& evt);
 	void	OnMouseMove (wxMouseEvent& evt);
 	void	OnMouseWheel (wxMouseEvent& evt);
 

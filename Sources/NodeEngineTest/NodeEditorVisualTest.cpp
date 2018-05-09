@@ -248,9 +248,9 @@ TEST (PanAndZoomTest)
 	Point panEndPoint = panStartPoint + Point (50.0, -50.0);
 
 	{
-		env.nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Middle, (int) panStartPoint.GetX (), (int) panStartPoint.GetY ());
+		env.nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Right, (int) panStartPoint.GetX (), (int) panStartPoint.GetY ());
 		env.nodeEditor.OnMouseMove (EmptyModifierKeys, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
-		env.nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Middle, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
+		env.nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Right, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 		ASSERT (env.CheckReference ("03_PanAndZoom_Panned.svg"));
 	}
 

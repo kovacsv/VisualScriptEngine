@@ -33,13 +33,13 @@ void DrawingControl::OnResize (wxSizeEvent& evt)
 	drawingContext->Resize (size.GetWidth (), size.GetHeight ());
 }
 
-void DrawingControl::OnMiddleButtonDown (wxMouseEvent& evt)
+void DrawingControl::OnRightButtonDown (wxMouseEvent& evt)
 {
 	captureHandler.OnMouseDown ();
 	lastMousePos.reset (new NUIE::Point (evt.GetX (), evt.GetY ()));
 }
 
-void DrawingControl::OnMiddleButtonUp (wxMouseEvent& evt)
+void DrawingControl::OnRightButtonUp (wxMouseEvent& evt)
 {
 	captureHandler.OnMouseUp ();
 	lastMousePos.reset (nullptr);
@@ -77,8 +77,8 @@ BEGIN_EVENT_TABLE(DrawingControl, wxPanel)
 EVT_PAINT (DrawingControl::OnPaint)
 EVT_SIZE (DrawingControl::OnResize)
 EVT_MOUSE_CAPTURE_LOST (DrawingControl::OnMouseCaptureLost)
-EVT_MIDDLE_DOWN (DrawingControl::OnMiddleButtonDown)
-EVT_MIDDLE_UP (DrawingControl::OnMiddleButtonUp)
+EVT_RIGHT_DOWN (DrawingControl::OnRightButtonDown)
+EVT_RIGHT_UP (DrawingControl::OnRightButtonUp)
 EVT_MOUSEWHEEL (DrawingControl::OnMouseWheel)
 EVT_MOTION (DrawingControl::OnMouseMove)
 END_EVENT_TABLE ()
