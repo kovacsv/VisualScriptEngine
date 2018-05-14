@@ -414,6 +414,9 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment&
 EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
+	if (multiMouseMoveHandler.HasHandler ()) {
+		return handlerResult;
+	}
 
 	if (mouseButton == MouseButton::Left) {
 		NodeCollection selectedNodes;
