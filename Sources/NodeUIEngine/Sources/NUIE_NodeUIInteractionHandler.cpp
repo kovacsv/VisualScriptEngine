@@ -305,9 +305,8 @@ EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& e
 		return handlerResult;
 	}
 
-	const ViewBox& viewBox = uiManager.GetViewBox ();
-	Point modelPosition = viewBox.ViewToModel (position);
 	if (DBGVERIFY (uiNode != nullptr)) {
+		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
 		handlerResult = uiNode->HandleMouseClick (env, modifierKeys, mouseButton, modelPosition);
 		if (handlerResult == EventHandlerResult::EventHandled) {
 			uiManager.RequestRecalculate ();
