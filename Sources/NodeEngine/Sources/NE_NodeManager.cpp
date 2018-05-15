@@ -484,7 +484,7 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	idGenerator.Write (outputStream);
 
 	AllNodesFilter allNodesFilter;
-	Stream::Status nodeStatus =  WriteNodes (outputStream, allNodesFilter);
+	Stream::Status nodeStatus = WriteNodes (outputStream, allNodesFilter);
 	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
 		return nodeStatus;
 	}
