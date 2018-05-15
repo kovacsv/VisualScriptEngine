@@ -408,6 +408,16 @@ public:
 
 			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
 			{
+				switch (index) {
+					case 0:
+						if (!NE::Value::IsType<NE::StringValue> (value) || NE::StringValue::Get (value).empty ()) {
+							return false;
+						}
+						break;
+					default:
+						DBGBREAK ();
+				}
+
 				auto found = changedParameterValues.find (index);
 				if (found != changedParameterValues.end ()) {
 					found->second = value;
