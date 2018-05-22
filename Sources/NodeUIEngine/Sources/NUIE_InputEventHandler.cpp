@@ -65,21 +65,21 @@ void MouseEventTranslator::OnMouseDown (NodeUIEnvironment&, const ModifierKeys&,
 void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	if (movingMouseButtons.find (mouseButton) != movingMouseButtons.end ()) {
-		handler.HandleMouseDragStop (env, modifierKeys, mouseButton, position);
 		movingMouseButtons.erase (mouseButton);
+		handler.HandleMouseDragStop (env, modifierKeys, mouseButton, position);
 	}
 
 	if (downMouseButtons.find (mouseButton) != downMouseButtons.end ()) {
-		handler.HandleMouseClick (env, modifierKeys, mouseButton, position);
 		downMouseButtons.erase (mouseButton);
+		handler.HandleMouseClick (env, modifierKeys, mouseButton, position);
 	}
 }
 
 void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
 {
 	for (const auto& it : downMouseButtons) {
-		handler.HandleMouseDragStart (env, modifierKeys, it.first, it.second);
 		movingMouseButtons.insert (it.first);
+		handler.HandleMouseDragStart (env, modifierKeys, it.first, it.second);
 	}
 	downMouseButtons.clear ();
 
