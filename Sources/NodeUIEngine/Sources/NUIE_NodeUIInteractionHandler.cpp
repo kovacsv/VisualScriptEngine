@@ -118,10 +118,25 @@ public:
 		return false;
 	}
 
-	virtual void HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
+	virtual void HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
-		Point diff = (position - prevPosition) / viewBox.GetScale ();
+		startModelPosition = viewBox.ViewToModel (position);
+	}
+
+	virtual void HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
+	{
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+			uiManager.InvalidateNodeGroupDrawing (nodeId);
+			return true;
+		});
+		uiManager.RequestRedraw ();
+	}
+
+	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	
+	{
+		const ViewBox& viewBox = uiManager.GetViewBox ();
+		Point diff = viewBox.ViewToModel (position) - startModelPosition;
 
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
@@ -130,12 +145,23 @@ public:
 			return true;
 		});
 
-		uiManager.RequestRedraw ();
+		uiManager.RequestRedraw ();	
+	}
+
+	virtual Point GetNodeOffset (const NE::NodeId& nodeId) const override
+	{
+		if (relevantNodes.Contains (nodeId)) {
+			const ViewBox& viewBox = uiManager.GetViewBox ();
+			Point diff = viewBox.ViewToModel (currentPosition) - startModelPosition;
+			return diff;
+		}
+		return Point (0.0, 0.0);
 	}
 
 private:
 	NodeUIManager&	uiManager;
 	NodeCollection	relevantNodes;
+	Point			startModelPosition;
 };
 
 template <class StartSlotType, class EndSlotType>

@@ -1,6 +1,5 @@
 #include "NUIE_UINodeGroup.hpp"
 #include "NUIE_SkinParams.hpp"
-#include "NUIE_NodeUIManager.hpp"
 
 #include <algorithm>
 
@@ -98,15 +97,15 @@ const NodeCollection& UINodeGroup::GetNodes () const
 	return nodes;
 }
 
-Rect UINodeGroup::GetRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
+Rect UINodeGroup::GetRect (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
 {
-	return GetDrawingImage (uiManager, env).GetRect ();
+	return GetDrawingImage (env, rectGetter).GetRect ();
 }
 
-void UINodeGroup::Draw (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
+void UINodeGroup::Draw (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
-	GetDrawingImage (uiManager, env).Draw (drawingContext);
+	GetDrawingImage (env, rectGetter).Draw (drawingContext);
 }
 
 void UINodeGroup::InvalidateGroupDrawing ()
@@ -130,15 +129,15 @@ NE::Stream::Status UINodeGroup::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-const GroupDrawingImage& UINodeGroup::GetDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
+const GroupDrawingImage& UINodeGroup::GetDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
 {
 	if (drawingImage.IsEmpty ()) {
-		UpdateDrawingImage (uiManager, env);
+		UpdateDrawingImage (env, rectGetter);
 	}
 	return drawingImage;
 }
 
-void UINodeGroup::UpdateDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const
+void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
 	SkinParams& skinParams = env.GetSkinParams ();
@@ -146,8 +145,7 @@ void UINodeGroup::UpdateDrawingImage (const NodeUIManager& uiManager, NodeUIDraw
 	Rect boundingRect;
 	bool isEmptyRect = true;
 	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-		UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
-		Rect nodeRect = uiNode->GetNodeRect (env);
+		Rect nodeRect = rectGetter.GetNodeRect (nodeId);
 		if (isEmptyRect) {
 			boundingRect = nodeRect;
 			isEmptyRect = false;

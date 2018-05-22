@@ -22,18 +22,21 @@ bool MouseMoveHandler::AreOtherHandlersAllowed () const
 void MouseMoveHandler::OnMouseDown (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
 {
 	startPosition = position;
-	prevPosition = startPosition;
+	currentPosition = position;
+	prevPosition = position;
 	HandleMouseDown (env, modifierKeys, position);
 }
 
 void MouseMoveHandler::OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
 {
+	currentPosition = position;
 	HandleMouseMove (env, modifierKeys, position);
 	prevPosition = position;
 }
 
 void MouseMoveHandler::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
 {
+	currentPosition = position;
 	HandleMouseUp (env, modifierKeys, position);
 }
 
@@ -60,6 +63,11 @@ void MouseMoveHandler::EnumerateSelectionRectangles (const std::function<void (c
 void MouseMoveHandler::EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>&) const
 {
 
+}
+
+Point MouseMoveHandler::GetNodeOffset (const NE::NodeId&) const
+{
+	return Point (0.0, 0.0);
 }
 
 MultiMouseMoveHandler::MultiMouseMoveHandler ()
@@ -127,6 +135,15 @@ void MultiMouseMoveHandler::EnumerateTemporaryConnections (const std::function<v
 	for (const auto& it : handlers) {
 		it.second->EnumerateTemporaryConnections (processor);
 	}
+}
+
+Point MultiMouseMoveHandler::GetNodeOffset (const NE::NodeId& nodeId) const
+{
+	Point offset (0.0, 0.0);
+	for (const auto& it : handlers) {
+		offset = offset + it.second->GetNodeOffset (nodeId);
+	}
+	return offset;
 }
 
 }

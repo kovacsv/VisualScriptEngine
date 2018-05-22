@@ -7,8 +7,6 @@
 namespace NUIE
 {
 
-class NodeUIManager;
-
 class GroupDrawingImage : public DrawingImage
 {
 public:
@@ -22,6 +20,12 @@ public:
 
 private:
 	Rect rect;
+};
+
+class NodeRectGetter
+{
+public:
+	virtual Rect GetNodeRect (const NE::NodeId& nodeId) const = 0;
 };
 
 class UINodeGroup
@@ -43,16 +47,16 @@ public:
 	bool					DeleteNode (const NE::NodeId& nodeId);
 	const NodeCollection&	GetNodes () const;
 
-	Rect					GetRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
-	void					Draw (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
+	Rect					GetRect (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
+	void					Draw (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
 	void					InvalidateGroupDrawing ();
 
 	NE::Stream::Status		Read (NE::InputStream& inputStream);
 	NE::Stream::Status		Write (NE::OutputStream& outputStream) const;
 
 private:
-	const GroupDrawingImage&		GetDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
-	void							UpdateDrawingImage (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) const;
+	const GroupDrawingImage&		GetDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
+	void							UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
 
 	std::wstring					name;
 	NodeCollection					nodes;

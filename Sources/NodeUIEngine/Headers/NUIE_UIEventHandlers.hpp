@@ -26,6 +26,7 @@ public:
 
 	virtual void	EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const override;
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>&) const override;
+	virtual Point	GetNodeOffset (const NE::NodeId& nodeId) const override;
 
 protected:
 	virtual void	HandleMouseDown (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
@@ -33,6 +34,7 @@ protected:
 	virtual void	HandleMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
 
 	Point	startPosition;
+	Point	currentPosition;
 	Point	prevPosition;
 };
 
@@ -52,6 +54,7 @@ public:
 
 	virtual void						EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const override;
 	virtual void						EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end)>& processor) const override;
+	virtual Point						GetNodeOffset (const NE::NodeId& nodeId) const override;
 
 private:
 	std::unordered_map<MouseButton, std::shared_ptr<MouseMoveHandler>> handlers;

@@ -6,6 +6,9 @@
 namespace NUIE
 {
 
+// TODO: Delete
+static Point NodeOffset (20.0, 20.0);
+
 NodeIdToNodeMap::NodeIdToNodeMap (const NodeUIManager& uiManager)
 {
 	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
@@ -53,9 +56,9 @@ void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawing
 		TextSkipperContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
 		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
 		NodeUIDrawingEnvironmentContextDecorator drawEnv (env, viewBoxContext);
-		DrawGroups (drawEnv);
+		DrawGroups (drawEnv, drawModifier);
 		DrawConnections (drawEnv, drawModifier);
-		DrawNodes (drawEnv);
+		DrawNodes (drawEnv, drawModifier);
 	}
 	DrawSelectionRect (env, drawModifier);
 
@@ -69,12 +72,36 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIDrawingEnvironment& env) const
 	drawingContext.FillRect (contextRect, env.GetSkinParams ().GetBackgroundColor ());
 }
 
-void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& env) const
+void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const
 {
+	class NodeUIManagerNodeRectGetter : public NodeRectGetter
+	{
+	public:
+		NodeUIManagerNodeRectGetter (const NodeUIManager& uiManager, const NodeDrawingModfier* drawModifier, NodeUIDrawingEnvironment& env) :
+			uiManager (uiManager),
+			drawModifier (drawModifier),
+			env (env)
+		{
+	
+		}
+
+		virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override
+		{
+			UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
+			return uiNode->GetNodeRect (env).Offset (drawModifier->GetNodeOffset (nodeId));
+		}
+
+	private:
+		const NodeUIManager& uiManager;
+		const NodeDrawingModfier* drawModifier;
+		NodeUIDrawingEnvironment& env;
+	};
+
+	NodeUIManagerNodeRectGetter rectGetter (uiManager, drawModifier, env);
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
-		Rect groupRect = group->GetRect (uiManager, env);
+		Rect groupRect = group->GetRect (env, rectGetter);
 		if (IsRectVisible (env, groupRect)) {
-			group->Draw (uiManager, env);
+			group->Draw (env, rectGetter);
 		}
 		return true;
 	});
@@ -84,13 +111,13 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& env, const 
 {
 	for (const UINode* uiNode : sortedNodeList) {
 		uiNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
-			Point beg = uiNode->GetOutputSlotConnPosition (env, outputSlot->GetId ());
+			Point beg = GetOutputSlotConnPosition (env, drawModifier, uiNode, outputSlot->GetId ());
 			uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
 				const UINode* endNode = nodeIdToNodeMap.GetUINode (inputSlot->GetOwnerNodeId ());
 				if (DBGERROR (endNode == nullptr)) {
 					return;
 				}
-				Point end = endNode->GetInputSlotConnPosition (env, inputSlot->GetId ());
+				Point end = GetInputSlotConnPosition (env, drawModifier, endNode, inputSlot->GetId ());
 				if (IsConnectionVisible (env, beg, end)) {
 					DrawConnection (env, beg, end);
 				}
@@ -116,14 +143,22 @@ void NodeUIManagerDrawer::DrawConnection (NodeUIDrawingEnvironment& env, const P
 	env.GetDrawingContext ().DrawBezier (beg, beg + bezierOffset, end - bezierOffset, end, pen);
 }
 
-void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& env) const
+void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const
 {
 	for (const UINode* uiNode: sortedNodeList) {
-		if (!IsNodeVisible (env, uiNode)) {
+		if (!IsNodeVisible (env, drawModifier, uiNode)) {
 			continue;
 		}
-		DrawNode (env, uiNode);
+		DrawNode (env, drawModifier, uiNode);
 	}
+}
+
+void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode) const
+{
+	ViewBox offsetViewBox (drawModifier->GetNodeOffset (uiNode->GetId ()), 1.0);
+	ViewBoxContextDecorator offsetContext (env.GetDrawingContext (), offsetViewBox);
+	NodeUIDrawingEnvironmentContextDecorator offsetEnv (env, offsetContext);
+	DrawNode (offsetEnv, uiNode);
 }
 
 void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& env, const UINode* uiNode) const
@@ -166,9 +201,9 @@ bool NodeUIManagerDrawer::IsConnectionVisible (NodeUIDrawingEnvironment& env, co
 	return IsRectVisible (env, connectionRect);
 }
 
-bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& env, const UINode* uiNode) const
+bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode) const
 {
-	Rect nodeRect = uiNode->GetNodeRect (env);
+	Rect nodeRect = GetNodeRect (env, drawModifier, uiNode);
 	return IsRectVisible (env, nodeRect);
 }
 
@@ -177,6 +212,24 @@ bool NodeUIManagerDrawer::IsRectVisible (NodeUIDrawingEnvironment& env, const Re
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	const DrawingContext& context = env.GetDrawingContext ();
 	return Rect::IsInBounds (viewBox.ModelToView (rect), context.GetWidth (), context.GetHeight ());
+}
+
+Rect NodeUIManagerDrawer::GetNodeRect (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode) const
+{
+	Rect nodeRect = uiNode->GetNodeRect (env);
+	return nodeRect.Offset (drawModifier->GetNodeOffset (uiNode->GetId ()));
+}
+
+Point NodeUIManagerDrawer::GetOutputSlotConnPosition (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode, const NE::SlotId& slotId) const
+{
+	Point position = uiNode->GetOutputSlotConnPosition (env, slotId);
+	return position + drawModifier->GetNodeOffset (uiNode->GetId ());
+}
+
+Point NodeUIManagerDrawer::GetInputSlotConnPosition (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode, const NE::SlotId& slotId) const
+{
+	Point position = uiNode->GetInputSlotConnPosition (env, slotId);
+	return position + drawModifier->GetNodeOffset (uiNode->GetId ());
 }
 
 }

@@ -324,6 +324,14 @@ TEST (NodeGroupingTest)
 		env.DragDrop (env.doubleInputRect.GetTopRight () + Point (10.0, 0.0), env.doubleInputRect.GetTopRight () + Point (20.0, 10.0));
 		ASSERT (env.CheckReference ("06_NodeGrouping_GroupMoved.svg"));
 	}
+
+	{ // move one node
+		Point currentRangeInputHeaderPoint = env.rangeInputNode->GetNodeRect (env.uiEnvironment).GetTopCenter () + Point (5.0, 5.0);
+		env.DragDrop (currentRangeInputHeaderPoint, currentRangeInputHeaderPoint + Point (10.0, 10.0), [&] () {
+			ASSERT (env.CheckReference ("06_NodeGrouping_RangeInputMoving.svg"));
+		});
+		ASSERT (env.CheckReference ("06_NodeGrouping_RangeInputMoved.svg"));
+	}
 }
 
 }
