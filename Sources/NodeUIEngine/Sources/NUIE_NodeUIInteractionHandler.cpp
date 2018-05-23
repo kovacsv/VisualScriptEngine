@@ -518,6 +518,10 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment
 
 EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey)
 {
+	if (multiMouseMoveHandler.HasHandler ()) {
+		return EventHandlerResult::EventNotHandled;
+	}
+
 	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
 	CommandPtr command = nullptr;
 
