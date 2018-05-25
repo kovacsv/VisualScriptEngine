@@ -157,15 +157,6 @@ public:
 		Close (true);
 	}
 
-	void OnKeyDown (wxKeyEvent& evt)
-	{
-		NUIE::Key key = GetKeyFromEvent (evt);
-		if (!key.IsValid ()) {
-			return;
-		}
-		nodeEditorControl->OnKeyPress (key);
-	}
-
 	void UpdateStatusBar ()
 	{
 		std::wstring currentFileText = L"No File";
@@ -195,7 +186,6 @@ EVT_MENU (MainFrame::CommandId::File_Open, MainFrame::OnOpen)
 EVT_MENU (MainFrame::CommandId::File_Save, MainFrame::OnSave)
 EVT_MENU (MainFrame::CommandId::File_SaveAs, MainFrame::OnSaveAs)
 EVT_MENU (MainFrame::CommandId::File_Exit, MainFrame::OnExit)
-EVT_CHAR_HOOK (MainFrame::OnKeyDown)
 END_EVENT_TABLE ()
 
 class NodeEngineTestApplication : public wxApp

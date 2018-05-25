@@ -212,7 +212,7 @@ NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
 }
 
 NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
-	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
+	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
 	updateInterface (updateInterface),
 	captureHandler (this),
 	uiEnvironment (this, evaluationEnv),
@@ -256,6 +256,7 @@ void NodeEditorControl::OnPaint (wxPaintEvent& evt)
 
 void NodeEditorControl::OnResize (wxSizeEvent& evt)
 {
+	SetFocus ();
 	wxSize size = evt.GetSize ();
 	nodeEditor.OnResize (size.GetWidth (), size.GetHeight ());
 }
@@ -318,6 +319,7 @@ void NodeEditorControl::OnMiddleButtonDoubleClick (wxMouseEvent& evt)
 
 void NodeEditorControl::OnMouseMove (wxMouseEvent& evt)
 {
+	SetFocus ();
 	nodeEditor.OnMouseMove (GetModiferKeysFromEvent (evt), evt.GetX (), evt.GetY ());
 }
 
@@ -327,9 +329,13 @@ void NodeEditorControl::OnMouseWheel (wxMouseEvent& evt)
 	nodeEditor.OnMouseWheel (GetModiferKeysFromEvent (evt), rotation, evt.GetX (), evt.GetY ());
 }
 
-void NodeEditorControl::OnKeyPress (const NUIE::Key& pressedKey)
+void NodeEditorControl::OnKeyDown (wxKeyEvent& evt)
 {
-	nodeEditor.OnKeyPress (pressedKey);
+	NUIE::Key key = GetKeyFromEvent (evt);
+	if (!key.IsValid ()) {
+		return;
+	}
+	nodeEditor.OnKeyPress (key);
 }
 
 void NodeEditorControl::New ()
@@ -378,5 +384,6 @@ EVT_MIDDLE_DCLICK (NodeEditorControl::OnMiddleButtonDoubleClick)
 
 EVT_MOUSEWHEEL (NodeEditorControl::OnMouseWheel)
 EVT_MOTION (NodeEditorControl::OnMouseMove)
+EVT_KEY_DOWN (NodeEditorControl::OnKeyDown)
 
 END_EVENT_TABLE ()
