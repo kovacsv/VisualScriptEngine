@@ -21,6 +21,7 @@ public:
 	void			OnMouseDown (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
 	void			OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
 	void			OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
+	void			OnAbort ();
 
 	virtual bool	AreOtherHandlersAllowed () const;
 
@@ -32,6 +33,7 @@ protected:
 	virtual void	HandleMouseDown (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
 	virtual void	HandleMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
 	virtual void	HandleMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
+	virtual void	HandleAbort ();
 
 	Point	startPosition;
 	Point	currentPosition;
@@ -45,6 +47,7 @@ public:
 
 	bool								HasHandler (MouseButton mouseButton) const;
 	std::shared_ptr<MouseMoveHandler>&	GetHandler (MouseButton mouseButton);
+	void								AbortHandlers ();
 	bool								AreOtherHandlersAllowed () const;
 
 	void								AddHandler (MouseButton mouseButton, MouseMoveHandler* newHandler);

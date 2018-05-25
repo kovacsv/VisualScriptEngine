@@ -49,6 +49,8 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 	if (unicodeKey <= WXK_ESCAPE || unicodeKey == WXK_SPACE || unicodeKey == WXK_DELETE || unicodeKey >= WXK_START) {
 		int key = evt.GetKeyCode ();
 		switch (key) {
+			case WXK_ESCAPE:
+				return NUIE::Key (NUIE::PressedKeyCode::Escape);
 			case WXK_DELETE:
 				return NUIE::Key (NUIE::PressedKeyCode::Delete);
 		}

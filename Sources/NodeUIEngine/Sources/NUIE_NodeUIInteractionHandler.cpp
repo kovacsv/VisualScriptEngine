@@ -82,6 +82,11 @@ public:
 		uiManager.SetSelectedNodes (selectedNodes);
 	}
 
+	virtual void HandleAbort () override
+	{
+		uiManager.RequestRedraw ();
+	}
+
 	virtual void EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const override
 	{
 		processor (selectionRect);
@@ -126,11 +131,7 @@ public:
 
 	virtual void HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
-		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-			uiManager.InvalidateNodeGroupDrawing (nodeId);
-			return true;
-		});
-		uiManager.RequestRedraw ();
+		RequestNodeRedraw ();
 	}
 
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	
@@ -148,6 +149,11 @@ public:
 		uiManager.RequestRedraw ();	
 	}
 
+	virtual void HandleAbort () override
+	{
+		RequestNodeRedraw ();
+	}
+
 	virtual Point GetNodeOffset (const NE::NodeId& nodeId) const override
 	{
 		if (relevantNodes.Contains (nodeId)) {
@@ -159,6 +165,15 @@ public:
 	}
 
 private:
+	void RequestNodeRedraw ()
+	{
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+			uiManager.InvalidateNodeGroupDrawing (nodeId);
+			return true;
+		});
+		uiManager.RequestRedraw ();
+	}
+
 	NodeUIManager&	uiManager;
 	NodeCollection	relevantNodes;
 	Point			startModelPosition;
@@ -181,6 +196,11 @@ public:
 	virtual void HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
 	{
 		currentPosition = position;
+	}
+
+	virtual void HandleAbort () override
+	{
+		uiManager.RequestRedraw ();
 	}
 
 protected:
@@ -519,6 +539,10 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment
 EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey)
 {
 	if (multiMouseMoveHandler.HasHandler ()) {
+		if (pressedKey.GetKeyCode () == PressedKeyCode::Escape) {
+			multiMouseMoveHandler.AbortHandlers ();
+			return EventHandlerResult::EventHandled;
+		}
 		return EventHandlerResult::EventNotHandled;
 	}
 

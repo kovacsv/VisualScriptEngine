@@ -157,6 +157,12 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			break;
 		case WM_KEYDOWN:
 			switch (wParam) {
+				case VK_ESCAPE:
+				{
+					NUIE::Key pressedKey (NUIE::PressedKeyCode::Escape);
+					nodeEditor->OnKeyPress (pressedKey);
+				}
+				break;
 				case VK_DELETE:
 				{
 					NUIE::Key pressedKey (NUIE::PressedKeyCode::Delete);

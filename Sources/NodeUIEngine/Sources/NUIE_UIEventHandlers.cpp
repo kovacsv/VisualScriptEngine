@@ -40,6 +40,11 @@ void MouseMoveHandler::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& mo
 	HandleMouseUp (env, modifierKeys, position);
 }
 
+void MouseMoveHandler::OnAbort ()
+{
+	HandleAbort ();
+}
+
 void MouseMoveHandler::HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point&)
 {
 	
@@ -51,6 +56,11 @@ void MouseMoveHandler::HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&,
 }
 
 void MouseMoveHandler::HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&)
+{
+
+}
+
+void MouseMoveHandler::HandleAbort ()
 {
 
 }
@@ -83,6 +93,14 @@ bool MultiMouseMoveHandler::HasHandler (MouseButton mouseButton) const
 std::shared_ptr<MouseMoveHandler>& MultiMouseMoveHandler::GetHandler (MouseButton mouseButton)
 {
 	return handlers.find (mouseButton)->second;
+}
+
+void MultiMouseMoveHandler::AbortHandlers ()
+{
+	for (const auto& it : handlers) {
+		it.second->OnAbort ();
+	}
+	handlers.clear ();
 }
 
 bool MultiMouseMoveHandler::AreOtherHandlersAllowed () const

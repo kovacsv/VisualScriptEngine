@@ -32,6 +32,7 @@ enum class ModifierKeyCode
 enum class PressedKeyCode
 {
 	Undefined,
+	Escape,
 	Delete,
 	Copy,
 	Paste
