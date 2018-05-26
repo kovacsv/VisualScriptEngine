@@ -538,12 +538,15 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment
 
 EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey)
 {
-	if (multiMouseMoveHandler.HasHandler ()) {
-		if (pressedKey.GetKeyCode () == PressedKeyCode::Escape) {
+	if (pressedKey.GetKeyCode () == PressedKeyCode::Escape) {
+		if (multiMouseMoveHandler.HasHandler ()) {
 			multiMouseMoveHandler.AbortHandlers ();
 			return EventHandlerResult::EventHandled;
+		} else {
+			NodeCollection emptySelectedNodes;
+			uiManager.SetSelectedNodes (emptySelectedNodes);
 		}
-		return EventHandlerResult::EventNotHandled;
+		return EventHandlerResult::EventHandled;
 	}
 
 	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
