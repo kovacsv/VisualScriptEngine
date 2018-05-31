@@ -36,13 +36,13 @@ bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NodeCollec
 
 	tempNodeManager.Clear ();
 	CopyFilter copyFilter (nodeCollection);
-	return source.MergeTo (tempNodeManager, copyFilter);
+	return source.AppendTo (tempNodeManager, copyFilter);
 }
 
 bool CopyPasteHandler::PasteTo (NE::NodeManager& target)
 {
 	NE::AllNodesFilter allNodesFilter;
-	return tempNodeManager.MergeTo (target, allNodesFilter);
+	return tempNodeManager.AppendTo (target, allNodesFilter);
 }
 
 }

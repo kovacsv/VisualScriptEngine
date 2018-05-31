@@ -84,7 +84,7 @@ public:
 	void				EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 	void				EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 
-	bool				MergeTo (NodeManager& targetNodeManager, const NodeFilter& nodeFilter) const;
+	bool				AppendTo (NodeManager& targetNodeManager, const NodeFilter& nodeFilter) const;
 
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;

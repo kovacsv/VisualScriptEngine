@@ -448,7 +448,7 @@ void NodeManager::EnumerateDependentNodesRecursive (const NodeConstPtr& node, co
 	});
 }
 
-bool NodeManager::MergeTo (NodeManager& targetNodeManager, const NodeFilter& nodeFilter) const
+bool NodeManager::AppendTo (NodeManager& targetNodeManager, const NodeFilter& nodeFilter) const
 {
 	MemoryOutputStream outputStream;
 	if (DBGERROR (WriteNodes (outputStream, nodeFilter) != Stream::Status::NoError)) {
