@@ -33,13 +33,6 @@ void DrawingLine::Draw (DrawingContext& context) const
 	context.DrawLine (beg, end, pen);
 }
 
-void DrawingLine::AddToChecksum (NE::Checksum& checksum) const
-{
-	AddPointToChecksum (checksum, beg);
-	AddPointToChecksum (checksum, end);
-	AddPenToChecksum (checksum, pen);
-}
-
 DrawingBezier::DrawingBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) :
 	p1 (p1),
 	p2 (p2),
@@ -60,15 +53,6 @@ void DrawingBezier::Draw (DrawingContext& context) const
 	context.DrawBezier (p1, p2, p3, p4, pen);
 }
 
-void DrawingBezier::AddToChecksum (NE::Checksum& checksum) const
-{
-	AddPointToChecksum (checksum, p1);
-	AddPointToChecksum (checksum, p2);
-	AddPointToChecksum (checksum, p3);
-	AddPointToChecksum (checksum, p4);
-	AddPenToChecksum (checksum, pen);	
-}
-
 DrawingRect::DrawingRect (const Rect& rect, const Pen& pen) :
 	rect (rect),
 	pen (pen)
@@ -84,12 +68,6 @@ DrawingRect::~DrawingRect ()
 void DrawingRect::Draw (DrawingContext& context) const
 {
 	context.DrawRect (rect, pen);
-}
-
-void DrawingRect::AddToChecksum (NE::Checksum& checksum) const
-{
-	AddRectToChecksum (checksum, rect);
-	AddPenToChecksum (checksum, pen);
 }
 
 DrawingFillRect::DrawingFillRect (const Rect& rect, const Color& color) :
@@ -109,12 +87,6 @@ void DrawingFillRect::Draw (DrawingContext& context) const
 	context.FillRect (rect, color);
 }
 
-void DrawingFillRect::AddToChecksum (NE::Checksum& checksum) const
-{
-	AddRectToChecksum (checksum, rect);
-	AddColorToChecksum (checksum, color);
-}
-
 DrawingEllipse::DrawingEllipse (const Rect& rect, const Pen& pen) :
 	rect (rect),
 	pen (pen)
@@ -132,12 +104,6 @@ void DrawingEllipse::Draw (DrawingContext& context) const
 	context.DrawEllipse (rect, pen);
 }
 
-void DrawingEllipse::AddToChecksum (NE::Checksum& checksum) const
-{
-	AddRectToChecksum (checksum, rect);
-	AddPenToChecksum (checksum, pen);
-}
-
 DrawingFillEllipse::DrawingFillEllipse (const Rect& rect, const Color& color) :
 	rect (rect),
 	color (color)
@@ -153,12 +119,6 @@ DrawingFillEllipse::~DrawingFillEllipse ()
 void DrawingFillEllipse::Draw (DrawingContext& context) const
 {
 	context.FillEllipse (rect, color);
-}
-
-void DrawingFillEllipse::AddToChecksum (NE::Checksum& checksum) const
-{
-	AddRectToChecksum (checksum, rect);
-	AddColorToChecksum (checksum, color);
 }
 
 DrawingText::DrawingText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) :
@@ -182,16 +142,6 @@ void DrawingText::Draw (DrawingContext& context) const
 	context.DrawFormattedText (rect, font, text, hAnchor, vAnchor, textColor);
 }
 
-void DrawingText::AddToChecksum (NE::Checksum& checksum) const
-{
-	AddRectToChecksum (checksum, rect);
-	AddFontToChecksum (checksum, font);
-	checksum.Add (text);
-	checksum.Add ((int) hAnchor);
-	checksum.Add ((int) vAnchor);
-	AddColorToChecksum (checksum, textColor);
-}
-
 MultiDrawingItem::MultiDrawingItem ()
 {
 
@@ -211,13 +161,6 @@ void MultiDrawingItem::Draw (DrawingContext& context) const
 {
 	for (const DrawingItemConstPtr& item : items) {
 		item->Draw (context);
-	}
-}
-
-void MultiDrawingItem::AddToChecksum (NE::Checksum& checksum) const
-{
-	for (const DrawingItemConstPtr& item : items) {
-		item->AddToChecksum (checksum);
 	}
 }
 
@@ -259,15 +202,6 @@ void DrawingImage::Draw (DrawingContext& context) const
 	for (const DrawingItemConstPtr& item : items) {
 		item->Draw (context);
 	}
-}
-
-NE::Checksum DrawingImage::GetChecksum () const
-{
-	NE::Checksum checksum;
-	for (const DrawingItemConstPtr& item : items) {
-		item->AddToChecksum (checksum);
-	}
-	return checksum;
 }
 
 }

@@ -2,7 +2,6 @@
 #define DRAWINGIMAGE_HPP
 
 #include "NUIE_DrawingContext.hpp"
-#include "NE_Checksum.hpp"
 
 #include <string>
 #include <vector>
@@ -22,7 +21,6 @@ public:
 	virtual ~DrawingItem ();
 
 	virtual void Draw (DrawingContext& context) const = 0;
-	virtual void AddToChecksum (NE::Checksum& checksum) const = 0;
 };
 
 class DrawingLine : public DrawingItem
@@ -32,7 +30,6 @@ public:
 	virtual ~DrawingLine ();
 
 	virtual void Draw (DrawingContext& context) const override;
-	virtual void AddToChecksum (NE::Checksum& checksum) const override;
 
 private:
 	Point	beg;
@@ -47,7 +44,6 @@ public:
 	virtual ~DrawingBezier ();
 
 	virtual void Draw (DrawingContext& context) const override;
-	virtual void AddToChecksum (NE::Checksum& checksum) const override;
 
 private:
 	Point	p1;
@@ -64,7 +60,6 @@ public:
 	virtual ~DrawingRect ();
 
 	virtual void Draw (DrawingContext& context) const override;
-	virtual void AddToChecksum (NE::Checksum& checksum) const override;
 
 private:
 	Rect	rect;
@@ -78,7 +73,6 @@ public:
 	virtual ~DrawingFillRect ();
 
 	virtual void Draw (DrawingContext& context) const override;
-	virtual void AddToChecksum (NE::Checksum& checksum) const override;
 
 private:
 	Rect	rect;
@@ -92,7 +86,6 @@ public:
 	virtual ~DrawingEllipse ();
 
 	virtual void Draw (DrawingContext& context) const override;
-	virtual void AddToChecksum (NE::Checksum& checksum) const override;
 
 private:
 	Rect	rect;
@@ -106,7 +99,6 @@ public:
 	virtual ~DrawingFillEllipse ();
 
 	virtual void Draw (DrawingContext& context) const override;
-	virtual void AddToChecksum (NE::Checksum& checksum) const override;
 
 private:
 	Rect	rect;
@@ -120,7 +112,6 @@ public:
 	virtual ~DrawingText ();
 
 	virtual void Draw (DrawingContext& context) const override;
-	virtual void AddToChecksum (NE::Checksum& checksum) const override;
 
 private:
 	Rect				rect;
@@ -140,7 +131,6 @@ public:
 	void			AddItem (const DrawingItemConstPtr& item);
 
 	virtual void	Draw (DrawingContext& context) const override;
-	virtual void	AddToChecksum (NE::Checksum& checksum) const override;
 
 private:
 	std::vector<DrawingItemConstPtr> items;
@@ -158,8 +148,6 @@ public:
 	void			AddItem (const DrawingItemConstPtr& item);
 	void			RemoveItem (const DrawingItemConstPtr& item);
 	void			Draw (DrawingContext& context) const;
-
-	NE::Checksum	GetChecksum () const;
 
 private:
 	std::vector<DrawingItemConstPtr> items;
