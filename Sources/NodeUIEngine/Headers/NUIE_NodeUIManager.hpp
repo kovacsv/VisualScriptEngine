@@ -44,7 +44,7 @@ public:
 	size_t					GetConnectedInputSlotCount (const UIOutputSlotConstPtr& outputSlot) const;
 	size_t					GetConnectedOutputSlotCount (const UIInputSlotConstPtr& inputSlot) const;
 
-	void					EnumerateConnections (const std::function<void (const NE::NodeId&, const NE::SlotId&, const NE::NodeId&, const NE::SlotId&)>& processor) const;
+	void					EnumerateConnections (const std::function<void (const NE::ConnectionInfo&)>& processor) const;
 	void					EnumerateConnectedInputSlots (const NE::OutputSlotConstPtr& outputSlot, const std::function<void (const NE::InputSlotConstPtr&)>& processor) const;
 	void					EnumerateConnectedOutputSlots (const NE::InputSlotConstPtr& inputSlot, const std::function<void (const NE::OutputSlotConstPtr&)>& processor) const;
 	void					EnumerateConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const;

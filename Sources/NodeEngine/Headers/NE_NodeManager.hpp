@@ -26,6 +26,26 @@ public:
 	virtual bool NeedToProcessNode (const NodeId& nodeId) const override;
 };
 
+class ConnectionInfo
+{
+public:
+	ConnectionInfo (const NodeId& outputNodeId, const SlotId& outputSlotId, const NodeId& inputNodeId, const SlotId& inputSlotId);
+
+	const NodeId&	GetOutputNodeId () const;
+	const SlotId&	GetOutputSlotId () const;
+	const NodeId&	GetInputNodeId () const;
+	const SlotId&	GetInputSlotId () const;
+
+	bool			operator< (const ConnectionInfo& rhs) const;
+	bool			operator> (const ConnectionInfo& rhs) const;
+
+private:
+	NodeId	outputNodeId;
+	SlotId	outputSlotId;
+	NodeId	inputNodeId;
+	SlotId	inputSlotId;
+};
+
 class NodeManager
 {
 	SERIALIZABLE;
@@ -39,6 +59,7 @@ public:
 	bool				IsEmpty () const;
 	size_t				GetNodeCount () const;
 	size_t				GetConnectionCount () const;
+	bool				AppendFrom (const NodeManager& sourceNodeManager, const NodeFilter& nodeFilter);
 
 	void				EnumerateNodes (const std::function<bool (const NodePtr&)>& processor);
 	void				EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const;
@@ -62,7 +83,7 @@ public:
 
 	void				EnumerateConnections (const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const;
 	void				EnumerateConnections (const std::function<void (const NodeConstPtr&, const OutputSlotConstPtr&, const NodeConstPtr&, const InputSlotConstPtr&)>& processor) const;
-	void				EnumerateConnections (const std::function<void (const NodeId&, const SlotId&, const NodeId&, const SlotId&)>& processor) const;
+	void				EnumerateConnections (const std::function<void (const ConnectionInfo&)>& processor) const;
 
 	bool				HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const;
 	bool				HasConnectedInputSlots (const OutputSlotConstPtr& outputSlot) const;
@@ -83,8 +104,6 @@ public:
 
 	void				EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 	void				EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
-
-	bool				AppendTo (NodeManager& targetNodeManager, const NodeFilter& nodeFilter) const;
 
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;

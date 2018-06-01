@@ -101,7 +101,7 @@ TEST (NodeManagerCompareTest_Equal)
 	source.ConnectOutputSlotToInputSlot (node3->GetOutputSlot (SlotId ("out")), node4->GetInputSlot (SlotId ("a")));
 
 	NodeManager target;
-	source.AppendTo (target, AllNodesFilter ());
+	target.AppendFrom (source, AllNodesFilter ());
 
 	NodeManagerDelta delta = CompareNodeManagers (source, target);
 	ASSERT (delta.IsEmpty ());
@@ -120,7 +120,7 @@ TEST (NodeManagerCompareTest_DeletedNode)
 	source.ConnectOutputSlotToInputSlot (node3->GetOutputSlot (SlotId ("out")), node4->GetInputSlot (SlotId ("a")));
 
 	NodeManager target;
-	source.AppendTo (target, AllNodesFilter ());
+	target.AppendFrom (source, AllNodesFilter ());
 	target.DeleteNode (node3->GetId ());
 
 	NodeManagerDelta delta = CompareNodeManagers (source, target);
@@ -142,7 +142,7 @@ TEST (NodeManagerCompareTest_NewNode)
 	source.ConnectOutputSlotToInputSlot (node3->GetOutputSlot (SlotId ("out")), node4->GetInputSlot (SlotId ("a")));
 
 	NodeManager target;
-	source.AppendTo (target, AllNodesFilter ());
+	target.AppendFrom (source, AllNodesFilter ());
 	NodePtr node5 = target.AddNode (NodePtr (new TestNode (L"5")));
 
 	NodeManagerDelta delta = CompareNodeManagers (source, target);
@@ -164,7 +164,7 @@ TEST (NodeManagerCompareTest_ModifiedNode)
 	source.ConnectOutputSlotToInputSlot (node3->GetOutputSlot (SlotId ("out")), node4->GetInputSlot (SlotId ("a")));
 
 	NodeManager target;
-	source.AppendTo (target, AllNodesFilter ());
+	target.AppendFrom (source, AllNodesFilter ());
 	std::shared_ptr<TestNode> targetNode = Node::Cast<TestNode> (target.GetNode (node3->GetId ()));
 	targetNode->SetName (L"NewName");
 
