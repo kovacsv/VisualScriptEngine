@@ -15,45 +15,6 @@ bool AllNodesFilter::NeedToProcessNode (const NodeId&) const
 	return true;
 }
 
-ConnectionInfo::ConnectionInfo (const NodeId& outputNodeId, const SlotId& outputSlotId, const NodeId& inputNodeId, const SlotId& inputSlotId) :
-	outputNodeId (outputNodeId),
-	outputSlotId (outputSlotId),
-	inputNodeId (inputNodeId),
-	inputSlotId (inputSlotId)
-{
-
-}
-
-const NodeId& ConnectionInfo::GetOutputNodeId () const
-{
-	return outputNodeId;
-}
-
-const SlotId& ConnectionInfo::GetOutputSlotId () const
-{
-	return outputSlotId;
-}
-
-const NodeId& ConnectionInfo::GetInputNodeId () const
-{
-	return inputNodeId;
-}
-
-const SlotId& ConnectionInfo::GetInputSlotId () const
-{
-	return inputSlotId;
-}
-
-bool ConnectionInfo::operator< (const ConnectionInfo& rhs) const
-{
-	return outputNodeId < rhs.outputNodeId && inputNodeId < rhs.inputNodeId && outputSlotId < rhs.outputSlotId && inputSlotId < rhs.inputSlotId;
-}
-
-bool ConnectionInfo::operator> (const ConnectionInfo& rhs) const
-{
-	return outputNodeId > rhs.outputNodeId && inputNodeId > rhs.inputNodeId && outputSlotId > rhs.outputSlotId && inputSlotId > rhs.inputSlotId;
-}
-
 class NodeManagerNodeEvaluator : public NodeEvaluator
 {
 public:
@@ -364,7 +325,10 @@ void NodeManager::EnumerateConnections (const std::function<void (const NodeCons
 void NodeManager::EnumerateConnections (const std::function<void (const ConnectionInfo&)>& processor) const
 {
 	connectionManager.EnumerateConnections ([&] (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) {
-		ConnectionInfo connection (outputSlot->GetOwnerNodeId (), outputSlot->GetId (), inputSlot->GetOwnerNodeId (), inputSlot->GetId ());
+		ConnectionInfo connection (
+			SlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ()),
+			SlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ())
+		);
 		processor (connection);
 	});
 }

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Checksum.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionInfo.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionList.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionManager.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Debug.hpp" />
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Checksum.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ConnectionInfo.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ConnectionManager.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Debug.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_EvaluationEnv.cpp" />

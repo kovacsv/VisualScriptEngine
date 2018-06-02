@@ -85,6 +85,9 @@
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManagerCompare.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionInfo.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Checksum.cpp">
@@ -151,6 +154,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManagerCompare.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ConnectionInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

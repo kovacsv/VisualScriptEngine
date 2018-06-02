@@ -7,6 +7,7 @@
 #include "NE_NodeId.hpp"
 #include "NE_SlotId.hpp"
 #include "NE_Value.hpp"
+#include "NE_ConnectionInfo.hpp"
 #include "NE_ConnectionManager.hpp"
 #include "NE_NodeValueCache.hpp"
 #include <functional>
@@ -24,26 +25,6 @@ class AllNodesFilter : public NodeFilter
 {
 public:
 	virtual bool NeedToProcessNode (const NodeId& nodeId) const override;
-};
-
-class ConnectionInfo
-{
-public:
-	ConnectionInfo (const NodeId& outputNodeId, const SlotId& outputSlotId, const NodeId& inputNodeId, const SlotId& inputSlotId);
-
-	const NodeId&	GetOutputNodeId () const;
-	const SlotId&	GetOutputSlotId () const;
-	const NodeId&	GetInputNodeId () const;
-	const SlotId&	GetInputSlotId () const;
-
-	bool			operator< (const ConnectionInfo& rhs) const;
-	bool			operator> (const ConnectionInfo& rhs) const;
-
-private:
-	NodeId	outputNodeId;
-	SlotId	outputSlotId;
-	NodeId	inputNodeId;
-	SlotId	inputSlotId;
 };
 
 class NodeManager
