@@ -32,12 +32,6 @@ class NodeManager
 	SERIALIZABLE;
 
 public:
-	enum class IdHandlingPolicy
-	{
-		KeepOriginalId,
-		GenerateNewId
-	};
-
 	NodeManager ();
 	NodeManager (const NodeManager& src) = delete;
 	~NodeManager ();
@@ -94,12 +88,21 @@ public:
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;
 
-	Stream::Status		ReadNodes (InputStream& inputStream, IdHandlingPolicy idHandling);
-	Stream::Status		WriteNodes (OutputStream& outputStream, const NodeFilter& nodeFilter) const;
+	bool				Append (const NodeManager& source, const NodeFilter& nodeFilter);
 
 private:
+	enum class IdHandlingPolicy
+	{
+		KeepOriginalId,
+		GenerateNewId
+	};
 
 	NodePtr				AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter);
+	NodePtr				AddUninitializedNode (const NodePtr& node);
+	NodePtr				AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling);
+
+	Stream::Status		ReadNodes (InputStream& inputStream, IdHandlingPolicy idHandling);
+	Stream::Status		WriteNodes (OutputStream& outputStream, const NodeFilter& nodeFilter) const;
 
 	NodeIdGenerator							idGenerator;
 	std::unordered_map<NodeId, NodePtr>		nodeIdToNodeTable;

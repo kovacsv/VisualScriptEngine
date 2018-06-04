@@ -37,13 +37,14 @@ bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NodeCollec
 
 	tempNodeManager.Clear ();
 	CopyFilter copyFilter (nodeCollection);
-	return AppendNodeManager (source, tempNodeManager, copyFilter);
+	return tempNodeManager.Append (source, copyFilter);
 }
 
 bool CopyPasteHandler::PasteTo (NE::NodeManager& target)
 {
+	// TODO: Node created does not called after append
 	NE::AllNodesFilter allNodesFilter;
-	return AppendNodeManager (tempNodeManager, target, allNodesFilter);
+	return target.Append (tempNodeManager, allNodesFilter);
 }
 
 }

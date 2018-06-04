@@ -172,13 +172,7 @@ NodePtr NodeManager::GetNode (const NodeId& id)
 
 NodePtr NodeManager::AddNode (const NodePtr& node)
 {
-	if (DBGERROR (node == nullptr || node->HasNodeEvaluator () || node->GetId () != NullNodeId)) {
-		return nullptr;
-	}
-
-	NodeId newNodeId (idGenerator.GenerateUniqueId ());
-	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::Initialize);
-	return AddNode (node, setter);
+	return AddUninitializedNode (node);
 }
 
 bool NodeManager::DeleteNode (const NodeId& id)
@@ -455,6 +449,57 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+bool NodeManager::Append (const NodeManager& source, const NodeFilter& nodeFilter)
+{
+	MemoryOutputStream outputStream;
+	if (DBGERROR (source.WriteNodes (outputStream, nodeFilter) != Stream::Status::NoError)) {
+		return false;
+	}
+	MemoryInputStream inputStream (outputStream.GetBuffer ());
+	if (DBGERROR (ReadNodes (inputStream, NodeManager::IdHandlingPolicy::GenerateNewId) != Stream::Status::NoError)) {
+		return false;
+	}
+	return true;
+}
+
+NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
+{
+	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {
+		return nullptr;
+	}
+	node->SetNodeEvaluator (setter);
+	nodeIdToNodeTable.insert ({ node->GetId (), node });
+	return node;
+}
+
+NodePtr NodeManager::AddUninitializedNode (const NodePtr& node)
+{
+	if (DBGERROR (node == nullptr || node->HasNodeEvaluator () || node->GetId () != NullNodeId)) {
+		return nullptr;
+	}
+
+	NodeId newNodeId (idGenerator.GenerateUniqueId ());
+	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::Initialize);
+	return AddNode (node, setter);
+}
+
+NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling)
+{
+	if (DBGERROR (node == nullptr || node->HasNodeEvaluator () || node->GetId () == NullNodeId)) {
+		return nullptr;
+	}
+
+	NodeId newNodeId;
+	if (idHandling == IdHandlingPolicy::KeepOriginalId) {
+		newNodeId = node->GetId ();
+	} else if (idHandling == IdHandlingPolicy::GenerateNewId) {
+		newNodeId = idGenerator.GenerateUniqueId ();
+	}
+
+	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::DoNotInitialize);
+	return AddNode (node, setter);
+}
+
 Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolicy idHandling)
 {
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
@@ -463,22 +508,12 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolic
 	inputStream.Read (nodeCount);
 	for (size_t i = 0; i < nodeCount; ++i) {
 		NodePtr node (ReadDynamicObject<Node> (inputStream));
-		if (DBGERROR (node == nullptr || node->HasNodeEvaluator () || node->GetId () == NullNodeId)) {
+		NodeId oldNodeId = node->GetId ();
+		NodePtr addedNode = AddInitializedNode (node, idHandling);
+		if (DBGERROR (addedNode == nullptr)) {
 			return Stream::Status::Error;
 		}
-
-		NodeId newNodeId;
-		if (idHandling == IdHandlingPolicy::KeepOriginalId) {
-			newNodeId = node->GetId ();
-		} else if (idHandling == IdHandlingPolicy::GenerateNewId) {
-			newNodeId = idGenerator.GenerateUniqueId ();
-		}
-		oldToNewNodeIdTable.insert ({ node->GetId (), newNodeId });
-
-		NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::DoNotInitialize);
-		if (DBGERROR (AddNode (node, setter) == nullptr)) {
-			return Stream::Status::Error;
-		}
+		oldToNewNodeIdTable.insert ({ oldNodeId, addedNode->GetId () });
 	}
 
 	size_t connectionCount = 0;
@@ -544,16 +579,6 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFi
 	}
 
 	return outputStream.GetStatus ();
-}
-
-NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
-{
-	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {
-		return nullptr;
-	}
-	node->SetNodeEvaluator (setter);
-	nodeIdToNodeTable.insert ({ node->GetId (), node });
-	return node;
 }
 
 }

@@ -6,7 +6,7 @@
 namespace NE
 {
 
-bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter);
+bool MergeNodeManager (const NodeManager& source, NodeManager& target);
 
 }
 
