@@ -24,7 +24,6 @@ public:
 	bool	HasConnection (const BegSlotType& begSlot) const;
 	bool	HasConnection (const BegSlotType& begSlot, const EndSlotType& endSlot) const;
 	void	EnumerateConnections (const BegSlotType& begSlot, const std::function<void (const EndSlotType&)>& processor) const;
-	void	EnumerateConnections (const std::function<void (const BegSlotType&, const EndSlotType&)>& processor) const;
 
 	void	AddConnection (const BegSlotType& begSlot, const EndSlotType& endSlot);
 	void	DeleteConnection (const BegSlotType& begSlot, const EndSlotType& endSlot);
@@ -103,17 +102,6 @@ void ConnectionList<BegSlotType, EndSlotType>::EnumerateConnections (const BegSl
 	const std::vector<EndSlotType>& endSlots = foundEndSlots->second;
 	for (const EndSlotType& endSlot : endSlots) {
 		processor (endSlot);
-	}
-}
-
-template <class BegSlotType, class EndSlotType>
-void ConnectionList<BegSlotType, EndSlotType>::EnumerateConnections (const std::function<void (const BegSlotType&, const EndSlotType&)>& processor) const
-{
-	for (const std::pair<BegSlotType, std::vector<EndSlotType>>& connection : connections) {
-		const BegSlotType& begSlot = connection.first;
-		for (const EndSlotType& endSlot : connection.second) {
-			processor (begSlot, endSlot);
-		}
 	}
 }
 

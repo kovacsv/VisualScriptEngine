@@ -59,11 +59,6 @@ void ConnectionManager::EnumerateConnectedInputSlots (const OutputSlotConstPtr& 
 	outputToInputConnections.EnumerateConnections (outputSlot, processor);
 }
 
-void ConnectionManager::EnumerateConnections (const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
-{
-	outputToInputConnections.EnumerateConnections (processor);
-}
-
 bool ConnectionManager::IsOutputSlotConnectedToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const
 {
 	if (outputSlot == nullptr || inputSlot == nullptr) {

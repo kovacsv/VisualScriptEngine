@@ -326,28 +326,6 @@ TEST (AdditionNodeTest)
 	manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first")));
 	manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("second")));
 
-	{
-		int connectionCount = 0;
-		manager.EnumerateConnections ([&] (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) {
-			ASSERT (outputSlot->GetId () == SlotId ("out"));
-			ASSERT (inputSlot->GetId () == SlotId ("first") || inputSlot->GetId () == SlotId ("second"));
-			connectionCount++;
-		});
-		ASSERT (connectionCount == 2);
-	}
-
-	{
-		int connectionCount = 0;
-		manager.EnumerateConnections ([&] (const NodeConstPtr& outputNode, const OutputSlotConstPtr& outputSlot, const NodeConstPtr& inputNode, const InputSlotConstPtr& inputSlot) {
-			ASSERT (outputNode == firstNode || outputNode == secondNode);
-			ASSERT (inputNode == additionNode);
-			ASSERT (outputSlot->GetId () == SlotId ("out"));
-			ASSERT (inputSlot->GetId () == SlotId ("first") || inputSlot->GetId () == SlotId ("second"));
-			connectionCount++;
-		});
-		ASSERT (connectionCount == 2);
-	}
-
 	ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
 	ASSERT (Value::IsType<IntValue> (result));

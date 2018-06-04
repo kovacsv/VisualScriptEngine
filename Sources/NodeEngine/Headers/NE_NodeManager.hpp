@@ -61,10 +61,6 @@ public:
 	bool				DisconnectAllInputSlotsFromOutputSlot (const OutputSlotConstPtr& outputSlot);
 	bool				DisconnectAllOutputSlotsFromInputSlot (const InputSlotConstPtr& inputSlot);
 
-	void				EnumerateConnections (const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const;
-	void				EnumerateConnections (const std::function<void (const NodeConstPtr&, const OutputSlotConstPtr&, const NodeConstPtr&, const InputSlotConstPtr&)>& processor) const;
-	void				EnumerateConnections (const std::function<void (const ConnectionInfo&)>& processor) const;
-
 	bool				HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const;
 	bool				HasConnectedInputSlots (const OutputSlotConstPtr& outputSlot) const;
 	size_t				GetConnectedOutputSlotCount (const InputSlotConstPtr& inputSlot) const;
