@@ -129,19 +129,6 @@ size_t NodeManager::GetConnectionCount () const
 	return connectionManager.GetConnectionCount ();
 }
 
-bool NodeManager::AppendFrom (const NodeManager& sourceNodeManager, const NodeFilter& nodeFilter)
-{
-	MemoryOutputStream outputStream;
-	if (DBGERROR (sourceNodeManager.WriteNodes (outputStream, nodeFilter) != Stream::Status::NoError)) {
-		return false;
-	}
-	MemoryInputStream inputStream (outputStream.GetBuffer ());
-	if (DBGERROR (ReadNodes (inputStream, IdHandlingPolicy::GenerateNewId) != Stream::Status::NoError)) {
-		return false;
-	}
-	return true;
-}
-
 void NodeManager::EnumerateNodes (const std::function<bool (const NodePtr&)>& processor)
 {
 	for (auto& node : nodeIdToNodeTable) {
@@ -468,16 +455,6 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
-{
-	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {
-		return nullptr;
-	}
-	node->SetNodeEvaluator (setter);
-	nodeIdToNodeTable.insert ({ node->GetId (), node });
-	return node;
-}
-
 Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolicy idHandling)
 {
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
@@ -567,6 +544,16 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFi
 	}
 
 	return outputStream.GetStatus ();
+}
+
+NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
+{
+	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {
+		return nullptr;
+	}
+	node->SetNodeEvaluator (setter);
+	nodeIdToNodeTable.insert ({ node->GetId (), node });
+	return node;
 }
 
 }

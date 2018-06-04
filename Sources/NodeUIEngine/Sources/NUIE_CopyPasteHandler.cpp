@@ -1,4 +1,5 @@
 #include "NUIE_CopyPasteHandler.hpp"
+#include "NE_NodeManagerMerge.hpp"
 #include "NE_Debug.hpp"
 
 namespace NUIE
@@ -36,13 +37,13 @@ bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NodeCollec
 
 	tempNodeManager.Clear ();
 	CopyFilter copyFilter (nodeCollection);
-	return tempNodeManager.AppendFrom (source, copyFilter);
+	return AppendNodeManager (source, tempNodeManager, copyFilter);
 }
 
 bool CopyPasteHandler::PasteTo (NE::NodeManager& target)
 {
 	NE::AllNodesFilter allNodesFilter;
-	return target.AppendFrom (tempNodeManager, allNodesFilter);
+	return AppendNodeManager (tempNodeManager, target, allNodesFilter);
 }
 
 }

@@ -33,7 +33,7 @@
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeEngineUtilities.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeId.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManager.hpp" />
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManagerCompare.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManagerMerge.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeValueCache.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_OutputSlot.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Serializable.hpp" />
@@ -59,7 +59,7 @@
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeEngineUtilities.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeId.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManager.cpp" />
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManagerCompare.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManagerMerge.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeValueCache.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_OutputSlot.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Serializable.cpp" />

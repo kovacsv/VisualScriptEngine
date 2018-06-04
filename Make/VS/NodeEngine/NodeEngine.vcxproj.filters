@@ -82,10 +82,10 @@
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ValueCombination.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManagerCompare.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionInfo.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionInfo.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManagerMerge.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -153,10 +153,10 @@
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ValueCombination.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManagerCompare.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ConnectionInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ConnectionInfo.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManagerMerge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,6 +12,8 @@ class SlotInfo
 public:
 	SlotInfo (const NodeId& nodeId, const SlotId& slotId);
 
+	size_t			GenerateHashValue () const;
+
 	const NodeId&	GetNodeId () const;
 	const SlotId&	GetSlotId () const;
 
@@ -46,6 +48,18 @@ private:
 	SlotInfo	inputSlotInfo;
 };
 
+}
+
+namespace std
+{
+	template <>
+	struct hash<NE::SlotInfo>
+	{
+		size_t operator() (const NE::SlotInfo& info) const noexcept
+		{
+			return info.GenerateHashValue ();
+		}
+	};
 }
 
 #endif

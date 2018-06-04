@@ -15,6 +15,11 @@ SlotInfo::SlotInfo (const NodeId& nodeId, const SlotId& slotId) :
 
 }
 
+size_t SlotInfo::GenerateHashValue () const
+{
+	return nodeId.GenerateHashValue () + 49157 * slotId.GenerateHashValue ();
+}
+
 const NodeId& SlotInfo::GetNodeId () const
 {
 	return nodeId;
