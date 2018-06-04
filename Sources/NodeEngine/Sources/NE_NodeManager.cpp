@@ -560,6 +560,8 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFi
 		WriteDynamicObject (outputStream, node.get ());
 	};
 
+	// TODO: In case of multiple input slots the connection order can be different after read
+
 	std::vector<ConnectionInfo> connectionsToWrite;
 	EnumerateConnections ([&] (const ConnectionInfo& connection) {
 		if (nodeFilter.NeedToProcessNode (connection.GetOutputNodeId ()) && nodeFilter.NeedToProcessNode (connection.GetInputNodeId ())) {
