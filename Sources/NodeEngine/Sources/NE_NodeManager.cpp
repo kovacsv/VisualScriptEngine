@@ -448,6 +448,10 @@ bool NodeManager::Append (const NodeManager& source, const NodeFilter& nodeFilte
 		return true;
 	});
 
+	std::sort (nodesToClone.begin (), nodesToClone.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) -> bool {
+		return a->GetId () < b->GetId ();
+	});
+
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
 	for (const NodeConstPtr& node : nodesToClone) {
 		NodePtr cloned = Node::Clone (node);
