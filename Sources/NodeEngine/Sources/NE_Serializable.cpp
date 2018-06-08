@@ -223,14 +223,21 @@ DynamicSerializable* ReadDynamicObject (InputStream& inputStream)
 	return serializable;
 }
 
-void WriteDynamicObject (OutputStream& outputStream, const DynamicSerializable* object)
+bool WriteDynamicObject (OutputStream& outputStream, const DynamicSerializable* object)
 {
 	const DynamicSerializationInfo* serializationInfo = object->GetDynamicSerializationInfo ();
 	if (DBGERROR (serializationInfo == nullptr)) {
-		return;
+		return false;
 	}
-	serializationInfo->GetObjectId ().Write (outputStream);
-	object->Write (outputStream);
+	Stream::Status status = serializationInfo->GetObjectId ().Write (outputStream);
+	if (DBGERROR (status != Stream::Status::NoError)) {
+		return false;
+	}
+	status = object->Write (outputStream);
+	if (DBGERROR (status != Stream::Status::NoError)) {
+		return false;
+	}
+	return true;
 }
 
 }

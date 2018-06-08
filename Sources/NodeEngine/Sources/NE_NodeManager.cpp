@@ -10,6 +10,22 @@ namespace NE
 
 SerializationInfo NodeManager::serializationInfo (ObjectVersion (1));
 
+static void EnumerateConnectionsOrdered (const NodeManager& nodeManager, const std::vector<NodeConstPtr>& nodes, const std::function<void (const ConnectionInfo&)>& processor)
+{
+	for (const NodeConstPtr& node : nodes) {
+		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
+			nodeManager.EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
+				ConnectionInfo connection (
+					SlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ()),
+					SlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ())
+				);
+				processor (connection);
+			});
+			return true;
+		});
+	}
+}
+
 bool AllNodesFilter::NeedToProcessNode (const NodeId&) const
 {
 	return true;
@@ -421,17 +437,65 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-bool NodeManager::Append (const NodeManager& source, const NodeFilter& nodeFilter)
+NodePtr CloneNode (const NodeConstPtr& node)
 {
 	MemoryOutputStream outputStream;
-	if (DBGERROR (source.WriteNodes (outputStream, nodeFilter) != Stream::Status::NoError)) {
-		return false;
+	WriteDynamicObject (outputStream, node.get ());
+	if (DBGERROR (node->Write (outputStream) != Stream::Status::NoError)) {
+		return nullptr;
 	}
+
 	MemoryInputStream inputStream (outputStream.GetBuffer ());
-	if (DBGERROR (ReadNodes (inputStream, NodeManager::IdHandlingPolicy::GenerateNewId) != Stream::Status::NoError)) {
-		return false;
+	NodePtr result (ReadDynamicObject<Node> (inputStream));
+	if (DBGERROR (result == nullptr)) {
+		return nullptr;
 	}
-	return true;
+
+	return result;
+}
+
+bool NodeManager::Append (const NodeManager& source, const NodeFilter& nodeFilter)
+{
+	std::vector<NodeConstPtr> nodesToClone;
+	source.EnumerateNodes ([&] (const NodeConstPtr& node) {
+		if (!nodeFilter.NeedToProcessNode (node->GetId ())) {
+			return true;
+		}
+		nodesToClone.push_back (node);
+		return true;
+	});
+
+	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
+	for (const NodeConstPtr& node : nodesToClone) {
+		NodePtr cloned = CloneNode (node);
+		AddInitializedNode (cloned, IdHandlingPolicy::GenerateNewId);
+		oldToNewNodeIdTable.insert ({ node->GetId (), cloned->GetId () });
+	}
+
+	bool success = true;
+	EnumerateConnectionsOrdered (source, nodesToClone, [&] (const ConnectionInfo& connection) {
+		if (!nodeFilter.NeedToProcessNode (connection.GetOutputNodeId ())) {
+			return;
+		}
+		NodeConstPtr outputNode = GetNode (oldToNewNodeIdTable[connection.GetOutputNodeId ()]);
+		NodeConstPtr inputNode = GetNode (oldToNewNodeIdTable[connection.GetInputNodeId ()]);
+		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
+			success = false;
+			return;
+		}
+		OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (connection.GetOutputSlotId ());
+		InputSlotConstPtr inputSlot = inputNode->GetInputSlot (connection.GetInputSlotId ());
+		if (DBGERROR (outputSlot == nullptr || inputSlot == nullptr)) {
+			success = false;
+			return;
+		}
+		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
+			success = false;
+			return;
+		}
+	});
+
+	return success;
 }
 
 NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
@@ -533,21 +597,12 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFi
 	};
 
 	std::vector<ConnectionInfo> connectionsToWrite;
-	for (const NodeConstPtr& node : nodesToWrite) {
-		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
-			connectionManager.EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
-				if (!nodeFilter.NeedToProcessNode (outputSlot->GetOwnerNodeId ())) {
-					return;
-				}
-				ConnectionInfo connection (
-					SlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ()),
-					SlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ())
-				);
-				connectionsToWrite.push_back (connection);
-			});
-			return true;
-		});
-	}
+	EnumerateConnectionsOrdered (*this, nodesToWrite, [&] (const ConnectionInfo& connection) {
+		if (!nodeFilter.NeedToProcessNode (connection.GetOutputNodeId ())) {
+			return;
+		}
+		connectionsToWrite.push_back (connection);
+	});
 
 	outputStream.Write (connectionsToWrite.size ());
 	for (const ConnectionInfo& connection : connectionsToWrite) {

@@ -99,7 +99,7 @@ public:
 
 DynamicSerializable*	CreateDynamicObject (const ObjectId& objectId);
 DynamicSerializable*	ReadDynamicObject (InputStream& inputStream);
-void					WriteDynamicObject (OutputStream& outputStream, const DynamicSerializable* object);
+bool					WriteDynamicObject (OutputStream& outputStream, const DynamicSerializable* object);
 
 template <class ObjectType>
 ObjectType* ReadDynamicObject (InputStream& inputStream)
