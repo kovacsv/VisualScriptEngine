@@ -42,8 +42,17 @@ bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NodeCollec
 
 bool CopyPasteHandler::PasteTo (NE::NodeManager& target)
 {
+	class AllNodesFilter : public NE::NodeFilter
+	{
+	public:
+		virtual bool NeedToProcessNode (const NE::NodeId&) const override
+		{
+			return true;
+		}
+	};
+
 	// TODO: Node created does not called after append
-	NE::AllNodesFilter allNodesFilter;
+	AllNodesFilter allNodesFilter;
 	return target.Append (tempNodeManager, allNodesFilter);
 }
 

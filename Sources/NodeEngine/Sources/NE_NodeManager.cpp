@@ -26,11 +26,6 @@ static void EnumerateConnectionsOrdered (const NodeManager& nodeManager, const s
 	}
 }
 
-bool AllNodesFilter::NeedToProcessNode (const NodeId&) const
-{
-	return true;
-}
-
 class NodeManagerNodeEvaluator : public NodeEvaluator
 {
 public:
