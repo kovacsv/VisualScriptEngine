@@ -437,23 +437,6 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-NodePtr CloneNode (const NodeConstPtr& node)
-{
-	MemoryOutputStream outputStream;
-	WriteDynamicObject (outputStream, node.get ());
-	if (DBGERROR (node->Write (outputStream) != Stream::Status::NoError)) {
-		return nullptr;
-	}
-
-	MemoryInputStream inputStream (outputStream.GetBuffer ());
-	NodePtr result (ReadDynamicObject<Node> (inputStream));
-	if (DBGERROR (result == nullptr)) {
-		return nullptr;
-	}
-
-	return result;
-}
-
 bool NodeManager::Append (const NodeManager& source, const NodeFilter& nodeFilter)
 {
 	std::vector<NodeConstPtr> nodesToClone;
@@ -467,7 +450,7 @@ bool NodeManager::Append (const NodeManager& source, const NodeFilter& nodeFilte
 
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
 	for (const NodeConstPtr& node : nodesToClone) {
-		NodePtr cloned = CloneNode (node);
+		NodePtr cloned = Node::Clone (node);
 		AddInitializedNode (cloned, IdHandlingPolicy::GenerateNewId);
 		oldToNewNodeIdTable.insert ({ node->GetId (), cloned->GetId () });
 	}

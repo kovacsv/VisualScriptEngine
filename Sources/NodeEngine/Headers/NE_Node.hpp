@@ -84,6 +84,8 @@ public:
 	bool					HasNodeEvaluator () const;
 	void					ClearNodeEvaluator ();
 
+	static NodePtr			Clone (const NodeConstPtr& node);
+
 	template <class SlotType>
 	void EnumerateSlots (const std::function<bool (const SlotType&)>& processor);
 

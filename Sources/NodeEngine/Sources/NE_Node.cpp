@@ -2,6 +2,7 @@
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NE_Debug.hpp"
+#include "NE_MemoryStream.hpp"
 
 namespace NE
 {
@@ -295,6 +296,23 @@ ListValuePtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, Evalua
 	nodeEvaluator->EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
 		result->Push (outputSlot->Evaluate (env));
 	});
+	return result;
+}
+
+NodePtr Node::Clone (const NodeConstPtr& node)
+{
+	MemoryOutputStream outputStream;
+	WriteDynamicObject (outputStream, node.get ());
+	if (DBGERROR (node->Write (outputStream) != Stream::Status::NoError)) {
+		return nullptr;
+	}
+
+	MemoryInputStream inputStream (outputStream.GetBuffer ());
+	NodePtr result (ReadDynamicObject<Node> (inputStream));
+	if (DBGERROR (result == nullptr)) {
+		return nullptr;
+	}
+
 	return result;
 }
 
