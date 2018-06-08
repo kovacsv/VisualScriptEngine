@@ -97,8 +97,8 @@ private:
 	NodePtr				AddUninitializedNode (const NodePtr& node);
 	NodePtr				AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling);
 
-	Stream::Status		ReadNodes (InputStream& inputStream, IdHandlingPolicy idHandling);
-	Stream::Status		WriteNodes (OutputStream& outputStream, const NodeFilter& nodeFilter) const;
+	Stream::Status		ReadNodes (InputStream& inputStream);
+	Stream::Status		WriteNodes (OutputStream& outputStream) const;
 
 	NodeIdGenerator							idGenerator;
 	std::unordered_map<NodeId, NodePtr>		nodeIdToNodeTable;

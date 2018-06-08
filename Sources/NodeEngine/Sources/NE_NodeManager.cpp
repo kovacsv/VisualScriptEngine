@@ -415,7 +415,7 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 	ObjectHeader header (inputStream);
 	idGenerator.Read (inputStream);
 
-	Stream::Status nodeStatus = ReadNodes (inputStream, IdHandlingPolicy::KeepOriginalId);
+	Stream::Status nodeStatus = ReadNodes (inputStream);
 	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
 		return nodeStatus;
 	}
@@ -428,8 +428,7 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	ObjectHeader header (outputStream, serializationInfo);
 	idGenerator.Write (outputStream);
 
-	AllNodesFilter allNodesFilter;
-	Stream::Status nodeStatus = WriteNodes (outputStream, allNodesFilter);
+	Stream::Status nodeStatus = WriteNodes (outputStream);
 	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
 		return nodeStatus;
 	}
@@ -523,7 +522,7 @@ NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy i
 	return AddNode (node, setter);
 }
 
-Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolicy idHandling)
+Stream::Status NodeManager::ReadNodes (InputStream& inputStream)
 {
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
 
@@ -532,7 +531,7 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolic
 	for (size_t i = 0; i < nodeCount; ++i) {
 		NodePtr node (ReadDynamicObject<Node> (inputStream));
 		NodeId oldNodeId = node->GetId ();
-		NodePtr addedNode = AddInitializedNode (node, idHandling);
+		NodePtr addedNode = AddInitializedNode (node, IdHandlingPolicy::KeepOriginalId);
 		if (DBGERROR (addedNode == nullptr)) {
 			return Stream::Status::Error;
 		}
@@ -565,13 +564,11 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream, IdHandlingPolic
 	return inputStream.GetStatus ();
 }
 
-Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFilter& nodeFilter) const
+Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
 {
 	std::vector<NodeConstPtr> nodesToWrite;
 	EnumerateNodes ([&] (const NodeConstPtr& node) {
-		if (nodeFilter.NeedToProcessNode (node->GetId ())) {
-			nodesToWrite.push_back (node);
-		}
+		nodesToWrite.push_back (node);
 		return true;
 	});
 	std::sort (nodesToWrite.begin (), nodesToWrite.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) -> bool {
@@ -585,9 +582,6 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream, const NodeFi
 
 	std::vector<ConnectionInfo> connectionsToWrite;
 	EnumerateConnectionsOrdered (*this, nodesToWrite, [&] (const ConnectionInfo& connection) {
-		if (!nodeFilter.NeedToProcessNode (connection.GetOutputNodeId ())) {
-			return;
-		}
 		connectionsToWrite.push_back (connection);
 	});
 
