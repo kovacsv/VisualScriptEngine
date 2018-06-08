@@ -316,6 +316,17 @@ NodePtr Node::Clone (const NodeConstPtr& node)
 	return result;
 }
 
+bool Node::IsEqual (const NodeConstPtr& aNode, const NodeConstPtr& bNode)
+{
+	MemoryOutputStream aStream;
+	MemoryOutputStream bStream;
+
+	aNode->Write (aStream);
+	bNode->Write (bStream);
+
+	return aStream.GetBuffer () == bStream.GetBuffer ();
+}
+
 template <>
 void Node::EnumerateSlots (const std::function<bool (const InputSlotPtr&)>& processor)
 {
