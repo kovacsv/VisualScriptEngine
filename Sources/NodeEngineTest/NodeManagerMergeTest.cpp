@@ -5,6 +5,7 @@
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NE_SingleValues.hpp"
+#include "NE_MemoryStream.hpp"
 
 using namespace NE;
 
@@ -96,6 +97,39 @@ static void InitNodeManager (NodeManager& manager)
 	manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out")), node3->GetInputSlot (SlotId ("a")));
 	manager.ConnectOutputSlotToInputSlot (node2->GetOutputSlot (SlotId ("out")), node3->GetInputSlot (SlotId ("b")));
 	manager.ConnectOutputSlotToInputSlot (node3->GetOutputSlot (SlotId ("out")), node4->GetInputSlot (SlotId ("a")));
+}
+
+static void CloneNodeManager (const NodeManager& source, NodeManager& target)
+{
+	MemoryOutputStream outputStream;
+	if (DBGERROR (source.Write (outputStream) != Stream::Status::NoError)) {
+		return;
+	}
+
+	MemoryInputStream inputStream (outputStream.GetBuffer ());
+	if (DBGERROR (target.Read (inputStream) != Stream::Status::NoError)) {
+		return;
+	}
+}
+
+static bool IsEqualNodeManagers (const NodeManager& source, const NodeManager& target)
+{
+	if (source.GetNodeCount () != target.GetNodeCount ()) {
+		return false;
+	}
+	if (source.GetConnectionCount () != target.GetConnectionCount ()) {
+		return false;
+	}
+	bool isEqual = true;
+	source.EnumerateNodes ([&] (const NodeConstPtr& sourceNode) {
+		ValuePtr sourceResult = sourceNode->Evaluate (EmptyEvaluationEnv);
+		ValuePtr targetResult = target.GetNode (sourceNode->GetId ())->Evaluate (EmptyEvaluationEnv);
+		if (IntValue::Get (sourceResult) != IntValue::Get (targetResult)) {
+			isEqual = false;
+		}
+		return isEqual;
+	});
+	return isEqual;
 }
 
 class AllNodeFilter : public NodeFilter
@@ -246,6 +280,105 @@ TEST (MergeMultipleNodes)
 	NodeConstPtr targetNode3 = FindNodesByName (target, L"3")[0];
 	ValuePtr result = targetNode3->Evaluate (EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (result) == 4);
+}
+
+TEST (NodeManagerUpdateTest_NewNode)
+{
+	NodeManager source;
+	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
+	NodePtr sourceNode2 = source.AddNode (NodePtr (new TestNode (L"2")));
+	NodePtr sourceNode3 = source.AddNode (NodePtr (new TestNode (L"3")));
+	NodePtr sourceNode4 = source.AddNode (NodePtr (new TestNode (L"4")));
+	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("a")));
+	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("b")));
+	source.ConnectOutputSlotToInputSlot (sourceNode3->GetOutputSlot (SlotId ("out")), sourceNode4->GetInputSlot (SlotId ("a")));
+
+	NodeManager target;
+	CloneNodeManager (source, target);
+	NodePtr targetNode5 = target.AddNode (NodePtr (new TestNode (L"5")));
+	ASSERT (target.ContainsNode (targetNode5->GetId ()));
+	NodeManagerMerge::UpdateNodeManager (source, target);
+	ASSERT (IsEqualNodeManagers (source, target));
+}
+
+TEST (NodeManagerUpdateTest_DeletedNode)
+{
+	NodeManager source;
+	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
+	NodePtr sourceNode2 = source.AddNode (NodePtr (new TestNode (L"2")));
+	NodePtr sourceNode3 = source.AddNode (NodePtr (new TestNode (L"3")));
+	NodePtr sourceNode4 = source.AddNode (NodePtr (new TestNode (L"4")));
+	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("a")));
+	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("b")));
+	source.ConnectOutputSlotToInputSlot (sourceNode3->GetOutputSlot (SlotId ("out")), sourceNode4->GetInputSlot (SlotId ("a")));
+
+	NodeManager target;
+	CloneNodeManager (source, target);
+	target.DeleteNode (sourceNode4->GetId ());
+	ASSERT (!target.ContainsNode (sourceNode4->GetId ()));
+	NodeManagerMerge::UpdateNodeManager (source, target);
+	ASSERT (IsEqualNodeManagers (source, target));
+}
+
+TEST (NodeManagerUpdateTest_DeletedNode2)
+{
+	NodeManager source;
+	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
+	NodePtr sourceNode2 = source.AddNode (NodePtr (new TestNode (L"2")));
+	NodePtr sourceNode3 = source.AddNode (NodePtr (new TestNode (L"3")));
+	NodePtr sourceNode4 = source.AddNode (NodePtr (new TestNode (L"4")));
+	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("a")));
+	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("b")));
+	source.ConnectOutputSlotToInputSlot (sourceNode3->GetOutputSlot (SlotId ("out")), sourceNode4->GetInputSlot (SlotId ("a")));
+
+	NodeManager target;
+	CloneNodeManager (source, target);
+	target.DeleteNode (sourceNode3->GetId ());
+	ASSERT (!target.ContainsNode (sourceNode3->GetId ()));
+	NodeManagerMerge::UpdateNodeManager (source, target);
+	ASSERT (IsEqualNodeManagers (source, target));
+}
+
+TEST (NodeManagerUpdateTest_AddConnection)
+{
+	NodeManager source;
+	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
+	NodePtr sourceNode2 = source.AddNode (NodePtr (new TestNode (L"2")));
+	NodePtr sourceNode3 = source.AddNode (NodePtr (new TestNode (L"3")));
+	NodePtr sourceNode4 = source.AddNode (NodePtr (new TestNode (L"4")));
+	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("a")));
+	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("b")));
+	source.ConnectOutputSlotToInputSlot (sourceNode3->GetOutputSlot (SlotId ("out")), sourceNode4->GetInputSlot (SlotId ("a")));
+
+	NodeManager target;
+	CloneNodeManager (source, target);
+	target.ConnectOutputSlotToInputSlot (
+		target.GetNode (sourceNode3->GetId ())->GetOutputSlot (SlotId ("out")),
+		target.GetNode (sourceNode4->GetId ())->GetInputSlot (SlotId ("b"))
+	);
+	NodeManagerMerge::UpdateNodeManager (source, target);
+	ASSERT (IsEqualNodeManagers (source, target));
+}
+
+TEST (NodeManagerUpdateTest_DeleteConnection)
+{
+	NodeManager source;
+	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
+	NodePtr sourceNode2 = source.AddNode (NodePtr (new TestNode (L"2")));
+	NodePtr sourceNode3 = source.AddNode (NodePtr (new TestNode (L"3")));
+	NodePtr sourceNode4 = source.AddNode (NodePtr (new TestNode (L"4")));
+	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("a")));
+	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("b")));
+	source.ConnectOutputSlotToInputSlot (sourceNode3->GetOutputSlot (SlotId ("out")), sourceNode4->GetInputSlot (SlotId ("a")));
+
+	NodeManager target;
+	CloneNodeManager (source, target);
+	target.DisconnectOutputSlotFromInputSlot (
+		target.GetNode (sourceNode3->GetId ())->GetOutputSlot (SlotId ("out")),
+		target.GetNode (sourceNode4->GetId ())->GetInputSlot (SlotId ("a"))
+	);
+	NodeManagerMerge::UpdateNodeManager (source, target);
+	ASSERT (IsEqualNodeManagers (source, target));
 }
 
 }

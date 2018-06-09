@@ -16,7 +16,7 @@ class NodeManagerMerge
 {
 public:
 	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter);
-	static bool MergeNodeManager (const NodeManager& source, NodeManager& target);
+	static bool UpdateNodeManager (const NodeManager& source, NodeManager& target);
 };
 
 
