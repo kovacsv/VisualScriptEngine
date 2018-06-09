@@ -35,6 +35,11 @@ public:
 		return name;
 	}
 
+	void SetName (const std::wstring& newName)
+	{
+		name = newName;
+	}
+
 	virtual void RegisterSlots () override
 	{
 		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("a"), ValuePtr (new IntValue (1)), OutputSlotConnectionMode::Single)));
@@ -122,8 +127,12 @@ static bool IsEqualNodeManagers (const NodeManager& source, const NodeManager& t
 	}
 	bool isEqual = true;
 	source.EnumerateNodes ([&] (const NodeConstPtr& sourceNode) {
+		NodeConstPtr targetNode = target.GetNode (sourceNode->GetId ());
+		if (!Node::IsEqual (sourceNode, targetNode)) {
+			isEqual = false;
+		}
 		ValuePtr sourceResult = sourceNode->Evaluate (EmptyEvaluationEnv);
-		ValuePtr targetResult = target.GetNode (sourceNode->GetId ())->Evaluate (EmptyEvaluationEnv);
+		ValuePtr targetResult = targetNode->Evaluate (EmptyEvaluationEnv);
 		if (IntValue::Get (sourceResult) != IntValue::Get (targetResult)) {
 			isEqual = false;
 		}
@@ -282,7 +291,7 @@ TEST (MergeMultipleNodes)
 	ASSERT (IntValue::Get (result) == 4);
 }
 
-TEST (NodeManagerUpdateTest_NewNode)
+TEST (NodeManagerUpdateTest_AddNode)
 {
 	NodeManager source;
 	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
@@ -301,7 +310,7 @@ TEST (NodeManagerUpdateTest_NewNode)
 	ASSERT (IsEqualNodeManagers (source, target));
 }
 
-TEST (NodeManagerUpdateTest_DeletedNode)
+TEST (NodeManagerUpdateTest_DeleteNode)
 {
 	NodeManager source;
 	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
@@ -320,7 +329,7 @@ TEST (NodeManagerUpdateTest_DeletedNode)
 	ASSERT (IsEqualNodeManagers (source, target));
 }
 
-TEST (NodeManagerUpdateTest_DeletedNode2)
+TEST (NodeManagerUpdateTest_DeleteNode2)
 {
 	NodeManager source;
 	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
@@ -337,6 +346,26 @@ TEST (NodeManagerUpdateTest_DeletedNode2)
 	ASSERT (!target.ContainsNode (sourceNode3->GetId ()));
 	NodeManagerMerge::UpdateNodeManager (source, target);
 	ASSERT (IsEqualNodeManagers (source, target));
+}
+
+TEST (NodeManagerUpdateTest_ModifyNode)
+{
+	NodeManager source;
+	NodePtr sourceNode1 = source.AddNode (NodePtr (new TestNode (L"1")));
+	NodePtr sourceNode2 = source.AddNode (NodePtr (new TestNode (L"2")));
+	NodePtr sourceNode3 = source.AddNode (NodePtr (new TestNode (L"3")));
+	NodePtr sourceNode4 = source.AddNode (NodePtr (new TestNode (L"4")));
+	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("a")));
+	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("out")), sourceNode3->GetInputSlot (SlotId ("b")));
+	source.ConnectOutputSlotToInputSlot (sourceNode3->GetOutputSlot (SlotId ("out")), sourceNode4->GetInputSlot (SlotId ("a")));
+
+	NodeManager target;
+	CloneNodeManager (source, target);
+	Node::Cast<TestNode> (target.GetNode (sourceNode3->GetId ()))->SetName (L"MyCoolNewName");
+	ASSERT (Node::Cast<TestNode> (target.GetNode (sourceNode3->GetId ()))->GetName () == L"MyCoolNewName");
+	NodeManagerMerge::UpdateNodeManager (source, target);
+	ASSERT (IsEqualNodeManagers (source, target));
+	ASSERT (Node::Cast<TestNode> (target.GetNode (sourceNode3->GetId ()))->GetName () == L"3");
 }
 
 TEST (NodeManagerUpdateTest_AddConnection)
