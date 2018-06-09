@@ -132,7 +132,7 @@ TEST (MergeAllNodesTest)
 
 	NodeManager target;
 	AllNodeFilter allNodeFilter;
-	target.Append (source, allNodeFilter);
+	NodeManagerMerge::AppendNodeManager (source, target, allNodeFilter);
 	ASSERT (target.GetNodeCount () == 4);
 	ASSERT (target.GetConnectionCount () == 3);
 
@@ -153,7 +153,7 @@ TEST (MergeAllNodesTest_Scope)
 		NodeManager source;
 		InitNodeManager (source);
 		AllNodeFilter allNodeFilter;
-		target.Append (source, allNodeFilter);
+		NodeManagerMerge::AppendNodeManager (source, target, allNodeFilter);
 	}
 
 	ASSERT (target.GetNodeCount () == 4);
@@ -177,8 +177,8 @@ TEST (MergeAllNodesTwiceTest)
 
 	NodeManager target;
 	AllNodeFilter allNodeFilter;
-	target.Append (source, allNodeFilter);
-	target.Append (source, allNodeFilter);
+	NodeManagerMerge::AppendNodeManager (source, target, allNodeFilter);
+	NodeManagerMerge::AppendNodeManager (source, target, allNodeFilter);
 	ASSERT (target.GetNodeCount () == 8);
 	ASSERT (target.GetConnectionCount () == 6);
 
@@ -200,7 +200,7 @@ TEST (MergeAllNodesToSameManager)
 	InitNodeManager (source);
 
 	AllNodeFilter allNodeFilter;
-	source.Append (source, allNodeFilter);
+	NodeManagerMerge::AppendNodeManager (source, source, allNodeFilter);
 	ASSERT (source.GetNodeCount () == 8);
 	ASSERT (source.GetConnectionCount () == 6);
 
@@ -224,7 +224,7 @@ TEST (MergeOnlyOneNode)
 
 	NodeManager target;
 	SomeNodesFilter someNodesFilter ({ nodeIdToMerge });
-	target.Append (source, someNodesFilter);
+	NodeManagerMerge::AppendNodeManager (source, target, someNodesFilter);
 	ASSERT (target.GetNodeCount () == 1);
 	ASSERT (target.GetConnectionCount () == 0);
 }
@@ -239,7 +239,7 @@ TEST (MergeMultipleNodes)
 
 	NodeManager target;
 	SomeNodesFilter someNodesFilter ({ nodeIdToMerge1, nodeIdToMerge2, nodeIdToMerge3 });
-	target.Append (source, someNodesFilter);
+	NodeManagerMerge::AppendNodeManager (source, target, someNodesFilter);
 	ASSERT (target.GetNodeCount () == 3);
 	ASSERT (target.GetConnectionCount () == 2);
 

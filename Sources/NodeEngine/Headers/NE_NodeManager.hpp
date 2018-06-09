@@ -15,15 +15,10 @@
 namespace NE
 {
 
-class NodeFilter
-{
-public:
-	virtual bool NeedToProcessNode (const NodeId& nodeId) const = 0;
-};
-
 class NodeManager
 {
 	SERIALIZABLE;
+	friend class NodeManagerMerge;
 
 public:
 	NodeManager ();
@@ -77,8 +72,6 @@ public:
 
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;
-
-	bool				Append (const NodeManager& source, const NodeFilter& nodeFilter);
 
 private:
 	enum class IdHandlingPolicy

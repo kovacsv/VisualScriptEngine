@@ -10,22 +10,6 @@ namespace NE
 
 SerializationInfo NodeManager::serializationInfo (ObjectVersion (1));
 
-static void EnumerateConnectionsOrdered (const NodeManager& nodeManager, const std::vector<NodeConstPtr>& nodes, const std::function<void (const ConnectionInfo&)>& processor)
-{
-	for (const NodeConstPtr& node : nodes) {
-		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
-			nodeManager.EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
-				ConnectionInfo connection (
-					SlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ()),
-					SlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ())
-				);
-				processor (connection);
-			});
-			return true;
-		});
-	}
-}
-
 class NodeManagerNodeEvaluator : public NodeEvaluator
 {
 public:
@@ -431,54 +415,6 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-bool NodeManager::Append (const NodeManager& source, const NodeFilter& nodeFilter)
-{
-	std::vector<NodeConstPtr> nodesToClone;
-	source.EnumerateNodes ([&] (const NodeConstPtr& node) {
-		if (!nodeFilter.NeedToProcessNode (node->GetId ())) {
-			return true;
-		}
-		nodesToClone.push_back (node);
-		return true;
-	});
-
-	std::sort (nodesToClone.begin (), nodesToClone.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) -> bool {
-		return a->GetId () < b->GetId ();
-	});
-
-	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
-	for (const NodeConstPtr& node : nodesToClone) {
-		NodePtr cloned = Node::Clone (node);
-		AddInitializedNode (cloned, IdHandlingPolicy::GenerateNewId);
-		oldToNewNodeIdTable.insert ({ node->GetId (), cloned->GetId () });
-	}
-
-	bool success = true;
-	EnumerateConnectionsOrdered (source, nodesToClone, [&] (const ConnectionInfo& connection) {
-		if (!nodeFilter.NeedToProcessNode (connection.GetOutputNodeId ())) {
-			return;
-		}
-		NodeConstPtr outputNode = GetNode (oldToNewNodeIdTable[connection.GetOutputNodeId ()]);
-		NodeConstPtr inputNode = GetNode (oldToNewNodeIdTable[connection.GetInputNodeId ()]);
-		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
-			success = false;
-			return;
-		}
-		OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (connection.GetOutputSlotId ());
-		InputSlotConstPtr inputSlot = inputNode->GetInputSlot (connection.GetInputSlotId ());
-		if (DBGERROR (outputSlot == nullptr || inputSlot == nullptr)) {
-			success = false;
-			return;
-		}
-		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
-			success = false;
-			return;
-		}
-	});
-
-	return success;
-}
-
 NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
 {
 	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {
@@ -576,9 +512,18 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
 	};
 
 	std::vector<ConnectionInfo> connectionsToWrite;
-	EnumerateConnectionsOrdered (*this, nodesToWrite, [&] (const ConnectionInfo& connection) {
-		connectionsToWrite.push_back (connection);
-	});
+	for (const NodeConstPtr& node : nodesToWrite) {
+		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
+			EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
+				ConnectionInfo connection (
+					SlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ()),
+					SlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ())
+				);
+				connectionsToWrite.push_back (connection);
+			});
+			return true;
+		});
+	}
 
 	outputStream.Write (connectionsToWrite.size ());
 	for (const ConnectionInfo& connection : connectionsToWrite) {

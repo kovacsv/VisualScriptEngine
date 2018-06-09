@@ -6,7 +6,19 @@
 namespace NE
 {
 
-bool MergeNodeManager (const NodeManager& source, NodeManager& target);
+class NodeFilter
+{
+public:
+	virtual bool NeedToProcessNode (const NodeId& nodeId) const = 0;
+};
+
+class NodeManagerMerge
+{
+public:
+	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter);
+	static bool MergeNodeManager (const NodeManager& source, NodeManager& target);
+};
+
 
 }
 
