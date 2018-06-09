@@ -158,7 +158,7 @@ void EnableDisableFeature::CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironm
 	}
 }
 
-void EnableDisableFeature::FeatureCalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void EnableDisableFeature::FeatureProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
 {
 	if (nodeEnabled) {
 		OnCalculated (value, env);

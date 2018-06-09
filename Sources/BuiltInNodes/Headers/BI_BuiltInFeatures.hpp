@@ -45,7 +45,7 @@ public:
 	void				SetEnableState (bool isNodeEnabled, const NE::ValuePtr& value, NE::EvaluationEnv& env);
 	void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const;
 	void				CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
-	void				FeatureCalculationPostProcess (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
+	void				FeatureProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
 
 	virtual void		OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
 	virtual void		OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;

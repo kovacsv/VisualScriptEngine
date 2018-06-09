@@ -116,7 +116,7 @@ private:
 	virtual void			Initialize ();
 	virtual void			RegisterSlots () = 0;
 	virtual ValuePtr		Calculate (EvaluationEnv& env) const = 0;
-	virtual void			CalculationPostProcess (const ValuePtr& value, EvaluationEnv& env) const;
+	virtual void			ProcessValue (const ValuePtr& value, EvaluationEnv& env) const;
 
 	ListValuePtr			EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
 

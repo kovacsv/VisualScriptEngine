@@ -104,7 +104,7 @@ ValuePtr Node::Evaluate (EvaluationEnv& env) const
 	ValuePtr value = Calculate (env);
 	nodeEvaluator->SetCalculatedNodeValue (nodeId, value);
 
-	CalculationPostProcess (value, env);
+	ProcessValue (value, env);
 	return value;
 }
 
@@ -276,7 +276,7 @@ void Node::Initialize ()
 	RegisterSlots ();
 }
 
-void Node::CalculationPostProcess (const ValuePtr&, EvaluationEnv&) const
+void Node::ProcessValue (const ValuePtr&, EvaluationEnv&) const
 {
 
 }
