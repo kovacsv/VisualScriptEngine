@@ -177,7 +177,7 @@ TEST (NodeParametersTest2)
 
 	{
 		NodeParameterList paramList;
-		RegisterCommonParameters (uiManager, NodeCollection (node->GetId ()), paramList);
+		RegisterCommonParameters (uiManager, NodeCollection ({ node->GetId () }), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
 		paramList.GetParameter (0)->GetName () == L"Name";
 		paramList.GetParameter (1)->GetName () == L"In1";
@@ -185,7 +185,7 @@ TEST (NodeParametersTest2)
 
 	{
 		NodeParameterList paramList;
-		RegisterCommonParameters (uiManager, NodeCollection (node2->GetId ()), paramList);
+		RegisterCommonParameters (uiManager, NodeCollection ({ node2->GetId () }), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
 		paramList.GetParameter (0)->GetName () == L"Name";
 		paramList.GetParameter (1)->GetName () == L"In2";

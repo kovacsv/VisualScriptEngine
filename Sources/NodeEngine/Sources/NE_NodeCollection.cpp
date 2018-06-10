@@ -12,11 +12,11 @@ NodeCollection::NodeCollection ()
 
 }
 
-NodeCollection::NodeCollection (const NodeId& nodeId) :
-	nodes ({ nodeId }),
-	nodeSet ({ nodeId })
+NodeCollection::NodeCollection (const std::unordered_set<NodeId>& nodeIds)
 {
-
+	for (const NodeId& nodeId : nodeIds) {
+		Insert (nodeId);
+	}
 }
 
 NodeCollection::~NodeCollection ()

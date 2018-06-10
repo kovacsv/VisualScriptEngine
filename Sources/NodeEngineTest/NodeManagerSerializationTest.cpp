@@ -68,7 +68,50 @@ private:
 	int val;
 };
 
+class TestGroup : public NodeGroup
+{
+	DYNAMIC_SERIALIZABLE (TestGroup);
+
+public:
+	TestGroup () :
+		TestGroup (L"", NodeCollection ())
+	{
+	
+	}
+
+	TestGroup (const std::wstring& name, const NodeCollection& nodes) :
+		NodeGroup (nodes),
+		name (name)
+	{
+	}
+
+	const std::wstring& GetName () const
+	{
+		return name;
+	}
+
+	virtual Stream::Status Read (InputStream& inputStream) override
+	{
+		ObjectHeader header (inputStream);
+		NodeGroup::Read (inputStream);
+		inputStream.Read (name);
+		return inputStream.GetStatus ();
+	}
+
+	virtual Stream::Status Write (OutputStream& outputStream) const override
+	{
+		ObjectHeader header (outputStream, serializationInfo);
+		NodeGroup::Write (outputStream);
+		outputStream.Write (name);
+		return outputStream.GetStatus ();
+	}
+
+private:
+	std::wstring name;
+};
+
 DynamicSerializationInfo TestNode::serializationInfo (ObjectId ("{9E0304A4-3B92-4EFA-9846-F0372A633038}"), ObjectVersion (1), TestNode::CreateSerializableInstance);
+DynamicSerializationInfo TestGroup::serializationInfo (ObjectId ("{66E68205-83BF-423F-B2B2-41C356B68125}"), ObjectVersion (1), TestGroup::CreateSerializableInstance);
 
 static bool ReadWrite (const NodeManager& source, NodeManager& target)
 {
@@ -129,14 +172,24 @@ TEST (ConnectionSerializationTest)
 	ASSERT (IntValue::Get (targetValue) == 6);
 }
 
-TEST (IdGeneratorConsistencyTest)
+TEST (NodeGroupSerializationTest)
 {
 	NodeManager source;
-	source.AddNode (NodePtr (new TestNode (42)));
+	std::shared_ptr<TestNode> sourceNode1 (new TestNode (1));
+	std::shared_ptr<TestNode> sourceNode2 (new TestNode (2));
+	std::shared_ptr<TestNode> sourceNode3 (new TestNode (3));
+	source.AddNode (sourceNode1);
+	source.AddNode (sourceNode2);
+	source.AddNode (sourceNode3);
+	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("c")), sourceNode3->GetInputSlot (SlotId ("a")));
+	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("c")), sourceNode3->GetInputSlot (SlotId ("b")));
+	source.AddNodeGroup (NodeGroupPtr (new TestGroup (L"Test", NodeCollection ({ sourceNode1->GetId (), sourceNode2->GetId () }))));
 
 	NodeManager target;
 	ASSERT (ReadWrite (source, target));
-	target.AddNode (NodePtr (new TestNode (43)));
+	ASSERT (std::static_pointer_cast<TestGroup> (target.GetNodeGroup (sourceNode1->GetId ()))->GetName () == L"Test");
+	ASSERT (std::static_pointer_cast<TestGroup> (target.GetNodeGroup (sourceNode2->GetId ()))->GetName () == L"Test");
+	
 }
 
 }

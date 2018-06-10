@@ -671,7 +671,7 @@ NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UIN
 	if (selectedNodes.Contains (uiNode->GetId ())) {
 		return selectedNodes;
 	}
-	return NE::NodeCollection (uiNode->GetId ());
+	return NE::NodeCollection ({ uiNode->GetId () });
 }
 
 CommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position)
