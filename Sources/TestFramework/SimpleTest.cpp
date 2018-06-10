@@ -1,5 +1,9 @@
 #include "SimpleTest.hpp"
 
+#ifdef _WIN32
+	#include <windows.h>
+#endif
+
 namespace SimpleTest
 {
 
@@ -34,6 +38,12 @@ void Test::TestAssert (bool condition, const std::string& fileName, int lineNumb
 			std::cout << std::endl;
 		}
 		std::cout << "Assertion failed: " << fileName << " (" << lineNumber << ")" << std::endl;
+#ifdef _WIN32
+		OutputDebugStringA (fileName.c_str ());
+		OutputDebugStringA ("(");
+		OutputDebugStringA (std::to_string (lineNumber).c_str ());
+		OutputDebugStringA ("): Assertion failed\n");
+#endif
 		testSuccess = false;
 	}
 }

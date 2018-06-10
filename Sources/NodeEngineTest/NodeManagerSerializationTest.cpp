@@ -189,7 +189,6 @@ TEST (NodeGroupSerializationTest)
 	ASSERT (ReadWrite (source, target));
 	ASSERT (std::static_pointer_cast<TestGroup> (target.GetNodeGroup (sourceNode1->GetId ()))->GetName () == L"Test");
 	ASSERT (std::static_pointer_cast<TestGroup> (target.GetNodeGroup (sourceNode2->GetId ()))->GetName () == L"Test");
-	
 }
 
 }
