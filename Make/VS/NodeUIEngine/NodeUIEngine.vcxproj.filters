@@ -31,9 +31,6 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_Geometry.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeCollection.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_NodeDrawingImage.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -124,9 +121,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_Geometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeDrawingImage.cpp">

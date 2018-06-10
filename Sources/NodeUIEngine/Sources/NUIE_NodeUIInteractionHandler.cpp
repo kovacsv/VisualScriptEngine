@@ -62,7 +62,7 @@ public:
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Rect modelSelectionRect = viewBox.ViewToModel (selectionRect);
-		NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
+		NE::NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
 		if (!modifierKeys.Contains (ModifierKeyCode::Control)) {
 			selectedNodes.Clear ();
 		}
@@ -110,7 +110,7 @@ private:
 class NodeMovingHandler : public MouseMoveHandler
 {
 public:
-	NodeMovingHandler (NodeUIManager& uiManager, const NodeCollection& relevantNodes) :
+	NodeMovingHandler (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
 		MouseMoveHandler (),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
@@ -174,9 +174,9 @@ private:
 		uiManager.RequestRedraw ();
 	}
 
-	NodeUIManager&	uiManager;
-	NodeCollection	relevantNodes;
-	Point			startModelPosition;
+	NodeUIManager&		uiManager;
+	NE::NodeCollection	relevantNodes;
+	Point				startModelPosition;
 };
 
 template <class StartSlotType, class EndSlotType>
@@ -401,7 +401,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnviron
 	if (mouseButton == MouseButton::Left) {
 		bool found = FindItemUnderPosition (uiManager, env, position,
 			[&] (UINodePtr& foundNode) {
-				NodeCollection nodesToMove = GetNodesForCommand (uiManager, foundNode);
+				NE::NodeCollection nodesToMove = GetNodesForCommand (uiManager, foundNode);
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			},
 			[&] (UIOutputSlotPtr& foundOutputSlot) {
@@ -417,7 +417,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnviron
 				}
 			},
 			[&] (UINodeGroupPtr& foundGroup) {
-				NodeCollection nodesToMove = foundGroup->GetNodes ();
+				NE::NodeCollection nodesToMove = foundGroup->GetNodes ();
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			}
 		);
@@ -465,7 +465,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 	}
 
 	if (mouseButton == MouseButton::Left) {
-		NodeCollection selectedNodes;
+		NE::NodeCollection selectedNodes;
 		UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
 		if (foundNode != nullptr) {
 			NodeInputEventHandler nodeInputEventHandler (uiManager, foundNode);
@@ -543,13 +543,13 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 			multiMouseMoveHandler.AbortHandlers ();
 			return EventHandlerResult::EventHandled;
 		} else {
-			NodeCollection emptySelectedNodes;
+			NE::NodeCollection emptySelectedNodes;
 			uiManager.SetSelectedNodes (emptySelectedNodes);
 		}
 		return EventHandlerResult::EventHandled;
 	}
 
-	const NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
 	CommandPtr command = nullptr;
 
 	switch (pressedKey.GetKeyCode ()) {

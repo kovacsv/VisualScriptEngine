@@ -29,8 +29,11 @@
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_InputSlot.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_MemoryStream.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Node.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeCollection.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeEngineTypes.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeEngineUtilities.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeGroup.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeGroupList.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeId.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManager.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManagerMerge.hpp" />
@@ -56,7 +59,10 @@
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_InputSlot.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_MemoryStream.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Node.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeCollection.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeEngineUtilities.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeGroup.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeGroupList.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeId.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManager.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManagerMerge.cpp" />

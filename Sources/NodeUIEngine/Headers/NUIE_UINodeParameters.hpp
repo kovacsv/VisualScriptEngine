@@ -1,14 +1,14 @@
 #ifndef UINODEPARAMETERS_HPP
 #define UINODEPARAMETERS_HPP
 
+#include "NE_Value.hpp"
+#include "NE_NodeCollection.hpp"
 #include "NUIE_UINode.hpp"
 #include "NUIE_ParameterInterface.hpp"
-#include "NE_Value.hpp"
 
 namespace NUIE
 {
 
-class NodeCollection;
 class NodeUIManager;
 class NodeUIEnvironment;
 
@@ -56,8 +56,8 @@ typedef std::shared_ptr<const NodeParameterList> NodeParameterListConstPtr;
 std::wstring	ParameterValueToString (const NE::ValuePtr& value, const ParameterType& type);
 NE::ValuePtr	StringToParameterValue (const std::wstring& str, const ParameterType& type);
 
-void			RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList);
-bool			ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);
+void			RegisterCommonParameters (NodeUIManager& uiManager, const NE::NodeCollection& nodeCollection, NodeParameterList& parameterList);
+bool			ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NE::NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);
 
 }
 

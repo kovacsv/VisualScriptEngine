@@ -159,6 +159,8 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 		}
 	}
 
+	// TODO: Handle groups
+
 	return true;
 }
 

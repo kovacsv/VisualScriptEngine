@@ -11,7 +11,7 @@ namespace NUIE
 class DeleteNodesCommand : public SingleCommand
 {
 public:
-	DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NodeCollection& relevantNodes);
+	DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
 	virtual ~DeleteNodesCommand ();
 
 	virtual void Do () override;
@@ -19,20 +19,20 @@ public:
 private:
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
-	NodeCollection		relevantNodes;
+	NE::NodeCollection	relevantNodes;
 };
 
 class CopyNodesCommand : public SingleCommand
 {
 public:
-	CopyNodesCommand (NodeUIManager& uiManager, const NodeCollection& relevantNodes);
+	CopyNodesCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
 	virtual ~CopyNodesCommand ();
 
 	virtual void Do () override;
 
 private:
 	NodeUIManager&		uiManager;
-	NodeCollection		relevantNodes;
+	NE::NodeCollection	relevantNodes;
 };
 
 class PasteNodesCommand : public SingleCommand
@@ -49,7 +49,7 @@ private:
 	Point				position;
 };
 
-NodeCollection		GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
+NE::NodeCollection	GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
 
 CommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
 CommandStructure	CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode);

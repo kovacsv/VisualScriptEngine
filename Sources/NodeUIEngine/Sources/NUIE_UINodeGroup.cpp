@@ -6,8 +6,7 @@
 namespace NUIE
 {
 
-NE::SerializationInfo UINodeGroup::serializationInfo (NE::ObjectVersion (1));
-NE::SerializationInfo UINodeGroupList::serializationInfo (NE::ObjectVersion (1));
+NE::DynamicSerializationInfo UINodeGroup::serializationInfo (NE::ObjectId ("{FCC7498F-03C5-49C8-B4C0-C88D768F18CD}"), NE::ObjectVersion (1), UINodeGroup::CreateSerializableInstance);
 
 GroupDrawingImage::GroupDrawingImage ()
 {
@@ -36,12 +35,13 @@ void GroupDrawingImage::SetRect (const Rect& newRect)
 }
 
 UINodeGroup::UINodeGroup () :
-	UINodeGroup (L"")
+	UINodeGroup (L"", NE::NodeCollection ())
 {
 
 }
 
-UINodeGroup::UINodeGroup (const std::wstring& name) :
+UINodeGroup::UINodeGroup (const std::wstring& name, const NE::NodeCollection& nodes) :
+	NE::NodeGroup (nodes),
 	name (name)
 {
 
@@ -63,40 +63,6 @@ void UINodeGroup::SetName (const std::wstring& newName)
 	InvalidateGroupDrawing ();
 }
 
-bool UINodeGroup::IsEmpty () const
-{
-	return nodes.IsEmpty ();
-}
-
-bool UINodeGroup::ContainsNode (const NE::NodeId& nodeId) const
-{
-	return nodes.Contains (nodeId);
-}
-
-bool UINodeGroup::AddNode (const NE::NodeId& nodeId)
-{
-	if (nodes.Contains (nodeId)) {
-		return false;
-	}
-	nodes.Insert (nodeId);
-	return true;
-}
-
-bool UINodeGroup::DeleteNode (const NE::NodeId& nodeId)
-{
-	if (!nodes.Contains (nodeId)) {
-		return false;
-	}
-	nodes.Erase (nodeId);
-	InvalidateGroupDrawing ();
-	return true;
-}
-
-const NodeCollection& UINodeGroup::GetNodes () const
-{
-	return nodes;
-}
-
 Rect UINodeGroup::GetRect (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
 {
 	return GetDrawingImage (env, rectGetter).GetRect ();
@@ -116,16 +82,16 @@ void UINodeGroup::InvalidateGroupDrawing ()
 NE::Stream::Status UINodeGroup::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
+	NE::NodeGroup::Read (inputStream);
 	inputStream.Read (name);
-	nodes.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status UINodeGroup::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
+	NE::NodeGroup::Write (outputStream);
 	outputStream.Write (name);
-	nodes.Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
@@ -175,112 +141,6 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 	drawingImage.SetRect (boundingRect);
 	drawingImage.AddItem (DrawingItemPtr (new DrawingFillRect (boundingRect, skinParams.GetGroupBackgroundColor ())));
 	drawingImage.AddItem (DrawingItemPtr (new DrawingText (textRect, skinParams.GetGroupNameFont (), name, HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetGroupNameColor ())));
-}
-	
-UINodeGroupList::UINodeGroupList ()
-{
-
-}
-
-UINodeGroupList::~UINodeGroupList ()
-{
-
-}
-
-void UINodeGroupList::Enumerate (const std::function<bool (const UINodeGroupPtr&)>& processor) const
-{
-	for (const UINodeGroupPtr& group : groups) {
-		if (!processor (group)) {
-			break;
-		}
-	}
-}
-
-bool UINodeGroupList::CreateGroup (const std::wstring& name, const NodeCollection& nodes)
-{
-	if (DBGERROR (nodes.IsEmpty ())) {
-		return false;
-	}
-
-	UINodeGroupPtr group (new UINodeGroup (name));
-	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-		RemoveNodeFromGroup (nodeId);
-		group->AddNode (nodeId);
-		nodeToGroup.insert ({ nodeId, group });
-		return true;
-	});
-
-	groups.push_back (group);
-	return true;
-}
-
-void UINodeGroupList::DeleteGroup (const UINodeGroupPtr& group)
-{
-	NodeCollection nodes = group->GetNodes ();
-	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-		RemoveNodeFromGroup (nodeId);
-		return true;
-	});
-}
-
-void UINodeGroupList::RemoveNodeFromGroup (const NE::NodeId& nodeId)
-{
-	auto found = nodeToGroup.find (nodeId);
-	if (found == nodeToGroup.end ()) {
-		return;
-	}
-	UINodeGroupPtr group = found->second;
-	group->DeleteNode (nodeId);
-	if (group->IsEmpty ()) {
-		auto foundInGroups = std::find (groups.begin (), groups.end (), group);
-		DBGASSERT (foundInGroups != groups.end ());
-		groups.erase (foundInGroups);
-	}
-	nodeToGroup.erase (nodeId);
-}
-
-void UINodeGroupList::InvalidateNodeGroupDrawing (const NE::NodeId& nodeId)
-{
-	auto found = nodeToGroup.find (nodeId);
-	if (found == nodeToGroup.end ()) {
-		return;
-	}
-	found->second->InvalidateGroupDrawing ();
-}
-
-void UINodeGroupList::Clear ()
-{
-	groups.clear ();
-	nodeToGroup.clear ();
-}
-
-NE::Stream::Status UINodeGroupList::Read (NE::InputStream& inputStream)
-{
-	DBGASSERT (groups.empty ());
-	NE::ObjectHeader header (inputStream);
-	size_t groupCount = 0;
-	inputStream.Read (groupCount);
-	for (size_t i = 0; i < groupCount; i++) {
-		UINodeGroupPtr group (new UINodeGroup ());
-		group->Read (inputStream);
-		const NodeCollection& nodes = group->GetNodes ();
-		groups.push_back (group);
-		nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-			nodeToGroup.insert ({ nodeId, group });
-			return true;
-		});
-	}
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status UINodeGroupList::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	outputStream.Write (groups.size ());
-	for (const UINodeGroupPtr& group : groups) {
-		group->Write (outputStream);
-	}
-	return outputStream.GetStatus ();
 }
 
 }

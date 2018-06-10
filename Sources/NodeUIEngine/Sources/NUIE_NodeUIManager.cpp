@@ -76,7 +76,6 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 		return false;
 	}
 	selectedNodes.Erase (uiNode->GetId ());
-	nodeGroups.RemoveNodeFromGroup (uiNode->GetId ());
 	uiNode->OnDeleted (env);
 	InvalidateNodeDrawing (uiNode);
 	if (!nodeManager.DeleteNode (uiNode)) {
@@ -95,12 +94,12 @@ bool NodeUIManager::DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env
 	return DeleteNode (node, env);
 }
 
-const NodeCollection& NodeUIManager::GetSelectedNodes () const
+const NE::NodeCollection& NodeUIManager::GetSelectedNodes () const
 {
 	return selectedNodes;
 }
 
-void NodeUIManager::SetSelectedNodes (const NodeCollection& newSelectedNodes)
+void NodeUIManager::SetSelectedNodes (const NE::NodeCollection& newSelectedNodes)
 {
 	selectedNodes = newSelectedNodes;
 	status.RequestRedraw ();
@@ -267,14 +266,28 @@ void NodeUIManager::InvalidateNodeDrawing (const UINodePtr& uiNode)
 	status.RequestRedraw ();
 }
 
-void NodeUIManager::InvalidateNodeGroupDrawing (const NE::NodeId& nodeId)
+void NodeUIManager::InvalidateNodeGroupDrawing (const NE::NodeId& nodeid)
 {
-	nodeGroups.InvalidateNodeGroupDrawing (nodeId);
+	NE::NodeGroupPtr group = nodeManager.GetNodeGroup (nodeid);
+	if (group == nullptr) {
+		return;
+	}
+
+	UINodeGroupPtr uiGroup = std::static_pointer_cast<UINodeGroup> (group);
+	uiGroup->InvalidateGroupDrawing ();
 }
 
 void NodeUIManager::InvalidateNodeGroupDrawing (const UINodePtr& uiNode)
 {
 	InvalidateNodeGroupDrawing (uiNode->GetId ());
+}
+
+void NodeUIManager::InvalidateAllNodeGroupDrawing ()
+{
+	EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
+		group->InvalidateGroupDrawing ();
+		return true;
+	});
 }
 
 void NodeUIManager::Update (NodeUICalculationEnvironment& env)
@@ -321,7 +334,6 @@ bool NodeUIManager::IsPreviewMode () const
 void NodeUIManager::Clear ()
 {
 	selectedNodes.Clear ();
-	nodeGroups.Clear ();
 	nodeManager.Clear ();
 	viewBox.Reset ();
 	status.RequestRecalculate ();
@@ -335,7 +347,6 @@ bool NodeUIManager::Load (NE::InputStream& inputStream)
 	inputStream.Read (version);
 	ReadViewBox (inputStream, viewBox);
 	nodeManager.Read (inputStream);
-	nodeGroups.Read (inputStream);
 	status.RequestRecalculate ();
 	bool success = (inputStream.GetStatus () == NE::Stream::Status::NoError);
 	return success;
@@ -346,7 +357,6 @@ bool NodeUIManager::Save (NE::OutputStream& outputStream) const
 	outputStream.Write (NodeUIManagerVersion);
 	WriteViewBox (outputStream, viewBox);
 	nodeManager.Write (outputStream);
-	nodeGroups.Write (outputStream);
 	bool success = (outputStream.GetStatus () == NE::Stream::Status::NoError);
 	return success;
 }
@@ -356,7 +366,7 @@ bool NodeUIManager::CanPaste () const
 	return copyPasteHandler.CanPaste ();
 }
 
-bool NodeUIManager::Copy (const NodeCollection& nodeCollection)
+bool NodeUIManager::Copy (const NE::NodeCollection& nodeCollection)
 {
 	return copyPasteHandler.CopyFrom (nodeManager, nodeCollection);
 }
@@ -369,29 +379,33 @@ bool NodeUIManager::Paste ()
 	return success;
 }
 
-void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor) const
+bool NodeUIManager::AddUINodeGroup (const UINodeGroupPtr& group)
 {
-	nodeGroups.Enumerate (processor);
-}
-
-bool NodeUIManager::RemoveNodesFromGroup (const NodeCollection& nodeCollection)
-{
-	std::vector<UINodePtr> nodes;
-	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
-		nodeGroups.RemoveNodeFromGroup (nodeId);
-		return true;	
-	});
-	return true;
-}
-
-bool NodeUIManager::CreateUINodeGroup (const std::wstring& name, const NodeCollection& nodeCollection)
-{
-	return nodeGroups.CreateGroup (name, nodeCollection);
+	bool success = nodeManager.AddNodeGroup (group);
+	InvalidateAllNodeGroupDrawing ();
+	return success;
 }
 
 void NodeUIManager::DeleteUINodeGroup (const UINodeGroupPtr& group)
 {
-	nodeGroups.DeleteGroup (group);
+	nodeManager.DeleteNodeGroup (group);
+}
+
+bool NodeUIManager::RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection)
+{
+	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
+		nodeManager.RemoveNodeFromGroup (nodeId);
+		return true;	
+	});
+	InvalidateAllNodeGroupDrawing ();
+	return true;
+}
+
+void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor) const
+{
+	nodeManager.EnumerateNodeGroups ([&] (const NE::NodeGroupPtr& nodeGroup) {
+		return processor (std::static_pointer_cast<UINodeGroup> (nodeGroup));
+	});
 }
 
 }

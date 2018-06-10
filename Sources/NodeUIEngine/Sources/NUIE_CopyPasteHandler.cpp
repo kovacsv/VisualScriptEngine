@@ -15,12 +15,12 @@ bool CopyPasteHandler::CanPaste () const
 	return !tempNodeManager.IsEmpty ();
 }
 
-bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NodeCollection& nodeCollection)
+bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NE::NodeCollection& nodeCollection)
 {
 	class CopyFilter : public NE::NodeFilter
 	{
 	public:
-		CopyFilter (const NodeCollection& nodeCollection) :
+		CopyFilter (const NE::NodeCollection& nodeCollection) :
 			nodeCollection (nodeCollection)
 		{
 			
@@ -32,7 +32,7 @@ bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NodeCollec
 		}
 
 	private:
-		const NodeCollection& nodeCollection;
+		const NE::NodeCollection& nodeCollection;
 	};
 
 	tempNodeManager.Clear ();

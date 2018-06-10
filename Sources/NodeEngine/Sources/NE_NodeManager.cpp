@@ -106,6 +106,7 @@ void NodeManager::Clear ()
 {
 	nodeIdToNodeTable.clear ();
 	connectionManager.Clear ();
+	nodeGroupList.Clear ();
 	nodeValueCache.Clear ();
 }
 
@@ -188,6 +189,7 @@ bool NodeManager::DeleteNode (const NodePtr& node)
 		return false;
 	}
 
+	nodeGroupList.RemoveNodeFromGroup (node->GetId ());
 	node->InvalidateValue ();
 
 	node->EnumerateInputSlots ([this] (const InputSlotPtr& inputSlot) -> bool {
@@ -385,6 +387,31 @@ void NodeManager::EnumerateDependentNodesRecursive (const NodeConstPtr& node, co
 	});
 }
 
+bool NodeManager::AddNodeGroup (const NodeGroupPtr& group)
+{
+	return nodeGroupList.AddGroup (group);
+}
+
+void NodeManager::DeleteNodeGroup (const NodeGroupPtr& group)
+{
+	return nodeGroupList.DeleteGroup (group);
+}
+
+NodeGroupPtr NodeManager::GetNodeGroup (const NodeId& nodeId)
+{
+	return nodeGroupList.GetGroup (nodeId);
+}
+
+void NodeManager::RemoveNodeFromGroup (const NodeId& nodeId)
+{
+	nodeGroupList.RemoveNodeFromGroup (nodeId);
+}
+
+void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor) const
+{
+	nodeGroupList.Enumerate (processor);
+}
+
 Stream::Status NodeManager::Read (InputStream& inputStream)
 {
 	if (DBGERROR (!IsEmpty ())) {
@@ -399,6 +426,7 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 		return nodeStatus;
 	}
 
+	nodeGroupList.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -412,6 +440,7 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 		return nodeStatus;
 	}
 
+	nodeGroupList.Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

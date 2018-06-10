@@ -1,18 +1,18 @@
-#include "NUIE_NodeCollection.hpp"
+#include "NE_NodeCollection.hpp"
 
 #include <algorithm>
 
-namespace NUIE
+namespace NE
 {
 
-NE::SerializationInfo NodeCollection::serializationInfo (NE::ObjectVersion (1));
+SerializationInfo NodeCollection::serializationInfo (ObjectVersion (1));
 
 NodeCollection::NodeCollection ()
 {
 
 }
 
-NodeCollection::NodeCollection (const NE::NodeId& nodeId) :
+NodeCollection::NodeCollection (const NodeId& nodeId) :
 	nodes ({ nodeId }),
 	nodeSet ({ nodeId })
 {
@@ -30,7 +30,7 @@ bool NodeCollection::IsEmpty () const
 	return nodes.empty ();
 }
 
-bool NodeCollection::Contains (const NE::NodeId& nodeId) const
+bool NodeCollection::Contains (const NodeId& nodeId) const
 {
 	return nodeSet.find (nodeId) != nodeSet.end ();
 }
@@ -40,30 +40,30 @@ size_t NodeCollection::Count () const
 	return nodes.size ();
 }
 
-NE::NodeId NodeCollection::GetLast () const
+NodeId NodeCollection::GetLast () const
 {
 	if (nodes.empty ()) {
-		return NE::NullNodeId;
+		return NullNodeId;
 	}
 	return nodes.back ();
 }
 
-void NodeCollection::Enumerate (const std::function<bool (const NE::NodeId&)>& processor) const
+void NodeCollection::Enumerate (const std::function<bool (const NodeId&)>& processor) const
 {
-	for (const NE::NodeId& nodeId : nodes) {
+	for (const NodeId& nodeId : nodes) {
 		if (!processor (nodeId)) {
 			return;
 		}
 	}
 }
 
-void NodeCollection::Insert (const NE::NodeId& nodeId)
+void NodeCollection::Insert (const NodeId& nodeId)
 {
 	nodes.push_back (nodeId);
 	nodeSet.insert (nodeId);
 }
 
-void NodeCollection::Erase (const NE::NodeId& nodeId)
+void NodeCollection::Erase (const NodeId& nodeId)
 {
 	if (Contains (nodeId)) {
 		nodes.erase (std::find (nodes.begin (), nodes.end (), nodeId));
@@ -87,25 +87,25 @@ bool NodeCollection::operator!= (const NodeCollection& rhs) const
 	return !operator== (rhs);
 }
 
-NE::Stream::Status NodeCollection::Read (NE::InputStream& inputStream)
+Stream::Status NodeCollection::Read (InputStream& inputStream)
 {
 	DBGASSERT (IsEmpty ());
-	NE::ObjectHeader header (inputStream);
+	ObjectHeader header (inputStream);
 	size_t nodeCount = 0;
 	inputStream.Read (nodeCount);
 	for (size_t i = 0; i < nodeCount; i++) {
-		NE::NodeId nodeId;
+		NodeId nodeId;
 		nodeId.Read (inputStream);
 		Insert (nodeId);
 	}
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status NodeCollection::Write (NE::OutputStream& outputStream) const
+Stream::Status NodeCollection::Write (OutputStream& outputStream) const
 {
-	NE::ObjectHeader header (outputStream, serializationInfo);
+	ObjectHeader header (outputStream, serializationInfo);
 	outputStream.Write (nodes.size ());
-	for (const NE::NodeId& nodeId : nodes) {
+	for (const NodeId& nodeId : nodes) {
 		nodeId.Write (outputStream);
 	}
 	return outputStream.GetStatus ();

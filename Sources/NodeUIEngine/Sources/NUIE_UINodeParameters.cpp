@@ -108,7 +108,7 @@ NE::ValuePtr StringToParameterValue (const std::wstring& str, const ParameterTyp
 	return result;
 }
 
-void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& nodeCollection, NodeParameterList& parameterList)
+void RegisterCommonParameters (NodeUIManager& uiManager, const NE::NodeCollection& nodeCollection, NodeParameterList& parameterList)
 {
 	std::vector<UINodePtr> uiNodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
@@ -136,7 +136,7 @@ void RegisterCommonParameters (NodeUIManager& uiManager, const NodeCollection& n
 	}
 }
 
-bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value)
+bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NE::NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value)
 {
 	std::vector<UINodePtr> uiNodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {

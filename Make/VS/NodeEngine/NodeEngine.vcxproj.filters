@@ -88,6 +88,15 @@
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManagerMerge.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeGroup.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeCollection.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeGroupList.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Checksum.cpp">
@@ -157,6 +166,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManagerMerge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeGroupList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

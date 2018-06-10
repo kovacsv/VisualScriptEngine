@@ -9,6 +9,7 @@
 #include "NE_Value.hpp"
 #include "NE_ConnectionInfo.hpp"
 #include "NE_ConnectionManager.hpp"
+#include "NE_NodeGroupList.hpp"
 #include "NE_NodeValueCache.hpp"
 #include <functional>
 
@@ -70,6 +71,12 @@ public:
 	void				EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 	void				EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 
+	bool				AddNodeGroup (const NodeGroupPtr& group);
+	void				DeleteNodeGroup (const NodeGroupPtr& group);
+	NodeGroupPtr		GetNodeGroup (const NodeId& nodeId);
+	void				RemoveNodeFromGroup (const NodeId& nodeId);
+	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor) const;
+
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;
 
@@ -90,6 +97,7 @@ private:
 	NodeIdGenerator							idGenerator;
 	std::unordered_map<NodeId, NodePtr>		nodeIdToNodeTable;
 	ConnectionManager						connectionManager;
+	NodeGroupList							nodeGroupList;
 
 	mutable NodeValueCache					nodeValueCache;
 	mutable NodeEvaluatorConstPtr			nodeEvaluator;
