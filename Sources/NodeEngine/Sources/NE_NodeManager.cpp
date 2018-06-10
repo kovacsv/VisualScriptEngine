@@ -407,7 +407,12 @@ void NodeManager::RemoveNodeFromGroup (const NodeId& nodeId)
 	nodeGroupList.RemoveNodeFromGroup (nodeId);
 }
 
-void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor) const
+void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const
+{
+	nodeGroupList.Enumerate (processor);
+}
+
+void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor)
 {
 	nodeGroupList.Enumerate (processor);
 }

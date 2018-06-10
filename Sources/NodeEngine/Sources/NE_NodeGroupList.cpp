@@ -16,7 +16,16 @@ NodeGroupList::~NodeGroupList ()
 
 }
 
-void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor) const
+void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupConstPtr&)>& processor) const
+{
+	for (const NodeGroupPtr& group : groups) {
+		if (!processor (group)) {
+			break;
+		}
+	}
+}
+
+void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor)
 {
 	for (const NodeGroupPtr& group : groups) {
 		if (!processor (group)) {

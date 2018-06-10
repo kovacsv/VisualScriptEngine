@@ -86,7 +86,8 @@ public:
 	bool						AddUINodeGroup (const UINodeGroupPtr& group);
 	void						DeleteUINodeGroup (const UINodeGroupPtr& group);
 	bool						RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection);
-	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor) const;
+	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
+	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
 
 private:
 	class Status

@@ -401,7 +401,14 @@ bool NodeUIManager::RemoveNodesFromGroup (const NE::NodeCollection& nodeCollecti
 	return true;
 }
 
-void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor) const
+void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const
+{
+	nodeManager.EnumerateNodeGroups ([&] (const NE::NodeGroupConstPtr& nodeGroup) {
+		return processor (std::static_pointer_cast<const UINodeGroup> (nodeGroup));
+	});
+}
+
+void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor)
 {
 	nodeManager.EnumerateNodeGroups ([&] (const NE::NodeGroupPtr& nodeGroup) {
 		return processor (std::static_pointer_cast<UINodeGroup> (nodeGroup));

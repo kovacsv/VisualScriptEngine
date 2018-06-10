@@ -17,7 +17,9 @@ public:
 	NodeGroupList ();
 	~NodeGroupList ();
 
-	void			Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor) const;
+	void			Enumerate (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
+	void			Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor);
+
 	bool			AddGroup (const NodeGroupPtr& group);
 	void			DeleteGroup (const NodeGroupPtr& group);
 	NodeGroupPtr	GetGroup (const NodeId& nodeId);

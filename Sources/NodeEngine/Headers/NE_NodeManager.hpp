@@ -75,7 +75,8 @@ public:
 	void				DeleteNodeGroup (const NodeGroupPtr& group);
 	NodeGroupPtr		GetNodeGroup (const NodeId& nodeId);
 	void				RemoveNodeFromGroup (const NodeId& nodeId);
-	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor) const;
+	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
+	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor);
 
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;
