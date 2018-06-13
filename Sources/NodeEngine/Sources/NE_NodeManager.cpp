@@ -449,6 +449,25 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+bool NodeManager::Clone (const NodeManager& source, NodeManager& target)
+{
+	if (DBGERROR (!target.IsEmpty ())) {
+		return false;
+	}
+
+	MemoryOutputStream outputStream;
+	if (DBGERROR (source.Write (outputStream) != Stream::Status::NoError)) {
+		return false;
+	}
+
+	MemoryInputStream inputStream (outputStream.GetBuffer ());
+	if (DBGERROR (target.Read (inputStream) != Stream::Status::NoError)) {
+		return false;
+	}
+
+	return true;
+}
+
 NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
 {
 	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {

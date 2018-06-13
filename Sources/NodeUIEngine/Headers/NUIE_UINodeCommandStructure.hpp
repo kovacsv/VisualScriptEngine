@@ -49,6 +49,19 @@ private:
 	Point				position;
 };
 
+class UndoCommand : public SingleCommand
+{
+public:
+	UndoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
+	virtual ~UndoCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+};
+
 NE::NodeCollection	GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
 
 CommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);

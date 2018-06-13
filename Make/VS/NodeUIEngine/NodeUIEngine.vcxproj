@@ -153,6 +153,7 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_ParameterInterface.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeParameters.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UIOutputSlot.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UndoHandler.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_ViewBox.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_ParameterInterface.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeParameters.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UIOutputSlot.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UndoHandler.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_ViewBox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

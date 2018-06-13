@@ -100,6 +100,24 @@ void PasteNodesCommand::Do ()
 	uiManager.SetSelectedNodes (newSelection);
 }
 
+UndoCommand::UndoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
+	SingleCommand (L"Undo", false),
+	uiManager (uiManager),
+	uiEnvironment (uiEnvironment)
+{
+
+}
+
+UndoCommand::~UndoCommand ()
+{
+
+}
+
+void UndoCommand::Do ()
+{
+	uiManager.Undo ();
+}
+
 class DisconnectFromInputSlotCommand : public InputSlotCommand
 {
 public:

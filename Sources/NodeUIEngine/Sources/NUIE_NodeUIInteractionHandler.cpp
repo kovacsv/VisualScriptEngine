@@ -569,6 +569,11 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 				command.reset (new PasteNodesCommand (uiManager, env, modelPastePosition));
 			}
 			break;
+		case PressedKeyCode::Undo:
+			{
+				command.reset (new UndoCommand (uiManager, env));
+			}
+			break;
 		case PressedKeyCode::Escape:
 		case PressedKeyCode::Undefined:
 			DBGBREAK ();

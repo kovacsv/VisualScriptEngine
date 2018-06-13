@@ -379,6 +379,19 @@ bool NodeUIManager::Paste ()
 	return success;
 }
 
+void NodeUIManager::SaveUndoState ()
+{
+	undoHandler.StoreState (nodeManager);
+}
+
+bool NodeUIManager::Undo ()
+{
+	bool success = undoHandler.RestoreState (nodeManager);
+	RequestRecalculate ();
+	RequestRedraw ();
+	return success;
+}
+
 bool NodeUIManager::AddUINodeGroup (const UINodeGroupPtr& group)
 {
 	bool success = nodeManager.AddNodeGroup (group);

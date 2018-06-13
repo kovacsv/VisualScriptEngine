@@ -24,7 +24,11 @@ class NodeManager
 public:
 	NodeManager ();
 	NodeManager (const NodeManager& src) = delete;
+	NodeManager (NodeManager&& src) = delete;
 	~NodeManager ();
+
+	NodeManager&		operator= (const NodeManager& rhs) = delete;
+	NodeManager&		operator= (NodeManager&& rhs) = delete;
 
 	void				Clear ();
 	bool				IsEmpty () const;
@@ -80,6 +84,8 @@ public:
 
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;
+
+	static bool			Clone (const NodeManager& source, NodeManager& target);
 
 private:
 	enum class IdHandlingPolicy

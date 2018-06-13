@@ -62,6 +62,8 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 			return NUIE::Key (NUIE::PressedKeyCode::Copy);
 		case L'V':
 			return NUIE::Key (NUIE::PressedKeyCode::Paste);
+		case L'Z':
+			return NUIE::Key (NUIE::PressedKeyCode::Undo);
 	}
 
 	return NUIE::InvalidKey;

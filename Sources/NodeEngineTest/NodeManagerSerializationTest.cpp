@@ -113,24 +113,11 @@ private:
 DynamicSerializationInfo TestNode::serializationInfo (ObjectId ("{9E0304A4-3B92-4EFA-9846-F0372A633038}"), ObjectVersion (1), TestNode::CreateSerializableInstance);
 DynamicSerializationInfo TestGroup::serializationInfo (ObjectId ("{66E68205-83BF-423F-B2B2-41C356B68125}"), ObjectVersion (1), TestGroup::CreateSerializableInstance);
 
-static bool ReadWrite (const NodeManager& source, NodeManager& target)
-{
-	MemoryOutputStream outputStream;
-	if (source.Write (outputStream) != Stream::Status::NoError) {
-		return false;
-	}
-	MemoryInputStream inputStream (outputStream.GetBuffer ());
-	if (target.Read (inputStream) != Stream::Status::NoError) {
-		return false;
-	}
-	return true;
-}
-
 TEST (EmptyNodeManagerSerializationTest)
 {
 	NodeManager source;
 	NodeManager target;
-	ASSERT (ReadWrite (source, target));
+	ASSERT (NodeManager::Clone (source, target));
 	ASSERT (source.GetNodeCount () == target.GetNodeCount ());
 }
 
@@ -141,7 +128,7 @@ TEST (OneNodeSerializazionTest)
 	source.AddNode (sourceNode);
 
 	NodeManager target;
-	ASSERT (ReadWrite (source, target));
+	ASSERT (NodeManager::Clone (source, target));
 	ASSERT (source.GetNodeCount () == target.GetNodeCount ());
 	ASSERT (target.ContainsNode (sourceNode->GetId ()));
 	std::shared_ptr<TestNode> targetNode = std::dynamic_pointer_cast<TestNode> (target.GetNode (sourceNode->GetId ()));
@@ -165,7 +152,7 @@ TEST (ConnectionSerializationTest)
 	ASSERT (IntValue::Get (sourceValue) == 6);
 
 	NodeManager target;
-	ASSERT (ReadWrite (source, target));
+	ASSERT (NodeManager::Clone (source, target));
 	ASSERT (source.GetNodeCount () == target.GetNodeCount ());
 	std::shared_ptr<TestNode> targetNode3 = std::dynamic_pointer_cast<TestNode> (target.GetNode (sourceNode3->GetId ()));
 	ValuePtr targetValue = targetNode3->Evaluate (EmptyEvaluationEnv);
@@ -186,7 +173,7 @@ TEST (NodeGroupSerializationTest)
 	source.AddNodeGroup (NodeGroupPtr (new TestGroup (L"Test", NodeCollection ({ sourceNode1->GetId (), sourceNode2->GetId () }))));
 
 	NodeManager target;
-	ASSERT (ReadWrite (source, target));
+	ASSERT (NodeManager::Clone (source, target));
 	ASSERT (std::static_pointer_cast<TestGroup> (target.GetNodeGroup (sourceNode1->GetId ()))->GetName () == L"Test");
 	ASSERT (std::static_pointer_cast<TestGroup> (target.GetNodeGroup (sourceNode2->GetId ()))->GetName () == L"Test");
 }

@@ -7,6 +7,7 @@
 #include "NUIE_UINodeGroup.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_CopyPasteHandler.hpp"
+#include "NUIE_UndoHandler.hpp"
 #include "NUIE_ViewBox.hpp"
 
 #include <unordered_map>
@@ -83,6 +84,9 @@ public:
 	bool						Copy (const NE::NodeCollection& nodeCollection);
 	bool						Paste ();
 
+	void						SaveUndoState ();
+	bool						Undo ();
+
 	bool						AddUINodeGroup (const UINodeGroupPtr& group);
 	void						DeleteUINodeGroup (const UINodeGroupPtr& group);
 	bool						RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection);
@@ -111,6 +115,7 @@ private:
 	NE::NodeManager		nodeManager;
 	NE::NodeCollection	selectedNodes;
 	CopyPasteHandler	copyPasteHandler;
+	UndoHandler			undoHandler;
 	ViewBox				viewBox;
 	Status				status;
 };
