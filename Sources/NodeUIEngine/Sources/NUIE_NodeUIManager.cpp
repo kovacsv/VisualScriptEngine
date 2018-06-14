@@ -56,7 +56,7 @@ NodeUIManager::~NodeUIManager ()
 
 }
 
-UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
+UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv&)
 {
 	if (DBGERROR (uiNode == nullptr)) {
 		return nullptr;
@@ -65,7 +65,6 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& en
 	if (resultNode == nullptr) {
 		return nullptr;
 	}
-	uiNode->OnCreated (env);
 	status.RequestRecalculate ();
 	return uiNode;
 }
@@ -75,8 +74,8 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 	if (DBGERROR (uiNode == nullptr)) {
 		return false;
 	}
+	uiNode->OnDelete (env);
 	selectedNodes.Erase (uiNode->GetId ());
-	uiNode->OnDeleted (env);
 	InvalidateNodeDrawing (uiNode);
 	if (!nodeManager.DeleteNode (uiNode)) {
 		return false;

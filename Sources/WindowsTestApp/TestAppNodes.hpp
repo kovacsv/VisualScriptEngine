@@ -44,7 +44,7 @@ public:
 	virtual void				OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 	virtual void				OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 	virtual void				OnDisabled (NE::EvaluationEnv& env) const override;
-	virtual void				OnDeleted (NE::EvaluationEnv& env) const override;
+	virtual void				OnDelete (NE::EvaluationEnv& env) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;

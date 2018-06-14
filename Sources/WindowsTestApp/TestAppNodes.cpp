@@ -176,7 +176,7 @@ void DrawableNode::OnDisabled (NE::EvaluationEnv& env) const
 	RemoveItem (env);
 }
 
-void DrawableNode::OnDeleted (NE::EvaluationEnv& env) const
+void DrawableNode::OnDelete (NE::EvaluationEnv& env) const
 {
 	RemoveItem (env);
 }

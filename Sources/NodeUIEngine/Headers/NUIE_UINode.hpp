@@ -68,8 +68,7 @@ public:
 
 	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const;
-	virtual void				OnCreated (NE::EvaluationEnv& env) const;
-	virtual void				OnDeleted (NE::EvaluationEnv& env) const;
+	virtual void				OnDelete (NE::EvaluationEnv& env) const;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;

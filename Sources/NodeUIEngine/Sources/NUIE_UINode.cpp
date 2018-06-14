@@ -246,12 +246,7 @@ void UINode::RegisterCommands (NodeCommandRegistrator&) const
 
 }
 
-void UINode::OnCreated (NE::EvaluationEnv&) const
-{
-
-}
-
-void UINode::OnDeleted (NE::EvaluationEnv&) const
+void UINode::OnDelete (NE::EvaluationEnv&) const
 {
 
 }
