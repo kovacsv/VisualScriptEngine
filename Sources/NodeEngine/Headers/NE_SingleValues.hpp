@@ -10,6 +10,9 @@ namespace NE
 class NumberValue
 {
 public:
+	NumberValue ();
+	virtual ~NumberValue ();
+
 	virtual int		ToInteger () const = 0;
 	virtual double	ToDouble () const = 0;
 

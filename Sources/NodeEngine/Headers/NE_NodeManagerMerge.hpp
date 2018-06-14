@@ -9,6 +9,9 @@ namespace NE
 class NodeFilter
 {
 public:
+	NodeFilter ();
+	virtual ~NodeFilter ();
+
 	virtual bool NeedToProcessNode (const NodeId& nodeId) const = 0;
 };
 

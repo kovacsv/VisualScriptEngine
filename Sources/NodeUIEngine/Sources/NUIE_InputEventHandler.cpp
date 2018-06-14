@@ -46,6 +46,16 @@ PressedKeyCode Key::GetKeyCode () const
 	return pressedKeyCode;
 }
 
+InputEventHandler::InputEventHandler ()
+{
+
+}
+
+InputEventHandler::~InputEventHandler ()
+{
+
+}
+
 MouseEventTranslator::MouseEventTranslator (InputEventHandler& handler) :
 	handler (handler)
 {

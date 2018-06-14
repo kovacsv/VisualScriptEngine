@@ -71,6 +71,16 @@ private:
 	bool enable;
 };
 
+Feature::Feature ()
+{
+
+}
+
+Feature::~Feature ()
+{
+
+}
+
 ValueCombinationFeature::ValueCombinationFeature (NE::ValueCombinationMode valueCombinationMode) :
 	valueCombinationMode (valueCombinationMode)
 {

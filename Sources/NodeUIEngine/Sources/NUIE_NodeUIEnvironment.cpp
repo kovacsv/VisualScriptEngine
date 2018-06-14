@@ -3,6 +3,46 @@
 namespace NUIE
 {
 
+NodeUIDrawingEnvironment::NodeUIDrawingEnvironment ()
+{
+
+}
+
+NodeUIDrawingEnvironment::~NodeUIDrawingEnvironment ()
+{
+
+}
+
+NodeUICalculationEnvironment::NodeUICalculationEnvironment ()
+{
+
+}
+
+NodeUICalculationEnvironment::~NodeUICalculationEnvironment ()
+{
+
+}
+
+NodeUIInteractionEnvironment::NodeUIInteractionEnvironment ()
+{
+
+}
+
+NodeUIInteractionEnvironment::~NodeUIInteractionEnvironment ()
+{
+
+}
+
+NodeUIEnvironment::NodeUIEnvironment ()
+{
+
+}
+
+NodeUIEnvironment::~NodeUIEnvironment ()
+{
+
+}
+
 NodeUIDrawingEnvironmentDecorator::NodeUIDrawingEnvironmentDecorator (NodeUIDrawingEnvironment& decorated) :
 	NodeUIDrawingEnvironment (),
 	decorated (decorated)

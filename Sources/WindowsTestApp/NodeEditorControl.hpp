@@ -56,6 +56,9 @@ private:
 class UpdateInterface
 {
 public:
+	UpdateInterface ();
+	virtual ~UpdateInterface ();
+
 	virtual void RedrawResultImage () = 0;
 };
 

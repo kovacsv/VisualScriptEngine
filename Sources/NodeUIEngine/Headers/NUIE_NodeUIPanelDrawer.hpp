@@ -10,6 +10,9 @@ namespace NUIE
 class NodeUIPanel
 {
 public:
+	NodeUIPanel ();
+	virtual ~NodeUIPanel ();
+
 	virtual Size	GetMinSize (NodeUIDrawingEnvironment& env) const = 0;
 	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const = 0;
 };

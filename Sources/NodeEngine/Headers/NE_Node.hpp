@@ -19,6 +19,9 @@ namespace NE
 class NodeEvaluator
 {
 public:
+	NodeEvaluator ();
+	virtual ~NodeEvaluator ();
+
 	virtual void		InvalidateNodeValue (const NodeId& nodeId) const = 0;
 	virtual bool		HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const = 0;
 	virtual void		EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const = 0;
@@ -37,6 +40,9 @@ enum class InitializationMode
 class NodeEvaluatorSetter
 {
 public:
+	NodeEvaluatorSetter ();
+	virtual ~NodeEvaluatorSetter ();
+
 	virtual const NodeId&					GetNodeId () const = 0;
 	virtual const NodeEvaluatorConstPtr&	GetNodeEvaluator () const = 0;
 	virtual InitializationMode				GetInitializationMode () const = 0;

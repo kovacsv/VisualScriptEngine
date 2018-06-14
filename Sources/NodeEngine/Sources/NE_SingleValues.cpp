@@ -8,6 +8,16 @@ DynamicSerializationInfo	IntValue::serializationInfo (ObjectId ("{FE348A6B-C5B8-
 DynamicSerializationInfo	DoubleValue::serializationInfo (ObjectId ("{4D6581DC-7A20-4F2A-A1A3-95BF6DDFFDB6}"), ObjectVersion (1), DoubleValue::CreateSerializableInstance);
 DynamicSerializationInfo	StringValue::serializationInfo (ObjectId ("{FABFAA20-48F4-4F15-A9FB-FD8F05581F31}"), ObjectVersion (1), StringValue::CreateSerializableInstance);
 
+NumberValue::NumberValue ()
+{
+
+}
+
+NumberValue::~NumberValue ()
+{
+
+}
+
 int NumberValue::ToInteger (const ValuePtr& val)
 {
 	return Value::Cast<NumberValue> (val)->ToInteger ();

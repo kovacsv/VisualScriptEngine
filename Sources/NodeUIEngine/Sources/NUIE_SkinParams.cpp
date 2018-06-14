@@ -3,6 +3,16 @@
 namespace NUIE
 {
 
+SkinParams::SkinParams ()
+{
+
+}
+
+SkinParams::~SkinParams ()
+{
+
+}
+
 DefaultSkinParams::DefaultSkinParams () :
 	backgroundColor (240, 240, 240),
 	connectionLinePen (Color (0, 0, 0), 1.0),

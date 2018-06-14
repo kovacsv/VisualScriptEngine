@@ -9,6 +9,26 @@ namespace NE
 
 SerializationInfo Node::serializationInfo (ObjectVersion (1));
 
+NodeEvaluator::NodeEvaluator ()
+{
+
+}
+
+NodeEvaluator::~NodeEvaluator ()
+{
+
+}
+
+NodeEvaluatorSetter::NodeEvaluatorSetter ()
+{
+
+}
+
+NodeEvaluatorSetter::~NodeEvaluatorSetter ()
+{
+
+}
+
 Node::Node () :
 	nodeId (NullNodeId),
 	nodeEvaluator (nullptr)

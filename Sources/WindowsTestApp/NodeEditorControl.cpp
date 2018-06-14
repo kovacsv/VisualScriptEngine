@@ -161,6 +161,16 @@ bool AppEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramInt
 	return false;
 }
 
+UpdateInterface::UpdateInterface ()
+{
+
+}
+
+UpdateInterface::~UpdateInterface ()
+{
+
+}
+
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	evaluationEnv (evaluationEnv),

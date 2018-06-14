@@ -25,6 +25,9 @@ private:
 class NodeRectGetter
 {
 public:
+	NodeRectGetter ();
+	virtual ~NodeRectGetter ();
+
 	virtual Rect GetNodeRect (const NE::NodeId& nodeId) const = 0;
 };
 

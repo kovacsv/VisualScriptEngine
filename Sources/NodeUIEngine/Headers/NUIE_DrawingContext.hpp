@@ -11,6 +11,9 @@ namespace NUIE
 class DrawingContext
 {
 public:
+	DrawingContext ();
+	virtual ~DrawingContext ();
+
 	virtual void	Resize (int newWidth, int newHeight) = 0;
 
 	virtual double	GetWidth () const = 0;

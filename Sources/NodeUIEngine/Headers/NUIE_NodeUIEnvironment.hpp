@@ -20,6 +20,9 @@ class EventHandlers;
 class NodeUIDrawingEnvironment
 {
 public:
+	NodeUIDrawingEnvironment ();
+	virtual ~NodeUIDrawingEnvironment ();
+
 	virtual DrawingContext&		GetDrawingContext () = 0;
 	virtual SkinParams&			GetSkinParams () = 0;
 };
@@ -27,6 +30,9 @@ public:
 class NodeUICalculationEnvironment
 {
 public:
+	NodeUICalculationEnvironment ();
+	virtual ~NodeUICalculationEnvironment ();
+
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
 	virtual void				OnValuesRecalculated () = 0;
 	virtual void				OnRedrawRequested () = 0;
@@ -35,6 +41,9 @@ public:
 class NodeUIInteractionEnvironment
 {
 public:
+	NodeUIInteractionEnvironment ();
+	virtual ~NodeUIInteractionEnvironment ();
+
 	virtual EventHandlers&		GetEventHandlers () = 0;
 };
 
@@ -42,6 +51,9 @@ class NodeUIEnvironment :	public NodeUIDrawingEnvironment,
 							public NodeUICalculationEnvironment,
 							public NodeUIInteractionEnvironment
 {
+public:
+	NodeUIEnvironment ();
+	virtual ~NodeUIEnvironment ();
 };
 
 class NodeUIDrawingEnvironmentDecorator : public NodeUIDrawingEnvironment

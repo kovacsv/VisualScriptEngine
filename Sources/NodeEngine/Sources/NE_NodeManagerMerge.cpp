@@ -42,6 +42,16 @@ static void Sort (std::vector<NodeConstPtr>& nodes)
 	});
 }
 
+NodeFilter::NodeFilter ()
+{
+
+}
+
+NodeFilter::~NodeFilter ()
+{
+
+}
+
 bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter)
 {
 	// collect nodes to create

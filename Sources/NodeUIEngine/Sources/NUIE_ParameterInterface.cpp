@@ -24,6 +24,16 @@ bool ParameterType::operator!= (const ParameterType& rhs) const
 	return !operator== (rhs);
 }
 
+ParameterInterface::ParameterInterface ()
+{
+
+}
+
+ParameterInterface::~ParameterInterface ()
+{
+
+}
+
 ParameterType ParameterType::Undefined ("undefined");
 ParameterType ParameterType::String ("string");
 ParameterType ParameterType::Integer ("integer");

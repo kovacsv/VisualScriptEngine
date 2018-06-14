@@ -10,6 +10,9 @@ namespace NUIE
 class SkinParams
 {
 public:
+	SkinParams ();
+	virtual ~SkinParams ();
+
 	virtual const Color&	GetBackgroundColor () const = 0;
 	virtual const Pen&		GetConnectionLinePen () const = 0;
 

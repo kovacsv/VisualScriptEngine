@@ -163,9 +163,11 @@
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_Drawing.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_DrawingContext.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_DrawingImage.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_EventHandlers.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_Geometry.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_InputEventHandler.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeDrawingImage.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeDrawingModifier.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeEditor.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeUIEnvironment.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_NodeUIInteractionHandler.cpp" />

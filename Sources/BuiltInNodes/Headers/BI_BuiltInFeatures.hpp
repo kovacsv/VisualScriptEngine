@@ -10,6 +10,9 @@ namespace BI
 class Feature
 {
 public:
+	Feature ();
+	virtual ~Feature ();
+
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) = 0;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const = 0;
 };

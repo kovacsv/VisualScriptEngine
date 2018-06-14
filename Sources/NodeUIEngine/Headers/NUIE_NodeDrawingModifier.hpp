@@ -8,9 +8,13 @@
 namespace NUIE
 {
 
+// TODO: typo
 class NodeDrawingModfier
 {
 public:
+	NodeDrawingModfier ();
+	virtual ~NodeDrawingModfier ();
+
 	virtual void	EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const = 0;
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>& processor) const = 0;
 	virtual Point	GetNodeOffset (const NE::NodeId& nodeId) const = 0;

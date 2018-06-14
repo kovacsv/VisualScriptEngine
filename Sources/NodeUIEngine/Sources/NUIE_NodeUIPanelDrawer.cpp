@@ -7,6 +7,16 @@
 namespace NUIE
 {
 
+NodeUIPanel::NodeUIPanel ()
+{
+
+}
+
+NodeUIPanel::~NodeUIPanel ()
+{
+
+}
+
 NodeUIPanelDrawer::NodeUIPanelDrawer ()
 {
 

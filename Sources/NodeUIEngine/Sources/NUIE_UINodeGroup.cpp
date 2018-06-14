@@ -34,6 +34,16 @@ void GroupDrawingImage::SetRect (const Rect& newRect)
 	rect = newRect;
 }
 
+NodeRectGetter::NodeRectGetter ()
+{
+
+}
+
+NodeRectGetter::~NodeRectGetter ()
+{
+
+}
+
 UINodeGroup::UINodeGroup () :
 	UINodeGroup (L"", NE::NodeCollection ())
 {

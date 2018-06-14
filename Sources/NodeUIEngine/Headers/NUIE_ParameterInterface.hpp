@@ -27,6 +27,9 @@ private:
 class ParameterInterface
 {
 public:
+	ParameterInterface ();
+	virtual ~ParameterInterface ();
+
 	virtual size_t					GetParameterCount () const = 0;
 	virtual const std::wstring&		GetParameterName (size_t index) const = 0;
 	virtual NE::ValuePtr			GetParameterValue (size_t index) const = 0;

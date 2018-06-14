@@ -108,12 +108,18 @@ public:
 class GeometricValue
 {
 public:
+	GeometricValue ();
+	virtual ~GeometricValue ();
+
 	virtual NE::ValuePtr Transform (const Transformation& transformation) const = 0;
 };
 
 class DrawableValue
 {
 public:
+	DrawableValue ();
+	virtual ~DrawableValue ();
+
 	virtual NUIE::DrawingItemConstPtr	CreateDrawingItem () const = 0;
 };
 

@@ -290,6 +290,26 @@ NE::Stream::Status ColorValue::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+GeometricValue::GeometricValue ()
+{
+
+}
+
+GeometricValue::~GeometricValue ()
+{
+
+}
+
+DrawableValue::DrawableValue ()
+{
+
+}
+
+DrawableValue::~DrawableValue ()
+{
+
+}
+
 PointValue::PointValue () :
 	PointValue (Point ())
 {
