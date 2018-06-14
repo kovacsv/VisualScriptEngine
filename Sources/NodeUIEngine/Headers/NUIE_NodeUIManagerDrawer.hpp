@@ -24,26 +24,26 @@ class NodeUIManagerDrawer
 public:
 	NodeUIManagerDrawer (const NodeUIManager& uiManager);
 	
-	void Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
+	void Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const;
 
 private:
 	void				DrawBackground (NodeUIDrawingEnvironment& env) const;
-	void				DrawGroups (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
-	void				DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
+	void				DrawGroups (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const;
+	void				DrawConnections (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const;
 	void				DrawConnection (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;
-	void				DrawNodes (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
-	void				DrawNode (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode) const;
+	void				DrawNodes (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const;
+	void				DrawNode (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
 	void				DrawNode (NodeUIDrawingEnvironment& env, const UINode* uiNode) const;
-	void				DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier) const;
+	void				DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const;
 
 	void				InitSortedNodeList () const;
 	bool				IsConnectionVisible (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;
-	bool				IsNodeVisible (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode) const;
+	bool				IsNodeVisible (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
 	bool				IsRectVisible (NodeUIDrawingEnvironment& env, const Rect& rect) const;
 
-	Rect				GetNodeRect (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode) const;
-	Point				GetOutputSlotConnPosition (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode, const NE::SlotId& slotId) const;
-	Point				GetInputSlotConnPosition (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawModifier, const UINode* uiNode, const NE::SlotId& slotId) const;
+	Rect				GetNodeRect (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
+	Point				GetOutputSlotConnPosition (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode, const NE::SlotId& slotId) const;
+	Point				GetInputSlotConnPosition (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode, const NE::SlotId& slotId) const;
 
 	const NodeUIManager&					uiManager;
 	NodeIdToNodeMap							nodeIdToNodeMap;

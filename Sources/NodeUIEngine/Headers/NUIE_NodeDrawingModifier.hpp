@@ -8,12 +8,11 @@
 namespace NUIE
 {
 
-// TODO: typo
-class NodeDrawingModfier
+class NodeDrawingModifier
 {
 public:
-	NodeDrawingModfier ();
-	virtual ~NodeDrawingModfier ();
+	NodeDrawingModifier ();
+	virtual ~NodeDrawingModifier ();
 
 	virtual void	EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const = 0;
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>& processor) const = 0;

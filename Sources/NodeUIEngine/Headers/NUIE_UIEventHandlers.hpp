@@ -12,7 +12,7 @@
 namespace NUIE
 {
 
-class MouseMoveHandler : public NodeDrawingModfier
+class MouseMoveHandler : public NodeDrawingModifier
 {
 public:
 	MouseMoveHandler ();
@@ -40,7 +40,7 @@ protected:
 	Point	prevPosition;
 };
 
-class MultiMouseMoveHandler : public NodeDrawingModfier
+class MultiMouseMoveHandler : public NodeDrawingModifier
 {
 public:
 	MultiMouseMoveHandler ();

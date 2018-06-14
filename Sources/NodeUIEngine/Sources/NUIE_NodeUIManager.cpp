@@ -303,7 +303,7 @@ void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 	status.Reset ();
 }
 
-void NodeUIManager::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawingModifier)
+void NodeUIManager::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawingModifier)
 {
 	NodeUIManagerDrawer drawer (*this);
 	drawer.Draw (env, drawingModifier);

@@ -17,7 +17,7 @@
 namespace NUIE
 {
 
-class NodeDrawingModfier;
+class NodeDrawingModifier;
 
 class NodeUIManager
 {
@@ -69,7 +69,7 @@ public:
 	void						InvalidateAllNodeGroupDrawing ();
 
 	void						Update (NodeUICalculationEnvironment& env);
-	void						Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModfier* drawingModifier);
+	void						Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawingModifier);
 	void						ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
 
 	const ViewBox&				GetViewBox () const;

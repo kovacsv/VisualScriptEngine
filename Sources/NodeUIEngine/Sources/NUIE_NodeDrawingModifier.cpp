@@ -3,12 +3,12 @@
 namespace NUIE
 {
 
-NodeDrawingModfier::NodeDrawingModfier ()
+NodeDrawingModifier::NodeDrawingModifier ()
 {
 
 }
 
-NodeDrawingModfier::~NodeDrawingModfier ()
+NodeDrawingModifier::~NodeDrawingModifier ()
 {
 
 }
