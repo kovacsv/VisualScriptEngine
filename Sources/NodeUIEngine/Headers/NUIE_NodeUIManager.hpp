@@ -86,6 +86,7 @@ public:
 
 	void						SaveUndoState ();
 	bool						Undo ();
+	bool						Redo ();
 
 	bool						AddUINodeGroup (const UINodeGroupPtr& group);
 	void						DeleteUINodeGroup (const UINodeGroupPtr& group);

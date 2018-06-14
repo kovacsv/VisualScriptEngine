@@ -3,7 +3,7 @@
 
 #include "NE_NodeManager.hpp"
 
-#include <stack>
+#include <vector>
 
 namespace NUIE
 {
@@ -13,11 +13,13 @@ class UndoHandler
 public:
 	UndoHandler ();
 
-	void	StoreState (const NE::NodeManager& nodeManager);
-	bool	RestoreState (NE::NodeManager& targetNodeManager);
+	void	SaveUndoState (const NE::NodeManager& nodeManager);
+	bool	Undo (NE::NodeManager& targetNodeManager);
+	bool	Redo (NE::NodeManager& targetNodeManager);
 
 private:
-	std::stack<std::shared_ptr<NE::NodeManager>>	undoStack;
+	size_t											undoPosition;
+	std::vector<std::shared_ptr<NE::NodeManager>>	undoQueue;
 };
 
 }

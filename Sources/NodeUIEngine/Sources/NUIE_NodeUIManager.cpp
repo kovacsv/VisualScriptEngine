@@ -380,12 +380,20 @@ bool NodeUIManager::Paste ()
 
 void NodeUIManager::SaveUndoState ()
 {
-	undoHandler.StoreState (nodeManager);
+	undoHandler.SaveUndoState (nodeManager);
 }
 
 bool NodeUIManager::Undo ()
 {
-	bool success = undoHandler.RestoreState (nodeManager);
+	bool success = undoHandler.Undo (nodeManager);
+	RequestRecalculate ();
+	RequestRedraw ();
+	return success;
+}
+
+bool NodeUIManager::Redo ()
+{
+	bool success = undoHandler.Redo (nodeManager);
 	RequestRecalculate ();
 	RequestRedraw ();
 	return success;

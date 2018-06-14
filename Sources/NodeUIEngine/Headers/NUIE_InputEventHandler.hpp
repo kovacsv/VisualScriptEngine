@@ -36,7 +36,8 @@ enum class PressedKeyCode
 	Delete,
 	Copy,
 	Paste,
-	Undo
+	Undo,
+	Redo
 };
 
 }

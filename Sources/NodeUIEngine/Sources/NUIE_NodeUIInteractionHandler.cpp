@@ -519,6 +519,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {
+			// uiManager.SaveUndoState ();
 			selectedCommand->Do ();
 		}
 		handlerResult = EventHandlerResult::EventHandled;
@@ -572,6 +573,11 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 		case PressedKeyCode::Undo:
 			{
 				command.reset (new UndoCommand (uiManager, env));
+			}
+			break;
+		case PressedKeyCode::Redo:
+			{
+				command.reset (new RedoCommand (uiManager, env));
 			}
 			break;
 		case PressedKeyCode::Escape:

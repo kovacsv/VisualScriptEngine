@@ -5,29 +5,47 @@
 namespace NUIE
 {
 
-UndoHandler::UndoHandler ()
+UndoHandler::UndoHandler () :
+	undoPosition (0)
 {
 
 }
 
-void UndoHandler::StoreState (const NE::NodeManager& nodeManager)
+void UndoHandler::SaveUndoState (const NE::NodeManager& nodeManager)
 {
 	std::shared_ptr<NE::NodeManager> undoState (new NE::NodeManager ());
 	NE::NodeManager::Clone (nodeManager, *undoState.get ());
-	undoStack.push (undoState);
+
+	undoQueue.resize (undoPosition);
+	undoQueue.push_back (undoState);
+	undoPosition = undoQueue.size ();
 }
 
-bool UndoHandler::RestoreState (NE::NodeManager& targetNodeManager)
+bool UndoHandler::Undo (NE::NodeManager& targetNodeManager)
 {
-	if (undoStack.empty ()) {
-		return false ;
+	if (undoQueue.empty () || undoPosition == 0) {
+		return false;
 	}
 
-	std::shared_ptr<NE::NodeManager> undoState = undoStack.top ();
-	undoStack.pop ();
+	if (undoPosition == undoQueue.size ()) {
+		SaveUndoState (targetNodeManager);
+		undoPosition = undoPosition - 1;
+	}
 
+	undoPosition = undoPosition - 1;
+	std::shared_ptr<NE::NodeManager> undoState = undoQueue[undoPosition];
 	return NE::NodeManagerMerge::UpdateNodeManager (*undoState.get (), targetNodeManager);
 }
 
+bool UndoHandler::Redo (NE::NodeManager& targetNodeManager)
+{
+	if (undoQueue.empty () || undoPosition >= undoQueue.size () - 1) {
+		return false;
+	}
+
+	undoPosition = undoPosition + 1;
+	std::shared_ptr<NE::NodeManager> undoState = undoQueue[undoPosition];
+	return NE::NodeManagerMerge::UpdateNodeManager (*undoState.get (), targetNodeManager);
+}
 
 }

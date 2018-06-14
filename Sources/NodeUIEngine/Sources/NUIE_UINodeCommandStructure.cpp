@@ -118,6 +118,24 @@ void UndoCommand::Do ()
 	uiManager.Undo ();
 }
 
+RedoCommand::RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
+	SingleCommand (L"Redo", false),
+	uiManager (uiManager),
+	uiEnvironment (uiEnvironment)
+{
+
+}
+
+RedoCommand::~RedoCommand ()
+{
+
+}
+
+void RedoCommand::Do ()
+{
+	uiManager.Redo ();
+}
+
 class DisconnectFromInputSlotCommand : public InputSlotCommand
 {
 public:

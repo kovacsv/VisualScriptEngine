@@ -62,6 +62,19 @@ private:
 	NodeUIEnvironment&	uiEnvironment;
 };
 
+class RedoCommand : public SingleCommand
+{
+public:
+	RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
+	virtual ~RedoCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+};
+
 NE::NodeCollection	GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
 
 CommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
