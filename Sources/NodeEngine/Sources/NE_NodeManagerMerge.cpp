@@ -4,6 +4,16 @@
 namespace NE
 {
 
+MergeEventHandler::MergeEventHandler ()
+{
+	
+}
+
+MergeEventHandler::~MergeEventHandler ()
+{
+
+}
+
 static std::vector<SlotInfo> GetConnectedOutputSlots (const NodeManager& nodeManager, const InputSlotConstPtr& inputSlot)
 {
 	std::vector<SlotInfo> result;
@@ -100,7 +110,7 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 	return success;
 }
 
-bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager& target)
+bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager& target, MergeEventHandler& eventHandler)
 {
 	// collect nodes to create or delete
 	std::vector<NodeId> nodesToCreate;
@@ -128,6 +138,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 
 	// delete and create nodes
 	for (const NodeId& nodeId : nodesToDelete) {
+		eventHandler.BeforeDelete (nodeId);
 		target.DeleteNode (nodeId);
 	}
 	for (const NodeId& nodeId : nodesToCreate) {

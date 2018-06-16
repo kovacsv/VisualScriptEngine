@@ -85,8 +85,8 @@ public:
 	bool						Paste ();
 
 	void						SaveUndoState ();
-	bool						Undo ();
-	bool						Redo ();
+	bool						Undo (NE::EvaluationEnv& env);
+	bool						Redo (NE::EvaluationEnv& env);
 
 	bool						AddUINodeGroup (const UINodeGroupPtr& group);
 	void						DeleteUINodeGroup (const UINodeGroupPtr& group);

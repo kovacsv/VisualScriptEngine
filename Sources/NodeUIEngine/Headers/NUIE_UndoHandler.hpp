@@ -2,6 +2,7 @@
 #define UNDOHANDLER_HPP
 
 #include "NE_NodeManager.hpp"
+#include "NE_NodeManagerMerge.hpp"
 
 #include <vector>
 
@@ -14,8 +15,8 @@ public:
 	UndoHandler ();
 
 	void	SaveUndoState (const NE::NodeManager& nodeManager);
-	bool	Undo (NE::NodeManager& targetNodeManager);
-	bool	Redo (NE::NodeManager& targetNodeManager);
+	bool	Undo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler);
+	bool	Redo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler);
 
 private:
 	size_t											undoPosition;

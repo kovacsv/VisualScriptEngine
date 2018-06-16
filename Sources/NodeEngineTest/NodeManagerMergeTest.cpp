@@ -155,6 +155,27 @@ private:
 	std::unordered_set<NodeId> nodeIds;
 };
 
+class EmptyEventHandler : public MergeEventHandler
+{
+public:
+	EmptyEventHandler () :
+		MergeEventHandler ()
+	{
+	}
+
+	virtual ~EmptyEventHandler ()
+	{
+	
+	}
+
+	virtual void BeforeDelete (const NE::NodeId&) override
+	{
+	
+	}
+};
+
+static EmptyEventHandler eventHandler;
+
 TEST (MergeAllNodesTest)
 {
 	NodeManager source;
@@ -293,7 +314,7 @@ TEST (NodeManagerUpdateTest_AddNode)
 	NodeManager::Clone (source, target);
 	NodePtr targetNode5 = target.AddNode (NodePtr (new TestNode (L"5")));
 	ASSERT (target.ContainsNode (targetNode5->GetId ()));
-	NodeManagerMerge::UpdateNodeManager (source, target);
+	NodeManagerMerge::UpdateNodeManager (source, target, eventHandler);
 	ASSERT (IsEqualNodeManagers (source, target));
 }
 
@@ -312,7 +333,7 @@ TEST (NodeManagerUpdateTest_DeleteNode)
 	NodeManager::Clone (source, target);
 	target.DeleteNode (sourceNode4->GetId ());
 	ASSERT (!target.ContainsNode (sourceNode4->GetId ()));
-	NodeManagerMerge::UpdateNodeManager (source, target);
+	NodeManagerMerge::UpdateNodeManager (source, target, eventHandler);
 	ASSERT (IsEqualNodeManagers (source, target));
 }
 
@@ -331,7 +352,7 @@ TEST (NodeManagerUpdateTest_DeleteNode2)
 	NodeManager::Clone (source, target);
 	target.DeleteNode (sourceNode3->GetId ());
 	ASSERT (!target.ContainsNode (sourceNode3->GetId ()));
-	NodeManagerMerge::UpdateNodeManager (source, target);
+	NodeManagerMerge::UpdateNodeManager (source, target, eventHandler);
 	ASSERT (IsEqualNodeManagers (source, target));
 }
 
@@ -350,7 +371,7 @@ TEST (NodeManagerUpdateTest_ModifyNode)
 	NodeManager::Clone (source, target);
 	Node::Cast<TestNode> (target.GetNode (sourceNode3->GetId ()))->SetName (L"MyCoolNewName");
 	ASSERT (Node::Cast<TestNode> (target.GetNode (sourceNode3->GetId ()))->GetName () == L"MyCoolNewName");
-	NodeManagerMerge::UpdateNodeManager (source, target);
+	NodeManagerMerge::UpdateNodeManager (source, target, eventHandler);
 	ASSERT (IsEqualNodeManagers (source, target));
 	ASSERT (Node::Cast<TestNode> (target.GetNode (sourceNode3->GetId ()))->GetName () == L"3");
 }
@@ -372,7 +393,7 @@ TEST (NodeManagerUpdateTest_AddConnection)
 		target.GetNode (sourceNode3->GetId ())->GetOutputSlot (SlotId ("out")),
 		target.GetNode (sourceNode4->GetId ())->GetInputSlot (SlotId ("b"))
 	);
-	NodeManagerMerge::UpdateNodeManager (source, target);
+	NodeManagerMerge::UpdateNodeManager (source, target, eventHandler);
 	ASSERT (IsEqualNodeManagers (source, target));
 }
 
@@ -393,7 +414,7 @@ TEST (NodeManagerUpdateTest_DeleteConnection)
 		target.GetNode (sourceNode3->GetId ())->GetOutputSlot (SlotId ("out")),
 		target.GetNode (sourceNode4->GetId ())->GetInputSlot (SlotId ("a"))
 	);
-	NodeManagerMerge::UpdateNodeManager (source, target);
+	NodeManagerMerge::UpdateNodeManager (source, target, eventHandler);
 	ASSERT (IsEqualNodeManagers (source, target));
 }
 

@@ -551,6 +551,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 	}
 
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+	bool isUndoRedo = (pressedKey.GetKeyCode () == PressedKeyCode::Undo || pressedKey.GetKeyCode () == PressedKeyCode::Redo);
 	CommandPtr command = nullptr;
 
 	switch (pressedKey.GetKeyCode ()) {
@@ -587,6 +588,9 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 	}
 
 	if (command != nullptr) {
+		if (!isUndoRedo) {
+			// uiManager.SaveUndoState ();
+		}
 		command->Do ();
 		return EventHandlerResult::EventHandled;
 	}

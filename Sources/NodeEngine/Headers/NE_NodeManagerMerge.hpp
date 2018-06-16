@@ -6,6 +6,15 @@
 namespace NE
 {
 
+class MergeEventHandler
+{
+public:
+	MergeEventHandler ();
+	virtual ~MergeEventHandler ();
+
+	virtual void BeforeDelete (const NE::NodeId& nodeId) = 0;
+};
+
 class NodeFilter
 {
 public:
@@ -19,7 +28,7 @@ class NodeManagerMerge
 {
 public:
 	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter);
-	static bool UpdateNodeManager (const NodeManager& source, NodeManager& target);
+	static bool UpdateNodeManager (const NodeManager& source, NodeManager& target, MergeEventHandler& eventHandler);
 };
 
 

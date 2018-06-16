@@ -115,7 +115,7 @@ UndoCommand::~UndoCommand ()
 
 void UndoCommand::Do ()
 {
-	uiManager.Undo ();
+	uiManager.Undo (uiEnvironment.GetEvaluationEnv ());
 }
 
 RedoCommand::RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
@@ -133,7 +133,7 @@ RedoCommand::~RedoCommand ()
 
 void RedoCommand::Do ()
 {
-	uiManager.Redo ();
+	uiManager.Redo (uiEnvironment.GetEvaluationEnv ());
 }
 
 class DisconnectFromInputSlotCommand : public InputSlotCommand

@@ -10,6 +10,35 @@ namespace NUIE
 
 static const size_t NodeUIManagerVersion = 1;
 
+class NodeUIManagerMergeEventHandler : public NE::MergeEventHandler
+{
+public:
+	NodeUIManagerMergeEventHandler (NodeUIManager& uiManager, NE::EvaluationEnv& env) :
+		uiManager (uiManager),
+		env (env)
+	{
+	
+	}
+
+	virtual ~NodeUIManagerMergeEventHandler ()
+	{
+	
+	}
+
+	virtual void BeforeDelete (const NE::NodeId& nodeId) override
+	{
+		UINodePtr uiNode = uiManager.GetUINode (nodeId);
+		if (DBGERROR (uiNode == nullptr)) {
+			return;
+		}
+		uiNode->OnDelete (env);
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NE::EvaluationEnv&	env;
+};
+
 NodeUIManager::Status::Status ()
 {
 	Reset ();
@@ -383,17 +412,19 @@ void NodeUIManager::SaveUndoState ()
 	undoHandler.SaveUndoState (nodeManager);
 }
 
-bool NodeUIManager::Undo ()
+bool NodeUIManager::Undo (NE::EvaluationEnv& env)
 {
-	bool success = undoHandler.Undo (nodeManager);
+	NodeUIManagerMergeEventHandler eventHandler (*this, env);
+	bool success = undoHandler.Undo (nodeManager, eventHandler);
 	RequestRecalculate ();
 	RequestRedraw ();
 	return success;
 }
 
-bool NodeUIManager::Redo ()
+bool NodeUIManager::Redo (NE::EvaluationEnv& env)
 {
-	bool success = undoHandler.Redo (nodeManager);
+	NodeUIManagerMergeEventHandler eventHandler (*this, env);
+	bool success = undoHandler.Redo (nodeManager, eventHandler);
 	RequestRecalculate ();
 	RequestRedraw ();
 	return success;
