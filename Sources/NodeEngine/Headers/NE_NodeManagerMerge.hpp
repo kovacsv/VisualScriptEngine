@@ -12,7 +12,8 @@ public:
 	MergeEventHandler ();
 	virtual ~MergeEventHandler ();
 
-	virtual void BeforeDelete (const NE::NodeId& nodeId) = 0;
+	virtual void BeforeNodeDelete (const NE::NodeId& nodeId) = 0;
+	virtual void AfterSlotConnect (const NE::NodeId& outputNodeId, const NE::NodeId& inputNodeId) = 0;
 };
 
 class NodeFilter

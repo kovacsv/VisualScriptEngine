@@ -138,7 +138,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 
 	// delete and create nodes
 	for (const NodeId& nodeId : nodesToDelete) {
-		eventHandler.BeforeDelete (nodeId);
+		eventHandler.BeforeNodeDelete (nodeId);
 		target.DeleteNode (nodeId);
 	}
 	for (const NodeId& nodeId : nodesToCreate) {
@@ -177,6 +177,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 			NodeConstPtr outputNode = target.GetNode (slotInfo.GetNodeId ());
 			OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (slotInfo.GetSlotId ());
 			target.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
+			eventHandler.AfterSlotConnect (outputSlot->GetOwnerNodeId (), inputSlot->GetOwnerNodeId ());
 		}
 	}
 

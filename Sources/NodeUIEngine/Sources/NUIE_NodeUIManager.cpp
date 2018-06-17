@@ -25,13 +25,19 @@ public:
 	
 	}
 
-	virtual void BeforeDelete (const NE::NodeId& nodeId) override
+	virtual void BeforeNodeDelete (const NE::NodeId& nodeId) override
 	{
 		UINodePtr uiNode = uiManager.GetUINode (nodeId);
 		if (DBGERROR (uiNode == nullptr)) {
 			return;
 		}
+		uiManager.InvalidateNodeDrawing (nodeId);
 		uiNode->OnDelete (env);
+	}
+
+	virtual void AfterSlotConnect (const NE::NodeId&, const NE::NodeId& inputNodeId) override
+	{
+		uiManager.InvalidateNodeDrawing (inputNodeId);
 	}
 
 private:

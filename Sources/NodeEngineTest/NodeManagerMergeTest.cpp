@@ -168,9 +168,14 @@ public:
 	
 	}
 
-	virtual void BeforeDelete (const NE::NodeId&) override
+	virtual void BeforeNodeDelete (const NE::NodeId&) override
 	{
 	
+	}
+
+	virtual void AfterSlotConnect (const NE::NodeId&, const NE::NodeId&) override
+	{
+
 	}
 };
 
