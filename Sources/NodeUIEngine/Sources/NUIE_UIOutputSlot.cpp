@@ -34,7 +34,7 @@ void UIOutputSlot::SetName (const std::wstring& newName)
 	name = newName;
 }
 
-void UIOutputSlot::RegisterCommands (OutputSlotCommandRegistrator&)
+void UIOutputSlot::RegisterCommands (OutputSlotCommandRegistrator&) const
 {
 
 }

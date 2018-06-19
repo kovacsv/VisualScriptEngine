@@ -20,7 +20,7 @@ public:
 	const std::wstring&			GetName () const;
 	void						SetName (const std::wstring& newName);
 
-	virtual void				RegisterCommands (OutputSlotCommandRegistrator& commandRegistrator);
+	virtual void				RegisterCommands (OutputSlotCommandRegistrator& commandRegistrator) const;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;

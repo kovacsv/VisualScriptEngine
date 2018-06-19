@@ -34,7 +34,7 @@ void UIInputSlot::SetName (const std::wstring& newName)
 	name = newName;
 }
 
-void UIInputSlot::RegisterCommands (InputSlotCommandRegistrator&)
+void UIInputSlot::RegisterCommands (InputSlotCommandRegistrator&) const
 {
 
 }

@@ -21,12 +21,12 @@ CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&,
 	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::OutputSlotPtr&, const CommandStructure& commands)
+CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const CommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const NE::InputSlotPtr&, const CommandStructure& commands)
+CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const CommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }

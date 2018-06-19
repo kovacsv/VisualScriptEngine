@@ -47,7 +47,7 @@ public:
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
-		const NE::OutputSlotPtr& outputSlot,
+		const NUIE::UIOutputSlotPtr& outputSlot,
 		const NUIE::CommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
@@ -57,7 +57,7 @@ public:
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
-		const NE::InputSlotPtr& inputSlot,
+		const NUIE::UIInputSlotPtr& inputSlot,
 		const NUIE::CommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
