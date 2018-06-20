@@ -297,6 +297,24 @@ public:
 	}
 };
 
+class NodeUIEventHandlerNotifications : public EventHandlerNotifications
+{
+public:
+	NodeUIEventHandlerNotifications (NodeUIManager& uiManager) :
+		uiManager (uiManager)
+	{
+
+	}
+
+	virtual void BeforeModification () override
+	{
+		// uiManager.SaveUndoState ();
+	}
+
+private:
+	NodeUIManager& uiManager;
+};
+
 PastePositionCalculator::PastePositionCalculator () :
 	lastPastePosition (),
 	samePositionPasteCounter (0)
@@ -353,11 +371,12 @@ EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& e
 
 	if (DBGVERIFY (uiNode != nullptr)) {
 		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
-		if (uiNode->WantToHandleMouseClick (env, modifierKeys, mouseButton, modelPosition)) {
-			handlerResult = uiNode->HandleMouseClick (env, modifierKeys, mouseButton, modelPosition);
+		NodeUIEventHandlerNotifications notifications (uiManager);
+		handlerResult = uiNode->HandleMouseClick (env, modifierKeys, mouseButton, modelPosition, notifications);
+		if (handlerResult == EventHandlerResult::EventHandled) {
 			uiManager.RequestRecalculate ();
 			uiManager.InvalidateNodeDrawing (uiNode);
-		}	
+		}
 	}
 	
 	return handlerResult;

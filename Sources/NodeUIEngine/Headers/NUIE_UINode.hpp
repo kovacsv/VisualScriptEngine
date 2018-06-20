@@ -16,7 +16,16 @@ class NodeUIEnvironment;
 class NodeParameterList;
 class NodeCommandRegistrator;
 
-class UINode :	public NE::Node
+class EventHandlerNotifications
+{
+public:
+	EventHandlerNotifications ();
+	virtual ~EventHandlerNotifications ();
+
+	virtual void BeforeModification () = 0;
+};
+
+class UINode : public NE::Node
 {
 	SERIALIZABLE;
 
@@ -60,8 +69,7 @@ public:
 	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const;
 	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
 
-	virtual bool				WantToHandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) const;
-	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position);
+	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, EventHandlerNotifications& notifications);
 
 	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const;

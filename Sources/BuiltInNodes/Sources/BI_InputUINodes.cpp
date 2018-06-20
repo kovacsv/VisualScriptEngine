@@ -41,23 +41,8 @@ void NumericUpDownNode::RegisterSlots ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
-bool NumericUpDownNode::WantToHandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position) const
+NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications& notifications)
 {
-	if (mouseButton != NUIE::MouseButton::Left) {
-		return false;
-	}
-
-	NUIE::Rect minusButtonRect = GetSpecialRect (env, "minus");
-	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
-	return minusButtonRect.Contains (position) || plusButtonRect.Contains (position);
-}
-
-NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position)
-{
-	if (DBGERROR (!WantToHandleMouseClick (env, modifierKeys, mouseButton, position))) {
-		return NUIE::EventHandlerResult::EventNotHandled; 
-	}
-
 	if (mouseButton != NUIE::MouseButton::Left) {
 		return NUIE::EventHandlerResult::EventNotHandled;
 	}
@@ -66,9 +51,11 @@ NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnviro
 	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
 
 	if (minusButtonRect.Contains (position)) {
+		notifications.BeforeModification ();
 		Decrease ();
 		return NUIE::EventHandlerResult::EventHandled;
 	} else if (plusButtonRect.Contains (position)) {
+		notifications.BeforeModification ();
 		Increase ();
 		return NUIE::EventHandlerResult::EventHandled;
 	}

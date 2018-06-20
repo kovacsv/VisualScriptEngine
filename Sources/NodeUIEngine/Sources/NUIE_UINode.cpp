@@ -14,6 +14,16 @@ namespace NUIE
 
 NE::SerializationInfo UINode::serializationInfo (NE::ObjectVersion (1));
 
+EventHandlerNotifications::EventHandlerNotifications ()
+{
+
+}
+
+EventHandlerNotifications::~EventHandlerNotifications ()
+{
+
+}
+
 UINode::UINode () :
 	Node ()
 {
@@ -185,12 +195,7 @@ void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlo
 	});
 }
 
-bool UINode::WantToHandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&) const
-{
-	return false;
-}
-
-NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&)
+NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, EventHandlerNotifications&)
 {
 	return EventHandlerResult::EventNotHandled;
 }

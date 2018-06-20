@@ -20,7 +20,7 @@ public:
 	virtual NE::ValuePtr				Calculate (NE::EvaluationEnv& env) const override;
 	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 
-	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position) override;
+	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications& notifications) override;
 
 	virtual NE::Stream::Status			Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status			Write (NE::OutputStream& outputStream) const override;
