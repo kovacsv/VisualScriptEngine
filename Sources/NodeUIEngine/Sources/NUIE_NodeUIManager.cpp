@@ -33,6 +33,7 @@ public:
 		}
 		uiManager.InvalidateNodeDrawing (nodeId);
 		uiNode->OnDelete (env);
+		// TODO: DeleteNodePreProcess
 	}
 
 	virtual void AfterSlotConnect (const NE::NodeId&, const NE::NodeId& inputNodeId) override
