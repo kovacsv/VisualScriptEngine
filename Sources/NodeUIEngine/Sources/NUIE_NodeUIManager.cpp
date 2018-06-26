@@ -31,9 +31,13 @@ public:
 		if (DBGERROR (uiNode == nullptr)) {
 			return;
 		}
-		uiManager.InvalidateNodeDrawing (nodeId);
 		uiNode->OnDelete (env);
-		// TODO: DeleteNodePreProcess
+
+		NE::NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
+		selectedNodes.Erase (nodeId);
+		uiManager.SetSelectedNodes (selectedNodes);
+
+		uiManager.InvalidateNodeDrawing (nodeId);
 	}
 
 	virtual void AfterSlotConnect (const NE::NodeId&, const NE::NodeId& inputNodeId) override
