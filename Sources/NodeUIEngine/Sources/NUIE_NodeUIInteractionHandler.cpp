@@ -139,6 +139,7 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = viewBox.ViewToModel (position) - startModelPosition;
 
+		// uiManager.SaveUndoState ();
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			uiNode->SetNodePosition (uiNode->GetNodePosition () + diff);
@@ -246,10 +247,7 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
-			std::vector<UIOutputSlotConstPtr> existingOutputSlots;
-			uiManager.EnumerateConnectedOutputSlots (endSlot, [&] (UIOutputSlotConstPtr outputSlot) {
-				existingOutputSlots.push_back (outputSlot);
-			});
+			// uiManager.SaveUndoState ();
 			uiManager.ConnectOutputSlotToInputSlot (startSlot, endSlot);
 		}
 		uiManager.RequestRedraw ();
@@ -291,6 +289,7 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
+			// uiManager.SaveUndoState ();
 			uiManager.ConnectOutputSlotToInputSlot (endSlot, startSlot);
 		}
 		uiManager.RequestRedraw ();
