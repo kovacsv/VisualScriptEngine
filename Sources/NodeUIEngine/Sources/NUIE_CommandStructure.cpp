@@ -59,6 +59,7 @@ void GroupCommand::AddChildCommand (CommandPtr command)
 
 bool GroupCommand::IsChecked () const
 {
+	DBGBREAK ();
 	return false;
 }
 

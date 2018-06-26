@@ -9,6 +9,19 @@
 namespace NUIE
 {
 
+// #define ENABLE_UNDO
+
+#ifdef ENABLE_UNDO
+static void SaveUndoState (NodeUIManager& uiManager)
+{
+	uiManager.SaveUndoState ();
+}
+#else
+static void SaveUndoState (NodeUIManager&)
+{
+}
+#endif
+
 class PanningHandler : public MouseMoveHandler
 {
 public:
@@ -139,7 +152,7 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = viewBox.ViewToModel (position) - startModelPosition;
 
-		// uiManager.SaveUndoState ();
+		SaveUndoState (uiManager);
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			uiNode->SetNodePosition (uiNode->GetNodePosition () + diff);
@@ -247,7 +260,7 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
-			// uiManager.SaveUndoState ();
+			SaveUndoState (uiManager);
 			uiManager.ConnectOutputSlotToInputSlot (startSlot, endSlot);
 		}
 		uiManager.RequestRedraw ();
@@ -289,7 +302,7 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
-			// uiManager.SaveUndoState ();
+			SaveUndoState (uiManager);
 			uiManager.ConnectOutputSlotToInputSlot (endSlot, startSlot);
 		}
 		uiManager.RequestRedraw ();
@@ -307,7 +320,7 @@ public:
 
 	virtual void BeforeModification () override
 	{
-		// uiManager.SaveUndoState ();
+		SaveUndoState (uiManager);
 	}
 
 private:
@@ -537,7 +550,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {
-			// uiManager.SaveUndoState ();
+			SaveUndoState (uiManager);
 			selectedCommand->Do ();
 		}
 		handlerResult = EventHandlerResult::EventHandled;
@@ -607,7 +620,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 
 	if (command != nullptr) {
 		if (!isUndoRedo) {
-			// uiManager.SaveUndoState ();
+			SaveUndoState (uiManager);
 		}
 		command->Do ();
 		return EventHandlerResult::EventHandled;
