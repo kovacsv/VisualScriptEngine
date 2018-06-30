@@ -10,7 +10,7 @@ namespace WAS
 {
 
 NUIE::ModifierKeys	GetModiferKeysFromEvent (WPARAM wParam);
-NUIE::CommandPtr	SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::CommandStructure& commands);
+NUIE::UICommandPtr	SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::UICommandStructure& commands);
 
 }
 

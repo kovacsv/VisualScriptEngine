@@ -4,7 +4,7 @@ namespace BI
 {
 
 CreateNodeCommand::CreateNodeCommand (const std::wstring& name, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& viewPosition) :
-	SingleCommand (name, false),
+	SingleUICommand (name, false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	viewPosition (viewPosition)

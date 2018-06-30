@@ -10,42 +10,42 @@
 namespace NUIE
 {
 
-class Command;
-typedef std::shared_ptr<Command> CommandPtr;
+class UICommand;
+typedef std::shared_ptr<UICommand> UICommandPtr;
 
-class GroupCommand;
-typedef std::shared_ptr<GroupCommand> GroupCommandPtr;
+class UIGroupCommand;
+typedef std::shared_ptr<UIGroupCommand> UIGroupCommandPtr;
 
-class SingleCommand;
-typedef std::shared_ptr<SingleCommand> SingleCommandPtr;
+class SingleUICommand;
+typedef std::shared_ptr<SingleUICommand> SingleUICommandPtr;
 
-class MultiCommand;
-typedef std::shared_ptr<MultiCommand> MultiCommandPtr;
+class MultiUICommand;
+typedef std::shared_ptr<MultiUICommand> MultiUICommandPtr;
 
-class CommandId
+class UICommandId
 {
 public:
-	CommandId (const std::string& id);
-	~CommandId ();
+	UICommandId (const std::string& id);
+	~UICommandId ();
 
-	bool	operator== (const CommandId& rhs) const;
-	bool	operator!= (const CommandId& rhs) const;
+	bool	operator== (const UICommandId& rhs) const;
+	bool	operator!= (const UICommandId& rhs) const;
 
 private:
 	std::string id;
 };
 
-class Command
+class UICommand
 {
 public:
-	Command (const std::wstring& name);
-	virtual ~Command ();
+	UICommand (const std::wstring& name);
+	virtual ~UICommand ();
 
 	const std::wstring&		GetName () const;
 
 	virtual bool			IsChecked () const = 0;
 	virtual bool			HasChildCommands () const = 0;
-	virtual void			EnumerateChildCommands (const std::function<void (const CommandPtr& command)>& processor) const = 0;
+	virtual void			EnumerateChildCommands (const std::function<void (const UICommandPtr& command)>& processor) const = 0;
 
 	virtual void			Do () = 0;
 
@@ -53,46 +53,46 @@ protected:
 	std::wstring			name;
 };
 
-class GroupCommand : public Command
+class UIGroupCommand : public UICommand
 {
 public:
-	GroupCommand (const std::wstring& name);
-	virtual ~GroupCommand ();
+	UIGroupCommand (const std::wstring& name);
+	virtual ~UIGroupCommand ();
 
-	void			AddChildCommand (CommandPtr command);
+	void			AddChildCommand (UICommandPtr command);
 
 	virtual bool	IsChecked () const override;
 	virtual bool	HasChildCommands () const override;
-	virtual void	EnumerateChildCommands (const std::function<void (const CommandPtr& command)>& processor) const override;
+	virtual void	EnumerateChildCommands (const std::function<void (const UICommandPtr& command)>& processor) const override;
 	virtual void	Do () override;
 
 private:
-	std::vector<CommandPtr> childCommands;
+	std::vector<UICommandPtr> childCommands;
 };
 
-class SingleCommand : public Command
+class SingleUICommand : public UICommand
 {
 public:
-	SingleCommand (const std::wstring& name, bool isChecked);
-	virtual ~SingleCommand ();
+	SingleUICommand (const std::wstring& name, bool isChecked);
+	virtual ~SingleUICommand ();
 
 	virtual bool	IsChecked () const override;
 	virtual bool	HasChildCommands () const override;
-	virtual void	EnumerateChildCommands (const std::function<void (const CommandPtr&)>& processor) const override;
+	virtual void	EnumerateChildCommands (const std::function<void (const UICommandPtr&)>& processor) const override;
 
 private:
 	bool isChecked;
 };
 
-class CommandStructure
+class UICommandStructure
 {
 public:
-	void	AddCommand (CommandPtr command);
+	void	AddCommand (UICommandPtr command);
 	bool	IsEmpty () const;
-	void	EnumerateCommands (const std::function<void (const CommandPtr&)>& processor) const;
+	void	EnumerateCommands (const std::function<void (const UICommandPtr&)>& processor) const;
 
 private:
-	std::vector<CommandPtr>	commands;
+	std::vector<UICommandPtr>	commands;
 };
 
 }

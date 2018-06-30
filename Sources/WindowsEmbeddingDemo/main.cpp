@@ -24,51 +24,51 @@ public:
 		hwnd = newHwnd;
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (
+	virtual NUIE::UICommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& uiEnvironment,
 		const NUIE::Point& position,
-		const NUIE::CommandStructure& commands) override
+		const NUIE::UICommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (
+	virtual NUIE::UICommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
 		const NUIE::UINodePtr& uiNode,
-		const NUIE::CommandStructure& commands) override
+		const NUIE::UICommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (
+	virtual NUIE::UICommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
 		const NUIE::UIOutputSlotPtr& outputSlot,
-		const NUIE::CommandStructure& commands) override
+		const NUIE::UICommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (
+	virtual NUIE::UICommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
 		const NUIE::UIInputSlotPtr& inputSlot,
-		const NUIE::CommandStructure& commands) override
+		const NUIE::UICommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::CommandPtr OnContextMenu (
+	virtual NUIE::UICommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
 		const NUIE::UINodeGroupPtr& group,
-		const NUIE::CommandStructure& commands) override
+		const NUIE::UICommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}

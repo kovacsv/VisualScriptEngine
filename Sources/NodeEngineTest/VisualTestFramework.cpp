@@ -11,27 +11,27 @@ TestEventHandlers::TestEventHandlers () :
 	
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const CommandStructure& commands)
+UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UICommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const CommandStructure& commands)
+UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const UICommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const CommandStructure& commands)
+UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const UICommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const CommandStructure& commands)
+UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const UICommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-CommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const CommandStructure& commands)
+UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const UICommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
@@ -48,11 +48,11 @@ void TestEventHandlers::SetNextCommandName (const std::wstring& nextCommandName)
 	commandToSelect = nextCommandName;
 }
 
-CommandPtr TestEventHandlers::SelectCommandByName (const CommandStructure& commands)
+UICommandPtr TestEventHandlers::SelectCommandByName (const UICommandStructure& commands)
 {
 	DBGASSERT (!commandToSelect.empty ());
-	CommandPtr selectedCommand = nullptr;
-	commands.EnumerateCommands ([&] (const CommandPtr& command) {
+	UICommandPtr selectedCommand = nullptr;
+	commands.EnumerateCommands ([&] (const UICommandPtr& command) {
 		if (selectedCommand == nullptr) {
 			selectedCommand = SelectCommandByName (command);
 		}
@@ -62,11 +62,11 @@ CommandPtr TestEventHandlers::SelectCommandByName (const CommandStructure& comma
 	return selectedCommand;
 }
 
-CommandPtr TestEventHandlers::SelectCommandByName (const CommandPtr& command)
+UICommandPtr TestEventHandlers::SelectCommandByName (const UICommandPtr& command)
 {
 	if (command->HasChildCommands ()) {
-		CommandPtr foundCommand = nullptr;
-		command->EnumerateChildCommands ([&] (const CommandPtr& childCommand) {
+		UICommandPtr foundCommand = nullptr;
+		command->EnumerateChildCommands ([&] (const UICommandPtr& childCommand) {
 			foundCommand = SelectCommandByName (childCommand);
 		});
 		return foundCommand;

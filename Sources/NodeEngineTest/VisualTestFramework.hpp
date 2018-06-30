@@ -14,18 +14,18 @@ class TestEventHandlers : public EventHandlers
 public:
 	TestEventHandlers ();
 
-	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const CommandStructure&) override;
-	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const CommandStructure&) override;
-	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const CommandStructure&) override;
-	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const CommandStructure&) override;
-	virtual CommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const CommandStructure&) override;
-	virtual bool		OnParameterSettings (ParameterInterfacePtr) override;
+	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UICommandStructure&) override;
+	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const UICommandStructure&) override;
+	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const UICommandStructure&) override;
+	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const UICommandStructure&) override;
+	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const UICommandStructure&) override;
+	virtual bool			OnParameterSettings (ParameterInterfacePtr) override;
 
-	void				SetNextCommandName (const std::wstring& nextCommandName);
+	void					SetNextCommandName (const std::wstring& nextCommandName);
 
 private:
-	CommandPtr			SelectCommandByName (const CommandStructure& commands);
-	CommandPtr			SelectCommandByName (const CommandPtr& command);
+	UICommandPtr			SelectCommandByName (const UICommandStructure& commands);
+	UICommandPtr			SelectCommandByName (const UICommandPtr& command);
 
 	std::wstring		commandToSelect;
 };

@@ -4,122 +4,122 @@
 namespace NUIE
 {
 
-CommandId::CommandId (const std::string& id) :
+UICommandId::UICommandId (const std::string& id) :
 	id (id)
 {
 
 }
 
-CommandId::~CommandId ()
+UICommandId::~UICommandId ()
 {
 
 }
 
-bool CommandId::operator== (const CommandId& rhs) const
+bool UICommandId::operator== (const UICommandId& rhs) const
 {
 	return id == rhs.id;
 }
 
-bool CommandId::operator!= (const CommandId& rhs) const
+bool UICommandId::operator!= (const UICommandId& rhs) const
 {
 	return !operator== (rhs);
 }
 
-Command::Command (const std::wstring& name) :
+UICommand::UICommand (const std::wstring& name) :
 	name (name)
 {
 
 }
 
-Command::~Command ()
+UICommand::~UICommand ()
 {
 
 }
 
-const std::wstring& Command::GetName () const
+const std::wstring& UICommand::GetName () const
 {
 	return name;
 }
 
-GroupCommand::GroupCommand (const std::wstring& name) :
-	Command (name)
+UIGroupCommand::UIGroupCommand (const std::wstring& name) :
+	UICommand (name)
 {
 	
 }
 
-GroupCommand::~GroupCommand ()
+UIGroupCommand::~UIGroupCommand ()
 {
 	
 }
 
-void GroupCommand::AddChildCommand (CommandPtr command)
+void UIGroupCommand::AddChildCommand (UICommandPtr command)
 {
 	childCommands.push_back (command);
 }
 
-bool GroupCommand::IsChecked () const
+bool UIGroupCommand::IsChecked () const
 {
 	DBGBREAK ();
 	return false;
 }
 
-bool GroupCommand::HasChildCommands () const
+bool UIGroupCommand::HasChildCommands () const
 {
 	return !childCommands.empty ();
 }
 
-void GroupCommand::EnumerateChildCommands (const std::function<void (const CommandPtr& command)>& processor) const
+void UIGroupCommand::EnumerateChildCommands (const std::function<void (const UICommandPtr& command)>& processor) const
 {
-	for (const CommandPtr& command : childCommands) {
+	for (const UICommandPtr& command : childCommands) {
 		processor (command);
 	}
 }
 
-void GroupCommand::Do ()
+void UIGroupCommand::Do ()
 {
 	DBGBREAK ();
 }
 
-SingleCommand::SingleCommand (const std::wstring& name, bool isChecked) :
-	Command (name),
+SingleUICommand::SingleUICommand (const std::wstring& name, bool isChecked) :
+	UICommand (name),
 	isChecked (isChecked)
 {
 
 }
 
-SingleCommand::~SingleCommand ()
+SingleUICommand::~SingleUICommand ()
 {
 
 }
 
-bool SingleCommand::IsChecked () const
+bool SingleUICommand::IsChecked () const
 {
 	return isChecked;
 }
 
-bool SingleCommand::HasChildCommands () const
+bool SingleUICommand::HasChildCommands () const
 {
 	return false;
 }
 
-void SingleCommand::EnumerateChildCommands (const std::function<void (const CommandPtr&)>&) const
+void SingleUICommand::EnumerateChildCommands (const std::function<void (const UICommandPtr&)>&) const
 {
 
 }
 
-void CommandStructure::AddCommand (CommandPtr command)
+void UICommandStructure::AddCommand (UICommandPtr command)
 {
 	commands.push_back (command);
 }
 
-bool CommandStructure::IsEmpty () const
+bool UICommandStructure::IsEmpty () const
 {
 	return commands.empty ();
 }
 
-void CommandStructure::EnumerateCommands (const std::function<void (const CommandPtr& command)>& processor) const
+void UICommandStructure::EnumerateCommands (const std::function<void (const UICommandPtr& command)>& processor) const
 {
-	for (const CommandPtr& command : commands) {
+	for (const UICommandPtr& command : commands) {
 		processor (command);
 	}
 }

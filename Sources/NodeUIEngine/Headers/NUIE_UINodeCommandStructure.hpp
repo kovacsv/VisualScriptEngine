@@ -8,7 +8,7 @@
 namespace NUIE
 {
 
-class DeleteNodesCommand : public SingleCommand
+class DeleteNodesCommand : public SingleUICommand
 {
 public:
 	DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
@@ -22,7 +22,7 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class CopyNodesCommand : public SingleCommand
+class CopyNodesCommand : public SingleUICommand
 {
 public:
 	CopyNodesCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
@@ -35,7 +35,7 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class PasteNodesCommand : public SingleCommand
+class PasteNodesCommand : public SingleUICommand
 {
 public:
 	PasteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
@@ -49,7 +49,7 @@ private:
 	Point				position;
 };
 
-class UndoCommand : public SingleCommand
+class UndoCommand : public SingleUICommand
 {
 public:
 	UndoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
@@ -62,7 +62,7 @@ private:
 	NodeUIEnvironment&	uiEnvironment;
 };
 
-class RedoCommand : public SingleCommand
+class RedoCommand : public SingleUICommand
 {
 public:
 	RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
@@ -77,11 +77,11 @@ private:
 
 NE::NodeCollection	GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
 
-CommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
-CommandStructure	CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode);
-CommandStructure	CreateOutputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIOutputSlotPtr& outputSlot);
-CommandStructure	CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotPtr& inputSlot);
-CommandStructure	CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
+UICommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
+UICommandStructure	CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode);
+UICommandStructure	CreateOutputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIOutputSlotPtr& outputSlot);
+UICommandStructure	CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotPtr& inputSlot);
+UICommandStructure	CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
 
 }
 

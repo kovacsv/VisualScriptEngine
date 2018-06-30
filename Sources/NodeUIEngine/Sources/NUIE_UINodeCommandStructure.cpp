@@ -11,7 +11,7 @@ namespace NUIE
 {
 
 DeleteNodesCommand::DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
-	SingleCommand (L"Delete Nodes", false),
+	SingleUICommand (L"Delete Nodes", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	relevantNodes (relevantNodes)
@@ -33,7 +33,7 @@ void DeleteNodesCommand::Do ()
 }
 
 CopyNodesCommand::CopyNodesCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-	SingleCommand (L"Copy Nodes", false),
+	SingleUICommand (L"Copy Nodes", false),
 	uiManager (uiManager),
 	relevantNodes (relevantNodes)
 {
@@ -51,7 +51,7 @@ void CopyNodesCommand::Do ()
 }
 
 PasteNodesCommand::PasteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position) :
-	SingleCommand (L"Paste Nodes", false),
+	SingleUICommand (L"Paste Nodes", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	position (position)
@@ -101,7 +101,7 @@ void PasteNodesCommand::Do ()
 }
 
 UndoCommand::UndoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-	SingleCommand (L"Undo", false),
+	SingleUICommand (L"Undo", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -119,7 +119,7 @@ void UndoCommand::Do ()
 }
 
 RedoCommand::RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-	SingleCommand (L"Redo", false),
+	SingleUICommand (L"Redo", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -204,11 +204,11 @@ public:
 	}
 };
 
-class MultiNodeCommand : public SingleCommand
+class MultiNodeCommand : public SingleUICommand
 {
 public:
 	MultiNodeCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, NodeCommandPtr& nodeCommand) :
-		SingleCommand (name, nodeCommand->IsChecked ()),
+		SingleUICommand (name, nodeCommand->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		nodeCommand (nodeCommand)
@@ -248,11 +248,11 @@ private:
 	std::vector<UINodePtr>		uiNodes;
 };
 
-class SetParametersCommand : public SingleCommand
+class SetParametersCommand : public SingleUICommand
 {
 public:
 	SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
-		SingleCommand (L"Set Parameters", false),
+		SingleUICommand (L"Set Parameters", false),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		currentNode (currentNode),
@@ -363,11 +363,11 @@ private:
 	NodeParameterList	relevantParameters;
 };
 
-class SetGroupParametersCommand : public SingleCommand
+class SetGroupParametersCommand : public SingleUICommand
 {
 public:
 	SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
-		SingleCommand (L"Set Parameters", false),
+		SingleUICommand (L"Set Parameters", false),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		group (group)
@@ -500,7 +500,7 @@ public:
 
 	virtual void RegisterNodeGroupCommand (NodeGroupCommandPtr nodeGroupCommand) override
 	{
-		GroupCommandPtr groupCommand (new GroupCommand (nodeGroupCommand->GetName ()));
+		UIGroupCommandPtr groupCommand (new UIGroupCommand (nodeGroupCommand->GetName ()));
 		nodeGroupCommand->EnumerateChildCommands ([&] (const NodeCommandPtr& nodeCommand) {
 			std::shared_ptr<MultiNodeCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
 			groupCommand->AddChildCommand (multiNodeCommand);
@@ -508,12 +508,12 @@ public:
 		commandStructure.AddCommand (groupCommand);
 	}
 
-	void RegisterCommand (CommandPtr command)
+	void RegisterCommand (UICommandPtr command)
 	{
 		commandStructure.AddCommand (command);
 	}
 
-	CommandStructure& GetCommandStructure ()
+	UICommandStructure& GetCommandStructure ()
 	{
 		return commandStructure;
 	}
@@ -535,15 +535,15 @@ private:
 	NodeUIManager&				uiManager;
 	NodeUIEnvironment&			uiEnvironment;
 	const NE::NodeCollection&	relevantNodes;
-	CommandStructure			commandStructure;
+	UICommandStructure			commandStructure;
 };
 
 template <typename SlotType, typename CommandType>
-class SlotCommand : public SingleCommand
+class SlotCommand : public SingleUICommand
 {
 public:
 	SlotCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, SlotType& slot, CommandType& command) :
-		SingleCommand (name, command->IsChecked ()),
+		SingleUICommand (name, command->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		slot (slot),
@@ -587,27 +587,27 @@ public:
 
 	virtual void RegisterSlotCommand (SlotCommandType slotCommand) override
 	{
-		CommandPtr command = CreateSlotCommand (slotCommand);
+		UICommandPtr command = CreateSlotCommand (slotCommand);
 		commandStructure.AddCommand (command);
 	}
 
 	virtual void RegisterSlotGroupCommand (std::shared_ptr<NodeGroupCommand<SlotCommandType>> slotGroupCommand) override
 	{
-		GroupCommandPtr groupCommand (new GroupCommand (slotGroupCommand->GetName ()));
+		UIGroupCommandPtr groupCommand (new UIGroupCommand (slotGroupCommand->GetName ()));
 		slotGroupCommand->EnumerateChildCommands ([&] (const SlotCommandType& slotNodeCommand) {
-			CommandPtr slotCommand = CreateSlotCommand (slotNodeCommand);
+			UICommandPtr slotCommand = CreateSlotCommand (slotNodeCommand);
 			groupCommand->AddChildCommand (slotCommand);
 		});
 		commandStructure.AddCommand (groupCommand);
 	}
 
-	CommandPtr CreateSlotCommand (SlotCommandType slotNodeCommand)
+	UICommandPtr CreateSlotCommand (SlotCommandType slotNodeCommand)
 	{
-		CommandPtr slotCommand (new SlotCommand<SourceSlotType, SlotCommandType> (slotNodeCommand->GetName (), uiManager, uiEnvironment, sourceSlot, slotNodeCommand));
+		UICommandPtr slotCommand (new SlotCommand<SourceSlotType, SlotCommandType> (slotNodeCommand->GetName (), uiManager, uiEnvironment, sourceSlot, slotNodeCommand));
 		return slotCommand;
 	}
 
-	const CommandStructure& GetCommandStructure ()
+	const UICommandStructure& GetCommandStructure ()
 	{
 		return commandStructure;
 	}
@@ -616,14 +616,14 @@ private:
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
 	SourceSlotType		sourceSlot;
-	CommandStructure	commandStructure;
+	UICommandStructure	commandStructure;
 };
 
-class CreateGroupCommand : public SingleCommand
+class CreateGroupCommand : public SingleUICommand
 {
 public:
 	CreateGroupCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		SingleCommand (L"Create New Group", false),
+		SingleUICommand (L"Create New Group", false),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
@@ -647,11 +647,11 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class DeleteGroupCommand : public SingleCommand
+class DeleteGroupCommand : public SingleUICommand
 {
 public:
 	DeleteGroupCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
-		SingleCommand (L"Delete Group", false),
+		SingleUICommand (L"Delete Group", false),
 		uiManager (uiManager),
 		group (group)
 	{
@@ -674,11 +674,11 @@ private:
 	UINodeGroupPtr		group;
 };
 
-class RemoveNodesFromGroupCommand : public SingleCommand
+class RemoveNodesFromGroupCommand : public SingleUICommand
 {
 public:
 	RemoveNodesFromGroupCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		SingleCommand (L"Remove From Group", false),
+		SingleUICommand (L"Remove From Group", false),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
@@ -710,26 +710,26 @@ NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UIN
 	return NE::NodeCollection ({ uiNode->GetId () });
 }
 
-CommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position)
+UICommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position)
 {
-	CommandStructure commandStructure;
+	UICommandStructure commandStructure;
 	if (uiManager.CanPaste ()) {
-		commandStructure.AddCommand (CommandPtr (new PasteNodesCommand (uiManager, uiEnvironment, position)));
+		commandStructure.AddCommand (UICommandPtr (new PasteNodesCommand (uiManager, uiEnvironment, position)));
 	}
 	return commandStructure;
 }
 
-CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode)
+UICommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode)
 {
 	NE::NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
 
-	commandStructureBuilder.RegisterCommand (CommandPtr (new SetParametersCommand (uiManager, uiEnvironment, uiNode, relevantNodes)));
-	commandStructureBuilder.RegisterCommand (CommandPtr (new CopyNodesCommand (uiManager, relevantNodes)));
-	commandStructureBuilder.RegisterCommand (CommandPtr (new DeleteNodesCommand (uiManager, uiEnvironment, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (UICommandPtr (new SetParametersCommand (uiManager, uiEnvironment, uiNode, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (UICommandPtr (new CopyNodesCommand (uiManager, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (UICommandPtr (new DeleteNodesCommand (uiManager, uiEnvironment, relevantNodes)));
 
-	GroupCommandPtr groupingCommandGroup (new GroupCommand (L"Grouping"));
-	groupingCommandGroup->AddChildCommand (CommandPtr (new CreateGroupCommand (uiManager, relevantNodes)));
+	UIGroupCommandPtr groupingCommandGroup (new UIGroupCommand (L"Grouping"));
+	groupingCommandGroup->AddChildCommand (UICommandPtr (new CreateGroupCommand (uiManager, relevantNodes)));
 	bool isNodeGrouped = false;
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
 		if (group->ContainsNode (uiNode->GetId ())) {
@@ -738,7 +738,7 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 		return !isNodeGrouped;
 	});
 	if (isNodeGrouped) {
-		groupingCommandGroup->AddChildCommand (CommandPtr (new RemoveNodesFromGroupCommand (uiManager, relevantNodes)));
+		groupingCommandGroup->AddChildCommand (UICommandPtr (new RemoveNodesFromGroupCommand (uiManager, relevantNodes)));
 	}
 	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
 
@@ -746,7 +746,7 @@ CommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnv
 	return commandStructureBuilder.GetCommandStructure ();
 }
 
-CommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIOutputSlotPtr& outputSlot)
+UICommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIOutputSlotPtr& outputSlot)
 {
 	SlotCommandStructureBuilder<OutputSlotCommandRegistrator, UIOutputSlotPtr, OutputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, outputSlot);
 
@@ -764,7 +764,7 @@ CommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager, Nod
 	return commandStructureBuilder.GetCommandStructure ();
 }
 
-CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotPtr& inputSlot)
+UICommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotPtr& inputSlot)
 {
 	SlotCommandStructureBuilder<InputSlotCommandRegistrator, UIInputSlotPtr, InputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, inputSlot);
 
@@ -782,11 +782,11 @@ CommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, Node
 	return commandStructureBuilder.GetCommandStructure ();
 }
 
-CommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group)
+UICommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group)
 {
-	CommandStructure commandStructure;
-	commandStructure.AddCommand (CommandPtr (new SetGroupParametersCommand (uiManager, uiEnvironment, group)));
-	commandStructure.AddCommand (CommandPtr (new DeleteGroupCommand (uiManager, group)));
+	UICommandStructure commandStructure;
+	commandStructure.AddCommand (UICommandPtr (new SetGroupParametersCommand (uiManager, uiEnvironment, group)));
+	commandStructure.AddCommand (UICommandPtr (new DeleteGroupCommand (uiManager, group)));
 	return commandStructure;
 }
 

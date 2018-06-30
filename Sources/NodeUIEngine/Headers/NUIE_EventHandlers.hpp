@@ -18,11 +18,11 @@ public:
 	EventHandlers ();
 	virtual ~EventHandlers ();
 
-	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const CommandStructure& commands) = 0;
-	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UINodePtr& uiNode, const CommandStructure& commands) = 0;
-	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UIOutputSlotPtr& inputSlot, const CommandStructure& commands) = 0;
-	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UIInputSlotPtr& inputSlot, const CommandStructure& commands) = 0;
-	virtual NUIE::CommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UINodeGroupPtr& group, const CommandStructure& commands) = 0;
+	virtual NUIE::UICommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UICommandStructure& commands) = 0;
+	virtual NUIE::UICommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UINodePtr& uiNode, const UICommandStructure& commands) = 0;
+	virtual NUIE::UICommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UIOutputSlotPtr& inputSlot, const UICommandStructure& commands) = 0;
+	virtual NUIE::UICommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UIInputSlotPtr& inputSlot, const UICommandStructure& commands) = 0;
+	virtual NUIE::UICommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UINodeGroupPtr& group, const UICommandStructure& commands) = 0;
 
 	virtual bool				OnParameterSettings (ParameterInterfacePtr paramAccessor) = 0;
 };

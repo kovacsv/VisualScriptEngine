@@ -525,28 +525,28 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 		handlerResult = EventHandlerResult::EventHandled;
 	} else if (mouseButton == MouseButton::Right) {
 		EventHandlers& eventHandlers = env.GetEventHandlers ();
-		CommandPtr selectedCommand;
+		UICommandPtr selectedCommand;
 		bool found = FindItemUnderPosition (uiManager, env, position,
 			[&] (UINodePtr& foundNode) {
-				CommandStructure commands = CreateNodeCommandStructure (uiManager, env, foundNode);
+				UICommandStructure commands = CreateNodeCommandStructure (uiManager, env, foundNode);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundNode, commands);
 			},
 			[&] (UIOutputSlotPtr& foundOutputSlot) {
-				CommandStructure commands = CreateOutputSlotCommandStructure (uiManager, env, foundOutputSlot);
+				UICommandStructure commands = CreateOutputSlotCommandStructure (uiManager, env, foundOutputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundOutputSlot, commands);
 			},
 			[&] (UIInputSlotPtr& foundInputSlot) {
-				CommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
+				UICommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundInputSlot, commands);
 			},
 			[&] (UINodeGroupPtr& foundGroup) {
-				CommandStructure commands = CreateNodeGroupCommandStructure (uiManager, env, foundGroup);
+				UICommandStructure commands = CreateNodeGroupCommandStructure (uiManager, env, foundGroup);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundGroup, commands);
 			}
 		);
 		if (!found) {
 			Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
-			CommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, env, modelPosition);
+			UICommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, env, modelPosition);
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {
@@ -583,7 +583,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
 	bool isUndoRedo = (pressedKey.GetKeyCode () == PressedKeyCode::Undo || pressedKey.GetKeyCode () == PressedKeyCode::Redo);
-	CommandPtr command = nullptr;
+	UICommandPtr command = nullptr;
 
 	switch (pressedKey.GetKeyCode ()) {
 		case PressedKeyCode::Delete:
