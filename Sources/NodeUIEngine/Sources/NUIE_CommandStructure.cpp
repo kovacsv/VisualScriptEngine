@@ -4,27 +4,6 @@
 namespace NUIE
 {
 
-UICommandId::UICommandId (const std::string& id) :
-	id (id)
-{
-
-}
-
-UICommandId::~UICommandId ()
-{
-
-}
-
-bool UICommandId::operator== (const UICommandId& rhs) const
-{
-	return id == rhs.id;
-}
-
-bool UICommandId::operator!= (const UICommandId& rhs) const
-{
-	return !operator== (rhs);
-}
-
 UICommand::UICommand (const std::wstring& name) :
 	name (name)
 {

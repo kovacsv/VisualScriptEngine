@@ -22,19 +22,6 @@ typedef std::shared_ptr<SingleUICommand> SingleUICommandPtr;
 class MultiUICommand;
 typedef std::shared_ptr<MultiUICommand> MultiUICommandPtr;
 
-class UICommandId
-{
-public:
-	UICommandId (const std::string& id);
-	~UICommandId ();
-
-	bool	operator== (const UICommandId& rhs) const;
-	bool	operator!= (const UICommandId& rhs) const;
-
-private:
-	std::string id;
-};
-
 class UICommand
 {
 public:
