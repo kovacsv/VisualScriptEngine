@@ -22,6 +22,14 @@ static void SaveUndoState (NodeUIManager&)
 }
 #endif
 
+static void ExecuteCommand (NodeUIManager& uiManager, UICommandPtr& command)
+{
+	if (command->IsUndoable ()) {
+		SaveUndoState (uiManager);
+	}
+	command->Do ();
+}
+
 class PanningHandler : public MouseMoveHandler
 {
 public:
@@ -550,8 +558,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {
-			SaveUndoState (uiManager);
-			selectedCommand->Do ();
+			ExecuteCommand (uiManager, selectedCommand);
 		}
 		handlerResult = EventHandlerResult::EventHandled;
 	}
@@ -582,7 +589,6 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 	}
 
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
-	bool isUndoRedo = (pressedKey.GetKeyCode () == PressedKeyCode::Undo || pressedKey.GetKeyCode () == PressedKeyCode::Redo);
 	UICommandPtr command = nullptr;
 
 	switch (pressedKey.GetKeyCode ()) {
@@ -619,10 +625,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 	}
 
 	if (command != nullptr) {
-		if (!isUndoRedo) {
-			SaveUndoState (uiManager);
-		}
-		command->Do ();
+		ExecuteCommand (uiManager, command);
 		return EventHandlerResult::EventHandled;
 	}
 	return EventHandlerResult::EventNotHandled;

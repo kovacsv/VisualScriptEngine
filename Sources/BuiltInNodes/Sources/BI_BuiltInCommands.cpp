@@ -17,6 +17,11 @@ CreateNodeCommand::~CreateNodeCommand ()
 
 }
 
+bool CreateNodeCommand::IsUndoable () const
+{
+	return true;
+}
+
 void CreateNodeCommand::Do ()
 {
 	const NUIE::ViewBox& viewBox = uiManager.GetViewBox ();

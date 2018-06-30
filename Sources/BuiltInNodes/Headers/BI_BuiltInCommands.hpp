@@ -14,6 +14,7 @@ public:
 	CreateNodeCommand (const std::wstring& name, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& viewPosition);
 	virtual ~CreateNodeCommand ();
 
+	virtual bool IsUndoable () const override;
 	virtual void Do () override;
 
 	virtual NUIE::UINodePtr CreateNode (const NUIE::Point& modelPosition) = 0;

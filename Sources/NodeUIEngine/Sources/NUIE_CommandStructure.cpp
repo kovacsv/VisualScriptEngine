@@ -54,6 +54,12 @@ void UIGroupCommand::EnumerateChildCommands (const std::function<void (const UIC
 	}
 }
 
+bool UIGroupCommand::IsUndoable () const
+{
+	DBGBREAK ();
+	return false;
+}
+
 void UIGroupCommand::Do ()
 {
 	DBGBREAK ();

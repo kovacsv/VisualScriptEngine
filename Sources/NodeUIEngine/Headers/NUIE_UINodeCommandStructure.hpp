@@ -8,7 +8,25 @@
 namespace NUIE
 {
 
-class DeleteNodesCommand : public SingleUICommand
+class UndoableCommand : public SingleUICommand
+{
+public:
+	UndoableCommand (const std::wstring& name, bool isChecked);
+	virtual ~UndoableCommand ();
+
+	virtual bool IsUndoable () const override;
+};
+
+class NotUndoableCommand : public SingleUICommand
+{
+public:
+	NotUndoableCommand (const std::wstring& name, bool isChecked);
+	virtual ~NotUndoableCommand ();
+
+	virtual bool IsUndoable () const override;
+};
+
+class DeleteNodesCommand : public UndoableCommand
 {
 public:
 	DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
@@ -22,7 +40,7 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class CopyNodesCommand : public SingleUICommand
+class CopyNodesCommand : public NotUndoableCommand
 {
 public:
 	CopyNodesCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
@@ -35,7 +53,7 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class PasteNodesCommand : public SingleUICommand
+class PasteNodesCommand : public UndoableCommand
 {
 public:
 	PasteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
@@ -49,7 +67,7 @@ private:
 	Point				position;
 };
 
-class UndoCommand : public SingleUICommand
+class UndoCommand : public NotUndoableCommand
 {
 public:
 	UndoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
@@ -62,7 +80,7 @@ private:
 	NodeUIEnvironment&	uiEnvironment;
 };
 
-class RedoCommand : public SingleUICommand
+class RedoCommand : public NotUndoableCommand
 {
 public:
 	RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);

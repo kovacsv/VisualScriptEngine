@@ -34,6 +34,7 @@ public:
 	virtual bool			HasChildCommands () const = 0;
 	virtual void			EnumerateChildCommands (const std::function<void (const UICommandPtr& command)>& processor) const = 0;
 
+	virtual bool			IsUndoable () const = 0;
 	virtual void			Do () = 0;
 
 protected:
@@ -51,6 +52,8 @@ public:
 	virtual bool	IsChecked () const override;
 	virtual bool	HasChildCommands () const override;
 	virtual void	EnumerateChildCommands (const std::function<void (const UICommandPtr& command)>& processor) const override;
+
+	virtual bool	IsUndoable () const override;
 	virtual void	Do () override;
 
 private:

@@ -10,8 +10,40 @@
 namespace NUIE
 {
 
+UndoableCommand::UndoableCommand (const std::wstring & name, bool isChecked) :
+	SingleUICommand (name, isChecked)
+{
+
+}
+
+UndoableCommand::~UndoableCommand ()
+{
+
+}
+
+bool UndoableCommand::IsUndoable () const
+{
+	return true;
+}
+
+NotUndoableCommand::NotUndoableCommand (const std::wstring & name, bool isChecked) :
+	SingleUICommand (name, isChecked)
+{
+
+}
+
+NotUndoableCommand::~NotUndoableCommand ()
+{
+
+}
+
+bool NotUndoableCommand::IsUndoable () const
+{
+	return false;
+}
+
 DeleteNodesCommand::DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
-	SingleUICommand (L"Delete Nodes", false),
+	UndoableCommand (L"Delete Nodes", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	relevantNodes (relevantNodes)
@@ -33,7 +65,7 @@ void DeleteNodesCommand::Do ()
 }
 
 CopyNodesCommand::CopyNodesCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-	SingleUICommand (L"Copy Nodes", false),
+	NotUndoableCommand (L"Copy Nodes", false),
 	uiManager (uiManager),
 	relevantNodes (relevantNodes)
 {
@@ -51,7 +83,7 @@ void CopyNodesCommand::Do ()
 }
 
 PasteNodesCommand::PasteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position) :
-	SingleUICommand (L"Paste Nodes", false),
+	UndoableCommand (L"Paste Nodes", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	position (position)
@@ -101,7 +133,7 @@ void PasteNodesCommand::Do ()
 }
 
 UndoCommand::UndoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-	SingleUICommand (L"Undo", false),
+	NotUndoableCommand (L"Undo", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -119,7 +151,7 @@ void UndoCommand::Do ()
 }
 
 RedoCommand::RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-	SingleUICommand (L"Redo", false),
+	NotUndoableCommand (L"Redo", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -204,11 +236,11 @@ public:
 	}
 };
 
-class MultiNodeCommand : public SingleUICommand
+class MultiNodeCommand : public UndoableCommand
 {
 public:
 	MultiNodeCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, NodeCommandPtr& nodeCommand) :
-		SingleUICommand (name, nodeCommand->IsChecked ()),
+		UndoableCommand (name, nodeCommand->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		nodeCommand (nodeCommand)
@@ -248,11 +280,11 @@ private:
 	std::vector<UINodePtr>		uiNodes;
 };
 
-class SetParametersCommand : public SingleUICommand
+class SetParametersCommand : public UndoableCommand
 {
 public:
 	SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
-		SingleUICommand (L"Set Parameters", false),
+		UndoableCommand (L"Set Parameters", false),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		currentNode (currentNode),
@@ -363,11 +395,11 @@ private:
 	NodeParameterList	relevantParameters;
 };
 
-class SetGroupParametersCommand : public SingleUICommand
+class SetGroupParametersCommand : public UndoableCommand
 {
 public:
 	SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
-		SingleUICommand (L"Set Parameters", false),
+		UndoableCommand (L"Set Parameters", false),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		group (group)
@@ -539,11 +571,11 @@ private:
 };
 
 template <typename SlotType, typename CommandType>
-class SlotCommand : public SingleUICommand
+class SlotCommand : public UndoableCommand
 {
 public:
 	SlotCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, SlotType& slot, CommandType& command) :
-		SingleUICommand (name, command->IsChecked ()),
+		UndoableCommand (name, command->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		slot (slot),
@@ -619,11 +651,11 @@ private:
 	UICommandStructure	commandStructure;
 };
 
-class CreateGroupCommand : public SingleUICommand
+class CreateGroupCommand : public UndoableCommand
 {
 public:
 	CreateGroupCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		SingleUICommand (L"Create New Group", false),
+		UndoableCommand (L"Create New Group", false),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
@@ -647,11 +679,11 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class DeleteGroupCommand : public SingleUICommand
+class DeleteGroupCommand : public UndoableCommand
 {
 public:
 	DeleteGroupCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
-		SingleUICommand (L"Delete Group", false),
+		UndoableCommand (L"Delete Group", false),
 		uiManager (uiManager),
 		group (group)
 	{
@@ -674,11 +706,11 @@ private:
 	UINodeGroupPtr		group;
 };
 
-class RemoveNodesFromGroupCommand : public SingleUICommand
+class RemoveNodesFromGroupCommand : public UndoableCommand
 {
 public:
 	RemoveNodesFromGroupCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		SingleUICommand (L"Remove From Group", false),
+		UndoableCommand (L"Remove From Group", false),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
