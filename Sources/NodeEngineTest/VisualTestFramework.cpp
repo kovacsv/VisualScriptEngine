@@ -1,9 +1,47 @@
 #include "VisualTestFramework.hpp"
 #include "NUIE_InputEventHandler.hpp"
+#include "BI_BuiltInCommands.hpp"
+#include "BI_InputUINodes.hpp"
+#include "BI_ArithmeticUINodes.hpp"
+#include "BI_ViewerUINodes.hpp"
 #include "SimpleTest.hpp"
 
 #include <iostream>
 #include <fstream>
+
+class MyCreateNodeCommand : public BI::CreateNodeCommand
+{
+public:
+	enum class NodeType
+	{
+		Number,
+		Addition,
+		Viewer
+	};
+
+	MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
+		BI::CreateNodeCommand (name, uiManager, uiEnvironment, position),
+		nodeType (nodeType)
+	{
+	
+	}
+
+	virtual NUIE::UINodePtr CreateNode (const NUIE::Point& modelPosition) override
+	{
+		switch (nodeType) {
+			case NodeType::Number:
+				return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0.0, 5.0));
+			case NodeType::Addition:
+				return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
+			case NodeType::Viewer:
+				return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
+		}
+		return nullptr;
+	}
+
+private:
+	NodeType nodeType;
+};
 
 TestEventHandlers::TestEventHandlers () :
 	commandToSelect ()
@@ -11,9 +49,17 @@ TestEventHandlers::TestEventHandlers () :
 	
 }
 
-UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UICommandStructure& commands)
+UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position, const UICommandStructure& commands)
 {
-	return SelectCommandByName (commands);
+	NUIE::UICommandStructure actualCommands = commands;
+	NUIE::UIGroupCommandPtr createCommandGroup (new NUIE::UIGroupCommand (L"Add Node"));
+
+	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Create Number Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Create Addition Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Create Viewer Node", position)));
+	actualCommands.AddCommand (createCommandGroup);
+
+	return SelectCommandByName (actualCommands);
 }
 
 UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const UICommandStructure& commands)
@@ -67,7 +113,9 @@ UICommandPtr TestEventHandlers::SelectCommandByName (const UICommandPtr& command
 	if (command->HasChildCommands ()) {
 		UICommandPtr foundCommand = nullptr;
 		command->EnumerateChildCommands ([&] (const UICommandPtr& childCommand) {
-			foundCommand = SelectCommandByName (childCommand);
+			if (foundCommand == nullptr) {
+				foundCommand = SelectCommandByName (childCommand);
+			}
 		});
 		return foundCommand;
 	} else {
@@ -133,6 +181,7 @@ NodeEditorTestEnv::NodeEditorTestEnv () :
 	uiEnvironment (nodeEditor),
 	nodeEditor (uiEnvironment)
 {
+	nodeEditor.Update ();
 }
 
 bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)

@@ -1,4 +1,5 @@
 #include "NE_NodeGroup.hpp"
+#include "NE_MemoryStream.hpp"
 
 namespace NE
 {
@@ -66,6 +67,34 @@ Stream::Status NodeGroup::Write (OutputStream& outputStream) const
 	ObjectHeader header (outputStream, serializationInfo);
 	nodes.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+NodeGroupPtr NodeGroup::Clone (const NodeGroupConstPtr& node)
+{
+	MemoryOutputStream outputStream;
+	WriteDynamicObject (outputStream, node.get ());
+	if (DBGERROR (node->Write (outputStream) != Stream::Status::NoError)) {
+		return nullptr;
+	}
+
+	MemoryInputStream inputStream (outputStream.GetBuffer ());
+	NodeGroupPtr result (ReadDynamicObject<NodeGroup> (inputStream));
+	if (DBGERROR (result == nullptr)) {
+		return nullptr;
+	}
+
+	return result;
+}
+
+bool NodeGroup::IsEqual (const NodeGroupConstPtr& aNode, const NodeGroupConstPtr& bNode)
+{
+	MemoryOutputStream aStream;
+	MemoryOutputStream bStream;
+
+	aNode->Write (aStream);
+	bNode->Write (bStream);
+
+	return aStream.GetBuffer () == bStream.GetBuffer ();
 }
 
 }

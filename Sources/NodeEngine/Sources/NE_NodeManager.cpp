@@ -397,6 +397,11 @@ void NodeManager::DeleteNodeGroup (const NodeGroupPtr& group)
 	return nodeGroupList.DeleteGroup (group);
 }
 
+void NodeManager::DeleteAllNodeGroups ()
+{
+	nodeGroupList.Clear ();
+}
+
 NodeGroupPtr NodeManager::GetNodeGroup (const NodeId& nodeId)
 {
 	return nodeGroupList.GetGroup (nodeId);

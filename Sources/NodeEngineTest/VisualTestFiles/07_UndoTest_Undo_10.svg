@@ -1,0 +1,17 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
+<rect x="0" y="0" width="800" height="600" style="fill:rgb(240,240,240);"/>
+<rect x="32" y="44" width="136" height="34" style="fill:rgb(100,100,100);"/>
+<text x="100" y="61" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Number</text>
+<rect x="32" y="78" width="136" height="39" style="fill:rgb(200,200,200);"/>
+<rect x="62" y="83" width="106" height="29" style="fill:rgb(225,225,225);"/>
+<text x="163" y="97" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Output</text>
+<rect x="32" y="117" width="136" height="39" style="fill:rgb(200,200,200);"/>
+<text x="100" y="136" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">0.00</text>
+<rect x="37" y="122" width="26" height="29" style="fill:rgb(150,175,200);"/>
+<text x="50" y="136" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&lt;</text>
+<rect x="37" y="122" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
+<rect x="137" y="122" width="26" height="29" style="fill:rgb(150,175,200);"/>
+<text x="150" y="136" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&gt;</text>
+<rect x="137" y="122" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
+<rect x="32" y="44" width="136" height="112" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+</svg>

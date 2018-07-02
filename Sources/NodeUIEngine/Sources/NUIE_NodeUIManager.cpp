@@ -52,7 +52,8 @@ private:
 
 NodeUIManager::Status::Status ()
 {
-	Reset ();
+	needToRecalculate = true;
+	needToRedraw = true;
 }
 
 void NodeUIManager::Status::Reset ()

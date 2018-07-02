@@ -9,23 +9,10 @@
 namespace NUIE
 {
 
-// #define ENABLE_UNDO
-
-#ifdef ENABLE_UNDO
-static void SaveUndoState (NodeUIManager& uiManager)
-{
-	uiManager.SaveUndoState ();
-}
-#else
-static void SaveUndoState (NodeUIManager&)
-{
-}
-#endif
-
 static void ExecuteCommand (NodeUIManager& uiManager, UICommandPtr& command)
 {
 	if (command->IsUndoable ()) {
-		SaveUndoState (uiManager);
+		uiManager.SaveUndoState ();
 	}
 	command->Do ();
 }
@@ -160,7 +147,7 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = viewBox.ViewToModel (position) - startModelPosition;
 
-		SaveUndoState (uiManager);
+		uiManager.SaveUndoState ();
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			uiNode->SetNodePosition (uiNode->GetNodePosition () + diff);
@@ -268,7 +255,7 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
-			SaveUndoState (uiManager);
+			uiManager.SaveUndoState ();
 			uiManager.ConnectOutputSlotToInputSlot (startSlot, endSlot);
 		}
 		uiManager.RequestRedraw ();
@@ -310,7 +297,7 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
-			SaveUndoState (uiManager);
+			uiManager.SaveUndoState ();
 			uiManager.ConnectOutputSlotToInputSlot (endSlot, startSlot);
 		}
 		uiManager.RequestRedraw ();
@@ -328,7 +315,7 @@ public:
 
 	virtual void BeforeModification () override
 	{
-		SaveUndoState (uiManager);
+		uiManager.SaveUndoState ();
 	}
 
 private:

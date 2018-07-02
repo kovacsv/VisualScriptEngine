@@ -77,6 +77,7 @@ public:
 
 	bool				AddNodeGroup (const NodeGroupPtr& group);
 	void				DeleteNodeGroup (const NodeGroupPtr& group);
+	void				DeleteAllNodeGroups ();
 	NodeGroupPtr		GetNodeGroup (const NodeId& nodeId);
 	void				RemoveNodeFromGroup (const NodeId& nodeId);
 	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;

@@ -24,6 +24,10 @@ class OutputSlot;
 typedef std::shared_ptr<OutputSlot> OutputSlotPtr;
 typedef std::shared_ptr<const OutputSlot> OutputSlotConstPtr;
 
+class NodeGroup;
+typedef std::shared_ptr<NodeGroup> NodeGroupPtr;
+typedef std::shared_ptr<const NodeGroup> NodeGroupConstPtr;
+
 }
 
 #endif

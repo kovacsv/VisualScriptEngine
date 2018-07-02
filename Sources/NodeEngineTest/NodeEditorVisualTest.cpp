@@ -334,4 +334,49 @@ TEST (NodeGroupingTest)
 	}
 }
 
+TEST (UndoTest)
+{
+	NodeEditorTestEnv env;
+	env.CheckReference ("07_UndoTest_Empty.svg");
+
+	env.SetNextCommandName (L"Create Number Node");
+	env.RightClick (Point (100, 100));
+	env.SetNextCommandName (L"Create Number Node");
+	env.RightClick (Point (100, 300));
+	env.SetNextCommandName (L"Create Addition Node");
+	env.RightClick (Point (300, 200));
+	env.SetNextCommandName (L"Create Viewer Node");
+	env.RightClick (Point (600, 200));
+	env.DragDrop (Point (120, 100), Point (240, 200));
+	env.DragDrop (Point (120, 300), Point (240, 230));
+	env.DragDrop (Point (300, 200), Point (540, 200));
+	env.Click (Point (145, 135));
+	env.DragDrop (Point (200, 100), Point (800, 400));
+	env.DragDrop (Point (300, 160), Point (320, 180));
+	env.SetNextCommandName (L"Create New Group");
+	env.RightClick (Point (320, 180));
+	env.Click (Point (320, 180));
+	env.SetNextCommandName (L"Delete Nodes");
+	env.RightClick (Point (320, 180));
+
+	env.CheckReference ("07_UndoTest_Initial.svg");
+
+	for (int i = 1; i <= 11; i++) {
+		env.nodeEditor.OnKeyPress (Key (PressedKeyCode::Undo));
+		std::string indexString = std::to_string (i);
+		while (indexString.length () < 2) {
+			indexString = "0" + indexString;
+		}
+		env.CheckReference ("07_UndoTest_Undo_" + indexString + ".svg");
+	}
+	for (int i = 1; i <= 11; i++) {
+		env.nodeEditor.OnKeyPress (Key (PressedKeyCode::Redo));
+		std::string indexString = std::to_string (i);
+		while (indexString.length () < 2) {
+			indexString = "0" + indexString;
+		}
+		env.CheckReference ("07_UndoTest_Redo_" + indexString + ".svg");
+	}
+}
+
 }
