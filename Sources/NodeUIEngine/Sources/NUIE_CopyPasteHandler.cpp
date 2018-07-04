@@ -51,7 +51,6 @@ bool CopyPasteHandler::PasteTo (NE::NodeManager& target)
 		}
 	};
 
-	// TODO: Node created does not called after append
 	AllNodesFilter allNodesFilter;
 	return NE::NodeManagerMerge::AppendNodeManager (tempNodeManager, target, allNodesFilter);
 }

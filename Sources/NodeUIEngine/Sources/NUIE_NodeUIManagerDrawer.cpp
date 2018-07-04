@@ -6,9 +6,6 @@
 namespace NUIE
 {
 
-// TODO: Delete
-static Point NodeOffset (20.0, 20.0);
-
 NodeIdToNodeMap::NodeIdToNodeMap (const NodeUIManager& uiManager)
 {
 	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
