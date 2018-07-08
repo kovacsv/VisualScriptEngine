@@ -42,8 +42,8 @@ bool UndoHandler::Redo (NE::NodeManager& targetNodeManager, NE::MergeEventHandle
 		return false;
 	}
 
+	SaveAndAddState (targetNodeManager, undoStack);
 	std::shared_ptr<NE::NodeManager> redoState = redoStack.back ();
-	undoStack.push_back (redoState);
 	redoStack.pop_back ();
 	return NE::NodeManagerMerge::UpdateNodeManager (*redoState.get (), targetNodeManager, eventHandler);
 }
