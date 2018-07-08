@@ -19,8 +19,8 @@ public:
 	bool	Redo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler);
 
 private:
-	size_t											undoPosition;
-	std::vector<std::shared_ptr<NE::NodeManager>>	undoQueue;
+	std::vector<std::shared_ptr<NE::NodeManager>>	undoStack;
+	std::vector<std::shared_ptr<NE::NodeManager>>	redoStack;
 };
 
 }

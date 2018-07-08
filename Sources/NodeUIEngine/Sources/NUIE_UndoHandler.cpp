@@ -4,47 +4,48 @@
 namespace NUIE
 {
 
-UndoHandler::UndoHandler () :
-	undoPosition (0)
+static void SaveAndAddState (const NE::NodeManager& nodeManager, std::vector<std::shared_ptr<NE::NodeManager>>& stack)
+{
+	std::shared_ptr<NE::NodeManager> undoState (new NE::NodeManager ());
+	NE::NodeManager::Clone (nodeManager, *undoState.get ());
+	stack.push_back (undoState);
+}
+
+UndoHandler::UndoHandler ()
 {
 
 }
 
 void UndoHandler::SaveUndoState (const NE::NodeManager& nodeManager)
 {
-	std::shared_ptr<NE::NodeManager> undoState (new NE::NodeManager ());
-	NE::NodeManager::Clone (nodeManager, *undoState.get ());
-
-	undoQueue.resize (undoPosition);
-	undoQueue.push_back (undoState);
-	undoPosition = undoQueue.size ();
+	redoStack.clear ();
+	SaveAndAddState (nodeManager, undoStack);
 }
 
 bool UndoHandler::Undo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler)
 {
-	if (undoQueue.empty () || undoPosition == 0) {
+	if (undoStack.empty ()) {
 		return false;
 	}
 
-	if (undoPosition == undoQueue.size ()) {
-		SaveUndoState (targetNodeManager);
-		undoPosition = undoPosition - 1;
-	}
+	SaveAndAddState (targetNodeManager, redoStack);
 
-	undoPosition = undoPosition - 1;
-	std::shared_ptr<NE::NodeManager> undoState = undoQueue[undoPosition];
+	std::shared_ptr<NE::NodeManager> undoState = undoStack.back ();
+	undoStack.pop_back ();
+
 	return NE::NodeManagerMerge::UpdateNodeManager (*undoState.get (), targetNodeManager, eventHandler);
 }
 
 bool UndoHandler::Redo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler)
 {
-	if (undoQueue.empty () || undoPosition >= undoQueue.size () - 1) {
+	if (redoStack.empty ()) {
 		return false;
 	}
 
-	undoPosition = undoPosition + 1;
-	std::shared_ptr<NE::NodeManager> undoState = undoQueue[undoPosition];
-	return NE::NodeManagerMerge::UpdateNodeManager (*undoState.get (), targetNodeManager, eventHandler);
+	std::shared_ptr<NE::NodeManager> redoState = redoStack.back ();
+	undoStack.push_back (redoState);
+	redoStack.pop_back ();
+	return NE::NodeManagerMerge::UpdateNodeManager (*redoState.get (), targetNodeManager, eventHandler);
 }
 
 }
