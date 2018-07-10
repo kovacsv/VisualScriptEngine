@@ -117,7 +117,7 @@ ValuePtr DoubleValue::Clone () const
 
 std::wstring DoubleValue::ToString (const StringSettings& stringSettings) const
 {
-	return DoubleToString (val, stringSettings.GetPrecision ());
+	return DoubleToString (val, stringSettings);
 }
 
 int DoubleValue::ToInteger () const

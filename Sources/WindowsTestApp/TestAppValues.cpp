@@ -84,7 +84,7 @@ std::wstring Transformation::ToString () const
 	std::wstring result = L"";
 	result += L"Matrix (";
 	for (int i = 0; i < 9; i++) {
-		result += NE::DoubleToString (matrix[i], 2);
+		result += NE::DoubleToString (matrix[i], NE::DefaultStringSettings);
 		if (i < 9 - 1) {
 			result += L", ";
 		}
@@ -134,9 +134,9 @@ std::wstring Point::ToString () const
 {
 	std::wstring result = L"";
 	result += L"Point (";
-	result += NE::DoubleToString (x, 2);
+	result += NE::DoubleToString (x, NE::DefaultStringSettings);
 	result += L", ";
-	result += NE::DoubleToString (y, 2);
+	result += NE::DoubleToString (y, NE::DefaultStringSettings);
 	result += L")";
 	return result;
 }
@@ -228,7 +228,7 @@ std::wstring Circle::ToString () const
 	result += L"Circle (";
 	result += center.ToString ();
 	result += L", ";
-	result += NE::DoubleToString (radius, 2);
+	result += NE::DoubleToString (radius, NE::DefaultStringSettings);
 	result += L")";
 	return result;
 }

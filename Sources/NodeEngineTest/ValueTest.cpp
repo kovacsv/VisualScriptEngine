@@ -108,7 +108,7 @@ TEST (StringSettingsTest)
 	ASSERT (listVal.ToString (DefaultStringSettings) == L"1.00, 2.00, 3.00");
 
 	BasicStringSettings hungarianSettings (L',', L';', 3);
-	ASSERT (listVal.ToString (hungarianSettings) == L"1.000; 2.000; 3.000");
+	ASSERT (listVal.ToString (hungarianSettings) == L"1,000; 2,000; 3,000");
 }
 
 TEST (CustomValueTest)
