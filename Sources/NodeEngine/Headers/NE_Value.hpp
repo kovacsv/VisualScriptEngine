@@ -2,6 +2,7 @@
 #define VALUE_HPP
 
 #include "NE_Serializable.hpp"
+#include "NE_StringSettings.hpp"
 
 #include <vector>
 #include <memory>
@@ -33,7 +34,7 @@ public:
 	virtual ~Value ();
 
 	virtual ValuePtr		Clone () const = 0;
-	virtual std::wstring	ToString () const = 0;
+	virtual std::wstring	ToString (const StringSettings& stringSettings) const = 0;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
@@ -109,7 +110,7 @@ public:
 	virtual ~ListValue ();
 
 	virtual ValuePtr			Clone () const override;
-	virtual std::wstring		ToString () const override;
+	virtual std::wstring		ToString (const StringSettings&) const override;
 	virtual Stream::Status		Read (InputStream& inputStream) override;
 	virtual Stream::Status		Write (OutputStream& outputStream) const override;
 

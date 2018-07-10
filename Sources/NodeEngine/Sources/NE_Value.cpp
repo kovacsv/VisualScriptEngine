@@ -89,14 +89,14 @@ ValuePtr ListValue::Clone () const
 	return result;
 }
 
-std::wstring ListValue::ToString () const
+std::wstring ListValue::ToString (const StringSettings& stringSettings) const
 {
-	// TODO: separator
 	std::wstring result = L"";
 	for (size_t i = 0; i < GetSize (); ++i) {
-		result += values[i]->ToString ();
+		result += values[i]->ToString (stringSettings);
 		if (i < GetSize () - 1) {
-			result += L", ";
+			result += stringSettings.GetListSeparator ();
+			result += ' ';
 		}
 	}
 	return result;

@@ -33,7 +33,7 @@ public:
 	virtual ~IntValue ();
 
 	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString () const override;
+	virtual std::wstring	ToString (const StringSettings&) const override;
 
 	virtual int				ToInteger () const override;
 	virtual double			ToDouble () const override;
@@ -53,7 +53,7 @@ public:
 	virtual ~DoubleValue ();
 
 	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString () const override;
+	virtual std::wstring	ToString (const StringSettings&) const override;
 
 	virtual int				ToInteger () const override;
 	virtual double			ToDouble () const override;
@@ -72,7 +72,7 @@ public:
 	virtual ~StringValue ();
 
 	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString () const override;
+	virtual std::wstring	ToString (const StringSettings&) const override;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;

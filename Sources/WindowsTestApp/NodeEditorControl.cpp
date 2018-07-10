@@ -174,8 +174,9 @@ UpdateInterface::~UpdateInterface ()
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	evaluationEnv (evaluationEnv),
-	drawingContext (CreateNativeDrawingContext ()),
+	stringSettings (L'.', L',', 2),
 	skinParams (),
+	drawingContext (CreateNativeDrawingContext ()),
 	eventHandlers (nodeEditorControl)
 {
 	drawingContext->Init (GetNativeHandle (nodeEditorControl));
@@ -191,14 +192,19 @@ void NodeEditorUIEnvironment::OnResize (int width, int height)
 	drawingContext->Resize (width, height);
 }
 
+const NE::StringSettings& NodeEditorUIEnvironment::GetStringSettings ()
+{
+	return stringSettings;
+}
+
+const NUIE::SkinParams& NodeEditorUIEnvironment::GetSkinParams ()
+{
+	return skinParams;
+}
+
 NUIE::DrawingContext& NodeEditorUIEnvironment::GetDrawingContext ()
 {
 	return *drawingContext;
-}
-
-NUIE::SkinParams& NodeEditorUIEnvironment::GetSkinParams ()
-{
-	return skinParams;
 }
 
 NE::EvaluationEnv& NodeEditorUIEnvironment::GetEvaluationEnv ()

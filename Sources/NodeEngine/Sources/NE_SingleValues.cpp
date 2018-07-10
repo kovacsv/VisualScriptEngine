@@ -61,7 +61,7 @@ ValuePtr IntValue::Clone () const
 	return ValuePtr (new IntValue (val));
 }
 
-std::wstring IntValue::ToString () const
+std::wstring IntValue::ToString (const StringSettings&) const
 {
 	return std::to_wstring (val);
 }
@@ -115,10 +115,9 @@ ValuePtr DoubleValue::Clone () const
 	return ValuePtr (new DoubleValue (val));
 }
 
-std::wstring DoubleValue::ToString () const
+std::wstring DoubleValue::ToString (const StringSettings& stringSettings) const
 {
-	// TODO: Precision
-	return DoubleToString (val, 2);
+	return DoubleToString (val, stringSettings.GetPrecision ());
 }
 
 int DoubleValue::ToInteger () const
@@ -169,7 +168,7 @@ ValuePtr StringValue::Clone () const
 	return ValuePtr (new StringValue (val));
 }
 
-std::wstring StringValue::ToString () const
+std::wstring StringValue::ToString (const StringSettings&) const
 {
 	return val;
 }

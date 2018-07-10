@@ -53,7 +53,7 @@ public:
 		return ValuePtr (new AValue (val));
 	}
 
-	virtual std::wstring ToString () const override
+	virtual std::wstring ToString (const StringSettings&) const override
 	{
 		return std::to_wstring (GetValue ().x);
 	}
@@ -81,7 +81,7 @@ public:
 		return ValuePtr (new BValue (val));
 	}
 
-	virtual std::wstring ToString () const override
+	virtual std::wstring ToString (const StringSettings&) const override
 	{
 		return std::to_wstring (GetValue ().x);
 	}
@@ -110,7 +110,7 @@ public:
 		return ValuePtr (new ABPairValue (val));
 	}
 
-	virtual std::wstring ToString () const override
+	virtual std::wstring ToString (const StringSettings&) const override
 	{
 		return std::to_wstring (GetValue ().a.x) + std::to_wstring (GetValue ().b.x);
 	}

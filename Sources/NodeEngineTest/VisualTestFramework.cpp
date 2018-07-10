@@ -129,22 +129,28 @@ UICommandPtr TestEventHandlers::SelectCommandByName (const UICommandPtr& command
 TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor) :
 	NUIE::NodeUIEnvironment (),
 	nodeEditor (nodeEditor),
-	drawingContext (800, 600),
+	stringSettings (L'.', L',', 2),
 	skinParams (),
+	drawingContext (800, 600),
 	eventHandlers (),
 	evaluationEnv (nullptr)
 {
 	
 }
 
+const StringSettings& TestNodeUIEnvironment::GetStringSettings ()
+{
+	return stringSettings;
+}
+
+const SkinParams& TestNodeUIEnvironment::GetSkinParams ()
+{
+	return skinParams;
+}
+
 DrawingContext& TestNodeUIEnvironment::GetDrawingContext ()
 {
 	return drawingContext;
-}
-
-SkinParams& TestNodeUIEnvironment::GetSkinParams ()
-{
-	return skinParams;
 }
 
 EvaluationEnv& TestNodeUIEnvironment::GetEvaluationEnv ()

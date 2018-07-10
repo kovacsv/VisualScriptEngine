@@ -1,6 +1,7 @@
 #ifndef VISUALTESTFRAMEWORK_HPP
 #define VISUALTESTFRAMEWORK_HPP
 
+#include "NE_StringSettings.hpp"
 #include "NE_EvaluationEnv.hpp"
 #include "NUIE_EventHandlers.hpp"
 #include "NUIE_NodeEditor.hpp"
@@ -35,23 +36,25 @@ class TestNodeUIEnvironment : public NodeUIEnvironment
 public:
 	TestNodeUIEnvironment (NodeEditor& nodeEditor);
 
-	virtual DrawingContext&		GetDrawingContext () override;
-	virtual SkinParams&			GetSkinParams () override;
-	virtual EvaluationEnv&		GetEvaluationEnv () override;
-	virtual void				OnValuesRecalculated () override;
-	virtual void				OnRedrawRequested () override;
-	virtual EventHandlers&		GetEventHandlers () override;
+	virtual const StringSettings&	GetStringSettings () override;
+	virtual const SkinParams&		GetSkinParams () override;
+	virtual DrawingContext&			GetDrawingContext () override;
+	virtual EvaluationEnv&			GetEvaluationEnv () override;
+	virtual void					OnValuesRecalculated () override;
+	virtual void					OnRedrawRequested () override;
+	virtual EventHandlers&			GetEventHandlers () override;
 
-	void						SetNextCommandName (const std::wstring& nextCommandName);
-	const SvgDrawingContext&	GetSvgDrawingContext () const;
+	void							SetNextCommandName (const std::wstring& nextCommandName);
+	const SvgDrawingContext&		GetSvgDrawingContext () const;
 
 private:
-	NodeEditor&			nodeEditor;
+	NodeEditor&				nodeEditor;
 
-	SvgDrawingContext	drawingContext;
-	DefaultSkinParams	skinParams;
-	TestEventHandlers	eventHandlers;
-	EvaluationEnv		evaluationEnv;
+	BasicStringSettings		stringSettings;
+	DefaultSkinParams		skinParams;
+	SvgDrawingContext		drawingContext;
+	TestEventHandlers		eventHandlers;
+	EvaluationEnv			evaluationEnv;
 };
 
 class NodeEditorTestEnv

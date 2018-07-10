@@ -88,6 +88,7 @@ class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 public:
 	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
+		stringSettings (L'.', L',', 2),
 		skinParams (),
 		eventHandlers (),
 		evaluationEnv (nullptr),
@@ -107,14 +108,19 @@ public:
 		nodeEditorControl.Resize (x, y, width, height);
 	}
 
+	virtual const NE::StringSettings& GetStringSettings () override
+	{
+		return stringSettings;
+	}
+
+	virtual const NUIE::SkinParams& GetSkinParams () override
+	{
+		return skinParams;
+	}
+
 	virtual NUIE::DrawingContext& GetDrawingContext () override
 	{
 		return nodeEditorControl.GetDrawingContext ();
-	}
-
-	virtual NUIE::SkinParams& GetSkinParams () override
-	{
-		return skinParams;
 	}
 	
 	virtual NE::EvaluationEnv& GetEvaluationEnv () override
@@ -138,10 +144,11 @@ public:
 	}
 
 private:
-	NUIE::DefaultSkinParams			skinParams;
-	MyEventHandlers					eventHandlers;
-	NE::EvaluationEnv				evaluationEnv;
-	WAS::NodeEditorHwndControl		nodeEditorControl;
+	NE::BasicStringSettings		stringSettings;
+	NUIE::DefaultSkinParams		skinParams;
+	MyEventHandlers				eventHandlers;
+	NE::EvaluationEnv			evaluationEnv;
+	WAS::NodeEditorHwndControl	nodeEditorControl;
 };
 
 static MyNodeUIEnvironment uiEnvironment;

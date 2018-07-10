@@ -6,6 +6,7 @@
 namespace NE
 {
 
+class StringSettings;
 class EvaluationEnv;
 
 }
@@ -13,8 +14,8 @@ class EvaluationEnv;
 namespace NUIE
 {
 
-class DrawingContext;
 class SkinParams;
+class DrawingContext;
 class EventHandlers;
 
 class NodeUIDrawingEnvironment
@@ -23,8 +24,9 @@ public:
 	NodeUIDrawingEnvironment ();
 	virtual ~NodeUIDrawingEnvironment ();
 
-	virtual DrawingContext&		GetDrawingContext () = 0;
-	virtual SkinParams&			GetSkinParams () = 0;
+	virtual const NE::StringSettings&	GetStringSettings () = 0;
+	virtual const SkinParams&			GetSkinParams () = 0;
+	virtual DrawingContext&				GetDrawingContext () = 0;
 };
 
 class NodeUICalculationEnvironment
@@ -62,8 +64,9 @@ public:
 	NodeUIDrawingEnvironmentDecorator (NodeUIDrawingEnvironment& decorated);
 	virtual ~NodeUIDrawingEnvironmentDecorator ();
 
-	virtual DrawingContext&		GetDrawingContext () override;
-	virtual SkinParams&			GetSkinParams () override;
+	virtual const NE::StringSettings&	GetStringSettings () override;
+	virtual const SkinParams&			GetSkinParams () override;
+	virtual DrawingContext&				GetDrawingContext () override;
 
 private:
 	NodeUIDrawingEnvironment& decorated;

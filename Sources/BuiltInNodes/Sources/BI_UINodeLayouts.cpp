@@ -33,7 +33,7 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 	DBGASSERT (uiNode.ValueIsCalculated ());
 	NE::ValuePtr nodeValue = uiNode.GetCalculatedValue ();
 	if (nodeValue != nullptr) {
-		nodeText = nodeValue->ToString ();
+		nodeText = nodeValue->ToString (env.GetStringSettings ());
 	}
 
 	NUIE::NodeUIPanelDrawer drawer;

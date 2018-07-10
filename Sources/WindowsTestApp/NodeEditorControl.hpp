@@ -72,19 +72,21 @@ public:
 	void							OnPaint (wxPanel* panel, wxPaintEvent& evt);
 	void							OnResize (int width, int height);
 
-	virtual NUIE::DrawingContext&	GetDrawingContext () override;
-	virtual NUIE::SkinParams&		GetSkinParams () override;
-	virtual NE::EvaluationEnv&		GetEvaluationEnv () override;
-	virtual void					OnValuesRecalculated () override;
-	virtual void					OnRedrawRequested () override;
-	virtual NUIE::EventHandlers&	GetEventHandlers () override;
+	virtual const NE::StringSettings&	GetStringSettings () override;
+	virtual const NUIE::SkinParams&		GetSkinParams () override;
+	virtual NUIE::DrawingContext&		GetDrawingContext () override;
+	virtual NE::EvaluationEnv&			GetEvaluationEnv () override;
+	virtual void						OnValuesRecalculated () override;
+	virtual void						OnRedrawRequested () override;
+	virtual NUIE::EventHandlers&		GetEventHandlers () override;
 
 private:
 	NodeEditorControl*								nodeEditorControl;
 	NE::EvaluationEnv&								evaluationEnv;
 
-	std::shared_ptr<NUIE::NativeDrawingContext>		drawingContext;
+	NE::BasicStringSettings							stringSettings;
 	NUIE::DefaultSkinParams							skinParams;
+	std::shared_ptr<NUIE::NativeDrawingContext>		drawingContext;
 	AppEventHandlers								eventHandlers;
 };
 

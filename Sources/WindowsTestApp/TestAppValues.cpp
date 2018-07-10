@@ -271,7 +271,7 @@ NE::ValuePtr ColorValue::Clone () const
 	return NE::ValuePtr (new ColorValue (val));
 }
 
-std::wstring ColorValue::ToString () const
+std::wstring ColorValue::ToString (const NE::StringSettings&) const
 {
 	return val.ToString ();
 }
@@ -327,7 +327,7 @@ NE::ValuePtr PointValue::Clone () const
 	return NE::ValuePtr (new PointValue (val));
 }
 
-std::wstring PointValue::ToString () const
+std::wstring PointValue::ToString (const NE::StringSettings&) const
 {
 	return val.ToString ();
 }
@@ -381,7 +381,7 @@ NE::ValuePtr LineValue::Clone () const
 	return NE::ValuePtr (new LineValue (val));
 }
 
-std::wstring LineValue::ToString () const
+std::wstring LineValue::ToString (const NE::StringSettings&) const
 {
 	return val.ToString ();
 }
@@ -435,7 +435,7 @@ NE::ValuePtr CircleValue::Clone () const
 	return NE::ValuePtr (new CircleValue (val));
 }
 
-std::wstring CircleValue::ToString () const
+std::wstring CircleValue::ToString (const NE::StringSettings&) const
 {
 	return val.ToString ();
 }

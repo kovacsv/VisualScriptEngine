@@ -55,14 +55,19 @@ NodeUIDrawingEnvironmentDecorator::~NodeUIDrawingEnvironmentDecorator ()
 
 }
 
+const NE::StringSettings& NodeUIDrawingEnvironmentDecorator::GetStringSettings ()
+{
+	return decorated.GetStringSettings ();
+}
+
+const SkinParams& NodeUIDrawingEnvironmentDecorator::GetSkinParams ()
+{
+	return decorated.GetSkinParams ();
+}
+
 DrawingContext& NodeUIDrawingEnvironmentDecorator::GetDrawingContext ()
 {
 	return decorated.GetDrawingContext ();
-}
-
-SkinParams& NodeUIDrawingEnvironmentDecorator::GetSkinParams ()
-{
-	return decorated.GetSkinParams ();
 }
 
 NodeUIDrawingEnvironmentContextDecorator::NodeUIDrawingEnvironmentContextDecorator (NodeUIDrawingEnvironment& decorated, DrawingContext& decoratedDrawingContext) :

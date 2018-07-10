@@ -120,7 +120,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 		NE::IListValuePtr listValue = NE::CreateListValue (nodeValue);
 		nodeTexts.clear ();
 		listValue->Enumerate ([&] (const NE::ValuePtr& value) {
-			nodeTexts.push_back (value->ToString ());
+			nodeTexts.push_back (value->ToString (env.GetStringSettings ()));
 		});
 	}
 

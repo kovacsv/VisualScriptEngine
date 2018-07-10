@@ -115,8 +115,8 @@ const GroupDrawingImage& UINodeGroup::GetDrawingImage (NodeUIDrawingEnvironment&
 
 void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
 {
+	const SkinParams& skinParams = env.GetSkinParams ();
 	DrawingContext& drawingContext = env.GetDrawingContext ();
-	SkinParams& skinParams = env.GetSkinParams ();
 
 	Rect boundingRect;
 	bool isEmptyRect = true;
