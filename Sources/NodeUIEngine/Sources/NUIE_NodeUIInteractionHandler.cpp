@@ -9,14 +9,6 @@
 namespace NUIE
 {
 
-static void ExecuteCommand (NodeUIManager& uiManager, UICommandPtr& command)
-{
-	if (command->IsUndoable ()) {
-		uiManager.SaveUndoState ();
-	}
-	command->Do ();
-}
-
 class PanningHandler : public MouseMoveHandler
 {
 public:
@@ -417,6 +409,14 @@ const NodeDrawingModifier* NodeUIInteractionHandler::GetDrawingModifier ()
 	return &multiMouseMoveHandler;
 }
 
+void NodeUIInteractionHandler::ExecuteCommand (UICommandPtr& command)
+{
+	if (command->IsUndoable ()) {
+		uiManager.SaveUndoState ();
+	}
+	command->Do ();
+}
+
 EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
@@ -545,7 +545,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {
-			ExecuteCommand (uiManager, selectedCommand);
+			ExecuteCommand (selectedCommand);
 		}
 		handlerResult = EventHandlerResult::EventHandled;
 	}
@@ -612,7 +612,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 	}
 
 	if (command != nullptr) {
-		ExecuteCommand (uiManager, command);
+		ExecuteCommand (command);
 		return EventHandlerResult::EventHandled;
 	}
 	return EventHandlerResult::EventNotHandled;
