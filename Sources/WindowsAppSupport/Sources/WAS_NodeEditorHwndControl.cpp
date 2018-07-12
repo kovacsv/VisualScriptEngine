@@ -185,6 +185,18 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 						nodeEditor->OnKeyPress (pressedKey);
 					}
 					break;
+				case 25: // TODO: Remove magic number
+					{
+						NUIE::Key pressedKey (NUIE::PressedKeyCode::Redo);
+						nodeEditor->OnKeyPress (pressedKey);
+					}
+					break;
+				case 26: // TODO: Remove magic number
+				{
+					NUIE::Key pressedKey (NUIE::PressedKeyCode::Undo);
+					nodeEditor->OnKeyPress (pressedKey);
+				}
+				break;
 			}
 			break;
 	}
