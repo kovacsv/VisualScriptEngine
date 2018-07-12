@@ -17,10 +17,7 @@ std::wstring DoubleToString (double val, const StringSettings& settings)
 	if (decimalSeparator != L'.') {
 		size_t decimalPos = string.find (L'.');
 		if (decimalPos != std::wstring::npos) {
-			wchar_t decimalSeparatorStr[2] = {};
-			decimalSeparatorStr[0] = decimalSeparator;
-			decimalSeparatorStr[1] = L'\0';
-			string.replace (decimalPos, decimalPos, decimalSeparatorStr);
+			string[decimalPos] = decimalSeparator;
 		}
 	}
 
