@@ -17,6 +17,7 @@ public:
 	void	SaveUndoState (const NE::NodeManager& nodeManager);
 	bool	Undo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler);
 	bool	Redo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler);
+	void	Clear ();
 
 private:
 	std::vector<std::shared_ptr<NE::NodeManager>>	undoStack;

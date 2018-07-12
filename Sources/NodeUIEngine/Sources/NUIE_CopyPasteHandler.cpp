@@ -55,4 +55,9 @@ bool CopyPasteHandler::PasteTo (NE::NodeManager& target)
 	return NE::NodeManagerMerge::AppendNodeManager (tempNodeManager, target, allNodesFilter);
 }
 
+void CopyPasteHandler::Clear ()
+{
+	tempNodeManager.Clear ();
+}
+
 }

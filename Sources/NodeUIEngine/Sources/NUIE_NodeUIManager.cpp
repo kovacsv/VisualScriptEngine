@@ -374,6 +374,8 @@ bool NodeUIManager::IsPreviewMode () const
 void NodeUIManager::Clear ()
 {
 	selectedNodes.Clear ();
+	copyPasteHandler.Clear ();
+	undoHandler.Clear ();
 	nodeManager.Clear ();
 	viewBox.Reset ();
 	status.RequestRecalculate ();

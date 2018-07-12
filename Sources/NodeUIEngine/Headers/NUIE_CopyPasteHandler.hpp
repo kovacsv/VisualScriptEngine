@@ -15,6 +15,7 @@ public:
 	bool	CanPaste () const;
 	bool	CopyFrom (const NE::NodeManager& source, const NE::NodeCollection& nodeCollection);
 	bool	PasteTo (NE::NodeManager& target);
+	void	Clear ();
 
 private:
 	NE::NodeManager tempNodeManager;

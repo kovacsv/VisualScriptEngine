@@ -48,4 +48,10 @@ bool UndoHandler::Redo (NE::NodeManager& targetNodeManager, NE::MergeEventHandle
 	return NE::NodeManagerMerge::UpdateNodeManager (*redoState.get (), targetNodeManager, eventHandler);
 }
 
+void UndoHandler::Clear ()
+{
+	undoStack.clear ();
+	redoStack.clear ();
+}
+
 }
