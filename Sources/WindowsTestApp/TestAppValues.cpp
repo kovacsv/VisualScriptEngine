@@ -24,7 +24,7 @@ Color::Color (unsigned char r, unsigned char g, unsigned char b) :
 
 }
 
-std::wstring Color::ToString () const
+std::wstring Color::ToString (const NE::StringSettings& stringSettings) const
 {
 	std::wstring result = L"";
 	result += L"Color (";
@@ -79,12 +79,12 @@ Transformation Transformation::Translation (double x, double y)
 	);
 }
 
-std::wstring Transformation::ToString () const
+std::wstring Transformation::ToString (const NE::StringSettings& stringSettings) const
 {
 	std::wstring result = L"";
 	result += L"Matrix (";
 	for (int i = 0; i < 9; i++) {
-		result += NE::DoubleToString (matrix[i], NE::DefaultStringSettings);
+		result += NE::DoubleToString (matrix[i], stringSettings);
 		if (i < 9 - 1) {
 			result += L", ";
 		}
@@ -130,13 +130,13 @@ Point::Point (double x, double y) :
 
 }
 
-std::wstring Point::ToString () const
+std::wstring Point::ToString (const NE::StringSettings& stringSettings) const
 {
 	std::wstring result = L"";
 	result += L"Point (";
-	result += NE::DoubleToString (x, NE::DefaultStringSettings);
+	result += NE::DoubleToString (x, stringSettings);
 	result += L", ";
-	result += NE::DoubleToString (y, NE::DefaultStringSettings);
+	result += NE::DoubleToString (y, stringSettings);
 	result += L")";
 	return result;
 }
@@ -176,13 +176,13 @@ Line::Line (const Point& beg, const Point& end, const Color& color) :
 
 }
 
-std::wstring Line::ToString () const
+std::wstring Line::ToString (const NE::StringSettings& stringSettings) const
 {
 	std::wstring result = L"";
 	result += L"Line (";
-	result += beg.ToString ();
+	result += beg.ToString (stringSettings);
 	result += L" - ";
-	result += end.ToString ();
+	result += end.ToString (stringSettings);
 	result += L")";
 	return result;
 }
@@ -222,13 +222,13 @@ Circle::Circle (const Point& center, double radius, const Color& color) :
 
 }
 
-std::wstring Circle::ToString () const
+std::wstring Circle::ToString (const NE::StringSettings& stringSettings) const
 {
 	std::wstring result = L"";
 	result += L"Circle (";
-	result += center.ToString ();
+	result += center.ToString (stringSettings);
 	result += L", ";
-	result += NE::DoubleToString (radius, NE::DefaultStringSettings);
+	result += NE::DoubleToString (radius, stringSettings);
 	result += L")";
 	return result;
 }
@@ -271,9 +271,9 @@ NE::ValuePtr ColorValue::Clone () const
 	return NE::ValuePtr (new ColorValue (val));
 }
 
-std::wstring ColorValue::ToString (const NE::StringSettings&) const
+std::wstring ColorValue::ToString (const NE::StringSettings& stringSettings) const
 {
-	return val.ToString ();
+	return val.ToString (stringSettings);
 }
 
 NE::Stream::Status ColorValue::Read (NE::InputStream& inputStream)
@@ -327,9 +327,9 @@ NE::ValuePtr PointValue::Clone () const
 	return NE::ValuePtr (new PointValue (val));
 }
 
-std::wstring PointValue::ToString (const NE::StringSettings&) const
+std::wstring PointValue::ToString (const NE::StringSettings& stringSettings) const
 {
-	return val.ToString ();
+	return val.ToString (stringSettings);
 }
 
 NE::Stream::Status PointValue::Read (NE::InputStream& inputStream)
@@ -381,9 +381,9 @@ NE::ValuePtr LineValue::Clone () const
 	return NE::ValuePtr (new LineValue (val));
 }
 
-std::wstring LineValue::ToString (const NE::StringSettings&) const
+std::wstring LineValue::ToString (const NE::StringSettings& stringSettings) const
 {
-	return val.ToString ();
+	return val.ToString (stringSettings);
 }
 
 NE::Stream::Status LineValue::Read (NE::InputStream& inputStream)
@@ -435,9 +435,9 @@ NE::ValuePtr CircleValue::Clone () const
 	return NE::ValuePtr (new CircleValue (val));
 }
 
-std::wstring CircleValue::ToString (const NE::StringSettings&) const
+std::wstring CircleValue::ToString (const NE::StringSettings& stringSettings) const
 {
-	return val.ToString ();
+	return val.ToString (stringSettings);
 }
 
 NE::Stream::Status CircleValue::Read (NE::InputStream& inputStream)

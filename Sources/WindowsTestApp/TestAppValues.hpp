@@ -12,7 +12,7 @@ public:
 	Color ();
 	Color (unsigned char r, unsigned char g, unsigned char b);
 
-	std::wstring		ToString () const;
+	std::wstring		ToString (const NE::StringSettings& stringSettings) const;
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
@@ -28,7 +28,7 @@ public:
 	Transformation (double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33);
 	~Transformation ();
 
-	std::wstring			ToString () const;
+	std::wstring			ToString (const NE::StringSettings& stringSettings) const;
 	NE::Stream::Status		Read (NE::InputStream& inputStream);
 	NE::Stream::Status		Write (NE::OutputStream& outputStream) const;
 
@@ -46,7 +46,7 @@ public:
 	Point ();
 	Point (double x, double y);
 
-	std::wstring		ToString () const;
+	std::wstring		ToString (const NE::StringSettings& stringSettings) const;
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
@@ -62,7 +62,7 @@ public:
 	Line ();
 	Line (const Point& beg, const Point& end, const Color& color);
 
-	std::wstring		ToString () const;
+	std::wstring		ToString (const NE::StringSettings& stringSettings) const;
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
@@ -79,7 +79,7 @@ public:
 	Circle ();
 	Circle (const Point& center, double radius, const Color& color);
 
-	std::wstring		ToString () const;
+	std::wstring		ToString (const NE::StringSettings& stringSettings) const;
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
