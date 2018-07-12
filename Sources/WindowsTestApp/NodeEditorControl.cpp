@@ -375,6 +375,16 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 	return true;
 }
 
+void NodeEditorControl::Undo ()
+{
+	nodeEditor.Undo ();
+}
+
+void NodeEditorControl::Redo ()
+{
+	nodeEditor.Redo ();
+}
+
 void NodeEditorControl::RedrawResultImage ()
 {
 	updateInterface.RedrawResultImage ();

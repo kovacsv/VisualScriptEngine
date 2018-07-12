@@ -34,6 +34,8 @@ public:
 	void						Clear ();
 	bool						Load (const std::wstring& fileName);
 	bool						Save (const std::wstring& fileName) const;
+	void						Undo ();
+	void						Redo ();
 
 protected:
 	NodeUIManager				uiManager;

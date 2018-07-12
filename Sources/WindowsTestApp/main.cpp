@@ -71,13 +71,16 @@ public:
 		File_Open		= 2,
 		File_Save		= 3,
 		File_SaveAs		= 4,
-		File_Exit		= 5
+		File_Exit		= 5,
+		Edit_Undo		= 6,
+		Edit_Redo		= 7
 	};
 
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
 		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
 		menuBar (new wxMenuBar ()),
 		fileMenu (new wxMenu ()),
+		editMenu (new wxMenu ()),
 		editorAndDrawingSplitter (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
 		drawingControl (new DrawingControl (editorAndDrawingSplitter, resultImage)),
 		updateInterface (drawingControl),
@@ -91,6 +94,11 @@ public:
 		fileMenu->AppendSeparator ();
 		fileMenu->Append (CommandId::File_Exit, L"Exit");
 		menuBar->Append (fileMenu, L"&File");
+
+		editMenu->Append (CommandId::Edit_Undo, "Undo");
+		editMenu->Append (CommandId::Edit_Redo, "Redo");
+		menuBar->Append (editMenu, L"&Edit");
+
 		SetMenuBar (menuBar);
 
 		CreateStatusBar ();
@@ -157,6 +165,16 @@ public:
 		Close (true);
 	}
 
+	void OnUndo (wxCommandEvent& evt)
+	{
+		nodeEditorControl->Undo ();
+	}
+
+	void OnRedo (wxCommandEvent& evt)
+	{
+		nodeEditorControl->Redo ();
+	}
+
 	void UpdateStatusBar ()
 	{
 		std::wstring currentFileText = L"No File";
@@ -169,6 +187,7 @@ public:
 private:
 	wxMenuBar*					menuBar;
 	wxMenu*						fileMenu;
+	wxMenu*						editMenu;
 
 	wxSplitterWindow*			editorAndDrawingSplitter;
 	DrawingControl*				drawingControl;
@@ -186,6 +205,8 @@ EVT_MENU (MainFrame::CommandId::File_Open, MainFrame::OnOpen)
 EVT_MENU (MainFrame::CommandId::File_Save, MainFrame::OnSave)
 EVT_MENU (MainFrame::CommandId::File_SaveAs, MainFrame::OnSaveAs)
 EVT_MENU (MainFrame::CommandId::File_Exit, MainFrame::OnExit)
+EVT_MENU (MainFrame::CommandId::Edit_Undo, MainFrame::OnUndo)
+EVT_MENU (MainFrame::CommandId::Edit_Redo, MainFrame::OnRedo)
 END_EVENT_TABLE ()
 
 class NodeEngineTestApplication : public wxApp

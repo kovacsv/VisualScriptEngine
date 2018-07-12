@@ -1,4 +1,5 @@
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_UINodeCommandStructure.hpp"
 #include "NE_MemoryStream.hpp"
 
 #include <fstream>
@@ -153,6 +154,18 @@ bool NodeEditor::Save (const std::wstring& fileName) const
 	file.close ();
 
 	return true;
+}
+
+void NodeEditor::Undo ()
+{
+	UICommandPtr command (new UndoCommand (uiManager, uiEnvironment));
+	uiInteractionHandler.ExecuteCommand (command);
+}
+
+void NodeEditor::Redo ()
+{
+	UICommandPtr command (new RedoCommand (uiManager, uiEnvironment));
+	uiInteractionHandler.ExecuteCommand (command);
 }
 
 }

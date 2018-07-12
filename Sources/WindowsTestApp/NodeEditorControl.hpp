@@ -119,6 +119,8 @@ public:
 	void							New ();
 	bool							Open (const std::wstring& fileName);
 	bool							Save (const std::wstring& fileName);
+	void							Undo ();
+	void							Redo ();
 
 	void							RedrawResultImage ();
 
