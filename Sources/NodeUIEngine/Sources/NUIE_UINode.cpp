@@ -322,7 +322,7 @@ void UINode::DrawInplace (NodeUIDrawingEnvironment& env) const
 
 bool UINode::RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot)
 {
-	if (!Node::RegisterInputSlot (newInputSlot)) {
+	if (!RegisterInputSlot (newInputSlot)) {
 		return false;
 	}
 	return true;
@@ -330,7 +330,7 @@ bool UINode::RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot)
 
 bool UINode::RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot)
 {
-	if (!Node::RegisterOutputSlot (newOutputSlot)) {
+	if (!RegisterOutputSlot (newOutputSlot)) {
 		return false;
 	}
 	return true;
@@ -342,6 +342,16 @@ const NodeDrawingImage& UINode::GetNodeDrawingImage (NodeUIDrawingEnvironment& e
 		UpdateNodeDrawingImage (env, nodeDrawingImage);
 	}
 	return nodeDrawingImage;
+}
+
+bool UINode::RegisterInputSlot (const NE::InputSlotPtr& newInputSlot)
+{
+	return Node::RegisterInputSlot (newInputSlot);
+}
+
+bool UINode::RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot)
+{
+	return Node::RegisterOutputSlot (newOutputSlot);
 }
 
 }

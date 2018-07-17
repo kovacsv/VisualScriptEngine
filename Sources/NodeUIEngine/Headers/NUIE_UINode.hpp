@@ -102,6 +102,9 @@ private:
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
 
+	virtual bool				RegisterInputSlot (const NE::InputSlotPtr& newInputSlot) override;
+	virtual bool				RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot) override;
+
 	std::wstring				nodeName;
 	Point						nodePosition;
 	mutable NodeDrawingImage	nodeDrawingImage;
