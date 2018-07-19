@@ -30,4 +30,9 @@ addons:
     build_command: "make"
     branch_pattern: coverity_scan
 
-script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then cd Make && cd GCC && make clean && make && make test ; fi
+script:
+  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then cd Make ; fi
+  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then cd GCC ; fi
+  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make clean ; fi
+  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; make ; fi
+  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; make test ; fi
