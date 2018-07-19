@@ -85,6 +85,9 @@
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\TestNodes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngineTest\MultiInputSlotTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\TestFramework\SimpleTest.hpp">

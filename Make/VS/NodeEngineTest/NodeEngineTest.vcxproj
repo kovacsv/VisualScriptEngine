@@ -138,6 +138,7 @@
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\ArithmeticNodesTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\ChecksumTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\MemoryStreamTest.cpp" />
+    <ClCompile Include="..\..\..\Sources\NodeEngineTest\MultiInputSlotTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\NodeManagerMergeTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\NodeEditorVisualTest.cpp" />
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\NodeManagerSerializationTest.cpp" />
