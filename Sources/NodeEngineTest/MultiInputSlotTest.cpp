@@ -79,22 +79,8 @@ public:
 	{
 		ListValuePtr val = EvaluateInputSlot (SlotId ("in"), env);
 		ListValuePtr result (new ListValue ());
-
-		bool isValid = true;
-		val->Enumerate ([&] (const ValuePtr& itemVal) {
-			if (!IsComplexType<IntValue> (itemVal)) {
-				isValid = false;
-			}
-		});
-		if (!isValid) {
-			return nullptr;
-		}
-
-		val->Enumerate ([&] (const ValuePtr& itemVal) {
-			IListValuePtr listVal = CreateListValue (itemVal);
-			listVal->Enumerate ([&] (const ValuePtr& listItemVal) {
-				result->Push (listItemVal->Clone ());
-			});
+		FlatEnumerate (val, [&] (const ValuePtr& flatVal) {
+			result->Push (flatVal->Clone ());
 		});
 		return result;
 	}

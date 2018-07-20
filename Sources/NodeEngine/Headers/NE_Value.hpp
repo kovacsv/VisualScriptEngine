@@ -176,6 +176,7 @@ bool IsComplexType (const ValuePtr& val)
 
 ValuePtr		CreateSingleValue (const ValuePtr& value);
 IListValuePtr	CreateListValue (const ValuePtr& value);
+void			FlatEnumerate (const ValuePtr& value, const std::function<void (const ValuePtr&)>& processor);
 
 }
 
