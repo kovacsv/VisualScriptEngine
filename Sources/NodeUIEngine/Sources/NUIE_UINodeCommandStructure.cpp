@@ -280,11 +280,11 @@ private:
 	std::vector<UINodePtr>		uiNodes;
 };
 
-class SetParametersCommand : public UndoableCommand
+class SetParametersCommand : public NotUndoableCommand
 {
 public:
 	SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
-		UndoableCommand (L"Set Parameters", false),
+		NotUndoableCommand (L"Set Parameters", false),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		currentNode (currentNode),
@@ -382,8 +382,8 @@ public:
 
 		RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
 		std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
-		// TODO: creates undo step even if nothing changed
 		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
+			uiManager.SaveUndoState ();
 			paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
 		}
 	}
