@@ -31,7 +31,7 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_InMemoryDialog.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_ParametersDialog.hpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_ParameterDialog.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -57,7 +57,7 @@
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_InMemoryDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_ParametersDialog.cpp">
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_ParameterDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

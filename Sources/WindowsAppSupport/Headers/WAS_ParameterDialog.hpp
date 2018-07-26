@@ -6,10 +6,10 @@
 namespace WAS
 {
 
-class ParametersDialog
+class ParameterDialog
 {
 public:
-	ParametersDialog ();
+	ParameterDialog ();
 
 	void Show (HWND hwnd) const;
 };

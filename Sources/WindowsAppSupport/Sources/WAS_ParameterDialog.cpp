@@ -1,4 +1,4 @@
-#include "WAS_ParametersDialog.hpp"
+#include "WAS_ParameterDialog.hpp"
 #include "WAS_InMemoryDialog.hpp"
 #include "NE_Debug.hpp"
 
@@ -24,12 +24,12 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT wm, WPARAM wParam, LPARAM lParam)
 	return FALSE;
 }
 
-ParametersDialog::ParametersDialog ()
+ParameterDialog::ParameterDialog ()
 {
 
 }
 
-void ParametersDialog::Show (HWND hwnd) const
+void ParameterDialog::Show (HWND hwnd) const
 {
 	InMemoryDialog dialog (L"Parameters", 300, 200);
 	dialog.AddButton (L"Close", 10, 10, 80, 20, 1984);

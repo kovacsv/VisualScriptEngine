@@ -2,7 +2,7 @@
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_NodeEditorHwndControl.hpp"
-#include "WAS_ParametersDialog.hpp"
+#include "WAS_ParameterDialog.hpp"
 
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
