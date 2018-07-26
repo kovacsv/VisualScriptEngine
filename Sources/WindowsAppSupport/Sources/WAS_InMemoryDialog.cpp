@@ -49,38 +49,42 @@ private:
 	std::vector<BYTE> bytes;
 };
 
-InMemoryDialog::DialogParameters::DialogParameters ()
+InMemoryDialog::DialogParameters::DialogParameters (const std::wstring& dialogTitle, WORD width, WORD height) :
+	helpId (0),
+	extendedStyle (0),
+	style (WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME),
+	x (0),
+	y (0),
+	width (width),
+	height (height),
+	dialogTitle (dialogTitle)
 {
-	helpId = 0;
-	extendedStyle = 0;
-	style = WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME;
-	x = 0;
-	y = 0;
-	width = 200;
-	height = 100;
-	dialogTitle = L"Example";
+
 }
 
-InMemoryDialog::ControlParameters::ControlParameters ()
+InMemoryDialog::ControlParameters::ControlParameters (DWORD controlType, const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+	helpId (0),
+	extendedStyle (0),
+	style (WS_CHILD | WS_VISIBLE | WS_GROUP | WS_TABSTOP | BS_DEFPUSHBUTTON),
+	x (x),
+	y (y),
+	width (width),
+	height (height),
+	controlId (controlId),
+	controlType (controlType),
+	controlText (controlText)
 {
-	helpId = 0;
-	extendedStyle = 0;
-	style = WS_CHILD | WS_VISIBLE | WS_GROUP | WS_TABSTOP | BS_DEFPUSHBUTTON;
-	x = 0;
-	y = 0;
-	width = 80;
-	height = 20;
-	controlId = 0;
-	controlText = L"Example";
+
 }
 
-InMemoryDialog::InMemoryDialog (const DialogParameters& parameters) :
-	parameters (parameters)
+InMemoryDialog::InMemoryDialog (const std::wstring& dialogTitle, WORD width, WORD height) :
+	parameters (dialogTitle, width, height)
 {
 }
 
-void InMemoryDialog::AddControl (const ControlParameters& parameters)
+void InMemoryDialog::AddButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
 {
+	ControlParameters parameters (0x0080FFFF, controlText, x, y, width, height, controlId);
 	controls.push_back (parameters);
 }
 
@@ -130,7 +134,7 @@ bool InMemoryDialog::Show (HWND hwnd, DLGPROC dialogProc) const
 		writer.Write<WORD> (control.width);
 		writer.Write<WORD> (control.height);
 		writer.Write<DWORD> (control.controlId);
-		writer.Write<DWORD> (0x0080FFFF);
+		writer.Write<DWORD> (control.controlType);
 		writer.WriteString (control.controlText.c_str ());
 		writer.Write<WORD> (0);
 	}

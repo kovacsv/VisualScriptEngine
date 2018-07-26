@@ -2,8 +2,6 @@
 #include "WAS_InMemoryDialog.hpp"
 #include "NE_Debug.hpp"
 
-#include <windowsx.h>
-
 namespace WAS
 {
 
@@ -13,12 +11,14 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT wm, WPARAM wParam, LPARAM lParam)
 	case WM_INITDIALOG:
 		return TRUE;
 	case WM_COMMAND:
-	{
-		DWORD a = GET_WM_COMMAND_ID (wParam, lParam);
-		if (GET_WM_COMMAND_ID (wParam, lParam) == IDCANCEL) {
-			EndDialog (hwnd, 0);
+		{
+			WORD commandId = LOWORD (wParam);
+			switch (commandId) {
+				case 1984:
+					EndDialog (hwnd, 0);
+					break;
+			}
 		}
-	}
 	break;
 	}
 	return FALSE;
@@ -31,11 +31,8 @@ ParametersDialog::ParametersDialog ()
 
 void ParametersDialog::Show (HWND hwnd) const
 {
-	InMemoryDialog::DialogParameters dialogParameters;
-	InMemoryDialog dialog (dialogParameters);
-
-	InMemoryDialog::ControlParameters controlParameters;
-	dialog.AddControl (controlParameters);
+	InMemoryDialog dialog (L"Parameters", 300, 200);
+	dialog.AddButton (L"Close", 10, 10, 80, 20, 1984);
 
 	dialog.Show (hwnd, DlgProc);
 }
