@@ -137,10 +137,10 @@ public:
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual bool OnParameterSettings (NUIE::ParameterInterfacePtr) override
+	virtual bool OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface) override
 	{
-		// TODO
-		return false;
+		WAS::ParameterDialog paramDialog (paramInterface);
+		return paramDialog.Show (hwnd);
 	}
 
 private:
@@ -237,10 +237,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			}
 			break;
 		case WM_CLOSE:
-			{
-				// WAS::ParametersDialog paramDialog;
-				// paramDialog.Show (hwnd);
-			}
 			DestroyWindow (hwnd);
 			break;
 		case WM_SIZE:

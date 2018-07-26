@@ -1,6 +1,8 @@
 #ifndef PARAMETERSDIALOG_HPP
 #define PARAMETERSDIALOG_HPP
 
+#include "NUIE_ParameterInterface.hpp"
+
 #include <windows.h>
 
 namespace WAS
@@ -9,9 +11,14 @@ namespace WAS
 class ParameterDialog
 {
 public:
-	ParameterDialog ();
+	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface);
 
-	void Show (HWND hwnd) const;
+	bool	Show (HWND parent) const;
+	void	OnOkButtonPressed (HWND hwnd);
+
+private:
+	NUIE::ParameterInterfacePtr		paramInterface;
+	std::vector<std::wstring>		paramValues;
 };
 
 }

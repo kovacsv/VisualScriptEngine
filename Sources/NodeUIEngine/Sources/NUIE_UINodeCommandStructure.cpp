@@ -382,6 +382,7 @@ public:
 
 		RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
 		std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
+		// TODO: creates undo step even if nothing changed
 		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
 			paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
 		}

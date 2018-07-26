@@ -62,10 +62,10 @@ InMemoryDialog::DialogParameters::DialogParameters (const std::wstring& dialogTi
 
 }
 
-InMemoryDialog::ControlParameters::ControlParameters (DWORD controlType, const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+InMemoryDialog::ControlParameters::ControlParameters (DWORD controlType, const std::wstring& controlText, DWORD style, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
 	helpId (0),
 	extendedStyle (0),
-	style (WS_CHILD | WS_VISIBLE | WS_GROUP | WS_TABSTOP | BS_DEFPUSHBUTTON),
+	style (WS_CHILD | WS_VISIBLE | WS_TABSTOP | style),
 	x (x),
 	y (y),
 	width (width),
@@ -82,22 +82,34 @@ InMemoryDialog::InMemoryDialog (const std::wstring& dialogTitle, WORD width, WOR
 {
 }
 
-void InMemoryDialog::AddButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+void InMemoryDialog::AddStatic (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
 {
-	ControlParameters parameters (0x0080FFFF, controlText, x, y, width, height, controlId);
+	ControlParameters parameters (0x0082FFFF, controlText, WS_EX_CLIENTEDGE, x, y, width, height, controlId);
 	controls.push_back (parameters);
 }
 
-bool InMemoryDialog::Show (HWND hwnd, DLGPROC dialogProc) const
+void InMemoryDialog::AddEdit (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+{
+	ControlParameters parameters (0x0081FFFF, controlText, WS_BORDER, x, y, width, height, controlId);
+	controls.push_back (parameters);
+}
+
+void InMemoryDialog::AddDefButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+{
+	ControlParameters parameters (0x0080FFFF, controlText, BS_DEFPUSHBUTTON, x, y, width, height, controlId);
+	controls.push_back (parameters);
+}
+
+INT_PTR InMemoryDialog::Show (HWND hwnd, DLGPROC dialogProc, LPARAM initParam) const
 {
 	HDC hdc = GetDC (NULL);
 	if (DBGERROR (hdc == NULL)) {
-		return false;
+		return -1;
 	}
 
 	NONCLIENTMETRICS metrics = { sizeof (NONCLIENTMETRICS) };
 	if (DBGERROR (!SystemParametersInfo (SPI_GETNONCLIENTMETRICS, 0, &metrics, 0))) {
-		return false;
+		return -1;
 	}
 
 	DialogTemplateWriter writer;
@@ -140,9 +152,9 @@ bool InMemoryDialog::Show (HWND hwnd, DLGPROC dialogProc) const
 	}
 	writer.AlignToDword ();
 
-	DialogBoxIndirect (NULL, writer.ConvertToTemplate (), hwnd, dialogProc);
+	INT_PTR result = DialogBoxIndirectParam (NULL, writer.ConvertToTemplate (), hwnd, dialogProc, initParam);
 	ReleaseDC (NULL, hdc);
-	return true;
+	return result;
 }
 
 }
