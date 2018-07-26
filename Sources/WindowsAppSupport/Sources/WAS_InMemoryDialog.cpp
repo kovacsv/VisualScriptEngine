@@ -49,12 +49,12 @@ private:
 	std::vector<BYTE> bytes;
 };
 
-InMemoryDialog::DialogParameters::DialogParameters (const std::wstring& dialogTitle, WORD width, WORD height) :
+InMemoryDialog::DialogParameters::DialogParameters (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height) :
 	helpId (0),
 	extendedStyle (0),
 	style (WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME),
-	x (0),
-	y (0),
+	x (x),
+	y (y),
 	width (width),
 	height (height),
 	dialogTitle (dialogTitle)
@@ -77,8 +77,8 @@ InMemoryDialog::ControlParameters::ControlParameters (DWORD controlType, const s
 
 }
 
-InMemoryDialog::InMemoryDialog (const std::wstring& dialogTitle, WORD width, WORD height) :
-	parameters (dialogTitle, width, height)
+InMemoryDialog::InMemoryDialog (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height) :
+	parameters (dialogTitle, x, y, width, height)
 {
 }
 

@@ -140,7 +140,7 @@ public:
 	virtual bool OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface) override
 	{
 		WAS::ParameterDialog paramDialog (paramInterface);
-		return paramDialog.Show (hwnd);
+		return paramDialog.Show (hwnd, 50, 50);
 	}
 
 private:

@@ -13,7 +13,7 @@ class ParameterDialog
 public:
 	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface);
 
-	bool	Show (HWND parent) const;
+	bool	Show (HWND parent, WORD x, WORD y) const;
 	void	OnOkButtonPressed (HWND hwnd);
 
 private:

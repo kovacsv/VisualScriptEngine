@@ -11,7 +11,7 @@ namespace WAS
 class InMemoryDialog
 {
 public:
-	InMemoryDialog (const std::wstring& dialogTitle, WORD width, WORD height);
+	InMemoryDialog (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height);
 
 	void		AddStatic (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
 	void		AddEdit (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
@@ -21,7 +21,7 @@ public:
 private:
 	struct DialogParameters
 	{
-		DialogParameters (const std::wstring& dialogTitle, WORD width, WORD height);
+		DialogParameters (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height);
 
 		DWORD			helpId;
 		DWORD			extendedStyle;

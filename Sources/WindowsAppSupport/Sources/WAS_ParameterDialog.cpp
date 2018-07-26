@@ -42,7 +42,7 @@ ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface) :
 
 }
 
-bool ParameterDialog::Show (HWND parent) const
+bool ParameterDialog::Show (HWND parent, WORD x, WORD y) const
 {
 	static const int padding = 5;
 	static const int staticWidth = 60;
@@ -53,7 +53,7 @@ bool ParameterDialog::Show (HWND parent) const
 	int paramCount = (int) paramInterface->GetParameterCount ();
 	int dialogWidth = staticWidth + editWidth + 3 * padding;
 	int dialogHeight = paramCount * controlHeight + (paramCount + 2) * padding + buttonHeight;
-	InMemoryDialog dialog (L"Parameters", dialogWidth, dialogHeight);
+	InMemoryDialog dialog (L"Parameters", x, y, dialogWidth, dialogHeight);
 
 	int currentY = padding;
 	for (size_t i = 0; i < paramCount; ++i) {
