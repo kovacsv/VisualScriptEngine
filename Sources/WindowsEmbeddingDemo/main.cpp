@@ -2,6 +2,7 @@
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_NodeEditorHwndControl.hpp"
+#include "WAS_ParametersDialog.hpp"
 
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
@@ -236,6 +237,10 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			}
 			break;
 		case WM_CLOSE:
+			{
+				// WAS::ParametersDialog paramDialog;
+				// paramDialog.Show (hwnd);
+			}
 			DestroyWindow (hwnd);
 			break;
 		case WM_SIZE:

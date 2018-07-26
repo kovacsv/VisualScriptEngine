@@ -28,6 +28,12 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_IncludeWindowsHeaders.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_InMemoryDialog.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_ParametersDialog.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdi.cpp">
@@ -46,6 +52,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_NodeEditorHwndControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_InMemoryDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_ParametersDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

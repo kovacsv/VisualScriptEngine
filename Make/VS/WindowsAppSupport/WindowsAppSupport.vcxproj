@@ -130,7 +130,9 @@
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_Direct2DContext.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_DrawingCacheKeys.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_IncludeWindowsHeaders.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_InMemoryDialog.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_NodeEditorHwndControl.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_ParametersDialog.hpp" />
     <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_WindowsAppUtils.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +140,9 @@
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdiplus.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_Direct2DContext.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_DrawingCacheKeys.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_InMemoryDialog.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_NodeEditorHwndControl.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_ParametersDialog.cpp" />
     <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_WindowsAppUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
