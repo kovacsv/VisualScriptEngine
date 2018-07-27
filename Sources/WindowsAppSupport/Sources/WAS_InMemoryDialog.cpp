@@ -65,7 +65,7 @@ InMemoryDialog::DialogParameters::DialogParameters (const std::wstring& dialogTi
 InMemoryDialog::ControlParameters::ControlParameters (DWORD controlType, const std::wstring& controlText, DWORD style, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
 	helpId (0),
 	extendedStyle (0),
-	style (WS_CHILD | WS_VISIBLE | WS_TABSTOP | style),
+	style (WS_CHILD | WS_VISIBLE | style),
 	x (x),
 	y (y),
 	width (width),
@@ -90,13 +90,19 @@ void InMemoryDialog::AddStatic (const std::wstring& controlText, WORD x, WORD y,
 
 void InMemoryDialog::AddEdit (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
 {
-	ControlParameters parameters (0x0081FFFF, controlText, WS_BORDER, x, y, width, height, controlId);
+	ControlParameters parameters (0x0081FFFF, controlText, WS_TABSTOP | WS_BORDER, x, y, width, height, controlId);
+	controls.push_back (parameters);
+}
+
+void InMemoryDialog::AddButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+{
+	ControlParameters parameters (0x0080FFFF, controlText, WS_TABSTOP | BS_PUSHBUTTON, x, y, width, height, controlId);
 	controls.push_back (parameters);
 }
 
 void InMemoryDialog::AddDefButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
 {
-	ControlParameters parameters (0x0080FFFF, controlText, BS_DEFPUSHBUTTON, x, y, width, height, controlId);
+	ControlParameters parameters (0x0080FFFF, controlText, WS_TABSTOP | BS_DEFPUSHBUTTON, x, y, width, height, controlId);
 	controls.push_back (parameters);
 }
 
