@@ -218,13 +218,16 @@ private:
 static MyNodeUIEnvironment uiEnvironment;
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
-#define MENU_FILE_QUIT 1000
+#define MENU_FILE_NEW	1000
+#define MENU_FILE_QUIT	1001
 
 static void CreateMenuBar (HWND hwnd)
 {
 	HMENU menuBar = CreateMenu ();
 	HMENU fileMenu = CreateMenu ();
 
+	AppendMenu (fileMenu, MF_STRING, MENU_FILE_NEW, L"New");
+	AppendMenu (fileMenu, MF_SEPARATOR, 0, NULL);
 	AppendMenu (fileMenu, MF_STRING, MENU_FILE_QUIT, L"Quit");
 	AppendMenu (menuBar, MF_POPUP, (UINT_PTR) fileMenu, L"File");
 
@@ -265,6 +268,9 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			{
 				WORD commandId = LOWORD (wParam);
 				switch (commandId) {
+					case MENU_FILE_NEW:
+						nodeEditor.Clear ();
+						break;
 					case MENU_FILE_QUIT:
 						PostQuitMessage (0);
 						break;
