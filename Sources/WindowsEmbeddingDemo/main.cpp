@@ -218,6 +218,19 @@ private:
 static MyNodeUIEnvironment uiEnvironment;
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
+#define MENU_FILE_QUIT 1000
+
+static void CreateMenuBar (HWND hwnd)
+{
+	HMENU menuBar = CreateMenu ();
+	HMENU fileMenu = CreateMenu ();
+
+	AppendMenu (fileMenu, MF_STRING, MENU_FILE_QUIT, L"Quit");
+	AppendMenu (menuBar, MF_POPUP, (UINT_PTR) fileMenu, L"File");
+
+	SetMenu (hwnd, menuBar);
+}
+
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg) {
@@ -234,6 +247,8 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10)), uiEnvironment.GetEvaluationEnv ());
 				uiManager.AddNode (NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (300, 200), 5)), uiEnvironment.GetEvaluationEnv ());
 				nodeEditor.Update ();
+
+				CreateMenuBar (hwnd);
 			}
 			break;
 		case WM_CLOSE:
@@ -244,6 +259,16 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				int newWidth = LOWORD (lParam);
 				int newHeight = HIWORD (lParam);
 				uiEnvironment.OnResize (0, 0, newWidth, newHeight);
+			}
+			break;
+		case WM_COMMAND:
+			{
+				WORD commandId = LOWORD (wParam);
+				switch (commandId) {
+					case MENU_FILE_QUIT:
+						PostQuitMessage (0);
+						break;
+				}
 			}
 			break;
 		case WM_DESTROY:
