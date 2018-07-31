@@ -1,9 +1,8 @@
 #ifndef PARAMETERSDIALOG_HPP
 #define PARAMETERSDIALOG_HPP
 
+#include "WAS_IncludeWindowsHeaders.hpp"
 #include "NUIE_ParameterInterface.hpp"
-
-#include <windows.h>
 
 namespace WAS
 {

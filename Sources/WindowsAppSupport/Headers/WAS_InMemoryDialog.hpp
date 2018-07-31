@@ -1,7 +1,8 @@
 #ifndef INMEMORYDIALOG_HPP
 #define INMEMORYDIALOG_HPP
 
-#include <windows.h>
+#include "WAS_IncludeWindowsHeaders.hpp"
+
 #include <string>
 #include <vector>
 
