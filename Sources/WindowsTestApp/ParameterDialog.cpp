@@ -66,18 +66,41 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 
 void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 {
+	bool isAllParameterValid = true;
+	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
+		ParamUIData& uiData = paramUIDataList[i];
+		if (!uiData.isChanged) {
+			continue;
+		}
+
+		NUIE::ParameterType type = paramInterface->GetParameterType (i);
+		if (!paramInterface->IsValidParameterValue (i, NUIE::StringToParameterValue (uiData.control->GetValue ().ToStdWstring (), type))) {
+			NE::ValuePtr oldValue = paramInterface->GetParameterValue (i);
+			std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
+			uiData.control->SetValue (oldValueString);
+			uiData.isChanged = false;
+			isAllParameterValid = false;
+		}
+	}
+
+	if (!isAllParameterValid) {
+		return;
+	}
+
 	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
 		const ParamUIData& uiData = paramUIDataList[i];
 		if (!uiData.isChanged) {
 			continue;
 		}
 
-		// TODO: veto event, and write back correct value in case of failure
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		paramInterface->SetParameterValue (i, NUIE::StringToParameterValue (uiData.control->GetValue ().ToStdWstring (), type));
+		NE::ValuePtr value = NUIE::StringToParameterValue (uiData.control->GetValue ().ToStdWstring (), type);
+		paramInterface->SetParameterValue (i, value);
 	}
 
-	EndModal (DialogIds::OkButtonId);
+	if (isAllParameterValid) {
+		EndModal (DialogIds::OkButtonId);
+	}
 }
 
 void ParameterDialog::OnTextChanged (wxCommandEvent& evt)

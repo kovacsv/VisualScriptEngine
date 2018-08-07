@@ -353,14 +353,19 @@ public:
 				return parameter->GetType ();
 			}
 
-			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+			virtual bool IsValidParameterValue (size_t index, const NE::ValuePtr& value) const override
 			{
 				NodeParameterPtr parameter = paramList.GetParameter (index);
 				if (DBGERROR (parameter == nullptr)) {
 					return false;
 				}
 
-				if (!parameter->CanSetValue (currentNode, value)) {
+				return parameter->CanSetValue (currentNode, value);
+			}
+
+			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+			{
+				if (DBGERROR (!IsValidParameterValue (index, value))) {
 					return false;
 				}
 
@@ -475,16 +480,21 @@ public:
 				return groupParameters[index].type;
 			}
 
-			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+			virtual bool IsValidParameterValue (size_t index, const NE::ValuePtr& value) const override
 			{
 				switch (index) {
 					case 0:
-						if (!NE::Value::IsType<NE::StringValue> (value) || NE::StringValue::Get (value).empty ()) {
-							return false;
-						}
-						break;
+						return NE::Value::IsType<NE::StringValue> (value) && !NE::StringValue::Get (value).empty ();
 					default:
 						DBGBREAK ();
+				}
+				return false;
+			}
+
+			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+			{
+				if (DBGERROR (!IsValidParameterValue (index, value))) {
+					return false;
 				}
 
 				auto found = changedParameterValues.find (index);

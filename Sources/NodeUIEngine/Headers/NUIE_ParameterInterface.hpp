@@ -34,6 +34,7 @@ public:
 	virtual const std::wstring&		GetParameterName (size_t index) const = 0;
 	virtual NE::ValuePtr			GetParameterValue (size_t index) const = 0;
 	virtual const ParameterType&	GetParameterType (size_t index) const = 0;
+	virtual bool					IsValidParameterValue (size_t index, const NE::ValuePtr& value) const = 0;
 	virtual bool					SetParameterValue (size_t index, const NE::ValuePtr& value) = 0;
 };
 

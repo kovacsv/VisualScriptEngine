@@ -26,8 +26,9 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				WORD commandId = LOWORD (wParam);
 				if (commandId == OkButtonId) {
 					ParameterDialog* paramDialog = (ParameterDialog*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
-					paramDialog->OnOkButtonPressed (hwnd);
-					EndDialog (hwnd, 1);
+					if (paramDialog->FillParameterValues (hwnd)) {
+						EndDialog (hwnd, 1);
+					}
 				}
 			}
 			break;
@@ -93,14 +94,30 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y) const
 	return false;
 }
 
-void ParameterDialog::OnOkButtonPressed (HWND hwnd)
+bool ParameterDialog::FillParameterValues (HWND hwnd)
 {
+	// TODO: modifies every selected fields, not just the changed ones
+
+	bool isAllParameterValid = true;
 	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
 		DWORD controlId = 1000 + (DWORD) i;
 		wchar_t itemText[1024];
 		GetDlgItemText (hwnd, controlId, itemText, 1024);
 		paramValues.push_back (std::wstring (itemText));
+
+		NUIE::ParameterType type = paramInterface->GetParameterType (i);
+		if (!paramInterface->IsValidParameterValue (i, NUIE::StringToParameterValue (itemText, type))) {
+			NE::ValuePtr oldValue = paramInterface->GetParameterValue (i);
+			std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
+			SetDlgItemText (hwnd, controlId, oldValueString.c_str ());
+			isAllParameterValid = false;
+		}
 	}
+
+	if (!isAllParameterValid) {
+		paramValues.clear ();
+	}
+	return isAllParameterValid;
 }
 
 }
