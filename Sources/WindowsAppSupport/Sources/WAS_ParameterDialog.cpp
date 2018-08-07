@@ -29,6 +29,13 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					if (paramDialog->FillParameterValues (hwnd)) {
 						EndDialog (hwnd, 1);
 					}
+				} else {
+					WORD notificationCode = HIWORD (wParam);
+					switch (notificationCode) {
+						case EN_CHANGE:
+							// TODO: send change notification if the dialog is inited
+							break;
+					}
 				}
 			}
 			break;
