@@ -4,6 +4,8 @@
 #include "WAS_IncludeWindowsHeaders.hpp"
 #include "NUIE_ParameterInterface.hpp"
 
+#include <unordered_set>
+
 namespace WAS
 {
 
@@ -13,11 +15,24 @@ public:
 	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface);
 
 	bool	Show (HWND parent, WORD x, WORD y) const;
-	bool	FillParameterValues (HWND hwnd);
+	void	SetParameterChanged (DWORD controlId);
+	bool	CollectChangedValues (HWND hwnd);
 
 private:
+	class ChangedParameter
+	{
+	public:
+		ChangedParameter (size_t index, const std::wstring& value);
+
+		size_t			index;
+		std::wstring	value;
+	};
+
+	void	ApplyParameterChanges () const;
+
 	NUIE::ParameterInterfacePtr		paramInterface;
-	std::vector<std::wstring>		paramValues;
+	std::vector<ChangedParameter>	paramValues;
+	std::unordered_set<size_t>		changedParams;
 };
 
 }
