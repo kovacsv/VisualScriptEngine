@@ -5,7 +5,19 @@
 
 #include <wx/spinctrl.h>
 
-void SetTextValidator (wxTextCtrl* textCtrl, const std::wstring& validChars)
+static const wxWindowID FirstControlId = 1000;
+
+static wxWindowID ParamIdToControlId (size_t paramId)
+{
+	return FirstControlId + (wxWindowID) paramId;
+}
+
+static size_t ControlIdToParamId (wxWindowID controlId)
+{
+	return (size_t) controlId - FirstControlId;
+}
+
+static void SetTextValidator (wxTextCtrl* textCtrl, const std::wstring& validChars)
 {
 	wxTextValidator validator (wxFILTER_INCLUDE_CHAR_LIST);
 	wxArrayString includeList;
@@ -30,7 +42,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
 		NE::ValuePtr value = paramInterface->GetParameterValue (i);
 
-		int controlId = 1000 + i;
+		int controlId = ParamIdToControlId (i);
 		wxTextCtrl* textControl = nullptr;
 		if (type == NUIE::ParameterType::String) {
 			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
@@ -106,7 +118,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 
 void ParameterDialog::OnTextChanged (wxCommandEvent& evt)
 {
-	int paramIndex = evt.GetId () - 1000;
+	int paramIndex = ControlIdToParamId (evt.GetId ());
 	paramUIDataList[paramIndex].isChanged = true;
 }
 
