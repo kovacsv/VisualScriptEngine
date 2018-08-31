@@ -192,13 +192,13 @@ Stream::Status StringValue::Write (OutputStream& outputStream) const
 }
 
 EnumerationValue::EnumerationValue () :
-	EnumerationValue (-1, {})
+	EnumerationValue (0, {})
 {
 
 }
 
-EnumerationValue::EnumerationValue (int val, const std::vector<std::wstring>& enumValues) :
-	GenericValue<int> (val),
+EnumerationValue::EnumerationValue (size_t val, const std::vector<std::wstring>& enumValues) :
+	GenericValue<size_t> (val),
 	enumValues (enumValues)
 {
 
@@ -216,7 +216,7 @@ ValuePtr EnumerationValue::Clone () const
 
 std::wstring EnumerationValue::ToString (const StringSettings&) const
 {
-	if (DBGERROR (val < 0 || val >= enumValues.size ())) {
+	if (DBGERROR (val >= enumValues.size ())) {
 		return L"";
 	}
 	return enumValues[val];
