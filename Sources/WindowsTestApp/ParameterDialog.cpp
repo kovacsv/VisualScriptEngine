@@ -43,32 +43,35 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 		NE::ValuePtr value = paramInterface->GetParameterValue (i);
 
 		int controlId = ParamIdToControlId (i);
-		wxTextCtrl* textControl = nullptr;
+		wxControl* control = nullptr;
 		if (type == NUIE::ParameterType::String) {
 			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
-				textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
+				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
+				control = textControl;
 			}
 		} else if (type == NUIE::ParameterType::Integer) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
-				textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
+				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
 				SetTextValidator (textControl, L"0123456789-");
+				control = textControl;
 			}
 		} else if (type == NUIE::ParameterType::Double) {
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
-				textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
+				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
 				SetTextValidator (textControl, L"0123456789.-");
+				control = textControl;
 			}
 		}
 		
-		if (DBGERROR (textControl == nullptr)) {
+		if (DBGERROR (control == nullptr)) {
 			continue;
 		}
 
 		wxStaticText* paramNameText = new wxStaticText (this, wxID_ANY, paramInterface->GetParameterName (i));
 		gridSizer->Add (paramNameText, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL);
 
-		gridSizer->Add (textControl, 1, wxEXPAND);
-		paramUIDataList.push_back (ParamUIData (textControl));
+		gridSizer->Add (control, 1, wxEXPAND);
+		paramUIDataList.push_back (ParamUIData (control));
 	}
 
 	boxSizer->Add (gridSizer, 1, wxEXPAND | wxALL, 5);
@@ -87,10 +90,10 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 		}
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		if (!paramInterface->IsValidParameterValue (i, NUIE::StringToParameterValue (uiData.control->GetValue ().ToStdWstring (), type))) {
+		if (!paramInterface->IsValidParameterValue (i, NUIE::StringToParameterValue (uiData.GetValue (), type))) {
 			NE::ValuePtr oldValue = paramInterface->GetParameterValue (i);
 			std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
-			uiData.control->SetValue (oldValueString);
+			uiData.SetValue (oldValueString);
 			uiData.isChanged = false;
 			isAllParameterValid = false;
 		}
@@ -107,7 +110,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 		}
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		NE::ValuePtr value = NUIE::StringToParameterValue (uiData.control->GetValue ().ToStdWstring (), type);
+		NE::ValuePtr value = NUIE::StringToParameterValue (uiData.GetValue (), type);
 		paramInterface->SetParameterValue (i, value);
 	}
 
@@ -122,11 +125,30 @@ void ParameterDialog::OnTextChanged (wxCommandEvent& evt)
 	paramUIDataList[paramIndex].isChanged = true;
 }
 
-ParameterDialog::ParamUIData::ParamUIData (wxTextCtrl* control) :
+ParameterDialog::ParamUIData::ParamUIData (wxControl* control) :
 	control (control),
 	isChanged (false)
 {
 
+}
+
+std::wstring ParameterDialog::ParamUIData::GetValue () const
+{
+	if (dynamic_cast<wxTextCtrl*> (control) != nullptr) {
+		return dynamic_cast<wxTextCtrl*> (control)->GetValue ().ToStdWstring ();
+	} else {
+		DBGBREAK ();
+		return L"";
+	}
+}
+
+void ParameterDialog::ParamUIData::SetValue (const std::wstring& value)
+{
+	if (dynamic_cast<wxTextCtrl*> (control) != nullptr) {
+		dynamic_cast<wxTextCtrl*> (control)->SetValue (value);
+	} else {
+		DBGBREAK ();
+	}
 }
 
 BEGIN_EVENT_TABLE (ParameterDialog, wxDialog)

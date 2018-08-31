@@ -118,6 +118,17 @@ public:
 	}
 };
 
+template <typename NodeType>
+class EnumerationParameter : public TypedNodeParameter<NodeType, NE::EnumerationValue>
+{
+public:
+	EnumerationParameter (const std::wstring& name) :
+		TypedNodeParameter<NodeType, NE::EnumerationValue> (name, ParameterType::Enumeration)
+	{
+
+	}
+};
+
 template <typename NodeType, typename ValueType>
 class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
 {

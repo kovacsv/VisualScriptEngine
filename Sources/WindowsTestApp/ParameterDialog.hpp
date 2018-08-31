@@ -22,9 +22,12 @@ public:
 private:
 	struct ParamUIData
 	{
-		ParamUIData (wxTextCtrl* control);
+		ParamUIData (wxControl* control);
 
-		wxTextCtrl*		control;
+		std::wstring	GetValue () const;
+		void			SetValue (const std::wstring& value);
+
+		wxControl*		control;
 		bool			isChanged;
 	};
 

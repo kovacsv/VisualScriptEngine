@@ -19,6 +19,7 @@ public:
 	static ParameterType String;
 	static ParameterType Integer;
 	static ParameterType Double;
+	static ParameterType Enumeration;
 
 private:
 	std::string id;

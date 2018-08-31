@@ -38,5 +38,6 @@ ParameterType ParameterType::Undefined ("undefined");
 ParameterType ParameterType::String ("string");
 ParameterType ParameterType::Integer ("integer");
 ParameterType ParameterType::Double ("double");
+ParameterType ParameterType::Enumeration ("enumeration");
 
 }

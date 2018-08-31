@@ -292,9 +292,31 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 
 void PointNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
+	//	class ExampleParameter : public NUIE::EnumerationParameter<PointNode>
+	//	{
+	//	public:
+	//		ExampleParameter () :
+	//			NUIE::EnumerationParameter<PointNode> (L"Example")
+	//		{
+	//		
+	//		}
+
+	//		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<PointNode>& uiNode) const override
+	//		{
+	//			NE::ValuePtr val (new NE::EnumerationValue (0, { L"a", L"b", L"c" }));
+	//			return val;
+	//		}
+
+	//		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<PointNode>& uiNode, const NE::ValuePtr& value) override
+	//		{
+	//			return true;
+	//		}
+	//	};
+
 	DrawableNode::RegisterParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, L"Position X", NUIE::ParameterType::Double, NE::SlotId ("x"));
 	NUIE::RegisterSlotDefaultValueParameter<PointNode, NE::DoubleValue> (parameterList, L"Position Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
+	//parameterList.AddParameter (NUIE::NodeParameterPtr (new ExampleParameter ()));
 }
 
 NE::Stream::Status PointNode::Read (NE::InputStream& inputStream)
