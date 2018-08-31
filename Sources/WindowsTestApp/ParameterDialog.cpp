@@ -13,6 +13,7 @@ void SetTextValidator (wxTextCtrl* textCtrl, const std::wstring& validChars)
 	for (const wchar_t& character : validChars) {
 		includeList.Add (character);
 	}
+
 	validator.SetIncludes (includeList);
 	textCtrl->SetValidator (validator);
 }
