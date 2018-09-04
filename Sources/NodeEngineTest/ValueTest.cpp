@@ -134,14 +134,6 @@ TEST (CloneTest)
 	ASSERT (AValue::Get (typedCloned) == A (1));
 }
 
-TEST (EnumerationValueTest)
-{
-	EnumerationValue enumValue (0, { L"a", L"b", L"c" });
-	ASSERT (enumValue.ToString (DefaultStringSettings) == L"a");
-	enumValue.SetValue (1);
-	ASSERT (enumValue.ToString (DefaultStringSettings) == L"b");
-}
-
 TEST (ListCloneTest)
 {
 	ListValuePtr original (new ListValue ());

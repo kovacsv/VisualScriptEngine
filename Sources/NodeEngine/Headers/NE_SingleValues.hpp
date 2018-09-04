@@ -78,25 +78,6 @@ public:
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 };
 
-class EnumerationValue : public GenericValue<size_t>
-{
-	DYNAMIC_SERIALIZABLE (EnumerationValue);
-
-public:
-	EnumerationValue ();
-	EnumerationValue (size_t val, const std::vector<std::wstring>& enumValues);
-	virtual ~EnumerationValue ();
-
-	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
-
-	virtual Stream::Status	Read (InputStream& inputStream) override;
-	virtual Stream::Status	Write (OutputStream& outputStream) const override;
-
-private:
-	std::vector<std::wstring> enumValues;
-};
-
 }
 
 #endif

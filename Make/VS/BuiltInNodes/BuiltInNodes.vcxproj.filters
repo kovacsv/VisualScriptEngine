@@ -16,9 +16,6 @@
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInFeatures.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInParameters.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_InputUINodes.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>

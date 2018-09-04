@@ -8,7 +8,6 @@ namespace NE
 DynamicSerializationInfo	IntValue::serializationInfo (ObjectId ("{FE348A6B-C5B8-42E2-9AD1-167BE291AEE8}"), ObjectVersion (1), IntValue::CreateSerializableInstance);
 DynamicSerializationInfo	DoubleValue::serializationInfo (ObjectId ("{4D6581DC-7A20-4F2A-A1A3-95BF6DDFFDB6}"), ObjectVersion (1), DoubleValue::CreateSerializableInstance);
 DynamicSerializationInfo	StringValue::serializationInfo (ObjectId ("{FABFAA20-48F4-4F15-A9FB-FD8F05581F31}"), ObjectVersion (1), StringValue::CreateSerializableInstance);
-DynamicSerializationInfo	EnumerationValue::serializationInfo (ObjectId ("{C0702048-B054-4300-B9F1-054067EA46A7}"), ObjectVersion (1), EnumerationValue::CreateSerializableInstance);
 
 NumberValue::NumberValue ()
 {
@@ -188,63 +187,6 @@ Stream::Status StringValue::Write (OutputStream& outputStream) const
 	ObjectHeader header (outputStream, serializationInfo);
 	SingleValue::Write (outputStream);
 	outputStream.Write (val);
-	return outputStream.GetStatus ();
-}
-
-EnumerationValue::EnumerationValue () :
-	EnumerationValue (0, {})
-{
-
-}
-
-EnumerationValue::EnumerationValue (size_t val, const std::vector<std::wstring>& enumValues) :
-	GenericValue<size_t> (val),
-	enumValues (enumValues)
-{
-
-}
-
-EnumerationValue::~EnumerationValue ()
-{
-
-}
-
-ValuePtr EnumerationValue::Clone () const
-{
-	return ValuePtr (new EnumerationValue (val, enumValues));
-}
-
-std::wstring EnumerationValue::ToString (const StringSettings&) const
-{
-	if (DBGERROR (val >= enumValues.size ())) {
-		return L"";
-	}
-	return enumValues[val];
-}
-
-Stream::Status EnumerationValue::Read (InputStream& inputStream)
-{
-	ObjectHeader header (inputStream);
-	SingleValue::Read (inputStream);
-	inputStream.Read (val);
-	size_t enumValueCount = 0;
-	for (size_t i = 0; i < enumValueCount; i++) {
-		std::wstring enumValue;
-		inputStream.Read (enumValue);
-		enumValues.push_back (enumValue);
-	}
-	return inputStream.GetStatus ();
-}
-
-Stream::Status EnumerationValue::Write (OutputStream& outputStream) const
-{
-	ObjectHeader header (outputStream, serializationInfo);
-	SingleValue::Write (outputStream);
-	outputStream.Write (val);
-	outputStream.Write (enumValues.size ());
-	for (const std::wstring& enumValue : enumValues) {
-		outputStream.Write (enumValue);
-	}
 	return outputStream.GetStatus ();
 }
 

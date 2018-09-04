@@ -22,7 +22,6 @@
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ArithmeticUINodes.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInCommands.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInFeatures.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInParameters.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_InputUINodes.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_UINodeLayouts.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_UINodePanels.hpp" />
