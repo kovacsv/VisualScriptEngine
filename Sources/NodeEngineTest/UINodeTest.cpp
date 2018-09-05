@@ -8,6 +8,7 @@
 
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_UINodeParameters.hpp"
+#include "NUIE_UINodeCommonParameters.hpp"
 
 using namespace NE;
 using namespace NUIE;
@@ -41,34 +42,13 @@ public:
 
 	virtual void RegisterParameters (NodeParameterList& parameterList) const override
 	{
-		class In1DefaultValueParameter : public NodeParameter
+		class In1DefaultValueParameter : public SlotDefaultValueParameter<TestNode, NE::IntValue>
 		{
 		public:
 			In1DefaultValueParameter () :
-				NodeParameter (L"In1", ParameterType::String)
+				SlotDefaultValueParameter<TestNode, NE::IntValue> (L"In1", ParameterType::Integer, SlotId ("in1"))
 			{
 			
-			}
-
-			virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
-			{
-				return uiNode->GetInputSlot (SlotId ("in1"))->GetDefaultValue ();
-			}
-
-			virtual bool IsApplicableTo (const UINodePtr& uiNode) const override
-			{
-				return NE::Node::IsType<TestNode> (uiNode);
-			}
-
-			virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const override
-			{
-				return NE::Value::IsType<NE::IntValue> (value);
-			}
-
-			virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
-			{
-				uiNode->GetInputSlot (SlotId ("in1"))->SetDefaultValue (value);
-				return true;
 			}
 		};
 
@@ -82,51 +62,137 @@ public:
 	}
 };
 
-class TestNode2 : public TestNode
+class TestNode2 : public SerializableTestUINode
 {
 public:
 	TestNode2 (const std::wstring& name, const Point& position) :
-		TestNode (name, position)
+		SerializableTestUINode (name, position)
 	{
-		
+
+	}
+
+	virtual void RegisterSlots () override
+	{
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), L"First Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), L"Second Input", NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), L"Single Output")));
+	}
+
+	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	{
+		ValuePtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
+		ValuePtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		int result = IntValue::Get (a) + IntValue::Get (b);
+		return ValuePtr (new IntValue (result));
 	}
 
 	virtual void RegisterParameters (NodeParameterList& parameterList) const override
 	{
-		class In1DefaultValueParameter : public NodeParameter
+		class In2DefaultValueParameter : public SlotDefaultValueParameter<TestNode2, NE::IntValue>
 		{
 		public:
-			In1DefaultValueParameter () :
-				NodeParameter (L"In2", ParameterType::String)
+			In2DefaultValueParameter () :
+				SlotDefaultValueParameter<TestNode2, NE::IntValue> (L"In2", ParameterType::Integer, SlotId ("in1"))
 			{
-			
+
+			}
+		};
+
+		UINode::RegisterParameters (parameterList);
+		parameterList.AddParameter (NodeParameterPtr (new In2DefaultValueParameter ()));
+	}
+
+	virtual void UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
+	{
+
+	}
+};
+
+class EnumerationParamTestNode : public SerializableTestUINode
+{
+public:
+	enum class MyEnumValue
+	{
+		AEnum,
+		BEnum,
+		CEnum
+	};
+
+	EnumerationParamTestNode (const std::wstring& name, const Point& position) :
+		SerializableTestUINode (name, position),
+		myEnumValue (MyEnumValue::AEnum)
+	{
+
+	}
+
+	virtual void RegisterSlots () override
+	{
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), L"First Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), L"Second Input", NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), L"Single Output")));
+	}
+
+	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	{
+		ValuePtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
+		ValuePtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		int result = IntValue::Get (a) + IntValue::Get (b);
+		return ValuePtr (new IntValue (result));
+	}
+
+	virtual void RegisterParameters (NodeParameterList& parameterList) const override
+	{
+		class EnumerationParameter : public TypedNodeParameter<EnumerationParamTestNode, NE::IntValue>
+		{
+		public:
+			EnumerationParameter () :
+				TypedNodeParameter<EnumerationParamTestNode, NE::IntValue> (L"EnumParam", ParameterType::Enumeration)
+			{
+
 			}
 
-			virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+			virtual std::vector<NE::ValuePtr> GetValueChoices () const override
 			{
-				return uiNode->GetInputSlot (SlotId ("in2"))->GetDefaultValue ();
+				return {
+					NE::ValuePtr (new NE::StringValue (L"AString")),
+					NE::ValuePtr (new NE::StringValue (L"BString")),
+					NE::ValuePtr (new NE::StringValue (L"CString"))
+				};
 			}
 
-			virtual bool IsApplicableTo (const UINodePtr& uiNode) const override
+			virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<EnumerationParamTestNode>& uiNode) const override
 			{
-				return NE::Node::IsType<TestNode2> (uiNode);
+				return NE::ValuePtr (new NE::IntValue ((int) uiNode->GetMyEnumValue ()));
 			}
 
-			virtual bool CanSetValue (const UINodePtr&, const NE::ValuePtr& value) const override
+			virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<EnumerationParamTestNode>& uiNode, const NE::ValuePtr& value) override
 			{
-				return NE::Value::IsType<NE::IntValue> (value);
-			}
-
-			virtual bool SetValue (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
-			{
-				uiNode->GetInputSlot (SlotId ("in2"))->SetDefaultValue (value);
+				uiNode->SetMyEnumValue ((MyEnumValue) NE::IntValue::Get (value));
 				return true;
 			}
 		};
 
-		TestNode::RegisterParameters (parameterList);
-		parameterList.AddParameter (NodeParameterPtr (new In1DefaultValueParameter ()));
+		UINode::RegisterParameters (parameterList);
+		parameterList.AddParameter (NodeParameterPtr (new EnumerationParameter ()));
 	}
+
+	virtual void UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
+	{
+
+	}
+
+	void SetMyEnumValue (MyEnumValue newValue)
+	{
+		myEnumValue = newValue;
+	}
+
+	MyEnumValue GetMyEnumValue () const
+	{
+		return myEnumValue;
+	}
+
+private:
+	MyEnumValue myEnumValue;
 };
 
 TEST (NodeParametersTest)
@@ -166,7 +232,7 @@ TEST (NodeParametersTest2)
 
 	UINodePtr node (new TestNode (L"TestNode", Point (0, 0)));
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
-	UINodePtr node2 (new TestNode (L"TestNode", Point (0, 0)));
+	UINodePtr node2 (new TestNode2 (L"TestNode2", Point (0, 0)));
 	ASSERT (uiManager.AddNode (node2, NE::EmptyEvaluationEnv) != nullptr);
 
 	{
@@ -179,16 +245,16 @@ TEST (NodeParametersTest2)
 		NodeParameterList paramList;
 		RegisterCommonParameters (uiManager, NodeCollection ({ node->GetId () }), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		paramList.GetParameter (0)->GetName () == L"Name";
-		paramList.GetParameter (1)->GetName () == L"In1";
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (1)->GetName () == L"In1");
 	}
 
 	{
 		NodeParameterList paramList;
 		RegisterCommonParameters (uiManager, NodeCollection ({ node2->GetId () }), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		paramList.GetParameter (0)->GetName () == L"Name";
-		paramList.GetParameter (1)->GetName () == L"In2";
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (1)->GetName () == L"In2");
 	}
 
 	{
@@ -197,9 +263,8 @@ TEST (NodeParametersTest2)
 		nodeCollection.Insert (node->GetId ());
 		nodeCollection.Insert (node2->GetId ());
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
-		ASSERT (paramList.GetParameterCount () == 2);
-		paramList.GetParameter (0)->GetName () == L"Name";
-		paramList.GetParameter (1)->GetName () == L"In1";
+		ASSERT (paramList.GetParameterCount () == 1);
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
 	}
 }
 
@@ -219,12 +284,36 @@ TEST (NodeParametersTest3)
 		nodeCollection.Insert (node2->GetId ());
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		paramList.GetParameter (0)->GetName () == L"Name";
-		paramList.GetParameter (1)->GetName () == L"In1";
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (1)->GetName () == L"In1");
 		ValuePtr newName (new StringValue (L"NewName"));
 		ApplyCommonParameter (uiManager, EmptyEvaluationEnv, nodeCollection, paramList.GetParameter (0), newName);
 		ASSERT (node->GetNodeName () == L"NewName");
 		ASSERT (node2->GetNodeName () == L"NewName");
+	}
+}
+
+TEST (NodeParametersTest4)
+{
+	NodeUIManager uiManager;
+
+	std::shared_ptr<EnumerationParamTestNode> node (new EnumerationParamTestNode (L"TestNode", Point (0, 0)));
+	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
+
+	{
+		NodeParameterList paramList;
+		NodeCollection nodeCollection ({ node->GetId () });
+		RegisterCommonParameters (uiManager, nodeCollection, paramList);
+		ASSERT (paramList.GetParameterCount () == 2);
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (1)->GetName () == L"EnumParam");
+		ASSERT (paramList.GetParameter (1)->GetValueChoices ().size () == 3);
+
+		ASSERT (node->GetMyEnumValue () == EnumerationParamTestNode::MyEnumValue::AEnum);
+
+		ValuePtr newValue (new IntValue (1));
+		ApplyCommonParameter (uiManager, EmptyEvaluationEnv, nodeCollection, paramList.GetParameter (1), newValue);
+		ASSERT (node->GetMyEnumValue () == EnumerationParamTestNode::MyEnumValue::BEnum);
 	}
 }
 

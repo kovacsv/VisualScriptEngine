@@ -60,8 +60,8 @@ public:
 		return SetValueInternal (uiManager, evaluationEnv, typedNode, value);
 	}
 
-	virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<NodeType>& uiNode) const = 0;
-	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, std::shared_ptr<NodeType>& uiNode, const NE::ValuePtr& value) = 0;
+	virtual NE::ValuePtr	GetValueInternal (const std::shared_ptr<NodeType>& uiNode) const = 0;
+	virtual bool			SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, std::shared_ptr<NodeType>& uiNode, const NE::ValuePtr& value) = 0;
 };
 
 template <typename NodeType>

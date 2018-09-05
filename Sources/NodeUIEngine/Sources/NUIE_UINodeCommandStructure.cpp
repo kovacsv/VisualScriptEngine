@@ -344,6 +344,15 @@ public:
 				return parameter->GetValue (currentNode);
 			}
 
+			virtual std::vector<NE::ValuePtr> GetParameterValueChoices (size_t index) const override
+			{
+				NodeParameterPtr parameter = paramList.GetParameter (index);
+				if (DBGERROR (parameter == nullptr)) {
+					return {};
+				}
+				return parameter->GetValueChoices ();
+			}
+
 			virtual const ParameterType& GetParameterType (size_t index) const override
 			{
 				NodeParameterPtr parameter = paramList.GetParameter (index);
@@ -473,6 +482,12 @@ public:
 						DBGBREAK ();
 						return nullptr;
 				}
+			}
+
+			virtual std::vector<NE::ValuePtr> GetParameterValueChoices (size_t) const
+			{
+				DBGBREAK ();
+				return {};
 			}
 
 			virtual const ParameterType& GetParameterType (size_t index) const override

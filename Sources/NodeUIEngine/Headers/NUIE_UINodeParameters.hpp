@@ -18,13 +18,14 @@ public:
 	NodeParameter (const std::wstring& name, const ParameterType& type);
 	virtual ~NodeParameter ();
 
-	const std::wstring&		GetName () const;
-	const ParameterType&	GetType () const;
+	const std::wstring&					GetName () const;
+	const ParameterType&				GetType () const;
+	virtual std::vector<NE::ValuePtr>	GetValueChoices () const;
 
-	virtual NE::ValuePtr	GetValue (const UINodePtr& uiNode) const = 0;
-	virtual bool			IsApplicableTo (const UINodePtr& uiNode) const = 0;
-	virtual bool			CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const = 0;
-	virtual bool			SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
+	virtual NE::ValuePtr				GetValue (const UINodePtr& uiNode) const = 0;
+	virtual bool						IsApplicableTo (const UINodePtr& uiNode) const = 0;
+	virtual bool						CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const = 0;
+	virtual bool						SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
 
 private:
 	std::wstring	name;
