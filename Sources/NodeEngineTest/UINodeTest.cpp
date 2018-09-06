@@ -142,22 +142,13 @@ public:
 
 	virtual void RegisterParameters (NodeParameterList& parameterList) const override
 	{
-		class EnumerationParameter : public TypedNodeParameter<EnumerationParamTestNode, NE::IntValue>
+		class MyEnumerationParameter : public EnumerationParameter<EnumerationParamTestNode>
 		{
 		public:
-			EnumerationParameter () :
-				TypedNodeParameter<EnumerationParamTestNode, NE::IntValue> (L"EnumParam", ParameterType::Enumeration)
+			MyEnumerationParameter () :
+				EnumerationParameter<EnumerationParamTestNode> (L"EnumParam", { L"AString", L"BString", L"CString" })
 			{
 
-			}
-
-			virtual std::vector<NE::ValuePtr> GetValueChoices () const override
-			{
-				return {
-					NE::ValuePtr (new NE::StringValue (L"AString")),
-					NE::ValuePtr (new NE::StringValue (L"BString")),
-					NE::ValuePtr (new NE::StringValue (L"CString"))
-				};
 			}
 
 			virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<EnumerationParamTestNode>& uiNode) const override
@@ -173,7 +164,7 @@ public:
 		};
 
 		UINode::RegisterParameters (parameterList);
-		parameterList.AddParameter (NodeParameterPtr (new EnumerationParameter ()));
+		parameterList.AddParameter (NodeParameterPtr (new MyEnumerationParameter ()));
 	}
 
 	virtual void UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
@@ -307,7 +298,11 @@ TEST (NodeParametersTest4)
 		ASSERT (paramList.GetParameterCount () == 2);
 		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
 		ASSERT (paramList.GetParameter (1)->GetName () == L"EnumParam");
-		ASSERT (paramList.GetParameter (1)->GetValueChoices ().size () == 3);
+		std::vector<NE::ValuePtr> choices = paramList.GetParameter (1)->GetValueChoices ();
+		ASSERT (choices.size () == 3);
+		ASSERT (StringValue::Get (choices[0]) == L"AString");
+		ASSERT (StringValue::Get (choices[1]) == L"BString");
+		ASSERT (StringValue::Get (choices[2]) == L"CString");
 
 		ASSERT (node->GetMyEnumValue () == EnumerationParamTestNode::MyEnumValue::AEnum);
 

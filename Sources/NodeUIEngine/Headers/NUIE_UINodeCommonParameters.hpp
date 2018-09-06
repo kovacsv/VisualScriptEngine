@@ -118,6 +118,33 @@ public:
 	}
 };
 
+template <typename NodeType>
+class EnumerationParameter : public TypedNodeParameter<NodeType, NE::IntValue>
+{
+public:
+	EnumerationParameter (const std::wstring& name, const std::vector<std::wstring>& valueChoiceStrings) :
+		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Enumeration)
+	{
+		for (const std::wstring& choiceString : valueChoiceStrings) {
+			valueChoices.push_back (NE::ValuePtr (new NE::StringValue (choiceString)));
+		}
+	}
+
+	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+	{
+		int valueInt = NE::IntValue::Get (value);
+		return valueInt >= 0 && valueInt < (int) valueChoices.size ();
+	}
+
+	virtual std::vector<NE::ValuePtr> GetValueChoices () const override
+	{
+		return valueChoices;
+	}
+
+private:
+	std::vector<NE::ValuePtr> valueChoices;
+};
+
 template <typename NodeType, typename ValueType>
 class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
 {
