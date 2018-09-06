@@ -39,6 +39,7 @@ public:
 	DrawableNode (const std::wstring& name, const NUIE::Point& position);
 
 	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 	virtual void				ProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 
 	virtual void				OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;

@@ -2,6 +2,7 @@
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_ContextDecorators.hpp"
 #include "NUIE_SkinParams.hpp"
+#include "NUIE_UINodeCommonParameters.hpp"
 
 namespace BI
 {
@@ -111,6 +112,11 @@ void ValueCombinationFeature::RegisterFeatureCommands (NUIE::NodeCommandRegistra
 	commandRegistrator.RegisterNodeGroupCommand (setValueCombinationModeGroup);
 }
 
+void ValueCombinationFeature::RegisterFeatureParameters (NUIE::NodeParameterList&) const
+{
+
+}
+
 NE::Stream::Status ValueCombinationFeature::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
@@ -155,6 +161,11 @@ void EnableDisableFeature::RegisterFeatureCommands (NUIE::NodeCommandRegistrator
 	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", nodeEnabled, true)));
 	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Disable", !nodeEnabled, false)));
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
+}
+
+void EnableDisableFeature::RegisterFeatureParameters (NUIE::NodeParameterList&) const
+{
+
 }
 
 void EnableDisableFeature::CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const

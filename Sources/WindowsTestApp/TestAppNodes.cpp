@@ -154,6 +154,12 @@ void DrawableNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegist
 	BI::EnableDisableFeature::RegisterFeatureCommands (commandRegistrator);
 }
 
+void DrawableNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	BI::ValueCombinationFeature::RegisterFeatureParameters (parameterList);
+	BI::EnableDisableFeature::RegisterFeatureParameters (parameterList);
+}
+
 void DrawableNode::ProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
 {
 	EnableDisableFeature::FeatureProcessValue (value, env);

@@ -15,6 +15,9 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) = 0;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const = 0;
+
+	virtual void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const = 0;
+	virtual void				RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const = 0;
 };
 
 class ValueCombinationFeature : public Feature
@@ -27,7 +30,9 @@ public:
 
 	void				SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode);
 	bool				CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const;
-	void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const;
+
+	virtual void		RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void		RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const override;
 
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
@@ -35,7 +40,6 @@ public:
 private:
 	NE::ValueCombinationMode	valueCombinationMode;
 };
-
 
 class EnableDisableFeature : public Feature
 {
@@ -46,9 +50,11 @@ public:
 	virtual ~EnableDisableFeature ();
 
 	void				SetEnableState (bool isNodeEnabled, const NE::ValuePtr& value, NE::EvaluationEnv& env);
-	void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const;
 	void				CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
 	void				FeatureProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
+
+	virtual void		RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void		RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const override;
 
 	virtual void		OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
 	virtual void		OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
