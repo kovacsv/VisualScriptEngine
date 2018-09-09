@@ -38,11 +38,11 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 	okButton (new wxButton (this, DialogIds::OkButtonId, L"OK"))
 {
 	gridSizer->SetRows (paramInterface->GetParameterCount ());
-	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
-		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		NE::ValuePtr value = paramInterface->GetParameterValue (i);
+	for (size_t paramIndex = 0; paramIndex < paramInterface->GetParameterCount (); ++paramIndex) {
+		NUIE::ParameterType type = paramInterface->GetParameterType (paramIndex);
+		NE::ValuePtr value = paramInterface->GetParameterValue (paramIndex);
 
-		int controlId = ParamIdToControlId (i);
+		int controlId = ParamIdToControlId (paramIndex);
 		wxControl* control = nullptr;
 		if (type == NUIE::ParameterType::String) {
 			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
@@ -67,7 +67,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 			continue;
 		}
 
-		wxStaticText* paramNameText = new wxStaticText (this, wxID_ANY, paramInterface->GetParameterName (i));
+		wxStaticText* paramNameText = new wxStaticText (this, wxID_ANY, paramInterface->GetParameterName (paramIndex));
 		gridSizer->Add (paramNameText, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL);
 
 		gridSizer->Add (control, 1, wxEXPAND);
