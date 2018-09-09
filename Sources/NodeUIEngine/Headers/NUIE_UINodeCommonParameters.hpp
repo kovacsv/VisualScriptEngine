@@ -122,12 +122,11 @@ template <typename NodeType>
 class EnumerationParameter : public TypedNodeParameter<NodeType, NE::IntValue>
 {
 public:
-	EnumerationParameter (const std::wstring& name, const std::vector<std::wstring>& valueChoiceStrings) :
-		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Enumeration)
+	EnumerationParameter (const std::wstring& name, const std::vector<std::wstring>& valueChoices) :
+		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Enumeration),
+		valueChoices (valueChoices)
 	{
-		for (const std::wstring& choiceString : valueChoiceStrings) {
-			valueChoices.push_back (NE::ValuePtr (new NE::StringValue (choiceString)));
-		}
+
 	}
 
 	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
@@ -136,13 +135,13 @@ public:
 		return valueInt >= 0 && valueInt < (int) valueChoices.size ();
 	}
 
-	virtual std::vector<NE::ValuePtr> GetValueChoices () const override
+	virtual std::vector<std::wstring> GetValueChoices () const override
 	{
 		return valueChoices;
 	}
 
 private:
-	std::vector<NE::ValuePtr> valueChoices;
+	std::vector<std::wstring> valueChoices;
 };
 
 template <typename NodeType, typename ValueType>

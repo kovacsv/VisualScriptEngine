@@ -298,11 +298,11 @@ TEST (NodeParametersTest4)
 		ASSERT (paramList.GetParameterCount () == 2);
 		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
 		ASSERT (paramList.GetParameter (1)->GetName () == L"EnumParam");
-		std::vector<NE::ValuePtr> choices = paramList.GetParameter (1)->GetValueChoices ();
+		std::vector<std::wstring> choices = paramList.GetParameter (1)->GetValueChoices ();
 		ASSERT (choices.size () == 3);
-		ASSERT (StringValue::Get (choices[0]) == L"AString");
-		ASSERT (StringValue::Get (choices[1]) == L"BString");
-		ASSERT (StringValue::Get (choices[2]) == L"CString");
+		ASSERT (choices[0] == L"AString");
+		ASSERT (choices[1] == L"BString");
+		ASSERT (choices[2] == L"CString");
 
 		ASSERT (node->GetMyEnumValue () == EnumerationParamTestNode::MyEnumValue::AEnum);
 

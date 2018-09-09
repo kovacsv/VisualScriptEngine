@@ -61,6 +61,16 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 				SetTextValidator (textControl, L"0123456789.-");
 				control = textControl;
 			}
+		} else if (type == NUIE::ParameterType::Enumeration) {
+			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
+				wxChoice* choiceControl = new wxChoice (this, controlId);
+				std::vector<std::wstring> choices = paramInterface->GetParameterValueChoices (paramIndex);
+				for (const std::wstring& choice : choices) {
+					choiceControl->Append (wxString (choice));
+				}
+				choiceControl->Select (NE::IntValue::Get (value));
+				control = choiceControl;
+			}		
 		}
 		
 		if (DBGERROR (control == nullptr)) {

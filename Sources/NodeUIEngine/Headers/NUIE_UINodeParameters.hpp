@@ -20,7 +20,7 @@ public:
 
 	const std::wstring&					GetName () const;
 	const ParameterType&				GetType () const;
-	virtual std::vector<NE::ValuePtr>	GetValueChoices () const;
+	virtual std::vector<std::wstring>	GetValueChoices () const;
 
 	virtual NE::ValuePtr				GetValue (const UINodePtr& uiNode) const = 0;
 	virtual bool						IsApplicableTo (const UINodePtr& uiNode) const = 0;

@@ -28,7 +28,7 @@ const ParameterType& NodeParameter::GetType () const
 	return type;
 }
 
-std::vector<NE::ValuePtr> NodeParameter::GetValueChoices () const
+std::vector<std::wstring> NodeParameter::GetValueChoices () const
 {
 	DBGBREAK ();
 	return {};
