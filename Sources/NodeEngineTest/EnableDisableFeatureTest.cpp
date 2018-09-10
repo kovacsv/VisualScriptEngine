@@ -89,14 +89,16 @@ public:
 		EnableDisableFeature::FeatureProcessValue (value, env);
 	}
 
-	virtual void OnCalculated (const ValuePtr& value, EvaluationEnv& env) const override
+	virtual void OnCalculated (const ValuePtr& /*value*/, EvaluationEnv& env) const override
 	{
-		InsertValue (value, env);
+		RemoveValue (env);
+		InsertValue (env);
 	}
 
-	virtual void OnEnabled (const ValuePtr& value, EvaluationEnv& env) const override
+	virtual void OnEnabled (EvaluationEnv& env) const override
 	{
-		InsertValue (value, env);
+		RemoveValue (env);
+		InsertValue (env);
 	}
 
 	virtual void OnDisabled (EvaluationEnv& env) const override
@@ -110,9 +112,10 @@ public:
 		collector->values.erase (GetId ());
 	}
 
-	void InsertValue (const ValuePtr& value, EvaluationEnv& env) const
+	void InsertValue (EvaluationEnv& env) const
 	{
 		std::shared_ptr<CalculatedCollector> collector = env.GetData<CalculatedCollector> ();
+		ValuePtr value = GetCalculatedValue ();
 		collector->values.insert ({ GetId (), IntValue::Get (value) });
 	}
 };
@@ -141,7 +144,7 @@ TEST (EnableDisableTest)
 	ASSERT (calcEnv.collector->values.size () == 4);
 	ASSERT (calcEnv.collector->values.find (node3->GetId ()) != calcEnv.collector->values.end ());
 
-	node3->SetEnableState (false, node3->GetCalculatedValue (), calcEnv.evalEnv);
+	node3->SetEnableState (false, calcEnv.evalEnv);
 	uiManager.RequestRecalculate ();
 
 	uiManager.Update (calcEnv);

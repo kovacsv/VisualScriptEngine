@@ -43,7 +43,7 @@ public:
 	virtual void				ProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
 
 	virtual void				OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
-	virtual void				OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const override;
+	virtual void				OnEnabled (NE::EvaluationEnv& env) const override;
 	virtual void				OnDisabled (NE::EvaluationEnv& env) const override;
 	virtual void				OnDelete (NE::EvaluationEnv& env) const override;
 
@@ -56,7 +56,7 @@ protected:
 
 private:
 	NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValuePtr& value) const;
-	void						AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
+	void						AddItem (NE::EvaluationEnv& env) const;
 	void						RemoveItem (NE::EvaluationEnv& env) const;
 
 	mutable NUIE::DrawingItemConstPtr	drawingItem;

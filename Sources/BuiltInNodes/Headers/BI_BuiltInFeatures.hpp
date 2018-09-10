@@ -49,7 +49,7 @@ public:
 	EnableDisableFeature (bool nodeEnabled);
 	virtual ~EnableDisableFeature ();
 
-	void				SetEnableState (bool isNodeEnabled, const NE::ValuePtr& value, NE::EvaluationEnv& env);
+	void				SetEnableState (bool isNodeEnabled, NE::EvaluationEnv& env);
 	void				CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
 	void				FeatureProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
 
@@ -57,7 +57,7 @@ public:
 	virtual void		RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const override;
 
 	virtual void		OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
-	virtual void		OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
+	virtual void		OnEnabled (NE::EvaluationEnv& env) const = 0;
 	virtual void		OnDisabled (NE::EvaluationEnv& env) const = 0;
 
 	NE::Stream::Status	Read (NE::InputStream& inputStream);

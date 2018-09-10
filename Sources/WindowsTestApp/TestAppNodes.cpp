@@ -165,16 +165,16 @@ void DrawableNode::ProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& e
 	EnableDisableFeature::FeatureProcessValue (value, env);
 }
 
-void DrawableNode::OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::OnCalculated (const NE::ValuePtr&, NE::EvaluationEnv& env) const
 {
 	RemoveItem (env);
-	AddItem (value, env);
+	AddItem (env);
 }
 
-void DrawableNode::OnEnabled (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::OnEnabled (NE::EvaluationEnv& env) const
 {
 	RemoveItem (env);
-	AddItem (value, env);
+	AddItem (env);
 }
 
 void DrawableNode::OnDisabled (NE::EvaluationEnv& env) const
@@ -202,11 +202,12 @@ NUIE::DrawingItemConstPtr DrawableNode::CreateDrawingItem (const NE::ValuePtr& v
 	return result;
 }
 
-void DrawableNode::AddItem (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::AddItem (NE::EvaluationEnv& env) const
 {
 	if (DBGERROR (!env.IsDataType<ResultImageEvaluationData> ())) {
 		return;
 	}
+	NE::ValuePtr value = GetCalculatedValue ();
 	drawingItem = CreateDrawingItem (value);
 	if (drawingItem != nullptr) {
 		std::shared_ptr<ResultImageEvaluationData> evalData = env.GetData<ResultImageEvaluationData> ();

@@ -62,8 +62,7 @@ public:
 		if (DBGERROR (featureNode == nullptr)) {
 			return;
 		}
-		NE::ValuePtr value = uiNode->GetCalculatedValue ();
-		featureNode->SetEnableState (enable, value, uiEnvironment.GetEvaluationEnv ());
+		featureNode->SetEnableState (enable, uiEnvironment.GetEvaluationEnv ());
 		uiManager.InvalidateNodeDrawing (uiNode);
 		uiManager.RequestRecalculate ();
 	}
@@ -145,11 +144,11 @@ EnableDisableFeature::~EnableDisableFeature ()
 
 }
 
-void EnableDisableFeature::SetEnableState (bool isNodeEnabled, const NE::ValuePtr& value, NE::EvaluationEnv& env)
+void EnableDisableFeature::SetEnableState (bool isNodeEnabled, NE::EvaluationEnv& env)
 {
 	nodeEnabled = isNodeEnabled;
 	if (nodeEnabled) {
-		OnEnabled (value, env);
+		OnEnabled (env);
 	} else {
 		OnDisabled (env);
 	}
