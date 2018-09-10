@@ -25,8 +25,7 @@ public:
 
 	virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
 	{
-		std::shared_ptr<NodeType> typedNode = NE::Node::Cast<NodeType> (uiNode);
-		return GetValueInternal (typedNode);
+		return GetValueInternal (uiNode);
 	}
 
 	virtual bool IsApplicableTo (const UINodePtr& uiNode) const
@@ -56,12 +55,16 @@ public:
 		if (DBGERROR (!CanSetValue (uiNode, value))) {
 			return false;
 		}
-		std::shared_ptr<NodeType> typedNode = NE::Node::Cast<NodeType> (uiNode);
-		return SetValueInternal (uiManager, evaluationEnv, typedNode, value);
+		return SetValueInternal (uiManager, evaluationEnv, uiNode, value);
 	}
 
-	virtual NE::ValuePtr	GetValueInternal (const std::shared_ptr<NodeType>& uiNode) const = 0;
-	virtual bool			SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, std::shared_ptr<NodeType>& uiNode, const NE::ValuePtr& value) = 0;
+	std::shared_ptr<NodeType> GetTypedNode (const NUIE::UINodePtr& uiNode) const
+	{
+		return NE::Node::Cast<NodeType> (uiNode);
+	}
+
+	virtual NE::ValuePtr	GetValueInternal (const UINodePtr& uiNode) const = 0;
+	virtual bool			SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
 };
 
 template <typename NodeType>
@@ -155,7 +158,7 @@ public:
 
 	}
 
-	virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<NodeType>& uiNode) const override
+	virtual NE::ValuePtr GetValueInternal (const UINodePtr& uiNode) const override
 	{
 		NE::InputSlotConstPtr inputSlot = uiNode->GetInputSlot (slotId);
 		if (DBGERROR (inputSlot == nullptr)) {
@@ -164,7 +167,7 @@ public:
 		return inputSlot->GetDefaultValue ();
 	}
 
-	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<NodeType>& uiNode, const NE::ValuePtr& value) override
+	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
 	{
 		uiNode->GetInputSlot (slotId)->SetDefaultValue (value);
 		uiManager.InvalidateNodeValue (uiNode->GetId ());

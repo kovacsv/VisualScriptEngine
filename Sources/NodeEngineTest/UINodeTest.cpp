@@ -151,14 +151,14 @@ public:
 
 			}
 
-			virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<EnumerationParamTestNode>& uiNode) const override
+			virtual NE::ValuePtr GetValueInternal (const UINodePtr& uiNode) const override
 			{
-				return NE::ValuePtr (new NE::IntValue ((int) uiNode->GetMyEnumValue ()));
+				return NE::ValuePtr (new NE::IntValue ((int) GetTypedNode (uiNode)->GetMyEnumValue ()));
 			}
 
-			virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<EnumerationParamTestNode>& uiNode, const NE::ValuePtr& value) override
+			virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
 			{
-				uiNode->SetMyEnumValue ((MyEnumValue) NE::IntValue::Get (value));
+				GetTypedNode (uiNode)->SetMyEnumValue ((MyEnumValue) NE::IntValue::Get (value));
 				return true;
 			}
 		};

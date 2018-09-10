@@ -5,7 +5,7 @@
 
 #include <wx/spinctrl.h>
 
-static const wxWindowID FirstControlId = 1000;
+static const wxWindowID FirstControlId = 10000;
 
 static wxWindowID ParamIdToControlId (size_t paramId)
 {
@@ -100,10 +100,22 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 		}
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		if (!paramInterface->IsValidParameterValue (i, NUIE::StringToParameterValue (uiData.GetValue (), type))) {
+		NE::ValuePtr value = nullptr;
+		if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
+			value = NUIE::StringToParameterValue (uiData.GetStringValue (), type);
+		} else if (type == NUIE::ParameterType::Enumeration) {
+			value = NE::ValuePtr (new NE::IntValue (uiData.GetIntegerValue ()));
+		}
+		
+		if (DBGERROR (value == nullptr)) {
+			isAllParameterValid = false;
+			continue;
+		}
+
+		if (!paramInterface->IsValidParameterValue (i, value)) {
 			NE::ValuePtr oldValue = paramInterface->GetParameterValue (i);
 			std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
-			uiData.SetValue (oldValueString);
+			uiData.SetStringValue (oldValueString);
 			uiData.isChanged = false;
 			isAllParameterValid = false;
 		}
@@ -120,7 +132,17 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 		}
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		NE::ValuePtr value = NUIE::StringToParameterValue (uiData.GetValue (), type);
+		NE::ValuePtr value = nullptr;
+		if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
+			value = NUIE::StringToParameterValue (uiData.GetStringValue (), type);
+		} else if (type == NUIE::ParameterType::Enumeration) {
+			value = NE::ValuePtr (new NE::IntValue (uiData.GetIntegerValue ()));
+		}
+		
+		if (DBGERROR (value == nullptr)) {
+			continue;
+		}
+
 		paramInterface->SetParameterValue (i, value);
 	}
 
@@ -135,6 +157,12 @@ void ParameterDialog::OnTextChanged (wxCommandEvent& evt)
 	paramUIDataList[paramIndex].isChanged = true;
 }
 
+void ParameterDialog::OnChoiceChanged (wxCommandEvent& evt)
+{
+	int paramIndex = ControlIdToParamId (evt.GetId ());
+	paramUIDataList[paramIndex].isChanged = true;
+}
+
 ParameterDialog::ParamUIData::ParamUIData (wxControl* control) :
 	control (control),
 	isChanged (false)
@@ -142,7 +170,7 @@ ParameterDialog::ParamUIData::ParamUIData (wxControl* control) :
 
 }
 
-std::wstring ParameterDialog::ParamUIData::GetValue () const
+std::wstring ParameterDialog::ParamUIData::GetStringValue () const
 {
 	if (dynamic_cast<wxTextCtrl*> (control) != nullptr) {
 		return dynamic_cast<wxTextCtrl*> (control)->GetValue ().ToStdWstring ();
@@ -152,7 +180,17 @@ std::wstring ParameterDialog::ParamUIData::GetValue () const
 	}
 }
 
-void ParameterDialog::ParamUIData::SetValue (const std::wstring& value)
+int ParameterDialog::ParamUIData::GetIntegerValue () const
+{
+	if (dynamic_cast<wxChoice*> (control) != nullptr) {
+		return dynamic_cast<wxChoice*> (control)->GetSelection ();
+	} else {
+		DBGBREAK ();
+		return -1;
+	}
+}
+
+void ParameterDialog::ParamUIData::SetStringValue (const std::wstring& value)
 {
 	if (dynamic_cast<wxTextCtrl*> (control) != nullptr) {
 		dynamic_cast<wxTextCtrl*> (control)->SetValue (value);
@@ -164,4 +202,5 @@ void ParameterDialog::ParamUIData::SetValue (const std::wstring& value)
 BEGIN_EVENT_TABLE (ParameterDialog, wxDialog)
 EVT_BUTTON (DialogIds::OkButtonId, ParameterDialog::OnOkButtonClick)
 EVT_TEXT (wxID_ANY, ParameterDialog::OnTextChanged)
+EVT_CHOICE (wxID_ANY, ParameterDialog::OnChoiceChanged)
 END_EVENT_TABLE ()

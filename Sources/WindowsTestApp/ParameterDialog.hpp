@@ -18,14 +18,16 @@ public:
 
 	void	OnOkButtonClick (wxCommandEvent& evt);
 	void	OnTextChanged (wxCommandEvent& evt);
+	void	OnChoiceChanged (wxCommandEvent& evt);
 
 private:
 	struct ParamUIData
 	{
 		ParamUIData (wxControl* control);
 
-		std::wstring	GetValue () const;
-		void			SetValue (const std::wstring& value);
+		std::wstring	GetStringValue () const;
+		int				GetIntegerValue () const;
+		void			SetStringValue (const std::wstring& value);
 
 		wxControl*		control;
 		bool			isChanged;

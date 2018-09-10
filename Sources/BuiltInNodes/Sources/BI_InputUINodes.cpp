@@ -116,14 +116,14 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<IntegerUpDownNode>& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
 		{
-			return NE::ValuePtr (new NE::IntValue (uiNode->GetValue ()));
+			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<IntegerUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
 		{
-			uiNode->SetValue (NE::IntValue::Get (value));
+			GetTypedNode (uiNode)->SetValue (NE::IntValue::Get (value));
 			uiManager.InvalidateNodeValue (uiNode);
 			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
@@ -139,14 +139,14 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<IntegerUpDownNode>& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
 		{
-			return NE::ValuePtr (new NE::IntValue (uiNode->GetStep ()));
+			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<IntegerUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
 		{
-			uiNode->SetStep (NE::IntValue::Get (value));
+			GetTypedNode (uiNode)->SetStep (NE::IntValue::Get (value));
 			return true;
 		}
 	};
@@ -242,14 +242,14 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<DoubleUpDownNode>& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
 		{
-			return NE::ValuePtr (new NE::DoubleValue (uiNode->GetValue ()));
+			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, std::shared_ptr<DoubleUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
 		{
-			uiNode->SetValue (NE::DoubleValue::Get (value));
+			GetTypedNode (uiNode)->SetValue (NE::DoubleValue::Get (value));
 			uiManager.InvalidateNodeValue (uiNode);
 			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
@@ -265,14 +265,14 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const std::shared_ptr<DoubleUpDownNode>& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
 		{
-			return NE::ValuePtr (new NE::DoubleValue (uiNode->GetStep ()));
+			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, std::shared_ptr<DoubleUpDownNode>& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
 		{
-			uiNode->SetStep (NE::DoubleValue::Get (value));
+			GetTypedNode (uiNode)->SetStep (NE::DoubleValue::Get (value));
 			return true;
 		}
 	};

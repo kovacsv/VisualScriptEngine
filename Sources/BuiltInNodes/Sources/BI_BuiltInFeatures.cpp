@@ -41,6 +41,17 @@ private:
 	NE::ValueCombinationMode combinationMode;
 };
 
+static void EnableDisableNode (bool enable, NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode)
+{
+	std::shared_ptr<EnableDisableFeature> featureNode = NE::Node::Cast<EnableDisableFeature> (uiNode);
+	if (DBGERROR (featureNode == nullptr)) {
+		return;
+	}
+	featureNode->SetEnableState (enable, evaluationEnv);
+	uiManager.InvalidateNodeDrawing (uiNode);
+	uiManager.RequestRecalculate ();
+}
+
 class EnableDisableNodeCommand : public NUIE::NodeCommand
 {
 public:
@@ -58,13 +69,7 @@ public:
 
 	virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, NUIE::UINodePtr& uiNode) override
 	{
-		std::shared_ptr<EnableDisableFeature> featureNode = NE::Node::Cast<EnableDisableFeature> (uiNode);
-		if (DBGERROR (featureNode == nullptr)) {
-			return;
-		}
-		featureNode->SetEnableState (enable, uiEnvironment.GetEvaluationEnv ());
-		uiManager.InvalidateNodeDrawing (uiNode);
-		uiManager.RequestRecalculate ();
+		EnableDisableNode (enable, uiManager, uiEnvironment.GetEvaluationEnv (), uiNode);
 	}
 
 private:
@@ -144,6 +149,11 @@ EnableDisableFeature::~EnableDisableFeature ()
 
 }
 
+bool EnableDisableFeature::GetEnableState () const
+{
+	return nodeEnabled;
+}
+
 void EnableDisableFeature::SetEnableState (bool isNodeEnabled, NE::EvaluationEnv& env)
 {
 	nodeEnabled = isNodeEnabled;
@@ -162,9 +172,34 @@ void EnableDisableFeature::RegisterFeatureCommands (NUIE::NodeCommandRegistrator
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
 }
 
-void EnableDisableFeature::RegisterFeatureParameters (NUIE::NodeParameterList&) const
+void EnableDisableFeature::RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const
 {
+	class EnableDisableParameter : public NUIE::EnumerationParameter<EnableDisableFeature>
+	{
+	public:
+		EnableDisableParameter () :
+			NUIE::EnumerationParameter<EnableDisableFeature> (L"Status", { L"Enable", L"Disable" })
+		{
+		
+		}
 
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		{
+			bool enableState = GetTypedNode (uiNode)->GetEnableState ();
+			int enableStateInt = (enableState ? 0 : 1);
+			return NE::ValuePtr (new NE::IntValue (enableStateInt));
+		}
+		
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		{
+			int enableStateInt = NE::IntValue::Get (value);
+			bool enableState = (enableStateInt == 0 ? true : false);
+			EnableDisableNode (enableState, uiManager, evaluationEnv, uiNode);
+			return true;
+		}
+	};
+
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new EnableDisableParameter ()));
 }
 
 void EnableDisableFeature::CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const

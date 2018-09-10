@@ -49,6 +49,7 @@ public:
 	EnableDisableFeature (bool nodeEnabled);
 	virtual ~EnableDisableFeature ();
 
+	bool				GetEnableState () const;
 	void				SetEnableState (bool isNodeEnabled, NE::EvaluationEnv& env);
 	void				CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
 	void				FeatureProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
