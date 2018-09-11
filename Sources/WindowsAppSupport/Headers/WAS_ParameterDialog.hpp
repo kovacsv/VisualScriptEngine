@@ -2,6 +2,7 @@
 #define PARAMETERSDIALOG_HPP
 
 #include "WAS_IncludeWindowsHeaders.hpp"
+#include "WAS_InMemoryDialog.hpp"
 #include "NUIE_ParameterInterface.hpp"
 
 #include <unordered_set>
@@ -14,7 +15,8 @@ class ParameterDialog
 public:
 	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface);
 
-	bool	Show (HWND parent, WORD x, WORD y) const;
+	bool	Show (HWND parent, WORD x, WORD y);
+	void	SetupControls (HWND dialogHwnd);
 	void	SetParameterChanged (DWORD controlId);
 	bool	CollectChangedValues (HWND hwnd);
 
@@ -30,6 +32,7 @@ private:
 
 	void	ApplyParameterChanges () const;
 
+	WAS::InMemoryDialog*			inMemoryDialog;
 	NUIE::ParameterInterfacePtr		paramInterface;
 	std::vector<ChangedParameter>	paramValues;
 	std::unordered_set<size_t>		changedParams;

@@ -5,9 +5,58 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace WAS
 {
+
+struct DialogParameters
+{
+	DialogParameters ();
+	DialogParameters (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height);
+
+	DWORD			helpId;
+	DWORD			extendedStyle;
+	DWORD			style;
+	WORD			x;
+	WORD			y;
+	WORD			width;
+	WORD			height;
+	std::wstring	dialogTitle;
+};
+
+struct ControlParameters
+{
+	ControlParameters ();
+	ControlParameters (DWORD controlType, DWORD style, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
+
+	DWORD			helpId;
+	DWORD			extendedStyle;
+	DWORD			style;
+	WORD			x;
+	WORD			y;
+	WORD			width;
+	WORD			height;
+	DWORD			controlId;
+	DWORD			controlType;
+};
+
+class InMemoryControl
+{
+public:
+	InMemoryControl ();
+	virtual ~InMemoryControl ();
+
+	DWORD						GetId () const;
+	const ControlParameters&	GetParameters () const;
+
+	void						Setup (HWND controlHwnd);
+	virtual void				SetupControl () = 0;
+
+protected:
+	ControlParameters	params;
+	HWND				hwnd;
+};
 
 class InMemoryDialog
 {
@@ -18,42 +67,14 @@ public:
 	void		AddEdit (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
 	void		AddButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
 	void		AddDefButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
+	void		AddComboBox (WORD x, WORD y, WORD width, WORD height, DWORD controlId);
 
-	INT_PTR		Show (HWND hwnd, DLGPROC dialogProc, LPARAM initParam) const;
+	INT_PTR		Show (HWND parent, DLGPROC dialogProc, LPARAM initParam) const;
+	void		SetupControls (HWND dialogHwnd);
 
 private:
-	struct DialogParameters
-	{
-		DialogParameters (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height);
-
-		DWORD			helpId;
-		DWORD			extendedStyle;
-		DWORD			style;
-		WORD			x;
-		WORD			y;
-		WORD			width;
-		WORD			height;
-		std::wstring	dialogTitle;
-	};
-
-	struct ControlParameters
-	{
-		ControlParameters (DWORD controlType, const std::wstring& controlText, DWORD style, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
-
-		DWORD			helpId;
-		DWORD			extendedStyle;
-		DWORD			style;
-		WORD			x;
-		WORD			y;
-		WORD			width;
-		WORD			height;
-		DWORD			controlId;
-		DWORD			controlType;
-		std::wstring	controlText;
-	};
-
-	DialogParameters				parameters;
-	std::vector<ControlParameters>	controls;
+	DialogParameters								parameters;
+	std::vector<std::unique_ptr<InMemoryControl>>	controls;
 };
 
 }

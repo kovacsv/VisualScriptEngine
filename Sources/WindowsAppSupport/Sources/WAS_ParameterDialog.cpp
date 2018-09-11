@@ -1,5 +1,4 @@
 #include "WAS_ParameterDialog.hpp"
-#include "WAS_InMemoryDialog.hpp"
 
 #include "NUIE_UINodeParameters.hpp"
 #include "NE_Debug.hpp"
@@ -10,7 +9,8 @@
 namespace WAS
 {
 
-static const DWORD FirstControlId = 1000;
+static const DWORD FirstControlId = 10000;
+static const DWORD StaticControlIdOffset = 1000;
 static const DWORD OkButtonId = 2000;
 
 static DWORD ParamIdToControlId (size_t paramId)
@@ -27,7 +27,13 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg) {
 		case WM_INITDIALOG:
-			SetWindowLongPtr (hwnd, GWLP_USERDATA, lParam);
+			{
+				SetWindowLongPtr (hwnd, GWLP_USERDATA, lParam);
+				ParameterDialog* paramDialog = (ParameterDialog*) lParam;
+				if (paramDialog != nullptr) {
+					paramDialog->SetupControls (hwnd);
+				}
+			}
 			break;
 		case WM_CLOSE:
 			EndDialog (hwnd, 0);
@@ -70,12 +76,13 @@ ParameterDialog::ChangedParameter::ChangedParameter (size_t index, const std::ws
 }
 
 ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface) :
+	inMemoryDialog (nullptr),
 	paramInterface (paramInterface)
 {
 
 }
 
-bool ParameterDialog::Show (HWND parent, WORD x, WORD y) const
+bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 {
 	static const int padding = 5;
 	static const int staticWidth = 60;
@@ -109,18 +116,28 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y) const
 			}
 		}
 
-		dialog.AddStatic (paramInterface->GetParameterName (paramId).c_str (), padding, currentY, staticWidth, controlHeight, 0);
+		dialog.AddStatic (paramInterface->GetParameterName (paramId).c_str (), padding, currentY, staticWidth, controlHeight, controlId + StaticControlIdOffset);
 		dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
 		currentY += controlHeight + padding;
 	}
 
 	dialog.AddDefButton (L"Save", padding, currentY, staticWidth + editWidth + padding, buttonHeight, OkButtonId);
+
+	inMemoryDialog = &dialog;
 	if (dialog.Show (parent, DlgProc, (LPARAM) this) == 1) {
 		ApplyParameterChanges ();
 		return true;
 	}
+	inMemoryDialog = nullptr;
 
 	return false;
+}
+
+void ParameterDialog::SetupControls (HWND dialogHwnd)
+{
+	if (DBGVERIFY (inMemoryDialog != nullptr)) {
+		inMemoryDialog->SetupControls (dialogHwnd);
+	}
 }
 
 void ParameterDialog::SetParameterChanged (DWORD controlId)
