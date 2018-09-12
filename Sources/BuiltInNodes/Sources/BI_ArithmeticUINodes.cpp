@@ -68,6 +68,7 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 void BinaryOperationNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	UINode::RegisterParameters (parameterList);
+	ValueCombinationFeature::RegisterFeatureParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", NUIE::ParameterType::Double, NE::SlotId ("a"));
 	NUIE::RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", NUIE::ParameterType::Double, NE::SlotId ("b"));
 }
