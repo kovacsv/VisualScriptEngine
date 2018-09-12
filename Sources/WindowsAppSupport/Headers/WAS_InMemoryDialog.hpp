@@ -67,7 +67,7 @@ public:
 	void		AddEdit (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
 	void		AddButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
 	void		AddDefButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
-	void		AddComboBox (WORD x, WORD y, WORD width, WORD height, DWORD controlId);
+	void		AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
 
 	INT_PTR		Show (HWND parent, DLGPROC dialogProc, LPARAM initParam) const;
 	void		SetupControls (HWND dialogHwnd);

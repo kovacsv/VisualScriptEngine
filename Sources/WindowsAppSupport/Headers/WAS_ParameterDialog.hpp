@@ -32,10 +32,12 @@ private:
 
 	void	ApplyParameterChanges () const;
 
-	WAS::InMemoryDialog*			inMemoryDialog;
 	NUIE::ParameterInterfacePtr		paramInterface;
 	std::vector<ChangedParameter>	paramValues;
 	std::unordered_set<size_t>		changedParams;
+
+	WAS::InMemoryDialog*			inMemoryDialog;
+	bool							isSetUp;
 };
 
 }

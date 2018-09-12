@@ -189,17 +189,25 @@ public:
 class ComboBoxControl : public InMemoryControl
 {
 public:
-	ComboBoxControl (WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
-		InMemoryControl ()
+	ComboBoxControl (int selectedItem, const std::vector<std::wstring>& choices, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+		InMemoryControl (),
+		selectedItem (selectedItem),
+		choices (choices)
 	{
 		params = ControlParameters (0x0085FFFF, WS_TABSTOP | WS_BORDER | CBS_DROPDOWNLIST, x, y, width, height, controlId);
 	}
 
 	virtual void SetupControl () override
 	{
-		SendMessage (hwnd, CB_ADDSTRING, 0, (LPARAM) L"aaa");
-		SendMessage (hwnd, CB_ADDSTRING, 0, (LPARAM) L"bbb");
+		for (const std::wstring& choice : choices) {
+			SendMessage (hwnd, CB_ADDSTRING, 0, (LPARAM) choice.c_str ());
+		}
+		SendMessage (hwnd, CB_SETCURSEL, (WPARAM) selectedItem, 0);
 	}
+
+private:
+	int selectedItem;
+	std::vector<std::wstring> choices;
 };
 
 InMemoryDialog::InMemoryDialog (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height) :
@@ -227,10 +235,10 @@ void InMemoryDialog::AddDefButton (const std::wstring& controlText, WORD x, WORD
 	controls.push_back (std::unique_ptr<InMemoryControl> (new DefButtonControl (controlText, x, y, width, height, controlId)));
 }
 
-void InMemoryDialog::AddComboBox (WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+void InMemoryDialog::AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
 {
 	static const WORD comboBoxListHeight = 200;
-	controls.push_back (std::unique_ptr<InMemoryControl> (new ComboBoxControl (x, y, width, height + comboBoxListHeight, controlId)));
+	controls.push_back (std::unique_ptr<InMemoryControl> (new ComboBoxControl (selectedItem, choices, x, y, width, height + comboBoxListHeight, controlId)));
 }
 
 INT_PTR InMemoryDialog::Show (HWND parent, DLGPROC dialogProc, LPARAM initParam) const

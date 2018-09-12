@@ -54,6 +54,7 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					WORD notificationCode = HIWORD (wParam);
 					switch (notificationCode) {
 						case EN_CHANGE:
+						case CBN_SELCHANGE:
 							{
 								DWORD controlId = GetWindowLong ((HWND) lParam, GWL_ID);
 								paramDialog->SetParameterChanged (controlId);
@@ -76,8 +77,9 @@ ParameterDialog::ChangedParameter::ChangedParameter (size_t index, const std::ws
 }
 
 ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface) :
+	paramInterface (paramInterface),
 	inMemoryDialog (nullptr),
-	paramInterface (paramInterface)
+	isSetUp (false)
 {
 
 }
@@ -137,11 +139,15 @@ void ParameterDialog::SetupControls (HWND dialogHwnd)
 {
 	if (DBGVERIFY (inMemoryDialog != nullptr)) {
 		inMemoryDialog->SetupControls (dialogHwnd);
+		isSetUp = true;
 	}
 }
 
 void ParameterDialog::SetParameterChanged (DWORD controlId)
 {
+	if (!isSetUp) {
+		return;
+	}
 	changedParams.insert (ControlIdToParamId (controlId));
 }
 
