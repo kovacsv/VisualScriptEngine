@@ -11,9 +11,9 @@ namespace NE
 
 enum class ValueCombinationMode
 {
-	Shortest,
-	Longest,
-	CrossProduct
+	Shortest		= 0,
+	Longest			= 1,
+	CrossProduct	= 2
 };
 
 class ValueCombination

@@ -10,12 +10,24 @@ namespace BI
 NE::SerializationInfo ValueCombinationFeature::serializationInfo (NE::ObjectVersion (1));
 NE::SerializationInfo EnableDisableFeature::serializationInfo (NE::ObjectVersion (1));
 
+static void SetNodeValueCombination (NE::ValueCombinationMode valueCombination, NUIE::NodeUIManager& uiManager, NUIE::UINodePtr& uiNode)
+{
+	std::shared_ptr<ValueCombinationFeature> featureNode = NE::Node::Cast<ValueCombinationFeature> (uiNode);
+	if (DBGERROR (featureNode == nullptr)) {
+		return;
+	}
+	featureNode->SetValueCombinationMode (valueCombination);
+	uiManager.InvalidateNodeValue (uiNode);
+	uiManager.InvalidateNodeDrawing (uiNode);
+	uiManager.RequestRecalculate ();
+}
+
 class SetValueCombinationModeCommand : public NUIE::NodeCommand
 {
 public:
-	SetValueCombinationModeCommand (const std::wstring& name, bool isChecked, NE::ValueCombinationMode combinationMode) :
+	SetValueCombinationModeCommand (const std::wstring& name, bool isChecked, NE::ValueCombinationMode valueCombination) :
 		NUIE::NodeCommand (name, isChecked),
-		combinationMode (combinationMode)
+		valueCombination (valueCombination)
 	{
 
 	}
@@ -27,18 +39,11 @@ public:
 
 	virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment&, NUIE::UINodePtr& uiNode) override
 	{
-		std::shared_ptr<ValueCombinationFeature> featureNode = NE::Node::Cast<ValueCombinationFeature> (uiNode);
-		if (DBGERROR (featureNode == nullptr)) {
-			return;
-		}
-		featureNode->SetValueCombinationMode (combinationMode);
-		uiManager.InvalidateNodeValue (uiNode);
-		uiManager.InvalidateNodeDrawing (uiNode);
-		uiManager.RequestRecalculate ();
+		SetNodeValueCombination (valueCombination, uiManager, uiNode);
 	}
 
 private:
-	NE::ValueCombinationMode combinationMode;
+	NE::ValueCombinationMode valueCombination;
 };
 
 static void EnableDisableNode (bool enable, NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode)
@@ -97,6 +102,11 @@ ValueCombinationFeature::~ValueCombinationFeature ()
 
 }
 
+NE::ValueCombinationMode ValueCombinationFeature::GetValueCombinationMode () const
+{
+	return valueCombinationMode;
+}
+
 void ValueCombinationFeature::SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode)
 {
 	valueCombinationMode = newValueCombinationMode;
@@ -116,9 +126,34 @@ void ValueCombinationFeature::RegisterFeatureCommands (NUIE::NodeCommandRegistra
 	commandRegistrator.RegisterNodeGroupCommand (setValueCombinationModeGroup);
 }
 
-void ValueCombinationFeature::RegisterFeatureParameters (NUIE::NodeParameterList&) const
+void ValueCombinationFeature::RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const
 {
+	class ValueCombinationParameter : public NUIE::EnumerationParameter<ValueCombinationFeature>
+	{
+	public:
+		ValueCombinationParameter () :
+			NUIE::EnumerationParameter<ValueCombinationFeature> (L"Value Combination", { L"Shortest", L"Longest", L"Cross Product" })
+		{
+		
+		}
 
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		{
+			NE::ValueCombinationMode valueCombination = GetTypedNode (uiNode)->GetValueCombinationMode ();
+			int valueCombinationInt = (int) valueCombination;
+			return NE::ValuePtr (new NE::IntValue (valueCombinationInt));
+		}
+		
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		{
+			int valueCombinationInt = NE::IntValue::Get (value);
+			NE::ValueCombinationMode valueCombination = (NE::ValueCombinationMode) valueCombinationInt;
+			SetNodeValueCombination (valueCombination, uiManager, uiNode);
+			return true;
+		}
+	};
+
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new ValueCombinationParameter ()));
 }
 
 NE::Stream::Status ValueCombinationFeature::Read (NE::InputStream& inputStream)

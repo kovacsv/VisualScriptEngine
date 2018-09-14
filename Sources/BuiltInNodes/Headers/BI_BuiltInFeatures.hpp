@@ -28,14 +28,15 @@ public:
 	ValueCombinationFeature (NE::ValueCombinationMode valueCombinationMode);
 	virtual ~ValueCombinationFeature ();
 
-	void				SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode);
-	bool				CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const;
+	NE::ValueCombinationMode	GetValueCombinationMode () const;
+	void						SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode);
+	bool						CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const;
 
-	virtual void		RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
-	virtual void		RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const override;
+	virtual void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void				RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const override;
 
-	NE::Stream::Status	Read (NE::InputStream& inputStream);
-	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+	NE::Stream::Status			Read (NE::InputStream& inputStream);
+	NE::Stream::Status			Write (NE::OutputStream& outputStream) const;
 
 private:
 	NE::ValueCombinationMode	valueCombinationMode;
