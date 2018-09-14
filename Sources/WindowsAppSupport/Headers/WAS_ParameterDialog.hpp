@@ -24,10 +24,14 @@ private:
 	class ChangedParameter
 	{
 	public:
-		ChangedParameter (size_t index, const std::wstring& value);
+		ChangedParameter (size_t index, const NE::ValuePtr& value);
 
+		size_t					GetIndex () const;
+		const NE::ValuePtr&		GetValue () const;
+
+	private:
 		size_t			index;
-		std::wstring	value;
+		NE::ValuePtr	value;
 	};
 
 	void	ApplyParameterChanges () const;

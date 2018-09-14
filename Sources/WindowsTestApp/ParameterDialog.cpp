@@ -70,7 +70,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 				}
 				choiceControl->Select (NE::IntValue::Get (value));
 				control = choiceControl;
-			}		
+			}
 		}
 		
 		if (DBGERROR (control == nullptr)) {
