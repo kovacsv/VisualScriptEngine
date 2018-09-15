@@ -150,8 +150,8 @@ DrawableNode::DrawableNode (const std::wstring& name, const NUIE::Point& positio
 
 void DrawableNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	BI::ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
 	BI::EnableDisableFeature::RegisterFeatureCommands (commandRegistrator);
+	BI::ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
 }
 
 void DrawableNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
