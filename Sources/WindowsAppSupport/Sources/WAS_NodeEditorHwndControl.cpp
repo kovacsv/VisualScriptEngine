@@ -158,45 +158,49 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 		case WM_KEYDOWN:
 			switch (wParam) {
 				case VK_ESCAPE:
-				{
-					NUIE::Key pressedKey (NUIE::PressedKeyCode::Escape);
-					nodeEditor->OnKeyPress (pressedKey);
-				}
-				break;
+					{
+						NUIE::Key pressedKey (NUIE::PressedKeyCode::Escape);
+						nodeEditor->OnKeyPress (pressedKey);
+					}
+					break;
 				case VK_DELETE:
-				{
-					NUIE::Key pressedKey (NUIE::PressedKeyCode::Delete);
-					nodeEditor->OnKeyPress (pressedKey);
-				}
-				break;
-			}
-			break;
-		case WM_CHAR:
-			switch (wParam) {
-				case 3: // TODO: Remove magic number
 					{
-						NUIE::Key pressedKey (NUIE::PressedKeyCode::Copy);
+						NUIE::Key pressedKey (NUIE::PressedKeyCode::Delete);
 						nodeEditor->OnKeyPress (pressedKey);
 					}
 					break;
-				case 22: // TODO: Remove magic number
+				case 'C':
 					{
-						NUIE::Key pressedKey (NUIE::PressedKeyCode::Paste);
-						nodeEditor->OnKeyPress (pressedKey);
+						if (GetKeyState (VK_CONTROL) < 0) {
+							NUIE::Key pressedKey (NUIE::PressedKeyCode::Copy);
+							nodeEditor->OnKeyPress (pressedKey);
+						}
 					}
 					break;
-				case 25: // TODO: Remove magic number
+				case 'V':
 					{
-						NUIE::Key pressedKey (NUIE::PressedKeyCode::Redo);
-						nodeEditor->OnKeyPress (pressedKey);
+						if (GetKeyState (VK_CONTROL) < 0) {
+							NUIE::Key pressedKey (NUIE::PressedKeyCode::Paste);
+							nodeEditor->OnKeyPress (pressedKey);
+						}
 					}
 					break;
-				case 26: // TODO: Remove magic number
-				{
-					NUIE::Key pressedKey (NUIE::PressedKeyCode::Undo);
-					nodeEditor->OnKeyPress (pressedKey);
-				}
-				break;
+				case 'Z':
+					{
+						if (GetKeyState (VK_CONTROL) < 0) {
+							NUIE::Key pressedKey (NUIE::PressedKeyCode::Undo);
+							nodeEditor->OnKeyPress (pressedKey);
+						}
+					}
+					break;
+				case 'Y':
+					{
+						if (GetKeyState (VK_CONTROL) < 0) {
+							NUIE::Key pressedKey (NUIE::PressedKeyCode::Redo);
+							nodeEditor->OnKeyPress (pressedKey);
+						}
+					}
+					break;
 			}
 			break;
 	}
