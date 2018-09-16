@@ -156,51 +156,37 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 			}
 			break;
 		case WM_KEYDOWN:
-			switch (wParam) {
-				case VK_ESCAPE:
-					{
-						NUIE::Key pressedKey (NUIE::PressedKeyCode::Escape);
-						nodeEditor->OnKeyPress (pressedKey);
+			{
+				NUIE::Key pressedKey (NUIE::PressedKeyCode::Undefined);
+				bool isControlPressed = (GetKeyState (VK_CONTROL) < 0);
+				if (isControlPressed) {
+					switch (wParam) {
+						case 'C':
+							pressedKey = NUIE::PressedKeyCode::Copy;
+							break;
+						case 'V':
+							pressedKey = NUIE::PressedKeyCode::Paste;
+							break;
+						case 'Z':
+							pressedKey = NUIE::PressedKeyCode::Undo;
+							break;
+						case 'Y':
+							pressedKey = NUIE::PressedKeyCode::Redo;
+							break;
 					}
-					break;
-				case VK_DELETE:
-					{
-						NUIE::Key pressedKey (NUIE::PressedKeyCode::Delete);
-						nodeEditor->OnKeyPress (pressedKey);
+				} else {
+					switch (wParam) {
+						case VK_ESCAPE:
+							pressedKey = NUIE::PressedKeyCode::Escape;
+							break;
+						case VK_DELETE:
+							pressedKey = NUIE::PressedKeyCode::Delete;
+							break;
 					}
-					break;
-				case 'C':
-					{
-						if (GetKeyState (VK_CONTROL) < 0) {
-							NUIE::Key pressedKey (NUIE::PressedKeyCode::Copy);
-							nodeEditor->OnKeyPress (pressedKey);
-						}
-					}
-					break;
-				case 'V':
-					{
-						if (GetKeyState (VK_CONTROL) < 0) {
-							NUIE::Key pressedKey (NUIE::PressedKeyCode::Paste);
-							nodeEditor->OnKeyPress (pressedKey);
-						}
-					}
-					break;
-				case 'Z':
-					{
-						if (GetKeyState (VK_CONTROL) < 0) {
-							NUIE::Key pressedKey (NUIE::PressedKeyCode::Undo);
-							nodeEditor->OnKeyPress (pressedKey);
-						}
-					}
-					break;
-				case 'Y':
-					{
-						if (GetKeyState (VK_CONTROL) < 0) {
-							NUIE::Key pressedKey (NUIE::PressedKeyCode::Redo);
-							nodeEditor->OnKeyPress (pressedKey);
-						}
-					}
-					break;
+				}
+				if (pressedKey.IsValid ()) {
+					nodeEditor->OnKeyPress (pressedKey);
+				}
 			}
 			break;
 	}
