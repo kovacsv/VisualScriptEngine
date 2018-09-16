@@ -220,16 +220,23 @@ static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
 #define MENU_FILE_NEW	1000
 #define MENU_FILE_QUIT	1001
+#define MENU_EDIT_UNDO	2000
+#define MENU_EDIT_REDO	2001
 
 static void CreateMenuBar (HWND hwnd)
 {
 	HMENU menuBar = CreateMenu ();
+	
 	HMENU fileMenu = CreateMenu ();
-
 	AppendMenu (fileMenu, MF_STRING, MENU_FILE_NEW, L"New");
 	AppendMenu (fileMenu, MF_SEPARATOR, 0, NULL);
 	AppendMenu (fileMenu, MF_STRING, MENU_FILE_QUIT, L"Quit");
 	AppendMenu (menuBar, MF_POPUP, (UINT_PTR) fileMenu, L"File");
+
+	HMENU editMenu = CreateMenu ();
+	AppendMenu (editMenu, MF_STRING, MENU_EDIT_UNDO, L"Undo");
+	AppendMenu (editMenu, MF_STRING, MENU_EDIT_REDO, L"Redo");
+	AppendMenu (menuBar, MF_POPUP, (UINT_PTR) editMenu, L"Edit");
 
 	SetMenu (hwnd, menuBar);
 }
@@ -273,6 +280,12 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 						break;
 					case MENU_FILE_QUIT:
 						PostQuitMessage (0);
+						break;
+					case MENU_EDIT_UNDO:
+						nodeEditor.Undo ();
+						break;
+					case MENU_EDIT_REDO:
+						nodeEditor.Redo ();
 						break;
 				}
 			}
