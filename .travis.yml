@@ -1,16 +1,9 @@
 language: cpp
 compiler: g++
 
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "ANex0425xt+idvd/VgCjgJLcfhms85eUEnGXs6+4Zd5ZO6uhTYNGUnh9ZLbBZ4SvX5BOyGMK2Up2vlBjdjWedo/aPDDSFIhtmzd6EC34C1QJZAjVl/qqKo5AhbEkVUjmd7zCuaOBXsISNjfJGS65Xkud/qhIcd/OStKw2Wg9huzNQHxSDDPInF0DH2/SbqLpKVFlRaQLyo5cDrFVVW0ThsBBEegjiJ0zYke+28gsldmZoX2dGzL59lnoHJvRq1o7QlXSje/8aL63/73mcCbnCfm0AqW3pFyH24xiaaGS0JSmUm8Y1IXpufj6bFo3JM0PdLHdSRiTu+sKvpTg76vvJex1slO30Ajk+t//d3YO7GOZQj1KSk8qG4zFj876wEKVZyATpnfCUhyyiypKCqSpGl6HLsmmHc0j2s339tT+aKITTG7AD1f5LlrYmg+x0Xax4pPA8EB5zWVRamiedsD8uEYeEMYnOa33qesjDoAhaNBCDZ15fkSO+fniP+hUViXwgFOa4M5fYgxQyrYwXQLnGNaTd62JDVfGWFCB5i7X4DvGr5K9lyLKVA+tR1h7X49LUNpspSm/IHP1DKizbAowMntGtyhAr9AeVuYAXBv1fOLr8aelM4bU6BHXdZLJ6brSLFq8OMRmKLORfgng6uLI98mxoFxi405ymmE9fPJ8G8Y="
-
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
@@ -22,17 +15,10 @@ addons:
     packages:
       - gcc-5
       - g++-5
-  coverity_scan:
-    project:
-      name: "kovacsv/VisualScriptEngine"
-    notification_email: viktorkovacs@gmail.com
-    build_command_prepend: "cd Make && cd GCC && make clean && cov-configure --comptype gcc --compiler gcc-5 --template"
-    build_command: "make"
-    branch_pattern: coverity_scan
 
 script:
-  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then cd Make ; fi
-  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then cd GCC ; fi
-  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make clean ; fi
-  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make ; fi
-  - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make test ; fi
+  - cd Make
+  - cd GCC
+  - make clean
+  - make
+  - make test
