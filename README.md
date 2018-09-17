@@ -4,11 +4,13 @@
 
 VisualScriptEngine is an experimental visual scripting engine designed for embedding in another applications.
 
-![Screenshot](Documentation/Screenshots/WindowsTestApp01.png?raw=true "Windows Test Application")
-
-![Screenshot](Documentation/Screenshots/WindowsTestApp02.gif?raw=true "Windows Test Application")
-
 ## Documentation
 
 [VisualScriptEngine Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki)
+
+## Screenshots
+
+![Screenshot](Documentation/Screenshots/WindowsTestApp01.png?raw=true "Windows Test Application")
+
+![Screenshot](Documentation/Screenshots/WindowsTestApp02.gif?raw=true "Windows Test Application")
 
