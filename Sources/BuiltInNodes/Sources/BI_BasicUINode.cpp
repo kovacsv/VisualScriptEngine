@@ -15,7 +15,7 @@ BasicUINode::BasicUINode () :
 }
 
 BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position) :
-	UINode (name, position)
+	NUIE::UINode (name, position)
 {
 
 }
@@ -28,14 +28,14 @@ BasicUINode::~BasicUINode ()
 NE::Stream::Status BasicUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
+	NUIE::UINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status BasicUINode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
+	NUIE::UINode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

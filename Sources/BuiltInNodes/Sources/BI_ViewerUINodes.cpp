@@ -65,7 +65,7 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 		}
 	};
 
-	UINode::RegisterParameters (parameterList);
+	NUIE::UINode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new TextPerPageParameter ()));
 }
 
@@ -173,7 +173,7 @@ void MultiLineViewerNode::ValidateCurrentPage () const
 NE::Stream::Status MultiLineViewerNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
+	NUIE::UINode::Read (inputStream);
 	inputStream.Read (textsPerPage);
 	return inputStream.GetStatus ();
 }
@@ -181,7 +181,7 @@ NE::Stream::Status MultiLineViewerNode::Read (NE::InputStream& inputStream)
 NE::Stream::Status MultiLineViewerNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
+	NUIE::UINode::Write (outputStream);
 	outputStream.Write (textsPerPage);
 	return outputStream.GetStatus ();
 }
