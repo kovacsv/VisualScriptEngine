@@ -1,5 +1,4 @@
 #include "BI_ArithmeticUINodes.hpp"
-#include "BI_UINodeLayouts.hpp"
 #include "NUIE_UINodeCommonParameters.hpp"
 
 #include <cmath>
@@ -20,7 +19,7 @@ BinaryOperationNode::BinaryOperationNode () :
 }
 
 BinaryOperationNode::BinaryOperationNode (const std::wstring& name, const NUIE::Point& position) :
-	UINode (name, position),
+	BasicUINode (name, position),
 	ValueCombinationFeature (NE::ValueCombinationMode::Longest)
 {
 
@@ -67,7 +66,7 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 
 void BinaryOperationNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	UINode::RegisterParameters (parameterList);
+	BasicUINode::RegisterParameters (parameterList);
 	ValueCombinationFeature::RegisterFeatureParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", NUIE::ParameterType::Double, NE::SlotId ("a"));
 	NUIE::RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", NUIE::ParameterType::Double, NE::SlotId ("b"));
@@ -81,7 +80,7 @@ void BinaryOperationNode::RegisterCommands (NUIE::NodeCommandRegistrator& comman
 NE::Stream::Status BinaryOperationNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
+	BasicUINode::Read (inputStream);
 	ValueCombinationFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
@@ -89,14 +88,9 @@ NE::Stream::Status BinaryOperationNode::Read (NE::InputStream& inputStream)
 NE::Stream::Status BinaryOperationNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
+	BasicUINode::Write (outputStream);
 	ValueCombinationFeature::Write (outputStream);
 	return outputStream.GetStatus ();
-}
-
-void BinaryOperationNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
-{
-	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 AdditionNode::AdditionNode () :

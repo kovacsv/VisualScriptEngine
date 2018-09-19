@@ -28,6 +28,9 @@
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ViewerUINodes.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BasicUINode.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ArithmeticUINodes.cpp">
@@ -49,6 +52,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ViewerUINodes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BasicUINode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

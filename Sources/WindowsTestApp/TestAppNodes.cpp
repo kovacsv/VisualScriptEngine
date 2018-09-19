@@ -2,7 +2,6 @@
 #include "NE_ValueCombination.hpp"
 #include "NUIE_UINodeParameters.hpp"
 #include "NUIE_UINodeCommonParameters.hpp"
-#include "BI_UINodeLayouts.hpp"
 #include "TestAppValues.hpp"
 #include "ResultImage.hpp"
 
@@ -21,7 +20,7 @@ ColorNode::ColorNode () :
 }
 
 ColorNode::ColorNode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::UINode (name, position),
+	BI::BasicUINode (name, position),
 	BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)
 {
 
@@ -102,7 +101,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 		}
 	};
 
-	UINode::RegisterParameters (parameterList);
+	BI::BasicUINode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new RedParameter ()));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new GreenParameter ()));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new BlueParameter ()));
@@ -116,7 +115,7 @@ void ColorNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrat
 NE::Stream::Status ColorNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NUIE::UINode::Read (inputStream);
+	BI::BasicUINode::Read (inputStream);
 	BI::ValueCombinationFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
@@ -124,14 +123,9 @@ NE::Stream::Status ColorNode::Read (NE::InputStream& inputStream)
 NE::Stream::Status ColorNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NUIE::UINode::Write (outputStream);
+	BI::BasicUINode::Write (outputStream);
 	BI::ValueCombinationFeature::Write (outputStream);
 	return outputStream.GetStatus ();
-}
-
-void ColorNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
-{
-	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 DrawableNode::DrawableNode () :
@@ -141,7 +135,7 @@ DrawableNode::DrawableNode () :
 }
 
 DrawableNode::DrawableNode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::UINode (name, position),
+	BI::BasicUINode (name, position),
 	BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest),
 	BI::EnableDisableFeature (true)
 {
@@ -156,7 +150,7 @@ void DrawableNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegist
 
 void DrawableNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	UINode::RegisterParameters (parameterList);
+	BI::BasicUINode::RegisterParameters (parameterList);
 	BI::EnableDisableFeature::RegisterFeatureParameters (parameterList);
 	BI::ValueCombinationFeature::RegisterFeatureParameters (parameterList);
 }
@@ -231,7 +225,7 @@ void DrawableNode::RemoveItem (NE::EvaluationEnv& env) const
 NE::Stream::Status DrawableNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
+	BI::BasicUINode::Read (inputStream);
 	BI::ValueCombinationFeature::Read (inputStream);
 	BI::EnableDisableFeature::Read (inputStream);
 	return inputStream.GetStatus ();
@@ -240,7 +234,7 @@ NE::Stream::Status DrawableNode::Read (NE::InputStream& inputStream)
 NE::Stream::Status DrawableNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
+	BI::BasicUINode::Write (outputStream);
 	BI::ValueCombinationFeature::Write (outputStream);
 	BI::EnableDisableFeature::Write (outputStream);
 	return outputStream.GetStatus ();
@@ -249,13 +243,8 @@ NE::Stream::Status DrawableNode::Write (NE::OutputStream& outputStream) const
 void DrawableNode::DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	EnableDisableFeature::CreateDrawingEnvironment (env, [&] (NUIE::NodeUIDrawingEnvironment& newEnv) {
-		UINode::DrawInplace (newEnv);
+		BI::BasicUINode::DrawInplace (newEnv);
 	});
-}
-
-void DrawableNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
-{
-	BI::DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 PointNode::PointNode () :
@@ -498,7 +487,7 @@ NE::ValuePtr OffsetNode::Calculate (NE::EvaluationEnv& env) const
 
 void OffsetNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	UINode::RegisterParameters (parameterList);
+	BI::BasicUINode::RegisterParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueParameter<OffsetNode, NE::DoubleValue> (parameterList, L"X", NUIE::ParameterType::Double, NE::SlotId ("x"));
 	NUIE::RegisterSlotDefaultValueParameter<OffsetNode, NE::DoubleValue> (parameterList, L"Y", NUIE::ParameterType::Double, NE::SlotId ("y"));
 }
@@ -506,7 +495,7 @@ void OffsetNode::RegisterParameters (NUIE::NodeParameterList& parameterList) con
 NE::Stream::Status OffsetNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NUIE::UINode::Read (inputStream);
+	BI::BasicUINode::Read (inputStream);
 	BI::ValueCombinationFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
@@ -514,7 +503,7 @@ NE::Stream::Status OffsetNode::Read (NE::InputStream& inputStream)
 NE::Stream::Status OffsetNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NUIE::UINode::Write (outputStream);
+	BI::BasicUINode::Write (outputStream);
 	BI::ValueCombinationFeature::Write (outputStream);
 	return outputStream.GetStatus ();
 }

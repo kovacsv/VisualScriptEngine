@@ -2,12 +2,12 @@
 #define TESTAPPNODES_HPP
 
 #include "NE_SingleValues.hpp"
-#include "NUIE_UINode.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_UINodeCommandRegistration.hpp"
+#include "BI_BasicUINode.hpp"
 #include "BI_BuiltInFeatures.hpp"
 
-class ColorNode :	public NUIE::UINode,
+class ColorNode :	public BI::BasicUINode,
 					public BI::ValueCombinationFeature
 {
 	DYNAMIC_SERIALIZABLE (ColorNode);
@@ -23,12 +23,9 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-protected:
-	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 };
 
-class DrawableNode :	public NUIE::UINode,
+class DrawableNode :	public BI::BasicUINode,
 						public BI::ValueCombinationFeature,
 						public BI::EnableDisableFeature
 {
@@ -52,7 +49,6 @@ public:
 
 protected:
 	virtual void				DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const override;
-	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
 	NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValuePtr& value) const;

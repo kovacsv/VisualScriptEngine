@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ArithmeticUINodes.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BasicUINode.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInCommands.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInFeatures.hpp" />
     <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_InputUINodes.hpp" />
@@ -29,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ArithmeticUINodes.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BasicUINode.cpp" />
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BuiltInCommands.cpp" />
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BuiltInFeatures.cpp" />
     <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_InputUINodes.cpp" />

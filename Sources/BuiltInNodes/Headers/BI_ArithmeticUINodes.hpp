@@ -2,13 +2,13 @@
 #define ARITHMETICUINODES_HPP
 
 #include "NE_SingleValues.hpp"
-#include "NUIE_UINode.hpp"
+#include "BI_BasicUINode.hpp"
 #include "BI_BuiltInFeatures.hpp"
 
 namespace BI
 {
 
-class BinaryOperationNode : public NUIE::UINode,
+class BinaryOperationNode : public BasicUINode,
 							public ValueCombinationFeature
 {
 	SERIALIZABLE;
@@ -26,9 +26,6 @@ public:
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
-
-protected:
-	virtual void				UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
 	virtual double				DoOperation (double a, double b) const = 0;

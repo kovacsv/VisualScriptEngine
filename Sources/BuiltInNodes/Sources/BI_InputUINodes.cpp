@@ -340,7 +340,7 @@ NumericRangeNode::NumericRangeNode () :
 }
 
 NumericRangeNode::NumericRangeNode (const std::wstring& name, const NUIE::Point& position) :
-	UINode (name, position)
+	BasicUINode (name, position)
 {
 
 }
@@ -353,20 +353,15 @@ NumericRangeNode::~NumericRangeNode ()
 NE::Stream::Status NumericRangeNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINode::Read (inputStream);
+	BasicUINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status NumericRangeNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINode::Write (outputStream);
+	BasicUINode::Write (outputStream);
 	return outputStream.GetStatus ();
-}
-
-void NumericRangeNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
-{
-	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
 }
 
 IntegerRangeNode::IntegerRangeNode () :
@@ -431,7 +426,7 @@ void IntegerRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 		}
 	};
 
-	UINode::RegisterParameters (parameterList);
+	BasicUINode::RegisterParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Start", NUIE::ParameterType::Integer, NE::SlotId ("start"));
 	NUIE::RegisterSlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Step", NUIE::ParameterType::Integer, NE::SlotId ("step"));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
@@ -513,7 +508,7 @@ void DoubleRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList
 		}
 	};
 
-	UINode::RegisterParameters (parameterList);
+	BasicUINode::RegisterParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
 	NUIE::RegisterSlotDefaultValueParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
