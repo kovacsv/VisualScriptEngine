@@ -8,6 +8,8 @@ Make/VS/*/*/Release/*
 Make/VS/*/Debug/*
 Make/VS/*/*/Debug/*
 *.db
+*.db-shm
+*.db-wal
 *.opendb
 *.suo
 *.vcxproj.user
