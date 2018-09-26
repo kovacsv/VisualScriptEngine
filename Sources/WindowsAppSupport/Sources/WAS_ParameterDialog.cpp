@@ -102,9 +102,10 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 	static const int controlHeight = 12;
 	static const int buttonHeight = 16;
 
-	int paramCount = (int) paramInterface->GetParameterCount ();
+	size_t paramCount = paramInterface->GetParameterCount ();
+	int paramCountInt = (int) paramCount;
 	int dialogWidth = staticWidth + editWidth + 3 * padding;
-	int dialogHeight = paramCount * controlHeight + (paramCount + 2) * padding + buttonHeight;
+	int dialogHeight = paramCountInt * controlHeight + (paramCountInt + 2) * padding + buttonHeight;
 	InMemoryDialog dialog (L"Parameters", x, y, dialogWidth, dialogHeight);
 
 	int currentY = padding;

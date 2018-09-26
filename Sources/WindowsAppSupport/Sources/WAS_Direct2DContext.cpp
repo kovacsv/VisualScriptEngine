@@ -216,7 +216,6 @@ void Direct2DContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& co
 
 void Direct2DContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
-	D2D1_RECT_F d2Rect = CreateRect (rect);
 	IDWriteTextFormat* textFormat = textFormatCache.Get (renderTarget, font);
 	ID2D1SolidColorBrush* d2Brush = brushCache.Get (renderTarget, textColor);
 
