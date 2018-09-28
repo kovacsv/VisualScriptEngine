@@ -22,3 +22,5 @@ script:
   - make clean
   - make
   - make test
+  - make release=1
+  - make test release=1

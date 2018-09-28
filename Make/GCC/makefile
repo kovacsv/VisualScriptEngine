@@ -8,7 +8,7 @@ DEBUG_BINARIES_FOLDER = DebugBinaries
 
 BINARIES_FOLDER = 
 
-ifeq ($(RELEASE), 1)
+ifeq ($(release), 1)
 BINARIES_FOLDER = $(RELEASE_BINARIES_FOLDER)
 else
 COMPILER_FLAGS += -DDEBUG -g
