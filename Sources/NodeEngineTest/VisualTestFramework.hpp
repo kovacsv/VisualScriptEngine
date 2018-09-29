@@ -43,6 +43,7 @@ public:
 	virtual void					OnValuesRecalculated () override;
 	virtual void					OnRedrawRequested () override;
 	virtual EventHandlers&			GetEventHandlers () override;
+	virtual double					GetMouseMoveMinOffset () override;
 
 	void							SetNextCommandName (const std::wstring& nextCommandName);
 	const SvgDrawingContext&		GetSvgDrawingContext () const;

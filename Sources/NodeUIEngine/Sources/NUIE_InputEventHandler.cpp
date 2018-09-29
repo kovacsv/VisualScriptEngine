@@ -87,11 +87,17 @@ void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys
 
 void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
 {
+	std::unordered_set<MouseButton> downButtonsMoved;
 	for (const auto& it : downMouseButtons) {
-		movingMouseButtons.insert (it.first);
-		handler.HandleMouseDragStart (env, modifierKeys, it.first, it.second);
+		if (it.second.DistanceTo (position) > env.GetMouseMoveMinOffset ()) {
+			movingMouseButtons.insert (it.first);
+			handler.HandleMouseDragStart (env, modifierKeys, it.first, it.second);
+			downButtonsMoved.insert (it.first);
+		}
 	}
-	downMouseButtons.clear ();
+	for (MouseButton downButtonMoved : downButtonsMoved) {
+		downMouseButtons.erase (downButtonMoved);
+	}
 
 	if (!movingMouseButtons.empty ()) {
 		handler.HandleMouseDrag (env, modifierKeys, position);

@@ -227,6 +227,11 @@ NUIE::EventHandlers& NodeEditorUIEnvironment::GetEventHandlers ()
 	return eventHandlers;
 }
 
+double NodeEditorUIEnvironment::GetMouseMoveMinOffset ()
+{
+	return 2.0;
+}
+
 NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
 	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
 	updateInterface (updateInterface),

@@ -207,6 +207,11 @@ public:
 		return eventHandlers;
 	}
 
+	virtual double GetMouseMoveMinOffset () override
+	{
+		return 2.0;
+	}
+
 private:
 	NE::BasicStringSettings		stringSettings;
 	NUIE::DefaultSkinParams		skinParams;
