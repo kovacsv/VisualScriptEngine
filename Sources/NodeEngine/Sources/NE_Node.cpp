@@ -212,7 +212,7 @@ void Node::SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter)
 	nodeId = evaluatorSetter.GetNodeId ();
 	nodeEvaluator = evaluatorSetter.GetNodeEvaluator ();
 	if (evaluatorSetter.GetInitializationMode () == InitializationMode::Initialize) {
-		Initialize ();
+		RegisterSlots ();
 	}
 }
 
@@ -289,11 +289,6 @@ ListValuePtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) 
 	}
 
 	return EvaluateInputSlot (inputSlot, env);
-}
-
-void Node::Initialize ()
-{
-	RegisterSlots ();
 }
 
 void Node::ProcessValue (const ValuePtr&, EvaluationEnv&) const
