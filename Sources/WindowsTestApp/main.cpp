@@ -116,9 +116,7 @@ public:
 
 	void OnNew (wxCommandEvent& evt)
 	{
-		nodeEditorControl->New ();
-		drawingControl->ClearImage ();
-		applicationState.ClearCurrentFileName ();
+		Reset ();
 		UpdateStatusBar ();
 	}
 
@@ -131,6 +129,8 @@ public:
 			// TODO: handle when open fails
 			if (nodeEditorControl->Open (fileName)) {
 				applicationState.SetCurrentFileName (fileName);
+			} else {
+				Reset ();
 			}
 		}
 		UpdateStatusBar ();
@@ -185,6 +185,13 @@ public:
 	}
 
 private:
+	void Reset ()
+	{
+		nodeEditorControl->New ();
+		drawingControl->ClearImage ();
+		applicationState.ClearCurrentFileName ();
+	}
+
 	wxMenuBar*					menuBar;
 	wxMenu*						fileMenu;
 	wxMenu*						editMenu;
