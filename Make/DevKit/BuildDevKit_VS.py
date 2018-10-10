@@ -8,7 +8,7 @@ class DevKitBuilder:
 		self.rootDirectory = rootDirectory
 		self.configMode = configMode
 		self.solutionDir = os.path.join (self.rootDirectory, 'Make', 'VS')
-		self.devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS_' + self.configMode)
+		self.devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS_2015_' + self.configMode)
 	
 	def Clean (self):
 		if os.path.exists (self.devKitFolder):
@@ -31,8 +31,8 @@ class DevKitBuilder:
 		return subprocess.call ([testPath])
 		
 	def Publish (self):
-		devKitHeaderFolder = os.path.join (self.devKitFolder, 'Headers')
-		devKitLibFolder = os.path.join (self.devKitFolder, 'Libs')
+		devKitHeaderFolder = os.path.join (self.devKitFolder, 'include')
+		devKitLibFolder = os.path.join (self.devKitFolder, 'libs')
 		
 		if os.path.exists (self.devKitFolder):
 			shutil.rmtree (self.devKitFolder)
@@ -46,7 +46,9 @@ class DevKitBuilder:
 		folderNames = ['NodeEngine', 'NodeUIEngine', 'BuiltInNodes', 'WindowsAppSupport']
 		for folderName in folderNames:
 			shutil.copy (os.path.join (binaryFolder, folderName + '.lib'), devKitLibFolder)
-			shutil.copytree (os.path.join (sourcesFolder, folderName, 'Headers'), os.path.join (devKitHeaderFolder, folderName))
+			headersFolder = os.path.join (sourcesFolder, folderName, 'Headers')
+			for headerFileName in os.listdir (headersFolder):
+				shutil.copy (os.path.join (headersFolder, headerFileName), devKitHeaderFolder)
 		return True
 
 def Main (argv):
