@@ -43,7 +43,7 @@ class DevKitBuilder:
 		binaryFolder = os.path.join (self.solutionDir, 'x64', self.configMode)
 		sourcesFolder = os.path.join (self.rootDirectory, 'Sources')
 
-		folderNames = ['NodeEngine', 'NodeUIEngine', 'BuiltInNodes', 'WindowsAppSupport']
+		folderNames = ['NodeEngine', 'NodeUIEngine', 'BuiltInNodes', 'WindowsAppSupport', 'wxWidgetsAppSupport']
 		for folderName in folderNames:
 			shutil.copy (os.path.join (binaryFolder, folderName + '.lib'), devKitLibFolder)
 			headersFolder = os.path.join (sourcesFolder, folderName, 'Headers')

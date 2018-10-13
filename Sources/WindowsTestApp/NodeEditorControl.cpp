@@ -1,12 +1,11 @@
 #include "NodeEditorControl.hpp"
-#include "ContextFactory.hpp"
-
 #include "BI_InputUINodes.hpp"
 #include "BI_ArithmeticUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
-#include "TestAppNodes.hpp"
+#include "WXAS_ContextFactory.hpp"
+#include "WXAS_ParameterDialog.hpp"
 
-#include "ParameterDialog.hpp"
+#include "TestAppNodes.hpp"
 
 #include <wx/menu.h>
 
@@ -214,7 +213,7 @@ NE::EvaluationEnv& NodeEditorUIEnvironment::GetEvaluationEnv ()
 
 void NodeEditorUIEnvironment::OnValuesRecalculated ()
 {
-	nodeEditorControl->RedrawResultImage ();
+	nodeEditorControl->OnValuesRecalculated ();
 }
 
 void NodeEditorUIEnvironment::OnRedrawRequested ()
@@ -390,9 +389,9 @@ void NodeEditorControl::Redo ()
 	nodeEditor.Redo ();
 }
 
-void NodeEditorControl::RedrawResultImage ()
+void NodeEditorControl::OnValuesRecalculated ()
 {
-	updateInterface.RedrawResultImage ();
+	updateInterface.OnValuesRecalculated ();
 }
 
 BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)

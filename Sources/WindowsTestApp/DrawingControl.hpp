@@ -3,8 +3,8 @@
 
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_ViewBox.hpp"
+#include "WXAS_ControlUtilities.hpp"
 #include "ResultImage.hpp"
-#include "ControlUtilities.hpp"
 
 #include <wx/wx.h>
 #include <memory>

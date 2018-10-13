@@ -1,4 +1,4 @@
-#include "wxDrawingContext.hpp"
+#include "WXAS_wxDrawingContext.hpp"
 #include "NE_Debug.hpp"
 
 #include <wx/wx.h>

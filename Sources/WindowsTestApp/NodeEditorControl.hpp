@@ -3,8 +3,8 @@
 
 #include "NUIE_NodeEditor.hpp"
 #include "BI_BuiltInCommands.hpp"
-#include "ControlUtilities.hpp"
-#include "ResultImage.hpp"
+#include "WXAS_ControlUtilities.hpp"
+
 #include <wx/wx.h>
 #include <memory>
 
@@ -59,7 +59,7 @@ public:
 	UpdateInterface ();
 	virtual ~UpdateInterface ();
 
-	virtual void RedrawResultImage () = 0;
+	virtual void OnValuesRecalculated () = 0;
 };
 
 class NodeEditorControl;
@@ -123,7 +123,7 @@ public:
 	void							Undo ();
 	void							Redo ();
 
-	void							RedrawResultImage ();
+	void							OnValuesRecalculated ();
 
 private:
 	UpdateInterface&				updateInterface;

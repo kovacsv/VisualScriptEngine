@@ -81,7 +81,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\wxWidgetsAppSupport\Headers;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers;$(SolutionDir)..\..\Sources\wxWidgetsAppSupport\Headers;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;_CRT_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
@@ -108,7 +108,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\wxWidgetsAppSupport\Headers;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers;$(SolutionDir)..\..\Sources\wxWidgetsAppSupport\Headers;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -120,10 +120,30 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\wxDrawingContext.hpp" />
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ContextFactory.hpp" />
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ControlUtilities.hpp" />
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ParameterDialog.hpp" />
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_wxDrawingContext.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\wxDrawingContext.cpp" />
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ContextFactory.cpp" />
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ControlUtilities.cpp" />
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ParameterDialog.cpp" />
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_wxDrawingContext.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BuiltInNodes\BuiltInNodes.vcxproj">
+      <Project>{30e0bdd6-57d1-4c26-8c50-61f0be438685}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NodeEngine\NodeEngine.vcxproj">
+      <Project>{ac633fde-c8dd-4a56-8434-1eb1aa220358}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NodeUIEngine\NodeUIEngine.vcxproj">
+      <Project>{62847b7a-aaf0-4eb7-b975-829609141c57}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsAppSupport\WindowsAppSupport.vcxproj">
+      <Project>{103c18b8-1f71-461f-8d93-a9a8a869ffd5}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,13 +7,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\wxDrawingContext.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\wxDrawingContext.cpp">
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_wxDrawingContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ContextFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ControlUtilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ParameterDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_wxDrawingContext.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ContextFactory.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ControlUtilities.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ParameterDialog.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

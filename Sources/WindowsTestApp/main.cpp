@@ -1,8 +1,8 @@
 #include "DrawingControl.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"
+#include "WXAS_ParameterDialog.hpp"
 #include "NodeEditorControl.hpp"
-#include "ParameterDialog.hpp"
 
 #include <CommCtrl.h>
 #include <iostream>
@@ -53,7 +53,7 @@ public:
 		
 	}
 
-	virtual void RedrawResultImage () override
+	virtual void OnValuesRecalculated () override
 	{
 		drawingControl->RedrawImage ();
 	}

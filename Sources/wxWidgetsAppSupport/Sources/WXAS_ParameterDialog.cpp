@@ -1,9 +1,7 @@
-#include "ParameterDialog.hpp"
+#include "WXAS_ParameterDialog.hpp"
 #include "NUIE_UINodeParameters.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"
-
-#include <wx/spinctrl.h>
 
 static const wxWindowID FirstControlId = 10000;
 

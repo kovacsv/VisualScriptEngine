@@ -1,5 +1,5 @@
-#include "ContextFactory.hpp"
-#include "wxDrawingContext.hpp"
+#include "WXAS_ContextFactory.hpp"
+#include "WXAS_wxDrawingContext.hpp"
 
 #if defined(_WIN32)
 #include "WAS_BitmapContextGdi.hpp"

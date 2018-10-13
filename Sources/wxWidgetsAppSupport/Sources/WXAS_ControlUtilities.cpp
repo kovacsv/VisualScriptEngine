@@ -1,4 +1,4 @@
-#include "ControlUtilities.hpp"
+#include "WXAS_ControlUtilities.hpp"
 
 MouseCaptureHandler::MouseCaptureHandler (wxPanel* panel) :
 	panel (panel),
