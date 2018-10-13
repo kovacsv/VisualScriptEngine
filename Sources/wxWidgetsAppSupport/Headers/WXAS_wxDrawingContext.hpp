@@ -6,6 +6,9 @@
 #include <wx/dcmemory.h>
 #include <wx/graphics.h>
 
+namespace WXAS
+{
+
 class wxDrawingContext : public NUIE::NativeDrawingContext
 {
 public:
@@ -52,5 +55,7 @@ private:
 	wxMemoryDC*					memoryDC;
 	wxGraphicsContext*			graphicsContext;
 };
+
+}
 
 #endif

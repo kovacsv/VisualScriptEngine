@@ -27,7 +27,7 @@ public:
 	void	RedrawImage ();
 
 private:
-	MouseCaptureHandler					captureHandler;
+	WXAS::MouseCaptureHandler			captureHandler;
 	std::shared_ptr<ResultImage>		resultImage;
 
 	std::shared_ptr<NUIE::NativeDrawingContext>		drawingContext;

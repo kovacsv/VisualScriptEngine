@@ -4,6 +4,9 @@
 #include "NUIE_InputEventHandler.hpp"
 #include <wx/wx.h>
 
+namespace WXAS
+{
+
 // On double click event the mouse down and up events are not in pair
 class MouseCaptureHandler
 {
@@ -21,5 +24,7 @@ private:
 
 NUIE::ModifierKeys GetModiferKeysFromEvent (wxKeyboardState& evt);
 NUIE::Key GetKeyFromEvent (wxKeyEvent& evt);
+
+}
 
 #endif

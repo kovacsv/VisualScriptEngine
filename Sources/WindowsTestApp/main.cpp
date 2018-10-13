@@ -44,7 +44,7 @@ private:
 	std::wstring currentFileName;
 };
 
-class MyNodeEditorEventHandler : public NodeEditorEventHandler
+class MyNodeEditorEventHandler : public WXAS::NodeEditorEventHandler
 {
 public:
 	MyNodeEditorEventHandler (DrawingControl* drawingControl) :
@@ -84,7 +84,7 @@ public:
 		editorAndDrawingSplitter (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
 		drawingControl (new DrawingControl (editorAndDrawingSplitter, resultImage)),
 		editorEventHandler (drawingControl),
-		nodeEditorControl (new NodeEditorControl (editorAndDrawingSplitter, evaluationEnv, editorEventHandler)),
+		nodeEditorControl (new WXAS::NodeEditorControl (editorAndDrawingSplitter, evaluationEnv, editorEventHandler)),
 		applicationState ()
 	{
 		fileMenu->Append (CommandId::File_New, "New");
@@ -199,7 +199,7 @@ private:
 	wxSplitterWindow*			editorAndDrawingSplitter;
 	DrawingControl*				drawingControl;
 	MyNodeEditorEventHandler	editorEventHandler;
-	NodeEditorControl*			nodeEditorControl;
+	WXAS::NodeEditorControl*	nodeEditorControl;
 
 	ApplicationState			applicationState;
 

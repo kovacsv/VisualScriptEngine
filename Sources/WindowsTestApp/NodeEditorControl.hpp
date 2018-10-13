@@ -8,6 +8,9 @@
 #include <wx/wx.h>
 #include <memory>
 
+namespace WXAS
+{
+
 class MyCreateNodeCommand : public BI::CreateNodeCommand
 {
 public:
@@ -133,5 +136,7 @@ private:
 
 	DECLARE_EVENT_TABLE ()
 };
+
+}
 
 #endif

@@ -3,6 +3,9 @@
 #include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"
 
+namespace WXAS
+{
+
 static const wxWindowID FirstControlId = 10000;
 
 static wxWindowID ParamIdToControlId (size_t paramId)
@@ -202,3 +205,5 @@ EVT_BUTTON (DialogIds::OkButtonId, ParameterDialog::OnOkButtonClick)
 EVT_TEXT (wxID_ANY, ParameterDialog::OnTextChanged)
 EVT_CHOICE (wxID_ANY, ParameterDialog::OnChoiceChanged)
 END_EVENT_TABLE ()
+
+}

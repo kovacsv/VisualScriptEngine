@@ -6,6 +6,9 @@
 #include <wx/wx.h>
 #include <memory>
 
+namespace WXAS
+{
+
 class ParameterDialog : public wxDialog
 {
 public:
@@ -42,5 +45,7 @@ private:
 
 	DECLARE_EVENT_TABLE ();
 };
+
+}
 
 #endif

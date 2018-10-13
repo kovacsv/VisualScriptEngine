@@ -6,7 +6,7 @@ DrawingControl::DrawingControl (wxWindow *parent, const std::shared_ptr<ResultIm
 	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize),
 	captureHandler (this),
 	resultImage (resultImage),
-	drawingContext (new wxDrawingContext ()),
+	drawingContext (new WXAS::wxDrawingContext ()),
 	viewBox (NUIE::Point (0.0, 0.0), 1.0),
 	lastMousePos (nullptr)
 {

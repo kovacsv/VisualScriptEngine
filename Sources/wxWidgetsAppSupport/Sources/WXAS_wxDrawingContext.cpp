@@ -3,6 +3,9 @@
 
 #include <wx/wx.h>
 
+namespace WXAS
+{
+
 wxDrawingContext::wxDrawingContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
@@ -206,4 +209,6 @@ wxFont wxDrawingContext::GetFont (const NUIE::Font& font)
 		fontSize += 1;
 	}
 	return wxFont (fontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+}
+
 }

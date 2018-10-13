@@ -11,6 +11,9 @@
 #define USE_WX_CONTEXT
 #endif
 
+namespace WXAS
+{
+
 void* GetNativeHandle (wxPanel* panel)
 {
 #if defined(USE_WX_CONTEXT)
@@ -27,4 +30,6 @@ std::shared_ptr<NUIE::NativeDrawingContext> CreateNativeDrawingContext ()
 #else
 	return std::shared_ptr<NUIE::NativeDrawingContext> (new WAS::BitmapContextGdi ());
 #endif
+}
+
 }

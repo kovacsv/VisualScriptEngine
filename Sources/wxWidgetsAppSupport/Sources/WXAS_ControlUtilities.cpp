@@ -1,5 +1,8 @@
 #include "WXAS_ControlUtilities.hpp"
 
+namespace WXAS
+{
+
 MouseCaptureHandler::MouseCaptureHandler (wxPanel* panel) :
 	panel (panel),
 	counter (0)
@@ -69,4 +72,6 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 	}
 
 	return NUIE::InvalidKey;
+}
+
 }

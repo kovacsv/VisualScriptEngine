@@ -9,6 +9,9 @@
 
 #include <wx/menu.h>
 
+namespace WXAS
+{
+
 static NUIE::UICommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
 {
 	if (commands.IsEmpty ()) {
@@ -417,3 +420,5 @@ EVT_MOTION (NodeEditorControl::OnMouseMove)
 EVT_KEY_DOWN (NodeEditorControl::OnKeyDown)
 
 END_EVENT_TABLE ()
+
+}
