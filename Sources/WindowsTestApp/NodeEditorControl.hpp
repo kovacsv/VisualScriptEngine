@@ -40,22 +40,6 @@ private:
 	NodeType nodeType;
 };
 
-class AppEventHandlers : public NUIE::EventHandlers
-{
-public:
-	AppEventHandlers (wxPanel* panel);
-
-	virtual NUIE::UICommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::UICommandStructure& commands) override;
-	virtual NUIE::UICommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::UICommandStructure& commands) override;
-	virtual NUIE::UICommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& outputSlot, const NUIE::UICommandStructure& commands) override;
-	virtual NUIE::UICommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::UICommandStructure& commands) override;
-	virtual NUIE::UICommandPtr	OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::UICommandStructure& commands) override;
-	virtual bool				OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface) override;
-
-private:
-	wxPanel* panel;
-};
-
 class NodeEditorEventHandler
 {
 public:
@@ -91,7 +75,7 @@ private:
 	NE::BasicStringSettings							stringSettings;
 	NUIE::DefaultSkinParams							skinParams;
 	std::shared_ptr<NUIE::NativeDrawingContext>		drawingContext;
-	AppEventHandlers								eventHandlers;
+	std::shared_ptr<NUIE::EventHandlers>			eventHandlers;
 };
 
 class NodeEditorControl : public wxPanel
