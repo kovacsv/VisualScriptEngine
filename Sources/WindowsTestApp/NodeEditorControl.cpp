@@ -100,85 +100,78 @@ NodeEditorEventHandler::~NodeEditorEventHandler ()
 
 }
 
-class NodeEditorControlEventHandlers : public NUIE::EventHandlers
+NodeEditorEventHandlers::NodeEditorEventHandlers (NodeEditorControl* nodeEditorControl) :
+	nodeEditorControl (nodeEditorControl)
 {
-public:
-	NodeEditorControlEventHandlers (wxPanel* panel) :
-		panel (panel)
-	{
 
+}
+
+NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
+{
+	NUIE::UICommandStructure actualCommands = commands;
+	NUIE::UIGroupCommandPtr createCommandGroup (new NUIE::UIGroupCommand (L"Add Node"));
+
+	NUIE::UIGroupCommandPtr inputCommandGroup (new NUIE::UIGroupCommand (L"Input Nodes"));
+	inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
+	inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
+	inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));
+	inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberRange, uiManager, uiEnvironment, L"Number Range", position)));
+	createCommandGroup->AddChildCommand (inputCommandGroup);
+
+	NUIE::UIGroupCommandPtr arithmeticCommandGroup (new NUIE::UIGroupCommand (L"Arithmetic Nodes"));
+	arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Addition", position)));
+	arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Subtraction, uiManager, uiEnvironment, L"Subtraction", position)));
+	arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Multiplication, uiManager, uiEnvironment, L"Multiplication", position)));
+	arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Division, uiManager, uiEnvironment, L"Division", position)));
+	createCommandGroup->AddChildCommand (arithmeticCommandGroup);
+
+	NUIE::UIGroupCommandPtr drawingCommandGroup (new NUIE::UIGroupCommand (L"Drawing Nodes"));
+	drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Color, uiManager, uiEnvironment, L"Color", position)));
+	drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Point, uiManager, uiEnvironment, L"Point", position)));
+	drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Line, uiManager, uiEnvironment, L"Line", position)));
+	drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Circle, uiManager, uiEnvironment, L"Circle", position)));
+	createCommandGroup->AddChildCommand (drawingCommandGroup);
+
+	NUIE::UIGroupCommandPtr transformationCommandGroup (new NUIE::UIGroupCommand (L"Transformation Nodes"));
+	transformationCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Offset, uiManager, uiEnvironment, L"Offset", position)));
+	createCommandGroup->AddChildCommand (transformationCommandGroup);
+
+	NUIE::UIGroupCommandPtr otherCommandGroup (new NUIE::UIGroupCommand (L"Other Nodes"));
+	otherCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Viewer", position)));
+	createCommandGroup->AddChildCommand (otherCommandGroup);
+
+	actualCommands.AddCommand (createCommandGroup);
+	return SelectCommandFromContextMenu (nodeEditorControl, position, actualCommands);
+}
+
+NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::UICommandStructure& commands)
+{
+	return SelectCommandFromContextMenu (nodeEditorControl, position, commands);
+}
+
+NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& outputSlot, const NUIE::UICommandStructure& commands)
+{
+	return SelectCommandFromContextMenu (nodeEditorControl, position, commands);
+}
+
+NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::UICommandStructure& commands)
+{
+	return SelectCommandFromContextMenu (nodeEditorControl, position, commands);
+}
+
+NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::UICommandStructure& commands)
+{
+	return SelectCommandFromContextMenu (nodeEditorControl, position, commands);
+}
+
+bool NodeEditorEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface)
+{
+	ParameterDialog paramDialog (nodeEditorControl, paramInterface);
+	if (paramDialog.ShowModal () == ParameterDialog::DialogIds::OkButtonId) {
+		return true;
 	}
-
-	NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
-	{
-		NUIE::UICommandStructure actualCommands = commands;
-		NUIE::UIGroupCommandPtr createCommandGroup (new NUIE::UIGroupCommand (L"Add Node"));
-
-		NUIE::UIGroupCommandPtr inputCommandGroup (new NUIE::UIGroupCommand (L"Input Nodes"));
-		inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
-		inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
-		inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));
-		inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberRange, uiManager, uiEnvironment, L"Number Range", position)));
-		createCommandGroup->AddChildCommand (inputCommandGroup);
-
-		NUIE::UIGroupCommandPtr arithmeticCommandGroup (new NUIE::UIGroupCommand (L"Arithmetic Nodes"));
-		arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Addition", position)));
-		arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Subtraction, uiManager, uiEnvironment, L"Subtraction", position)));
-		arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Multiplication, uiManager, uiEnvironment, L"Multiplication", position)));
-		arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Division, uiManager, uiEnvironment, L"Division", position)));
-		createCommandGroup->AddChildCommand (arithmeticCommandGroup);
-
-		NUIE::UIGroupCommandPtr drawingCommandGroup (new NUIE::UIGroupCommand (L"Drawing Nodes"));
-		drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Color, uiManager, uiEnvironment, L"Color", position)));
-		drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Point, uiManager, uiEnvironment, L"Point", position)));
-		drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Line, uiManager, uiEnvironment, L"Line", position)));
-		drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Circle, uiManager, uiEnvironment, L"Circle", position)));
-		createCommandGroup->AddChildCommand (drawingCommandGroup);
-
-		NUIE::UIGroupCommandPtr transformationCommandGroup (new NUIE::UIGroupCommand (L"Transformation Nodes"));
-		transformationCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Offset, uiManager, uiEnvironment, L"Offset", position)));
-		createCommandGroup->AddChildCommand (transformationCommandGroup);
-
-		NUIE::UIGroupCommandPtr otherCommandGroup (new NUIE::UIGroupCommand (L"Other Nodes"));
-		otherCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Viewer", position)));
-		createCommandGroup->AddChildCommand (otherCommandGroup);
-
-		actualCommands.AddCommand (createCommandGroup);
-		return SelectCommandFromContextMenu (panel, position, actualCommands);
-	}
-
-	NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::UICommandStructure& commands)
-	{
-		return SelectCommandFromContextMenu (panel, position, commands);
-	}
-
-	NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& outputSlot, const NUIE::UICommandStructure& commands)
-	{
-		return SelectCommandFromContextMenu (panel, position, commands);
-	}
-
-	NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::UICommandStructure& commands)
-	{
-		return SelectCommandFromContextMenu (panel, position, commands);
-	}
-
-	NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::UICommandStructure& commands)
-	{
-		return SelectCommandFromContextMenu (panel, position, commands);
-	}
-
-	bool OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface)
-	{
-		ParameterDialog paramDialog (panel, paramInterface);
-		if (paramDialog.ShowModal () == ParameterDialog::DialogIds::OkButtonId) {
-			return true;
-		}
-		return false;
-	}
-
-private:
-	wxPanel* panel;
-};
+	return false;
+}
 
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
@@ -186,7 +179,7 @@ NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorC
 	stringSettings (L'.', L',', 2),
 	skinParams (),
 	drawingContext (CreateNativeDrawingContext ()),
-	eventHandlers (std::shared_ptr<NUIE::EventHandlers> (new NodeEditorControlEventHandlers (nodeEditorControl)))
+	eventHandlers (std::shared_ptr<NUIE::EventHandlers> (new NodeEditorEventHandlers (nodeEditorControl)))
 {
 	drawingContext->Init (GetNativeHandle (nodeEditorControl));
 }

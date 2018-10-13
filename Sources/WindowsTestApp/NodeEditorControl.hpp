@@ -51,13 +51,29 @@ public:
 
 class NodeEditorControl;
 
+class NodeEditorEventHandlers : public NUIE::EventHandlers
+{
+public:
+	NodeEditorEventHandlers (NodeEditorControl* nodeEditorControl);
+
+	virtual NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::UICommandStructure& commands) override;
+	virtual NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::UICommandStructure& commands) override;
+	virtual NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& outputSlot, const NUIE::UICommandStructure& commands) override;
+	virtual NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::UICommandStructure& commands) override;
+	virtual NUIE::UICommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::UICommandStructure& commands) override;
+	virtual bool OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface);
+
+private:
+	NodeEditorControl* nodeEditorControl;
+};
+
 class NodeEditorUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
 	NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv);
 
-	void							OnPaint (wxPanel* panel, wxPaintEvent& evt);
-	void							OnResize (int width, int height);
+	void								OnPaint (wxPanel* panel, wxPaintEvent& evt);
+	void								OnResize (int width, int height);
 
 	virtual const NE::StringSettings&	GetStringSettings () override;
 	virtual const NUIE::SkinParams&		GetSkinParams () override;
@@ -110,6 +126,7 @@ public:
 	void							Undo ();
 	void							Redo ();
 
+	void							OnContextMenu ();
 	void							OnValuesRecalculated ();
 
 private:
