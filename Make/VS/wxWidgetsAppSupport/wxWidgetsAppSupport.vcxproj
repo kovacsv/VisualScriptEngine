@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{82252687-77EC-42B5-98BC-C1B42D5D6C78}</ProjectGuid>
-    <RootNamespace>NodeEngineTestApp</RootNamespace>
+    <ProjectGuid>{6920C305-9E2F-42C2-824D-3B4011FBF2A4}</ProjectGuid>
+    <RootNamespace>wxWidgetsAppSupport</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -28,23 +28,23 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -74,26 +74,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>gdiplus.lib;d2d1.lib;dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers;$(SolutionDir)..\..\Sources\wxWidgetsAppSupport\Headers;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\wxWidgetsAppSupport\Headers;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG;_CRT_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>gdiplus.lib;d2d1.lib;dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\wxWidgets-3.1.0\lib\vc_x64_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\wxWidgets-3.1.0\lib\vc_x64_lib;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -102,12 +95,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>gdiplus.lib;d2d1.lib;dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -117,54 +108,22 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers;$(SolutionDir)..\..\Sources\wxWidgetsAppSupport\Headers;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\wxWidgetsAppSupport\Headers;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>gdiplus.lib;d2d1.lib;dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\wxWidgets-3.1.0\lib\vc_x64_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\wxWidgets-3.1.0\lib\vc_x64_lib;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BuiltInNodes\BuiltInNodes.vcxproj">
-      <Project>{30e0bdd6-57d1-4c26-8c50-61f0be438685}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\NodeEngine\NodeEngine.vcxproj">
-      <Project>{ac633fde-c8dd-4a56-8434-1eb1aa220358}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\NodeUIEngine\NodeUIEngine.vcxproj">
-      <Project>{62847b7a-aaf0-4eb7-b975-829609141c57}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\WindowsAppSupport\WindowsAppSupport.vcxproj">
-      <Project>{103c18b8-1f71-461f-8d93-a9a8a869ffd5}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\wxWidgetsAppSupport\wxWidgetsAppSupport.vcxproj">
-      <Project>{6920c305-9e2f-42c2-824d-3b4011fbf2a4}</Project>
-    </ProjectReference>
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\wxDrawingContext.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ContextFactory.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\DrawingControl.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\main.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ParameterDialog.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\ResultImage.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsTestApp\TestAppValues.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ContextFactory.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ControlUtilities.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\DrawingControl.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\NodeEditorControl.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ParameterDialog.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\ResultImage.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\TestAppNodes.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsTestApp\TestAppValues.hpp" />
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\wxDrawingContext.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
