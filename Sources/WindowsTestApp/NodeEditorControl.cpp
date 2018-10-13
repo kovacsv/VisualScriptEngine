@@ -160,12 +160,12 @@ bool AppEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramInt
 	return false;
 }
 
-UpdateInterface::UpdateInterface ()
+NodeEditorEventHandler::NodeEditorEventHandler ()
 {
 
 }
 
-UpdateInterface::~UpdateInterface ()
+NodeEditorEventHandler::~NodeEditorEventHandler ()
 {
 
 }
@@ -231,12 +231,12 @@ double NodeEditorUIEnvironment::GetMouseMoveMinOffset ()
 	return 2.0;
 }
 
-NodeEditorControl::NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv) :
+NodeEditorControl::NodeEditorControl (wxWindow *parent, NE::EvaluationEnv& evaluationEnv, NodeEditorEventHandler& editorEventHandler) :
 	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
-	updateInterface (updateInterface),
 	captureHandler (this),
 	uiEnvironment (this, evaluationEnv),
-	nodeEditor (uiEnvironment)
+	nodeEditor (uiEnvironment),
+	editorEventHandler (editorEventHandler)
 {
 	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
@@ -391,7 +391,7 @@ void NodeEditorControl::Redo ()
 
 void NodeEditorControl::OnValuesRecalculated ()
 {
-	updateInterface.OnValuesRecalculated ();
+	editorEventHandler.OnValuesRecalculated ();
 }
 
 BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)

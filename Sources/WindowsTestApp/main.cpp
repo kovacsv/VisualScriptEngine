@@ -44,10 +44,10 @@ private:
 	std::wstring currentFileName;
 };
 
-class NodeEditorUpdateInterface : public UpdateInterface
+class MyNodeEditorEventHandler : public NodeEditorEventHandler
 {
 public:
-	NodeEditorUpdateInterface (DrawingControl* drawingControl) :
+	MyNodeEditorEventHandler (DrawingControl* drawingControl) :
 		drawingControl (drawingControl)
 	{
 		
@@ -83,8 +83,8 @@ public:
 		editMenu (new wxMenu ()),
 		editorAndDrawingSplitter (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
 		drawingControl (new DrawingControl (editorAndDrawingSplitter, resultImage)),
-		updateInterface (drawingControl),
-		nodeEditorControl (new NodeEditorControl (editorAndDrawingSplitter, updateInterface, evaluationEnv)),
+		editorEventHandler (drawingControl),
+		nodeEditorControl (new NodeEditorControl (editorAndDrawingSplitter, evaluationEnv, editorEventHandler)),
 		applicationState ()
 	{
 		fileMenu->Append (CommandId::File_New, "New");
@@ -198,7 +198,7 @@ private:
 
 	wxSplitterWindow*			editorAndDrawingSplitter;
 	DrawingControl*				drawingControl;
-	NodeEditorUpdateInterface	updateInterface;
+	MyNodeEditorEventHandler	editorEventHandler;
 	NodeEditorControl*			nodeEditorControl;
 
 	ApplicationState			applicationState;

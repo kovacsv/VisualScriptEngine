@@ -53,11 +53,11 @@ private:
 	wxPanel* panel;
 };
 
-class UpdateInterface
+class NodeEditorEventHandler
 {
 public:
-	UpdateInterface ();
-	virtual ~UpdateInterface ();
+	NodeEditorEventHandler ();
+	virtual ~NodeEditorEventHandler ();
 
 	virtual void OnValuesRecalculated () = 0;
 };
@@ -94,7 +94,7 @@ private:
 class NodeEditorControl : public wxPanel
 {
 public:
-	NodeEditorControl (wxWindow *parent, UpdateInterface& updateInterface, NE::EvaluationEnv& evaluationEnv);
+	NodeEditorControl (wxWindow *parent, NE::EvaluationEnv& evaluationEnv, NodeEditorEventHandler& editorEventHandler);
 
 	void							OnPaint (wxPaintEvent& evt);
 	void							OnResize (wxSizeEvent& evt);
@@ -126,10 +126,10 @@ public:
 	void							OnValuesRecalculated ();
 
 private:
-	UpdateInterface&				updateInterface;
 	MouseCaptureHandler				captureHandler;
 	NodeEditorUIEnvironment			uiEnvironment;
 	NUIE::NodeEditor				nodeEditor;
+	NodeEditorEventHandler&			editorEventHandler;
 
 	DECLARE_EVENT_TABLE ()
 };
