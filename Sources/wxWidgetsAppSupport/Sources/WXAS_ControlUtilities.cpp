@@ -74,4 +74,40 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 	return NUIE::InvalidKey;
 }
 
+NUIE::UICommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
+{
+	if (commands.IsEmpty ()) {
+		return nullptr;
+	}
+
+	wxMenu popupMenu;
+	wxMenu* currentMenu = &popupMenu;
+
+	size_t currentCommandId = 1000;
+	std::unordered_map<size_t, NUIE::UICommandPtr> commandTable;
+	std::function<void (const NUIE::UICommandPtr&)> addCommand = [&] (const NUIE::UICommandPtr& command) {
+		if (command->HasChildCommands ()) {
+			wxMenu* oldMenu = currentMenu;
+			currentMenu = new wxMenu ();
+			oldMenu->AppendSubMenu (currentMenu, command->GetName ());
+			command->EnumerateChildCommands (addCommand);
+			currentMenu = oldMenu;
+		} else {
+			wxMenuItem* currentMenuItem = currentMenu->AppendCheckItem (currentCommandId, command->GetName ());
+			currentMenuItem->Check (command->IsChecked ());
+			commandTable.insert ({ currentCommandId, command });
+			currentCommandId += 1;
+		}
+	};
+	commands.EnumerateCommands (addCommand);
+
+	wxPoint mousePos ((int) position.GetX (), (int) position.GetY ());
+	int selectedItem = panel->GetPopupMenuSelectionFromUser (popupMenu, mousePos);
+	if (selectedItem == wxID_NONE) {
+		return nullptr;
+	}
+
+	return commandTable[selectedItem];
+}
+
 }

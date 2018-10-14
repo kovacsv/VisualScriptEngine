@@ -2,6 +2,7 @@
 #define CONTROLUTILITIES_HPP
 
 #include "NUIE_InputEventHandler.hpp"
+#include "NUIE_CommandStructure.hpp"
 #include <wx/wx.h>
 
 namespace WXAS
@@ -22,8 +23,10 @@ private:
 	int			counter;
 };
 
-NUIE::ModifierKeys GetModiferKeysFromEvent (wxKeyboardState& evt);
-NUIE::Key GetKeyFromEvent (wxKeyEvent& evt);
+NUIE::ModifierKeys		GetModiferKeysFromEvent (wxKeyboardState& evt);
+NUIE::Key				GetKeyFromEvent (wxKeyEvent& evt);
+
+NUIE::UICommandPtr		SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::UICommandStructure& commands);
 
 }
 

@@ -23,12 +23,12 @@ void* GetNativeHandle (wxPanel* panel)
 #endif
 }
 
-std::shared_ptr<NUIE::NativeDrawingContext> CreateNativeDrawingContext ()
+std::unique_ptr<NUIE::NativeDrawingContext> CreateNativeDrawingContext ()
 {
 #if defined(USE_WX_CONTEXT)
-	return std::shared_ptr<NUIE::NativeDrawingContext> (new wxDrawingContext ());
+	return std::unique_ptr<NUIE::NativeDrawingContext> (new wxDrawingContext ());
 #else
-	return std::shared_ptr<NUIE::NativeDrawingContext> (new WAS::BitmapContextGdi ());
+	return std::unique_ptr<NUIE::NativeDrawingContext> (new WAS::BitmapContextGdi ());
 #endif
 }
 

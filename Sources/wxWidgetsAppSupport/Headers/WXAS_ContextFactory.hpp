@@ -10,7 +10,7 @@ namespace WXAS
 {
 
 void*											GetNativeHandle (wxPanel* panel);
-std::shared_ptr<NUIE::NativeDrawingContext>		CreateNativeDrawingContext ();
+std::unique_ptr<NUIE::NativeDrawingContext>		CreateNativeDrawingContext ();
 
 }
 

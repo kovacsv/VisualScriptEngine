@@ -1,187 +1,75 @@
 #include "NodeEditorControl.hpp"
-#include "BI_InputUINodes.hpp"
-#include "BI_ArithmeticUINodes.hpp"
-#include "BI_ViewerUINodes.hpp"
 #include "WXAS_ContextFactory.hpp"
 #include "WXAS_ParameterDialog.hpp"
-
-#include "TestAppNodes.hpp"
 
 #include <wx/menu.h>
 
 namespace WXAS
 {
 
-static NUIE::UICommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
-{
-	if (commands.IsEmpty ()) {
-		return nullptr;
-	}
-
-	wxMenu popupMenu;
-	wxMenu* currentMenu = &popupMenu;
-
-	size_t currentCommandId = 1000;
-	std::unordered_map<size_t, NUIE::UICommandPtr> commandTable;
-	std::function<void (const NUIE::UICommandPtr&)> addCommand = [&] (const NUIE::UICommandPtr& command) {
-		if (command->HasChildCommands ()) {
-			wxMenu* oldMenu = currentMenu;
-			currentMenu = new wxMenu ();
-			oldMenu->AppendSubMenu (currentMenu, command->GetName ());
-			command->EnumerateChildCommands (addCommand);
-			currentMenu = oldMenu;
-		} else {
-			wxMenuItem* currentMenuItem = currentMenu->AppendCheckItem (currentCommandId, command->GetName ());
-			currentMenuItem->Check (command->IsChecked ());
-			commandTable.insert ({ currentCommandId, command });
-			currentCommandId += 1;
-		}
-	};
-	commands.EnumerateCommands (addCommand);
-
-	wxPoint mousePos ((int) position.GetX (), (int) position.GetY ());
-	int selectedItem = panel->GetPopupMenuSelectionFromUser (popupMenu, mousePos);
-	if (selectedItem == wxID_NONE) {
-		return nullptr;
-	}
-
-	return commandTable[selectedItem];
-}
-
-MyCreateNodeCommand::MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
-	BI::CreateNodeCommand (name, uiManager, uiEnvironment, position),
-	nodeType (nodeType)
+NodeEditorEventHandlers::NodeEditorEventHandlers (wxPanel* panel) :
+	panel (panel)
 {
 
 }
 
-NUIE::UINodePtr MyCreateNodeCommand::CreateNode (const NUIE::Point& modelPosition)
-{
-	switch (nodeType) {
-		case NodeType::Integer:
-			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", modelPosition, 0, 5));
-		case NodeType::Number:
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0.0, 5.0));
-		case NodeType::IntegerRange:
-			return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", modelPosition));
-		case NodeType::NumberRange:
-			return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", modelPosition));
-		case NodeType::Addition:
-			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
-		case NodeType::Subtraction:
-			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", modelPosition));
-		case NodeType::Multiplication:
-			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", modelPosition));
-		case NodeType::Division:
-			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", modelPosition));
-		case NodeType::Color:
-			return NUIE::UINodePtr (new ColorNode (L"Color", modelPosition));
-		case NodeType::Point:
-			return NUIE::UINodePtr (new PointNode (L"Point", modelPosition));
-		case NodeType::Line:
-			return NUIE::UINodePtr (new LineNode (L"Line", modelPosition));
-		case NodeType::Circle:
-			return NUIE::UINodePtr (new CircleNode (L"Circle", modelPosition));
-		case NodeType::Offset:
-			return NUIE::UINodePtr (new OffsetNode (L"Offset", modelPosition));
-		case NodeType::Viewer:
-			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
-	}
-	return nullptr;
-}
-
-NodeEditorEventHandler::NodeEditorEventHandler ()
-{
-
-}
-
-NodeEditorEventHandler::~NodeEditorEventHandler ()
-{
-
-}
-
-NodeEditorEventHandlers::NodeEditorEventHandlers (NodeEditorControl* nodeEditorControl) :
-	nodeEditorControl (nodeEditorControl)
+NodeEditorEventHandlers::~NodeEditorEventHandlers ()
 {
 
 }
 
 NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
 {
-	NUIE::UICommandStructure actualCommands = commands;
-	NUIE::UIGroupCommandPtr createCommandGroup (new NUIE::UIGroupCommand (L"Add Node"));
-
-	NUIE::UIGroupCommandPtr inputCommandGroup (new NUIE::UIGroupCommand (L"Input Nodes"));
-	inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
-	inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
-	inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));
-	inputCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberRange, uiManager, uiEnvironment, L"Number Range", position)));
-	createCommandGroup->AddChildCommand (inputCommandGroup);
-
-	NUIE::UIGroupCommandPtr arithmeticCommandGroup (new NUIE::UIGroupCommand (L"Arithmetic Nodes"));
-	arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Addition", position)));
-	arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Subtraction, uiManager, uiEnvironment, L"Subtraction", position)));
-	arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Multiplication, uiManager, uiEnvironment, L"Multiplication", position)));
-	arithmeticCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Division, uiManager, uiEnvironment, L"Division", position)));
-	createCommandGroup->AddChildCommand (arithmeticCommandGroup);
-
-	NUIE::UIGroupCommandPtr drawingCommandGroup (new NUIE::UIGroupCommand (L"Drawing Nodes"));
-	drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Color, uiManager, uiEnvironment, L"Color", position)));
-	drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Point, uiManager, uiEnvironment, L"Point", position)));
-	drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Line, uiManager, uiEnvironment, L"Line", position)));
-	drawingCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Circle, uiManager, uiEnvironment, L"Circle", position)));
-	createCommandGroup->AddChildCommand (drawingCommandGroup);
-
-	NUIE::UIGroupCommandPtr transformationCommandGroup (new NUIE::UIGroupCommand (L"Transformation Nodes"));
-	transformationCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Offset, uiManager, uiEnvironment, L"Offset", position)));
-	createCommandGroup->AddChildCommand (transformationCommandGroup);
-
-	NUIE::UIGroupCommandPtr otherCommandGroup (new NUIE::UIGroupCommand (L"Other Nodes"));
-	otherCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Viewer", position)));
-	createCommandGroup->AddChildCommand (otherCommandGroup);
-
-	actualCommands.AddCommand (createCommandGroup);
-	return SelectCommandFromContextMenu (nodeEditorControl, position, actualCommands);
+	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
 NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::UICommandStructure& commands)
 {
-	return SelectCommandFromContextMenu (nodeEditorControl, position, commands);
+	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
 NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& outputSlot, const NUIE::UICommandStructure& commands)
 {
-	return SelectCommandFromContextMenu (nodeEditorControl, position, commands);
+	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
 NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::UICommandStructure& commands)
 {
-	return SelectCommandFromContextMenu (nodeEditorControl, position, commands);
+	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
 NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::UICommandStructure& commands)
 {
-	return SelectCommandFromContextMenu (nodeEditorControl, position, commands);
+	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
 bool NodeEditorEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface)
 {
-	ParameterDialog paramDialog (nodeEditorControl, paramInterface);
+	ParameterDialog paramDialog (panel, paramInterface);
 	if (paramDialog.ShowModal () == ParameterDialog::DialogIds::OkButtonId) {
 		return true;
 	}
 	return false;
 }
 
-NodeEditorUIEnvironment::NodeEditorUIEnvironment (NodeEditorControl* nodeEditorControl, NE::EvaluationEnv& evaluationEnv) :
+NodeEditorUIEnvironment::NodeEditorUIEnvironment (	NodeEditorControl* nodeEditorControl,
+													std::shared_ptr<NE::StringSettings>& stringSettings,
+													std::shared_ptr<NUIE::SkinParams>& skinParams,
+													std::shared_ptr<NUIE::EventHandlers>& eventHandlers,
+													NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	evaluationEnv (evaluationEnv),
-	stringSettings (L'.', L',', 2),
-	skinParams (),
-	drawingContext (CreateNativeDrawingContext ()),
-	eventHandlers (std::shared_ptr<NUIE::EventHandlers> (new NodeEditorEventHandlers (nodeEditorControl)))
+	stringSettings (stringSettings),
+	skinParams (skinParams),
+	eventHandlers (eventHandlers),
+	drawingContext (CreateNativeDrawingContext ())
 {
 	drawingContext->Init (GetNativeHandle (nodeEditorControl));
+}
+
+NodeEditorUIEnvironment::~NodeEditorUIEnvironment ()
+{
+
 }
 
 void NodeEditorUIEnvironment::OnPaint (wxPanel* panel, wxPaintEvent& evt)
@@ -196,12 +84,12 @@ void NodeEditorUIEnvironment::OnResize (int width, int height)
 
 const NE::StringSettings& NodeEditorUIEnvironment::GetStringSettings ()
 {
-	return stringSettings;
+	return *stringSettings;
 }
 
 const NUIE::SkinParams& NodeEditorUIEnvironment::GetSkinParams ()
 {
-	return skinParams;
+	return *skinParams;
 }
 
 NUIE::DrawingContext& NodeEditorUIEnvironment::GetDrawingContext ()
@@ -216,7 +104,7 @@ NE::EvaluationEnv& NodeEditorUIEnvironment::GetEvaluationEnv ()
 
 void NodeEditorUIEnvironment::OnValuesRecalculated ()
 {
-	nodeEditorControl->OnValuesRecalculated ();
+	
 }
 
 void NodeEditorUIEnvironment::OnRedrawRequested ()
@@ -234,54 +122,41 @@ double NodeEditorUIEnvironment::GetMouseMoveMinOffset ()
 	return 2.0;
 }
 
-NodeEditorControl::NodeEditorControl (wxWindow *parent, NE::EvaluationEnv& evaluationEnv, NodeEditorEventHandler& editorEventHandler) :
+NodeEditorControl::NodeEditorControl (wxWindow *parent) :
 	wxPanel (parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
-	captureHandler (this),
-	uiEnvironment (this, evaluationEnv),
-	nodeEditor (uiEnvironment),
-	editorEventHandler (editorEventHandler)
+	captureHandler (this)
 {
-	NUIE::NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
 
-	static const bool isStressTest = false;
-	if (isStressTest) {
-		static int count = 10;
-		for (int i = 0; i < count; i++) {
-			for (int j = 0; j < count; j++) {
-				uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment.GetEvaluationEnv ());
-			}
-		}
-		nodeEditor.Update ();
-	} else {
-		NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (70, 70), 20, 5)), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (70, 180), 20, 5)), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleRangeNode (L"Range", NUIE::Point (220, 100))), uiEnvironment.GetEvaluationEnv ());
-		NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (220, 220), 20, 5)), uiEnvironment.GetEvaluationEnv ());
-		std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
-		uiManager.AddNode (pointNode, uiEnvironment.GetEvaluationEnv ());
-		pointNode->SetValueCombinationMode (NE::ValueCombinationMode::CrossProduct);
-		NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (600, 150), 5)), uiEnvironment.GetEvaluationEnv ());
+}
 
-		uiManager.ConnectOutputSlotToInputSlot (startInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("start")));
-		uiManager.ConnectOutputSlotToInputSlot (stepInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("step")));
-		uiManager.ConnectOutputSlotToInputSlot (intRangeNodeX->GetUIOutputSlot (NE::SlotId ("out")), pointNode->GetUIInputSlot (NE::SlotId ("x")));
-		uiManager.ConnectOutputSlotToInputSlot (inputNodeY->GetUIOutputSlot (NE::SlotId ("out")), pointNode->GetUIInputSlot (NE::SlotId ("y")));
-		uiManager.ConnectOutputSlotToInputSlot (pointNode->GetUIOutputSlot (NE::SlotId ("point")), viewerNode->GetUIInputSlot (NE::SlotId ("in")));
-		nodeEditor.Update ();
-	}
+NodeEditorControl::~NodeEditorControl ()
+{
+
+}
+
+void NodeEditorControl::Init (std::shared_ptr<NodeEditorUIEnvironment>& editorUIEnvironment)
+{
+	uiEnvironment = editorUIEnvironment;
+	nodeEditor = std::shared_ptr<NUIE::NodeEditor> (new NUIE::NodeEditor (*uiEnvironment));
+	OnInit ();
+}
+
+void NodeEditorControl::OnInit ()
+{
+
 }
 
 void NodeEditorControl::OnPaint (wxPaintEvent& evt)
 {
-	nodeEditor.Draw ();
-	uiEnvironment.OnPaint (this, evt);
+	nodeEditor->Draw ();
+	uiEnvironment->OnPaint (this, evt);
 }
 
 void NodeEditorControl::OnResize (wxSizeEvent& evt)
 {
 	SetFocus ();
 	wxSize size = evt.GetSize ();
-	nodeEditor.OnResize (size.GetWidth (), size.GetHeight ());
+	nodeEditor->OnResize (size.GetWidth (), size.GetHeight ());
 }
 
 void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
@@ -292,64 +167,64 @@ void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
 void NodeEditorControl::OnLeftButtonDown (wxMouseEvent& evt)
 {
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnLeftButtonUp (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 void NodeEditorControl::OnLeftButtonDoubleClick (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Left, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnRightButtonDown (wxMouseEvent& evt)
 {
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnRightButtonUp (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 void NodeEditorControl::OnRightButtonDoubleClick (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Right, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMiddleButtonDown (wxMouseEvent& evt)
 {
 	captureHandler.OnMouseDown ();
-	nodeEditor.OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseDown (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMiddleButtonUp (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseUp (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 	captureHandler.OnMouseUp ();
 }
 
 void NodeEditorControl::OnMiddleButtonDoubleClick (wxMouseEvent& evt)
 {
-	nodeEditor.OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseDoubleClick (GetModiferKeysFromEvent (evt), NUIE::MouseButton::Middle, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMouseMove (wxMouseEvent& evt)
 {
 	SetFocus ();
-	nodeEditor.OnMouseMove (GetModiferKeysFromEvent (evt), evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseMove (GetModiferKeysFromEvent (evt), evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnMouseWheel (wxMouseEvent& evt)
 {
 	NUIE::MouseWheelRotation rotation = evt.GetWheelRotation () > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
-	nodeEditor.OnMouseWheel (GetModiferKeysFromEvent (evt), rotation, evt.GetX (), evt.GetY ());
+	nodeEditor->OnMouseWheel (GetModiferKeysFromEvent (evt), rotation, evt.GetX (), evt.GetY ());
 }
 
 void NodeEditorControl::OnKeyDown (wxKeyEvent& evt)
@@ -358,17 +233,17 @@ void NodeEditorControl::OnKeyDown (wxKeyEvent& evt)
 	if (!key.IsValid ()) {
 		return;
 	}
-	nodeEditor.OnKeyPress (key);
+	nodeEditor->OnKeyPress (key);
 }
 
 void NodeEditorControl::New ()
 {
-	nodeEditor.Clear ();
+	nodeEditor->Clear ();
 }
  
 bool NodeEditorControl::Open (const std::wstring& fileName)
 {
-	if (!nodeEditor.Load (fileName)) {
+	if (!nodeEditor->Load (fileName)) {
 		return false;
 	}
 	return true;
@@ -376,7 +251,7 @@ bool NodeEditorControl::Open (const std::wstring& fileName)
  
 bool NodeEditorControl::Save (const std::wstring& fileName)
 {
-	if (!nodeEditor.Save (fileName)) {
+	if (!nodeEditor->Save (fileName)) {
 		return false;
 	}
 	return true;
@@ -384,17 +259,12 @@ bool NodeEditorControl::Save (const std::wstring& fileName)
 
 void NodeEditorControl::Undo ()
 {
-	nodeEditor.Undo ();
+	nodeEditor->Undo ();
 }
 
 void NodeEditorControl::Redo ()
 {
-	nodeEditor.Redo ();
-}
-
-void NodeEditorControl::OnValuesRecalculated ()
-{
-	editorEventHandler.OnValuesRecalculated ();
+	nodeEditor->Redo ();
 }
 
 BEGIN_EVENT_TABLE(NodeEditorControl, wxPanel)
