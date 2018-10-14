@@ -8,14 +8,14 @@ class DevKitBuilder:
 		self.rootDirectory = rootDirectory
 		self.configMode = configMode
 		self.solutionDir = os.path.join (self.rootDirectory, 'Make', 'VS')
-		self.devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS_2015_' + self.configMode)
+		self.devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS_2017_' + self.configMode)
 	
 	def Clean (self):
 		if os.path.exists (self.devKitFolder):
 			shutil.rmtree (self.devKitFolder)
 	
 	def Build (self):
-		msBuildPath = os.path.join (os.environ['ProgramFiles(x86)'], 'MSBuild', '14.0', 'Bin', 'MSBuild.exe')
+		msBuildPath = os.path.join (os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', '2017', 'Community', 'MSBuild', '15.0', 'Bin', 'MSBuild.exe')
 		solutionPath = os.path.join (self.solutionDir, 'VisualScript.sln')
 		buildResult = subprocess.call ([
 			msBuildPath,

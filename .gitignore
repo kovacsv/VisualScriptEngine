@@ -1,5 +1,5 @@
-Make/DevKit/VS_2015_Debug/*
-Make/DevKit/VS_2015_Release/*
+Make/DevKit/VS_*_Debug/*
+Make/DevKit/VS_*_Release/*
 Make/GCC/Binaries/*
 Make/GCC/DebugBinaries/*
 Make/GCC/ReleaseBinaries/*
@@ -13,5 +13,5 @@ Make/VS/*/*/Debug/*
 *.opendb
 *.suo
 *.vcxproj.user
-
+*.ipch
 
