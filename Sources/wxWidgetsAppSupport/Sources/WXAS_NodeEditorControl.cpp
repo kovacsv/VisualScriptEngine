@@ -1,4 +1,4 @@
-#include "NodeEditorControl.hpp"
+#include "WXAS_NodeEditorControl.hpp"
 #include "WXAS_ContextFactory.hpp"
 #include "WXAS_ParameterDialog.hpp"
 

@@ -5,8 +5,8 @@
 #include "BI_ArithmeticUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
 #include "WXAS_ParameterDialog.hpp"
+#include "WXAS_NodeEditorControl.hpp"
 
-#include "NodeEditorControl.hpp"
 #include "TestAppNodes.hpp"
 
 #include <CommCtrl.h>

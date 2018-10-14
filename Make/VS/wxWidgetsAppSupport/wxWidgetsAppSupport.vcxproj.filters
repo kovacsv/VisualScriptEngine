@@ -19,6 +19,9 @@
     <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ParameterDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_NodeEditorControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_wxDrawingContext.hpp">
@@ -31,6 +34,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ParameterDialog.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_NodeEditorControl.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

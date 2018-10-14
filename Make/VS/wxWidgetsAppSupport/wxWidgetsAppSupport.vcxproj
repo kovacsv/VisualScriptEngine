@@ -122,12 +122,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ContextFactory.hpp" />
     <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ControlUtilities.hpp" />
+    <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_NodeEditorControl.hpp" />
     <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_ParameterDialog.hpp" />
     <ClInclude Include="..\..\..\Sources\wxWidgetsAppSupport\Headers\WXAS_wxDrawingContext.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ContextFactory.cpp" />
     <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ControlUtilities.cpp" />
+    <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_NodeEditorControl.cpp" />
     <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_ParameterDialog.cpp" />
     <ClCompile Include="..\..\..\Sources\wxWidgetsAppSupport\Sources\WXAS_wxDrawingContext.cpp" />
   </ItemGroup>
