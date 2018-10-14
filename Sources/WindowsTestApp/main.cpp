@@ -9,10 +9,6 @@
 
 #include "TestAppNodes.hpp"
 
-#include <CommCtrl.h>
-#include <iostream>
-#include <fstream>
-
 #include <wx/wx.h>
 #include <wx/splitter.h>
 
