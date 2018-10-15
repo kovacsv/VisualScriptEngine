@@ -59,7 +59,7 @@ def Main (argv):
 		builder = DevKitBuilder (rootDirectory, configMode)
 		if len (argv) > 1 and argv[1] == 'clean':
 			builder.Clean ()
-			return 0
+			continue
 		if os.name == 'nt':
 			print 'Build Solution'
 			if builder.Build () != 0:
