@@ -1,79 +1,75 @@
 import sys
 import os
 import shutil
-import subprocess
 
-class DevKitBuilder:
-	def __init__ (self, rootDirectory, configMode):
-		self.rootDirectory = rootDirectory
-		self.configMode = configMode
-		self.solutionDir = os.path.join (self.rootDirectory, 'Make', 'VS')
-		self.devKitFolder = os.path.join (self.rootDirectory, 'Make', 'DevKit', 'VS_2017_' + self.configMode)
-	
-	def Clean (self):
-		if os.path.exists (self.devKitFolder):
-			shutil.rmtree (self.devKitFolder)
-	
-	def Build (self):
-		msBuildPath = os.path.join (os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', '2017', 'Community', 'MSBuild', '15.0', 'Bin', 'MSBuild.exe')
-		solutionPath = os.path.join (self.solutionDir, 'VisualScript.sln')
-		buildResult = subprocess.call ([
-			msBuildPath,
-			solutionPath,
-			'/property:Configuration=' + self.configMode,
-			'/property:Platform=x64'
-		])
-		return buildResult
-	
-	def Test (self):
-		binaryFolder = os.path.join (self.solutionDir, 'x64', self.configMode)
-		testPath = os.path.join (binaryFolder, 'NodeEngineTest.exe')
-		return subprocess.call ([testPath])
-		
-	def Publish (self):
-		devKitHeaderFolder = os.path.join (self.devKitFolder, 'include')
-		devKitLibFolder = os.path.join (self.devKitFolder, 'libs')
-		
-		if os.path.exists (self.devKitFolder):
-			shutil.rmtree (self.devKitFolder)
-		os.makedirs (self.devKitFolder)
-		os.makedirs (devKitHeaderFolder)
-		os.makedirs (devKitLibFolder)
-		
-		binaryFolder = os.path.join (self.solutionDir, 'x64', self.configMode)
-		sourcesFolder = os.path.join (self.rootDirectory, 'Sources')
+def RemoveDir (path):
+	if os.path.exists (path):
+		shutil.rmtree (path)	
 
-		folderNames = ['NodeEngine', 'NodeUIEngine', 'BuiltInNodes', 'WindowsAppSupport', 'wxWidgetsAppSupport']
-		for folderName in folderNames:
-			shutil.copy (os.path.join (binaryFolder, folderName + '.lib'), devKitLibFolder)
-			headersFolder = os.path.join (sourcesFolder, folderName, 'Headers')
-			for headerFileName in os.listdir (headersFolder):
-				shutil.copy (os.path.join (headersFolder, headerFileName), devKitHeaderFolder)
+def MakeDir (path):
+	if not os.path.exists (path):
+		os.mkdir (path)	
+
+class DevKitModule:
+	def __init__ (self, rootDir, moduleName):
+		self.rootDir = rootDir
+		self.moduleName = moduleName
+
+	def IsAvailable (self, mode):
+		if not os.path.exists (self.GetHeadersDir ()):
+			return False
+		if not os.path.exists (self.GetLibFilePath (mode)):
+			return False
 		return True
-
+		
+	def Copy (self, mode):
+		devKitDir = self.GetDevKitDir (mode)
+		MakeDir (devKitDir)
+		devKitHeadersDir = os.path.join (devKitDir, 'include')
+		devKitLibsDir = os.path.join (devKitDir, 'lib')
+		MakeDir (devKitHeadersDir)	
+		MakeDir (devKitLibsDir)
+		for headerFile in os.listdir (self.GetHeadersDir ()):
+			shutil.copy (os.path.join (self.GetHeadersDir (), headerFile), devKitHeadersDir)
+		shutil.copy (self.GetLibFilePath (mode), devKitLibsDir)
+	
+	def GetDevKitDir (self, mode):
+		return os.path.join (self.rootDir, 'Make', 'DevKit', 'VS_' + mode)
+	
+	def GetHeadersDir (self):
+		return os.path.join (self.rootDir, 'Sources', self.moduleName, 'Headers')
+	
+	def GetLibFilePath (self, mode):
+		return os.path.join (self.rootDir, 'Make', 'VS', 'x64', mode, self.moduleName + '.lib')
+		
 def Main (argv):
 	currentDir = os.path.dirname (os.path.abspath (__file__))
 	os.chdir (currentDir)
-	for configMode in ['Debug', 'Release']:
-		rootDirectory = os.path.dirname (os.path.dirname (currentDir))
-		builder = DevKitBuilder (rootDirectory, configMode)
-		if len (argv) > 1 and argv[1] == 'clean':
-			builder.Clean ()
-			continue
-		if os.name == 'nt':
-			print 'Build Solution'
-			if builder.Build () != 0:
-				print 'ERROR: Build Failed'
-				return 1
-			print 'Run Tests'
-			if builder.Test () != 0:
-				print 'ERROR: Test Failed'
-				return 1
-			print 'Publish DevKit'
-			if not builder.Publish ():
-				print 'ERROR: Publish Failed'
-				return 1
-			print 'Success'
+
+	rootDir = os.path.abspath (os.path.join (currentDir, '..', '..'))
+
+	modules = [
+		DevKitModule (rootDir, 'NodeEngine'),
+		DevKitModule (rootDir, 'NodeUIEngine'),
+		DevKitModule (rootDir, 'BuiltInNodes'),
+		DevKitModule (rootDir, 'WindowsAppSupport'),
+		DevKitModule (rootDir, 'wxWidgetsAppSupport')
+	]
+	
+	for mode in ['Debug', 'Release']:
+		print 'Building ' + mode + ' DevKit...'
+		isAvailable = True
+		for module in modules:
+			if not module.IsAvailable (mode):
+				isAvailable = False
+				break
+		if not isAvailable:
+			print '  FAILED: Build is not available. Build the solution first.'
+			break
+		RemoveDir (module.GetDevKitDir (mode))
+		for module in modules:
+			module.Copy (mode)
+		print '  SUCCESSFUL'
 	return 0
 	
 sys.exit (Main (sys.argv))
