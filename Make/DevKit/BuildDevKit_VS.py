@@ -62,14 +62,15 @@ def Main (argv):
 		for module in modules:
 			if not module.IsAvailable (mode):
 				isAvailable = False
-				break
+				print '  ' + module.moduleName + ': FAILED'
+			else:
+				module.Copy (mode)
+				print '  ' + module.moduleName + ': SUCCESSFUL'
 		if not isAvailable:
-			print '  FAILED: Build is not available. Build the solution first.'
-			break
-		RemoveDir (module.GetDevKitDir (mode))
-		for module in modules:
-			module.Copy (mode)
-		print '  SUCCESSFUL'
+			print '  FAILED: One or more modules are missing.'
+		else:
+			print '  SUCCESSFUL'
+		print ''
 	return 0
 	
 sys.exit (Main (sys.argv))
