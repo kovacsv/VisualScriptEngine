@@ -10,6 +10,9 @@ def MakeDir (path):
 	if not os.path.exists (path):
 		os.mkdir (path)	
 
+def GetDevKitDir (rootDir, mode):
+	return os.path.join (rootDir, 'Make', 'DevKit', 'VS_' + mode)
+		
 class DevKitModule:
 	def __init__ (self, rootDir, moduleName):
 		self.rootDir = rootDir
@@ -23,8 +26,7 @@ class DevKitModule:
 		return True
 		
 	def Copy (self, mode):
-		devKitDir = self.GetDevKitDir (mode)
-		MakeDir (devKitDir)
+		devKitDir = GetDevKitDir (self.rootDir, mode)
 		devKitHeadersDir = os.path.join (devKitDir, 'include')
 		devKitLibsDir = os.path.join (devKitDir, 'lib')
 		MakeDir (devKitHeadersDir)	
@@ -32,9 +34,6 @@ class DevKitModule:
 		for headerFile in os.listdir (self.GetHeadersDir ()):
 			shutil.copy (os.path.join (self.GetHeadersDir (), headerFile), devKitHeadersDir)
 		shutil.copy (self.GetLibFilePath (mode), devKitLibsDir)
-	
-	def GetDevKitDir (self, mode):
-		return os.path.join (self.rootDir, 'Make', 'DevKit', 'VS_' + mode)
 	
 	def GetHeadersDir (self):
 		return os.path.join (self.rootDir, 'Sources', self.moduleName, 'Headers')
@@ -57,6 +56,9 @@ def Main (argv):
 	]
 	
 	for mode in ['Debug', 'Release']:
+		devKitDir = GetDevKitDir (rootDir, mode)
+		RemoveDir (devKitDir)
+		MakeDir (devKitDir)
 		print 'Building ' + mode + ' DevKit...'
 		isAvailable = True
 		for module in modules:
