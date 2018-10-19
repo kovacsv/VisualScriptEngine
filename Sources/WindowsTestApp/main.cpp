@@ -255,11 +255,7 @@ public:
 		editMenu->Append (CommandId::Edit_Undo, "Undo");
 		editMenu->Append (CommandId::Edit_Redo, "Redo");
 		Append (editMenu, L"&Edit");
-
 	}
-
-private:
-
 };
 
 class MainFrame : public wxFrame
