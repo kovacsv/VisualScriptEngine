@@ -225,7 +225,7 @@ public:
 	 }
 };
 
-class MainFrame : public wxFrame
+class MenuBar : public wxMenuBar
 {
 public:
 	enum CommandId
@@ -239,14 +239,37 @@ public:
 		Edit_Redo		= 7
 	};
 
+	MenuBar () :
+		wxMenuBar ()
+	{
+		wxMenu* fileMenu = new wxMenu ();
+		fileMenu->Append (CommandId::File_New, "New");
+		fileMenu->Append (CommandId::File_Open, "Open...");
+		fileMenu->Append (CommandId::File_Save, "Save...");
+		fileMenu->Append (CommandId::File_SaveAs, "Save As...");
+		fileMenu->AppendSeparator ();
+		fileMenu->Append (CommandId::File_Exit, L"Exit");
+		Append (fileMenu, L"&File");
+
+		wxMenu* editMenu = new wxMenu ();
+		editMenu->Append (CommandId::Edit_Undo, "Undo");
+		editMenu->Append (CommandId::Edit_Redo, "Redo");
+		Append (editMenu, L"&Edit");
+
+	}
+
+private:
+
+};
+
+class MainFrame : public wxFrame
+{
+public:
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
 		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
-		menuBar (new wxMenuBar ()),
-		fileMenu (new wxMenu ()),
-		editMenu (new wxMenu ()),
-		editorAndDrawingSplitter (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
-		drawingControl (new DrawingControl (editorAndDrawingSplitter, resultImage)),
-		nodeEditorControl (new MyNodeEditorControl (editorAndDrawingSplitter)),
+		mainWindow (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
+		drawingControl (new DrawingControl (mainWindow, resultImage)),
+		nodeEditorControl (new MyNodeEditorControl (mainWindow)),
 		applicationState ()
 	{
 		std::shared_ptr<WXAS::NodeEditorUIEnvironment> uiEnvironment = std::shared_ptr<WXAS::NodeEditorUIEnvironment> (
@@ -262,26 +285,14 @@ public:
 
 		nodeEditorControl->Init (uiEnvironment);
 
-		fileMenu->Append (CommandId::File_New, "New");
-		fileMenu->Append (CommandId::File_Open, "Open...");
-		fileMenu->Append (CommandId::File_Save, "Save...");
-		fileMenu->Append (CommandId::File_SaveAs, "Save As...");
-		fileMenu->AppendSeparator ();
-		fileMenu->Append (CommandId::File_Exit, L"Exit");
-		menuBar->Append (fileMenu, L"&File");
-
-		editMenu->Append (CommandId::Edit_Undo, "Undo");
-		editMenu->Append (CommandId::Edit_Redo, "Redo");
-		menuBar->Append (editMenu, L"&Edit");
-
-		SetMenuBar (menuBar);
+		SetMenuBar (new MenuBar ());
 
 		CreateStatusBar ();
 		UpdateStatusBar ();
 
-		editorAndDrawingSplitter->SetSashGravity (0.5);
-		editorAndDrawingSplitter->SetMinimumPaneSize (20);
-		editorAndDrawingSplitter->SplitVertically (nodeEditorControl, drawingControl, 700);
+		mainWindow->SetSashGravity (0.5);
+		mainWindow->SetMinimumPaneSize (20);
+		mainWindow->SplitVertically (nodeEditorControl, drawingControl, 700);
 	}
 
 	~MainFrame ()
@@ -367,11 +378,7 @@ private:
 		applicationState.ClearCurrentFileName ();
 	}
 
-	wxMenuBar*					menuBar;
-	wxMenu*						fileMenu;
-	wxMenu*						editMenu;
-
-	wxSplitterWindow*			editorAndDrawingSplitter;
+	wxSplitterWindow*			mainWindow;
 	DrawingControl*				drawingControl;
 	WXAS::NodeEditorControl*	nodeEditorControl;
 
@@ -381,13 +388,13 @@ private:
 };
 
 BEGIN_EVENT_TABLE (MainFrame, wxFrame)
-EVT_MENU (MainFrame::CommandId::File_New, MainFrame::OnNew)
-EVT_MENU (MainFrame::CommandId::File_Open, MainFrame::OnOpen)
-EVT_MENU (MainFrame::CommandId::File_Save, MainFrame::OnSave)
-EVT_MENU (MainFrame::CommandId::File_SaveAs, MainFrame::OnSaveAs)
-EVT_MENU (MainFrame::CommandId::File_Exit, MainFrame::OnExit)
-EVT_MENU (MainFrame::CommandId::Edit_Undo, MainFrame::OnUndo)
-EVT_MENU (MainFrame::CommandId::Edit_Redo, MainFrame::OnRedo)
+EVT_MENU (MenuBar::CommandId::File_New, MainFrame::OnNew)
+EVT_MENU (MenuBar::CommandId::File_Open, MainFrame::OnOpen)
+EVT_MENU (MenuBar::CommandId::File_Save, MainFrame::OnSave)
+EVT_MENU (MenuBar::CommandId::File_SaveAs, MainFrame::OnSaveAs)
+EVT_MENU (MenuBar::CommandId::File_Exit, MainFrame::OnExit)
+EVT_MENU (MenuBar::CommandId::Edit_Undo, MainFrame::OnUndo)
+EVT_MENU (MenuBar::CommandId::Edit_Redo, MainFrame::OnRedo)
 END_EVENT_TABLE ()
 
 class NodeEngineTestApplication : public wxApp
