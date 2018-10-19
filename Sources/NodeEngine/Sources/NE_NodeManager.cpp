@@ -328,6 +328,14 @@ void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 	});
 }
 
+void NodeManager::ForceEvaluateAllNodes (EvaluationEnv& env) const
+{
+	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
+		node->ForceEvaluate (env);
+		return true;
+	});
+}
+
 void NodeManager::InvalidateNodeValue (const NodeId& nodeId) const
 {
 	NodeConstPtr node = GetNode (nodeId);

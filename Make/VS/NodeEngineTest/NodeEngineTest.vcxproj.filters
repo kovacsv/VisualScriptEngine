@@ -91,6 +91,9 @@
     <ClCompile Include="..\..\..\Sources\NodeEngineTest\EnableDisableFeatureTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeEngineTest\NodeManagerManualUpdateTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sources\TestFramework\SimpleTest.hpp">

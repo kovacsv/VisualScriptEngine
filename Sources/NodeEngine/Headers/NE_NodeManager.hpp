@@ -69,6 +69,7 @@ public:
 	void				EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const;
 
 	void				EvaluateAllNodes (EvaluationEnv& env) const;
+	void				ForceEvaluateAllNodes (EvaluationEnv& env) const;
 	void				InvalidateNodeValue (const NodeId& nodeId) const;
 	void				InvalidateNodeValue (const NodeConstPtr& node) const;
 	
