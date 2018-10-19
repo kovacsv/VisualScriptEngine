@@ -62,14 +62,14 @@ TEST (RecalculationTest)
 		manager.EvaluateAllNodes (EmptyEvaluationEnv);
 		for (std::shared_ptr<TestNode> node : nodes) {
 			ASSERT (node->calculationCounter == 1);
-			ASSERT (node->ValueIsCalculated ());
+			ASSERT (node->HasCalculatedValue ());
 		}
 		ValuePtr lastVal = nodes[4]->Evaluate (EmptyEvaluationEnv);
 		ASSERT (Value::IsType<IntValue> (lastVal));
 		ASSERT (IntValue::Get (lastVal) == 5);
 		for (std::shared_ptr<TestNode> node : nodes) {
 			ASSERT (node->calculationCounter == 1);
-			ASSERT (node->ValueIsCalculated ());
+			ASSERT (node->HasCalculatedValue ());
 		}
 	}
 
@@ -78,9 +78,9 @@ TEST (RecalculationTest)
 		for (size_t i = 0; i < nodes.size (); ++i) {
 			ASSERT (nodes[i]->calculationCounter == 1);
 			if (i < 2) {
-				ASSERT (nodes[i]->ValueIsCalculated ());
+				ASSERT (nodes[i]->HasCalculatedValue ());
 			} else {
-				ASSERT (!nodes[i]->ValueIsCalculated ());
+				ASSERT (!nodes[i]->HasCalculatedValue ());
 			}
 		}
 		manager.EvaluateAllNodes (EmptyEvaluationEnv);
@@ -90,7 +90,7 @@ TEST (RecalculationTest)
 			} else {
 				ASSERT (nodes[i]->calculationCounter == 2);
 			}
-			ASSERT (nodes[i]->ValueIsCalculated ());
+			ASSERT (nodes[i]->HasCalculatedValue ());
 		}
 	}
 
@@ -103,9 +103,9 @@ TEST (RecalculationTest)
 				ASSERT (nodes[i]->calculationCounter == 2);
 			}
 			if (i < 2) {
-				ASSERT (nodes[i]->ValueIsCalculated ());
+				ASSERT (nodes[i]->HasCalculatedValue ());
 			} else {
-				ASSERT (!nodes[i]->ValueIsCalculated ());
+				ASSERT (!nodes[i]->HasCalculatedValue ());
 			}
 		}
 		manager.EvaluateAllNodes (EmptyEvaluationEnv);
@@ -115,7 +115,7 @@ TEST (RecalculationTest)
 			} else {
 				ASSERT (nodes[i]->calculationCounter == 3);
 			}
-			ASSERT (nodes[i]->ValueIsCalculated ());
+			ASSERT (nodes[i]->HasCalculatedValue ());
 		}
 	}
 }

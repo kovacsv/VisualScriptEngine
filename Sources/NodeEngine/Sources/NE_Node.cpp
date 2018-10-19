@@ -117,8 +117,12 @@ ValuePtr Node::Evaluate (EvaluationEnv& env) const
 		return nullptr;
 	}
 
-	if (nodeEvaluator->IsNodeValueCalculated (nodeId)) {
+	if (nodeEvaluator->HasCalculatedNodeValue (nodeId)) {
 		return nodeEvaluator->GetCalculatedNodeValue (nodeId);
+	}
+
+	if (!nodeEvaluator->IsCalculationEnabled () && !IsForceCalculated ()) {
+		return nullptr;
 	}
 
 	ValuePtr value = Calculate (env);
@@ -134,11 +138,19 @@ ValuePtr Node::GetCalculatedValue () const
 		return nullptr;
 	}
 
-	if (DBGERROR (!nodeEvaluator->IsNodeValueCalculated (nodeId))) {
+	if (DBGERROR (!nodeEvaluator->HasCalculatedNodeValue (nodeId))) {
 		return nullptr;
 	}
 
 	return nodeEvaluator->GetCalculatedNodeValue (nodeId);
+}
+
+bool Node::HasCalculatedValue () const
+{
+	if (DBGERROR (nodeEvaluator == nullptr)) {
+		return false;
+	}
+	return nodeEvaluator->HasCalculatedNodeValue (GetId ());
 }
 
 void Node::InvalidateValue () const
@@ -147,14 +159,6 @@ void Node::InvalidateValue () const
 		return;
 	}
 	nodeEvaluator->InvalidateNodeValue (GetId ());	
-}
-
-bool Node::ValueIsCalculated () const
-{
-	if (DBGERROR (nodeEvaluator == nullptr)) {
-		return false;
-	}
-	return nodeEvaluator->IsNodeValueCalculated (GetId ());
 }
 
 Stream::Status Node::Read (InputStream& inputStream)
@@ -289,6 +293,11 @@ ListValuePtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) 
 	}
 
 	return EvaluateInputSlot (inputSlot, env);
+}
+
+bool Node::IsForceCalculated () const
+{
+	return false;
 }
 
 void Node::ProcessValue (const ValuePtr&, EvaluationEnv&) const

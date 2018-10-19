@@ -35,7 +35,12 @@ public:
 		return nodeManager.EnumerateConnectedOutputSlots (inputSlot, processor);
 	}
 
-	virtual bool IsNodeValueCalculated (const NodeId& nodeId) const override
+	virtual bool IsCalculationEnabled () const override
+	{
+		return nodeManager.GetUpdateMode () == NodeManager::UpdateMode::Automatic;
+	}
+
+	virtual bool HasCalculatedNodeValue (const NodeId& nodeId) const override
 	{
 		return nodeValueCache.Contains (nodeId);
 	}
@@ -91,6 +96,8 @@ NodeManager::NodeManager () :
 	idGenerator (),
 	nodeIdToNodeTable (),
 	connectionManager (),
+	nodeGroupList (),
+	updateMode (UpdateMode::Automatic),
 	nodeValueCache (),
 	nodeEvaluator (new NodeManagerNodeEvaluator (*this, nodeValueCache))
 {
@@ -420,6 +427,16 @@ void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroup
 void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor)
 {
 	nodeGroupList.Enumerate (processor);
+}
+
+NodeManager::UpdateMode NodeManager::GetUpdateMode () const
+{
+	return updateMode;
+}
+
+void NodeManager::SetUpdateMode (UpdateMode newUpdateMode)
+{
+	updateMode = newUpdateMode;
 }
 
 Stream::Status NodeManager::Read (InputStream& inputStream)

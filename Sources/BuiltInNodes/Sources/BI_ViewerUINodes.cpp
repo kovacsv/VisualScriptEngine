@@ -114,7 +114,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 	};
 
 	std::vector<std::wstring> nodeTexts;
-	DBGASSERT (ValueIsCalculated ());
+	DBGASSERT (HasCalculatedValue ());
 	NE::ValuePtr nodeValue = GetCalculatedValue ();
 	if (nodeValue != nullptr) {
 		NE::IListValuePtr listValue = NE::CreateListValue (nodeValue);

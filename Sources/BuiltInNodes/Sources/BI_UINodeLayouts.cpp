@@ -9,7 +9,7 @@ void DrawStatusHeaderWithSlotsLayout (	const NUIE::UINode& uiNode,
 										NUIE::NodeUIDrawingEnvironment& env,
 										NUIE::NodeDrawingImage& drawingImage)
 {
-	DBGASSERT (uiNode.ValueIsCalculated ());
+	DBGASSERT (uiNode.HasCalculatedValue ());
 	NodeUIStatusHeaderPanel::NodeStatus nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasNoValue;
 	if (uiNode.GetCalculatedValue () != nullptr) {
 		nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasValue;
@@ -30,7 +30,7 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 											NUIE::NodeDrawingImage& drawingImage)
 {
 	std::wstring nodeText = L"<empty>";
-	DBGASSERT (uiNode.ValueIsCalculated ());
+	DBGASSERT (uiNode.HasCalculatedValue ());
 	NE::ValuePtr nodeValue = uiNode.GetCalculatedValue ();
 	if (nodeValue != nullptr) {
 		nodeText = nodeValue->ToString (env.GetStringSettings ());

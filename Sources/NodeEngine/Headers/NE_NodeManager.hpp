@@ -22,6 +22,12 @@ class NodeManager
 	friend class NodeManagerMerge;
 
 public:
+	enum class UpdateMode
+	{
+		Automatic,
+		Manual
+	};
+
 	NodeManager ();
 	NodeManager (const NodeManager& src) = delete;
 	NodeManager (NodeManager&& src) = delete;
@@ -83,6 +89,9 @@ public:
 	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
 	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor);
 
+	UpdateMode			GetUpdateMode () const;
+	void				SetUpdateMode (UpdateMode newUpdateMode);
+
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;
 
@@ -106,6 +115,7 @@ private:
 	std::unordered_map<NodeId, NodePtr>		nodeIdToNodeTable;
 	ConnectionManager						connectionManager;
 	NodeGroupList							nodeGroupList;
+	UpdateMode								updateMode;
 
 	mutable NodeValueCache					nodeValueCache;
 	mutable NodeEvaluatorConstPtr			nodeEvaluator;

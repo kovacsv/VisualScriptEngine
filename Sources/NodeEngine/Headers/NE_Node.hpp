@@ -26,7 +26,8 @@ public:
 	virtual bool		HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const = 0;
 	virtual void		EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const = 0;
 
-	virtual bool		IsNodeValueCalculated (const NodeId& nodeId) const = 0;
+	virtual bool		IsCalculationEnabled () const = 0;
+	virtual bool		HasCalculatedNodeValue (const NodeId& nodeId) const = 0;
 	virtual ValuePtr	GetCalculatedNodeValue (const NodeId& nodeId) const = 0;
 	virtual void		SetCalculatedNodeValue (const NodeId& nodeId, const ValuePtr& valuePtr) const = 0;
 };
@@ -80,8 +81,8 @@ public:
 
 	ValuePtr				Evaluate (EvaluationEnv& env) const;
 	ValuePtr				GetCalculatedValue () const;
+	bool					HasCalculatedValue () const;
 	void					InvalidateValue () const;
-	bool					ValueIsCalculated () const;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
@@ -121,6 +122,8 @@ protected:
 private:
 	virtual void			RegisterSlots () = 0;
 	virtual ValuePtr		Calculate (EvaluationEnv& env) const = 0;
+
+	virtual bool			IsForceCalculated () const;
 	virtual void			ProcessValue (const ValuePtr& value, EvaluationEnv& env) const;
 
 	ListValuePtr			EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
