@@ -333,12 +333,16 @@ void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 void NodeManager::ForceEvaluateAllNodes (EvaluationEnv& env) const
 {
 	ValueGuard<bool> isForcedCalculationGuard (isForcedCalculation, true);
+	std::vector<NodeConstPtr> nodesToRecalculate;
 	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
 		if (node->NeedToCalculate ()) {
-			InvalidateNodeValue (node);
+			nodesToRecalculate.push_back (node);
 		}
 		return true;
 	});
+	for (const NodeConstPtr& node : nodesToRecalculate) {
+		InvalidateNodeValue (node);
+	}
 	EvaluateAllNodes (env);
 }
 
