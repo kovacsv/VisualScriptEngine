@@ -322,7 +322,7 @@ void NodeUIManager::InvalidateNodeGroupDrawing (const UINodePtr& uiNode)
 	InvalidateNodeGroupDrawing (uiNode->GetId ());
 }
 
-void NodeUIManager::InvalidateAllNodeGroupDrawing ()
+void NodeUIManager::InvalidateAllNodeGroupsDrawing ()
 {
 	EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
 		group->InvalidateGroupDrawing ();
@@ -334,6 +334,19 @@ void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 {
 	if (status.NeedToRecalculate ()) {
 		nodeManager.EvaluateAllNodes (env.GetEvaluationEnv ());
+		env.OnValuesRecalculated ();
+		status.RequestRedraw ();
+	}
+	if (status.NeedToRedraw ()) {
+		env.OnRedrawRequested ();
+	}
+	status.Reset ();
+}
+
+void NodeUIManager::ForceUpdate (NodeUICalculationEnvironment& env)
+{
+	if (status.NeedToRecalculate ()) {
+		nodeManager.ForceEvaluateAllNodes (env.GetEvaluationEnv ());
 		env.OnValuesRecalculated ();
 		status.RequestRedraw ();
 	}
@@ -369,6 +382,33 @@ void NodeUIManager::SetViewBox (const ViewBox& newViewBox)
 bool NodeUIManager::IsPreviewMode () const
 {
 	return viewBox.GetScale () < 0.3;
+}
+
+NodeUIManager::UpdateMode NodeUIManager::GetUpdateMode () const
+{
+	switch (nodeManager.GetUpdateMode ()) {
+		case NE::NodeManager::UpdateMode::Automatic:
+			return UpdateMode::Automatic;
+		case NE::NodeManager::UpdateMode::Manual:
+			return UpdateMode::Manual;
+	}
+	DBGBREAK ();
+	return UpdateMode::Automatic;
+}
+
+void NodeUIManager::SetUpdateMode (UpdateMode newUpdateMode)
+{
+	switch (newUpdateMode) {
+		case UpdateMode::Automatic:
+			nodeManager.SetUpdateMode (NE::NodeManager::UpdateMode::Automatic);
+			break;
+		case UpdateMode::Manual:
+			nodeManager.SetUpdateMode (NE::NodeManager::UpdateMode::Manual);
+			break;
+		default:
+			DBGBREAK ();
+			break;
+	}
 }
 
 void NodeUIManager::Clear ()
@@ -447,7 +487,7 @@ bool NodeUIManager::Redo (NE::EvaluationEnv& env)
 bool NodeUIManager::AddUINodeGroup (const UINodeGroupPtr& group)
 {
 	bool success = nodeManager.AddNodeGroup (group);
-	InvalidateAllNodeGroupDrawing ();
+	InvalidateAllNodeGroupsDrawing ();
 	return success;
 }
 
@@ -462,7 +502,7 @@ bool NodeUIManager::RemoveNodesFromGroup (const NE::NodeCollection& nodeCollecti
 		nodeManager.RemoveNodeFromGroup (nodeId);
 		return true;	
 	});
-	InvalidateAllNodeGroupDrawing ();
+	InvalidateAllNodeGroupsDrawing ();
 	return true;
 }
 

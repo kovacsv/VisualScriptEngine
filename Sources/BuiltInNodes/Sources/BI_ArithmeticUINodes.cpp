@@ -77,6 +77,11 @@ void BinaryOperationNode::RegisterCommands (NUIE::NodeCommandRegistrator& comman
 	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
 }
 
+bool BinaryOperationNode::IsForceCalculated () const
+{
+	return true;
+}
+
 NE::Stream::Status BinaryOperationNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);

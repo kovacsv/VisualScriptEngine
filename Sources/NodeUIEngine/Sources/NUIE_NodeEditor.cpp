@@ -74,14 +74,46 @@ void NodeEditor::OnResize (int newWidth, int newHeight)
 	uiManager.Update (uiEnvironment);
 }
 
-void NodeEditor::InvalidateAllNodesDrawing ()
+NodeEditor::UpdateMode NodeEditor::GetUpdateMode () const
 {
-	uiManager.InvalidateAllNodesDrawing ();
+	switch (uiManager.GetUpdateMode ()) {
+		case NodeUIManager::UpdateMode::Automatic:
+			return UpdateMode::Automatic;
+		case NodeUIManager::UpdateMode::Manual:
+			return UpdateMode::Manual;
+	}
+	DBGBREAK ();
+	return UpdateMode::Automatic;
+}
+
+void NodeEditor::SetUpdateMode (UpdateMode newUpdateMode)
+{
+	switch (newUpdateMode) {
+		case UpdateMode::Automatic:
+			ManualUpdate ();
+			uiManager.SetUpdateMode (NodeUIManager::UpdateMode::Automatic);
+			break;
+		case UpdateMode::Manual:
+			uiManager.SetUpdateMode (NodeUIManager::UpdateMode::Manual);
+			break;
+		default:
+			DBGBREAK ();
+			break;
+	}
 }
 
 void NodeEditor::Update ()
 {
 	uiManager.Update (uiEnvironment);
+}
+
+void NodeEditor::ManualUpdate ()
+{
+	uiManager.InvalidateAllNodesDrawing ();
+	uiManager.InvalidateAllNodeGroupsDrawing ();
+	uiManager.RequestRecalculate ();
+	uiManager.RequestRedraw ();
+	uiManager.ForceUpdate (uiEnvironment);
 }
 
 void NodeEditor::Draw ()

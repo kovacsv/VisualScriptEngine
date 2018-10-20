@@ -62,6 +62,11 @@ NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnviro
 	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
+bool NumericUpDownNode::IsForceCalculated () const
+{
+	return true;
+}
+
 NE::Stream::Status NumericUpDownNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
@@ -348,6 +353,11 @@ NumericRangeNode::NumericRangeNode (const std::wstring& name, const NUIE::Point&
 NumericRangeNode::~NumericRangeNode ()
 {
 
+}
+
+bool NumericRangeNode::IsForceCalculated () const
+{
+	return true;
 }
 
 NE::Stream::Status NumericRangeNode::Read (NE::InputStream& inputStream)

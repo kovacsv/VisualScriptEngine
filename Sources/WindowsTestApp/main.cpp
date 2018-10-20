@@ -236,7 +236,10 @@ public:
 		File_SaveAs		= 4,
 		File_Exit		= 5,
 		Edit_Undo		= 6,
-		Edit_Redo		= 7
+		Edit_Redo		= 7,
+		Mode_Automatic	= 8,
+		Mode_Manual		= 9,
+		Mode_Update		= 10
 	};
 
 	MenuBar () :
@@ -255,6 +258,13 @@ public:
 		editMenu->Append (CommandId::Edit_Undo, "Undo");
 		editMenu->Append (CommandId::Edit_Redo, "Redo");
 		Append (editMenu, L"&Edit");
+
+		wxMenu* modeMenu = new wxMenu ();
+		modeMenu->AppendRadioItem (CommandId::Mode_Automatic, "Automatic");
+		modeMenu->AppendRadioItem (CommandId::Mode_Manual, "Manual");
+		modeMenu->AppendSeparator ();
+		modeMenu->Append (CommandId::Mode_Update, L"Update");
+		Append (modeMenu, L"&Mode");
 	}
 };
 
@@ -357,6 +367,21 @@ public:
 		nodeEditorControl->Redo ();
 	}
 
+	void OnChangeToAutomatic (wxCommandEvent& evt)
+	{
+		nodeEditorControl->SwitchToAutomaticUpdate ();
+	}
+
+	void OnChangeToManual (wxCommandEvent& evt)
+	{
+		nodeEditorControl->SwitchToManualUpdate ();
+	}
+
+	void OnUpdate (wxCommandEvent& evt)
+	{
+		nodeEditorControl->ManualUpdate ();
+	}
+
 	void UpdateStatusBar ()
 	{
 		std::wstring currentFileText = L"No File";
@@ -391,6 +416,9 @@ EVT_MENU (MenuBar::CommandId::File_SaveAs, MainFrame::OnSaveAs)
 EVT_MENU (MenuBar::CommandId::File_Exit, MainFrame::OnExit)
 EVT_MENU (MenuBar::CommandId::Edit_Undo, MainFrame::OnUndo)
 EVT_MENU (MenuBar::CommandId::Edit_Redo, MainFrame::OnRedo)
+EVT_MENU (MenuBar::CommandId::Mode_Automatic, MainFrame::OnChangeToAutomatic)
+EVT_MENU (MenuBar::CommandId::Mode_Manual, MainFrame::OnChangeToManual)
+EVT_MENU (MenuBar::CommandId::Mode_Update, MainFrame::OnUpdate)
 END_EVENT_TABLE ()
 
 class NodeEngineTestApplication : public wxApp

@@ -114,14 +114,15 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 	};
 
 	std::vector<std::wstring> nodeTexts;
-	DBGASSERT (HasCalculatedValue ());
-	NE::ValuePtr nodeValue = GetCalculatedValue ();
-	if (nodeValue != nullptr) {
-		NE::IListValuePtr listValue = NE::CreateListValue (nodeValue);
-		nodeTexts.clear ();
-		listValue->Enumerate ([&] (const NE::ValuePtr& value) {
-			nodeTexts.push_back (value->ToString (env.GetStringSettings ()));
-		});
+	if (HasCalculatedValue ()) {
+		NE::ValuePtr nodeValue = GetCalculatedValue ();
+		if (nodeValue != nullptr) {
+			NE::IListValuePtr listValue = NE::CreateListValue (nodeValue);
+			nodeTexts.clear ();
+			listValue->Enumerate ([&] (const NE::ValuePtr& value) {
+				nodeTexts.push_back (value->ToString (env.GetStringSettings ()));
+			});
+		}
 	}
 
 	textCount = nodeTexts.size ();
@@ -168,6 +169,11 @@ void MultiLineViewerNode::ValidateCurrentPage () const
 	if (currentPage > pageCount) {
 		currentPage = 1;
 	}
+}
+
+bool MultiLineViewerNode::IsForceCalculated () const
+{
+	return true;
 }
 
 NE::Stream::Status MultiLineViewerNode::Read (NE::InputStream& inputStream)

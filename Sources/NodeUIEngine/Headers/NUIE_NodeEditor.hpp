@@ -14,6 +14,12 @@ namespace NUIE
 class NodeEditor
 {
 public:
+	enum class UpdateMode
+	{
+		Automatic,
+		Manual
+	};
+
 	NodeEditor (NodeUIEnvironment& uiEnvironment);
 	virtual ~NodeEditor ();
 
@@ -25,12 +31,15 @@ public:
 	void						OnKeyPress (const Key& pressedKey);
 	void						OnResize (int newWidth, int newHeight);
 	
-	void						InvalidateAllNodesDrawing ();
+	UpdateMode					GetUpdateMode () const;
+	void						SetUpdateMode (UpdateMode newUpdateMode);
+	void						ManualUpdate ();
+
 	void						Update ();
 	void						Draw ();
 
 	NodeUIManager&				GetNodeUIManager ();
-	
+
 	void						Clear ();
 	bool						Load (const std::wstring& fileName);
 	bool						Save (const std::wstring& fileName) const;

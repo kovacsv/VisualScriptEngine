@@ -92,6 +92,10 @@ public:
 
 	void			OnKeyDown (wxKeyEvent& evt);
 
+	void			SwitchToAutomaticUpdate ();
+	void			SwitchToManualUpdate ();
+	void			ManualUpdate ();
+
 	void			New ();
 	bool			Open (const std::wstring& fileName);
 	bool			Save (const std::wstring& fileName);

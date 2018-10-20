@@ -22,6 +22,12 @@ class NodeDrawingModifier;
 class NodeUIManager
 {
 public:
+	enum class UpdateMode
+	{
+		Automatic,
+		Manual
+	};
+
 	NodeUIManager ();
 	virtual ~NodeUIManager ();
 
@@ -66,15 +72,19 @@ public:
 	void						InvalidateNodeDrawing (const UINodePtr& uiNode);
 	void						InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
 	void						InvalidateNodeGroupDrawing (const UINodePtr& uiNode);
-	void						InvalidateAllNodeGroupDrawing ();
+	void						InvalidateAllNodeGroupsDrawing ();
 
 	void						Update (NodeUICalculationEnvironment& env);
+	void						ForceUpdate (NodeUICalculationEnvironment& env);
 	void						Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawingModifier);
 	void						ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
 
 	const ViewBox&				GetViewBox () const;
 	void						SetViewBox (const ViewBox& newViewBox);
 	bool						IsPreviewMode () const;
+
+	UpdateMode					GetUpdateMode () const;
+	void						SetUpdateMode (UpdateMode newUpdateMode);
 
 	void						Clear ();
 	bool						Load (NE::InputStream& inputStream);

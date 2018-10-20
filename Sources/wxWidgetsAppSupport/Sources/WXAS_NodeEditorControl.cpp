@@ -236,6 +236,21 @@ void NodeEditorControl::OnKeyDown (wxKeyEvent& evt)
 	nodeEditor->OnKeyPress (key);
 }
 
+void NodeEditorControl::SwitchToAutomaticUpdate ()
+{
+	nodeEditor->SetUpdateMode (NUIE::NodeEditor::UpdateMode::Automatic);
+}
+
+void NodeEditorControl::SwitchToManualUpdate ()
+{
+	nodeEditor->SetUpdateMode (NUIE::NodeEditor::UpdateMode::Manual);
+}
+
+void NodeEditorControl::ManualUpdate ()
+{
+	nodeEditor->ManualUpdate ();
+}
+
 void NodeEditorControl::New ()
 {
 	nodeEditor->Clear ();

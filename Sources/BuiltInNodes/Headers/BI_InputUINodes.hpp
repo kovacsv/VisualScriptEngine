@@ -20,6 +20,8 @@ public:
 
 	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications& notifications) override;
 
+	virtual bool						IsForceCalculated () const override;
+
 	virtual NE::Stream::Status			Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status			Write (NE::OutputStream& outputStream) const override;
 
@@ -96,6 +98,8 @@ public:
 	NumericRangeNode ();
 	NumericRangeNode (const std::wstring& name, const NUIE::Point& position);
 	virtual ~NumericRangeNode ();
+
+	virtual bool				IsForceCalculated () const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
