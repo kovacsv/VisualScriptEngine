@@ -80,9 +80,9 @@ public:
 	void					EnumerateOutputSlots (const std::function<bool (const OutputSlotConstPtr&)>& processor) const;
 
 	ValuePtr				Evaluate (EvaluationEnv& env) const;
-	ValuePtr				ForceEvaluate (EvaluationEnv& env) const;
 	ValuePtr				GetCalculatedValue () const;
 	bool					HasCalculatedValue () const;
+	bool					NeedToCalculate () const;
 	void					InvalidateValue () const;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
@@ -121,19 +121,12 @@ protected:
 	ListValuePtr			EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
 
 private:
-	enum class EvaluationMode
-	{
-		Normal,
-		Forced
-	};
-
 	virtual void			RegisterSlots () = 0;
 	virtual ValuePtr		Calculate (EvaluationEnv& env) const = 0;
 
 	virtual bool			IsForceCalculated () const;
 	virtual void			ProcessValue (const ValuePtr& value, EvaluationEnv& env) const;
 
-	ValuePtr				EvaluateInternal (EvaluationEnv& env, EvaluationMode mode) const;
 	ListValuePtr			EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
 
 	NodeId					nodeId;

@@ -67,6 +67,38 @@ public:
 	}
 };
 
+
+class IncreaseForceCalculatedNode : public SerializableTestNode
+{
+public:
+	IncreaseForceCalculatedNode () :
+		SerializableTestNode ()
+	{
+
+	}
+
+	virtual void RegisterSlots () override
+	{
+		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("in"), nullptr, NE::OutputSlotConnectionMode::Single)));
+		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
+	}
+
+	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	{
+		ValuePtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
+		if (in == nullptr) {
+			return nullptr;
+		}
+		return ValuePtr (new IntValue (IntValue::Get (in) + 1));
+	}
+
+private:
+	virtual bool IsForceCalculated () const override
+	{
+		return true;
+	}
+};
+
 TEST (ManualUpdateTest_Automatic)
 {
 	NodeManager manager;
@@ -74,17 +106,21 @@ TEST (ManualUpdateTest_Automatic)
 	NE::NodePtr valueNode = manager.AddNode (NodePtr (new ValueNode (5)));
 	NE::NodePtr incNode1 = manager.AddNode (NodePtr (new IncreaseNode ()));
 	NE::NodePtr incNode2 = manager.AddNode (NodePtr (new IncreaseNode ()));
+	NE::NodePtr incNode3 = manager.AddNode (NodePtr (new IncreaseForceCalculatedNode ()));
 
 	manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode1->GetInputSlot (SlotId ("in")));
 	manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode2->GetInputSlot (SlotId ("in")));
+	manager.ConnectOutputSlotToInputSlot (incNode2->GetOutputSlot (SlotId ("out")), incNode3->GetInputSlot (SlotId ("in")));
 
 	{
 		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 5);
 		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode1Val) == 6);
-		NE::ValuePtr incNode2Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode2Val) == 6);
+		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		ASSERT (NE::IntValue::Get (incNode3Val) == 7);
 	}
 
 	NE::Node::Cast<ValueNode> (valueNode)->SetValue (10);
@@ -96,8 +132,10 @@ TEST (ManualUpdateTest_Automatic)
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 10);
 		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode1Val) == 11);
-		NE::ValuePtr incNode2Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode2Val) == 11);
+		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		ASSERT (NE::IntValue::Get (incNode3Val) == 12);
 	}
 }
 
@@ -109,28 +147,38 @@ TEST (ManualUpdateTest_Manual)
 	NE::NodePtr valueNode = manager.AddNode (NodePtr (new ValueNode (5)));
 	NE::NodePtr incNode1 = manager.AddNode (NodePtr (new IncreaseNode ()));
 	NE::NodePtr incNode2 = manager.AddNode (NodePtr (new IncreaseNode ()));
+	NE::NodePtr incNode3 = manager.AddNode (NodePtr (new IncreaseForceCalculatedNode ()));
 
 	manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode1->GetInputSlot (SlotId ("in")));
 	manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode2->GetInputSlot (SlotId ("in")));
+	manager.ConnectOutputSlotToInputSlot (incNode2->GetOutputSlot (SlotId ("out")), incNode3->GetInputSlot (SlotId ("in")));
 
 	{
 		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 5);
 		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode1Val == nullptr);
-		NE::ValuePtr incNode2Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode2Val == nullptr);
+		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		ASSERT (incNode3Val == nullptr);
 	}
 
+	manager.EvaluateAllNodes (EmptyEvaluationEnv);
+
 	{
-		NE::ValuePtr incNode1Val = incNode1->ForceEvaluate (EmptyEvaluationEnv);
-		ASSERT (NE::IntValue::Get (incNode1Val) == 6);
-		NE::ValuePtr incNode2Val = incNode1->ForceEvaluate (EmptyEvaluationEnv);
-		ASSERT (NE::IntValue::Get (incNode2Val) == 6);
-	}	
+		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
+		ASSERT (NE::IntValue::Get (valueNodeVal) == 5);
+		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		ASSERT (incNode1Val == nullptr);
+		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		ASSERT (incNode2Val == nullptr);
+		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		ASSERT (incNode3Val == nullptr);
+	}
 }
 
-TEST (ManualUpdateTest_ManualForceAll)
+TEST (ManualUpdateTest_ManualForced)
 {
 	NodeManager manager;
 	manager.SetUpdateMode (NodeManager::UpdateMode::Manual);
@@ -138,17 +186,22 @@ TEST (ManualUpdateTest_ManualForceAll)
 	NE::NodePtr valueNode = manager.AddNode (NodePtr (new ValueNode (5)));
 	NE::NodePtr incNode1 = manager.AddNode (NodePtr (new IncreaseNode ()));
 	NE::NodePtr incNode2 = manager.AddNode (NodePtr (new IncreaseNode ()));
+	NE::NodePtr incNode3 = manager.AddNode (NodePtr (new IncreaseForceCalculatedNode ()));
 
 	manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode1->GetInputSlot (SlotId ("in")));
 	manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode2->GetInputSlot (SlotId ("in")));
+	manager.ConnectOutputSlotToInputSlot (incNode2->GetOutputSlot (SlotId ("out")), incNode3->GetInputSlot (SlotId ("in")));
+
 
 	{
 		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 5);
 		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode1Val == nullptr);
-		NE::ValuePtr incNode2Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode2Val == nullptr);
+		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		ASSERT (incNode3Val == nullptr);
 	}
 
 	manager.ForceEvaluateAllNodes (EmptyEvaluationEnv);
@@ -156,9 +209,35 @@ TEST (ManualUpdateTest_ManualForceAll)
 	{
 		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode1Val) == 6);
-		NE::ValuePtr incNode2Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode2Val) == 6);
-	}	
+		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		ASSERT (NE::IntValue::Get (incNode3Val) == 7);
+	}
+
+	NE::Node::Cast<ValueNode> (valueNode)->SetValue (10);
+
+	{
+		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
+		ASSERT (NE::IntValue::Get (valueNodeVal) == 10);
+		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		ASSERT (incNode1Val == nullptr);
+		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		ASSERT (incNode2Val == nullptr);
+		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		ASSERT (incNode3Val == nullptr);
+	}
+
+	manager.ForceEvaluateAllNodes (EmptyEvaluationEnv);
+
+	{
+		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		ASSERT (NE::IntValue::Get (incNode1Val) == 11);
+		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		ASSERT (NE::IntValue::Get (incNode2Val) == 11);
+		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		ASSERT (NE::IntValue::Get (incNode3Val) == 12);
+	}
 }
 
 }

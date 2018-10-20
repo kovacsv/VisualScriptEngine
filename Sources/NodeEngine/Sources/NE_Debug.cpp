@@ -10,25 +10,32 @@
 	#endif
 #endif
 
+static void Assert (bool condition)
+{
+	if (!condition) {
+		assert (condition);
+	}
+}
+
 void DbgBreak ()
 {
-	assert (false);
+	Assert (false);
 }
 
 void DbgAssert (bool condition)
 {
-	assert (condition);
+	Assert (condition);
 }
 
 bool DbgError (bool condition)
 {
-	assert (!condition);
+	Assert (!condition);
 	return condition;
 }
 
 bool DbgVerify (bool condition)
 {
-	assert (condition);
+	Assert (condition);
 	return condition;
 }
 

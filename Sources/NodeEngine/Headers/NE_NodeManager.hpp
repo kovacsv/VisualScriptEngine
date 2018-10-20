@@ -90,6 +90,7 @@ public:
 	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
 	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor);
 
+	bool				IsCalculationEnabled () const;
 	UpdateMode			GetUpdateMode () const;
 	void				SetUpdateMode (UpdateMode newUpdateMode);
 
@@ -120,6 +121,7 @@ private:
 
 	mutable NodeValueCache					nodeValueCache;
 	mutable NodeEvaluatorConstPtr			nodeEvaluator;
+	mutable bool							isForcedCalculation;
 };
 
 }

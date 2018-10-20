@@ -48,6 +48,7 @@
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Stamp.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Stream.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_StringUtils.hpp" />
+    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Utils.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Value.hpp" />
     <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ValueCombination.hpp" />
   </ItemGroup>

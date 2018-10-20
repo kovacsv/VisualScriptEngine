@@ -113,12 +113,23 @@ void Node::EnumerateOutputSlots (const std::function<bool (const OutputSlotConst
 
 ValuePtr Node::Evaluate (EvaluationEnv& env) const
 {
-	return EvaluateInternal (env, EvaluationMode::Normal);
-}
+	if (DBGERROR (nodeEvaluator == nullptr)) {
+		return nullptr;
+	}
 
-ValuePtr Node::ForceEvaluate (EvaluationEnv& env) const
-{
-	return EvaluateInternal (env, EvaluationMode::Forced);
+	if (nodeEvaluator->HasCalculatedNodeValue (nodeId)) {
+		return nodeEvaluator->GetCalculatedNodeValue (nodeId);
+	}
+
+	if (!nodeEvaluator->IsCalculationEnabled () && !IsForceCalculated ()) {
+		return nullptr;
+	}
+
+	ValuePtr value = Calculate (env);
+	nodeEvaluator->SetCalculatedNodeValue (nodeId, value);
+
+	ProcessValue (value, env);
+	return value;
 }
 
 ValuePtr Node::GetCalculatedValue () const
@@ -140,6 +151,23 @@ bool Node::HasCalculatedValue () const
 		return false;
 	}
 	return nodeEvaluator->HasCalculatedNodeValue (GetId ());
+}
+
+bool Node::NeedToCalculate () const
+{
+	if (DBGERROR (nodeEvaluator == nullptr)) {
+		return false;
+	}
+
+	if (nodeEvaluator->HasCalculatedNodeValue (nodeId)) {
+		return false;
+	}
+
+	if (!nodeEvaluator->IsCalculationEnabled () && !IsForceCalculated ()) {
+		return false;
+	}
+
+	return true;
 }
 
 void Node::InvalidateValue () const
@@ -292,27 +320,6 @@ bool Node::IsForceCalculated () const
 void Node::ProcessValue (const ValuePtr&, EvaluationEnv&) const
 {
 
-}
-
-ValuePtr Node::EvaluateInternal (EvaluationEnv& env, EvaluationMode mode) const
-{
-	if (DBGERROR (nodeEvaluator == nullptr)) {
-		return nullptr;
-	}
-
-	if (nodeEvaluator->HasCalculatedNodeValue (nodeId)) {
-		return nodeEvaluator->GetCalculatedNodeValue (nodeId);
-	}
-
-	if (mode == EvaluationMode::Normal && !nodeEvaluator->IsCalculationEnabled () && !IsForceCalculated ()) {
-		return nullptr;
-	}
-
-	ValuePtr value = Calculate (env);
-	nodeEvaluator->SetCalculatedNodeValue (nodeId, value);
-
-	ProcessValue (value, env);
-	return value;
 }
 
 ListValuePtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const

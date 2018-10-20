@@ -1,4 +1,5 @@
 #include "NE_NodeManager.hpp"
+#include "NE_Utils.hpp"
 #include "NE_Node.hpp"
 #include "NE_Debug.hpp"
 #include "NE_InputSlot.hpp"
@@ -37,7 +38,7 @@ public:
 
 	virtual bool IsCalculationEnabled () const override
 	{
-		return nodeManager.GetUpdateMode () == NodeManager::UpdateMode::Automatic;
+		return nodeManager.IsCalculationEnabled ();
 	}
 
 	virtual bool HasCalculatedNodeValue (const NodeId& nodeId) const override
@@ -97,9 +98,10 @@ NodeManager::NodeManager () :
 	nodeIdToNodeTable (),
 	connectionManager (),
 	nodeGroupList (),
-	updateMode (UpdateMode::Automatic),
+	updateMode (UpdateMode::Automatic), // TODO: serialize update mode
 	nodeValueCache (),
-	nodeEvaluator (new NodeManagerNodeEvaluator (*this, nodeValueCache))
+	nodeEvaluator (new NodeManagerNodeEvaluator (*this, nodeValueCache)),
+	isForcedCalculation (false)
 {
 
 }
@@ -330,10 +332,14 @@ void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 
 void NodeManager::ForceEvaluateAllNodes (EvaluationEnv& env) const
 {
+	ValueGuard<bool> isForcedCalculationGuard (isForcedCalculation, true);
 	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
-		node->ForceEvaluate (env);
+		if (node->NeedToCalculate ()) {
+			InvalidateNodeValue (node);
+		}
 		return true;
 	});
+	EvaluateAllNodes (env);
 }
 
 void NodeManager::InvalidateNodeValue (const NodeId& nodeId) const
@@ -435,6 +441,11 @@ void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroup
 void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor)
 {
 	nodeGroupList.Enumerate (processor);
+}
+
+bool NodeManager::IsCalculationEnabled () const
+{
+	return updateMode == UpdateMode::Automatic || isForcedCalculation;
 }
 
 NodeManager::UpdateMode NodeManager::GetUpdateMode () const
