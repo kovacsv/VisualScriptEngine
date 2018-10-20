@@ -98,7 +98,7 @@ NodeManager::NodeManager () :
 	nodeIdToNodeTable (),
 	connectionManager (),
 	nodeGroupList (),
-	updateMode (UpdateMode::Automatic), // TODO: serialize update mode
+	updateMode (UpdateMode::Automatic),
 	nodeValueCache (),
 	nodeEvaluator (new NodeManagerNodeEvaluator (*this, nodeValueCache)),
 	isForcedCalculation (false)
@@ -477,6 +477,11 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 	}
 
 	nodeGroupList.Read (inputStream);
+
+	int updateModeInt = 0;
+	inputStream.Read (updateModeInt);
+	updateMode = (UpdateMode) updateModeInt;
+
 	return inputStream.GetStatus ();
 }
 
@@ -491,6 +496,7 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	}
 
 	nodeGroupList.Write (outputStream);
+	outputStream.Write ((int) updateMode);
 	return outputStream.GetStatus ();
 }
 

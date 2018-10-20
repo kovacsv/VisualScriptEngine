@@ -243,7 +243,9 @@ public:
 	};
 
 	MenuBar () :
-		wxMenuBar ()
+		wxMenuBar (),
+		automaticModeItem (nullptr),
+		manualModeItem (nullptr)
 	{
 		wxMenu* fileMenu = new wxMenu ();
 		fileMenu->Append (CommandId::File_New, "New");
@@ -260,12 +262,27 @@ public:
 		Append (editMenu, L"&Edit");
 
 		wxMenu* modeMenu = new wxMenu ();
-		modeMenu->AppendRadioItem (CommandId::Mode_Automatic, "Automatic");
-		modeMenu->AppendRadioItem (CommandId::Mode_Manual, "Manual");
+		automaticModeItem = modeMenu->AppendRadioItem (CommandId::Mode_Automatic, "Automatic");
+		manualModeItem = modeMenu->AppendRadioItem (CommandId::Mode_Manual, "Manual");
 		modeMenu->AppendSeparator ();
 		modeMenu->Append (CommandId::Mode_Update, L"Update");
 		Append (modeMenu, L"&Mode");
 	}
+
+	void Update (WXAS::NodeEditorControl* nodeEditorControl)
+	{
+		if (nodeEditorControl->IsAutomaticUpdate ()) {
+			automaticModeItem->Check ();
+		} else if (nodeEditorControl->IsManualUpdate ()) {
+			manualModeItem->Check ();
+		} else {
+			DBGBREAK ();
+		}
+	}
+
+private:
+	wxMenuItem* automaticModeItem;
+	wxMenuItem* manualModeItem;
 };
 
 class MainFrame : public wxFrame
@@ -273,6 +290,7 @@ class MainFrame : public wxFrame
 public:
 	MainFrame (const std::shared_ptr<ResultImage>& resultImage, NE::EvaluationEnv& evaluationEnv) :
 		wxFrame (NULL, wxID_ANY, L"Node Engine Test App", wxDefaultPosition, wxSize (1000, 600)),
+		menuBar (new MenuBar ()),
 		mainWindow (new wxSplitterWindow (this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_THIN_SASH | wxSP_LIVE_UPDATE)),
 		drawingControl (new DrawingControl (mainWindow, resultImage)),
 		nodeEditorControl (new MyNodeEditorControl (mainWindow)),
@@ -291,7 +309,8 @@ public:
 
 		nodeEditorControl->Init (uiEnvironment);
 
-		SetMenuBar (new MenuBar ());
+		SetMenuBar (menuBar);
+		menuBar->Update (nodeEditorControl);
 
 		CreateStatusBar ();
 		UpdateStatusBar ();
@@ -325,6 +344,7 @@ public:
 				Reset ();
 			}
 		}
+		menuBar->Update (nodeEditorControl);
 		UpdateStatusBar ();
 	}
 
@@ -399,6 +419,7 @@ private:
 		applicationState.ClearCurrentFileName ();
 	}
 
+	MenuBar*					menuBar;
 	wxSplitterWindow*			mainWindow;
 	DrawingControl*				drawingControl;
 	WXAS::NodeEditorControl*	nodeEditorControl;

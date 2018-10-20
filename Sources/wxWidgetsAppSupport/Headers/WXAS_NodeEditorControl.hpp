@@ -92,6 +92,8 @@ public:
 
 	void			OnKeyDown (wxKeyEvent& evt);
 
+	bool			IsAutomaticUpdate () const;
+	bool			IsManualUpdate () const;
 	void			SwitchToAutomaticUpdate ();
 	void			SwitchToManualUpdate ();
 	void			ManualUpdate ();
