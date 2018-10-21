@@ -337,7 +337,7 @@ TEST (NodeGroupingTest)
 TEST (UndoTest)
 {
 	NodeEditorTestEnv env;
-	env.CheckReference ("07_UndoTest_Empty.svg");
+	ASSERT (env.CheckReference ("07_UndoTest_Empty.svg"));
 
 	env.SetNextCommandName (L"Create Number Node");
 	env.RightClick (Point (100, 100));
@@ -359,7 +359,7 @@ TEST (UndoTest)
 	env.SetNextCommandName (L"Delete Nodes");
 	env.RightClick (Point (320, 180));
 
-	env.CheckReference ("07_UndoTest_Initial.svg");
+	ASSERT (env.CheckReference ("07_UndoTest_Initial.svg"));
 
 	for (int i = 1; i <= 11; i++) {
 		env.nodeEditor.OnKeyPress (Key (PressedKeyCode::Undo));
@@ -367,7 +367,7 @@ TEST (UndoTest)
 		while (indexString.length () < 2) {
 			indexString = "0" + indexString;
 		}
-		env.CheckReference ("07_UndoTest_Undo_" + indexString + ".svg");
+		ASSERT (env.CheckReference ("07_UndoTest_Undo_" + indexString + ".svg"));
 	}
 	for (int i = 1; i <= 11; i++) {
 		env.nodeEditor.OnKeyPress (Key (PressedKeyCode::Redo));
@@ -375,8 +375,32 @@ TEST (UndoTest)
 		while (indexString.length () < 2) {
 			indexString = "0" + indexString;
 		}
-		env.CheckReference ("07_UndoTest_Redo_" + indexString + ".svg");
+		ASSERT (env.CheckReference ("07_UndoTest_Redo_" + indexString + ".svg"));
 	}
+}
+
+TEST (ManualUpdateTest)
+{
+	NodeEditorTestEnv env;
+	env.SetNextCommandName (L"Create Integer Node");
+	env.RightClick (Point (100, 100));
+	env.SetNextCommandName (L"Create Increase Node");
+	env.RightClick (Point (300, 200));
+	env.SetNextCommandName (L"Create Viewer Node");
+	env.RightClick (Point (600, 300));
+	env.DragDrop (Point (125, 100), Point (240, 220));
+	env.DragDrop (Point (360, 220), Point (530, 300));
+	ASSERT (env.CheckReference ("08_ManualUpdateTest_Init.svg"));
+
+	env.Click (Point (145, 140));
+	ASSERT (env.CheckReference ("08_ManualUpdateTest_AutoUpdateMode.svg"));
+	env.nodeEditor.SetUpdateMode (NodeEditor::UpdateMode::Manual);
+
+	env.Click (Point (145, 140));
+	ASSERT (env.CheckReference ("08_ManualUpdateTest_ManualUpdateMode.svg"));
+	
+	env.nodeEditor.ManualUpdate ();
+	ASSERT (env.CheckReference ("08_ManualUpdateTest_ManualUpdateMode_ForceUpdate.svg"));
 }
 
 }

@@ -9,13 +9,68 @@
 #include <iostream>
 #include <fstream>
 
+class IncreaseNode : public BI::BasicUINode
+{
+	DYNAMIC_SERIALIZABLE(IncreaseNode);
+
+public:
+	IncreaseNode () :
+		IncreaseNode (L"", Point ())
+	{
+	}
+
+	IncreaseNode (const std::wstring& name, const Point& position) :
+		BI::BasicUINode (name, position)
+	{
+
+	}
+
+	virtual ~IncreaseNode ()
+	{
+	}
+
+	void RegisterSlots ()
+	{
+		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"In", nullptr, NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Out")));
+	}
+
+	NE::ValuePtr Calculate (NE::EvaluationEnv& env) const
+	{
+		NE::ValuePtr inValue = EvaluateSingleInputSlot (NE::SlotId ("in"), env);
+		if (!IsSingleType<NE::IntValue> (inValue)) {
+			return nullptr;
+		}
+		return NE::ValuePtr (new NE::IntValue (NE::IntValue::Get (inValue) + 1));
+	}
+
+
+	virtual NE::Stream::Status Read (NE::InputStream& inputStream) override
+	{
+		NE::ObjectHeader header (inputStream);
+		BasicUINode::Read (inputStream);
+		return inputStream.GetStatus ();
+	}
+
+	virtual NE::Stream::Status Write (NE::OutputStream& outputStream) const override
+	{
+		NE::ObjectHeader header (outputStream, serializationInfo);
+		BasicUINode::Write (outputStream);
+		return outputStream.GetStatus ();
+	}
+};
+
+NE::DynamicSerializationInfo IncreaseNode::serializationInfo (NE::ObjectId ("{8C06D4A9-B042-4E23-8556-410AA5ED2B35}"), NE::ObjectVersion (1), IncreaseNode::CreateSerializableInstance);
+
 class MyCreateNodeCommand : public BI::CreateNodeCommand
 {
 public:
 	enum class NodeType
 	{
 		Number,
+		Integer,
 		Addition,
+		Increase,
 		Viewer
 	};
 
@@ -31,8 +86,12 @@ public:
 		switch (nodeType) {
 			case NodeType::Number:
 				return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0.0, 5.0));
+			case NodeType::Integer:
+				return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", modelPosition, 0, 1));
 			case NodeType::Addition:
 				return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
+			case NodeType::Increase:
+				return NUIE::UINodePtr (new IncreaseNode (L"Increase", modelPosition));
 			case NodeType::Viewer:
 				return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
 		}
@@ -55,7 +114,9 @@ UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager& uiManager, NodeUIE
 	NUIE::UIGroupCommandPtr createCommandGroup (new NUIE::UIGroupCommand (L"Add Node"));
 
 	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Create Number Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Create Integer Node", position)));
 	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Create Addition Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Increase, uiManager, uiEnvironment, L"Create Increase Node", position)));
 	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Create Viewer Node", position)));
 	actualCommands.AddCommand (createCommandGroup);
 
