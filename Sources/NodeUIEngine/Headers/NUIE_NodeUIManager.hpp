@@ -75,7 +75,7 @@ public:
 	void						InvalidateAllNodeGroupsDrawing ();
 
 	void						Update (NodeUICalculationEnvironment& env);
-	void						ForceUpdate (NodeUICalculationEnvironment& env);
+	void						ManualUpdate (NodeUICalculationEnvironment& env);
 	void						Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawingModifier);
 	void						ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
 
@@ -122,6 +122,14 @@ private:
 		bool	needToRecalculate;
 		bool	needToRedraw;
 	};
+
+	enum class InternalUpdateMode
+	{
+		Normal,
+		Manual
+	};
+
+	void				UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode);
 
 	NE::NodeManager		nodeManager;
 	NE::NodeCollection	selectedNodes;

@@ -332,28 +332,12 @@ void NodeUIManager::InvalidateAllNodeGroupsDrawing ()
 
 void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 {
-	if (status.NeedToRecalculate ()) {
-		nodeManager.EvaluateAllNodes (env.GetEvaluationEnv ());
-		env.OnValuesRecalculated ();
-		status.RequestRedraw ();
-	}
-	if (status.NeedToRedraw ()) {
-		env.OnRedrawRequested ();
-	}
-	status.Reset ();
+	UpdateInternal (env, InternalUpdateMode::Normal);
 }
 
-void NodeUIManager::ForceUpdate (NodeUICalculationEnvironment& env)
+void NodeUIManager::ManualUpdate (NodeUICalculationEnvironment& env)
 {
-	if (status.NeedToRecalculate ()) {
-		nodeManager.ForceEvaluateAllNodes (env.GetEvaluationEnv ());
-		env.OnValuesRecalculated ();
-		status.RequestRedraw ();
-	}
-	if (status.NeedToRedraw ()) {
-		env.OnRedrawRequested ();
-	}
-	status.Reset ();
+	UpdateInternal (env, InternalUpdateMode::Manual);
 }
 
 void NodeUIManager::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawingModifier)
@@ -518,6 +502,23 @@ void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINod
 	nodeManager.EnumerateNodeGroups ([&] (const NE::NodeGroupPtr& nodeGroup) {
 		return processor (std::static_pointer_cast<UINodeGroup> (nodeGroup));
 	});
+}
+
+void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode)
+{
+	if (status.NeedToRecalculate ()) {
+		if (mode == InternalUpdateMode::Normal) {
+			nodeManager.EvaluateAllNodes (env.GetEvaluationEnv ());
+		} else if (mode == InternalUpdateMode::Manual) {
+			nodeManager.ForceEvaluateAllNodes (env.GetEvaluationEnv ());
+		}
+		env.OnValuesRecalculated ();
+		status.RequestRedraw ();
+	}
+	if (status.NeedToRedraw ()) {
+		env.OnRedrawRequested ();
+	}
+	status.Reset ();
 }
 
 }

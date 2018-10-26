@@ -113,7 +113,7 @@ void NodeEditor::ManualUpdate ()
 	uiManager.InvalidateAllNodeGroupsDrawing ();
 	uiManager.RequestRecalculate ();
 	uiManager.RequestRedraw ();
-	uiManager.ForceUpdate (uiEnvironment);
+	uiManager.ManualUpdate (uiEnvironment);
 }
 
 void NodeEditor::Draw ()
