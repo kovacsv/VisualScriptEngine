@@ -1,9 +1,10 @@
-#ifndef UINODEFEATURES_HPP
-#define UINODEFEATURES_HPP
+#ifndef UINODEFEATURESET_HPP
+#define UINODEFEATURESET_HPP
 
 #include "NE_Stream.hpp"
 #include "NE_Serializable.hpp"
 
+#include <memory>
 #include <vector>
 #include <unordered_map>
 

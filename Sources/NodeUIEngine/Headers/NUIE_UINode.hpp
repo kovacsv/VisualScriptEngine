@@ -7,7 +7,7 @@
 #include "NUIE_InputEventHandler.hpp"
 #include "NUIE_UIInputSlot.hpp"
 #include "NUIE_UIOutputSlot.hpp"
-#include "NUIE_UINodeFeatures.hpp"
+#include "NUIE_UINodeFeatureSet.hpp"
 #include <string>
 
 namespace NUIE
