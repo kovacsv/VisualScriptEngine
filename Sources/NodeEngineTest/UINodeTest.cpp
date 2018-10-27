@@ -25,7 +25,7 @@ public:
 		
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), L"First Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), L"Second Input", NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
@@ -42,11 +42,11 @@ public:
 
 	virtual void RegisterParameters (NodeParameterList& parameterList) const override
 	{
-		class In1DefaultValueParameter : public SlotDefaultValueParameter<TestNode, NE::IntValue>
+		class In1DefaultValueParameter : public SlotDefaultValueNodeParameter<TestNode, NE::IntValue>
 		{
 		public:
 			In1DefaultValueParameter () :
-				SlotDefaultValueParameter<TestNode, NE::IntValue> (L"In1", ParameterType::Integer, SlotId ("in1"))
+				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (L"In1", ParameterType::Integer, SlotId ("in1"))
 			{
 			
 			}
@@ -71,7 +71,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), L"First Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), L"Second Input", NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
@@ -88,11 +88,11 @@ public:
 
 	virtual void RegisterParameters (NodeParameterList& parameterList) const override
 	{
-		class In2DefaultValueParameter : public SlotDefaultValueParameter<TestNode2, NE::IntValue>
+		class In2DefaultValueParameter : public SlotDefaultValueNodeParameter<TestNode2, NE::IntValue>
 		{
 		public:
 			In2DefaultValueParameter () :
-				SlotDefaultValueParameter<TestNode2, NE::IntValue> (L"In2", ParameterType::Integer, SlotId ("in1"))
+				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (L"In2", ParameterType::Integer, SlotId ("in1"))
 			{
 
 			}
@@ -125,7 +125,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), L"First Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), L"Second Input", NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
@@ -142,11 +142,11 @@ public:
 
 	virtual void RegisterParameters (NodeParameterList& parameterList) const override
 	{
-		class MyEnumerationParameter : public EnumerationParameter<EnumerationParamTestNode>
+		class MyEnumerationParameter : public EnumerationNodeParameter<EnumerationParamTestNode>
 		{
 		public:
 			MyEnumerationParameter () :
-				EnumerationParameter<EnumerationParamTestNode> (L"EnumParam", { L"AString", L"BString", L"CString" })
+				EnumerationNodeParameter<EnumerationParamTestNode> (L"EnumParam", { L"AString", L"BString", L"CString" })
 			{
 
 			}

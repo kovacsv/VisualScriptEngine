@@ -103,6 +103,9 @@
     <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UndoHandler.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sources\NodeUIEngine\Headers\NUIE_UINodeFeatures.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_CommandStructure.cpp">
@@ -196,6 +199,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_EventHandlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\NodeUIEngine\Sources\NUIE_UINodeFeatures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -40,7 +40,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new TestInputSlot (SlotId ("a"))));
 		RegisterInputSlot (InputSlotPtr (new TestInputSlot (SlotId ("b"))));

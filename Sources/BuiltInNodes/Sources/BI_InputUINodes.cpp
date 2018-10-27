@@ -36,7 +36,7 @@ NumericUpDownNode::~NumericUpDownNode ()
 
 }
 
-void NumericUpDownNode::RegisterSlots ()
+void NumericUpDownNode::Initialize ()
 {
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
@@ -112,11 +112,11 @@ NE::ValuePtr IntegerUpDownNode::Calculate (NE::EvaluationEnv&) const
 
 void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class ValueParameter : public NUIE::IntegerParameter<IntegerUpDownNode>
+	class ValueParameter : public NUIE::IntegerNodeParameter<IntegerUpDownNode>
 	{
 	public:
 		ValueParameter () :
-			NUIE::IntegerParameter<IntegerUpDownNode> (L"Value")
+			NUIE::IntegerNodeParameter<IntegerUpDownNode> (L"Value")
 		{
 
 		}
@@ -135,11 +135,11 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 		}
 	};
 
-	class StepParameter : public NUIE::IntegerParameter<IntegerUpDownNode>
+	class StepParameter : public NUIE::IntegerNodeParameter<IntegerUpDownNode>
 	{
 	public:
 		StepParameter () :
-			NUIE::IntegerParameter<IntegerUpDownNode> (L"Step")
+			NUIE::IntegerNodeParameter<IntegerUpDownNode> (L"Step")
 		{
 
 		}
@@ -238,11 +238,11 @@ NE::ValuePtr DoubleUpDownNode::Calculate (NE::EvaluationEnv&) const
 
 void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class ValueParameter : public NUIE::DoubleParameter<DoubleUpDownNode>
+	class ValueParameter : public NUIE::DoubleNodeParameter<DoubleUpDownNode>
 	{
 	public:
 		ValueParameter () :
-			NUIE::DoubleParameter<DoubleUpDownNode> (L"Value")
+			NUIE::DoubleNodeParameter<DoubleUpDownNode> (L"Value")
 		{
 
 		}
@@ -261,11 +261,11 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 		}
 	};
 
-	class StepParameter : public NUIE::DoubleParameter<DoubleUpDownNode>
+	class StepParameter : public NUIE::DoubleNodeParameter<DoubleUpDownNode>
 	{
 	public:
 		StepParameter () :
-			NUIE::DoubleParameter<DoubleUpDownNode> (L"Step")
+			NUIE::DoubleNodeParameter<DoubleUpDownNode> (L"Step")
 		{
 
 		}
@@ -391,7 +391,7 @@ IntegerRangeNode::~IntegerRangeNode ()
 
 }
 
-void IntegerRangeNode::RegisterSlots ()
+void IntegerRangeNode::Initialize ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
@@ -421,11 +421,11 @@ NE::ValuePtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
 
 void IntegerRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class CountParameter : public NUIE::SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue>
+	class CountParameter : public NUIE::SlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue>
 	{
 	public:
 		CountParameter () :
-			NUIE::SlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
+			NUIE::SlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
 		{
 
 		}
@@ -437,8 +437,8 @@ void IntegerRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 	};
 
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Start", NUIE::ParameterType::Integer, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Step", NUIE::ParameterType::Integer, NE::SlotId ("step"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Start", NUIE::ParameterType::Integer, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Step", NUIE::ParameterType::Integer, NE::SlotId ("step"));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
 }
 
@@ -473,7 +473,7 @@ DoubleRangeNode::~DoubleRangeNode ()
 
 }
 
-void DoubleRangeNode::RegisterSlots ()
+void DoubleRangeNode::Initialize ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
@@ -503,11 +503,11 @@ NE::ValuePtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
 
 void DoubleRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class CountParameter : public NUIE::SlotDefaultValueParameter<DoubleRangeNode, NE::IntValue>
+	class CountParameter : public NUIE::SlotDefaultValueNodeParameter<DoubleRangeNode, NE::IntValue>
 	{
 	public:
 		CountParameter () :
-			NUIE::SlotDefaultValueParameter<DoubleRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
+			NUIE::SlotDefaultValueNodeParameter<DoubleRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
 		{
 
 		}
@@ -519,8 +519,8 @@ void DoubleRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList
 	};
 
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
 }
 

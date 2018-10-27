@@ -9,7 +9,7 @@ SerializableTestNode::SerializableTestNode () :
 
 }
 
-void SerializableTestNode::RegisterSlots ()
+void SerializableTestNode::Initialize ()
 {
 	DBGBREAK ();
 }
@@ -44,7 +44,7 @@ SerializableTestUINode::SerializableTestUINode (const std::wstring& nodeName, co
 
 }
 
-void SerializableTestUINode::RegisterSlots ()
+void SerializableTestUINode::Initialize ()
 {
 	DBGBREAK ();
 }

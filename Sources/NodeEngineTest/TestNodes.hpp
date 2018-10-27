@@ -13,7 +13,7 @@ class SerializableTestNode : public Node
 public:
 	SerializableTestNode ();
 
-	virtual void				RegisterSlots () override;
+	virtual void				Initialize () override;
 	virtual ValuePtr			Calculate (NE::EvaluationEnv&) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
@@ -28,7 +28,7 @@ public:
 	SerializableTestUINode ();
 	SerializableTestUINode (const std::wstring& nodeName, const Point& nodePosition);
 
-	virtual void				RegisterSlots () override;
+	virtual void				Initialize () override;
 	virtual ValuePtr			Calculate (NE::EvaluationEnv&) const override;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
 

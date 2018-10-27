@@ -20,7 +20,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
@@ -54,7 +54,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("in"), nullptr, NE::OutputSlotConnectionMode::Single)));
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
@@ -77,7 +77,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("in"), nullptr, NE::OutputSlotConnectionMode::Single)));
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));

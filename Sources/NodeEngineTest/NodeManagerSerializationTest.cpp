@@ -34,7 +34,7 @@ public:
 		return val;
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("a"), ValuePtr (new IntValue (0)), OutputSlotConnectionMode::Single)));
 		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("b"), ValuePtr (new IntValue (0)), OutputSlotConnectionMode::Single)));

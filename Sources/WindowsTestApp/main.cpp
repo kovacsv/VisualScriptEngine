@@ -212,7 +212,6 @@ public:
 			NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (220, 220), 20, 5)), uiEnvironment->GetEvaluationEnv ());
 			std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
 			uiManager.AddNode (pointNode, uiEnvironment->GetEvaluationEnv ());
-			pointNode->SetValueCombinationMode (NE::ValueCombinationMode::CrossProduct);
 			NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (600, 150), 5)), uiEnvironment->GetEvaluationEnv ());
 
 			uiManager.ConnectOutputSlotToInputSlot (startInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("start")));

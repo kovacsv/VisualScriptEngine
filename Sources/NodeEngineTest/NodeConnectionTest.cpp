@@ -49,7 +49,7 @@ public:
 		
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
@@ -72,7 +72,7 @@ public:
 	
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out1"))));
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out2"))));
@@ -93,7 +93,7 @@ public:
 	
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out1"))));
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out2"))));
@@ -134,7 +134,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new TestInputSlot (SlotId ("first"))));
 		RegisterInputSlot (InputSlotPtr (new TestInputSlot (SlotId ("second"))));
@@ -158,7 +158,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new MultiInputSlot (SlotId ("in"), ValuePtr (new IntValue (0)))));
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));
@@ -184,7 +184,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new DisabledInputSlot (SlotId ("first"), ValuePtr (new IntValue (2)))));
 		RegisterInputSlot (InputSlotPtr (new DisabledInputSlot (SlotId ("second"), ValuePtr (new IntValue (3)))));
@@ -209,7 +209,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new TestInputSlot (SlotId ("in"))));
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));

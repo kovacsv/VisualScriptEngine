@@ -29,7 +29,7 @@ public:
 	{
 	}
 
-	void RegisterSlots ()
+	void Initialize ()
 	{
 		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"In", nullptr, NE::OutputSlotConnectionMode::Single)));
 		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Out")));

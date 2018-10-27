@@ -7,6 +7,7 @@
 #include "NUIE_InputEventHandler.hpp"
 #include "NUIE_UIInputSlot.hpp"
 #include "NUIE_UIOutputSlot.hpp"
+#include "NUIE_UINodeFeatures.hpp"
 #include <string>
 
 namespace NUIE
@@ -15,6 +16,7 @@ namespace NUIE
 class NodeUIEnvironment;
 class NodeParameterList;
 class NodeCommandRegistrator;
+class NodeFeature;
 
 class EventHandlerNotifications
 {
@@ -69,10 +71,14 @@ public:
 	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const;
 	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
 
+	bool						HasFeature (const FeatureId& featureId) const;
+	const UINodeFeaturePtr&		GetFeature (const FeatureId& featureId) const;
+
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, EventHandlerNotifications& notifications);
 
 	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const;
+	virtual void				OnFeatureChange (const FeatureId& featureId, NE::EvaluationEnv& env) const;
 	virtual void				OnDelete (NE::EvaluationEnv& env) const;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
@@ -97,6 +103,7 @@ protected:
 	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 	bool						RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot);
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
+	bool						RegisterFeature (const UINodeFeaturePtr& newFeature);
 
 private:
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
@@ -105,13 +112,26 @@ private:
 	virtual bool				RegisterInputSlot (const NE::InputSlotPtr& newInputSlot) override;
 	virtual bool				RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot) override;
 
-	std::wstring				nodeName;
-	Point						nodePosition;
-	mutable NodeDrawingImage	nodeDrawingImage;
+	std::wstring					nodeName;
+	Point							nodePosition;
+	UINodeFeatureSet				nodeFeatureSet;
+	mutable NodeDrawingImage		nodeDrawingImage;
 };
 
 typedef std::shared_ptr<UINode> UINodePtr;
 typedef std::shared_ptr<const UINode> UINodeConstPtr;
+
+template <class FeatureType>
+std::shared_ptr<FeatureType> GetUINodeFeature (const UINode* uiNode, const FeatureId& featureId)
+{
+	return UINodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
+}
+
+template <class FeatureType>
+std::shared_ptr<FeatureType> GetUINodeFeature (const UINodePtr& uiNode, const FeatureId& featureId)
+{
+	return UINodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
+}
 
 }
 

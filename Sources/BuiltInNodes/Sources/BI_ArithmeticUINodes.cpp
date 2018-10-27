@@ -19,10 +19,8 @@ BinaryOperationNode::BinaryOperationNode () :
 }
 
 BinaryOperationNode::BinaryOperationNode (const std::wstring& name, const NUIE::Point& position) :
-	BasicUINode (name, position),
-	ValueCombinationFeature (NE::ValueCombinationMode::Longest)
+	BasicUINode (name, position)
 {
-
 }
 
 BinaryOperationNode::~BinaryOperationNode ()
@@ -30,11 +28,12 @@ BinaryOperationNode::~BinaryOperationNode ()
 
 }
 
-void BinaryOperationNode::RegisterSlots ()
+void BinaryOperationNode::Initialize ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), L"A", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), L"B", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), L"Result")));
+	RegisterFeature (NUIE::UINodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
 NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
@@ -45,9 +44,11 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 		return nullptr;
 	}
 
+	std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (this);
+
 	bool isValid = true;
 	NE::ListValuePtr resultListValue (new NE::ListValue ());
-	CombineValues ({aValue, bValue}, [&] (const NE::ValueCombination& combination) {
+	valueCombination->CombineValues ({aValue, bValue}, [&] (const NE::ValueCombination& combination) {
 		double aDouble = NE::NumberValue::ToDouble (combination.GetValue (0));
 		double bDouble = NE::NumberValue::ToDouble (combination.GetValue (1));
 		double result = DoOperation (aDouble, bDouble);
@@ -67,14 +68,8 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 void BinaryOperationNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	ValueCombinationFeature::RegisterFeatureParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", NUIE::ParameterType::Double, NE::SlotId ("a"));
-	NUIE::RegisterSlotDefaultValueParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", NUIE::ParameterType::Double, NE::SlotId ("b"));
-}
-
-void BinaryOperationNode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
-{
-	ValueCombinationFeature::RegisterFeatureCommands (commandRegistrator);
+	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", NUIE::ParameterType::Double, NE::SlotId ("a"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", NUIE::ParameterType::Double, NE::SlotId ("b"));
 }
 
 bool BinaryOperationNode::IsForceCalculated () const
@@ -86,7 +81,6 @@ NE::Stream::Status BinaryOperationNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	BasicUINode::Read (inputStream);
-	ValueCombinationFeature::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -94,7 +88,6 @@ NE::Stream::Status BinaryOperationNode::Write (NE::OutputStream& outputStream) c
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	BasicUINode::Write (outputStream);
-	ValueCombinationFeature::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

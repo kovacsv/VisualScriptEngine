@@ -45,7 +45,7 @@ public:
 		
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterUIInputSlot (UIInputSlotPtr (new TestInputSlot (SlotId ("in1"), L"First Input")));
 		RegisterUIInputSlot (UIInputSlotPtr (new TestInputSlot (SlotId ("in2"), L"Second Input")));

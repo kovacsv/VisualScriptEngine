@@ -2,29 +2,44 @@
 #define BUILTINFEATURES_HPP
 
 #include "NE_ValueCombination.hpp"
+#include "NUIE_UINodeFeatures.hpp"
 #include "NUIE_UINodeCommandRegistration.hpp"
 
 namespace BI
 {
 
-class Feature
+extern const NUIE::FeatureId EnableDisableFeatureId;
+extern const NUIE::FeatureId ValueCombinationFeatureId;
+
+class EnableDisableFeature : public NUIE::UINodeFeature
 {
+	DYNAMIC_SERIALIZABLE (EnableDisableFeature);
+
 public:
-	Feature ();
-	virtual ~Feature ();
+	EnableDisableFeature ();
+	EnableDisableFeature (bool nodeEnabled);
+	virtual ~EnableDisableFeature ();
 
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) = 0;
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const = 0;
+	bool				GetEnableState () const;
+	void				SetEnableState (bool isNodeEnabled);
+	void				DrawInplace (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
 
-	virtual void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const = 0;
-	virtual void				RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const = 0;
+	virtual void		RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void		RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+
+private:
+	bool	nodeEnabled;
 };
 
-class ValueCombinationFeature : public Feature
+class ValueCombinationFeature : public NUIE::UINodeFeature
 {
-	SERIALIZABLE;
+	DYNAMIC_SERIALIZABLE (ValueCombinationFeature);
 
 public:
+	ValueCombinationFeature ();
 	ValueCombinationFeature (NE::ValueCombinationMode valueCombinationMode);
 	virtual ~ValueCombinationFeature ();
 
@@ -32,42 +47,21 @@ public:
 	void						SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode);
 	bool						CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const;
 
-	virtual void				RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
-	virtual void				RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const override;
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 
-	NE::Stream::Status			Read (NE::InputStream& inputStream);
-	NE::Stream::Status			Write (NE::OutputStream& outputStream) const;
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
 	NE::ValueCombinationMode	valueCombinationMode;
 };
 
-class EnableDisableFeature : public Feature
-{
-	SERIALIZABLE;
+std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINode* uiNode);
+std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINodePtr& uiNode);
+std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINode* uiNode);
+std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINodePtr& uiNode);
 
-public:
-	EnableDisableFeature (bool nodeEnabled);
-	virtual ~EnableDisableFeature ();
-
-	bool				GetEnableState () const;
-	void				SetEnableState (bool isNodeEnabled, NE::EvaluationEnv& env);
-	void				CreateDrawingEnvironment (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
-	void				FeatureProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const;
-
-	virtual void		RegisterFeatureCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
-	virtual void		RegisterFeatureParameters (NUIE::NodeParameterList& parameterList) const override;
-
-	virtual void		OnCalculated (const NE::ValuePtr& value, NE::EvaluationEnv& env) const = 0;
-	virtual void		OnEnabled (NE::EvaluationEnv& env) const = 0;
-	virtual void		OnDisabled (NE::EvaluationEnv& env) const = 0;
-
-	NE::Stream::Status	Read (NE::InputStream& inputStream);
-	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
-
-private:
-	bool	nodeEnabled;
-};
 
 }
 

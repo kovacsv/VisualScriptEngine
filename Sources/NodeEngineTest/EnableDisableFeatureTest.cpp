@@ -53,22 +53,21 @@ public:
 	EvaluationEnv evalEnv;
 };
 
-class TestNode :	public SerializableTestUINode,
-					public EnableDisableFeature
+class TestNode : public SerializableTestUINode
 {
 public:
 	TestNode (const std::wstring& name, const Point& position) :
-		SerializableTestUINode (name, position),
-		EnableDisableFeature (true)
+		SerializableTestUINode (name, position)
 	{
 		
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), L"First Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), L"Second Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
 		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), L"Single Output")));
+		RegisterFeature (UINodeFeaturePtr (new EnableDisableFeature ()));
 	}
 
 	virtual ValuePtr Calculate (EvaluationEnv& env) const override
@@ -84,24 +83,37 @@ public:
 	
 	}
 
+	virtual void OnFeatureChange (const FeatureId&, EvaluationEnv& env) const override
+	{
+		std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
+		if (enableDisable->GetEnableState ()) {
+			OnEnabled (env);
+		} else {
+			OnDisabled (env);
+		}
+	}
+
 	virtual void ProcessValue (const ValuePtr& value, EvaluationEnv& env) const
 	{
-		EnableDisableFeature::FeatureProcessValue (value, env);
+		std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
+		if (enableDisable->GetEnableState ()) {
+			OnCalculated (value, env);
+		}
 	}
 
-	virtual void OnCalculated (const ValuePtr& /*value*/, EvaluationEnv& env) const override
+	void OnCalculated (const ValuePtr& /*value*/, EvaluationEnv& env) const
 	{
 		RemoveValue (env);
 		InsertValue (env);
 	}
 
-	virtual void OnEnabled (EvaluationEnv& env) const override
+	void OnEnabled (EvaluationEnv& env) const
 	{
 		RemoveValue (env);
 		InsertValue (env);
 	}
 
-	virtual void OnDisabled (EvaluationEnv& env) const override
+	void OnDisabled (EvaluationEnv& env) const
 	{
 		RemoveValue (env);
 	}
@@ -144,9 +156,11 @@ TEST (EnableDisableTest)
 	ASSERT (calcEnv.collector->values.size () == 4);
 	ASSERT (calcEnv.collector->values.find (node3->GetId ()) != calcEnv.collector->values.end ());
 
-	node3->SetEnableState (false, calcEnv.evalEnv);
+	std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (node3);
+	enableDisable->SetEnableState (false);
+	node3->OnFeatureChange (EnableDisableFeatureId, calcEnv.evalEnv);
 	uiManager.RequestRecalculate ();
-
+	
 	uiManager.Update (calcEnv);
 	ASSERT (calcEnv.collector->values.size () == 3);
 	ASSERT (calcEnv.collector->values.find (node3->GetId ()) == calcEnv.collector->values.end ());

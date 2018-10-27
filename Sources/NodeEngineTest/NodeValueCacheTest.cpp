@@ -42,7 +42,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new TestInputSlot (SlotId ("in"))));
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));
@@ -85,7 +85,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 
 	}

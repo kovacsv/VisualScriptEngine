@@ -121,7 +121,7 @@ protected:
 	ListValuePtr			EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
 
 private:
-	virtual void			RegisterSlots () = 0;
+	virtual void			Initialize () = 0;
 	virtual ValuePtr		Calculate (EvaluationEnv& env) const = 0;
 
 	virtual bool			IsForceCalculated () const;

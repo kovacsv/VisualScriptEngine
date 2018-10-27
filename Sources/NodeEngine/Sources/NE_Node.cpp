@@ -233,7 +233,7 @@ void Node::SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter)
 	nodeId = evaluatorSetter.GetNodeId ();
 	nodeEvaluator = evaluatorSetter.GetNodeEvaluator ();
 	if (evaluatorSetter.GetInitializationMode () == InitializationMode::Initialize) {
-		RegisterSlots ();
+		Initialize ();
 	}
 }
 

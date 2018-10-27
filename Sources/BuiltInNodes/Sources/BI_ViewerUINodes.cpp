@@ -30,7 +30,7 @@ MultiLineViewerNode::~MultiLineViewerNode ()
 
 }
 
-void MultiLineViewerNode::RegisterSlots ()
+void MultiLineViewerNode::Initialize ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
@@ -43,11 +43,11 @@ NE::ValuePtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
 
 void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class TextPerPageParameter : public NUIE::PositiveIntegerParameter<MultiLineViewerNode>
+	class TextPerPageParameter : public NUIE::PositiveIntegerNodeParameter<MultiLineViewerNode>
 	{
 	public:
 		TextPerPageParameter () :
-			PositiveIntegerParameter<MultiLineViewerNode> (L"Texts per page")
+			PositiveIntegerNodeParameter<MultiLineViewerNode> (L"Texts per page")
 		{
 
 		}

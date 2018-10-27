@@ -40,7 +40,7 @@ public:
 		name = newName;
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("a"), ValuePtr (new IntValue (1)), OutputSlotConnectionMode::Single)));
 		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("b"), ValuePtr (new IntValue (1)), OutputSlotConnectionMode::Single)));

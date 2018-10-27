@@ -58,7 +58,7 @@ public:
 		return SetValueInternal (uiManager, evaluationEnv, uiNode, value);
 	}
 
-	std::shared_ptr<NodeType> GetTypedNode (const NUIE::UINodePtr& uiNode) const
+	std::shared_ptr<NodeType> GetTypedNode (const UINodePtr& uiNode) const
 	{
 		return NE::Node::Cast<NodeType> (uiNode);
 	}
@@ -68,10 +68,10 @@ public:
 };
 
 template <typename NodeType>
-class NotEmptyStringParameter : public TypedNodeParameter<NodeType, NE::StringValue>
+class NotEmptyStringNodeParameter : public TypedNodeParameter<NodeType, NE::StringValue>
 {
 public:
-	NotEmptyStringParameter (const std::wstring& name) :
+	NotEmptyStringNodeParameter (const std::wstring& name) :
 		TypedNodeParameter<NodeType, NE::StringValue> (name, ParameterType::String)
 	{
 
@@ -84,10 +84,10 @@ public:
 };
 
 template <typename NodeType>
-class IntegerParameter : public TypedNodeParameter<NodeType, NE::IntValue>
+class IntegerNodeParameter : public TypedNodeParameter<NodeType, NE::IntValue>
 {
 public:
-	IntegerParameter (const std::wstring& name) :
+	IntegerNodeParameter (const std::wstring& name) :
 		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Integer)
 	{
 
@@ -95,10 +95,10 @@ public:
 };
 
 template <typename NodeType>
-class PositiveIntegerParameter : public TypedNodeParameter<NodeType, NE::IntValue>
+class PositiveIntegerNodeParameter : public TypedNodeParameter<NodeType, NE::IntValue>
 {
 public:
-	PositiveIntegerParameter (const std::wstring& name) :
+	PositiveIntegerNodeParameter (const std::wstring& name) :
 		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Integer)
 	{
 
@@ -111,10 +111,10 @@ public:
 };
 
 template <typename NodeType>
-class DoubleParameter : public TypedNodeParameter<NodeType, NE::DoubleValue>
+class DoubleNodeParameter : public TypedNodeParameter<NodeType, NE::DoubleValue>
 {
 public:
-	DoubleParameter (const std::wstring& name) :
+	DoubleNodeParameter (const std::wstring& name) :
 		TypedNodeParameter<NodeType, NE::DoubleValue> (name, ParameterType::Double)
 	{
 
@@ -122,10 +122,10 @@ public:
 };
 
 template <typename NodeType>
-class EnumerationParameter : public TypedNodeParameter<NodeType, NE::IntValue>
+class EnumerationNodeParameter : public TypedNodeParameter<NodeType, NE::IntValue>
 {
 public:
-	EnumerationParameter (const std::wstring& name, const std::vector<std::wstring>& valueChoices) :
+	EnumerationNodeParameter (const std::wstring& name, const std::vector<std::wstring>& valueChoices) :
 		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Enumeration),
 		valueChoices (valueChoices)
 	{
@@ -148,10 +148,10 @@ private:
 };
 
 template <typename NodeType, typename ValueType>
-class SlotDefaultValueParameter : public TypedNodeParameter<NodeType, ValueType>
+class SlotDefaultValueNodeParameter : public TypedNodeParameter<NodeType, ValueType>
 {
 public:
-	SlotDefaultValueParameter (const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId) :
+	SlotDefaultValueNodeParameter (const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId) :
 		TypedNodeParameter<NodeType, ValueType> (name, type),
 		slotId (slotId)
 	{
@@ -180,13 +180,13 @@ private:
 };
 
 template <class NodeType, class ValueType>
-void RegisterSlotDefaultValueParameter (NodeParameterList& parameterList, const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId)
+void RegisterSlotDefaultValueNodeParameter (NodeParameterList& parameterList, const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId)
 {
-	class Parameter : public SlotDefaultValueParameter<NodeType, ValueType>
+	class Parameter : public SlotDefaultValueNodeParameter<NodeType, ValueType>
 	{
 	public:
 		Parameter (const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId) :
-			SlotDefaultValueParameter<NodeType, ValueType> (name, type, slotId)
+			SlotDefaultValueNodeParameter<NodeType, ValueType> (name, type, slotId)
 		{
 
 		}
@@ -194,6 +194,91 @@ void RegisterSlotDefaultValueParameter (NodeParameterList& parameterList, const 
 
 	parameterList.AddParameter (NodeParameterPtr (new Parameter (name, type, slotId)));
 }
+
+// TODO: lot of duplication with TypedNodeParameter
+template <typename FeatureType, typename ValueType>
+class TypedFeatureParameter : public NodeParameter
+{
+public:
+	TypedFeatureParameter (const std::wstring& name, const ParameterType& type, const FeatureId& featureId) :
+		NodeParameter (name, type),
+		featureId (featureId)
+	{
+
+	}
+
+	virtual ~TypedFeatureParameter ()
+	{
+
+	}
+
+	virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
+	{
+		return GetValueInternal (uiNode);
+	}
+
+	virtual bool IsApplicableTo (const UINodePtr& uiNode) const
+	{
+		return uiNode->HasFeature (featureId);
+	}
+
+	virtual bool CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const
+	{
+		if (!NE::Value::IsType<ValueType> (value)) {
+			return false;
+		}
+		std::shared_ptr<ValueType> typedValue = NE::Value::Cast<ValueType> (value);
+		if (!IsValidValue (uiNode, typedValue)) {
+			return false;
+		}
+		return true;
+	}
+
+	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<ValueType>&) const
+	{
+		return true;
+	}
+
+	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) override
+	{
+		if (DBGERROR (!CanSetValue (uiNode, value))) {
+			return false;
+		}
+		return SetValueInternal (uiManager, evaluationEnv, uiNode, value);
+	}
+
+	virtual NE::ValuePtr	GetValueInternal (const UINodePtr& uiNode) const = 0;
+	virtual bool			SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
+
+private:
+	FeatureId featureId;
+};
+
+template <typename FeatureType>
+class EnumerationFeatureParameter : public TypedFeatureParameter<FeatureType, NE::IntValue>
+{
+public:
+	EnumerationFeatureParameter (const std::wstring& name, const std::vector<std::wstring>& valueChoices, const FeatureId& featureId) :
+		TypedFeatureParameter<FeatureType, NE::IntValue> (name, ParameterType::Enumeration, featureId),
+		valueChoices (valueChoices)
+	{
+
+	}
+
+	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+	{
+		int valueInt = NE::IntValue::Get (value);
+		return valueInt >= 0 && valueInt < (int) valueChoices.size ();
+	}
+
+	virtual std::vector<std::wstring> GetValueChoices () const override
+	{
+		return valueChoices;
+	}
+
+private:
+	std::vector<std::wstring> valueChoices;
+};
 
 }
 

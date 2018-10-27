@@ -195,6 +195,16 @@ void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlo
 	});
 }
 
+bool UINode::HasFeature (const FeatureId& featureId) const
+{
+	return nodeFeatureSet.HasFeature (featureId);
+}
+
+const UINodeFeaturePtr& UINode::GetFeature (const FeatureId& featureId) const
+{
+	return nodeFeatureSet.GetFeature (featureId);
+}
+
 NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, EventHandlerNotifications&)
 {
 	return EventHandlerResult::EventNotHandled;
@@ -202,11 +212,11 @@ NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const Mod
 
 void UINode::RegisterParameters (NodeParameterList& parameterList) const
 {
-	class NodeNameParameter : public NotEmptyStringParameter<UINode>
+	class NodeNameParameter : public NotEmptyStringNodeParameter<UINode>
 	{
 	public:
 		NodeNameParameter () :
-			NotEmptyStringParameter<UINode> (L"Name")
+			NotEmptyStringNodeParameter<UINode> (L"Name")
 		{
 		
 		}
@@ -225,9 +235,15 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 	};
 
 	parameterList.AddParameter (NodeParameterPtr (new NodeNameParameter ()));
+	nodeFeatureSet.RegisterParameters (parameterList);
 }
 
-void UINode::RegisterCommands (NodeCommandRegistrator&) const
+void UINode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
+{
+	nodeFeatureSet.RegisterCommands (commandRegistrator);
+}
+
+void UINode::OnFeatureChange (const FeatureId&, NE::EvaluationEnv&) const
 {
 
 }
@@ -243,6 +259,7 @@ NE::Stream::Status UINode::Read (NE::InputStream& inputStream)
 	Node::Read (inputStream);
 	inputStream.Read (nodeName);
 	ReadPoint (inputStream, nodePosition);
+	nodeFeatureSet.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -252,6 +269,7 @@ NE::Stream::Status UINode::Write (NE::OutputStream& outputStream) const
 	Node::Write (outputStream);
 	outputStream.Write (nodeName);
 	WritePoint (outputStream, nodePosition);
+	nodeFeatureSet.Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
@@ -333,6 +351,12 @@ bool UINode::RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot)
 	if (!RegisterOutputSlot (newOutputSlot)) {
 		return false;
 	}
+	return true;
+}
+
+bool UINode::RegisterFeature (const UINodeFeaturePtr& newFeature)
+{
+	nodeFeatureSet.AddFeature (newFeature->GetId (), newFeature);
 	return true;
 }
 

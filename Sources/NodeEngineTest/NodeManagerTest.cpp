@@ -17,7 +17,7 @@ public:
 	
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 
 	}

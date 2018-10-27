@@ -163,7 +163,7 @@ public:
 	
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlotA (SlotId ("outA"))));
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlotB (SlotId ("outB"))));
@@ -197,7 +197,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new InputSlotA (SlotId ("inA"))));
 	}
@@ -227,7 +227,7 @@ public:
 
 	}
 
-	virtual void RegisterSlots () override
+	virtual void Initialize () override
 	{
 		RegisterInputSlot (InputSlotPtr (new InputSlotB (SlotId ("inB"))));
 	}

@@ -783,6 +783,8 @@ UICommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIE
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
 
 	commandStructureBuilder.RegisterCommand (UICommandPtr (new SetParametersCommand (uiManager, uiEnvironment, uiNode, relevantNodes)));
+	uiNode->RegisterCommands (commandStructureBuilder);
+
 	commandStructureBuilder.RegisterCommand (UICommandPtr (new CopyNodesCommand (uiManager, relevantNodes)));
 	commandStructureBuilder.RegisterCommand (UICommandPtr (new DeleteNodesCommand (uiManager, uiEnvironment, relevantNodes)));
 
@@ -800,7 +802,6 @@ UICommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIE
 	}
 	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
 
-	uiNode->RegisterCommands (commandStructureBuilder);
 	return commandStructureBuilder.GetCommandStructure ();
 }
 
