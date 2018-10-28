@@ -1,5 +1,5 @@
-#ifndef DIRECT2DCONTEXT_HPP
-#define DIRECT2DCONTEXT_HPP
+#ifndef WAS_DIRECT2DCONTEXT_HPP
+#define WAS_DIRECT2DCONTEXT_HPP
 
 #include <d2d1.h>
 #include <dwrite.h>

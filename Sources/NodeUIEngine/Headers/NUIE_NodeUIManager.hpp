@@ -1,5 +1,5 @@
-#ifndef NODEUIMANAGER_HPP
-#define NODEUIMANAGER_HPP
+#ifndef NUIE_NODEUIMANAGER_HPP
+#define NUIE_NODEUIMANAGER_HPP
 
 #include "NE_NodeManager.hpp"
 #include "NE_NodeCollection.hpp"

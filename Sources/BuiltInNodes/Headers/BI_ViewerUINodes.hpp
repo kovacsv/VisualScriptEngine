@@ -1,5 +1,5 @@
-#ifndef UINODES_HPP
-#define UINODES_HPP
+#ifndef BI_UINODES_HPP
+#define BI_UINODES_HPP
 
 #include "NE_SingleValues.hpp"
 #include "NUIE_UINode.hpp"

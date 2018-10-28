@@ -1,5 +1,5 @@
-#ifndef UNDOHANDLER_HPP
-#define UNDOHANDLER_HPP
+#ifndef NUIE_UNDOHANDLER_HPP
+#define NUIE_UNDOHANDLER_HPP
 
 #include "NE_NodeManager.hpp"
 #include "NE_NodeManagerMerge.hpp"

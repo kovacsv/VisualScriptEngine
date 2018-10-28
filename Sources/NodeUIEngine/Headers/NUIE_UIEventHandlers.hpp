@@ -1,5 +1,5 @@
-#ifndef UIEVENTHANDLERS_HPP
-#define UIEVENTHANDLERS_HPP
+#ifndef NUIE_UIEVENTHANDLERS_HPP
+#define NUIE_UIEVENTHANDLERS_HPP
 
 #include "NUIE_Geometry.hpp"
 #include "NUIE_InputEventHandler.hpp"

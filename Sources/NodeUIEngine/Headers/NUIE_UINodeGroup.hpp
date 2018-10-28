@@ -1,5 +1,5 @@
-#ifndef UINODEGROUP_HPP
-#define UINODEGROUP_HPP
+#ifndef NUIE_UINODEGROUP_HPP
+#define NUIE_UINODEGROUP_HPP
 
 #include "NE_NodeGroup.hpp"
 #include "NUIE_UINode.hpp"

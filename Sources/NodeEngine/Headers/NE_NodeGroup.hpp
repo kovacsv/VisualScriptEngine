@@ -1,5 +1,5 @@
-#ifndef NODEGROUP_HPP
-#define NODEGROUP_HPP
+#ifndef NE_NODEGROUP_HPP
+#define NE_NODEGROUP_HPP
 
 #include "NE_NodeEngineTypes.hpp"
 #include "NE_Serializable.hpp"

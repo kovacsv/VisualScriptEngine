@@ -1,5 +1,5 @@
-#ifndef SLOT_HPP
-#define SLOT_HPP
+#ifndef NE_SLOT_HPP
+#define NE_SLOT_HPP
 
 #include "NE_NodeEngineTypes.hpp"
 #include "NE_Serializable.hpp"

@@ -1,5 +1,5 @@
-#ifndef BUILTINCOMMANDS_HPP
-#define BUILTINCOMMANDS_HPP
+#ifndef BI_BUILTINCOMMANDS_HPP
+#define BI_BUILTINCOMMANDS_HPP
 
 #include "NUIE_CommandStructure.hpp"
 #include "NUIE_NodeUIManager.hpp"

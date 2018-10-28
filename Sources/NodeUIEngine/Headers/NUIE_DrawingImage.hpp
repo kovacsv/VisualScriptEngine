@@ -1,5 +1,5 @@
-#ifndef DRAWINGIMAGE_HPP
-#define DRAWINGIMAGE_HPP
+#ifndef NUIE_DRAWINGIMAGE_HPP
+#define NUIE_DRAWINGIMAGE_HPP
 
 #include "NUIE_DrawingContext.hpp"
 

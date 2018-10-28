@@ -1,5 +1,5 @@
-#ifndef CONTEXTDECORATORS_HPP
-#define CONTEXTDECORATORS_HPP
+#ifndef NUIE_CONTEXTDECORATORS_HPP
+#define NUIE_CONTEXTDECORATORS_HPP
 
 #include "NUIE_Geometry.hpp"
 #include "NUIE_ViewBox.hpp"

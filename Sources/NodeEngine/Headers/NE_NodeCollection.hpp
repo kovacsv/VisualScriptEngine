@@ -1,5 +1,5 @@
-#ifndef NODECOLLECTION_HPP
-#define NODECOLLECTION_HPP
+#ifndef NE_NODECOLLECTION_HPP
+#define NE_NODECOLLECTION_HPP
 
 #include "NE_NodeId.hpp"
 

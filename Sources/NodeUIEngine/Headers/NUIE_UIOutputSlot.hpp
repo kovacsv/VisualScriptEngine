@@ -1,5 +1,5 @@
-#ifndef UIOUTPUTSLOT_HPP
-#define UIOUTPUTSLOT_HPP
+#ifndef NUIE_UIOUTPUTSLOT_HPP
+#define NUIE_UIOUTPUTSLOT_HPP
 
 #include "NE_OutputSlot.hpp"
 

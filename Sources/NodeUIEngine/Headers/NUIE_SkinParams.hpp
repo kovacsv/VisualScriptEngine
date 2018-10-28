@@ -1,5 +1,5 @@
-#ifndef SKINPARAMS_HPP
-#define SKINPARAMS_HPP
+#ifndef NUIE_SKINPARAMS_HPP
+#define NUIE_SKINPARAMS_HPP
 
 #include "NUIE_Geometry.hpp"
 #include "NUIE_Drawing.hpp"

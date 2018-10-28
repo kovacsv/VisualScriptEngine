@@ -1,5 +1,5 @@
-#ifndef DRAWING_HPP
-#define DRAWING_HPP
+#ifndef NUIE_DRAWING_HPP
+#define NUIE_DRAWING_HPP
 
 #include "NE_Serializable.hpp"
 #include "NE_Checksum.hpp"

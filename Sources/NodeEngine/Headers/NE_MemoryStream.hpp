@@ -1,5 +1,5 @@
-#ifndef MEMORYSTREAM_HPP
-#define MEMORYSTREAM_HPP
+#ifndef NE_MEMORYSTREAM_HPP
+#define NE_MEMORYSTREAM_HPP
 
 #include "NE_Stream.hpp"
 #include <vector>

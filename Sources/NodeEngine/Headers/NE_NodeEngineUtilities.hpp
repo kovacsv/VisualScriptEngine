@@ -1,5 +1,5 @@
-#ifndef UTILITIES_HPP
-#define UTILITIES_HPP
+#ifndef NE_UTILITIES_HPP
+#define NE_UTILITIES_HPP
 
 #include <functional>
 #include <vector>

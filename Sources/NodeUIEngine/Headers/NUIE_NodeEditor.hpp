@@ -1,5 +1,5 @@
-#ifndef NODEEDITOR_HPP
-#define NODEEDITOR_HPP
+#ifndef NUIE_NODEEDITOR_HPP
+#define NUIE_NODEEDITOR_HPP
 
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_EventHandlers.hpp"

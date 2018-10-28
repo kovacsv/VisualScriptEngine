@@ -1,5 +1,5 @@
-#ifndef EVENTHANDLERS_HPP
-#define EVENTHANDLERS_HPP
+#ifndef NUIE_EVENTHANDLERS_HPP
+#define NUIE_EVENTHANDLERS_HPP
 
 #include "NUIE_UINode.hpp"
 #include "NUIE_UINodeGroup.hpp"

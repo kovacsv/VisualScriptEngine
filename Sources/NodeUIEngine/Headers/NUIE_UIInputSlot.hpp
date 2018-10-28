@@ -1,5 +1,5 @@
-#ifndef UIINPUTSLOT_HPP
-#define UIINPUTSLOT_HPP
+#ifndef NUIE_UIINPUTSLOT_HPP
+#define NUIE_UIINPUTSLOT_HPP
 
 #include "NE_InputSlot.hpp"
 

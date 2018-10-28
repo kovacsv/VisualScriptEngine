@@ -1,5 +1,5 @@
-#ifndef UINODELAYOUTS_HPP
-#define UINODELAYOUTS_HPP
+#ifndef BI_UINODELAYOUTS_HPP
+#define BI_UINODELAYOUTS_HPP
 
 #include "NUIE_UINode.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"

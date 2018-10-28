@@ -1,5 +1,5 @@
-#ifndef PARAMETERSDIALOG_HPP
-#define PARAMETERSDIALOG_HPP
+#ifndef WAS_PARAMETERSDIALOG_HPP
+#define WAS_PARAMETERSDIALOG_HPP
 
 #include "WAS_IncludeWindowsHeaders.hpp"
 #include "WAS_InMemoryDialog.hpp"

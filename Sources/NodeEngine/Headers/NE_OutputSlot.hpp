@@ -1,5 +1,5 @@
-#ifndef OUTPUTSLOT_HPP
-#define OUTPUTSLOT_HPP
+#ifndef NE_OUTPUTSLOT_HPP
+#define NE_OUTPUTSLOT_HPP
 
 #include "NE_Slot.hpp"
 #include "NE_Value.hpp"

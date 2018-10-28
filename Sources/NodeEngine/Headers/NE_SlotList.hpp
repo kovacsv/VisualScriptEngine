@@ -1,5 +1,5 @@
-#ifndef SLOTLIST_HPP
-#define SLOTLIST_HPP
+#ifndef NE_SLOTLIST_HPP
+#define NE_SLOTLIST_HPP
 
 #include "NE_Debug.hpp"
 #include "NE_Stream.hpp"

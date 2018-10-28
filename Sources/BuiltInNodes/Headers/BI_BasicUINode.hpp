@@ -1,5 +1,5 @@
-#ifndef BASICUINODE_HPP
-#define BASICUINODE_HPP
+#ifndef BI_BASICUINODE_HPP
+#define BI_BASICUINODE_HPP
 
 #include "NUIE_UINode.hpp"
 

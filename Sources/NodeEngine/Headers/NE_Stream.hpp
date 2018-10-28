@@ -1,5 +1,5 @@
-#ifndef STREAM_HPP
-#define STREAM_HPP
+#ifndef NE_STREAM_HPP
+#define NE_STREAM_HPP
 
 #include <string>
 

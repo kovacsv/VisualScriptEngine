@@ -1,5 +1,5 @@
-#ifndef VALUE_HPP
-#define VALUE_HPP
+#ifndef NE_VALUE_HPP
+#define NE_VALUE_HPP
 
 #include "NE_Serializable.hpp"
 #include "NE_StringSettings.hpp"

@@ -1,5 +1,5 @@
-#ifndef COPYPASTEHANDLER_HPP
-#define COPYPASTEHANDLER_HPP
+#ifndef NUIE_COPYPASTEHANDLER_HPP
+#define NUIE_COPYPASTEHANDLER_HPP
 
 #include "NE_NodeManager.hpp"
 #include "NE_NodeCollection.hpp"

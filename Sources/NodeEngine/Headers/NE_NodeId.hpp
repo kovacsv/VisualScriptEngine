@@ -1,5 +1,5 @@
-#ifndef NODEID_HPP
-#define NODEID_HPP
+#ifndef NE_NODEID_HPP
+#define NE_NODEID_HPP
 
 #include "NE_Serializable.hpp"
 

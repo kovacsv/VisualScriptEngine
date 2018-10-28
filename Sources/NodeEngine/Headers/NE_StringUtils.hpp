@@ -1,5 +1,5 @@
-#ifndef STRINGUTILS_HPP
-#define STRINGUTILS_HPP
+#ifndef NE_STRINGUTILS_HPP
+#define NE_STRINGUTILS_HPP
 
 #include "NE_StringSettings.hpp"
 #include <string>

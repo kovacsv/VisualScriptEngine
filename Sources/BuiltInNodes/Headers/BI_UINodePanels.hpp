@@ -1,5 +1,5 @@
-#ifndef UINODEPANELS_HPP
-#define UINODEPANELS_HPP
+#ifndef BI_UINODEPANELS_HPP
+#define BI_UINODEPANELS_HPP
 
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeDrawingImage.hpp"

@@ -1,5 +1,5 @@
-#ifndef CONTROLUTILITIES_HPP
-#define CONTROLUTILITIES_HPP
+#ifndef WXAS_CONTROLUTILITIES_HPP
+#define WXAS_CONTROLUTILITIES_HPP
 
 #include "NUIE_InputEventHandler.hpp"
 #include "NUIE_CommandStructure.hpp"

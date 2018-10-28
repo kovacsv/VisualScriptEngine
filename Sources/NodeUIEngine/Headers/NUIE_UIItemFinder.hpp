@@ -1,5 +1,5 @@
-#ifndef UIITEMFINDER_HPP
-#define UIITEMFINDER_HPP
+#ifndef NUIE_UIITEMFINDER_HPP
+#define NUIE_UIITEMFINDER_HPP
 
 #include "NUIE_NodeUIManager.hpp"
 

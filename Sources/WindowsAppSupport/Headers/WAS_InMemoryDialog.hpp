@@ -1,5 +1,5 @@
-#ifndef INMEMORYDIALOG_HPP
-#define INMEMORYDIALOG_HPP
+#ifndef WAS_INMEMORYDIALOG_HPP
+#define WAS_INMEMORYDIALOG_HPP
 
 #include "WAS_IncludeWindowsHeaders.hpp"
 

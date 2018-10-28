@@ -1,5 +1,5 @@
-#ifndef NODEEDITORHWNDCONTROL_HPP
-#define NODEEDITORHWNDCONTROL_HPP
+#ifndef WAS_NODEEDITORHWNDCONTROL_HPP
+#define WAS_NODEEDITORHWNDCONTROL_HPP
 
 #include "NUIE_NodeEditor.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"

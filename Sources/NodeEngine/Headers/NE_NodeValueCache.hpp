@@ -1,5 +1,5 @@
-#ifndef NODEVALUECACHE_HPP
-#define NODEVALUECACHE_HPP
+#ifndef NE_NODEVALUECACHE_HPP
+#define NE_NODEVALUECACHE_HPP
 
 #include "NE_NodeId.hpp"
 #include "NE_Value.hpp"

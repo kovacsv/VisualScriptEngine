@@ -1,5 +1,5 @@
-#ifndef BITMAPCONTEXTGDI_HPP
-#define BITMAPCONTEXTGDI_HPP
+#ifndef WAS_BITMAPCONTEXTGDI_HPP
+#define WAS_BITMAPCONTEXTGDI_HPP
 
 #include <unordered_map>
 

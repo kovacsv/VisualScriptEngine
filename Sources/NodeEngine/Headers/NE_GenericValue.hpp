@@ -1,5 +1,5 @@
-#ifndef VALUEBASE_HPP
-#define VALUEBASE_HPP
+#ifndef NE_VALUEBASE_HPP
+#define NE_VALUEBASE_HPP
 
 #include "NE_Value.hpp"
 #include <vector>

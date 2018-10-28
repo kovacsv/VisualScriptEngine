@@ -1,5 +1,5 @@
-#ifndef WINDOWSAPPUTILS_HPP
-#define WINDOWSAPPUTILS_HPP
+#ifndef WAS_WINDOWSAPPUTILS_HPP
+#define WAS_WINDOWSAPPUTILS_HPP
 
 #include "WAS_IncludeWindowsHeaders.hpp"
 #include "NUIE_Geometry.hpp"

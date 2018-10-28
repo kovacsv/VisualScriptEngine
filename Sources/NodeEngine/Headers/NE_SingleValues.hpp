@@ -1,5 +1,5 @@
-#ifndef SINGLEVALUES_HPP
-#define SINGLEVALUES_HPP
+#ifndef NE_SINGLEVALUES_HPP
+#define NE_SINGLEVALUES_HPP
 
 #include "NE_GenericValue.hpp"
 #include "NE_Serializable.hpp"

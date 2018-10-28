@@ -1,5 +1,5 @@
-#ifndef NODEDRAWINGIMAGE_HPP
-#define NODEDRAWINGIMAGE_HPP
+#ifndef NUIE_NODEDRAWINGIMAGE_HPP
+#define NUIE_NODEDRAWINGIMAGE_HPP
 
 #include "NUIE_DrawingImage.hpp"
 #include "NE_SlotId.hpp"

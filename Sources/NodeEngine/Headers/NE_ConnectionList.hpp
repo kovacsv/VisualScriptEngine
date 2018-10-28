@@ -1,5 +1,5 @@
-#ifndef CONNECTIONLIST_HPP
-#define CONNECTIONLIST_HPP
+#ifndef NE_CONNECTIONLIST_HPP
+#define NE_CONNECTIONLIST_HPP
 
 #include "NE_Debug.hpp"
 #include <unordered_map>

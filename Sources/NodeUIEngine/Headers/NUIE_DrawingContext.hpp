@@ -1,5 +1,5 @@
-#ifndef DRAWINGCONTEXT_HPP
-#define DRAWINGCONTEXT_HPP
+#ifndef NUIE_DRAWINGCONTEXT_HPP
+#define NUIE_DRAWINGCONTEXT_HPP
 
 #include "NUIE_Geometry.hpp"
 #include "NUIE_Drawing.hpp"

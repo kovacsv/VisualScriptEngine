@@ -1,5 +1,5 @@
-#ifndef CONNECTIONMANAGER_HPP
-#define CONNECTIONMANAGER_HPP
+#ifndef NE_CONNECTIONMANAGER_HPP
+#define NE_CONNECTIONMANAGER_HPP
 
 #include "NE_NodeEngineTypes.hpp"
 #include "NE_ConnectionList.hpp"

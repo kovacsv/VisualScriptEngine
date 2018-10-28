@@ -1,5 +1,5 @@
-#ifndef NODEUIPANELDRAWER_HPP
-#define NODEUIPANELDRAWER_HPP
+#ifndef NUIE_NODEUIPANELDRAWER_HPP
+#define NUIE_NODEUIPANELDRAWER_HPP
 
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeDrawingImage.hpp"

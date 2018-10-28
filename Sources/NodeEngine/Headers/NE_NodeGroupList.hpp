@@ -1,5 +1,5 @@
-#ifndef NODEGROUPLSIT_HPP
-#define NODEGROUPLSIT_HPP
+#ifndef NE_NODEGROUPLSIT_HPP
+#define NE_NODEGROUPLSIT_HPP
 
 #include "NE_NodeGroup.hpp"
 

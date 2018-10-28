@@ -1,5 +1,5 @@
-#ifndef TYPES_HPP
-#define TYPES_HPP
+#ifndef NE_TYPES_HPP
+#define NE_TYPES_HPP
 
 #include <memory>
 

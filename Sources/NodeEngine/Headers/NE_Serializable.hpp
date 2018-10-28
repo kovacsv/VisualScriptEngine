@@ -1,5 +1,5 @@
-#ifndef SERIALIZABLE_HPP
-#define SERIALIZABLE_HPP
+#ifndef NE_SERIALIZABLE_HPP
+#define NE_SERIALIZABLE_HPP
 
 #include "NE_Stream.hpp"
 #include "NE_Debug.hpp"

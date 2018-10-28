@@ -1,5 +1,5 @@
-#ifndef PARAMETERDIALOG_HPP
-#define PARAMETERDIALOG_HPP
+#ifndef WXAS_PARAMETERDIALOG_HPP
+#define WXAS_PARAMETERDIALOG_HPP
 
 #include "NUIE_ParameterInterface.hpp"
 

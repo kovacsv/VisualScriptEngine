@@ -1,5 +1,5 @@
-#ifndef STAMP_HPP
-#define STAMP_HPP
+#ifndef NE_STAMP_HPP
+#define NE_STAMP_HPP
 
 #include <cstddef>
 

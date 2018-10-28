@@ -1,5 +1,5 @@
-#ifndef DEBUG_HPP
-#define DEBUG_HPP
+#ifndef NE_DEBUG_HPP
+#define NE_DEBUG_HPP
 
 #ifdef DEBUG
 #define DBGBREAK() DbgBreak()

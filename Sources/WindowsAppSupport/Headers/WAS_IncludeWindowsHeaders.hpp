@@ -1,5 +1,5 @@
-#ifndef INCLUDEWINDOWSHEADER_HPP
-#define INCLUDEWINDOWSHEADER_HPP
+#ifndef WAS_INCLUDEWINDOWSHEADER_HPP
+#define WAS_INCLUDEWINDOWSHEADER_HPP
 
 #include <windows.h>
 #include <windowsx.h>

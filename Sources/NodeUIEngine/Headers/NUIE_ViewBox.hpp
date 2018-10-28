@@ -1,5 +1,5 @@
-#ifndef VIEWBOX_HPP
-#define VIEWBOX_HPP
+#ifndef NUIE_VIEWBOX_HPP
+#define NUIE_VIEWBOX_HPP
 
 #include "NUIE_Geometry.hpp"
 #include "NUIE_Drawing.hpp"

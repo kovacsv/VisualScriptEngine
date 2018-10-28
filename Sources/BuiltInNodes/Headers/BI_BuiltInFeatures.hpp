@@ -1,5 +1,5 @@
-#ifndef BUILTINFEATURES_HPP
-#define BUILTINFEATURES_HPP
+#ifndef BI_BUILTINFEATURES_HPP
+#define BI_BUILTINFEATURES_HPP
 
 #include "NE_ValueCombination.hpp"
 #include "NUIE_UINodeFeatureSet.hpp"

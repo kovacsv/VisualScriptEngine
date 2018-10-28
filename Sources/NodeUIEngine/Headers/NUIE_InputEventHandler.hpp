@@ -1,5 +1,5 @@
-#ifndef INPUTEVENTHANDLER_HPP
-#define INPUTEVENTHANDLER_HPP
+#ifndef NUIE_INPUTEVENTHANDLER_HPP
+#define NUIE_INPUTEVENTHANDLER_HPP
 
 #include "NUIE_Geometry.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"

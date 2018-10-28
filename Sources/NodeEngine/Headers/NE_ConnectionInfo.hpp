@@ -1,5 +1,5 @@
-#ifndef CONNECTIONINFO_HPP
-#define CONNECTIONINFO_HPP
+#ifndef NE_CONNECTIONINFO_HPP
+#define NE_CONNECTIONINFO_HPP
 
 #include "NE_NodeId.hpp"
 #include "NE_SlotId.hpp"

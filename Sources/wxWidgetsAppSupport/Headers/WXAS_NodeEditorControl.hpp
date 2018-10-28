@@ -1,5 +1,5 @@
-#ifndef NODEEDITORCONTROL_HPP
-#define NODEEDITORCONTROL_HPP
+#ifndef WXAS_NODEEDITORCONTROL_HPP
+#define WXAS_NODEEDITORCONTROL_HPP
 
 #include "NUIE_NodeEditor.hpp"
 #include "BI_BuiltInCommands.hpp"

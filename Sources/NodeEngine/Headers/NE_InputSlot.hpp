@@ -1,5 +1,5 @@
-#ifndef INPUTSLOT_HPP
-#define INPUTSLOT_HPP
+#ifndef NE_INPUTSLOT_HPP
+#define NE_INPUTSLOT_HPP
 
 #include "NE_NodeEngineTypes.hpp"
 #include "NE_Slot.hpp"

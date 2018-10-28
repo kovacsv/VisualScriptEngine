@@ -1,5 +1,5 @@
-#ifndef UINODEFEATURESET_HPP
-#define UINODEFEATURESET_HPP
+#ifndef NUIE_UINODEFEATURESET_HPP
+#define NUIE_UINODEFEATURESET_HPP
 
 #include "NE_Stream.hpp"
 #include "NE_Serializable.hpp"

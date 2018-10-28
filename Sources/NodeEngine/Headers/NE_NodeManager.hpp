@@ -1,5 +1,5 @@
-#ifndef NODEMANAGER_HPP
-#define NODEMANAGER_HPP
+#ifndef NE_NODEMANAGER_HPP
+#define NE_NODEMANAGER_HPP
 
 #include "NE_NodeEngineTypes.hpp"
 #include "NE_Serializable.hpp"

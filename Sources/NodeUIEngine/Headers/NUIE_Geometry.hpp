@@ -1,5 +1,5 @@
-#ifndef GEOMETRY_HPP
-#define GEOMETRY_HPP
+#ifndef NUIE_GEOMETRY_HPP
+#define NUIE_GEOMETRY_HPP
 
 #include "NE_Serializable.hpp"
 #include "NE_Checksum.hpp"

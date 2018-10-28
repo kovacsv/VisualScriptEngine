@@ -1,5 +1,5 @@
-#ifndef CHECKSUM_HPP
-#define CHECKSUM_HPP
+#ifndef NE_CHECKSUM_HPP
+#define NE_CHECKSUM_HPP
 
 #include <string>
 

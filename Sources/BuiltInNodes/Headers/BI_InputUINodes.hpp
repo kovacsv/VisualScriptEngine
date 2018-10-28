@@ -1,5 +1,5 @@
-#ifndef INPUTUINODES_HPP
-#define INPUTUINODES_HPP
+#ifndef BI_INPUTUINODES_HPP
+#define BI_INPUTUINODES_HPP
 
 #include "NE_SingleValues.hpp"
 #include "BI_BasicUINode.hpp"

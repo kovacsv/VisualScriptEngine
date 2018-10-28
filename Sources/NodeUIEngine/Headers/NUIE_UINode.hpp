@@ -1,5 +1,5 @@
-#ifndef UINODE_HPP
-#define UINODE_HPP
+#ifndef NUIE_UINODE_HPP
+#define NUIE_UINODE_HPP
 
 #include "NE_Node.hpp"
 #include "NUIE_NodeDrawingImage.hpp"

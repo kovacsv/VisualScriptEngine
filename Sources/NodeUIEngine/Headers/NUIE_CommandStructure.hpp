@@ -1,5 +1,5 @@
-#ifndef COMMANDSTRUCTURE_HPP
-#define COMMANDSTRUCTURE_HPP
+#ifndef NUIE_COMMANDSTRUCTURE_HPP
+#define NUIE_COMMANDSTRUCTURE_HPP
 
 #include <string>
 #include <vector>

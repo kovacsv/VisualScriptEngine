@@ -1,5 +1,5 @@
-#ifndef SLOTID_HPP
-#define SLOTID_HPP
+#ifndef NE_SLOTID_HPP
+#define NE_SLOTID_HPP
 
 #include "NE_Serializable.hpp"
 

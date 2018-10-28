@@ -1,5 +1,5 @@
-#ifndef CONTEXTFACTORY_HPP
-#define CONTEXTFACTORY_HPP
+#ifndef WXAS_CONTEXTFACTORY_HPP
+#define WXAS_CONTEXTFACTORY_HPP
 
 #include "NUIE_DrawingContext.hpp"
 
