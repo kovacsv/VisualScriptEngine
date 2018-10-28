@@ -250,7 +250,7 @@ void DrawableNode::DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const
 }
 
 PointNode::PointNode () :
-	DrawableNode ()
+	PointNode (L"", NUIE::Point ())
 {
 
 }
@@ -314,7 +314,7 @@ NE::Stream::Status PointNode::Write (NE::OutputStream& outputStream) const
 }
 
 LineNode::LineNode () :
-	DrawableNode ()
+	LineNode (L"", NUIE::Point ())
 {
 
 }
@@ -373,7 +373,7 @@ NE::Stream::Status LineNode::Write (NE::OutputStream& outputStream) const
 }
 
 CircleNode::CircleNode () :
-	DrawableNode ()
+	CircleNode (L"", NUIE::Point ())
 {
 
 }
