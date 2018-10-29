@@ -268,7 +268,7 @@ public:
 		Append (modeMenu, L"&Mode");
 	}
 
-	void Update (WXAS::NodeEditorControl* nodeEditorControl)
+	void UpdateStatus (WXAS::NodeEditorControl* nodeEditorControl)
 	{
 		if (nodeEditorControl->IsAutomaticUpdate ()) {
 			automaticModeItem->Check ();
@@ -309,7 +309,7 @@ public:
 		nodeEditorControl->Init (uiEnvironment);
 
 		SetMenuBar (menuBar);
-		menuBar->Update (nodeEditorControl);
+		UpdateMenuBar ();
 
 		CreateStatusBar ();
 		UpdateStatusBar ();
@@ -343,7 +343,7 @@ public:
 				Reset ();
 			}
 		}
-		menuBar->Update (nodeEditorControl);
+		UpdateMenuBar ();
 		UpdateStatusBar ();
 	}
 
@@ -401,6 +401,12 @@ public:
 		nodeEditorControl->ManualUpdate ();
 	}
 
+private:
+	void UpdateMenuBar ()
+	{
+		menuBar->UpdateStatus (nodeEditorControl);
+	}
+
 	void UpdateStatusBar ()
 	{
 		std::wstring currentFileText = L"No File";
@@ -410,7 +416,6 @@ public:
 		SetStatusText (currentFileText);
 	}
 
-private:
 	void Reset ()
 	{
 		nodeEditorControl->New ();
@@ -422,7 +427,6 @@ private:
 	wxSplitterWindow*			mainWindow;
 	DrawingControl*				drawingControl;
 	WXAS::NodeEditorControl*	nodeEditorControl;
-
 	ApplicationState			applicationState;
 
 	DECLARE_EVENT_TABLE ()
