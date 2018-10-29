@@ -8,17 +8,17 @@
 namespace NUIE
 {
 
-template <typename NodeType, typename ValueType>
-class TypedNodeParameter : public NodeParameter
+template <typename ValueType>
+class TypedParameter : public NodeParameter
 {
 public:
-	TypedNodeParameter (const std::wstring& name, const ParameterType& type) :
+	TypedParameter (const std::wstring& name, const ParameterType& type) :
 		NodeParameter (name, type)
 	{
 
 	}
 
-	virtual ~TypedNodeParameter ()
+	virtual ~TypedParameter ()
 	{
 
 	}
@@ -26,11 +26,6 @@ public:
 	virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
 	{
 		return GetValueInternal (uiNode);
-	}
-
-	virtual bool IsApplicableTo (const UINodePtr& uiNode) const
-	{
-		return NE::Node::IsType<NodeType> (uiNode);
 	}
 
 	virtual bool CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const
@@ -58,13 +53,34 @@ public:
 		return SetValueInternal (uiManager, evaluationEnv, uiNode, value);
 	}
 
+	virtual NE::ValuePtr	GetValueInternal (const UINodePtr& uiNode) const = 0;
+	virtual bool			SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
+};
+
+template <typename NodeType, typename ValueType>
+class TypedNodeParameter : public TypedParameter<ValueType>
+{
+public:
+	TypedNodeParameter (const std::wstring& name, const ParameterType& type) :
+		TypedParameter (name, type)
+	{
+
+	}
+
+	virtual ~TypedNodeParameter ()
+	{
+
+	}
+
+	virtual bool IsApplicableTo (const UINodePtr& uiNode) const
+	{
+		return NE::Node::IsType<NodeType> (uiNode);
+	}
+
 	std::shared_ptr<NodeType> GetTypedNode (const UINodePtr& uiNode) const
 	{
 		return NE::Node::Cast<NodeType> (uiNode);
 	}
-
-	virtual NE::ValuePtr	GetValueInternal (const UINodePtr& uiNode) const = 0;
-	virtual bool			SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
 };
 
 template <typename NodeType>
@@ -195,13 +211,12 @@ void RegisterSlotDefaultValueNodeParameter (NodeParameterList& parameterList, co
 	parameterList.AddParameter (NodeParameterPtr (new Parameter (name, type, slotId)));
 }
 
-// TODO: lot of duplication with TypedNodeParameter
 template <typename FeatureType, typename ValueType>
-class TypedFeatureParameter : public NodeParameter
+class TypedFeatureParameter : public TypedParameter<ValueType>
 {
 public:
 	TypedFeatureParameter (const std::wstring& name, const ParameterType& type, const FeatureId& featureId) :
-		NodeParameter (name, type),
+		TypedParameter (name, type),
 		featureId (featureId)
 	{
 
@@ -212,43 +227,10 @@ public:
 
 	}
 
-	virtual NE::ValuePtr GetValue (const UINodePtr& uiNode) const override
-	{
-		return GetValueInternal (uiNode);
-	}
-
 	virtual bool IsApplicableTo (const UINodePtr& uiNode) const
 	{
 		return uiNode->HasFeature (featureId);
 	}
-
-	virtual bool CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const
-	{
-		if (!NE::Value::IsType<ValueType> (value)) {
-			return false;
-		}
-		std::shared_ptr<ValueType> typedValue = NE::Value::Cast<ValueType> (value);
-		if (!IsValidValue (uiNode, typedValue)) {
-			return false;
-		}
-		return true;
-	}
-
-	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<ValueType>&) const
-	{
-		return true;
-	}
-
-	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) override
-	{
-		if (DBGERROR (!CanSetValue (uiNode, value))) {
-			return false;
-		}
-		return SetValueInternal (uiManager, evaluationEnv, uiNode, value);
-	}
-
-	virtual NE::ValuePtr	GetValueInternal (const UINodePtr& uiNode) const = 0;
-	virtual bool			SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
 
 private:
 	FeatureId featureId;
