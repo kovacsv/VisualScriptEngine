@@ -62,7 +62,7 @@ class TypedNodeParameter : public TypedParameter<ValueType>
 {
 public:
 	TypedNodeParameter (const std::wstring& name, const ParameterType& type) :
-		TypedParameter (name, type)
+		TypedParameter<ValueType> (name, type)
 	{
 
 	}
@@ -216,7 +216,7 @@ class TypedFeatureParameter : public TypedParameter<ValueType>
 {
 public:
 	TypedFeatureParameter (const std::wstring& name, const ParameterType& type, const FeatureId& featureId) :
-		TypedParameter (name, type),
+		TypedParameter<ValueType> (name, type),
 		featureId (featureId)
 	{
 
