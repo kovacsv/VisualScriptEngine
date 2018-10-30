@@ -65,14 +65,15 @@ public:
 	void						RequestRecalculate ();
 	void						RequestRedraw ();
 
+	void						InvalidateAllDrawings ();
 	void						InvalidateAllNodesDrawing ();
+	void						InvalidateAllNodeGroupsDrawing ();
 	void						InvalidateNodeValue (const NE::NodeId& nodeId);
 	void						InvalidateNodeValue (const UINodePtr& uiNode);
 	void						InvalidateNodeDrawing (const NE::NodeId& nodeId);
 	void						InvalidateNodeDrawing (const UINodePtr& uiNode);
 	void						InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
 	void						InvalidateNodeGroupDrawing (const UINodePtr& uiNode);
-	void						InvalidateAllNodeGroupsDrawing ();
 
 	void						Update (NodeUICalculationEnvironment& env);
 	void						ManualUpdate (NodeUICalculationEnvironment& env);

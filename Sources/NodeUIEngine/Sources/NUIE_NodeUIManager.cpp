@@ -269,10 +269,24 @@ void NodeUIManager::RequestRedraw ()
 	status.RequestRedraw ();
 }
 
+void NodeUIManager::InvalidateAllDrawings ()
+{
+	InvalidateAllNodesDrawing ();
+	InvalidateAllNodeGroupsDrawing ();
+}
+
 void NodeUIManager::InvalidateAllNodesDrawing ()
 {
 	EnumerateUINodes ([&] (const UINodePtr& uiNode) {
 		uiNode->InvalidateDrawing ();
+		return true;
+	});
+}
+
+void NodeUIManager::InvalidateAllNodeGroupsDrawing ()
+{
+	EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
+		group->InvalidateGroupDrawing ();
 		return true;
 	});
 }
@@ -322,14 +336,6 @@ void NodeUIManager::InvalidateNodeGroupDrawing (const UINodePtr& uiNode)
 	InvalidateNodeGroupDrawing (uiNode->GetId ());
 }
 
-void NodeUIManager::InvalidateAllNodeGroupsDrawing ()
-{
-	EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
-		group->InvalidateGroupDrawing ();
-		return true;
-	});
-}
-
 void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 {
 	UpdateInternal (env, InternalUpdateMode::Normal);
@@ -337,6 +343,7 @@ void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 
 void NodeUIManager::ManualUpdate (NodeUICalculationEnvironment& env)
 {
+	InvalidateAllDrawings ();
 	UpdateInternal (env, InternalUpdateMode::Manual);
 }
 
@@ -454,6 +461,7 @@ bool NodeUIManager::Undo (NE::EvaluationEnv& env)
 {
 	NodeUIManagerMergeEventHandler eventHandler (*this, env);
 	bool success = undoHandler.Undo (nodeManager, eventHandler);
+	InvalidateAllDrawings ();
 	RequestRecalculate ();
 	RequestRedraw ();
 	return success;
@@ -463,6 +471,7 @@ bool NodeUIManager::Redo (NE::EvaluationEnv& env)
 {
 	NodeUIManagerMergeEventHandler eventHandler (*this, env);
 	bool success = undoHandler.Redo (nodeManager, eventHandler);
+	InvalidateAllDrawings ();
 	RequestRecalculate ();
 	RequestRedraw ();
 	return success;

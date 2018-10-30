@@ -109,8 +109,6 @@ void NodeEditor::Update ()
 
 void NodeEditor::ManualUpdate ()
 {
-	uiManager.InvalidateAllNodesDrawing ();
-	uiManager.InvalidateAllNodeGroupsDrawing ();
 	uiManager.RequestRecalculate ();
 	uiManager.RequestRedraw ();
 	uiManager.ManualUpdate (uiEnvironment);
