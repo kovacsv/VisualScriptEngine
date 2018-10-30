@@ -268,7 +268,7 @@ public:
 		Append (modeMenu, L"&Mode");
 	}
 
-	void UpdateStatus (WXAS::NodeEditorControl* nodeEditorControl)
+	void UpdateStatus (const WXAS::NodeEditorControl* nodeEditorControl)
 	{
 		if (nodeEditorControl->IsAutomaticUpdate ()) {
 			automaticModeItem->Check ();
