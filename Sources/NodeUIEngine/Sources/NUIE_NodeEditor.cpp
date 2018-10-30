@@ -192,12 +192,14 @@ void NodeEditor::Undo ()
 {
 	UICommandPtr command (new UndoCommand (uiManager, uiEnvironment));
 	uiInteractionHandler.ExecuteCommand (command);
+	Update ();
 }
 
 void NodeEditor::Redo ()
 {
 	UICommandPtr command (new RedoCommand (uiManager, uiEnvironment));
 	uiInteractionHandler.ExecuteCommand (command);
+	Update ();
 }
 
 }
