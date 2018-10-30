@@ -327,6 +327,7 @@ public:
 	void OnNew (wxCommandEvent& evt)
 	{
 		Reset ();
+		UpdateMenuBar ();
 		UpdateStatusBar ();
 	}
 

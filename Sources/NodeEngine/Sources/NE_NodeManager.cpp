@@ -117,6 +117,7 @@ void NodeManager::Clear ()
 	connectionManager.Clear ();
 	nodeGroupList.Clear ();
 	nodeValueCache.Clear ();
+	updateMode = UpdateMode::Automatic;
 }
 
 bool NodeManager::IsEmpty () const
