@@ -100,8 +100,7 @@ NodeManager::NodeManager () :
 	nodeGroupList (),
 	updateMode (UpdateMode::Automatic),
 	nodeValueCache (),
-	nodeEvaluator (new NodeManagerNodeEvaluator (*this, nodeValueCache)),
-	isForcedCalculation (false)
+	nodeEvaluator (new NodeManagerNodeEvaluator (*this, nodeValueCache))
 {
 
 }
@@ -333,10 +332,10 @@ void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 
 void NodeManager::ForceEvaluateAllNodes (EvaluationEnv& env) const
 {
-	ValueGuard<bool> isForcedCalculationGuard (isForcedCalculation, true);
 	std::vector<NodeConstPtr> nodesToRecalculate;
 	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
-		if (node->NeedToCalculate ()) {
+		Node::CalculationStatus calcStatus = node->GetCalculationStatus ();
+		if (calcStatus == Node::CalculationStatus::NeedToCalculate || calcStatus == Node::CalculationStatus::NeedToCalculateButDisabled) {
 			nodesToRecalculate.push_back (node);
 		}
 		return true;
@@ -344,7 +343,10 @@ void NodeManager::ForceEvaluateAllNodes (EvaluationEnv& env) const
 	for (const NodeConstPtr& node : nodesToRecalculate) {
 		InvalidateNodeValue (node);
 	}
-	EvaluateAllNodes (env);
+	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
+		node->ForceEvaluate (env);
+		return true;
+	});
 }
 
 void NodeManager::InvalidateNodeValue (const NodeId& nodeId) const
@@ -450,7 +452,7 @@ void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroup
 
 bool NodeManager::IsCalculationEnabled () const
 {
-	return updateMode == UpdateMode::Automatic || isForcedCalculation;
+	return updateMode == UpdateMode::Automatic;
 }
 
 NodeManager::UpdateMode NodeManager::GetUpdateMode () const

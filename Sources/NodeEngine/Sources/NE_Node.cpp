@@ -113,23 +113,12 @@ void Node::EnumerateOutputSlots (const std::function<bool (const OutputSlotConst
 
 ValuePtr Node::Evaluate (EvaluationEnv& env) const
 {
-	if (DBGERROR (nodeEvaluator == nullptr)) {
-		return nullptr;
-	}
+	return EvaluateInternal (env, EvaluationMode::Normal);
+}
 
-	if (nodeEvaluator->HasCalculatedNodeValue (nodeId)) {
-		return nodeEvaluator->GetCalculatedNodeValue (nodeId);
-	}
-
-	if (!nodeEvaluator->IsCalculationEnabled () && !IsForceCalculated ()) {
-		return nullptr;
-	}
-
-	ValuePtr value = Calculate (env);
-	nodeEvaluator->SetCalculatedNodeValue (nodeId, value);
-
-	ProcessValue (value, env);
-	return value;
+ValuePtr Node::ForceEvaluate (EvaluationEnv& env) const
+{
+	return EvaluateInternal (env, EvaluationMode::Forced);
 }
 
 ValuePtr Node::GetCalculatedValue () const
@@ -153,21 +142,21 @@ bool Node::HasCalculatedValue () const
 	return nodeEvaluator->HasCalculatedNodeValue (GetId ());
 }
 
-bool Node::NeedToCalculate () const
+Node::CalculationStatus Node::GetCalculationStatus () const
 {
 	if (DBGERROR (nodeEvaluator == nullptr)) {
-		return false;
+		return CalculationStatus::NeedToCalculate;
 	}
 
 	if (nodeEvaluator->HasCalculatedNodeValue (nodeId)) {
-		return false;
+		return CalculationStatus::Calculated;
 	}
 
-	if (!nodeEvaluator->IsCalculationEnabled () && !IsForceCalculated ()) {
-		return false;
+	if (nodeEvaluator->IsCalculationEnabled () || IsForceCalculated ()) {
+		return CalculationStatus::NeedToCalculate;
+	} else {
+		return CalculationStatus::NeedToCalculateButDisabled;
 	}
-
-	return true;
 }
 
 void Node::InvalidateValue () const
@@ -320,6 +309,32 @@ bool Node::IsForceCalculated () const
 void Node::ProcessValue (const ValuePtr&, EvaluationEnv&) const
 {
 
+}
+
+ValuePtr Node::EvaluateInternal (EvaluationEnv& env, EvaluationMode mode) const
+{
+	if (DBGERROR (nodeEvaluator == nullptr)) {
+		return nullptr;
+	}
+
+	CalculationStatus calcStatus = GetCalculationStatus ();
+	if (calcStatus == CalculationStatus::Calculated) {
+		return nodeEvaluator->GetCalculatedNodeValue (nodeId);
+	}
+
+	bool needToCalculate = (calcStatus == CalculationStatus::NeedToCalculate);
+	if (mode == EvaluationMode::Forced && calcStatus == CalculationStatus::NeedToCalculateButDisabled) {
+		needToCalculate = true;
+	}
+
+	if (!needToCalculate) {
+		return nullptr;
+	}
+
+	ValuePtr value = Calculate (env);
+	nodeEvaluator->SetCalculatedNodeValue (nodeId, value);
+	ProcessValue (value, env);
+	return value;
 }
 
 ListValuePtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const
