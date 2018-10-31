@@ -172,11 +172,6 @@ public:
 	{
 	
 	}
-
-	virtual void AfterSlotConnect (const NE::NodeId&, const NE::NodeId&) override
-	{
-
-	}
 };
 
 static EmptyEventHandler eventHandler;

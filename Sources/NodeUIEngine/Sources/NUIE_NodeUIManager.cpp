@@ -36,13 +36,6 @@ public:
 		NE::NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
 		selectedNodes.Erase (nodeId);
 		uiManager.SetSelectedNodes (selectedNodes);
-
-		uiManager.InvalidateNodeDrawing (nodeId);
-	}
-
-	virtual void AfterSlotConnect (const NE::NodeId&, const NE::NodeId& inputNodeId) override
-	{
-		uiManager.InvalidateNodeDrawing (inputNodeId);
 	}
 
 private:

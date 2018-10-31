@@ -173,11 +173,14 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 		const InputSlotConstPtr& inputSlot = inputSlotData.first;
 		const std::vector<SlotInfo>& outputSlots = inputSlotData.second;
 		target.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
-		for (const SlotInfo& slotInfo : outputSlots) {
-			NodeConstPtr outputNode = target.GetNode (slotInfo.GetNodeId ());
-			OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (slotInfo.GetSlotId ());
-			target.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
-			eventHandler.AfterSlotConnect (outputSlot->GetOwnerNodeId (), inputSlot->GetOwnerNodeId ());
+		if (outputSlots.empty ()) {
+			target.InvalidateNodeValue (inputSlot->GetOwnerNodeId ());
+		} else {
+			for (const SlotInfo& slotInfo : outputSlots) {
+				NodeConstPtr outputNode = target.GetNode (slotInfo.GetNodeId ());
+				OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (slotInfo.GetSlotId ());
+				target.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
+			}
 		}
 	}
 
