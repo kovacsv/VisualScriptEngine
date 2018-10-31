@@ -322,8 +322,10 @@ ValuePtr Node::EvaluateInternal (EvaluationEnv& env, EvaluationMode mode) const
 		return nodeEvaluator->GetCalculatedNodeValue (nodeId);
 	}
 
-	bool needToCalculate = (calcStatus == CalculationStatus::NeedToCalculate);
-	if (mode == EvaluationMode::Forced && calcStatus == CalculationStatus::NeedToCalculateButDisabled) {
+	bool needToCalculate = false;
+	if (calcStatus == CalculationStatus::NeedToCalculate) {
+		needToCalculate = true;
+	} else if (calcStatus == CalculationStatus::NeedToCalculateButDisabled && mode == EvaluationMode::Forced) {
 		needToCalculate = true;
 	}
 
