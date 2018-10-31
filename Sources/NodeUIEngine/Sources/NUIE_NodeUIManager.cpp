@@ -336,7 +336,7 @@ void NodeUIManager::Update (NodeUICalculationEnvironment& env)
 
 void NodeUIManager::ManualUpdate (NodeUICalculationEnvironment& env)
 {
-	InvalidateAllDrawings ();
+	InvalidateDrawingsForInvalidatedNodes ();
 	UpdateInternal (env, InternalUpdateMode::Manual);
 }
 
@@ -454,9 +454,8 @@ bool NodeUIManager::Undo (NE::EvaluationEnv& env)
 {
 	NodeUIManagerMergeEventHandler eventHandler (*this, env);
 	bool success = undoHandler.Undo (nodeManager, eventHandler);
-	InvalidateAllDrawings ();
+	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculate ();
-	RequestRedraw ();
 	return success;
 }
 
@@ -464,9 +463,8 @@ bool NodeUIManager::Redo (NE::EvaluationEnv& env)
 {
 	NodeUIManagerMergeEventHandler eventHandler (*this, env);
 	bool success = undoHandler.Redo (nodeManager, eventHandler);
-	InvalidateAllDrawings ();
+	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculate ();
-	RequestRedraw ();
 	return success;
 }
 
@@ -504,6 +502,22 @@ void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINod
 	nodeManager.EnumerateNodeGroups ([&] (const NE::NodeGroupPtr& nodeGroup) {
 		return processor (std::static_pointer_cast<UINodeGroup> (nodeGroup));
 	});
+}
+
+void NodeUIManager::InvalidateDrawingsForInvalidatedNodes ()
+{
+	std::vector<UINodePtr> nodesToInvalidate;
+	EnumerateUINodes ([&] (const UINodePtr& uiNode) {
+		NE::Node::CalculationStatus calcStatus = uiNode->GetCalculationStatus ();
+		if (calcStatus == NE::Node::CalculationStatus::NeedToCalculate || calcStatus == NE::Node::CalculationStatus::NeedToCalculateButDisabled) {
+			nodesToInvalidate.push_back (uiNode);
+		}
+		return true;
+	});
+	for (const UINodePtr& uiNode : nodesToInvalidate) {
+		InvalidateNodeDrawing (uiNode);
+	}
+	status.RequestRedraw ();
 }
 
 void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode)

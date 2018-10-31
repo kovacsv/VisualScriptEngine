@@ -130,6 +130,7 @@ private:
 		Manual
 	};
 
+	void				InvalidateDrawingsForInvalidatedNodes ();
 	void				UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode);
 
 	NE::NodeManager		nodeManager;
