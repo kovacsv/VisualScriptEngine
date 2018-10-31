@@ -403,4 +403,29 @@ TEST (ManualUpdateTest)
 	ASSERT (env.CheckReference ("08_ManualUpdateTest_ManualUpdateMode_ForceUpdate.svg"));
 }
 
+TEST (ManualUpdateTestUndo)
+{
+	NodeEditorTestEnv env;
+	env.nodeEditor.SetUpdateMode (NodeEditor::UpdateMode::Manual);
+
+	env.SetNextCommandName (L"Create Integer Node");
+	env.RightClick (Point (100, 100));
+	env.SetNextCommandName (L"Create Increase Node");
+	env.RightClick (Point (300, 200));
+	env.SetNextCommandName (L"Create Viewer Node");
+	env.RightClick (Point (600, 300));
+	env.DragDrop (Point (360, 220), Point (530, 300));
+	env.DragDrop (Point (125, 100), Point (240, 220));
+	ASSERT (env.CheckReference ("09_ManualUpdateTest_Init.svg"));
+
+	env.nodeEditor.ManualUpdate ();
+	ASSERT (env.CheckReference ("09_ManualUpdateTest_ManualUpdate.svg"));
+
+	env.nodeEditor.Undo ();
+	ASSERT (env.CheckReference ("09_ManualUpdateTest_AfterUndo.svg"));
+
+	env.nodeEditor.ManualUpdate ();
+	ASSERT (env.CheckReference ("09_ManualUpdateTest_ManualUpdateAfterUndo.svg"));
+}
+
 }
