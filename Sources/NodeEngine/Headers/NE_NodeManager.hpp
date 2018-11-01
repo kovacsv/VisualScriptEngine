@@ -121,6 +121,7 @@ private:
 
 	mutable NodeValueCache					nodeValueCache;
 	mutable NodeEvaluatorConstPtr			nodeEvaluator;
+	mutable bool							isForceCalculate;
 };
 
 }
