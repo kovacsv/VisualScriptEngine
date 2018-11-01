@@ -1,6 +1,7 @@
 import sys
 import os
 import shutil
+import time
 
 def RemoveDir (path):
 	if os.path.exists (path):
@@ -60,4 +61,6 @@ def Main (argv):
 
 	return 0
 	
-sys.exit (Main (sys.argv))
+result = Main (sys.argv)
+time.sleep (3)
+sys.exit (result)
