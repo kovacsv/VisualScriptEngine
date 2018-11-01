@@ -25,7 +25,7 @@ public:
 
 	~HandleCache ()
 	{
-		for (auto it : cache) {
+		for (auto& it: cache) {
 			DeleteObject (it.second);
 		}	
 	}

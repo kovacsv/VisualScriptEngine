@@ -36,7 +36,7 @@ public:
 
 	~ObjectCache ()
 	{
-		for (auto it : cache) {
+		for (auto& it : cache) {
 			SafeRelease (&it.second);
 		}	
 	}
