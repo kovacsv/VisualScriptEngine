@@ -236,24 +236,27 @@ void NodeEditorControl::OnKeyDown (wxKeyEvent& evt)
 	nodeEditor->OnKeyPress (key);
 }
 
-bool NodeEditorControl::IsAutomaticUpdate () const
+NodeEditorControl::UpdateMode NodeEditorControl::GetUpdateMode () const
 {
-	return nodeEditor->GetUpdateMode () == NUIE::NodeEditor::UpdateMode::Automatic;
+	if (nodeEditor->GetUpdateMode () == NUIE::NodeEditor::UpdateMode::Automatic) {
+		return UpdateMode::Automatic;
+	} else if (nodeEditor->GetUpdateMode () == NUIE::NodeEditor::UpdateMode::Manual) {
+		return UpdateMode::Manual;
+	} else {
+		DBGBREAK ();
+		return UpdateMode::Automatic;
+	}
 }
 
-bool NodeEditorControl::IsManualUpdate () const
+void NodeEditorControl::SetUpdateMode (UpdateMode mode) const
 {
-	return nodeEditor->GetUpdateMode () == NUIE::NodeEditor::UpdateMode::Manual;
-}
-
-void NodeEditorControl::SwitchToAutomaticUpdate ()
-{
-	nodeEditor->SetUpdateMode (NUIE::NodeEditor::UpdateMode::Automatic);
-}
-
-void NodeEditorControl::SwitchToManualUpdate ()
-{
-	nodeEditor->SetUpdateMode (NUIE::NodeEditor::UpdateMode::Manual);
+	if (mode == UpdateMode::Automatic) {
+		nodeEditor->SetUpdateMode (NUIE::NodeEditor::UpdateMode::Automatic);
+	} else if (mode == UpdateMode::Manual) {
+		nodeEditor->SetUpdateMode (NUIE::NodeEditor::UpdateMode::Manual);
+	} else {
+		DBGBREAK ();
+	}
 }
 
 void NodeEditorControl::ManualUpdate ()

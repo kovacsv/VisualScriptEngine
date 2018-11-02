@@ -242,9 +242,7 @@ public:
 	};
 
 	MenuBar () :
-		wxMenuBar (),
-		automaticModeItem (nullptr),
-		manualModeItem (nullptr)
+		wxMenuBar ()
 	{
 		wxMenu* fileMenu = new wxMenu ();
 		fileMenu->Append (CommandId::File_New, "New");
@@ -261,27 +259,23 @@ public:
 		Append (editMenu, L"&Edit");
 
 		wxMenu* modeMenu = new wxMenu ();
-		automaticModeItem = modeMenu->AppendRadioItem (CommandId::Mode_Automatic, "Automatic");
-		manualModeItem = modeMenu->AppendRadioItem (CommandId::Mode_Manual, "Manual");
+		modeMenu->AppendRadioItem (CommandId::Mode_Automatic, "Automatic");
+		modeMenu->AppendRadioItem (CommandId::Mode_Manual, "Manual");
 		modeMenu->AppendSeparator ();
 		modeMenu->Append (CommandId::Mode_Update, L"Update");
 		Append (modeMenu, L"&Mode");
 	}
 
-	void UpdateStatus (const WXAS::NodeEditorControl* nodeEditorControl)
+	void UpdateStatus (WXAS::NodeEditorControl::UpdateMode updateMode)
 	{
-		if (nodeEditorControl->IsAutomaticUpdate ()) {
-			automaticModeItem->Check ();
-		} else if (nodeEditorControl->IsManualUpdate ()) {
-			manualModeItem->Check ();
+		if (updateMode == WXAS::NodeEditorControl::UpdateMode::Automatic) {
+			FindItem (CommandId::Mode_Automatic)->Check ();
+		} else if (updateMode == WXAS::NodeEditorControl::UpdateMode::Manual) {
+			FindItem (CommandId::Mode_Manual)->Check ();
 		} else {
 			DBGBREAK ();
 		}
 	}
-
-private:
-	wxMenuItem* automaticModeItem;
-	wxMenuItem* manualModeItem;
 };
 
 class MainFrame : public wxFrame
@@ -324,88 +318,91 @@ public:
 	
 	}
 
-	void OnNew (wxCommandEvent& evt)
+	void OnCommand (wxCommandEvent& evt)
 	{
-		Reset ();
-		UpdateMenuBar ();
-		UpdateStatusBar ();
-	}
-
-	void OnOpen (wxCommandEvent& evt)
-	{
-		wxFileDialog fileDialog (this, L"Open", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-		if (fileDialog.ShowModal () == wxID_OK) {
-			std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
-			drawingControl->ClearImage ();
-			// TODO: handle when open fails
-			if (nodeEditorControl->Open (fileName)) {
-				applicationState.SetCurrentFileName (fileName);
-			} else {
-				Reset ();
-			}
+		MenuBar::CommandId commandId = (MenuBar::CommandId) evt.GetId ();
+		switch (commandId) {
+			case MenuBar::CommandId::File_New:
+				{
+					Reset ();
+				}
+				break;
+			case MenuBar::CommandId::File_Open:
+				{
+					wxFileDialog fileDialog (this, L"Open", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+					if (fileDialog.ShowModal () == wxID_OK) {
+						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
+						drawingControl->ClearImage ();
+						// TODO: handle when open fails
+						if (nodeEditorControl->Open (fileName)) {
+							applicationState.SetCurrentFileName (fileName);
+						} else {
+							Reset ();
+						}
+					}
+				}
+				break;
+			case MenuBar::CommandId::File_Save:
+				{
+					wxFileDialog fileDialog (this, L"Save", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
+					if (applicationState.HasCurrentFileName ()) {
+						nodeEditorControl->Save (applicationState.GetCurrentFileName ());
+					} else if (fileDialog.ShowModal () == wxID_OK) {
+						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
+						nodeEditorControl->Save (fileName);
+						applicationState.SetCurrentFileName (fileName);
+					}
+				}
+				break;
+			case MenuBar::CommandId::File_SaveAs:
+				{
+					wxFileDialog fileDialog (this, L"Save As", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
+					if (fileDialog.ShowModal () == wxID_OK) {
+						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
+						nodeEditorControl->Save (fileName);
+						applicationState.SetCurrentFileName (fileName);
+					}
+				}
+				break;
+			case MenuBar::CommandId::File_Exit:
+				{
+					Close (true);
+				}
+				break;
+			case MenuBar::CommandId::Edit_Undo:
+				{
+					nodeEditorControl->Undo ();
+				}
+				break;
+			case MenuBar::CommandId::Edit_Redo:
+				{
+					nodeEditorControl->Redo ();
+				}
+				break;
+			case MenuBar::CommandId::Mode_Automatic:
+				{
+					nodeEditorControl->SetUpdateMode (WXAS::NodeEditorControl::UpdateMode::Automatic);
+				}
+				break;
+			case MenuBar::CommandId::Mode_Manual:
+				{
+					nodeEditorControl->SetUpdateMode (WXAS::NodeEditorControl::UpdateMode::Manual);
+				}
+				break;
+			case MenuBar::CommandId::Mode_Update:
+				{
+					nodeEditorControl->ManualUpdate ();
+				}
+				break;
 		}
 		UpdateMenuBar ();
 		UpdateStatusBar ();
-	}
-
-	void OnSave (wxCommandEvent& evt)
-	{
-		wxFileDialog fileDialog (this, L"Save", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
-		if (applicationState.HasCurrentFileName ()) {
-			nodeEditorControl->Save (applicationState.GetCurrentFileName ());
-		} else if (fileDialog.ShowModal () == wxID_OK) {
-			std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
-			nodeEditorControl->Save (fileName);
-			applicationState.SetCurrentFileName (fileName);
-		}
-		UpdateStatusBar ();
-	}
-
-	void OnSaveAs (wxCommandEvent& evt)
-	{
-		wxFileDialog fileDialog (this, L"Save As", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
-		if (fileDialog.ShowModal () == wxID_OK) {
-			std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
-			nodeEditorControl->Save (fileName);
-			applicationState.SetCurrentFileName (fileName);
-		}
-		UpdateStatusBar ();
-	}
-
-	void OnExit (wxCommandEvent& evt)
-	{
-		Close (true);
-	}
-
-	void OnUndo (wxCommandEvent& evt)
-	{
-		nodeEditorControl->Undo ();
-	}
-
-	void OnRedo (wxCommandEvent& evt)
-	{
-		nodeEditorControl->Redo ();
-	}
-
-	void OnChangeToAutomatic (wxCommandEvent& evt)
-	{
-		nodeEditorControl->SwitchToAutomaticUpdate ();
-	}
-
-	void OnChangeToManual (wxCommandEvent& evt)
-	{
-		nodeEditorControl->SwitchToManualUpdate ();
-	}
-
-	void OnUpdate (wxCommandEvent& evt)
-	{
-		nodeEditorControl->ManualUpdate ();
 	}
 
 private:
 	void UpdateMenuBar ()
 	{
-		menuBar->UpdateStatus (nodeEditorControl);
+		menuBar->UpdateStatus (nodeEditorControl->GetUpdateMode ());
 	}
 
 	void UpdateStatusBar ()
@@ -434,16 +431,7 @@ private:
 };
 
 BEGIN_EVENT_TABLE (MainFrame, wxFrame)
-EVT_MENU (MenuBar::CommandId::File_New, MainFrame::OnNew)
-EVT_MENU (MenuBar::CommandId::File_Open, MainFrame::OnOpen)
-EVT_MENU (MenuBar::CommandId::File_Save, MainFrame::OnSave)
-EVT_MENU (MenuBar::CommandId::File_SaveAs, MainFrame::OnSaveAs)
-EVT_MENU (MenuBar::CommandId::File_Exit, MainFrame::OnExit)
-EVT_MENU (MenuBar::CommandId::Edit_Undo, MainFrame::OnUndo)
-EVT_MENU (MenuBar::CommandId::Edit_Redo, MainFrame::OnRedo)
-EVT_MENU (MenuBar::CommandId::Mode_Automatic, MainFrame::OnChangeToAutomatic)
-EVT_MENU (MenuBar::CommandId::Mode_Manual, MainFrame::OnChangeToManual)
-EVT_MENU (MenuBar::CommandId::Mode_Update, MainFrame::OnUpdate)
+EVT_MENU (wxID_ANY, MainFrame::OnCommand)
 END_EVENT_TABLE ()
 
 class NodeEngineTestApplication : public wxApp

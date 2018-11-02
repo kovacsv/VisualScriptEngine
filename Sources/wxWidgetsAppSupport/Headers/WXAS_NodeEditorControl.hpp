@@ -65,6 +65,12 @@ private:
 class NodeEditorControl : public wxPanel
 {
 public:
+	enum class UpdateMode
+	{
+		Automatic,
+		Manual
+	};
+
 	NodeEditorControl (wxWindow *parent);
 	virtual ~NodeEditorControl ();
 
@@ -92,10 +98,8 @@ public:
 
 	void			OnKeyDown (wxKeyEvent& evt);
 
-	bool			IsAutomaticUpdate () const;
-	bool			IsManualUpdate () const;
-	void			SwitchToAutomaticUpdate ();
-	void			SwitchToManualUpdate ();
+	UpdateMode		GetUpdateMode () const;
+	void			SetUpdateMode (UpdateMode mode) const;
 	void			ManualUpdate ();
 
 	void			New ();
