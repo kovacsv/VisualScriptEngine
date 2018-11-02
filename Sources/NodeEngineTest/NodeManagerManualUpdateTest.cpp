@@ -240,4 +240,50 @@ TEST (ManualUpdateTest_ManualForced)
 	}
 }
 
+TEST (ManualUpdateTest_RandomForced)
+{
+	for (size_t i = 0; i < 100; i++) {
+		NodeManager manager;
+		manager.SetUpdateMode (NodeManager::UpdateMode::Manual);
+
+		NE::NodePtr valueNode = nullptr;
+		NE::NodePtr incNode1 = nullptr;
+		NE::NodePtr incNode2 = nullptr;
+		NE::NodePtr incNode3 = nullptr;
+
+		std::vector<std::function <void ()>> addOps = {
+			[&] () { valueNode = manager.AddNode (NodePtr (new ValueNode (5))); },
+			[&] () { incNode1 = manager.AddNode (NodePtr (new IncreaseNode ())); },
+			[&] () { incNode2 = manager.AddNode (NodePtr (new IncreaseNode ())); },
+			[&] () { incNode3 = manager.AddNode (NodePtr (new IncreaseForceCalculatedNode ())); }
+		};
+
+		std::vector<std::function <void ()>> connectOps = {
+			[&] () { manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode1->GetInputSlot (SlotId ("in"))); },
+			[&] () { manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode2->GetInputSlot (SlotId ("in"))); },
+			[&] () { manager.ConnectOutputSlotToInputSlot (incNode2->GetOutputSlot (SlotId ("out")), incNode3->GetInputSlot (SlotId ("in"))); }
+		};
+
+		std::random_shuffle (addOps.begin (), addOps.end ());
+		std::random_shuffle (connectOps.begin (), connectOps.end ());
+
+		for (auto& it : addOps) {
+			it ();
+		}
+
+		for (auto& it : connectOps) {
+			it ();
+		}
+
+		manager.ForceEvaluateAllNodes (EmptyEvaluationEnv);
+
+		NE::ValuePtr incNode1Val = incNode1->GetCalculatedValue ();
+		ASSERT (NE::IntValue::Get (incNode1Val) == 6);
+		NE::ValuePtr incNode2Val = incNode2->GetCalculatedValue ();
+		ASSERT (NE::IntValue::Get (incNode2Val) == 6);
+		NE::ValuePtr incNode3Val = incNode3->GetCalculatedValue ();
+		ASSERT (NE::IntValue::Get (incNode3Val) == 7);
+	}
+}
+
 }
