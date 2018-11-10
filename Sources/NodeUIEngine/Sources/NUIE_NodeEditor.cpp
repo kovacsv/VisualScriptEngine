@@ -121,6 +121,7 @@ void NodeEditor::Draw ()
 
 void NodeEditor::AddNode (const UINodePtr& uiNode)
 {
+	uiManager.SaveUndoState ();
 	uiManager.AddNode (uiNode, uiEnvironment.GetEvaluationEnv ());
 	Update ();
 }
