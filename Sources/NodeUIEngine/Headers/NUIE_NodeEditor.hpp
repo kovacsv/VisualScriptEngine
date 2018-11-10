@@ -38,6 +38,9 @@ public:
 	void						Update ();
 	void						Draw ();
 
+	void						AddNode (const UINodePtr& uiNode);
+	Point						GetCenterPoint () const;
+	
 	NodeUIManager&				GetNodeUIManager ();
 
 	void						Clear ();

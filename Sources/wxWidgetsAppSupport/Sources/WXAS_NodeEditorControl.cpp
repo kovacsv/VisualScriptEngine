@@ -264,6 +264,16 @@ void NodeEditorControl::ManualUpdate ()
 	nodeEditor->ManualUpdate ();
 }
 
+void NodeEditorControl::AddNode (const NUIE::UINodePtr& uiNode)
+{
+	nodeEditor->AddNode (uiNode);
+}
+
+NUIE::Point NodeEditorControl::GetCenterPoint () const
+{
+	return nodeEditor->GetCenterPoint ();
+}
+
 void NodeEditorControl::New ()
 {
 	nodeEditor->Clear ();

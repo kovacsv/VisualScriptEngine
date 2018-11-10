@@ -119,6 +119,20 @@ void NodeEditor::Draw ()
 	uiManager.Draw (uiEnvironment, uiInteractionHandler.GetDrawingModifier ());
 }
 
+void NodeEditor::AddNode (const UINodePtr& uiNode)
+{
+	uiManager.AddNode (uiNode, uiEnvironment.GetEvaluationEnv ());
+	Update ();
+}
+
+Point NodeEditor::GetCenterPoint () const
+{
+	DrawingContext& drawingContext = uiEnvironment.GetDrawingContext ();
+	Size screenSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
+	Rect screenRect = Rect::FromPositionAndSize (Point (0, 0), screenSize);
+	return uiManager.GetViewBox ().ViewToModel (screenRect.GetCenter ());
+}
+
 NodeUIManager& NodeEditor::GetNodeUIManager ()
 {
 	return uiManager;

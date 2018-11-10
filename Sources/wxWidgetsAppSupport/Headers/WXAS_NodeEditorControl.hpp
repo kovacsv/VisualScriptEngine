@@ -102,6 +102,9 @@ public:
 	void			SetUpdateMode (UpdateMode mode) const;
 	void			ManualUpdate ();
 
+	void			AddNode (const NUIE::UINodePtr& uiNode);
+	NUIE::Point		GetCenterPoint () const;
+
 	void			New ();
 	bool			Open (const std::wstring& fileName);
 	bool			Save (const std::wstring& fileName);
