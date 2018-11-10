@@ -16,6 +16,7 @@ TEST (TypeTest)
 	ASSERT (outputStream.Write (true) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((size_t) 1) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((int) 2) == Stream::Status::NoError);
+	ASSERT (outputStream.Write ((float) 3.0f) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((double) 3.0) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::string ("apple")) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::wstring (L"banana")) == Stream::Status::NoError);
@@ -23,6 +24,7 @@ TEST (TypeTest)
 	bool boolVal;
 	size_t sizeVal;
 	int intVal;
+	float floatVal;
 	double doubleVal;
 	std::string stringVal;
 	std::wstring wStringVal;
@@ -31,6 +33,7 @@ TEST (TypeTest)
 	ASSERT (inputStream.Read (boolVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (sizeVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (intVal) == Stream::Status::NoError);
+	ASSERT (inputStream.Read (floatVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (doubleVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (stringVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (wStringVal) == Stream::Status::NoError);
@@ -38,6 +41,7 @@ TEST (TypeTest)
 	ASSERT (boolVal == true);
 	ASSERT (sizeVal == 1);
 	ASSERT (intVal == 2);
+	ASSERT (floatVal == 3.0f);
 	ASSERT (doubleVal == 3.0);
 	ASSERT (stringVal == "apple");
 	ASSERT (wStringVal == L"banana");

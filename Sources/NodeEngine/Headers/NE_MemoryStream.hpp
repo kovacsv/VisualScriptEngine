@@ -17,6 +17,7 @@ public:
 	virtual Status		Read (unsigned char& val) override;
 	virtual Status		Read (size_t& val) override;
 	virtual Status		Read (int& val) override;
+	virtual Status		Read (float& val) override;
 	virtual Status		Read (double& val) override;
 	virtual Status		Read (std::string& val) override;
 	virtual Status		Read (std::wstring& val) override;
@@ -40,6 +41,7 @@ public:
 	virtual Status				Write (const unsigned char& val) override;
 	virtual Status				Write (const size_t& val) override;
 	virtual Status				Write (const int& val) override;
+	virtual Status				Write (const float& val) override;
 	virtual Status				Write (const double& val) override;
 	virtual Status				Write (const std::string& val) override;
 	virtual Status				Write (const std::wstring& val) override;

@@ -66,6 +66,12 @@ Stream::Status MemoryInputStream::Read (int& val)
 	return GetStatus ();
 }
 
+Stream::Status MemoryInputStream::Read (float& val)
+{
+	Read ((char*) &val, sizeof (val));
+	return GetStatus ();
+}
+
 Stream::Status MemoryInputStream::Read (double& val)
 {
 	Read ((char*) &val, sizeof (val));
@@ -132,6 +138,12 @@ Stream::Status MemoryOutputStream::Write (const size_t& val)
 }
 
 Stream::Status MemoryOutputStream::Write (const int& val)
+{
+	Write ((const char*) &val, sizeof (val));
+	return GetStatus ();
+}
+
+Stream::Status MemoryOutputStream::Write (const float& val)
 {
 	Write ((const char*) &val, sizeof (val));
 	return GetStatus ();
