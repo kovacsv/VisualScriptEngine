@@ -125,12 +125,10 @@ void NodeEditor::AddNode (const UINodePtr& uiNode)
 	Update ();
 }
 
-Point NodeEditor::GetCenterPoint () const
+Point NodeEditor::ViewToModel (const Point& viewPoint) const
 {
-	DrawingContext& drawingContext = uiEnvironment.GetDrawingContext ();
-	Size screenSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
-	Rect screenRect = Rect::FromPositionAndSize (Point (0, 0), screenSize);
-	return uiManager.GetViewBox ().ViewToModel (screenRect.GetCenter ());
+	const ViewBox& viewBox = uiManager.GetViewBox ();
+	return viewBox.ViewToModel (viewPoint);
 }
 
 NodeUIManager& NodeEditor::GetNodeUIManager ()

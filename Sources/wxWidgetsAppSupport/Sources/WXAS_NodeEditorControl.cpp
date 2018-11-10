@@ -269,9 +269,9 @@ void NodeEditorControl::AddNode (const NUIE::UINodePtr& uiNode)
 	nodeEditor->AddNode (uiNode);
 }
 
-NUIE::Point NodeEditorControl::GetCenterPoint () const
+NUIE::Point NodeEditorControl::ViewToModel (const NUIE::Point& viewPoint) const
 {
-	return nodeEditor->GetCenterPoint ();
+	return nodeEditor->ViewToModel (viewPoint);
 }
 
 void NodeEditorControl::New ()

@@ -103,7 +103,7 @@ public:
 	void			ManualUpdate ();
 
 	void			AddNode (const NUIE::UINodePtr& uiNode);
-	NUIE::Point		GetCenterPoint () const;
+	NUIE::Point		ViewToModel (const NUIE::Point& viewPoint) const;
 
 	void			New ();
 	bool			Open (const std::wstring& fileName);

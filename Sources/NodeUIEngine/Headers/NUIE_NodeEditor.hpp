@@ -39,7 +39,7 @@ public:
 	void						Draw ();
 
 	void						AddNode (const UINodePtr& uiNode);
-	Point						GetCenterPoint () const;
+	Point						ViewToModel (const Point& viewPoint) const;
 	
 	NodeUIManager&				GetNodeUIManager ();
 
