@@ -52,7 +52,7 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 		double aDouble = NE::NumberValue::ToDouble (combination.GetValue (0));
 		double bDouble = NE::NumberValue::ToDouble (combination.GetValue (1));
 		double result = DoOperation (aDouble, bDouble);
-		if (std::isnan (result)) {
+		if (std::isnan (result) || std::isinf (result)) {
 			isValid = false;
 			return;
 		}
