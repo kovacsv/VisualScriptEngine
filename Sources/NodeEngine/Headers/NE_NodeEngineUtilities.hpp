@@ -8,7 +8,7 @@ namespace NE
 {
 
 bool EnumerateVariationIndices (std::vector<size_t> maxIndices,
-								const std::function<void (const std::vector<size_t>&)>& processVariation);
+								const std::function<bool (const std::vector<size_t>&)>& processVariation);
 
 }
 

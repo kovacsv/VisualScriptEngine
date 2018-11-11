@@ -4,7 +4,7 @@ namespace NE
 {
 
 bool EnumerateVariationIndices (std::vector<size_t> maxIndices,
-								const std::function<void (const std::vector<size_t>&)>& processVariation)
+								const std::function<bool (const std::vector<size_t>&)>& processVariation)
 {
 	size_t length = maxIndices.size ();
 	if (length == 0) {
@@ -16,7 +16,9 @@ bool EnumerateVariationIndices (std::vector<size_t> maxIndices,
 	}
 	int columnIndex = (int) length - 1;
 	while (columnIndex != -1) {
-		processVariation (indices);
+		if (!processVariation (indices)) {
+			return false;
+		}
 		columnIndex = (int) length - 1;
 		while (columnIndex >= 0) {
 			if (indices[columnIndex] < maxIndices[columnIndex]) {

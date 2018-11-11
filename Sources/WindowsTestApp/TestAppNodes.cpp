@@ -51,6 +51,7 @@ NE::ValuePtr ColorNode::Calculate (NE::EvaluationEnv& env) const
 		unsigned char gColor = (unsigned char) NE::NumberValue::ToInteger (combination.GetValue (1));
 		unsigned char bColor = (unsigned char) NE::NumberValue::ToInteger (combination.GetValue (2));
 		result->Push (NE::ValuePtr (new ColorValue (Color (rColor, gColor, bColor))));
+		return true;
 	});
 
 	return result;
@@ -288,6 +289,7 @@ NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
 				NE::NumberValue::ToDouble (combination.GetValue (1))
 			)
 		)));
+		return true;
 	});
 
 	return result;
@@ -353,7 +355,9 @@ NE::ValuePtr LineNode::Calculate (NE::EvaluationEnv& env) const
 				PointValue::Get (combination.GetValue (0)),
 				PointValue::Get (combination.GetValue (1)),
 				ColorValue::Get (combination.GetValue (2))
-			))));
+			)
+		)));
+		return true;
 	});
 
 	return result;
@@ -412,7 +416,9 @@ NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 				PointValue::Get (combination.GetValue (0)),
 				NE::NumberValue::ToDouble (combination.GetValue (1)),
 				ColorValue::Get (combination.GetValue (2))
-			))));
+			)
+		)));
+		return true;
 	});
 
 	return result;
@@ -495,6 +501,7 @@ NE::ValuePtr OffsetNode::Calculate (NE::EvaluationEnv& env) const
 		if (DBGVERIFY (geomValue != nullptr)) {
 			result->Push (geomValue->Transform (transformation));
 		}
+		return true;
 	});
 
 	return result;

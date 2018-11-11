@@ -207,7 +207,7 @@ void ValueCombinationFeature::SetValueCombinationMode (NE::ValueCombinationMode 
 	valueCombinationMode = newValueCombinationMode;
 }
 
-bool ValueCombinationFeature::CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<void (const NE::ValueCombination&)>& processor) const
+bool ValueCombinationFeature::CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor) const
 {
 	return NE::CombineValues (valueCombinationMode, values, processor);
 }

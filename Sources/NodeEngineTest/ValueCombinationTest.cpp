@@ -12,7 +12,10 @@ TEST (DegenerateCaseTests)
 {
 	{
 		std::vector<std::vector<size_t>> variations;
-		bool success = EnumerateVariationIndices ({}, [&] (const std::vector<size_t>& variation) { variations.push_back (variation); });
+		bool success = EnumerateVariationIndices ({}, [&] (const std::vector<size_t>& variation) {
+			variations.push_back (variation);
+			return true;
+		});
 		ASSERT (!success);
 		ASSERT (variations.size () == 0);
 	}
@@ -22,25 +25,45 @@ TEST (SimpleCaseTest)
 {
 	{
 		std::vector<std::vector<size_t>> variations;
-		bool success = EnumerateVariationIndices ({0}, [&] (const std::vector<size_t>& variation) { variations.push_back (variation); });
+		bool success = EnumerateVariationIndices ({0}, [&] (const std::vector<size_t>& variation) {
+			variations.push_back (variation);
+			return true;
+		});
 		ASSERT (success);
 		ASSERT (variations.size () == 1);
 		ASSERT (variations[0] == std::vector<size_t> ({0}));
 	}
 	{
 		std::vector<std::vector<size_t>> variations;
-		bool success = EnumerateVariationIndices ({0, 0}, [&] (const std::vector<size_t>& variation) { variations.push_back (variation); });
+		bool success = EnumerateVariationIndices ({0, 0}, [&] (const std::vector<size_t>& variation) {
+			variations.push_back (variation);
+			return true;
+		});
 		ASSERT (success);
 		ASSERT (variations.size () == 1);
 		ASSERT (variations[0] == std::vector<size_t> ({ 0, 0 }));
 	}
 }
 
+TEST (StoppingTest)
+{
+	std::vector<std::vector<size_t>> variations;
+	bool success = EnumerateVariationIndices ({1, 1}, [&] (const std::vector<size_t>& variation) {
+		variations.push_back (variation);
+		return false;
+	});
+	ASSERT (!success);
+	ASSERT (variations.size () == 1);
+}
+
 TEST (MultipleCaseTest)
 {
 	{
 		std::vector<std::vector<size_t>> variations;
-		bool success = EnumerateVariationIndices ({1}, [&] (const std::vector<size_t>& variation) { variations.push_back (variation); });
+		bool success = EnumerateVariationIndices ({1}, [&] (const std::vector<size_t>& variation) {
+			variations.push_back (variation);
+			return true;
+		});
 		ASSERT (success);
 		ASSERT (variations.size () == 2);
 		ASSERT (variations[0] == std::vector<size_t> ({ 0 }));
@@ -48,7 +71,10 @@ TEST (MultipleCaseTest)
 	}
 	{
 		std::vector<std::vector<size_t>> variations;
-		bool success = EnumerateVariationIndices ({1, 1}, [&] (const std::vector<size_t>& variation) { variations.push_back (variation); });
+		bool success = EnumerateVariationIndices ({1, 1}, [&] (const std::vector<size_t>& variation) {
+			variations.push_back (variation);
+			return true;
+		});
 		ASSERT (success);
 		ASSERT (variations.size () == 4);
 		ASSERT (variations[0] == std::vector<size_t> ({ 0, 0 }));
@@ -61,7 +87,10 @@ TEST (MultipleCaseTest)
 TEST (MultipleCaseTest2)
 {
 	std::vector<std::vector<size_t>> variations;
-	bool success = EnumerateVariationIndices ({2, 2, 2}, [&] (const std::vector<size_t>& variation) { variations.push_back (variation); });
+	bool success = EnumerateVariationIndices ({2, 2, 2}, [&] (const std::vector<size_t>& variation) {
+		variations.push_back (variation);
+		return true;
+	});
 	ASSERT (success);
 	ASSERT (variations.size () == 27);
 	ASSERT (variations[0] == std::vector<size_t> ({ 0, 0, 0 }));
@@ -78,8 +107,11 @@ TEST (DifferentMaximumsTest)
 {
 	std::vector<std::vector<size_t>> variations;
 	bool success = EnumerateVariationIndices ({0, 1, 2},
-		[&] (const std::vector<size_t>& variation) { variations.push_back (variation);
-	});
+		[&] (const std::vector<size_t>& variation) {
+			variations.push_back (variation);
+			return true;
+		}
+	);
 	ASSERT (success);
 	ASSERT (variations.size () == 6);
 	ASSERT (variations[0] == std::vector<size_t> ({ 0, 0, 0 }));
@@ -94,8 +126,11 @@ TEST (DifferentMaximumsTest2)
 {
 	std::vector<std::vector<size_t>> variations;
 	bool success = EnumerateVariationIndices({2, 3},
-		[&] (const std::vector<size_t>& variation) { variations.push_back (variation);
-	});
+		[&] (const std::vector<size_t>& variation) {
+			variations.push_back (variation);
+			return true;
+		}
+	);
 	ASSERT (success);
 	ASSERT (variations.size () == 12);
 	ASSERT (variations[0] == std::vector<size_t> ({ 0, 0 }));
@@ -124,8 +159,11 @@ TEST (DifferentMaximumsTest3)
 	}
 	std::vector<std::vector<size_t>> variations;
 	bool success = EnumerateVariationIndices (maxIndices,
-		[&] (const std::vector<size_t>& variation) { variations.push_back (variation);
-	});
+		[&] (const std::vector<size_t>& variation) {
+			variations.push_back (variation);
+			return true;
+		}
+	);
 	ASSERT (success);
 	ASSERT (variations.size () == 100);
 	for (size_t i = 0; i < variations.size (); ++i) {
@@ -154,6 +192,7 @@ TEST (ValueCombinationTest)
 		bool success = CombineValues (ValueCombinationMode::Shortest, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 2);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)) });
+			return true;
 		});
 	
 		ASSERT (success);
@@ -165,6 +204,7 @@ TEST (ValueCombinationTest)
 		bool success = CombineValues (ValueCombinationMode::Longest, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 2);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)) });
+			return true;
 		});
 	
 		ASSERT (success);
@@ -178,6 +218,7 @@ TEST (ValueCombinationTest)
 		bool success = CombineValues (ValueCombinationMode::CrossProduct, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 2);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)) });
+			return true;
 		});
 
 		ASSERT (success);
@@ -204,6 +245,7 @@ TEST (ValueCombinationTest2)
 		bool success = CombineValues (ValueCombinationMode::Shortest, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 2);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)) });
+			return true;
 		});
 
 		ASSERT (success);
@@ -216,6 +258,7 @@ TEST (ValueCombinationTest2)
 		bool success = CombineValues (ValueCombinationMode::Longest, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 2);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)) });
+			return true;
 		});
 
 		ASSERT (success);
@@ -229,6 +272,7 @@ TEST (ValueCombinationTest2)
 		bool success = CombineValues (ValueCombinationMode::CrossProduct, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 2);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)) });
+			return true;
 		});
 
 		ASSERT (success);
@@ -259,6 +303,7 @@ TEST (ValueCombinationTest3)
 		bool success = CombineValues (ValueCombinationMode::Shortest, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 3);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)), IntValue::Get (current.GetValue (2)) });
+			return true;
 		});
 
 		ASSERT (success);
@@ -270,6 +315,7 @@ TEST (ValueCombinationTest3)
 		bool success = CombineValues (ValueCombinationMode::Longest, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 3);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)), IntValue::Get (current.GetValue (2)) });
+			return true;
 		});
 
 		ASSERT (success);
@@ -283,6 +329,7 @@ TEST (ValueCombinationTest3)
 		bool success = CombineValues (ValueCombinationMode::CrossProduct, values, [&] (const ValueCombination& current) {
 			ASSERT (current.GetSize () == 3);
 			combinations.push_back ({ IntValue::Get (current.GetValue (0)), IntValue::Get (current.GetValue (1)), IntValue::Get (current.GetValue (2)) });
+			return true;
 		});
 
 		ASSERT (success);

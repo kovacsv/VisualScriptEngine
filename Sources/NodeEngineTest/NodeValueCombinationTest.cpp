@@ -41,6 +41,7 @@ public:
 		NE::ListValuePtr result (new NE::ListValue ());
 		NE::CombineValues (combinationMode, { a, b }, [&] (const NE::ValueCombination& combination) {
 			result->Push (NE::ValuePtr (new IntValue (NE::IntValue::Get (combination.GetValue (0)) + NE::IntValue::Get (combination.GetValue (1)))));
+			return true;
 		});
 		return result;
 	}

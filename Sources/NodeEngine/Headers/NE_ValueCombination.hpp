@@ -27,7 +27,7 @@ public:
 };
 
 bool CombineValues (ValueCombinationMode combinationMode, const std::vector<ValuePtr>& values,
-					const std::function<void (const ValueCombination&)>& processor);
+					const std::function<bool (const ValueCombination&)>& processor);
 
 }
 

@@ -46,17 +46,16 @@ NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 
 	std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (this);
 
-	bool isValid = true;
 	NE::ListValuePtr resultListValue (new NE::ListValue ());
-	valueCombination->CombineValues ({aValue, bValue}, [&] (const NE::ValueCombination& combination) {
+	bool isValid = valueCombination->CombineValues ({aValue, bValue}, [&] (const NE::ValueCombination& combination) {
 		double aDouble = NE::NumberValue::ToDouble (combination.GetValue (0));
 		double bDouble = NE::NumberValue::ToDouble (combination.GetValue (1));
 		double result = DoOperation (aDouble, bDouble);
 		if (std::isnan (result) || std::isinf (result)) {
-			isValid = false;
-			return;
+			return false;
 		}
 		resultListValue->Push (NE::ValuePtr (new NE::DoubleValue (result)));
+		return true;
 	});
 
 	if (!isValid) {

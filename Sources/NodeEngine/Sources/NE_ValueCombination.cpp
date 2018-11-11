@@ -19,7 +19,7 @@ ValueCombination::~ValueCombination ()
 }
 
 static bool EnumerateShortestCombinations (	const std::vector<IListValuePtr>& values,
-											const std::function<void (const ValueCombination&)>& processor)
+											const std::function<bool (const ValueCombination&)>& processor)
 {
 	class ShortestPairValueCombination : public ValueCombination
 	{
@@ -54,14 +54,16 @@ static bool EnumerateShortestCombinations (	const std::vector<IListValuePtr>& va
 
 	for (size_t combinationIndex = 0; combinationIndex < minSize; ++combinationIndex) {
 		ShortestPairValueCombination valueCombination (combinationIndex, values);
-		processor (valueCombination);
+		if (!processor (valueCombination)) {
+			return false;
+		}
 	}
 
 	return true;
 }
 
 static bool EnumerateLongestCombinations (	const std::vector<IListValuePtr>& values,
-											const std::function<void (const ValueCombination&)>& processor)
+											const std::function<bool (const ValueCombination&)>& processor)
 {
 	class LongestPairValueCombination : public ValueCombination
 	{
@@ -101,14 +103,16 @@ static bool EnumerateLongestCombinations (	const std::vector<IListValuePtr>& val
 	
 	for (size_t combinationIndex = 0; combinationIndex < maxSize; ++combinationIndex) {
 		LongestPairValueCombination valueCombination (combinationIndex, values);
-		processor (valueCombination);
+		if (!processor (valueCombination)) {
+			return false;
+		}
 	}
 
 	return true;
 }
 
 static bool EnumerateCrossProductCombinations (	const std::vector<IListValuePtr>& values,
-												const std::function<void (const ValueCombination&)>& processor)
+												const std::function<bool (const ValueCombination&)>& processor)
 {
 	class CrossProductValueCombination : public ValueCombination
 	{
@@ -146,7 +150,7 @@ static bool EnumerateCrossProductCombinations (	const std::vector<IListValuePtr>
 	bool result = EnumerateVariationIndices (maxIndices,
 		[&] (const std::vector<size_t>& indices) {
 			CrossProductValueCombination valueCombination (values, indices);
-			processor (valueCombination);
+			return processor (valueCombination);
 		}
 	);
 
@@ -154,7 +158,7 @@ static bool EnumerateCrossProductCombinations (	const std::vector<IListValuePtr>
 }
 
 bool CombineValues (ValueCombinationMode combinationMode, const std::vector<ValuePtr>& values,
-					const std::function<void (const ValueCombination&)>& processor)
+					const std::function<bool (const ValueCombination&)>& processor)
 {
 	std::vector<IListValuePtr> listValues;
 	for (const ValuePtr& value : values) {
