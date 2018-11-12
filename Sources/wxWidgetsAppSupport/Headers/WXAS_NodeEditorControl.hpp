@@ -104,6 +104,7 @@ public:
 
 	void			AddNode (const NUIE::UINodePtr& uiNode);
 	NUIE::Point		ViewToModel (const NUIE::Point& viewPoint) const;
+	void			FitToWindow ();
 
 	void			New ();
 	bool			Open (const std::wstring& fileName);

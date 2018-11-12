@@ -428,4 +428,12 @@ TEST (ManualUpdateTestUndo)
 	ASSERT (env.CheckReference ("09_ManualUpdateTest_ManualUpdateAfterUndo.svg"));
 }
 
+TEST (FitToWindowTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env;
+	ASSERT (env.CheckReference ("10_FitToWindow_Basic.svg"));
+	env.nodeEditor.FitToWindow ();
+	ASSERT (env.CheckReference ("10_FitToWindow_Fit.svg"));
+}
+
 }

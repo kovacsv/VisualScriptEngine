@@ -18,6 +18,60 @@ static std::string WideStringToNormalString (const std::wstring& str)
 	return converter.to_bytes (str);
 }
 
+static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, Rect& boundingRect)
+{
+	class StaticNodeRectGetter : public NodeRectGetter
+	{
+	public:
+		StaticNodeRectGetter (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) :
+			uiManager (uiManager),
+			env (env)
+		{
+		}
+
+		virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override
+		{
+			UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
+			return uiNode->GetNodeRect (env);
+		}
+
+	private:
+		const NodeUIManager& uiManager;
+		NodeUIDrawingEnvironment& env;
+	};
+
+	bool isEmptyRect = true;
+	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+		Rect nodeRect = uiNode->GetNodeRect (env);
+		if (isEmptyRect) {
+			boundingRect = nodeRect;
+			isEmptyRect = false;
+		} else {
+			boundingRect = Rect::FromTwoPoints (
+				Point (std::min (nodeRect.GetLeft (), boundingRect.GetLeft ()), std::min (nodeRect.GetTop (), boundingRect.GetTop ())),
+				Point (std::max (nodeRect.GetRight (), boundingRect.GetRight ()), std::max (nodeRect.GetBottom (), boundingRect.GetBottom ()))
+			);
+		}
+		return true;
+	});
+
+	if (isEmptyRect) {
+		return false;
+	}
+
+	StaticNodeRectGetter nodeRectGetter (uiManager, env);
+	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
+		Rect groupRect = uiGroup->GetRect (env, nodeRectGetter);
+		boundingRect = Rect::FromTwoPoints (
+			Point (std::min (groupRect.GetLeft (), boundingRect.GetLeft ()), std::min (groupRect.GetTop (), boundingRect.GetTop ())),
+			Point (std::max (groupRect.GetRight (), boundingRect.GetRight ()), std::max (groupRect.GetBottom (), boundingRect.GetBottom ()))
+		);
+		return true;
+	});
+
+	return true;
+}
+
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (),
 	uiInteractionHandler (uiManager),
@@ -130,6 +184,41 @@ Point NodeEditor::ViewToModel (const Point& viewPoint) const
 {
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	return viewBox.ViewToModel (viewPoint);
+}
+
+void NodeEditor::FitToWindow ()
+{
+	Rect boundingRect;
+	if (!GetBoundingRect (uiManager, uiEnvironment, boundingRect)) {
+		return;
+	}
+
+	static const double ViewPadding = 10.0;
+
+	const DrawingContext& drawingContext = uiEnvironment.GetDrawingContext ();
+	double contextWidth = drawingContext.GetWidth () - 2.0 * ViewPadding;
+	double contextHeight = drawingContext.GetHeight () - 2.0 * ViewPadding;
+
+	double boundingRectScale = boundingRect.GetWidth () / boundingRect.GetHeight ();
+	double contextScale = contextWidth / contextHeight;
+	double scale = 0.0;
+	if (boundingRectScale > contextScale) {
+		scale = contextWidth / boundingRect.GetWidth ();
+	} else {
+		scale = contextHeight / boundingRect.GetHeight ();
+	}
+
+	ViewBox scaleViewBox (Point (0.0, 0.0), scale);
+	Point newOffset = scaleViewBox.ModelToView (-boundingRect.GetTopLeft ()) + Point (ViewPadding, ViewPadding);
+
+	Rect viewBoundingRect = scaleViewBox.ModelToView (boundingRect);
+	Point centerOffset (
+		(viewBoundingRect.GetWidth () - contextWidth) / 2.0,
+		(viewBoundingRect.GetHeight () - contextHeight) / 2.0
+	);
+
+	uiManager.SetViewBox (ViewBox (newOffset - centerOffset, scale));
+	Update ();
 }
 
 NodeUIManager& NodeEditor::GetNodeUIManager ()

@@ -40,6 +40,7 @@ public:
 
 	void						AddNode (const UINodePtr& uiNode);
 	Point						ViewToModel (const Point& viewPoint) const;
+	void						FitToWindow ();
 	
 	NodeUIManager&				GetNodeUIManager ();
 

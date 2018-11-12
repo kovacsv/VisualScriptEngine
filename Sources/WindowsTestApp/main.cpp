@@ -229,16 +229,17 @@ class MenuBar : public wxMenuBar
 public:
 	enum CommandId
 	{
-		File_New		= 1,
-		File_Open		= 2,
-		File_Save		= 3,
-		File_SaveAs		= 4,
-		File_Exit		= 5,
-		Edit_Undo		= 6,
-		Edit_Redo		= 7,
-		Mode_Automatic	= 8,
-		Mode_Manual		= 9,
-		Mode_Update		= 10
+		File_New			= 1,
+		File_Open			= 2,
+		File_Save			= 3,
+		File_SaveAs			= 4,
+		File_Exit			= 5,
+		Edit_Undo			= 6,
+		Edit_Redo			= 7,
+		Mode_Automatic		= 8,
+		Mode_Manual			= 9,
+		Mode_Update			= 10,
+		View_FitToWindow	= 11
 	};
 
 	MenuBar () :
@@ -264,6 +265,10 @@ public:
 		modeMenu->AppendSeparator ();
 		modeMenu->Append (CommandId::Mode_Update, L"Update");
 		Append (modeMenu, L"&Mode");
+
+		wxMenu* viewMenu = new wxMenu ();
+		viewMenu->Append (CommandId::View_FitToWindow, "Fit To Window");
+		Append (viewMenu, L"&View");
 	}
 
 	void UpdateStatus (WXAS::NodeEditorControl::UpdateMode updateMode)
@@ -392,6 +397,10 @@ public:
 			case MenuBar::CommandId::Mode_Update:
 				{
 					nodeEditorControl->ManualUpdate ();
+				}
+			case MenuBar::CommandId::View_FitToWindow:
+				{
+					nodeEditorControl->FitToWindow ();
 				}
 				break;
 		}
