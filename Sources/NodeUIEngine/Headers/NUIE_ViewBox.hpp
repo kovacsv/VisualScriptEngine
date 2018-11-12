@@ -37,9 +37,6 @@ private:
 	double	scale;
 };
 
-NE::Stream::Status ReadViewBox (NE::InputStream& inputStream, ViewBox& viewBox);
-NE::Stream::Status WriteViewBox (NE::OutputStream& outputStream, const ViewBox& viewBox);
-
 }
 
 #endif

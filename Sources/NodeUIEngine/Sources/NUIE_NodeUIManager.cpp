@@ -411,7 +411,6 @@ bool NodeUIManager::Load (NE::InputStream& inputStream)
 
 	size_t version;
 	inputStream.Read (version);
-	ReadViewBox (inputStream, viewBox);
 	nodeManager.Read (inputStream);
 	status.RequestRecalculate ();
 	bool success = (inputStream.GetStatus () == NE::Stream::Status::NoError);
@@ -421,7 +420,6 @@ bool NodeUIManager::Load (NE::InputStream& inputStream)
 bool NodeUIManager::Save (NE::OutputStream& outputStream) const
 {
 	outputStream.Write (NodeUIManagerVersion);
-	WriteViewBox (outputStream, viewBox);
 	nodeManager.Write (outputStream);
 	bool success = (outputStream.GetStatus () == NE::Stream::Status::NoError);
 	return success;

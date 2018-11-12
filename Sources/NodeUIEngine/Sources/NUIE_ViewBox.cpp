@@ -81,22 +81,4 @@ Font ViewBox::ModelToView (const Font& font) const
 	return Font (font.GetFamily (), font.GetSize () * scale);
 }
 
-NE::Stream::Status ReadViewBox (NE::InputStream& inputStream, ViewBox& viewBox)
-{
-	Point offset;
-	double scale = 0.0;
-	ReadPoint (inputStream, offset);
-	inputStream.Read (scale);
-	viewBox.SetOffset (offset);
-	viewBox.SetScale (scale);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status WriteViewBox (NE::OutputStream& outputStream, const ViewBox& viewBox)
-{
-	WritePoint (outputStream, viewBox.GetOffset ());
-	outputStream.Write (viewBox.GetScale ());
-	return outputStream.GetStatus ();
-}
-
 }
