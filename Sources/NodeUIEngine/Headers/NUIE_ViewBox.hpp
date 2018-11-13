@@ -37,6 +37,8 @@ private:
 	double	scale;
 };
 
+ViewBox FitRectToSize (const Size& targetSize, double targetPadding, const Rect& rect);
+
 }
 
 #endif

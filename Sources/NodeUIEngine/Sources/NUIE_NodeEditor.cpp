@@ -193,31 +193,12 @@ void NodeEditor::FitToWindow ()
 		return;
 	}
 
-	static const double ViewPadding = 10.0;
+	double viewPadding = uiEnvironment.GetSkinParams ().GetNodePadding ();
 
 	const DrawingContext& drawingContext = uiEnvironment.GetDrawingContext ();
-	double contextWidth = drawingContext.GetWidth () - 2.0 * ViewPadding;
-	double contextHeight = drawingContext.GetHeight () - 2.0 * ViewPadding;
-
-	double boundingRectScale = boundingRect.GetWidth () / boundingRect.GetHeight ();
-	double contextScale = contextWidth / contextHeight;
-	double scale = 0.0;
-	if (boundingRectScale > contextScale) {
-		scale = contextWidth / boundingRect.GetWidth ();
-	} else {
-		scale = contextHeight / boundingRect.GetHeight ();
-	}
-
-	ViewBox scaleViewBox (Point (0.0, 0.0), scale);
-	Point newOffset = scaleViewBox.ModelToView (-boundingRect.GetTopLeft ()) + Point (ViewPadding, ViewPadding);
-
-	Rect viewBoundingRect = scaleViewBox.ModelToView (boundingRect);
-	Point centerOffset (
-		(viewBoundingRect.GetWidth () - contextWidth) / 2.0,
-		(viewBoundingRect.GetHeight () - contextHeight) / 2.0
-	);
-
-	uiManager.SetViewBox (ViewBox (newOffset - centerOffset, scale));
+	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
+	ViewBox newViewBox = FitRectToSize (contextSize, viewPadding, boundingRect);
+	uiManager.SetViewBox (newViewBox);
 	Update ();
 }
 

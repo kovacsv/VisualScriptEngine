@@ -81,4 +81,30 @@ Font ViewBox::ModelToView (const Font& font) const
 	return Font (font.GetFamily (), font.GetSize () * scale);
 }
 
+ViewBox FitRectToSize (const Size& targetSize, double targetPadding, const Rect& rect)
+{
+	double targetWidth = targetSize.GetWidth () - 2.0 * targetPadding;
+	double targetHeight = targetSize.GetHeight () - 2.0 * targetPadding;
+
+	double scale = 0.0;
+	double targetScale = targetWidth / targetHeight;
+	double rectScale = rect.GetWidth () / rect.GetHeight ();
+	if (rectScale > targetScale) {
+		scale = targetWidth / rect.GetWidth ();
+	} else {
+		scale = targetHeight / rect.GetHeight ();
+	}
+
+	ViewBox scaleViewBox (Point (0.0, 0.0), scale);
+	Point newOffset = scaleViewBox.ModelToView (-rect.GetTopLeft ()) + Point (targetPadding, targetPadding);
+
+	Rect viewBoundingRect = scaleViewBox.ModelToView (rect);
+	Point centerOffset (
+		(viewBoundingRect.GetWidth () - targetWidth) / 2.0,
+		(viewBoundingRect.GetHeight () - targetHeight) / 2.0
+	);
+
+	return ViewBox (newOffset - centerOffset, scale);
+}
+
 }
