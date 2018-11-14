@@ -35,9 +35,10 @@ def Main (argv):
 	print 'Copy header files'
 	for moduleName in modules:
 		print '  Copy header files for ' + moduleName
-		moduleHeadersDir = os.path.join (rootDir, 'Sources', moduleName, 'Headers')
-		for headerFile in os.listdir (moduleHeadersDir):
-			shutil.copy (os.path.join (moduleHeadersDir, headerFile), devKitIncludeDir)
+		moduleSourcesDir = os.path.join (rootDir, 'Sources', moduleName)
+		for sourceFile in os.listdir (moduleSourcesDir):
+			if os.path.splitext (sourceFile)[1] == '.hpp':
+				shutil.copy (os.path.join (moduleSourcesDir, sourceFile), devKitIncludeDir)
 	print '  SUCCESSFUL'
 	
 	for mode in ['Debug', 'Release']:
