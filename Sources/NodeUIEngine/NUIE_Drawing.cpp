@@ -89,7 +89,7 @@ const std::wstring& Font::GetFamily () const
 	return family;
 }
 
-const double Font::GetSize () const
+double Font::GetSize () const
 {
 	return size;
 }

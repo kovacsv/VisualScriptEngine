@@ -64,7 +64,7 @@ public:
 	Font (const std::wstring& family, double size);
 
 	const std::wstring&		GetFamily () const;
-	const double			GetSize () const;
+	double					GetSize () const;
 
 	bool	operator== (const Font& rhs) const;
 	bool	operator!= (const Font& rhs) const;
