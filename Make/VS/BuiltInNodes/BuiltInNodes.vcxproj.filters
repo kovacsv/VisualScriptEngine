@@ -7,55 +7,55 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ArithmeticUINodes.hpp">
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_ArithmeticUINodes.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInCommands.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_BasicUINode.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInFeatures.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_BuiltInCommands.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_InputUINodes.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_BuiltInFeatures.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_UINodeLayouts.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_InputUINodes.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_UINodePanels.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_UINodeLayouts.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ViewerUINodes.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_UINodePanels.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BasicUINode.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_ViewerUINodes.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ArithmeticUINodes.cpp">
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_ArithmeticUINodes.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BuiltInCommands.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_BasicUINode.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BuiltInFeatures.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_BuiltInCommands.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_InputUINodes.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_BuiltInFeatures.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_UINodeLayouts.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_InputUINodes.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_UINodePanels.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_UINodeLayouts.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ViewerUINodes.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_UINodePanels.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BasicUINode.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_ViewerUINodes.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
+    </ClInclude>
   </ItemGroup>
 </Project>

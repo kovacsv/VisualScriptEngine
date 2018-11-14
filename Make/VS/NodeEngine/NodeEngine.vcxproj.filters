@@ -7,183 +7,183 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Checksum.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_ValueCombination.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionList.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Value.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionManager.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Utils.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Debug.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_StringUtils.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_EvaluationEnv.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_StringSettings.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_GenericValue.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Stream.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_InputSlot.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Stamp.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_MemoryStream.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_SlotList.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Node.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_SlotId.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeEngineTypes.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Slot.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeEngineUtilities.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_SingleValues.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeId.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Serializable.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManager.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_OutputSlot.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeValueCache.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeValueCache.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_OutputSlot.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeManagerMerge.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Serializable.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeManager.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_SingleValues.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeId.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Slot.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeGroupList.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_SlotId.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeGroup.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_SlotList.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeEngineUtilities.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Stamp.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeEngineTypes.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Stream.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_NodeCollection.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_StringUtils.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Node.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Value.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_MemoryStream.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ValueCombination.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_InputSlot.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_ConnectionInfo.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_GenericValue.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeManagerMerge.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_EvaluationEnv.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeGroup.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Debug.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeCollection.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_ConnectionManager.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_NodeGroupList.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_ConnectionList.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_StringSettings.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_ConnectionInfo.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sources\NodeEngine\Headers\NE_Utils.hpp">
+    <ClInclude Include="..\..\..\Sources\NodeEngine\NE_Checksum.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Checksum.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_ValueCombination.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ConnectionManager.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_Value.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Debug.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_EvaluationEnv.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_StringSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_InputSlot.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_Stream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_MemoryStream.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_Stamp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Node.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_SlotId.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeEngineUtilities.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_Slot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeId.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_SingleValues.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManager.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_Serializable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeValueCache.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_OutputSlot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_OutputSlot.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_NodeValueCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Serializable.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_NodeManagerMerge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_SingleValues.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_NodeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Slot.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_NodeId.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_SlotId.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_NodeGroupList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Stamp.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_NodeGroup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Stream.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_NodeEngineUtilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_StringUtils.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_NodeCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_Value.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ValueCombination.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_MemoryStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_ConnectionInfo.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_InputSlot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeManagerMerge.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_EvaluationEnv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeGroup.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_Debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeCollection.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_ConnectionManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_NodeGroupList.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_ConnectionInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sources\NodeEngine\Sources\NE_StringSettings.cpp">
+    <ClCompile Include="..\..\..\Sources\NodeEngine\NE_Checksum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -19,32 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ArithmeticUINodes.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BasicUINode.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInCommands.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_BuiltInFeatures.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_InputUINodes.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_UINodeLayouts.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_UINodePanels.hpp" />
-    <ClInclude Include="..\..\..\Sources\BuiltInNodes\Headers\BI_ViewerUINodes.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ArithmeticUINodes.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BasicUINode.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BuiltInCommands.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_BuiltInFeatures.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_InputUINodes.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_UINodeLayouts.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_UINodePanels.cpp" />
-    <ClCompile Include="..\..\..\Sources\BuiltInNodes\Sources\BI_ViewerUINodes.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NodeEngine\NodeEngine.vcxproj">
       <Project>{ac633fde-c8dd-4a56-8434-1eb1aa220358}</Project>
     </ProjectReference>
     <ProjectReference Include="..\NodeUIEngine\NodeUIEngine.vcxproj">
       <Project>{62847b7a-aaf0-4eb7-b975-829609141c57}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_ArithmeticUINodes.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_BasicUINode.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_BuiltInCommands.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_BuiltInFeatures.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_InputUINodes.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_UINodeLayouts.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_UINodePanels.cpp" />
+    <ClCompile Include="..\..\..\Sources\BuiltInNodes\BI_ViewerUINodes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_ArithmeticUINodes.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_BasicUINode.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_BuiltInCommands.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_BuiltInFeatures.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_InputUINodes.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_UINodeLayouts.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_UINodePanels.hpp" />
+    <ClInclude Include="..\..\..\Sources\BuiltInNodes\BI_ViewerUINodes.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{30E0BDD6-57D1-4C26-8C50-61F0BE438685}</ProjectGuid>
@@ -111,7 +111,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\BuiltInNodes</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>

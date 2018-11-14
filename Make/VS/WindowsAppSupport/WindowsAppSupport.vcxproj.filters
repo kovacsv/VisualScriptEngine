@@ -7,58 +7,58 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_BitmapContextGdi.hpp">
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_BitmapContextGdi.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_BitmapContextGdiplus.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_BitmapContextGdiplus.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_Direct2DContext.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_Direct2DContext.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_DrawingCacheKeys.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_DrawingCacheKeys.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_WindowsAppUtils.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_InMemoryDialog.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_NodeEditorHwndControl.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_NodeEditorHwndControl.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_IncludeWindowsHeaders.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_ParameterDialog.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_InMemoryDialog.hpp">
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_WindowsAppUtils.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_ParameterDialog.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdi.cpp">
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_BitmapContextGdi.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdiplus.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_BitmapContextGdiplus.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_Direct2DContext.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_Direct2DContext.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_DrawingCacheKeys.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_DrawingCacheKeys.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_WindowsAppUtils.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_IncludeWindowsHeaders.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_NodeEditorHwndControl.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_InMemoryDialog.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_InMemoryDialog.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_NodeEditorHwndControl.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_ParameterDialog.cpp">
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_ParameterDialog.hpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_WindowsAppUtils.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

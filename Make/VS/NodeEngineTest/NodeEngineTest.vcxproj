@@ -74,7 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\TestFramework</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\BuiltInNodes;$(SolutionDir)..\..\Sources\TestFramework</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -83,7 +83,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\TestFramework</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\BuiltInNodes;$(SolutionDir)..\..\Sources\TestFramework</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
@@ -98,7 +98,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\TestFramework</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\BuiltInNodes;$(SolutionDir)..\..\Sources\TestFramework</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -112,7 +112,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\BuiltInNodes\Headers;$(SolutionDir)..\..\Sources\TestFramework</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\BuiltInNodes;$(SolutionDir)..\..\Sources\TestFramework</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>

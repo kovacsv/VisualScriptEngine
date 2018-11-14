@@ -74,7 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\WindowsAppSupport</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -83,7 +83,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\WindowsAppSupport</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -94,7 +94,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\WindowsAppSupport</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -108,7 +108,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine\Headers;$(SolutionDir)..\..\Sources\NodeUIEngine\Headers;$(SolutionDir)..\..\Sources\WindowsAppSupport\Headers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Sources\NodeEngine;$(SolutionDir)..\..\Sources\NodeUIEngine;$(SolutionDir)..\..\Sources\WindowsAppSupport</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -125,25 +125,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_BitmapContextGdi.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_BitmapContextGdiplus.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_Direct2DContext.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_DrawingCacheKeys.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_IncludeWindowsHeaders.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_InMemoryDialog.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_NodeEditorHwndControl.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_ParameterDialog.hpp" />
-    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\Headers\WAS_WindowsAppUtils.hpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_BitmapContextGdi.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_BitmapContextGdiplus.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_Direct2DContext.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_DrawingCacheKeys.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_InMemoryDialog.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_NodeEditorHwndControl.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_ParameterDialog.cpp" />
+    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\WAS_WindowsAppUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdi.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_BitmapContextGdiplus.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_Direct2DContext.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_DrawingCacheKeys.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_InMemoryDialog.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_NodeEditorHwndControl.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_ParameterDialog.cpp" />
-    <ClCompile Include="..\..\..\Sources\WindowsAppSupport\Sources\WAS_WindowsAppUtils.cpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_BitmapContextGdi.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_BitmapContextGdiplus.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_Direct2DContext.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_DrawingCacheKeys.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_IncludeWindowsHeaders.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_InMemoryDialog.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_NodeEditorHwndControl.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_ParameterDialog.hpp" />
+    <ClInclude Include="..\..\..\Sources\WindowsAppSupport\WAS_WindowsAppUtils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
