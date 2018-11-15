@@ -1,5 +1,8 @@
+dist: trusty
 language: cpp
-compiler: g++
+
+compiler:
+  - gcc
 
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -17,10 +20,10 @@ addons:
       - g++-5
 
 script:
-  - cd Make
-  - cd GCC
-  - make clean
+  - mkdir Build
+  - cd Build
+  - mkdir Debug
+  - cd Debug
+  - cmake ../.. -DCMAKE_BUILD_TYPE=Debug
   - make
   - make test
-  - make release=1
-  - make test release=1
