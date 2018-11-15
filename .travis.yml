@@ -13,7 +13,6 @@ matrix:
             - g++-7
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-  include:
     - os: linux
       dist: trusty
       compiler : clang
