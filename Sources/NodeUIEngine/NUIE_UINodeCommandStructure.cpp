@@ -484,7 +484,7 @@ public:
 				}
 			}
 
-			virtual std::vector<std::wstring> GetParameterValueChoices (size_t) const
+			virtual std::vector<std::wstring> GetParameterValueChoices (size_t) const override
 			{
 				DBGBREAK ();
 				return {};
