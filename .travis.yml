@@ -1,24 +1,21 @@
-dist: trusty
 language: cpp
 
 compiler:
   - gcc
 
-before_install:
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update -qq
-
-install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-7" CC="gcc-7"; fi
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-7
-      - g++-7
-
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+      
 script:
   - mkdir Build
   - cd Build
@@ -28,6 +25,7 @@ script:
   - make
   - make test
   - cd ..
+  - mkdir Release
   - cd Release
   - cmake ../.. -DCMAKE_BUILD_TYPE=Release
   - make
