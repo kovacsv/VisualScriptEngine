@@ -45,8 +45,8 @@ public:
 	NodeUIManager&				GetNodeUIManager ();
 
 	void						Clear ();
-	bool						Load (const std::wstring& fileName);
-	bool						Save (const std::wstring& fileName) const;
+	bool						Load (const std::string& fileName);
+	bool						Save (const std::string& fileName) const;
 	void						Undo ();
 	void						Redo ();
 

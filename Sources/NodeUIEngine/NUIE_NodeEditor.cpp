@@ -3,21 +3,12 @@
 #include "NE_MemoryStream.hpp"
 
 #include <fstream>
-#include <locale>
-#include <codecvt>
 
 namespace NUIE
 {
 
 static const std::string NodeEditorFileMarker = "NodeEditorFile";
 static const size_t NodeEditorFileVersion = 1;
-
-static std::string WideStringToNormalString (const std::wstring& str)
-{
-	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-	return converter.to_bytes (str);
-}
-
 static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, Rect& boundingRect)
 {
 	class StaticNodeRectGetter : public NodeRectGetter
@@ -213,10 +204,10 @@ void NodeEditor::Clear ()
 	Update ();
 }
 
-bool NodeEditor::Load (const std::wstring& fileName)
+bool NodeEditor::Load (const std::string& fileName)
 {
 	std::ifstream file;
-	file.open (WideStringToNormalString (fileName), std::ios::binary);
+	file.open (fileName, std::ios::binary);
 	if (DBGERROR (!file.is_open ())) {
 		return false;
 	}
@@ -247,7 +238,7 @@ bool NodeEditor::Load (const std::wstring& fileName)
 	return true;
 }
 
-bool NodeEditor::Save (const std::wstring& fileName) const
+bool NodeEditor::Save (const std::string& fileName) const
 {
 	NE::MemoryOutputStream outputStream;
 	outputStream.Write (NodeEditorFileMarker);
@@ -257,7 +248,7 @@ bool NodeEditor::Save (const std::wstring& fileName) const
 	}
 
 	std::ofstream file;
-	file.open (WideStringToNormalString (fileName), std::ios::binary);
+	file.open (fileName, std::ios::binary);
 	if (DBGERROR (!file.is_open ())) {
 		return false;
 	}

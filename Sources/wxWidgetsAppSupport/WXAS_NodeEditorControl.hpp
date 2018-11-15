@@ -107,8 +107,8 @@ public:
 	void			FitToWindow ();
 
 	void			New ();
-	bool			Open (const std::wstring& fileName);
-	bool			Save (const std::wstring& fileName);
+	bool			Open (const std::string& fileName);
+	bool			Save (const std::string& fileName);
 	void			Undo ();
 	void			Redo ();
 

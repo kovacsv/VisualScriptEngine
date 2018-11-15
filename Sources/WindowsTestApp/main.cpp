@@ -9,8 +9,17 @@
 
 #include "TestAppNodes.hpp"
 
+#include <locale>
+#include <codecvt>
+
 #include <wx/wx.h>
 #include <wx/splitter.h>
+
+static std::string WideStringToNormalString (const std::wstring& str)
+{
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+	return converter.to_bytes (str);
+}
 
 class ApplicationState
 {
@@ -339,7 +348,7 @@ public:
 						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
 						drawingControl->ClearImage ();
 						// TODO: handle when open fails
-						if (nodeEditorControl->Open (fileName)) {
+						if (nodeEditorControl->Open (WideStringToNormalString (fileName))) {
 							applicationState.SetCurrentFileName (fileName);
 						} else {
 							Reset ();
@@ -351,10 +360,10 @@ public:
 				{
 					wxFileDialog fileDialog (this, L"Save", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
 					if (applicationState.HasCurrentFileName ()) {
-						nodeEditorControl->Save (applicationState.GetCurrentFileName ());
+						nodeEditorControl->Save (WideStringToNormalString (applicationState.GetCurrentFileName ()));
 					} else if (fileDialog.ShowModal () == wxID_OK) {
 						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
-						nodeEditorControl->Save (fileName);
+						nodeEditorControl->Save (WideStringToNormalString (fileName));
 						applicationState.SetCurrentFileName (fileName);
 					}
 				}
@@ -364,7 +373,7 @@ public:
 					wxFileDialog fileDialog (this, L"Save As", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
 					if (fileDialog.ShowModal () == wxID_OK) {
 						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
-						nodeEditorControl->Save (fileName);
+						nodeEditorControl->Save (WideStringToNormalString (fileName));
 						applicationState.SetCurrentFileName (fileName);
 					}
 				}

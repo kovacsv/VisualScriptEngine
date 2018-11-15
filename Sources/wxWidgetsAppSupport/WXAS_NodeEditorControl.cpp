@@ -284,7 +284,7 @@ void NodeEditorControl::New ()
 	nodeEditor->Clear ();
 }
  
-bool NodeEditorControl::Open (const std::wstring& fileName)
+bool NodeEditorControl::Open (const std::string& fileName)
 {
 	if (!nodeEditor->Load (fileName)) {
 		return false;
@@ -292,7 +292,7 @@ bool NodeEditorControl::Open (const std::wstring& fileName)
 	return true;
 }
  
-bool NodeEditorControl::Save (const std::wstring& fileName)
+bool NodeEditorControl::Save (const std::string& fileName)
 {
 	if (!nodeEditor->Save (fileName)) {
 		return false;
