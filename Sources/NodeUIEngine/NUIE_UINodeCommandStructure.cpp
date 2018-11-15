@@ -82,10 +82,9 @@ void CopyNodesCommand::Do ()
 	uiManager.Copy (relevantNodes);
 }
 
-PasteNodesCommand::PasteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position) :
+PasteNodesCommand::PasteNodesCommand (NodeUIManager& uiManager, const Point& position) :
 	UndoableCommand (L"Paste Nodes", false),
 	uiManager (uiManager),
-	uiEnvironment (uiEnvironment),
 	position (position)
 {
 
@@ -768,11 +767,11 @@ NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UIN
 	return NE::NodeCollection ({ uiNode->GetId () });
 }
 
-UICommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position)
+UICommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment&, const Point& position)
 {
 	UICommandStructure commandStructure;
 	if (uiManager.CanPaste ()) {
-		commandStructure.AddCommand (UICommandPtr (new PasteNodesCommand (uiManager, uiEnvironment, position)));
+		commandStructure.AddCommand (UICommandPtr (new PasteNodesCommand (uiManager, position)));
 	}
 	return commandStructure;
 }

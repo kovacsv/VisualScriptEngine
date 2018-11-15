@@ -56,14 +56,13 @@ private:
 class PasteNodesCommand : public UndoableCommand
 {
 public:
-	PasteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
+	PasteNodesCommand (NodeUIManager& uiManager, const Point& position);
 	virtual ~PasteNodesCommand ();
 
 	virtual void Do () override;
 
 private:
 	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
 	Point				position;
 };
 

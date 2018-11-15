@@ -592,7 +592,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& 
 		case PressedKeyCode::Paste:
 			{
 				Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
-				command.reset (new PasteNodesCommand (uiManager, env, modelPastePosition));
+				command.reset (new PasteNodesCommand (uiManager, modelPastePosition));
 			}
 			break;
 		case PressedKeyCode::Undo:
