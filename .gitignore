@@ -9,6 +9,7 @@ Make/VS/*/*/Release/*
 Make/VS/*/Debug/*
 Make/VS/*/*/Debug/*
 Build/*
+DevKit/*
 *.db
 *.db-shm
 *.db-wal
