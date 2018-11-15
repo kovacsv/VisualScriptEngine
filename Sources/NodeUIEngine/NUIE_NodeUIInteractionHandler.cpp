@@ -134,7 +134,7 @@ public:
 		RequestNodeRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	
+	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = viewBox.ViewToModel (position) - startModelPosition;
