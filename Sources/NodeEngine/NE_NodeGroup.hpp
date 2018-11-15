@@ -27,8 +27,8 @@ public:
 	bool					DeleteNode (const NodeId& nodeId);
 	const NodeCollection&	GetNodes () const;
 
-	Stream::Status			Read (InputStream& inputStream);
-	Stream::Status			Write (OutputStream& outputStream) const;
+	virtual Stream::Status	Read (InputStream& inputStream) override;
+	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 
 	static NodeGroupPtr		Clone (const NodeGroupConstPtr& group);
 	static bool				IsEqual (const NodeGroupConstPtr& aGroup, const NodeGroupConstPtr& bGroup);

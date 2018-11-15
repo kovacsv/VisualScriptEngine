@@ -47,8 +47,8 @@ public:
 	void						Draw (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
 	void						InvalidateGroupDrawing ();
 
-	NE::Stream::Status			Read (NE::InputStream& inputStream);
-	NE::Stream::Status			Write (NE::OutputStream& outputStream) const;
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
 	const GroupDrawingImage&	GetDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
