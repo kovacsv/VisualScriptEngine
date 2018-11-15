@@ -28,7 +28,7 @@ public:
 		return GetValueInternal (uiNode);
 	}
 
-	virtual bool CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const
+	virtual bool CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const override
 	{
 		if (!NE::Value::IsType<ValueType> (value)) {
 			return false;
@@ -40,17 +40,17 @@ public:
 		return true;
 	}
 
-	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<ValueType>&) const
-	{
-		return true;
-	}
-
 	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) override
 	{
 		if (DBGERROR (!CanSetValue (uiNode, value))) {
 			return false;
 		}
 		return SetValueInternal (uiManager, evaluationEnv, uiNode, value);
+	}
+
+	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<ValueType>&) const
+	{
+		return true;
 	}
 
 	virtual NE::ValuePtr	GetValueInternal (const UINodePtr& uiNode) const = 0;
@@ -72,7 +72,7 @@ public:
 
 	}
 
-	virtual bool IsApplicableTo (const UINodePtr& uiNode) const
+	virtual bool IsApplicableTo (const UINodePtr& uiNode) const override
 	{
 		return NE::Node::IsType<NodeType> (uiNode);
 	}
@@ -120,7 +120,7 @@ public:
 
 	}
 
-	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const
+	virtual bool IsValidValue (const UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
 	{
 		return value->GetValue () > 0;
 	}
