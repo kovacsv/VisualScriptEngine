@@ -3,7 +3,8 @@
 namespace NUIE
 {
 
-ModifierKeys EmptyModifierKeys ({});
+static const std::unordered_set<ModifierKeyCode> noKeys;
+ModifierKeys EmptyModifierKeys (noKeys);
 Key InvalidKey;
 
 ModifierKeys::ModifierKeys (const std::unordered_set<ModifierKeyCode>& keys) :
