@@ -172,7 +172,6 @@ if (MSVC)
 		)
 		source_group ("Sources" FILES ${wxWidgetsAppSupportFiles})
 		add_library (wxWidgetsAppSupport STATIC ${wxWidgetsAppSupportFiles})
-		target_compile_definitions (wxWidgetsAppSupport PUBLIC _CRT_SECURE_NO_WARNINGS)
 		target_include_directories (
 			wxWidgetsAppSupport PUBLIC
 			${wxWidgetsAppSupport}
@@ -183,6 +182,7 @@ if (MSVC)
 			${WXWIDGETS_DIR}/include/msvc
 		)
 		target_link_libraries (wxWidgetsAppSupport NodeEngine NodeUIEngine BuiltInNodes)
+		target_compile_definitions (wxWidgetsAppSupport PUBLIC _CRT_SECURE_NO_WARNINGS)
 		SetCompilerOptions (wxWidgetsAppSupport OFF)
 		install (TARGETS wxWidgetsAppSupport DESTINATION lib_debug CONFIGURATIONS Debug)
 		install (TARGETS wxWidgetsAppSupport DESTINATION lib_release CONFIGURATIONS Release)
@@ -212,6 +212,7 @@ if (MSVC)
 			${WXWIDGETS_DIR}/include/msvc		
 		)
 		target_link_libraries (WindowsTestApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport wxWidgetsAppSupport)
+		target_compile_definitions (WindowsTestApp PUBLIC _CRT_SECURE_NO_WARNINGS)
 		SetCompilerOptions (WindowsTestApp OFF)
 	
 	endif ()
