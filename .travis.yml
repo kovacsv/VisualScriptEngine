@@ -4,7 +4,7 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      compiler : gcc
+      compiler: gcc
       addons:
         apt:
           sources:
@@ -15,7 +15,7 @@ matrix:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - os: linux
       dist: trusty
-      compiler : clang
+      compiler: clang
       addons:
         apt:
           sources:
@@ -26,6 +26,7 @@ matrix:
         - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
     - os: osx
       osx_image: xcode8
+      compiler: gcc
       env:
         - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7"
 
