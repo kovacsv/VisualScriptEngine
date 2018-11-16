@@ -40,7 +40,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 	
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const
+	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
 	{
 		return ValuePtr (new IntValue (val));
 	}
@@ -63,7 +63,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 	
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const
+	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		std::vector<int> result;
 		return EvaluateInputSlot (SlotId ("in"), env);
@@ -85,7 +85,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 	
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const
+	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		NE::ValuePtr val = EvaluateSingleInputSlot (SlotId ("in"), env);
 		ListValue* input = Value::Cast<ListValue> (val.get ());

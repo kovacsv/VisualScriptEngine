@@ -29,13 +29,13 @@ public:
 	{
 	}
 
-	void Initialize ()
+	virtual void Initialize () override
 	{
 		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"In", nullptr, NE::OutputSlotConnectionMode::Single)));
 		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Out")));
 	}
 
-	NE::ValuePtr Calculate (NE::EvaluationEnv& env) const
+	NE::ValuePtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		NE::ValuePtr inValue = EvaluateSingleInputSlot (NE::SlotId ("in"), env);
 		if (!IsSingleType<NE::IntValue> (inValue)) {
@@ -43,7 +43,6 @@ public:
 		}
 		return NE::ValuePtr (new NE::IntValue (NE::IntValue::Get (inValue) + 1));
 	}
-
 
 	virtual NE::Stream::Status Read (NE::InputStream& inputStream) override
 	{

@@ -22,7 +22,6 @@ TEST (TestAllArithmeticNodes)
 	UINodePtr mul = uiManager.AddNode (UINodePtr (new MultiplicationNode (L"Multiplication", Point (0, 0))), EmptyEvaluationEnv);
 	UINodePtr div = uiManager.AddNode (UINodePtr (new DivisionNode (L"Division", Point (0, 0))), EmptyEvaluationEnv);
 
-	
 	uiManager.ConnectOutputSlotToInputSlot (val1->GetUIOutputSlot (NE::SlotId ("out")), add->GetUIInputSlot (NE::SlotId ("a")));
 	uiManager.ConnectOutputSlotToInputSlot (val2->GetUIOutputSlot (NE::SlotId ("out")), add->GetUIInputSlot (NE::SlotId ("b")));
 	uiManager.ConnectOutputSlotToInputSlot (val1->GetUIOutputSlot (NE::SlotId ("out")), sub->GetUIInputSlot (NE::SlotId ("a")));
