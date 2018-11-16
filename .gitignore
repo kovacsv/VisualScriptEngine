@@ -1,13 +1,3 @@
-Make/DevKit/include/*
-Make/DevKit/vs_debug/*
-Make/DevKit/vs_release/*
-Make/GCC/Binaries/*
-Make/GCC/DebugBinaries/*
-Make/GCC/ReleaseBinaries/*
-Make/VS/*/Release/*
-Make/VS/*/*/Release/*
-Make/VS/*/Debug/*
-Make/VS/*/*/Debug/*
 Build/*
 DevKit/*
 *.db
