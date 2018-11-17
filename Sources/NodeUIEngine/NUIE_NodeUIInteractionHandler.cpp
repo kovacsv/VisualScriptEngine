@@ -509,11 +509,8 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 					selectedNodes.Insert (foundNodeId);
 				}
 			} else {
-				bool onlyThisNodeSelected = (selectedNodes.Count () == 1 && selectedNodes.Contains (foundNodeId));
 				selectedNodes.Clear ();
-				if (!onlyThisNodeSelected) {
-					selectedNodes.Insert (foundNodeId);
-				}
+				selectedNodes.Insert (foundNodeId);
 			}
 		}
 		uiManager.SetSelectedNodes (selectedNodes);

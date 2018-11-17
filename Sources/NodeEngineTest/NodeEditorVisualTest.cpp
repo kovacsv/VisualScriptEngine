@@ -88,9 +88,8 @@ TEST (SelectionTest)
 		ASSERT (env.CheckReference ("01_Selection_DoubleNodeSelected.svg"));
 	}
 
-	{ // deselect one node by clicking on the header again
-		Point doubleInputHeaderPoint = env.doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
-		env.Click (doubleInputHeaderPoint);
+	{ // deselect all nodes by clicking on the empty are
+		env.Click (Point (5.0, 5.0));
 		ASSERT (env.CheckReference ("01_Selection_NoSelection.svg"));
 	}
 	
