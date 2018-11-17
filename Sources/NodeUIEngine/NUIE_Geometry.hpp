@@ -11,6 +11,8 @@ extern const double INF;
 extern const double EPS;
 
 bool IsEqualNum (double a, double b);
+bool IsLowerNum (double a, double b);
+bool IsGreaterNum (double a, double b);
 
 class Point
 {

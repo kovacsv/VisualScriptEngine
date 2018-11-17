@@ -6,6 +6,16 @@ using namespace NUIE;
 namespace GeometryTest
 {
 
+TEST (EpsilonTest)
+{
+	ASSERT (IsEqualNum (0.1 + 0.2, 0.3));
+	ASSERT (IsEqualNum (42.000000001, 42.000000002));
+	ASSERT (IsLowerNum (42.1, 42.2));
+	ASSERT (!IsLowerNum (42.1, 42.100000001));
+	ASSERT (IsGreaterNum (42.2, 42.1));
+	ASSERT (!IsGreaterNum (42.2, 42.199999999));
+}
+
 TEST (PointTest)
 {
 	Point p1 (1.0, 2.0);

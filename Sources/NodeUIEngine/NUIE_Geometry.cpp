@@ -13,6 +13,16 @@ bool IsEqualNum (double a, double b)
 	return fabs (a - b) < EPS;
 }
 
+bool IsLowerNum (double a, double b)
+{
+	return b - a > EPS;
+}
+
+bool IsGreaterNum (double a, double b)
+{
+	return a - b > EPS;
+}
+
 Point::Point () :
 	x (0.0),
 	y (0.0)
