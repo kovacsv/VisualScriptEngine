@@ -145,7 +145,7 @@ bool IsSingleType (const ValuePtr& val)
 	}
 	if (Value::IsType<ListValue> (val)) {
 		ListValue* listVal = Value::Cast<ListValue> (val.get ());
-		if (listVal->GetSize () == 1) {
+		if (listVal->GetSize () == 1 && Value::IsType<Type> (listVal->GetValue (0))) {
 			return true;
 		}
 	}
