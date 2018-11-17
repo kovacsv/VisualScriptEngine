@@ -363,22 +363,20 @@ EventHandlerResult NodeInputEventHandler::HandleMouseDrag (NodeUIEnvironment&, c
 
 EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
-	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
-	if (uiManager.IsPreviewMode ()) {
-		return handlerResult;
-	}
-
-	if (DBGVERIFY (uiNode != nullptr)) {
-		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
+	return ForwardEventToNode ([&] () {
 		NodeUIEventHandlerNotifications notifications (uiManager);
-		handlerResult = uiNode->HandleMouseClick (env, modifierKeys, mouseButton, modelPosition, notifications);
-		if (handlerResult == EventHandlerResult::EventHandled) {
-			uiManager.RequestRecalculate ();
-			uiManager.InvalidateNodeDrawing (uiNode);
-		}
-	}
-	
-	return handlerResult;
+		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
+		return uiNode->HandleMouseClick (env, modifierKeys, mouseButton, modelPosition, notifications);
+	});
+}
+
+EventHandlerResult NodeInputEventHandler::HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
+{
+	return ForwardEventToNode ([&] () {
+		NodeUIEventHandlerNotifications notifications (uiManager);
+		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
+		return uiNode->HandleMouseDoubleClick (env, modifierKeys, mouseButton, modelPosition, notifications);
+	});
 }
 
 EventHandlerResult NodeInputEventHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation, const Point&)
@@ -389,6 +387,24 @@ EventHandlerResult NodeInputEventHandler::HandleMouseWheel (NodeUIEnvironment&, 
 EventHandlerResult NodeInputEventHandler::HandleKeyPress (NodeUIEnvironment&, const Key&)
 {
 	return EventHandlerResult::EventNotHandled;
+}
+
+EventHandlerResult NodeInputEventHandler::ForwardEventToNode (const std::function<EventHandlerResult ()>& forwardEvent)
+{
+	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
+	if (uiManager.IsPreviewMode ()) {
+		return handlerResult;
+	}
+
+	if (DBGVERIFY (uiNode != nullptr)) {
+		handlerResult = forwardEvent ();
+		if (handlerResult == EventHandlerResult::EventHandled) {
+			uiManager.RequestRecalculate ();
+			uiManager.InvalidateNodeDrawing (uiNode);
+		}
+	}
+
+	return handlerResult;
 }
 
 NodeUIInteractionHandler::NodeUIInteractionHandler (NodeUIManager& uiManager) :
@@ -490,16 +506,18 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 		return handlerResult;
 	}
 
+	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
+	if (foundNode != nullptr) {
+		NodeInputEventHandler nodeInputEventHandler (uiManager, foundNode);
+		handlerResult = nodeInputEventHandler.HandleMouseClick (env, modifierKeys, mouseButton, position);
+		if (handlerResult == EventHandlerResult::EventHandled) {
+			return handlerResult;
+		}
+	}
+
 	if (mouseButton == MouseButton::Left) {
 		NE::NodeCollection selectedNodes;
-		UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
 		if (foundNode != nullptr) {
-			NodeInputEventHandler nodeInputEventHandler (uiManager, foundNode);
-			handlerResult = nodeInputEventHandler.HandleMouseClick (env, modifierKeys, mouseButton, position);
-			if (handlerResult == EventHandlerResult::EventHandled) {
-				return handlerResult;
-			}
-
 			const NE::NodeId& foundNodeId = foundNode->GetId ();
 			selectedNodes = uiManager.GetSelectedNodes ();
 			if (modifierKeys.Contains (ModifierKeyCode::Control)) {
@@ -545,6 +563,25 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 			ExecuteCommand (selectedCommand);
 		}
 		handlerResult = EventHandlerResult::EventHandled;
+	}
+
+	return handlerResult;
+}
+
+EventHandlerResult NodeUIInteractionHandler::HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
+{
+	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
+	if (multiMouseMoveHandler.HasHandler ()) {
+		return handlerResult;
+	}
+
+	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
+	if (foundNode != nullptr) {
+		NodeInputEventHandler nodeInputEventHandler (uiManager, foundNode);
+		handlerResult = nodeInputEventHandler.HandleMouseDoubleClick (env, modifierKeys, mouseButton, position);
+		if (handlerResult == EventHandlerResult::EventHandled) {
+			return handlerResult;
+		}
 	}
 
 	return handlerResult;

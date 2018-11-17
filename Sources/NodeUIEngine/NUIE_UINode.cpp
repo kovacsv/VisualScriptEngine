@@ -210,6 +210,11 @@ NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const Mod
 	return EventHandlerResult::EventNotHandled;
 }
 
+NUIE::EventHandlerResult UINode::HandleMouseDoubleClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, EventHandlerNotifications&)
+{
+	return EventHandlerResult::EventNotHandled;
+}
+
 void UINode::RegisterParameters (NodeParameterList& parameterList) const
 {
 	class NodeNameParameter : public NotEmptyStringNodeParameter<UINode>

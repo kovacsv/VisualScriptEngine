@@ -62,6 +62,11 @@ NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnviro
 	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
+NUIE::EventHandlerResult NumericUpDownNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications& notifications)
+{
+	return HandleMouseClick (env, keys, mouseButton, position, notifications);
+}
+
 bool NumericUpDownNode::IsForceCalculated () const
 {
 	return true;

@@ -95,6 +95,11 @@ NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseClick (NUIE::NodeUIEnvi
 	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
+NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications& notifications)
+{
+	return HandleMouseClick (env, keys, mouseButton, position, notifications);
+}
+
 void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	class NodeUIMultiLineTextViewerPanel : public NodeUIMultiLineTextPanel

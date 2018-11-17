@@ -112,8 +112,7 @@ void MouseEventTranslator::OnMouseWheel (NodeUIEnvironment& env, const ModifierK
 
 void MouseEventTranslator::OnMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
-	// TODO: this is a hack
-	handler.HandleMouseClick (env, modifierKeys, mouseButton, position);
+	handler.HandleMouseDoubleClick (env, modifierKeys, mouseButton, position);
 }
 
 }
