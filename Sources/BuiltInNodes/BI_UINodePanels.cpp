@@ -236,7 +236,7 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 	NUIE::Point inputSlotsStartPoint = rect.GetTopLeft () + NUIE::Point (0.0, nodePadding);
 	inputSlots.Enumerate (SlotRectCollection::RefPointMode::TopLeft, inputSlotsStartPoint, nodePadding, [&] (const NE::SlotId& slotId, const NUIE::Rect& slotRect) {
 		NUIE::UIInputSlotConstPtr uiSlot = node.GetUIInputSlot (slotId);
-		NUIE::Rect textRect = NUIE::Rect::FromCenterAndSize (slotRect.GetCenter (), slotRect.GetSize ().Grow (2.0 * -nodePadding, -nodePadding));
+		NUIE::Rect textRect = slotRect.Expand (NUIE::Size (2.0 * -nodePadding, -nodePadding));
 		drawingImage.AddInputSlotConnPosition (slotId, slotRect.GetLeftCenter ());
 		drawingImage.AddInputSlotRect (slotId, slotRect);
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
@@ -246,7 +246,7 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 	NUIE::Point outputSlotsStartPoint = rect.GetTopRight () + NUIE::Point (0.0, nodePadding);
 	outputSlots.Enumerate (SlotRectCollection::RefPointMode::TopRight, outputSlotsStartPoint, nodePadding, [&] (const NE::SlotId& slotId, const NUIE::Rect& slotRect) {
 		NUIE::UIOutputSlotConstPtr uiSlot = node.GetUIOutputSlot (slotId);
-		NUIE::Rect textRect = NUIE::Rect::FromCenterAndSize (slotRect.GetCenter (), slotRect.GetSize ().Grow (2.0 * -nodePadding, -nodePadding));
+		NUIE::Rect textRect = slotRect.Expand (NUIE::Size (2.0 * -nodePadding, -nodePadding));
 		drawingImage.AddOutputSlotConnPosition (slotId, slotRect.GetRightCenter ());
 		drawingImage.AddOutputSlotRect (slotId, slotRect);
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));

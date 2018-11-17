@@ -172,6 +172,11 @@ bool Size::operator!= (const Size& s) const
 	return !operator== (s);
 }
 
+bool Size::IsEqualTo (const Size& s) const
+{
+	return IsEqualNum (width, s.width) && IsEqualNum (height, s.height);
+}
+
 Rect::Rect () :
 	position (),
 	size ()
@@ -291,6 +296,12 @@ Rect Rect::Offset (const Point& p) const
 	return Rect::FromPositionAndSize (position + p, size);
 }
 
+Rect Rect::Expand (const Size& s) const
+{
+	Point sp (s.GetWidth (), s.GetHeight ());
+	return Rect::FromPositionAndSize (position - sp / 2.0, size + s);
+}
+
 bool Rect::operator== (const Rect& r) const
 {
 	return position == r.position && size == r.size;
@@ -299,6 +310,11 @@ bool Rect::operator== (const Rect& r) const
 bool Rect::operator!= (const Rect& r) const
 {
 	return !operator== (r);
+}
+
+bool Rect::IsEqualTo (const Rect& r) const
+{
+	return position.IsEqualTo (r.position) && size.IsEqualTo (r.size);
 }
 
 Rect Rect::FromPositionAndSize (const Point& rectPosition, const Size& rectSize)

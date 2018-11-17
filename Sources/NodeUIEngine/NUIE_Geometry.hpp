@@ -66,6 +66,8 @@ public:
 	bool	operator== (const Size& s) const;
 	bool	operator!= (const Size& s) const;
 
+	bool	IsEqualTo (const Size& s) const;
+
 private:
 	double width;
 	double height;
@@ -103,9 +105,12 @@ public:
 	bool	Contains (const Rect& r) const;
 
 	Rect	Offset (const Point& p) const;
+	Rect	Expand (const Size& s) const;
 
 	bool	operator== (const Rect& r) const;
 	bool	operator!= (const Rect& r) const;
+
+	bool	IsEqualTo (const Rect& r) const;
 
 	static Rect FromPositionAndSize (const Point& rectPosition, const Size& rectSize);
 	static Rect FromCenterAndSize (const Point& rectCenter, const Size& rectSize);
