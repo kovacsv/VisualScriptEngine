@@ -8,21 +8,6 @@ namespace NUIE
 const double INF = 10.0e10;
 const double EPS = 10e-5;
 
-bool IsEqualNum (double a, double b)
-{
-	return fabs (a - b) < EPS;
-}
-
-bool IsLowerNum (double a, double b)
-{
-	return b - a > EPS;
-}
-
-bool IsGreaterNum (double a, double b)
-{
-	return a - b > EPS;
-}
-
 Point::Point () :
 	x (0.0),
 	y (0.0)
@@ -96,11 +81,6 @@ bool Point::operator== (const Point& p) const
 bool Point::operator!= (const Point& p) const
 {
 	return !operator== (p);
-}
-
-bool Point::IsEqualTo (const Point& p) const
-{
-	return IsEqualNum (x, p.x) && IsEqualNum (y, p.y);
 }
 
 double Point::DistanceTo (const Point& p) const
@@ -180,11 +160,6 @@ bool Size::operator== (const Size& s) const
 bool Size::operator!= (const Size& s) const
 {
 	return !operator== (s);
-}
-
-bool Size::IsEqualTo (const Size& s) const
-{
-	return IsEqualNum (width, s.width) && IsEqualNum (height, s.height);
 }
 
 Rect::Rect () :
@@ -286,6 +261,11 @@ Point Rect::GetBottomRight() const
 	return Point (position.GetX () + size.GetWidth (), position.GetY () + size.GetHeight ());
 }
 
+Point Rect::GetPosition () const
+{
+	return position;
+}
+
 Size Rect::GetSize () const
 {
 	return size;
@@ -320,11 +300,6 @@ bool Rect::operator== (const Rect& r) const
 bool Rect::operator!= (const Rect& r) const
 {
 	return !operator== (r);
-}
-
-bool Rect::IsEqualTo (const Rect& r) const
-{
-	return position.IsEqualTo (r.position) && size.IsEqualTo (r.size);
 }
 
 Rect Rect::FromPositionAndSize (const Point& rectPosition, const Size& rectSize)
@@ -471,6 +446,36 @@ void AddRectToChecksum (NE::Checksum& checksum, const Rect& rect)
 {
 	AddPointToChecksum (checksum, rect.GetTopLeft ());
 	AddSizeToChecksum (checksum, rect.GetSize ());
+}
+
+bool IsEqual (double a, double b)
+{
+	return fabs (a - b) < EPS;
+}
+
+bool IsLower (double a, double b)
+{
+	return b - a > EPS;
+}
+
+bool IsGreater (double a, double b)
+{
+	return a - b > EPS;
+}
+
+bool IsEqual (const Point& a, const Point& b)
+{
+	return IsEqual (a.GetX (), b.GetX ()) && IsEqual (a.GetY (), b.GetY ());
+}
+
+bool IsEqual (const Size& a, const Size& b)
+{
+	return IsEqual (a.GetWidth (), b.GetWidth ()) && IsEqual (a.GetHeight (), b.GetHeight ());
+}
+
+bool IsEqual (const Rect& a, const Rect& b)
+{
+	return IsEqual (a.GetPosition (), b.GetPosition ()) && IsEqual (a.GetSize (), b.GetSize ());
 }
 
 }

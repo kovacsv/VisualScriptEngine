@@ -111,19 +111,19 @@ TEST (ViewBoxTest)
 
 	{
 		ViewBox viewBox (Point (1.0, 2.0), 1.0);
-		ASSERT (viewBox.ModelToView (Point (0.0, 0.0)).IsEqualTo (Point (1.0, 2.0)));
-		ASSERT (viewBox.ModelToView (Point (1.0, 1.0)).IsEqualTo (Point (2.0, 3.0)));
-		ASSERT (viewBox.ViewToModel (Point (1.0, 2.0)).IsEqualTo (Point (0.0, 0.0)));
-		ASSERT (viewBox.ViewToModel (Point (2.0, 3.0)).IsEqualTo (Point (1.0, 1.0)));
+		ASSERT (IsEqual (viewBox.ModelToView (Point (0.0, 0.0)), Point (1.0, 2.0)));
+		ASSERT (IsEqual (viewBox.ModelToView (Point (1.0, 1.0)), Point (2.0, 3.0)));
+		ASSERT (IsEqual (viewBox.ViewToModel (Point (1.0, 2.0)), Point (0.0, 0.0)));
+		ASSERT (IsEqual (viewBox.ViewToModel (Point (2.0, 3.0)), Point (1.0, 1.0)));
 	}
 	{
 		ViewBox viewBox (Point (1.0, 2.0), 0.5);
-		ASSERT (viewBox.ModelToView (Point (0.0, 0.0)).IsEqualTo (Point (1.0, 2.0)));
-		ASSERT (viewBox.ModelToView (Point (2.0, 2.0)).IsEqualTo (Point (2.0, 3.0)));
-		ASSERT (viewBox.ModelToView (Point (6.0, 4.0)).IsEqualTo (Point (4.0, 4.0)));
-		ASSERT (viewBox.ViewToModel (Point (1.0, 2.0)).IsEqualTo (Point (0.0, 0.0)));
-		ASSERT (viewBox.ViewToModel (Point (2.0, 3.0)).IsEqualTo (Point (2.0, 2.0)));
-		ASSERT (viewBox.ViewToModel (Point (4.0, 4.0)).IsEqualTo (Point (6.0, 4.0)));
+		ASSERT (IsEqual (viewBox.ModelToView (Point (0.0, 0.0)), Point (1.0, 2.0)));
+		ASSERT (IsEqual (viewBox.ModelToView (Point (2.0, 2.0)), Point (2.0, 3.0)));
+		ASSERT (IsEqual (viewBox.ModelToView (Point (6.0, 4.0)), Point (4.0, 4.0)));
+		ASSERT (IsEqual (viewBox.ViewToModel (Point (1.0, 2.0)), Point (0.0, 0.0)));
+		ASSERT (IsEqual (viewBox.ViewToModel (Point (2.0, 3.0)), Point (2.0, 2.0)));
+		ASSERT (IsEqual (viewBox.ViewToModel (Point (4.0, 4.0)), Point (6.0, 4.0)));
 	}
 }
 
@@ -141,7 +141,7 @@ TEST (ViewBoxScaleFixPointTest)
 			ViewBox viewBox (Point (1.0, 2.0), 1.0);
 			Point origModelPoint = viewBox.ViewToModel (mousePoint);
 			viewBox.SetScale (scale, mousePoint);
-			ASSERT (viewBox.ViewToModel (mousePoint).IsEqualTo (origModelPoint));
+			ASSERT (IsEqual (viewBox.ViewToModel (mousePoint), origModelPoint));
 		}
 	}
 }
@@ -150,74 +150,74 @@ TEST (ViewBoxFitTest)
 {
 	{
 		ViewBox viewBox = FitRectToSize (Size (10.0, 10.0), 0.0, Rect (0.0, 0.0, 10.0, 10.0));
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point (0.0, 0.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), 1.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.0, 0.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), 1.0));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (10.0, 10.0), 0.0, Rect (0.0, 0.0, 20.0, 20.0));
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point (0.0, 0.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), 0.5));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.0, 0.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), 0.5));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (10.0, 10.0), 0.0, Rect (0.0, 0.0, 5.0, 5.0));
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point (0.0, 0.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), 2.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.0, 0.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), 2.0));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (3.0, 2.0), 0.0, Rect (0.0, 0.0, 3.0, 2.0));
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point (0.0, 0.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), 1.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.0, 0.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), 1.0));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (3.0, 2.0), 0.0, Rect (0.0, 0.0, 2.0, 3.0));
 		double expectedScale = 2.0 / 3.0;
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point ((3.0 - (2.0 * expectedScale)) / 2.0, 0.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), expectedScale));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point ((3.0 - (2.0 * expectedScale)) / 2.0, 0.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), expectedScale));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (2.0, 3.0), 0.0, Rect (0.0, 0.0, 2.0, 3.0));
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point (0.0, 0.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), 1.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.0, 0.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), 1.0));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (2.0, 3.0), 0.0, Rect (0.0, 0.0, 3.0, 2.0));
 		double expectedScale = 2.0 / 3.0;
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point (0.0, (3.0 - (2.0 * expectedScale)) / 2.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), expectedScale));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.0, (3.0 - (2.0 * expectedScale)) / 2.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), expectedScale));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (3.0, 2.0), 0.2, Rect (0.0, 0.0, 3.0, 2.0));
 		double expectedScale = (2.0 - 0.4) / 2.0;
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point ((3.0 - (3.0 * expectedScale)) / 2.0, 0.2)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), expectedScale));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point ((3.0 - (3.0 * expectedScale)) / 2.0, 0.2)));
+		ASSERT (IsEqual (viewBox.GetScale (), expectedScale));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (3.0, 2.0), 0.2, Rect (0.0, 0.0, 2.0, 3.0));
 		double expectedScale = (2.0 - 0.4) / 3.0;
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point ((3.0 - (2.0 * expectedScale)) / 2.0, 0.2)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), expectedScale));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point ((3.0 - (2.0 * expectedScale)) / 2.0, 0.2)));
+		ASSERT (IsEqual (viewBox.GetScale (), expectedScale));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (2.0, 3.0), 0.2, Rect (0.0, 0.0, 2.0, 3.0));
 		double expectedScale = (2.0 - 0.4) / 2.0;
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point (0.2, (3.0 - (3.0 * expectedScale)) / 2.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), expectedScale));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.2, (3.0 - (3.0 * expectedScale)) / 2.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), expectedScale));
 	}
 
 	{
 		ViewBox viewBox = FitRectToSize (Size (2.0, 3.0), 0.2, Rect (0.0, 0.0, 3.0, 2.0));
 		double expectedScale = (2.0 - 0.4) / 3.0;
-		ASSERT (viewBox.GetOffset ().IsEqualTo (Point (0.2, (3.0 - (2.0 * expectedScale)) / 2.0)));
-		ASSERT (IsEqualNum (viewBox.GetScale (), expectedScale));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.2, (3.0 - (2.0 * expectedScale)) / 2.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), expectedScale));
 	}
 }
 

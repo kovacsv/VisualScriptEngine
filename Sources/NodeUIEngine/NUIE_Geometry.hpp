@@ -10,10 +10,6 @@ namespace NUIE
 extern const double INF;
 extern const double EPS;
 
-bool IsEqualNum (double a, double b);
-bool IsLowerNum (double a, double b);
-bool IsGreaterNum (double a, double b);
-
 class Point
 {
 public:
@@ -36,7 +32,6 @@ public:
 	bool	operator== (const Point& p) const;
 	bool	operator!= (const Point& p) const;
 
-	bool	IsEqualTo (const Point& p) const;
 	double	DistanceTo (const Point& p) const;
 
 	static Point GetMidPoint (const Point& a, const Point& b);
@@ -67,8 +62,6 @@ public:
 
 	bool	operator== (const Size& s) const;
 	bool	operator!= (const Size& s) const;
-
-	bool	IsEqualTo (const Size& s) const;
 
 private:
 	double width;
@@ -102,6 +95,7 @@ public:
 	Point	GetBottomLeft () const;
 	Point	GetBottomRight () const;
 
+	Point	GetPosition () const;
 	Size	GetSize () const;
 	bool	Contains (const Point& p) const;
 	bool	Contains (const Rect& r) const;
@@ -111,8 +105,6 @@ public:
 
 	bool	operator== (const Rect& r) const;
 	bool	operator!= (const Rect& r) const;
-
-	bool	IsEqualTo (const Rect& r) const;
 
 	static Rect FromPositionAndSize (const Point& rectPosition, const Size& rectSize);
 	static Rect FromCenterAndSize (const Point& rectCenter, const Size& rectSize);
@@ -154,6 +146,14 @@ NE::Stream::Status WriteRect (NE::OutputStream& outputStream, const Rect& rect);
 void AddPointToChecksum (NE::Checksum& checksum, const Point& point);
 void AddSizeToChecksum (NE::Checksum& checksum, const Size& size);
 void AddRectToChecksum (NE::Checksum& checksum, const Rect& rect);
+
+bool IsEqual (double a, double b);
+bool IsLower (double a, double b);
+bool IsGreater (double a, double b);
+
+bool IsEqual (const Point& a, const Point& b);
+bool IsEqual (const Size& a, const Size& b);
+bool IsEqual (const Rect& a, const Rect& b);
 
 }
 

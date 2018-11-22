@@ -8,12 +8,12 @@ namespace GeometryTest
 
 TEST (EpsilonTest)
 {
-	ASSERT (IsEqualNum (0.1 + 0.2, 0.3));
-	ASSERT (IsEqualNum (42.000000001, 42.000000002));
-	ASSERT (IsLowerNum (42.1, 42.2));
-	ASSERT (!IsLowerNum (42.1, 42.100000001));
-	ASSERT (IsGreaterNum (42.2, 42.1));
-	ASSERT (!IsGreaterNum (42.2, 42.199999999));
+	ASSERT (IsEqual (0.1 + 0.2, 0.3));
+	ASSERT (IsEqual (42.000000001, 42.000000002));
+	ASSERT (IsLower (42.1, 42.2));
+	ASSERT (!IsLower (42.1, 42.100000001));
+	ASSERT (IsGreater (42.2, 42.1));
+	ASSERT (!IsGreater (42.2, 42.199999999));
 }
 
 TEST (PointTest)
@@ -87,11 +87,11 @@ TEST (RectTest)
 	ASSERT (!r1.Contains (Point (6.0, 4.0)));
 	ASSERT (!r1.Contains (Point (2.0, 7.0)));
 
-	ASSERT (r1.IsEqualTo (Rect::FromPositionAndSize (Point (1.0, 2.0), Size (3.0, 4.0))));
-	ASSERT (r1.IsEqualTo (Rect::FromCenterAndSize (Point (2.5, 4.0), Size (3.0, 4.0))));
+	ASSERT (IsEqual (r1, Rect::FromPositionAndSize (Point (1.0, 2.0), Size (3.0, 4.0))));
+	ASSERT (IsEqual (r1, Rect::FromCenterAndSize (Point (2.5, 4.0), Size (3.0, 4.0))));
 
-	ASSERT (r1.Offset (Point (5.0, 6.0)).IsEqualTo (Rect::FromPositionAndSize (Point (6.0, 8.0), Size (3.0, 4.0))));
-	ASSERT (r1.Expand (Size (5.0, 6.0)).IsEqualTo (Rect::FromCenterAndSize (r1.GetCenter (), r1.GetSize () + Size (5.0, 6.0))));
+	ASSERT (IsEqual (r1.Offset (Point (5.0, 6.0)), Rect::FromPositionAndSize (Point (6.0, 8.0), Size (3.0, 4.0))));
+	ASSERT (IsEqual (r1.Expand (Size (5.0, 6.0)), Rect::FromCenterAndSize (r1.GetCenter (), r1.GetSize () + Size (5.0, 6.0))));
 }
 
 }

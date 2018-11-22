@@ -33,7 +33,7 @@ TEST (TestAllArithmeticNodes)
 
 	ValuePtr val = div->Evaluate (EmptyEvaluationEnv);
 	ASSERT (IsSingleType<DoubleValue> (val));
-	ASSERT (IsEqualNum (DoubleValue::Get (CreateSingleValue (val)), -1.0));
+	ASSERT (IsEqual (DoubleValue::Get (CreateSingleValue (val)), -1.0));
 }
 
 }
