@@ -4,6 +4,7 @@
 #include "NUIE_UINode.hpp"
 #include "NUIE_CommandStructure.hpp"
 #include "NUIE_NodeUIManager.hpp"
+#include "NUIE_UINodeParameters.hpp"
 
 namespace NUIE
 {
@@ -90,6 +91,22 @@ public:
 private:
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
+};
+
+class SetParametersCommand : public NotUndoableCommand
+{
+public:
+	SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes);
+	virtual ~SetParametersCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	UINodePtr			currentNode;
+	NE::NodeCollection	relevantNodes;
+	NodeParameterList	relevantParameters;
 };
 
 NE::NodeCollection	GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);

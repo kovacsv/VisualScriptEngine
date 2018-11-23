@@ -582,6 +582,10 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDoubleClick (NodeUIEnvir
 		if (handlerResult == EventHandlerResult::EventHandled) {
 			return handlerResult;
 		}
+
+		SetParametersCommand setParameters (uiManager, env, foundNode, NE::NodeCollection ({ foundNode->GetId () }));
+		setParameters.Do ();
+		handlerResult = EventHandlerResult::EventHandled;
 	}
 
 	return handlerResult;

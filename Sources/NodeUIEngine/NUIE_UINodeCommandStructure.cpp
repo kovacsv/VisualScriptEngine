@@ -1,6 +1,5 @@
 #include "NUIE_UINodeCommandStructure.hpp"
 #include "NUIE_UINodeCommandRegistration.hpp"
-#include "NUIE_UINodeParameters.hpp"
 #include "NUIE_EventHandlers.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"
@@ -167,6 +166,125 @@ void RedoCommand::Do ()
 	uiManager.Redo (uiEnvironment.GetEvaluationEnv ());
 }
 
+SetParametersCommand::SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
+	NotUndoableCommand (L"Set Parameters", false),
+	uiManager (uiManager),
+	uiEnvironment (uiEnvironment),
+	currentNode (currentNode),
+	relevantNodes (relevantNodes),
+	relevantParameters ()
+{
+	DBGASSERT (relevantNodes.Contains (currentNode->GetId ()));
+}
+
+SetParametersCommand::~SetParametersCommand ()
+{
+
+}
+
+void SetParametersCommand::Do ()
+{
+	class NodeSelectionParameterInterface : public ParameterInterface
+	{
+	public:
+		NodeSelectionParameterInterface (NodeParameterList& paramList, const UINodePtr& currentNode) :
+			paramList (paramList),
+			currentNode (currentNode)
+		{
+
+		}
+
+		void ApplyChanges (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes)
+		{
+			for (const auto& it : changedParameterValues) {
+				NodeParameterPtr& parameter = paramList.GetParameter (it.first);
+				ApplyCommonParameter (uiManager, uiEnvironment.GetEvaluationEnv (), relevantNodes, parameter, it.second);
+			}
+			uiManager.Update (uiEnvironment);
+		}
+
+		virtual size_t GetParameterCount () const override
+		{
+			return paramList.GetParameterCount ();
+		}
+
+		virtual const std::wstring& GetParameterName (size_t index) const override
+		{
+			static const std::wstring InvalidParameterName = L"";
+			NodeParameterPtr parameter = paramList.GetParameter (index);
+			if (DBGERROR (parameter == nullptr)) {
+				return InvalidParameterName;
+			}
+			return parameter->GetName ();
+		}
+
+		virtual NE::ValuePtr GetParameterValue (size_t index) const override
+		{
+			NodeParameterPtr parameter = paramList.GetParameter (index);
+			if (DBGERROR (parameter == nullptr)) {
+				return nullptr;
+			}
+			return parameter->GetValue (currentNode);
+		}
+
+		virtual std::vector<std::wstring> GetParameterValueChoices (size_t index) const override
+		{
+			NodeParameterPtr parameter = paramList.GetParameter (index);
+			if (DBGERROR (parameter == nullptr)) {
+				return {};
+			}
+			return parameter->GetValueChoices ();
+		}
+
+		virtual const ParameterType& GetParameterType (size_t index) const override
+		{
+			NodeParameterPtr parameter = paramList.GetParameter (index);
+			if (DBGERROR (parameter == nullptr)) {
+				return ParameterType::Undefined;
+			}
+			return parameter->GetType ();
+		}
+
+		virtual bool IsValidParameterValue (size_t index, const NE::ValuePtr& value) const override
+		{
+			NodeParameterPtr parameter = paramList.GetParameter (index);
+			if (DBGERROR (parameter == nullptr)) {
+				return false;
+			}
+
+			return parameter->CanSetValue (currentNode, value);
+		}
+
+		virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!IsValidParameterValue (index, value))) {
+				return false;
+			}
+
+			auto found = changedParameterValues.find (index);
+			if (found != changedParameterValues.end ()) {
+				found->second = value;
+			} else {
+				changedParameterValues.insert ({ index, value });
+			}
+
+			return true;
+		}
+
+	private:
+		NodeParameterList&							paramList;
+		const UINodePtr&							currentNode;
+		std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
+	};
+
+	RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
+	std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
+	if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
+		uiManager.SaveUndoState ();
+		paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
+	}
+}
+
 class DisconnectFromInputSlotCommand : public InputSlotCommand
 {
 public:
@@ -277,136 +395,6 @@ private:
 	NodeUIEnvironment&			uiEnvironment;
 	NodeCommandPtr				nodeCommand;
 	std::vector<UINodePtr>		uiNodes;
-};
-
-class SetParametersCommand : public NotUndoableCommand
-{
-public:
-	SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
-		NotUndoableCommand (L"Set Parameters", false),
-		uiManager (uiManager),
-		uiEnvironment (uiEnvironment),
-		currentNode (currentNode),
-		relevantNodes (relevantNodes),
-		relevantParameters ()
-	{
-
-	}
-
-	virtual ~SetParametersCommand ()
-	{
-
-	}
-
-	virtual void Do () override
-	{
-		class NodeSelectionParameterInterface : public ParameterInterface
-		{
-		public:
-			NodeSelectionParameterInterface (NodeParameterList& paramList, const UINodePtr& currentNode) :
-				paramList (paramList),
-				currentNode (currentNode)
-			{
-			
-			}
-
-			void ApplyChanges (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes)
-			{
-				for (const auto& it : changedParameterValues) {
-					NodeParameterPtr& parameter = paramList.GetParameter (it.first);
-					ApplyCommonParameter (uiManager, uiEnvironment.GetEvaluationEnv (), relevantNodes, parameter, it.second);
-				}
-				uiManager.Update (uiEnvironment);
-			}
-
-			virtual size_t GetParameterCount () const override
-			{
-				return paramList.GetParameterCount ();
-			}
-
-			virtual const std::wstring& GetParameterName (size_t index) const override
-			{
-				static const std::wstring InvalidParameterName = L"";
-				NodeParameterPtr parameter = paramList.GetParameter (index);
-				if (DBGERROR (parameter == nullptr)) {
-					return InvalidParameterName;
-				}
-				return parameter->GetName ();
-			}
-
-			virtual NE::ValuePtr GetParameterValue (size_t index) const override
-			{
-				NodeParameterPtr parameter = paramList.GetParameter (index);
-				if (DBGERROR (parameter == nullptr)) {
-					return nullptr;
-				}
-				return parameter->GetValue (currentNode);
-			}
-
-			virtual std::vector<std::wstring> GetParameterValueChoices (size_t index) const override
-			{
-				NodeParameterPtr parameter = paramList.GetParameter (index);
-				if (DBGERROR (parameter == nullptr)) {
-					return {};
-				}
-				return parameter->GetValueChoices ();
-			}
-
-			virtual const ParameterType& GetParameterType (size_t index) const override
-			{
-				NodeParameterPtr parameter = paramList.GetParameter (index);
-				if (DBGERROR (parameter == nullptr)) {
-					return ParameterType::Undefined;
-				}
-				return parameter->GetType ();
-			}
-
-			virtual bool IsValidParameterValue (size_t index, const NE::ValuePtr& value) const override
-			{
-				NodeParameterPtr parameter = paramList.GetParameter (index);
-				if (DBGERROR (parameter == nullptr)) {
-					return false;
-				}
-
-				return parameter->CanSetValue (currentNode, value);
-			}
-
-			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
-			{
-				if (DBGERROR (!IsValidParameterValue (index, value))) {
-					return false;
-				}
-
-				auto found = changedParameterValues.find (index);
-				if (found != changedParameterValues.end ()) {
-					found->second = value;
-				} else {
-					changedParameterValues.insert ({ index, value });
-				}
-
-				return true;
-			}
-
-		private:
-			NodeParameterList&							paramList;
-			const UINodePtr&							currentNode;
-			std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
-		};
-
-		RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
-		std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
-		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
-			uiManager.SaveUndoState ();
-			paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
-		}
-	}
-
-private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
-	UINodePtr			currentNode;
-	NE::NodeCollection	relevantNodes;
-	NodeParameterList	relevantParameters;
 };
 
 class SetGroupParametersCommand : public UndoableCommand
