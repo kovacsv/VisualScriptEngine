@@ -40,14 +40,15 @@ public:
 	Test (const std::string& testName);
 	virtual ~Test ();
 	
-	bool			Run ();
+	bool				Run ();
+	const std::string&	GetName () const;
 
 protected:
-	void			TestAssert (bool condition, const std::string& fileName, int lineNumber);
-	virtual void	RunTest () = 0;
+	void				TestAssert (bool condition, const std::string& fileName, int lineNumber);
+	virtual void		RunTest () = 0;
 
-	std::string		testName;
-	bool			testSuccess;
+	std::string			testName;
+	bool				testSuccess;
 };
 
 class Suite
