@@ -97,12 +97,17 @@ file (GLOB TestFrameworkFiles ${TestFrameworkSourcesFolder}/*.hpp ${TestFramewor
 file (GLOB NodeEngineTestHeaderFiles ${NodeEngineTestSourcesFolder}/*.hpp)
 file (GLOB NodeEngineTestSourceFiles ${NodeEngineTestSourcesFolder}/*.cpp)
 set (
-	NodeEngineTestFiles
-	${TestFrameworkFiles}
+	NodeEngineTestTestFiles
 	${NodeEngineTestHeaderFiles}
 	${NodeEngineTestSourceFiles}
 )
-source_group ("Sources" FILES ${NodeEngineTestFiles})
+set (
+	NodeEngineTestFiles
+	${TestFrameworkFiles}
+	${NodeEngineTestTestFiles}
+)
+source_group ("Framework" FILES ${TestFrameworkFiles})
+source_group ("Sources" FILES ${NodeEngineTestTestFiles})
 add_executable (NodeEngineTest ${NodeEngineTestFiles})
 target_include_directories (NodeEngineTest PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${BuiltInNodesSourcesFolder} ${TestFrameworkSourcesFolder})
 target_link_libraries (NodeEngineTest NodeEngine NodeUIEngine BuiltInNodes)
