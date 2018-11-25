@@ -50,7 +50,8 @@ private:
 class ColoredConsoleWriter
 {
 public:
-	ColoredConsoleWriter (ConsoleColor)
+	ColoredConsoleWriter (ConsoleColor consoleColor) :
+		consoleColor (consoleColor)
 	{
 	}
 
@@ -60,8 +61,17 @@ public:
 
 	void Write (const std::string& text)
 	{
+		if (consoleColor == ConsoleColor::Green) {
+			std::cout << "\033[32m";
+		} else if (consoleColor == ConsoleColor::Red) {
+			std::cout << "\033[31m";
+		}
 		std::cout << text;
+		std::cout << "\033[39m";
 	}
+
+private:
+	ConsoleColor consoleColor;
 };
 #endif
 
