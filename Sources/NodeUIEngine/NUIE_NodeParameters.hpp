@@ -57,7 +57,7 @@ typedef std::shared_ptr<const NodeParameterList> NodeParameterListConstPtr;
 std::wstring	ParameterValueToString (const NE::ValuePtr& value, const ParameterType& type);
 NE::ValuePtr	StringToParameterValue (const std::wstring& str, const ParameterType& type);
 
-void			RegisterCommonParameters (NodeUIManager& uiManager, const NE::NodeCollection& nodeCollection, NodeParameterList& parameterList);
+void			RegisterCommonParameters (const NodeUIManager& uiManager, const NE::NodeCollection& nodeCollection, NodeParameterList& parameterList);
 bool			ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NE::NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);
 
 }

@@ -114,7 +114,7 @@ NE::ValuePtr StringToParameterValue (const std::wstring& str, const ParameterTyp
 	return result;
 }
 
-void RegisterCommonParameters (NodeUIManager& uiManager, const NE::NodeCollection& nodeCollection, NodeParameterList& parameterList)
+void RegisterCommonParameters (const NodeUIManager& uiManager, const NE::NodeCollection& nodeCollection, NodeParameterList& parameterList)
 {
 	std::vector<UINodeConstPtr> uiNodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
