@@ -74,7 +74,7 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 	return NUIE::InvalidKey;
 }
 
-NUIE::UICommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
+NUIE::MenuCommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
 	if (commands.IsEmpty ()) {
 		return nullptr;
@@ -84,8 +84,8 @@ NUIE::UICommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Poi
 	wxMenu* currentMenu = &popupMenu;
 
 	size_t currentCommandId = 1000;
-	std::unordered_map<size_t, NUIE::UICommandPtr> commandTable;
-	std::function<void (const NUIE::UICommandPtr&)> addCommand = [&] (const NUIE::UICommandPtr& command) {
+	std::unordered_map<size_t, NUIE::MenuCommandPtr> commandTable;
+	std::function<void (const NUIE::MenuCommandPtr&)> addCommand = [&] (const NUIE::MenuCommandPtr& command) {
 		if (command->HasChildCommands ()) {
 			wxMenu* oldMenu = currentMenu;
 			currentMenu = new wxMenu ();

@@ -15,18 +15,18 @@ class TestEventHandlers : public EventHandlers
 public:
 	TestEventHandlers ();
 
-	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UICommandStructure&) override;
-	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const UICommandStructure&) override;
-	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const UICommandStructure&) override;
-	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const UICommandStructure&) override;
-	virtual UICommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const UICommandStructure&) override;
+	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
 	virtual bool			OnParameterSettings (ParameterInterfacePtr) override;
 
 	void					SetNextCommandName (const std::wstring& nextCommandName);
 
 private:
-	UICommandPtr			SelectCommandByName (const UICommandStructure& commands);
-	UICommandPtr			SelectCommandByName (const UICommandPtr& command);
+	MenuCommandPtr			SelectCommandByName (const MenuCommandStructure& commands);
+	MenuCommandPtr			SelectCommandByName (const MenuCommandPtr& command);
 
 	std::wstring		commandToSelect;
 };

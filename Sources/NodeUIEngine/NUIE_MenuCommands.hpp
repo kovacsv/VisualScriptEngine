@@ -10,29 +10,26 @@
 namespace NUIE
 {
 
-class UICommand;
-typedef std::shared_ptr<UICommand> UICommandPtr;
+class MenuCommand;
+typedef std::shared_ptr<MenuCommand> MenuCommandPtr;
 
-class UIGroupCommand;
-typedef std::shared_ptr<UIGroupCommand> UIGroupCommandPtr;
+class SingleMenuCommand;
+typedef std::shared_ptr<SingleMenuCommand> SingleMenuCommandPtr;
 
-class SingleUICommand;
-typedef std::shared_ptr<SingleUICommand> SingleUICommandPtr;
+class GroupMenuCommand;
+typedef std::shared_ptr<GroupMenuCommand> GroupMenuCommandPtr;
 
-class MultiUICommand;
-typedef std::shared_ptr<MultiUICommand> MultiUICommandPtr;
-
-class UICommand
+class MenuCommand
 {
 public:
-	UICommand (const std::wstring& name);
-	virtual ~UICommand ();
+	MenuCommand (const std::wstring& name);
+	virtual ~MenuCommand ();
 
 	const std::wstring&		GetName () const;
 
 	virtual bool			IsChecked () const = 0;
 	virtual bool			HasChildCommands () const = 0;
-	virtual void			EnumerateChildCommands (const std::function<void (const UICommandPtr& command)>& processor) const = 0;
+	virtual void			EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const = 0;
 
 	virtual bool			IsUndoable () const = 0;
 	virtual void			Do () = 0;
@@ -41,51 +38,51 @@ protected:
 	std::wstring			name;
 };
 
-class UIGroupCommand : public UICommand
+class SingleMenuCommand : public MenuCommand
 {
 public:
-	UIGroupCommand (const std::wstring& name);
-	virtual ~UIGroupCommand ();
-
-	void			AddChildCommand (UICommandPtr command);
+	SingleMenuCommand (const std::wstring& name, bool isChecked);
+	virtual ~SingleMenuCommand ();
 
 	virtual bool	IsChecked () const override;
 	virtual bool	HasChildCommands () const override;
-	virtual void	EnumerateChildCommands (const std::function<void (const UICommandPtr& command)>& processor) const override;
-
-	virtual bool	IsUndoable () const override;
-	virtual void	Do () override;
-
-private:
-	std::vector<UICommandPtr> childCommands;
-};
-
-class SingleUICommand : public UICommand
-{
-public:
-	SingleUICommand (const std::wstring& name, bool isChecked);
-	virtual ~SingleUICommand ();
-
-	virtual bool	IsChecked () const override;
-	virtual bool	HasChildCommands () const override;
-	virtual void	EnumerateChildCommands (const std::function<void (const UICommandPtr&)>& processor) const override;
+	virtual void	EnumerateChildCommands (const std::function<void (const MenuCommandPtr&)>& processor) const override;
 
 private:
 	bool isChecked;
 };
 
-class UICommandStructure
+class GroupMenuCommand : public MenuCommand
 {
 public:
-	UICommandStructure ();
-	~UICommandStructure ();
+	GroupMenuCommand (const std::wstring& name);
+	virtual ~GroupMenuCommand ();
 
-	void	AddCommand (UICommandPtr command);
-	bool	IsEmpty () const;
-	void	EnumerateCommands (const std::function<void (const UICommandPtr&)>& processor) const;
+	void			AddChildCommand (MenuCommandPtr command);
+
+	virtual bool	IsChecked () const override;
+	virtual bool	HasChildCommands () const override;
+	virtual void	EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const override;
+
+	virtual bool	IsUndoable () const override;
+	virtual void	Do () override;
 
 private:
-	std::vector<UICommandPtr>	commands;
+	std::vector<MenuCommandPtr> childCommands;
+};
+
+class MenuCommandStructure
+{
+public:
+	MenuCommandStructure ();
+	~MenuCommandStructure ();
+
+	void	AddCommand (MenuCommandPtr command);
+	bool	IsEmpty () const;
+	void	EnumerateCommands (const std::function<void (const MenuCommandPtr&)>& processor) const;
+
+private:
+	std::vector<MenuCommandPtr>	commands;
 };
 
 }

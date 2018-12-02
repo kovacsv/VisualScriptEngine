@@ -26,7 +26,7 @@ private:
 NUIE::ModifierKeys		GetModiferKeysFromEvent (wxKeyboardState& evt);
 NUIE::Key				GetKeyFromEvent (wxKeyEvent& evt);
 
-NUIE::UICommandPtr		SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::UICommandStructure& commands);
+NUIE::MenuCommandPtr		SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
 
 }
 

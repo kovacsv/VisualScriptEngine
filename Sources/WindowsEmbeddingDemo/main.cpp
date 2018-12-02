@@ -78,61 +78,61 @@ public:
 		hwnd = newHwnd;
 	}
 
-	virtual NUIE::UICommandPtr OnContextMenu (
+	virtual NUIE::MenuCommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& uiEnvironment,
 		const NUIE::Point& position,
-		const NUIE::UICommandStructure& commands) override
+		const NUIE::MenuCommandStructure& commands) override
 	{
-		NUIE::UICommandStructure finalCommands = commands;
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberRange, uiManager, uiEnvironment, L"Number Range", position)));
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Addition", position)));
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Subtraction, uiManager, uiEnvironment, L"Subtraction", position)));
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Multiplication, uiManager, uiEnvironment, L"Multiplication", position)));
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Division, uiManager, uiEnvironment, L"Division", position)));
-		finalCommands.AddCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Viewer", position)));
+		NUIE::MenuCommandStructure finalCommands = commands;
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberRange, uiManager, uiEnvironment, L"Number Range", position)));
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Addition", position)));
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Subtraction, uiManager, uiEnvironment, L"Subtraction", position)));
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Multiplication, uiManager, uiEnvironment, L"Multiplication", position)));
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Division, uiManager, uiEnvironment, L"Division", position)));
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Viewer", position)));
 		return WAS::SelectCommandFromContextMenu (hwnd, position, finalCommands);
 	}
 
-	virtual NUIE::UICommandPtr OnContextMenu (
+	virtual NUIE::MenuCommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
 		const NUIE::UINodePtr& uiNode,
-		const NUIE::UICommandStructure& commands) override
+		const NUIE::MenuCommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::UICommandPtr OnContextMenu (
+	virtual NUIE::MenuCommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
 		const NUIE::UIOutputSlotPtr& outputSlot,
-		const NUIE::UICommandStructure& commands) override
+		const NUIE::MenuCommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::UICommandPtr OnContextMenu (
+	virtual NUIE::MenuCommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
 		const NUIE::UIInputSlotPtr& inputSlot,
-		const NUIE::UICommandStructure& commands) override
+		const NUIE::MenuCommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
-	virtual NUIE::UICommandPtr OnContextMenu (
+	virtual NUIE::MenuCommandPtr OnContextMenu (
 		NUIE::NodeUIManager& uiManager,
 		NUIE::NodeUIEnvironment& env,
 		const NUIE::Point& position,
 		const NUIE::UINodeGroupPtr& group,
-		const NUIE::UICommandStructure& commands) override
+		const NUIE::MenuCommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}

@@ -17,7 +17,7 @@ NUIE::ModifierKeys GetModiferKeysFromEvent (WPARAM wParam)
 	return NUIE::ModifierKeys (keys);
 }
 
-NUIE::UICommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
+NUIE::MenuCommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
 	if (commands.IsEmpty ()) {
 		return nullptr;
@@ -30,10 +30,10 @@ NUIE::UICommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& p
 	HMENU hPopupMenu = CreatePopupMenu ();
 	HMENU hCurrentMenu = hPopupMenu;
 
-	std::unordered_map<size_t, NUIE::UICommandPtr> commandTable;
+	std::unordered_map<size_t, NUIE::MenuCommandPtr> commandTable;
 
 	size_t currentCommandId = 1000;
-	std::function<void (const NUIE::UICommandPtr&)> addCommand = [&] (const NUIE::UICommandPtr& command) {
+	std::function<void (const NUIE::MenuCommandPtr&)> addCommand = [&] (const NUIE::MenuCommandPtr& command) {
 		if (command->HasChildCommands ()) {
 			HMENU subMenu = CreatePopupMenu ();
 			AppendMenu (hCurrentMenu, MF_POPUP, (UINT_PTR) subMenu, command->GetName ().c_str ());

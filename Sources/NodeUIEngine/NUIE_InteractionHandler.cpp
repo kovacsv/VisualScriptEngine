@@ -425,7 +425,7 @@ const NodeDrawingModifier* InteractionHandler::GetDrawingModifier ()
 	return &multiMouseMoveHandler;
 }
 
-void InteractionHandler::ExecuteCommand (UICommandPtr& command)
+void InteractionHandler::ExecuteCommand (MenuCommandPtr& command)
 {
 	if (command->IsUndoable ()) {
 		uiManager.SaveUndoState ();
@@ -535,28 +535,28 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& env,
 		handlerResult = EventHandlerResult::EventHandled;
 	} else if (mouseButton == MouseButton::Right) {
 		EventHandlers& eventHandlers = env.GetEventHandlers ();
-		UICommandPtr selectedCommand;
+		MenuCommandPtr selectedCommand;
 		bool found = FindItemUnderPosition (uiManager, env, position,
 			[&] (UINodePtr& foundNode) {
-				UICommandStructure commands = CreateNodeCommandStructure (uiManager, env, foundNode);
+				MenuCommandStructure commands = CreateNodeCommandStructure (uiManager, env, foundNode);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundNode, commands);
 			},
 			[&] (UIOutputSlotPtr& foundOutputSlot) {
-				UICommandStructure commands = CreateOutputSlotCommandStructure (uiManager, env, foundOutputSlot);
+				MenuCommandStructure commands = CreateOutputSlotCommandStructure (uiManager, env, foundOutputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundOutputSlot, commands);
 			},
 			[&] (UIInputSlotPtr& foundInputSlot) {
-				UICommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
+				MenuCommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundInputSlot, commands);
 			},
 			[&] (UINodeGroupPtr& foundGroup) {
-				UICommandStructure commands = CreateNodeGroupCommandStructure (uiManager, env, foundGroup);
+				MenuCommandStructure commands = CreateNodeGroupCommandStructure (uiManager, env, foundGroup);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundGroup, commands);
 			}
 		);
 		if (!found) {
 			Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
-			UICommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, env, modelPosition);
+			MenuCommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, env, modelPosition);
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {
@@ -614,7 +614,7 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 	}
 
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
-	UICommandPtr command = nullptr;
+	MenuCommandPtr command = nullptr;
 
 	switch (pressedKey.GetKeyCode ()) {
 		case PressedKeyCode::Delete:

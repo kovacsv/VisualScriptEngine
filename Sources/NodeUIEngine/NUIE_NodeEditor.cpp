@@ -262,14 +262,14 @@ bool NodeEditor::Save (const std::string& fileName) const
 
 void NodeEditor::Undo ()
 {
-	UICommandPtr command (new UndoCommand (uiManager, uiEnvironment));
+	MenuCommandPtr command (new UndoCommand (uiManager, uiEnvironment));
 	interactionHandler.ExecuteCommand (command);
 	Update ();
 }
 
 void NodeEditor::Redo ()
 {
-	UICommandPtr command (new RedoCommand (uiManager, uiEnvironment));
+	MenuCommandPtr command (new RedoCommand (uiManager, uiEnvironment));
 	interactionHandler.ExecuteCommand (command);
 	Update ();
 }

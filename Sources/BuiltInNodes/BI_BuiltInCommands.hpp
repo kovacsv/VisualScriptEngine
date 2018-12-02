@@ -8,7 +8,7 @@
 namespace BI
 {
 
-class CreateNodeCommand : public NUIE::SingleUICommand
+class CreateNodeCommand : public NUIE::SingleMenuCommand
 {
 public:
 	CreateNodeCommand (const std::wstring& name, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& viewPosition);

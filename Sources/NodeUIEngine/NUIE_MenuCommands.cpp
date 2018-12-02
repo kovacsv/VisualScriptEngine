@@ -4,117 +4,117 @@
 namespace NUIE
 {
 
-UICommand::UICommand (const std::wstring& name) :
+MenuCommand::MenuCommand (const std::wstring& name) :
 	name (name)
 {
 
 }
 
-UICommand::~UICommand ()
+MenuCommand::~MenuCommand ()
 {
 
 }
 
-const std::wstring& UICommand::GetName () const
+const std::wstring& MenuCommand::GetName () const
 {
 	return name;
 }
 
-UIGroupCommand::UIGroupCommand (const std::wstring& name) :
-	UICommand (name)
-{
-	
-}
-
-UIGroupCommand::~UIGroupCommand ()
-{
-	
-}
-
-void UIGroupCommand::AddChildCommand (UICommandPtr command)
-{
-	childCommands.push_back (command);
-}
-
-bool UIGroupCommand::IsChecked () const
-{
-	DBGBREAK ();
-	return false;
-}
-
-bool UIGroupCommand::HasChildCommands () const
-{
-	return !childCommands.empty ();
-}
-
-void UIGroupCommand::EnumerateChildCommands (const std::function<void (const UICommandPtr& command)>& processor) const
-{
-	for (const UICommandPtr& command : childCommands) {
-		processor (command);
-	}
-}
-
-bool UIGroupCommand::IsUndoable () const
-{
-	DBGBREAK ();
-	return false;
-}
-
-void UIGroupCommand::Do ()
-{
-	DBGBREAK ();
-}
-
-SingleUICommand::SingleUICommand (const std::wstring& name, bool isChecked) :
-	UICommand (name),
+SingleMenuCommand::SingleMenuCommand (const std::wstring& name, bool isChecked) :
+	MenuCommand (name),
 	isChecked (isChecked)
 {
 
 }
 
-SingleUICommand::~SingleUICommand ()
+SingleMenuCommand::~SingleMenuCommand ()
 {
 
 }
 
-bool SingleUICommand::IsChecked () const
+bool SingleMenuCommand::IsChecked () const
 {
 	return isChecked;
 }
 
-bool SingleUICommand::HasChildCommands () const
+bool SingleMenuCommand::HasChildCommands () const
 {
 	return false;
 }
 
-void SingleUICommand::EnumerateChildCommands (const std::function<void (const UICommandPtr&)>&) const
+void SingleMenuCommand::EnumerateChildCommands (const std::function<void (const MenuCommandPtr&)>&) const
 {
 
 }
 
-UICommandStructure::UICommandStructure ()
+GroupMenuCommand::GroupMenuCommand (const std::wstring& name) :
+	MenuCommand (name)
+{
+	
+}
+
+GroupMenuCommand::~GroupMenuCommand ()
+{
+	
+}
+
+void GroupMenuCommand::AddChildCommand (MenuCommandPtr command)
+{
+	childCommands.push_back (command);
+}
+
+bool GroupMenuCommand::IsChecked () const
+{
+	DBGBREAK ();
+	return false;
+}
+
+bool GroupMenuCommand::HasChildCommands () const
+{
+	return !childCommands.empty ();
+}
+
+void GroupMenuCommand::EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const
+{
+	for (const MenuCommandPtr& command : childCommands) {
+		processor (command);
+	}
+}
+
+bool GroupMenuCommand::IsUndoable () const
+{
+	DBGBREAK ();
+	return false;
+}
+
+void GroupMenuCommand::Do ()
+{
+	DBGBREAK ();
+}
+
+MenuCommandStructure::MenuCommandStructure ()
 {
 
 }
 
-UICommandStructure::~UICommandStructure ()
+MenuCommandStructure::~MenuCommandStructure ()
 {
 
 }
 
-void UICommandStructure::AddCommand (UICommandPtr command)
+void MenuCommandStructure::AddCommand (MenuCommandPtr command)
 {
 	commands.push_back (command);
 }
 
-bool UICommandStructure::IsEmpty () const
+bool MenuCommandStructure::IsEmpty () const
 {
 	return commands.empty ();
 }
 
-void UICommandStructure::EnumerateCommands (const std::function<void (const UICommandPtr& command)>& processor) const
+void MenuCommandStructure::EnumerateCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const
 {
-	for (const UICommandPtr& command : commands) {
+	for (const MenuCommandPtr& command : commands) {
 		processor (command);
 	}
 }

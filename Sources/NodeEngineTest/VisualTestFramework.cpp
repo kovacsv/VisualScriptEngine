@@ -107,37 +107,37 @@ TestEventHandlers::TestEventHandlers () :
 	
 }
 
-UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position, const UICommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position, const MenuCommandStructure& commands)
 {
-	NUIE::UICommandStructure actualCommands = commands;
-	NUIE::UIGroupCommandPtr createCommandGroup (new NUIE::UIGroupCommand (L"Add Node"));
+	NUIE::MenuCommandStructure actualCommands = commands;
+	NUIE::GroupMenuCommandPtr createCommandGroup (new NUIE::GroupMenuCommand (L"Add Node"));
 
-	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Create Number Node", position)));
-	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Create Integer Node", position)));
-	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Create Addition Node", position)));
-	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Increase, uiManager, uiEnvironment, L"Create Increase Node", position)));
-	createCommandGroup->AddChildCommand (NUIE::UICommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Create Viewer Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Create Number Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Create Integer Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Create Addition Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Increase, uiManager, uiEnvironment, L"Create Increase Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Create Viewer Node", position)));
 	actualCommands.AddCommand (createCommandGroup);
 
 	return SelectCommandByName (actualCommands);
 }
 
-UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const UICommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const UICommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const UICommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-UICommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const UICommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
@@ -154,11 +154,11 @@ void TestEventHandlers::SetNextCommandName (const std::wstring& nextCommandName)
 	commandToSelect = nextCommandName;
 }
 
-UICommandPtr TestEventHandlers::SelectCommandByName (const UICommandStructure& commands)
+MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandStructure& commands)
 {
 	DBGASSERT (!commandToSelect.empty ());
-	UICommandPtr selectedCommand = nullptr;
-	commands.EnumerateCommands ([&] (const UICommandPtr& command) {
+	MenuCommandPtr selectedCommand = nullptr;
+	commands.EnumerateCommands ([&] (const MenuCommandPtr& command) {
 		if (selectedCommand == nullptr) {
 			selectedCommand = SelectCommandByName (command);
 		}
@@ -168,11 +168,11 @@ UICommandPtr TestEventHandlers::SelectCommandByName (const UICommandStructure& c
 	return selectedCommand;
 }
 
-UICommandPtr TestEventHandlers::SelectCommandByName (const UICommandPtr& command)
+MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandPtr& command)
 {
 	if (command->HasChildCommands ()) {
-		UICommandPtr foundCommand = nullptr;
-		command->EnumerateChildCommands ([&] (const UICommandPtr& childCommand) {
+		MenuCommandPtr foundCommand = nullptr;
+		command->EnumerateChildCommands ([&] (const MenuCommandPtr& childCommand) {
 			if (foundCommand == nullptr) {
 				foundCommand = SelectCommandByName (childCommand);
 			}

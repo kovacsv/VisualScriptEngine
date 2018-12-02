@@ -18,27 +18,27 @@ NodeEditorEventHandlers::~NodeEditorEventHandlers ()
 
 }
 
-NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::UICommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::UICommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& outputSlot, const NUIE::UICommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& outputSlot, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::UICommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-NUIE::UICommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::UICommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
