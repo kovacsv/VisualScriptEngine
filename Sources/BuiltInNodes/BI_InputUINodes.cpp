@@ -51,12 +51,12 @@ NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnviro
 	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
 
 	if (minusButtonRect.Contains (position)) {
-		commandInterface.RunCommand ([&] () {
+		commandInterface.RunUndoableCommand ([&] () {
 			Decrease ();
 		});
 		return NUIE::EventHandlerResult::EventHandled;
 	} else if (plusButtonRect.Contains (position)) {
-		commandInterface.RunCommand ([&] () {
+		commandInterface.RunUndoableCommand ([&] () {
 			Increase ();
 		});
 		return NUIE::EventHandlerResult::EventHandled;

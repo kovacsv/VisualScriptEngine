@@ -302,7 +302,7 @@ public:
 
 	}
 
-	virtual void RunCommand (const std::function<void ()>& func) override
+	virtual void RunUndoableCommand (const std::function<void ()>& func) override
 	{
 		CustomUndoableCommand command (func);
 		uiManager.ExecuteCommand (command);

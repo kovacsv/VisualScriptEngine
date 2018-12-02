@@ -24,7 +24,7 @@ public:
 	UINodeCommandInterface ();
 	virtual ~UINodeCommandInterface ();
 
-	virtual void RunCommand (const std::function<void ()>& func) = 0;
+	virtual void RunUndoableCommand (const std::function<void ()>& func) = 0;
 };
 
 class UINode : public NE::Node
