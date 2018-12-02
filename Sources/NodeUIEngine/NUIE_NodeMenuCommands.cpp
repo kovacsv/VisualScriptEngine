@@ -140,7 +140,6 @@ void SetParametersCommand::Do ()
 				NodeParameterPtr& parameter = paramList.GetParameter (it.first);
 				ApplyCommonParameter (uiManager, uiEnvironment.GetEvaluationEnv (), relevantNodes, parameter, it.second);
 			}
-			uiManager.Update (uiEnvironment);
 		}
 
 		virtual size_t GetParameterCount () const override
@@ -383,7 +382,7 @@ public:
 			
 			}
 
-			void ApplyChanges (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment)
+			void ApplyChanges (NodeUIManager& uiManager)
 			{
 				for (const auto& it : changedParameterValues) {
 					switch (it.first) {
@@ -396,7 +395,6 @@ public:
 					}
 				}
 				uiManager.RequestRedraw ();
-				uiManager.Update (uiEnvironment);
 			}
 
 			virtual size_t GetParameterCount () const override
@@ -466,7 +464,7 @@ public:
 		std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group));
 		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
 			CustomUndoableCommand command ([&] () {
-				paramInterface->ApplyChanges (uiManager, uiEnvironment);
+				paramInterface->ApplyChanges (uiManager);
 			});
 			uiManager.ExecuteCommand (command);
 		}
