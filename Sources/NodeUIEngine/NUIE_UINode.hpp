@@ -129,7 +129,7 @@ std::shared_ptr<FeatureType> GetUINodeFeature (const UINode* uiNode, const Featu
 }
 
 template <class FeatureType>
-std::shared_ptr<FeatureType> GetUINodeFeature (const UINodePtr& uiNode, const FeatureId& featureId)
+std::shared_ptr<FeatureType> GetUINodeFeature (const UINodeConstPtr& uiNode, const FeatureId& featureId)
 {
 	return NodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
 }

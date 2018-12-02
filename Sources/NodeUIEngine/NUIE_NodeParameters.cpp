@@ -64,9 +64,9 @@ const NodeParameterPtr& NodeParameterList::GetParameter (size_t index) const
 	return parameters[index];
 }
 
-static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vector<UINodePtr>& uiNodes)
+static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vector<UINodeConstPtr>& uiNodes)
 {
-	for (const UINodePtr& uiNode : uiNodes) {
+	for (const UINodeConstPtr& uiNode : uiNodes) {
 		if (!parameter->IsApplicableTo (uiNode)) {
 			return false;
 		}
@@ -116,9 +116,9 @@ NE::ValuePtr StringToParameterValue (const std::wstring& str, const ParameterTyp
 
 void RegisterCommonParameters (NodeUIManager& uiManager, const NE::NodeCollection& nodeCollection, NodeParameterList& parameterList)
 {
-	std::vector<UINodePtr> uiNodes;
+	std::vector<UINodeConstPtr> uiNodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
-		UINodePtr uiNode = uiManager.GetUINode (nodeId);
+		UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
 		if (DBGVERIFY (uiNode != nullptr)) {
 			uiNodes.push_back (uiNode);
 		}
@@ -126,7 +126,7 @@ void RegisterCommonParameters (NodeUIManager& uiManager, const NE::NodeCollectio
 	});
 
 	std::unordered_set<std::wstring> registeredParameterNames;
-	for (const UINodePtr& uiNode : uiNodes) {
+	for (const UINodeConstPtr& uiNode : uiNodes) {
 		NodeParameterList parameters;
 		uiNode->RegisterParameters (parameters);
 		for (size_t paramIndex = 0; paramIndex < parameters.GetParameterCount (); ++paramIndex) {

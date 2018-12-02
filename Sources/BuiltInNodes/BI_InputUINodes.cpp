@@ -128,7 +128,7 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetValue ()));
 		}
@@ -151,7 +151,7 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetStep ()));
 		}
@@ -254,7 +254,7 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetValue ()));
 		}
@@ -277,7 +277,7 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetStep ()));
 		}
@@ -437,7 +437,7 @@ void IntegerRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0.0;
 		}
@@ -519,7 +519,7 @@ void DoubleRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0.0;
 		}

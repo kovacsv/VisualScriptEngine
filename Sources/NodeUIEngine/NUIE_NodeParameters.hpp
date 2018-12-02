@@ -22,9 +22,9 @@ public:
 	const ParameterType&				GetType () const;
 	virtual std::vector<std::wstring>	GetValueChoices () const;
 
-	virtual NE::ValuePtr				GetValue (const UINodePtr& uiNode) const = 0;
-	virtual bool						IsApplicableTo (const UINodePtr& uiNode) const = 0;
-	virtual bool						CanSetValue (const UINodePtr& uiNode, const NE::ValuePtr& value) const = 0;
+	virtual NE::ValuePtr				GetValue (const UINodeConstPtr& uiNode) const = 0;
+	virtual bool						IsApplicableTo (const UINodeConstPtr& uiNode) const = 0;
+	virtual bool						CanSetValue (const UINodeConstPtr& uiNode, const NE::ValuePtr& value) const = 0;
 	virtual bool						SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
 
 private:

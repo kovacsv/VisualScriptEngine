@@ -35,7 +35,7 @@ public:
 
 	}
 
-	virtual bool IsApplicableTo (const NUIE::UINodePtr& uiNode) override
+	virtual bool IsApplicableTo (const NUIE::UINodeConstPtr& uiNode) override
 	{
 		return uiNode->HasFeature (EnableDisableFeatureId);
 	}
@@ -72,7 +72,7 @@ public:
 
 	}
 
-	virtual bool IsApplicableTo (const NUIE::UINodePtr& uiNode) override
+	virtual bool IsApplicableTo (const NUIE::UINodeConstPtr& uiNode) override
 	{
 		return uiNode->HasFeature (ValueCombinationFeatureId);
 	}
@@ -133,7 +133,7 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			bool enableState = GetEnableDisableFeature (uiNode)->GetEnableState ();
 			int enableStateInt = (enableState ? 0 : 1);
@@ -232,7 +232,7 @@ void ValueCombinationFeature::RegisterParameters (NUIE::NodeParameterList& param
 		
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			NE::ValueCombinationMode valueCombination = GetValueCombinationFeature (uiNode)->GetValueCombinationMode ();
 			int valueCombinationInt = (int) valueCombination;
@@ -275,17 +275,18 @@ std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINod
 	return NUIE::GetUINodeFeature<EnableDisableFeature> (uiNode, EnableDisableFeatureId);
 }
 
-std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINodePtr& uiNode)
+std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINodeConstPtr& uiNode)
 {
 	return NUIE::GetUINodeFeature<EnableDisableFeature> (uiNode, EnableDisableFeatureId);
 }
+
 
 std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINode* uiNode)
 {
 	return NUIE::GetUINodeFeature<ValueCombinationFeature> (uiNode, ValueCombinationFeatureId);
 }
 
-std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINodePtr& uiNode)
+std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINodeConstPtr& uiNode)
 {
 	return NUIE::GetUINodeFeature<ValueCombinationFeature> (uiNode, ValueCombinationFeatureId);
 }

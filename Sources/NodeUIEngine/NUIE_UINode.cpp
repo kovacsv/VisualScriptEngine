@@ -226,7 +226,7 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 		
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ()));
 		}

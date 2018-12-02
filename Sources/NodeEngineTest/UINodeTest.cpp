@@ -151,7 +151,7 @@ public:
 
 			}
 
-			virtual NE::ValuePtr GetValueInternal (const UINodePtr& uiNode) const override
+			virtual NE::ValuePtr GetValueInternal (const UINodeConstPtr& uiNode) const override
 			{
 				return NE::ValuePtr (new NE::IntValue ((int) GetTypedNode (uiNode)->GetMyEnumValue ()));
 			}

@@ -68,7 +68,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0 && value->GetValue () <= 255;
 		}
@@ -83,7 +83,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0 && value->GetValue () <= 255;
 		}
@@ -98,7 +98,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0 && value->GetValue () <= 255;
 		}
@@ -435,7 +435,7 @@ void CircleNode::RegisterParameters (NUIE::NodeParameterList& parameterList) con
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodePtr&, const std::shared_ptr<NE::DoubleValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::DoubleValue>& value) const override
 		{
 			return value->GetValue () >= 0.0;
 		}

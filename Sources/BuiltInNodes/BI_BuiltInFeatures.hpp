@@ -58,10 +58,9 @@ private:
 };
 
 std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINode* uiNode);
-std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINodePtr& uiNode);
+std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINodeConstPtr& uiNode);
 std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINode* uiNode);
-std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINodePtr& uiNode);
-
+std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINodeConstPtr& uiNode);
 
 }
 

@@ -52,7 +52,7 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodePtr& uiNode) const override
+		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::IntValue ((int) GetTypedNode (uiNode)->GetTextsPerPage ()));
 		}

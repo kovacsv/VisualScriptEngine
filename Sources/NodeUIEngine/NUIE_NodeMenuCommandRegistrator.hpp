@@ -85,7 +85,7 @@ public:
 	NodeCommand (const std::wstring& name, bool isChecked);
 	virtual ~NodeCommand ();
 
-	virtual bool	IsApplicableTo (const UINodePtr& uiNode) = 0;
+	virtual bool	IsApplicableTo (const UINodeConstPtr& uiNode) = 0;
 	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) = 0;
 };
 
