@@ -1,4 +1,5 @@
 #include "BI_BuiltInCommands.hpp"
+#include "NUIE_NodeUIManagerCommands.hpp"
 
 namespace BI
 {
@@ -17,15 +18,12 @@ CreateNodeCommand::~CreateNodeCommand ()
 
 }
 
-bool CreateNodeCommand::IsUndoable () const
-{
-	return true;
-}
-
 void CreateNodeCommand::Do ()
 {
 	const NUIE::ViewBox& viewBox = uiManager.GetViewBox ();
-	uiManager.AddNode (CreateNode (viewBox.ViewToModel (viewPosition)), uiEnvironment.GetEvaluationEnv ());
+	NUIE::UINodePtr uiNode = CreateNode (viewBox.ViewToModel (viewPosition));
+	NUIE::AddNodeCommand command (uiNode, uiEnvironment.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (command);
 }
 
 }

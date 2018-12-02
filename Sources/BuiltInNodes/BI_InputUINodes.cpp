@@ -41,7 +41,7 @@ void NumericUpDownNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
-NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications& notifications)
+NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
 {
 	if (mouseButton != NUIE::MouseButton::Left) {
 		return NUIE::EventHandlerResult::EventNotHandled;
@@ -51,20 +51,22 @@ NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnviro
 	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
 
 	if (minusButtonRect.Contains (position)) {
-		notifications.BeforeModification ();
-		Decrease ();
+		commandInterface.RunCommand ([&] () {
+			Decrease ();
+		});
 		return NUIE::EventHandlerResult::EventHandled;
 	} else if (plusButtonRect.Contains (position)) {
-		notifications.BeforeModification ();
-		Increase ();
+		commandInterface.RunCommand ([&] () {
+			Increase ();
+		});
 		return NUIE::EventHandlerResult::EventHandled;
 	}
 	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
-NUIE::EventHandlerResult NumericUpDownNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications& notifications)
+NUIE::EventHandlerResult NumericUpDownNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
 {
-	return HandleMouseClick (env, keys, mouseButton, position, notifications);
+	return HandleMouseClick (env, keys, mouseButton, position, commandInterface);
 }
 
 bool NumericUpDownNode::IsForceCalculated () const

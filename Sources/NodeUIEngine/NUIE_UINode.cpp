@@ -14,12 +14,12 @@ namespace NUIE
 
 NE::SerializationInfo UINode::serializationInfo (NE::ObjectVersion (1));
 
-EventHandlerNotifications::EventHandlerNotifications ()
+UINodeCommandInterface::UINodeCommandInterface ()
 {
 
 }
 
-EventHandlerNotifications::~EventHandlerNotifications ()
+UINodeCommandInterface::~UINodeCommandInterface ()
 {
 
 }
@@ -205,12 +205,12 @@ const NodeFeaturePtr& UINode::GetFeature (const FeatureId& featureId) const
 	return nodeFeatureSet.GetFeature (featureId);
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, EventHandlerNotifications&)
+NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, UINodeCommandInterface&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseDoubleClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, EventHandlerNotifications&)
+NUIE::EventHandlerResult UINode::HandleMouseDoubleClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, UINodeCommandInterface&)
 {
 	return EventHandlerResult::EventNotHandled;
 }

@@ -17,7 +17,20 @@
 namespace NUIE
 {
 
+class NodeUIManager;
 class NodeDrawingModifier;
+
+class NodeUIManagerCommand
+{
+public:
+	NodeUIManagerCommand ();
+	virtual ~NodeUIManagerCommand ();
+
+	virtual bool IsUndoable () const = 0;
+	virtual void Do (NodeUIManager& uiManager) = 0;
+};
+
+typedef std::shared_ptr<NodeUIManagerCommand> NodeUIManagerCommandPtr;
 
 class NodeUIManager
 {
@@ -104,6 +117,9 @@ public:
 	bool						RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection);
 	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
 	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
+
+	void						ExecuteCommand (NodeUIManagerCommand& command);
+	void						ExecuteCommand (NodeUIManagerCommandPtr& command);
 
 private:
 	class Status

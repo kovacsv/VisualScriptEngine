@@ -52,7 +52,6 @@ public:
 	~InteractionHandler ();
 
 	const NodeDrawingModifier*		GetDrawingModifier ();
-	void							ExecuteCommand (MenuCommandPtr& command);
 
 	virtual EventHandlerResult		HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult		HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;

@@ -9,29 +9,11 @@
 namespace NUIE
 {
 
-class UndoableCommand : public SingleMenuCommand
+class DeleteNodesMenuCommand : public SingleMenuCommand
 {
 public:
-	UndoableCommand (const std::wstring& name, bool isChecked);
-	virtual ~UndoableCommand ();
-
-	virtual bool IsUndoable () const override;
-};
-
-class NotUndoableCommand : public SingleMenuCommand
-{
-public:
-	NotUndoableCommand (const std::wstring& name, bool isChecked);
-	virtual ~NotUndoableCommand ();
-
-	virtual bool IsUndoable () const override;
-};
-
-class DeleteNodesCommand : public UndoableCommand
-{
-public:
-	DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
-	virtual ~DeleteNodesCommand ();
+	DeleteNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
+	virtual ~DeleteNodesMenuCommand ();
 
 	virtual void Do () override;
 
@@ -41,11 +23,11 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class CopyNodesCommand : public NotUndoableCommand
+class CopyNodesMenuCommand : public SingleMenuCommand
 {
 public:
-	CopyNodesCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
-	virtual ~CopyNodesCommand ();
+	CopyNodesMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
+	virtual ~CopyNodesMenuCommand ();
 
 	virtual void Do () override;
 
@@ -54,11 +36,11 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class PasteNodesCommand : public UndoableCommand
+class PasteNodesMenuCommand : public SingleMenuCommand
 {
 public:
-	PasteNodesCommand (NodeUIManager& uiManager, const Point& position);
-	virtual ~PasteNodesCommand ();
+	PasteNodesMenuCommand (NodeUIManager& uiManager, const Point& position);
+	virtual ~PasteNodesMenuCommand ();
 
 	virtual void Do () override;
 
@@ -67,11 +49,11 @@ private:
 	Point				position;
 };
 
-class UndoCommand : public NotUndoableCommand
+class UndoMenuCommand : public SingleMenuCommand
 {
 public:
-	UndoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
-	virtual ~UndoCommand ();
+	UndoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
+	virtual ~UndoMenuCommand ();
 
 	virtual void Do () override;
 
@@ -80,11 +62,11 @@ private:
 	NodeUIEnvironment&	uiEnvironment;
 };
 
-class RedoCommand : public NotUndoableCommand
+class RedoMenuCommand : public SingleMenuCommand
 {
 public:
-	RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
-	virtual ~RedoCommand ();
+	RedoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
+	virtual ~RedoMenuCommand ();
 
 	virtual void Do () override;
 
@@ -93,7 +75,7 @@ private:
 	NodeUIEnvironment&	uiEnvironment;
 };
 
-class SetParametersCommand : public NotUndoableCommand
+class SetParametersCommand : public SingleMenuCommand
 {
 public:
 	SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes);
@@ -109,7 +91,7 @@ private:
 	NodeParameterList	relevantParameters;
 };
 
-NE::NodeCollection	GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
+NE::NodeCollection		GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
 
 MenuCommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
 MenuCommandStructure	CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode);

@@ -18,13 +18,13 @@ class NodeParameterList;
 class NodeCommandRegistrator;
 class NodeFeature;
 
-class EventHandlerNotifications
+class UINodeCommandInterface
 {
 public:
-	EventHandlerNotifications ();
-	virtual ~EventHandlerNotifications ();
+	UINodeCommandInterface ();
+	virtual ~UINodeCommandInterface ();
 
-	virtual void BeforeModification () = 0;
+	virtual void RunCommand (const std::function<void ()>& func) = 0;
 };
 
 class UINode : public NE::Node
@@ -74,8 +74,8 @@ public:
 	bool						HasFeature (const FeatureId& featureId) const;
 	const NodeFeaturePtr&		GetFeature (const FeatureId& featureId) const;
 
-	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, EventHandlerNotifications& notifications);
-	virtual EventHandlerResult	HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, EventHandlerNotifications& notifications);
+	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, UINodeCommandInterface& commandInterface);
+	virtual EventHandlerResult	HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, UINodeCommandInterface& commandInterface);
 
 	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const;

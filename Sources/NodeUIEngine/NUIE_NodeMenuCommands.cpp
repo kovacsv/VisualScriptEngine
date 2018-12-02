@@ -1,5 +1,6 @@
 #include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeMenuCommandRegistrator.hpp"
+#include "NUIE_NodeUIManagerCommands.hpp"
 #include "NUIE_EventHandlers.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"
@@ -9,40 +10,8 @@
 namespace NUIE
 {
 
-UndoableCommand::UndoableCommand (const std::wstring & name, bool isChecked) :
-	SingleMenuCommand (name, isChecked)
-{
-
-}
-
-UndoableCommand::~UndoableCommand ()
-{
-
-}
-
-bool UndoableCommand::IsUndoable () const
-{
-	return true;
-}
-
-NotUndoableCommand::NotUndoableCommand (const std::wstring & name, bool isChecked) :
-	SingleMenuCommand (name, isChecked)
-{
-
-}
-
-NotUndoableCommand::~NotUndoableCommand ()
-{
-
-}
-
-bool NotUndoableCommand::IsUndoable () const
-{
-	return false;
-}
-
-DeleteNodesCommand::DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
-	UndoableCommand (L"Delete Nodes", false),
+DeleteNodesMenuCommand::DeleteNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
+	SingleMenuCommand (L"Delete Nodes", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	relevantNodes (relevantNodes)
@@ -50,124 +19,95 @@ DeleteNodesCommand::DeleteNodesCommand (NodeUIManager& uiManager, NodeUIEnvironm
 
 }
 
-DeleteNodesCommand::~DeleteNodesCommand ()
+DeleteNodesMenuCommand::~DeleteNodesMenuCommand ()
 {
 
 }
 
-void DeleteNodesCommand::Do ()
+void DeleteNodesMenuCommand::Do ()
 {
-	relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-		uiManager.DeleteNode (nodeId, uiEnvironment.GetEvaluationEnv ());
-		return true;
-	});
+	DeleteNodesCommand command (relevantNodes, uiEnvironment.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (command);
 }
 
-CopyNodesCommand::CopyNodesCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-	NotUndoableCommand (L"Copy Nodes", false),
+CopyNodesMenuCommand::CopyNodesMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
+	SingleMenuCommand (L"Copy Nodes", false),
 	uiManager (uiManager),
 	relevantNodes (relevantNodes)
 {
 
 }
 
-CopyNodesCommand::~CopyNodesCommand ()
+CopyNodesMenuCommand::~CopyNodesMenuCommand ()
 {
 
 }
 
-void CopyNodesCommand::Do ()
+void CopyNodesMenuCommand::Do ()
 {
-	uiManager.Copy (relevantNodes);
+	CopyNodesCommand command (relevantNodes);
+	uiManager.ExecuteCommand (command);
 }
 
-PasteNodesCommand::PasteNodesCommand (NodeUIManager& uiManager, const Point& position) :
-	UndoableCommand (L"Paste Nodes", false),
+PasteNodesMenuCommand::PasteNodesMenuCommand (NodeUIManager& uiManager, const Point& position) :
+	SingleMenuCommand (L"Paste Nodes", false),
 	uiManager (uiManager),
 	position (position)
 {
 
 }
 
-PasteNodesCommand::~PasteNodesCommand ()
+PasteNodesMenuCommand::~PasteNodesMenuCommand ()
 {
 
 }
 
-void PasteNodesCommand::Do ()
+void PasteNodesMenuCommand::Do ()
 {
-	std::unordered_set<NE::NodeId> oldNodes;
-	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
-		oldNodes.insert (uiNode->GetId ());
-		return true;
-	});
-
-	uiManager.Paste ();
-
-	std::vector<UINodePtr> newNodes;
-	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) {
-		if (oldNodes.find (uiNode->GetId ()) == oldNodes.end ()) {
-			newNodes.push_back (uiNode);
-		}
-		return true;
-	});
-
-	Point centerPosition;
-	for (UINodePtr& uiNode : newNodes) {
-		Point nodePosition = uiNode->GetNodePosition ();
-		centerPosition = centerPosition + nodePosition;
-	}
-
-	NE::NodeCollection newSelection;
-	centerPosition = centerPosition / (double) newNodes.size ();
-	Point nodeOffset = position - centerPosition;
-	for (UINodePtr& uiNode : newNodes) {
-		Point nodePosition = uiNode->GetNodePosition ();
-		uiNode->SetNodePosition (nodePosition + nodeOffset);
-		newSelection.Insert (uiNode->GetId ());
-	}
-
-	uiManager.SetSelectedNodes (newSelection);
+	PasteNodesCommand command (position);
+	uiManager.ExecuteCommand (command);
 }
 
-UndoCommand::UndoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-	NotUndoableCommand (L"Undo", false),
+UndoMenuCommand::UndoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
+	SingleMenuCommand (L"Undo", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
 
 }
 
-UndoCommand::~UndoCommand ()
+UndoMenuCommand::~UndoMenuCommand ()
 {
 
 }
 
-void UndoCommand::Do ()
+void UndoMenuCommand::Do ()
 {
-	uiManager.Undo (uiEnvironment.GetEvaluationEnv ());
+	UndoCommand command (uiEnvironment.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (command);
 }
 
-RedoCommand::RedoCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-	NotUndoableCommand (L"Redo", false),
+RedoMenuCommand::RedoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
+	SingleMenuCommand (L"Redo", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
 
 }
 
-RedoCommand::~RedoCommand ()
+RedoMenuCommand::~RedoMenuCommand ()
 {
 
 }
 
-void RedoCommand::Do ()
+void RedoMenuCommand::Do ()
 {
-	uiManager.Redo (uiEnvironment.GetEvaluationEnv ());
+	RedoCommand command (uiEnvironment.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (command);
 }
 
 SetParametersCommand::SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
-	NotUndoableCommand (L"Set Parameters", false),
+	SingleMenuCommand (L"Set Parameters", false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	currentNode (currentNode),
@@ -280,15 +220,17 @@ void SetParametersCommand::Do ()
 	RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
 	std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
 	if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
-		uiManager.SaveUndoState ();
-		paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
+		CustomUndoableCommand command ([&] () {
+			paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
+		});
+		uiManager.ExecuteCommand (command);
 	}
 }
 
-class DisconnectFromInputSlotCommand : public InputSlotCommand
+class DisconnectFromInputSlotMenuCommand : public InputSlotCommand
 {
 public:
-	DisconnectFromInputSlotCommand (const std::wstring& name, const UIOutputSlotConstPtr& slotToDisconnect) :
+	DisconnectFromInputSlotMenuCommand (const std::wstring& name, const UIOutputSlotConstPtr& slotToDisconnect) :
 		InputSlotCommand (name, false),
 		slotToDisconnect (slotToDisconnect)
 	{
@@ -297,17 +239,18 @@ public:
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UIInputSlotPtr& inputSlot) override
 	{
-		uiManager.DisconnectOutputSlotFromInputSlot (slotToDisconnect, inputSlot);
+		DisconnectSlotsCommand command (slotToDisconnect, inputSlot);
+		uiManager.ExecuteCommand (command);
 	}
 
 private:
 	UIOutputSlotConstPtr slotToDisconnect;
 };
 
-class DisconnectAllFromInputSlotCommand : public InputSlotCommand
+class DisconnectAllFromInputSlotMenuCommand : public InputSlotCommand
 {
 public:
-	DisconnectAllFromInputSlotCommand (const std::wstring& name) :
+	DisconnectAllFromInputSlotMenuCommand (const std::wstring& name) :
 		InputSlotCommand (name, false)
 	{
 
@@ -315,14 +258,15 @@ public:
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UIInputSlotPtr& inputSlot) override
 	{
-		uiManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
+		DisconnectAllOutputSlotsCommand command (inputSlot);
+		uiManager.ExecuteCommand (command);
 	}
 };
 
-class DisconnectFromOutputSlotCommand : public OutputSlotCommand
+class DisconnectFromOutputSlotMenuCommand : public OutputSlotCommand
 {
 public:
-	DisconnectFromOutputSlotCommand (const std::wstring& name, const UIInputSlotConstPtr& slotToDisconnect) :
+	DisconnectFromOutputSlotMenuCommand (const std::wstring& name, const UIInputSlotConstPtr& slotToDisconnect) :
 		OutputSlotCommand (name, false),
 		slotToDisconnect (slotToDisconnect)
 	{
@@ -331,17 +275,18 @@ public:
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UIOutputSlotPtr& outputSlot) override
 	{
-		uiManager.DisconnectOutputSlotFromInputSlot (outputSlot, slotToDisconnect);
+		DisconnectSlotsCommand command (outputSlot, slotToDisconnect);
+		uiManager.ExecuteCommand (command);
 	}
 
 private:
 	UIInputSlotConstPtr slotToDisconnect;
 };
 
-class DisconnectAllFromOutputSlotCommand : public OutputSlotCommand
+class DisconnectAllFromOutputSlotMenuCommand : public OutputSlotCommand
 {
 public:
-	DisconnectAllFromOutputSlotCommand (const std::wstring& name) :
+	DisconnectAllFromOutputSlotMenuCommand (const std::wstring& name) :
 		OutputSlotCommand (name, false)
 	{
 
@@ -349,15 +294,16 @@ public:
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UIOutputSlotPtr& outputSlot) override
 	{
-		uiManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
+		DisconnectAllInputSlotsCommand command (outputSlot);
+		uiManager.ExecuteCommand (command);
 	}
 };
 
-class MultiNodeCommand : public UndoableCommand
+class MultiNodeMenuCommand : public SingleMenuCommand
 {
 public:
-	MultiNodeCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, NodeCommandPtr& nodeCommand) :
-		UndoableCommand (name, nodeCommand->IsChecked ()),
+	MultiNodeMenuCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, NodeCommandPtr& nodeCommand) :
+		SingleMenuCommand (name, nodeCommand->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		nodeCommand (nodeCommand)
@@ -365,7 +311,7 @@ public:
 
 	}
 
-	virtual ~MultiNodeCommand ()
+	virtual ~MultiNodeMenuCommand ()
 	{
 
 	}
@@ -385,9 +331,12 @@ public:
 		if (DBGERROR (nodeCommand == nullptr)) {
 			return;
 		}
-		for (UINodePtr& uiNode : uiNodes) {
-			nodeCommand->Do (uiManager, uiEnvironment, uiNode);
-		}
+		CustomUndoableCommand command ([&] () {
+			for (UINodePtr& uiNode : uiNodes) {
+				nodeCommand->Do (uiManager, uiEnvironment, uiNode);
+			}
+		});
+		uiManager.ExecuteCommand (command);
 	}
 
 private:
@@ -397,11 +346,11 @@ private:
 	std::vector<UINodePtr>		uiNodes;
 };
 
-class SetGroupParametersCommand : public UndoableCommand
+class SetGroupParametersCommand : public SingleMenuCommand
 {
 public:
 	SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
-		UndoableCommand (L"Set Parameters", false),
+		SingleMenuCommand (L"Set Parameters", false),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		group (group)
@@ -539,7 +488,7 @@ public:
 
 	virtual void RegisterNodeCommand (NodeCommandPtr nodeCommand) override
 	{
-		std::shared_ptr<MultiNodeCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
+		std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
 		commandStructure.AddCommand (multiNodeCommand);
 	}
 
@@ -547,7 +496,7 @@ public:
 	{
 		GroupMenuCommandPtr groupCommand (new GroupMenuCommand (nodeGroupCommand->GetName ()));
 		nodeGroupCommand->EnumerateChildCommands ([&] (const NodeCommandPtr& nodeCommand) {
-			std::shared_ptr<MultiNodeCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
+			std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
 			groupCommand->AddChildCommand (multiNodeCommand);
 		});
 		commandStructure.AddCommand (groupCommand);
@@ -564,9 +513,9 @@ public:
 	}
 
 private:
-	std::shared_ptr<MultiNodeCommand> CreateMultiNodeCommand (NodeCommandPtr nodeCommand)
+	std::shared_ptr<MultiNodeMenuCommand> CreateMultiNodeCommand (NodeCommandPtr nodeCommand)
 	{
-		std::shared_ptr<MultiNodeCommand> multiNodeCommand (new MultiNodeCommand (nodeCommand->GetName (), uiManager, uiEnvironment, nodeCommand));
+		std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand (new MultiNodeMenuCommand (nodeCommand->GetName (), uiManager, uiEnvironment, nodeCommand));
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			if (nodeCommand->IsApplicableTo (uiNode)) {
@@ -584,11 +533,11 @@ private:
 };
 
 template <typename SlotType, typename CommandType>
-class SlotCommand : public UndoableCommand
+class SlotCommand : public SingleMenuCommand
 {
 public:
 	SlotCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, SlotType& slot, CommandType& command) :
-		UndoableCommand (name, command->IsChecked ()),
+		SingleMenuCommand (name, command->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
 		slot (slot),
@@ -664,18 +613,18 @@ private:
 	MenuCommandStructure	commandStructure;
 };
 
-class CreateGroupCommand : public UndoableCommand
+class CreateGroupMenuCommand : public SingleMenuCommand
 {
 public:
-	CreateGroupCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		UndoableCommand (L"Create New Group", false),
+	CreateGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
+		SingleMenuCommand (L"Create New Group", false),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
 	
 	}
 
-	virtual ~CreateGroupCommand ()
+	virtual ~CreateGroupMenuCommand ()
 	{
 	
 	}
@@ -683,8 +632,8 @@ public:
 	virtual void Do () override
 	{
 		UINodeGroupPtr group (new UINodeGroup (L"Group", relevantNodes));
-		uiManager.AddUINodeGroup (group);
-		uiManager.RequestRedraw ();
+		AddGroupCommand command (group);
+		uiManager.ExecuteCommand (command);
 	}
 
 private:
@@ -692,26 +641,26 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-class DeleteGroupCommand : public UndoableCommand
+class DeleteGroupMenuCommand : public SingleMenuCommand
 {
 public:
-	DeleteGroupCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
-		UndoableCommand (L"Delete Group", false),
+	DeleteGroupMenuCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
+		SingleMenuCommand (L"Delete Group", false),
 		uiManager (uiManager),
 		group (group)
 	{
 	
 	}
 
-	virtual ~DeleteGroupCommand ()
+	virtual ~DeleteGroupMenuCommand ()
 	{
 	
 	}
 
 	virtual void Do () override
 	{
-		uiManager.DeleteUINodeGroup (group);
-		uiManager.RequestRedraw ();
+		DeleteGroupCommand command (group);
+		uiManager.ExecuteCommand (command);
 	}
 
 private:
@@ -719,26 +668,26 @@ private:
 	UINodeGroupPtr		group;
 };
 
-class RemoveNodesFromGroupCommand : public UndoableCommand
+class RemoveNodesFromGroupMenuCommand : public SingleMenuCommand
 {
 public:
-	RemoveNodesFromGroupCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		UndoableCommand (L"Remove From Group", false),
+	RemoveNodesFromGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
+		SingleMenuCommand (L"Remove From Group", false),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
 	
 	}
 
-	virtual ~RemoveNodesFromGroupCommand ()
+	virtual ~RemoveNodesFromGroupMenuCommand ()
 	{
 	
 	}
 
 	virtual void Do () override
 	{
-		uiManager.RemoveNodesFromGroup (relevantNodes);
-		uiManager.RequestRedraw ();
+		RemoveNodesFromGroupCommand command (relevantNodes);
+		uiManager.ExecuteCommand (command);
 	}
 
 private:
@@ -759,7 +708,7 @@ MenuCommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, 
 {
 	MenuCommandStructure commandStructure;
 	if (uiManager.CanPaste ()) {
-		commandStructure.AddCommand (MenuCommandPtr (new PasteNodesCommand (uiManager, position)));
+		commandStructure.AddCommand (MenuCommandPtr (new PasteNodesMenuCommand (uiManager, position)));
 	}
 	return commandStructure;
 }
@@ -772,11 +721,11 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new SetParametersCommand (uiManager, uiEnvironment, uiNode, relevantNodes)));
 	uiNode->RegisterCommands (commandStructureBuilder);
 
-	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new CopyNodesCommand (uiManager, relevantNodes)));
-	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new DeleteNodesCommand (uiManager, uiEnvironment, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new CopyNodesMenuCommand (uiManager, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new DeleteNodesMenuCommand (uiManager, uiEnvironment, relevantNodes)));
 
 	GroupMenuCommandPtr groupingCommandGroup (new GroupMenuCommand (L"Grouping"));
-	groupingCommandGroup->AddChildCommand (MenuCommandPtr (new CreateGroupCommand (uiManager, relevantNodes)));
+	groupingCommandGroup->AddChildCommand (MenuCommandPtr (new CreateGroupMenuCommand (uiManager, relevantNodes)));
 	bool isNodeGrouped = false;
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
 		if (group->ContainsNode (uiNode->GetId ())) {
@@ -785,7 +734,7 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 		return !isNodeGrouped;
 	});
 	if (isNodeGrouped) {
-		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new RemoveNodesFromGroupCommand (uiManager, relevantNodes)));
+		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new RemoveNodesFromGroupMenuCommand (uiManager, relevantNodes)));
 	}
 	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
 
@@ -800,9 +749,9 @@ MenuCommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager,
 		OutputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<OutputSlotCommandPtr> (L"Disconnect"));
 		uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (UIInputSlotConstPtr inputSlot) {
 			UINodeConstPtr uiNode = uiManager.GetUINode (inputSlot->GetOwnerNodeId ());
-			disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectFromOutputSlotCommand (uiNode->GetNodeName () + L" (" + inputSlot->GetName () + L")", inputSlot)));
+			disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectFromOutputSlotMenuCommand (uiNode->GetNodeName () + L" (" + inputSlot->GetName () + L")", inputSlot)));
 		});
-		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectAllFromOutputSlotCommand (L"All")));
+		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectAllFromOutputSlotMenuCommand (L"All")));
 		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
 	}
 
@@ -818,9 +767,9 @@ MenuCommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, 
 		InputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<InputSlotCommandPtr> (L"Disconnect"));
 		uiManager.EnumerateConnectedOutputSlots (inputSlot, [&] (UIOutputSlotConstPtr outputSlot) {
 			UINodeConstPtr uiNode = uiManager.GetUINode (outputSlot->GetOwnerNodeId ());
-			disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectFromInputSlotCommand (uiNode->GetNodeName () + L" (" + outputSlot->GetName () + L")", outputSlot)));
+			disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectFromInputSlotMenuCommand (uiNode->GetNodeName () + L" (" + outputSlot->GetName () + L")", outputSlot)));
 		});
-		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectAllFromInputSlotCommand (L"All")));
+		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectAllFromInputSlotMenuCommand (L"All")));
 		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
 	}
 
@@ -832,7 +781,7 @@ MenuCommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, 
 {
 	MenuCommandStructure commandStructure;
 	commandStructure.AddCommand (MenuCommandPtr (new SetGroupParametersCommand (uiManager, uiEnvironment, group)));
-	commandStructure.AddCommand (MenuCommandPtr (new DeleteGroupCommand (uiManager, group)));
+	commandStructure.AddCommand (MenuCommandPtr (new DeleteGroupMenuCommand (uiManager, group)));
 	return commandStructure;
 }
 

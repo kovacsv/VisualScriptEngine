@@ -1,5 +1,6 @@
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_NodeMenuCommands.hpp"
+#include "NUIE_NodeUIManagerCommands.hpp"
 #include "NE_MemoryStream.hpp"
 
 #include <fstream>
@@ -166,8 +167,8 @@ void NodeEditor::Draw ()
 
 void NodeEditor::AddNode (const UINodePtr& uiNode)
 {
-	uiManager.SaveUndoState ();
-	uiManager.AddNode (uiNode, uiEnvironment.GetEvaluationEnv ());
+	AddNodeCommand command (uiNode, uiEnvironment.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (command);
 	Update ();
 }
 
@@ -262,15 +263,15 @@ bool NodeEditor::Save (const std::string& fileName) const
 
 void NodeEditor::Undo ()
 {
-	MenuCommandPtr command (new UndoCommand (uiManager, uiEnvironment));
-	interactionHandler.ExecuteCommand (command);
+	UndoCommand command (uiEnvironment.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (command);
 	Update ();
 }
 
 void NodeEditor::Redo ()
 {
-	MenuCommandPtr command (new RedoCommand (uiManager, uiEnvironment));
-	interactionHandler.ExecuteCommand (command);
+	RedoCommand command (uiEnvironment.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (command);
 	Update ();
 }
 

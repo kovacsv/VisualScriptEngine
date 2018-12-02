@@ -69,7 +69,7 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new TextPerPageParameter ()));
 }
 
-NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications&)
+NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface&)
 {
 	if (mouseButton != NUIE::MouseButton::Left) {
 		return NUIE::EventHandlerResult::EventNotHandled;
@@ -95,9 +95,14 @@ NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseClick (NUIE::NodeUIEnvi
 	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
-NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::EventHandlerNotifications& notifications)
+NUIE::EventHandlerResult MultiLineViewerNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
 {
-	return HandleMouseClick (env, keys, mouseButton, position, notifications);
+	return HandleMouseClick (env, keys, mouseButton, position, commandInterface);
+}
+
+bool MultiLineViewerNode::IsForceCalculated () const
+{
+	return true;
 }
 
 void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
@@ -174,11 +179,6 @@ void MultiLineViewerNode::ValidateCurrentPage () const
 	if (currentPage > pageCount) {
 		currentPage = 1;
 	}
-}
-
-bool MultiLineViewerNode::IsForceCalculated () const
-{
-	return true;
 }
 
 NE::Stream::Status MultiLineViewerNode::Read (NE::InputStream& inputStream)

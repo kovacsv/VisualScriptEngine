@@ -81,12 +81,6 @@ void GroupMenuCommand::EnumerateChildCommands (const std::function<void (const M
 	}
 }
 
-bool GroupMenuCommand::IsUndoable () const
-{
-	DBGBREAK ();
-	return false;
-}
-
 void GroupMenuCommand::Do ()
 {
 	DBGBREAK ();

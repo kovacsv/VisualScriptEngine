@@ -75,6 +75,16 @@ bool NodeUIManager::Status::NeedToRedraw () const
 	return needToRedraw;
 }
 
+NodeUIManagerCommand::NodeUIManagerCommand ()
+{
+
+}
+
+NodeUIManagerCommand::~NodeUIManagerCommand ()
+{
+
+}
+
 NodeUIManager::NodeUIManager () :
 	nodeManager (),
 	selectedNodes (),
@@ -500,6 +510,19 @@ void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINod
 	nodeManager.EnumerateNodeGroups ([&] (const NE::NodeGroupPtr& nodeGroup) {
 		return processor (std::static_pointer_cast<UINodeGroup> (nodeGroup));
 	});
+}
+
+void NodeUIManager::ExecuteCommand (NodeUIManagerCommand& command)
+{
+	if (command.IsUndoable ()) {
+		SaveUndoState ();
+	}
+	command.Do (*this);
+}
+
+void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
+{
+	ExecuteCommand (*command);
 }
 
 void NodeUIManager::InvalidateDrawingsForInvalidatedNodes ()

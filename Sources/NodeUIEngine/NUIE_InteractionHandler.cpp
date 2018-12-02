@@ -1,6 +1,7 @@
 #include "NUIE_InteractionHandler.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_UIItemFinder.hpp"
+#include "NUIE_NodeUIManagerCommands.hpp"
 #include "NUIE_NodeMenuCommands.hpp"
 #include "NE_Debug.hpp"
 
@@ -137,17 +138,10 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
-		Point diff = viewBox.ViewToModel (position) - startModelPosition;
+		Point offset = viewBox.ViewToModel (position) - startModelPosition;
 
-		uiManager.SaveUndoState ();
-		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-			UINodePtr uiNode = uiManager.GetUINode (nodeId);
-			uiNode->SetNodePosition (uiNode->GetNodePosition () + diff);
-			uiManager.InvalidateNodeGroupDrawing (uiNode);
-			return true;
-		});
-
-		uiManager.RequestRedraw ();	
+		MoveNodesCommand command (relevantNodes, offset);
+		uiManager.ExecuteCommand (command);
 	}
 
 	virtual void HandleAbort () override
@@ -247,10 +241,11 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
-			uiManager.SaveUndoState ();
-			uiManager.ConnectOutputSlotToInputSlot (startSlot, endSlot);
+			ConnectSlotsCommand command (startSlot, endSlot);
+			uiManager.ExecuteCommand (command);
+		} else {
+			uiManager.RequestRedraw ();
 		}
-		uiManager.RequestRedraw ();
 	}
 };
 
@@ -289,25 +284,28 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
-			uiManager.SaveUndoState ();
-			uiManager.ConnectOutputSlotToInputSlot (endSlot, startSlot);
+			ConnectSlotsCommand command (endSlot, startSlot);
+			uiManager.ExecuteCommand (command);
+		} else {
+			uiManager.RequestRedraw ();
 		}
-		uiManager.RequestRedraw ();
 	}
 };
 
-class NodeUIEventHandlerNotifications : public EventHandlerNotifications
+class UINodeInteractionCommandInterface : public UINodeCommandInterface
 {
 public:
-	NodeUIEventHandlerNotifications (NodeUIManager& uiManager) :
+	UINodeInteractionCommandInterface (NodeUIManager& uiManager) :
+		UINodeCommandInterface (),
 		uiManager (uiManager)
 	{
 
 	}
 
-	virtual void BeforeModification () override
+	virtual void RunCommand (const std::function<void ()>& func) override
 	{
-		uiManager.SaveUndoState ();
+		CustomUndoableCommand command (func);
+		uiManager.ExecuteCommand (command);
 	}
 
 private:
@@ -364,18 +362,18 @@ EventHandlerResult NodeInputEventHandler::HandleMouseDrag (NodeUIEnvironment&, c
 EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	return ForwardEventToNode ([&] () {
-		NodeUIEventHandlerNotifications notifications (uiManager);
+		UINodeInteractionCommandInterface commandInterface (uiManager);
 		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
-		return uiNode->HandleMouseClick (env, modifierKeys, mouseButton, modelPosition, notifications);
+		return uiNode->HandleMouseClick (env, modifierKeys, mouseButton, modelPosition, commandInterface);
 	});
 }
 
 EventHandlerResult NodeInputEventHandler::HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	return ForwardEventToNode ([&] () {
-		NodeUIEventHandlerNotifications notifications (uiManager);
+		UINodeInteractionCommandInterface commandInterface (uiManager);
 		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
-		return uiNode->HandleMouseDoubleClick (env, modifierKeys, mouseButton, modelPosition, notifications);
+		return uiNode->HandleMouseDoubleClick (env, modifierKeys, mouseButton, modelPosition, commandInterface);
 	});
 }
 
@@ -423,14 +421,6 @@ InteractionHandler::~InteractionHandler ()
 const NodeDrawingModifier* InteractionHandler::GetDrawingModifier ()
 {
 	return &multiMouseMoveHandler;
-}
-
-void InteractionHandler::ExecuteCommand (MenuCommandPtr& command)
-{
-	if (command->IsUndoable ()) {
-		uiManager.SaveUndoState ();
-	}
-	command->Do ();
 }
 
 EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
@@ -560,7 +550,7 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& env,
 			selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, commands);
 		}
 		if (selectedCommand != nullptr) {
-			ExecuteCommand (selectedCommand);
+			selectedCommand->Do ();
 		}
 		handlerResult = EventHandlerResult::EventHandled;
 	}
@@ -619,28 +609,28 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 	switch (pressedKey.GetKeyCode ()) {
 		case PressedKeyCode::Delete:
 			{
-				command.reset (new DeleteNodesCommand (uiManager, env, selectedNodes));
+				command.reset (new DeleteNodesMenuCommand (uiManager, env, selectedNodes));
 			}
 			break;
 		case PressedKeyCode::Copy:
 			{
-				command.reset (new CopyNodesCommand (uiManager, selectedNodes));
+				command.reset (new CopyNodesMenuCommand (uiManager, selectedNodes));
 			}
 			break;
 		case PressedKeyCode::Paste:
 			{
 				Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
-				command.reset (new PasteNodesCommand (uiManager, modelPastePosition));
+				command.reset (new PasteNodesMenuCommand (uiManager, modelPastePosition));
 			}
 			break;
 		case PressedKeyCode::Undo:
 			{
-				command.reset (new UndoCommand (uiManager, env));
+				command.reset (new UndoMenuCommand (uiManager, env));
 			}
 			break;
 		case PressedKeyCode::Redo:
 			{
-				command.reset (new RedoCommand (uiManager, env));
+				command.reset (new RedoMenuCommand (uiManager, env));
 			}
 			break;
 		case PressedKeyCode::Escape:
@@ -650,7 +640,7 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 	}
 
 	if (command != nullptr) {
-		ExecuteCommand (command);
+		command->Do ();
 		return EventHandlerResult::EventHandled;
 	}
 	return EventHandlerResult::EventNotHandled;
