@@ -286,6 +286,7 @@ void NodeUIManager::InvalidateAllNodesDrawing ()
 		uiNode->InvalidateDrawing ();
 		return true;
 	});
+	RequestRedraw ();
 }
 
 void NodeUIManager::InvalidateAllNodeGroupsDrawing ()
@@ -294,6 +295,7 @@ void NodeUIManager::InvalidateAllNodeGroupsDrawing ()
 		group->InvalidateGroupDrawing ();
 		return true;
 	});
+	RequestRedraw ();
 }
 
 void NodeUIManager::InvalidateNodeValue (const NE::NodeId& nodeId)
@@ -489,6 +491,7 @@ bool NodeUIManager::AddUINodeGroup (const UINodeGroupPtr& group)
 void NodeUIManager::DeleteUINodeGroup (const UINodeGroupPtr& group)
 {
 	nodeManager.DeleteNodeGroup (group);
+	RequestRedraw ();
 }
 
 bool NodeUIManager::RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection)

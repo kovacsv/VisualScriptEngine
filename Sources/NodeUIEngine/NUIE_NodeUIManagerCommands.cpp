@@ -187,7 +187,6 @@ AddGroupCommand::AddGroupCommand (const UINodeGroupPtr& uiGroup) :
 void AddGroupCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.AddUINodeGroup (uiGroup);
-	uiManager.RequestRecalculate ();
 }
 
 DeleteGroupCommand::DeleteGroupCommand (const UINodeGroupPtr& uiGroup) :
@@ -200,7 +199,6 @@ DeleteGroupCommand::DeleteGroupCommand (const UINodeGroupPtr& uiGroup) :
 void DeleteGroupCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.DeleteUINodeGroup (uiGroup);
-	uiManager.RequestRecalculate ();
 }
 
 RemoveNodesFromGroupCommand::RemoveNodesFromGroupCommand (const NE::NodeCollection& nodes) :
@@ -213,7 +211,6 @@ RemoveNodesFromGroupCommand::RemoveNodesFromGroupCommand (const NE::NodeCollecti
 void RemoveNodesFromGroupCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.RemoveNodesFromGroup (nodes);
-	uiManager.RequestRecalculate ();
 }
 
 UndoCommand::UndoCommand (NE::EvaluationEnv& evaluationEnv) :
