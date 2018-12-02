@@ -132,7 +132,7 @@ public:
 
 	virtual void HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
-		RequestNodeRedraw ();
+		RequestRedraw ();
 	}
 
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	override
@@ -148,7 +148,7 @@ public:
 
 	virtual void HandleAbort () override
 	{
-		RequestNodeRedraw ();
+		RequestRedraw ();
 	}
 
 	virtual Point GetNodeOffset (const NE::NodeId& nodeId) const override
@@ -162,12 +162,13 @@ public:
 	}
 
 private:
-	void RequestNodeRedraw ()
+	void RequestRedraw ()
 	{
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			uiManager.InvalidateNodeGroupDrawing (nodeId);
 			return true;
 		});
+		uiManager.RequestRedraw ();
 	}
 
 	NodeUIManager&		uiManager;
