@@ -1,4 +1,4 @@
-#include "NUIE_UINodeParameters.hpp"
+#include "NUIE_NodeParameters.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"

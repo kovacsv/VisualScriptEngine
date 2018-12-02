@@ -1,5 +1,5 @@
-#ifndef NUIE_COMMANDSTRUCTURE_HPP
-#define NUIE_COMMANDSTRUCTURE_HPP
+#ifndef NUIE_MENUCOMMANDS_HPP
+#define NUIE_MENUCOMMANDS_HPP
 
 #include <string>
 #include <vector>
@@ -77,6 +77,9 @@ private:
 class UICommandStructure
 {
 public:
+	UICommandStructure ();
+	~UICommandStructure ();
+
 	void	AddCommand (UICommandPtr command);
 	bool	IsEmpty () const;
 	void	EnumerateCommands (const std::function<void (const UICommandPtr&)>& processor) const;

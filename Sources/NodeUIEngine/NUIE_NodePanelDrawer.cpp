@@ -1,4 +1,4 @@
-#include "NUIE_NodeUIPanelDrawer.hpp"
+#include "NUIE_NodePanelDrawer.hpp"
 #include "NUIE_SkinParams.hpp"
 
 #include <vector>
@@ -7,32 +7,22 @@
 namespace NUIE
 {
 
-NodeUIPanel::NodeUIPanel ()
+NodePanelDrawer::NodePanelDrawer ()
 {
 
 }
 
-NodeUIPanel::~NodeUIPanel ()
+NodePanelDrawer::~NodePanelDrawer ()
 {
 
 }
 
-NodeUIPanelDrawer::NodeUIPanelDrawer ()
-{
-
-}
-
-NodeUIPanelDrawer::~NodeUIPanelDrawer ()
-{
-
-}
-
-void NodeUIPanelDrawer::AddPanel (const NodeUIPanelPtr& panel)
+void NodePanelDrawer::AddPanel (const NodeUIPanelPtr& panel)
 {
 	panels.push_back (panel);
 }
 
-void NodeUIPanelDrawer::Draw (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
+void NodePanelDrawer::Draw (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 

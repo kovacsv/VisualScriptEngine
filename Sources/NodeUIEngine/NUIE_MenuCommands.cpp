@@ -1,4 +1,4 @@
-#include "NUIE_CommandStructure.hpp"
+#include "NUIE_MenuCommands.hpp"
 #include "NE_Debug.hpp"
 
 namespace NUIE
@@ -88,6 +88,16 @@ bool SingleUICommand::HasChildCommands () const
 }
 
 void SingleUICommand::EnumerateChildCommands (const std::function<void (const UICommandPtr&)>&) const
+{
+
+}
+
+UICommandStructure::UICommandStructure ()
+{
+
+}
+
+UICommandStructure::~UICommandStructure ()
 {
 
 }

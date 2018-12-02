@@ -1,8 +1,8 @@
-#ifndef NUIE_UINODECOMMANDREGISTRATION_HPP
-#define NUIE_UINODECOMMANDREGISTRATION_HPP
+#ifndef NUIE_NODEMENUCOMMANDREGISTRATOR_HPP
+#define NUIE_NODEMENUCOMMANDREGISTRATOR_HPP
 
 #include "NUIE_UINode.hpp"
-#include "NUIE_CommandStructure.hpp"
+#include "NUIE_MenuCommands.hpp"
 
 namespace NUIE
 {

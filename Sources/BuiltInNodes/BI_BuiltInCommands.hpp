@@ -1,7 +1,7 @@
 #ifndef BI_BUILTINCOMMANDS_HPP
 #define BI_BUILTINCOMMANDS_HPP
 
-#include "NUIE_CommandStructure.hpp"
+#include "NUIE_MenuCommands.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 

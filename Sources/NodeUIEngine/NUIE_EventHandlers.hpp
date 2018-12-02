@@ -3,7 +3,7 @@
 
 #include "NUIE_UINode.hpp"
 #include "NUIE_UINodeGroup.hpp"
-#include "NUIE_CommandStructure.hpp"
+#include "NUIE_MenuCommands.hpp"
 #include "NUIE_ParameterInterface.hpp"
 #include <vector>
 

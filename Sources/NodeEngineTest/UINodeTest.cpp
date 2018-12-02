@@ -7,8 +7,8 @@
 #include "TestNodes.hpp"
 
 #include "NUIE_NodeUIManager.hpp"
-#include "NUIE_UINodeParameters.hpp"
-#include "NUIE_UINodeCommonParameters.hpp"
+#include "NUIE_NodeParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
 
 using namespace NE;
 using namespace NUIE;

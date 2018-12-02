@@ -1,5 +1,5 @@
 #include "NUIE_NodeEditor.hpp"
-#include "NUIE_UINodeCommandStructure.hpp"
+#include "NUIE_NodeMenuCommands.hpp"
 #include "NE_MemoryStream.hpp"
 
 #include <fstream>
@@ -65,8 +65,8 @@ static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnviro
 
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (),
-	uiInteractionHandler (uiManager),
-	mouseEventTranslator (uiInteractionHandler),
+	interactionHandler (uiManager),
+	mouseEventTranslator (interactionHandler),
 	uiEnvironment (uiEnvironment)
 {
 
@@ -109,7 +109,7 @@ void NodeEditor::OnMouseDoubleClick (const ModifierKeys& keys, MouseButton butto
 
 void NodeEditor::OnKeyPress (const Key& pressedKey)
 {
-	uiInteractionHandler.HandleKeyPress (uiEnvironment, pressedKey);
+	interactionHandler.HandleKeyPress (uiEnvironment, pressedKey);
 	uiManager.Update (uiEnvironment);
 }
 
@@ -161,7 +161,7 @@ void NodeEditor::ManualUpdate ()
 
 void NodeEditor::Draw ()
 {
-	uiManager.Draw (uiEnvironment, uiInteractionHandler.GetDrawingModifier ());
+	uiManager.Draw (uiEnvironment, interactionHandler.GetDrawingModifier ());
 }
 
 void NodeEditor::AddNode (const UINodePtr& uiNode)
@@ -263,14 +263,14 @@ bool NodeEditor::Save (const std::string& fileName) const
 void NodeEditor::Undo ()
 {
 	UICommandPtr command (new UndoCommand (uiManager, uiEnvironment));
-	uiInteractionHandler.ExecuteCommand (command);
+	interactionHandler.ExecuteCommand (command);
 	Update ();
 }
 
 void NodeEditor::Redo ()
 {
 	UICommandPtr command (new RedoCommand (uiManager, uiEnvironment));
-	uiInteractionHandler.ExecuteCommand (command);
+	interactionHandler.ExecuteCommand (command);
 	Update ();
 }
 

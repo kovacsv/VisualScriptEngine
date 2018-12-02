@@ -8,8 +8,8 @@
 #include "TestNodes.hpp"
 
 #include "NUIE_NodeUIManager.hpp"
-#include "NUIE_UINodeParameters.hpp"
-#include "NUIE_UINodeCommonParameters.hpp"
+#include "NUIE_NodeParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
 
 using namespace NE;
 using namespace NUIE;
@@ -67,7 +67,7 @@ public:
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), L"First Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
 		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), L"Second Input", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
 		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), L"Single Output")));
-		RegisterFeature (UINodeFeaturePtr (new EnableDisableFeature ()));
+		RegisterFeature (NodeFeaturePtr (new EnableDisableFeature ()));
 	}
 
 	virtual ValuePtr Calculate (EvaluationEnv& env) const override

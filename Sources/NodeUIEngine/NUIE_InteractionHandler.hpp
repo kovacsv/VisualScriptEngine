@@ -1,10 +1,10 @@
-#ifndef NUIE_NODEUIINTERACTIONHANDLER_HPP
-#define NUIE_NODEUIINTERACTIONHANDLER_HPP
+#ifndef NUIE_INTERACTIONHANDLER_HPP
+#define NUIE_INTERACTIONHANDLER_HPP
 
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NUIE_EventHandlers.hpp"
-#include "NUIE_CommandStructure.hpp"
+#include "NUIE_MenuCommands.hpp"
 #include "NUIE_UIEventHandlers.hpp"
 #include <memory>
 
@@ -45,11 +45,11 @@ private:
 	UINodePtr&		uiNode;
 };
 
-class NodeUIInteractionHandler : public InputEventHandler
+class InteractionHandler : public InputEventHandler
 {
 public:
-	NodeUIInteractionHandler (NodeUIManager& uiManager);
-	~NodeUIInteractionHandler ();
+	InteractionHandler (NodeUIManager& uiManager);
+	~InteractionHandler ();
 
 	const NodeDrawingModifier*		GetDrawingModifier ();
 	void							ExecuteCommand (UICommandPtr& command);

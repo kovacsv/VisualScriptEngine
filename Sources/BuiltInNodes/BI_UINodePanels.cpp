@@ -61,7 +61,7 @@ void SlotRectCollection::Enumerate (RefPointMode refPointMode, const NUIE::Point
 }
 
 NodeUITextPanelBase::NodeUITextPanelBase (const std::wstring& nodeText) :
-	NodeUIPanel (),
+	NodePanel (),
 	nodeText (nodeText)
 {
 	
@@ -115,7 +115,7 @@ NUIE::Color NodeUIHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironmen
 }
 
 NodeUIStatusHeaderPanel::NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus) :
-	NodeUIPanel (),
+	NodePanel (),
 	headerText (headerText),
 	nodeStatus (nodeStatus)
 {
@@ -143,7 +143,7 @@ void NodeUIStatusHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const N
 }
 
 NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t textsPerPage) :
-	NodeUIPanel (),
+	NodePanel (),
 	nodeTexts (nodeTexts),
 	textsPerPage (textsPerPage)
 {
@@ -193,7 +193,7 @@ NUIE::Color NodeUIMultiLineTextPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnv
 }
 
 NodeUISlotPanel::NodeUISlotPanel (const NUIE::UINode& node, NUIE::NodeUIDrawingEnvironment& env) :
-	NodeUIPanel (),
+	NodePanel (),
 	node (node)
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
@@ -263,7 +263,7 @@ NodeUILeftRightButtonsPanel::NodeUILeftRightButtonsPanel (	const std::string& le
 															const std::wstring& rightButtonText,
 															const std::wstring& panelText,
 															NUIE::NodeUIDrawingEnvironment& env) :
-	NodeUIPanel (),
+	NodePanel (),
 	leftButtonId (leftButtonId),
 	leftButtonText (leftButtonText),
 	rightButtonId (rightButtonId),

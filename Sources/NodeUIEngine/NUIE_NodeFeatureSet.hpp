@@ -1,5 +1,5 @@
-#ifndef NUIE_UINODEFEATURESET_HPP
-#define NUIE_UINODEFEATURESET_HPP
+#ifndef NUIE_NODEFEATURESET_HPP
+#define NUIE_NODEFEATURESET_HPP
 
 #include "NE_Stream.hpp"
 #include "NE_Serializable.hpp"
@@ -37,18 +37,18 @@ private:
 	std::string id;
 };
 
-class UINodeFeature;
-typedef std::shared_ptr<UINodeFeature> UINodeFeaturePtr;
-typedef std::shared_ptr<const UINodeFeature> UINodeFeatureConstPtr;
+class NodeFeature;
+typedef std::shared_ptr<NodeFeature> NodeFeaturePtr;
+typedef std::shared_ptr<const NodeFeature> NodeFeatureConstPtr;
 
-class UINodeFeature : public NE::DynamicSerializable
+class NodeFeature : public NE::DynamicSerializable
 {
 	SERIALIZABLE;
 
 public:
-	UINodeFeature ();
-	UINodeFeature (const FeatureId& featureId);
-	virtual ~UINodeFeature ();
+	NodeFeature ();
+	NodeFeature (const FeatureId& featureId);
+	virtual ~NodeFeature ();
 
 	const FeatureId&			GetId () const;
 
@@ -59,23 +59,23 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
 	template <class Type>
-	static Type* Cast (UINodeFeature* feature);
+	static Type* Cast (NodeFeature* feature);
 
 	template <class Type>
-	static std::shared_ptr<Type> Cast (const UINodeFeaturePtr& node);
+	static std::shared_ptr<Type> Cast (const NodeFeaturePtr& node);
 
 private:
 	FeatureId	featureId;
 };
 
 template <class Type>
-Type* UINodeFeature::Cast (UINodeFeature* feature)
+Type* NodeFeature::Cast (NodeFeature* feature)
 {
 	return dynamic_cast<Type*> (feature);
 }
 
 template <class Type>
-std::shared_ptr<Type> UINodeFeature::Cast (const UINodeFeaturePtr& feature)
+std::shared_ptr<Type> NodeFeature::Cast (const NodeFeaturePtr& feature)
 {
 	return std::dynamic_pointer_cast<Type> (feature);
 }
@@ -105,9 +105,9 @@ public:
 	UINodeFeatureSet ();
 	~UINodeFeatureSet ();
 
-	void						AddFeature (const FeatureId& featureId, const UINodeFeaturePtr& feature);
+	void						AddFeature (const FeatureId& featureId, const NodeFeaturePtr& feature);
 	bool						HasFeature (const FeatureId& featureId) const;
-	const UINodeFeaturePtr&		GetFeature (const FeatureId& featureId) const;
+	const NodeFeaturePtr&		GetFeature (const FeatureId& featureId) const;
 
 	void						RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const;
 	void						RegisterParameters (NUIE::NodeParameterList& parameterList) const;
@@ -116,7 +116,7 @@ public:
 	NE::Stream::Status			Write (NE::OutputStream& outputStream) const;
 
 private:
-	std::vector<UINodeFeaturePtr>			features;
+	std::vector<NodeFeaturePtr>			features;
 	std::unordered_map<FeatureId, size_t>	idToIndex;
 };
 

@@ -3,7 +3,7 @@
 
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeDrawingImage.hpp"
-#include "NUIE_NodeUIPanelDrawer.hpp"
+#include "NUIE_NodePanelDrawer.hpp"
 #include "NUIE_UINode.hpp"
 #include <memory>
 
@@ -30,7 +30,7 @@ private:
 	std::vector<std::pair<NE::SlotId, NUIE::Size>> slotSizes;
 };
 
-class NodeUITextPanelBase : public NUIE::NodeUIPanel
+class NodeUITextPanelBase : public NUIE::NodePanel
 {
 public:
 	NodeUITextPanelBase (const std::wstring& nodeText);
@@ -66,7 +66,7 @@ private:
 	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
 };
 
-class NodeUIStatusHeaderPanel : public NUIE::NodeUIPanel
+class NodeUIStatusHeaderPanel : public NUIE::NodePanel
 {
 public:
 	enum class NodeStatus
@@ -87,7 +87,7 @@ private:
 	NodeStatus		nodeStatus;
 };
 
-class NodeUIMultiLineTextPanel : public NUIE::NodeUIPanel
+class NodeUIMultiLineTextPanel : public NUIE::NodePanel
 {
 public:
 	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts,NUIE:: NodeUIDrawingEnvironment& env, size_t textsPerPage);
@@ -105,7 +105,7 @@ private:
 	size_t						textsPerPage;
 };
 
-class NodeUISlotPanel : public NUIE::NodeUIPanel
+class NodeUISlotPanel : public NUIE::NodePanel
 {
 public:
 	NodeUISlotPanel (const NUIE::UINode& node, NUIE::NodeUIDrawingEnvironment& env);
@@ -119,7 +119,7 @@ private:
 	SlotRectCollection		outputSlots;
 };
 
-class NodeUILeftRightButtonsPanel : public NUIE::NodeUIPanel
+class NodeUILeftRightButtonsPanel : public NUIE::NodePanel
 {
 public:
 	NodeUILeftRightButtonsPanel (	const std::string& leftButtonId,

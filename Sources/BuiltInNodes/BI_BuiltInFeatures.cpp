@@ -2,7 +2,7 @@
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_ContextDecorators.hpp"
 #include "NUIE_SkinParams.hpp"
-#include "NUIE_UINodeCommonParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
 
 namespace BI
 {
@@ -93,7 +93,7 @@ EnableDisableFeature::EnableDisableFeature () :
 }
 
 EnableDisableFeature::EnableDisableFeature (bool nodeEnabled) :
-	NUIE::UINodeFeature (EnableDisableFeatureId),
+	NUIE::NodeFeature (EnableDisableFeatureId),
 	nodeEnabled (nodeEnabled)
 {
 
@@ -166,7 +166,7 @@ void EnableDisableFeature::DrawInplace (NUIE::NodeUIDrawingEnvironment& env, con
 NE::Stream::Status EnableDisableFeature::Read (NE::InputStream & inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINodeFeature::Read (inputStream);
+	NodeFeature::Read (inputStream);
 	inputStream.Read (nodeEnabled);
 	return inputStream.GetStatus ();
 }
@@ -174,7 +174,7 @@ NE::Stream::Status EnableDisableFeature::Read (NE::InputStream & inputStream)
 NE::Stream::Status EnableDisableFeature::Write (NE::OutputStream & outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINodeFeature::Write (outputStream);
+	NodeFeature::Write (outputStream);
 	outputStream.Write (nodeEnabled);
 	return outputStream.GetStatus ();
 }
@@ -186,7 +186,7 @@ ValueCombinationFeature::ValueCombinationFeature () :
 }
 
 ValueCombinationFeature::ValueCombinationFeature (NE::ValueCombinationMode valueCombinationMode) :
-	NUIE::UINodeFeature (ValueCombinationFeatureId),
+	NUIE::NodeFeature (ValueCombinationFeatureId),
 	valueCombinationMode (valueCombinationMode)
 {
 
@@ -254,7 +254,7 @@ void ValueCombinationFeature::RegisterParameters (NUIE::NodeParameterList& param
 NE::Stream::Status ValueCombinationFeature::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	UINodeFeature::Read (inputStream);
+	NodeFeature::Read (inputStream);
 	size_t valueCombinationModeInt = 0;
 	inputStream.Read (valueCombinationModeInt);
 	valueCombinationMode = (NE::ValueCombinationMode) valueCombinationModeInt;
@@ -264,7 +264,7 @@ NE::Stream::Status ValueCombinationFeature::Read (NE::InputStream& inputStream)
 NE::Stream::Status ValueCombinationFeature::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	UINodeFeature::Write (outputStream);
+	NodeFeature::Write (outputStream);
 	size_t valueCombinationModeInt = (size_t) valueCombinationMode;
 	outputStream.Write (valueCombinationModeInt);
 	return outputStream.GetStatus ();

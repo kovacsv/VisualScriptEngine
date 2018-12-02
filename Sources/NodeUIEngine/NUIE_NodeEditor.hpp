@@ -4,7 +4,7 @@
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_EventHandlers.hpp"
 #include "NUIE_NodeUIManager.hpp"
-#include "NUIE_NodeUIInteractionHandler.hpp"
+#include "NUIE_InteractionHandler.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_SkinParams.hpp"
 
@@ -52,7 +52,7 @@ public:
 
 protected:
 	NodeUIManager				uiManager;
-	NodeUIInteractionHandler	uiInteractionHandler;
+	InteractionHandler			interactionHandler;
 	MouseEventTranslator		mouseEventTranslator;
 	NodeUIEnvironment&			uiEnvironment;
 };

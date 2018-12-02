@@ -1,10 +1,10 @@
-#ifndef NUIE_UINODECOMMANDSTRUCTURE_HPP
-#define NUIE_UINODECOMMANDSTRUCTURE_HPP
+#ifndef NUIE_NODEMENUCOMMANDS_HPP
+#define NUIE_NODEMENUCOMMANDS_HPP
 
 #include "NUIE_UINode.hpp"
-#include "NUIE_CommandStructure.hpp"
+#include "NUIE_MenuCommands.hpp"
 #include "NUIE_NodeUIManager.hpp"
-#include "NUIE_UINodeParameters.hpp"
+#include "NUIE_NodeParameters.hpp"
 
 namespace NUIE
 {

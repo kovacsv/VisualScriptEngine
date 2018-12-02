@@ -1,6 +1,6 @@
 #include "WAS_ParameterDialog.hpp"
 
-#include "NUIE_UINodeParameters.hpp"
+#include "NUIE_NodeParameters.hpp"
 #include "NE_Debug.hpp"
 #include "NE_SingleValues.hpp"
 

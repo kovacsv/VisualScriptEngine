@@ -1,8 +1,8 @@
 #include "BI_InputUINodes.hpp"
 #include "BI_UINodePanels.hpp"
 #include "BI_UINodeLayouts.hpp"
-#include "NUIE_UINodeParameters.hpp"
-#include "NUIE_UINodeCommonParameters.hpp"
+#include "NUIE_NodeParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_SkinParams.hpp"
 

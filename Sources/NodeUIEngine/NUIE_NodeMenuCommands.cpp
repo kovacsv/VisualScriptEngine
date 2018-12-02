@@ -1,5 +1,5 @@
-#include "NUIE_UINodeCommandStructure.hpp"
-#include "NUIE_UINodeCommandRegistration.hpp"
+#include "NUIE_NodeMenuCommands.hpp"
+#include "NUIE_NodeMenuCommandRegistrator.hpp"
 #include "NUIE_EventHandlers.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"

@@ -3,7 +3,7 @@
 
 #include "NE_SingleValues.hpp"
 #include "NUIE_NodeUIManager.hpp"
-#include "NUIE_UINodeCommandRegistration.hpp"
+#include "NUIE_NodeMenuCommandRegistrator.hpp"
 #include "BI_BasicUINode.hpp"
 #include "BI_BuiltInFeatures.hpp"
 

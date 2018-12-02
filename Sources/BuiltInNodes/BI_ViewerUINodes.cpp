@@ -1,6 +1,6 @@
 #include "BI_ViewerUINodes.hpp"
 #include "BI_UINodePanels.hpp"
-#include "NUIE_UINodeCommonParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
 #include "NUIE_SkinParams.hpp"
 
 #include <algorithm>
@@ -146,7 +146,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 		nodeTextsToShow.push_back (L"<empty>");
 	}
 
-	NUIE::NodeUIPanelDrawer drawer;
+	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (GetNodeName ())));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextViewerPanel (nodeTextsToShow, env, textsPerPage)));

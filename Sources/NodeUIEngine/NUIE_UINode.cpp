@@ -3,9 +3,9 @@
 #include "NE_OutputSlot.hpp"
 #include "NE_Debug.hpp"
 #include "NUIE_ContextDecorators.hpp"
-#include "NUIE_UINodeParameters.hpp"
-#include "NUIE_UINodeCommonParameters.hpp"
-#include "NUIE_UINodeCommandRegistration.hpp"
+#include "NUIE_NodeParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
+#include "NUIE_NodeMenuCommandRegistrator.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 
@@ -200,7 +200,7 @@ bool UINode::HasFeature (const FeatureId& featureId) const
 	return nodeFeatureSet.HasFeature (featureId);
 }
 
-const UINodeFeaturePtr& UINode::GetFeature (const FeatureId& featureId) const
+const NodeFeaturePtr& UINode::GetFeature (const FeatureId& featureId) const
 {
 	return nodeFeatureSet.GetFeature (featureId);
 }
@@ -359,7 +359,7 @@ bool UINode::RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot)
 	return true;
 }
 
-bool UINode::RegisterFeature (const UINodeFeaturePtr& newFeature)
+bool UINode::RegisterFeature (const NodeFeaturePtr& newFeature)
 {
 	nodeFeatureSet.AddFeature (newFeature->GetId (), newFeature);
 	return true;

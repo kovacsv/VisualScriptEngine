@@ -7,7 +7,7 @@
 #include "NUIE_InputEventHandler.hpp"
 #include "NUIE_UIInputSlot.hpp"
 #include "NUIE_UIOutputSlot.hpp"
-#include "NUIE_UINodeFeatureSet.hpp"
+#include "NUIE_NodeFeatureSet.hpp"
 #include <string>
 
 namespace NUIE
@@ -72,7 +72,7 @@ public:
 	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
 
 	bool						HasFeature (const FeatureId& featureId) const;
-	const UINodeFeaturePtr&		GetFeature (const FeatureId& featureId) const;
+	const NodeFeaturePtr&		GetFeature (const FeatureId& featureId) const;
 
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, EventHandlerNotifications& notifications);
 	virtual EventHandlerResult	HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, EventHandlerNotifications& notifications);
@@ -104,7 +104,7 @@ protected:
 	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 	bool						RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot);
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
-	bool						RegisterFeature (const UINodeFeaturePtr& newFeature);
+	bool						RegisterFeature (const NodeFeaturePtr& newFeature);
 
 private:
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
@@ -125,13 +125,13 @@ typedef std::shared_ptr<const UINode> UINodeConstPtr;
 template <class FeatureType>
 std::shared_ptr<FeatureType> GetUINodeFeature (const UINode* uiNode, const FeatureId& featureId)
 {
-	return UINodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
+	return NodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
 }
 
 template <class FeatureType>
 std::shared_ptr<FeatureType> GetUINodeFeature (const UINodePtr& uiNode, const FeatureId& featureId)
 {
-	return UINodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
+	return NodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
 }
 
 }

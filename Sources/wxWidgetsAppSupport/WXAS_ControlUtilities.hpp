@@ -2,7 +2,7 @@
 #define WXAS_CONTROLUTILITIES_HPP
 
 #include "NUIE_InputEventHandler.hpp"
-#include "NUIE_CommandStructure.hpp"
+#include "NUIE_MenuCommands.hpp"
 #include <wx/wx.h>
 
 namespace WXAS

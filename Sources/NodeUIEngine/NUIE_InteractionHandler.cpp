@@ -1,7 +1,7 @@
-#include "NUIE_NodeUIInteractionHandler.hpp"
+#include "NUIE_InteractionHandler.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_UIItemFinder.hpp"
-#include "NUIE_UINodeCommandStructure.hpp"
+#include "NUIE_NodeMenuCommands.hpp"
 #include "NE_Debug.hpp"
 
 #include <algorithm>
@@ -407,7 +407,7 @@ EventHandlerResult NodeInputEventHandler::ForwardEventToNode (const std::functio
 	return handlerResult;
 }
 
-NodeUIInteractionHandler::NodeUIInteractionHandler (NodeUIManager& uiManager) :
+InteractionHandler::InteractionHandler (NodeUIManager& uiManager) :
 	InputEventHandler (),
 	uiManager (uiManager),
 	multiMouseMoveHandler ()
@@ -415,17 +415,17 @@ NodeUIInteractionHandler::NodeUIInteractionHandler (NodeUIManager& uiManager) :
 
 }
 
-NodeUIInteractionHandler::~NodeUIInteractionHandler ()
+InteractionHandler::~InteractionHandler ()
 {
 
 }
 
-const NodeDrawingModifier* NodeUIInteractionHandler::GetDrawingModifier ()
+const NodeDrawingModifier* InteractionHandler::GetDrawingModifier ()
 {
 	return &multiMouseMoveHandler;
 }
 
-void NodeUIInteractionHandler::ExecuteCommand (UICommandPtr& command)
+void InteractionHandler::ExecuteCommand (UICommandPtr& command)
 {
 	if (command->IsUndoable ()) {
 		uiManager.SaveUndoState ();
@@ -433,7 +433,7 @@ void NodeUIInteractionHandler::ExecuteCommand (UICommandPtr& command)
 	command->Do ();
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (!multiMouseMoveHandler.AreOtherHandlersAllowed ()) {
@@ -478,7 +478,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStart (NodeUIEnviron
 	return handlerResult;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult InteractionHandler::HandleMouseDragStop (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	if (multiMouseMoveHandler.HasHandler (mouseButton)) {
 		multiMouseMoveHandler.GetHandler (mouseButton)->OnMouseUp (env, modifierKeys, position);
@@ -488,7 +488,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDragStop (NodeUIEnvironm
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
+EventHandlerResult InteractionHandler::HandleMouseDrag (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
 {
 	if (multiMouseMoveHandler.HasHandler ()) {
 		multiMouseMoveHandler.EnumerateHandlers ([&] (const std::shared_ptr<MouseMoveHandler>& handler) {
@@ -499,7 +499,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDrag (NodeUIEnvironment&
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (multiMouseMoveHandler.HasHandler ()) {
@@ -568,7 +568,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseClick (NodeUIEnvironment
 	return handlerResult;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
+EventHandlerResult InteractionHandler::HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (multiMouseMoveHandler.HasHandler ()) {
@@ -591,7 +591,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseDoubleClick (NodeUIEnvir
 	return handlerResult;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation rotation, const Point& position)
+EventHandlerResult InteractionHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation rotation, const Point& position)
 {
 	ViewBox viewBox = uiManager.GetViewBox ();
 	double scaleRatio = (rotation == MouseWheelRotation::Forward ? 1.1 : 0.9);
@@ -600,7 +600,7 @@ EventHandlerResult NodeUIInteractionHandler::HandleMouseWheel (NodeUIEnvironment
 	return EventHandlerResult::EventHandled;
 }
 
-EventHandlerResult NodeUIInteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey)
+EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey)
 {
 	if (pressedKey.GetKeyCode () == PressedKeyCode::Escape) {
 		if (multiMouseMoveHandler.HasHandler ()) {

@@ -2,8 +2,8 @@
 #define BI_BUILTINFEATURES_HPP
 
 #include "NE_ValueCombination.hpp"
-#include "NUIE_UINodeFeatureSet.hpp"
-#include "NUIE_UINodeCommandRegistration.hpp"
+#include "NUIE_NodeFeatureSet.hpp"
+#include "NUIE_NodeMenuCommandRegistrator.hpp"
 
 namespace BI
 {
@@ -11,7 +11,7 @@ namespace BI
 extern const NUIE::FeatureId EnableDisableFeatureId;
 extern const NUIE::FeatureId ValueCombinationFeatureId;
 
-class EnableDisableFeature : public NUIE::UINodeFeature
+class EnableDisableFeature : public NUIE::NodeFeature
 {
 	DYNAMIC_SERIALIZABLE (EnableDisableFeature);
 
@@ -34,7 +34,7 @@ private:
 	bool	nodeEnabled;
 };
 
-class ValueCombinationFeature : public NUIE::UINodeFeature
+class ValueCombinationFeature : public NUIE::NodeFeature
 {
 	DYNAMIC_SERIALIZABLE (ValueCombinationFeature);
 

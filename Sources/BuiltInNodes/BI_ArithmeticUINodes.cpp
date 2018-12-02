@@ -1,5 +1,5 @@
 #include "BI_ArithmeticUINodes.hpp"
-#include "NUIE_UINodeCommonParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
 
 #include <cmath>
 
@@ -33,7 +33,7 @@ void BinaryOperationNode::Initialize ()
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), L"A", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), L"B", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), L"Result")));
-	RegisterFeature (NUIE::UINodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
+	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
 NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const

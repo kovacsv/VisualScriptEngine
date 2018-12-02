@@ -1,5 +1,5 @@
-#ifndef NUIE_UINODEPARAMETERS_HPP
-#define NUIE_UINODEPARAMETERS_HPP
+#ifndef NUIE_NODEPARAMETERS_HPP
+#define NUIE_NODEPARAMETERS_HPP
 
 #include "NE_Value.hpp"
 #include "NE_NodeCollection.hpp"

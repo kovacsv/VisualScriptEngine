@@ -1,10 +1,10 @@
-#include "NUIE_UINodeFeatureSet.hpp"
+#include "NUIE_NodeFeatureSet.hpp"
 
 namespace NUIE
 {
 
 NE::SerializationInfo FeatureId::serializationInfo (NE::ObjectVersion (1));
-NE::SerializationInfo UINodeFeature::serializationInfo (NE::ObjectVersion (1));
+NE::SerializationInfo NodeFeature::serializationInfo (NE::ObjectVersion (1));
 NE::SerializationInfo UINodeFeatureSet::serializationInfo (NE::ObjectVersion (1));
 
 FeatureId::FeatureId () :
@@ -63,34 +63,34 @@ NE::Stream::Status FeatureId::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-UINodeFeature::UINodeFeature () :
-	UINodeFeature (FeatureId ())
+NodeFeature::NodeFeature () :
+	NodeFeature (FeatureId ())
 {
 
 }
 
-UINodeFeature::UINodeFeature (const FeatureId& featureId) :
+NodeFeature::NodeFeature (const FeatureId& featureId) :
 	featureId (featureId)
 {
 }
 
-UINodeFeature::~UINodeFeature ()
+NodeFeature::~NodeFeature ()
 {
 
 }
 
-const FeatureId& UINodeFeature::GetId () const
+const FeatureId& NodeFeature::GetId () const
 {
 	return featureId;
 }
 
-NE::Stream::Status UINodeFeature::Read (NE::InputStream& inputStream)
+NE::Stream::Status NodeFeature::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status UINodeFeature::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status NodeFeature::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	return outputStream.GetStatus ();
@@ -106,7 +106,7 @@ UINodeFeatureSet::~UINodeFeatureSet ()
 
 }
 
-void UINodeFeatureSet::AddFeature (const FeatureId& featureId, const UINodeFeaturePtr& feature)
+void UINodeFeatureSet::AddFeature (const FeatureId& featureId, const NodeFeaturePtr& feature)
 {
 	size_t index = features.size ();
 	features.push_back (feature);
@@ -118,21 +118,21 @@ bool UINodeFeatureSet::HasFeature (const FeatureId& featureId) const
 	return idToIndex.find (featureId) != idToIndex.end ();
 }
 
-const UINodeFeaturePtr& UINodeFeatureSet::GetFeature (const FeatureId& featureId) const
+const NodeFeaturePtr& UINodeFeatureSet::GetFeature (const FeatureId& featureId) const
 {
 	return features[idToIndex.at (featureId)];
 }
 
 void UINodeFeatureSet::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	for (const UINodeFeaturePtr& feature : features) {
+	for (const NodeFeaturePtr& feature : features) {
 		feature->RegisterCommands (commandRegistrator);
 	}
 }
 
 void UINodeFeatureSet::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	for (const UINodeFeaturePtr& feature : features) {
+	for (const NodeFeaturePtr& feature : features) {
 		feature->RegisterParameters (parameterList);
 	}
 }
@@ -143,7 +143,7 @@ NE::Stream::Status UINodeFeatureSet::Read (NE::InputStream& inputStream)
 	size_t featureCount = 0;
 	inputStream.Read (featureCount);
 	for (size_t i = 0; i < featureCount; i++) {
-		UINodeFeaturePtr feature (NE::ReadDynamicObject<UINodeFeature> (inputStream));
+		NodeFeaturePtr feature (NE::ReadDynamicObject<NodeFeature> (inputStream));
 		AddFeature (feature->GetId (), feature);
 	}
 	return inputStream.GetStatus ();
@@ -153,7 +153,7 @@ NE::Stream::Status UINodeFeatureSet::Write (NE::OutputStream& outputStream) cons
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	outputStream.Write (features.size ());
-	for (const UINodeFeaturePtr& feature : features) {
+	for (const NodeFeaturePtr& feature : features) {
 		NE::WriteDynamicObject (outputStream, feature.get ());
 	}
 	return outputStream.GetStatus ();

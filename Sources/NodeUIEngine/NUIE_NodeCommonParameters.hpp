@@ -1,8 +1,8 @@
-#ifndef NUIE_UINODECOMMONPARAMETERS_HPP
-#define NUIE_UINODECOMMONPARAMETERS_HPP
+#ifndef NUIE_NODECOMMONPARAMETERS_HPP
+#define NUIE_NODECOMMONPARAMETERS_HPP
 
 #include "NE_SingleValues.hpp"
-#include "NUIE_UINodeParameters.hpp"
+#include "NUIE_NodeParameters.hpp"
 #include "NUIE_NodeUIManager.hpp"
 
 namespace NUIE

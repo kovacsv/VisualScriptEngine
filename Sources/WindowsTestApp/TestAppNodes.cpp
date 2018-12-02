@@ -1,7 +1,7 @@
 #include "TestAppNodes.hpp"
 #include "NE_ValueCombination.hpp"
-#include "NUIE_UINodeParameters.hpp"
-#include "NUIE_UINodeCommonParameters.hpp"
+#include "NUIE_NodeParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
 #include "TestAppValues.hpp"
 #include "ResultImage.hpp"
 
@@ -31,7 +31,7 @@ void ColorNode::Initialize ()
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("g"), L"Green", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), L"Blue", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("color"), L"Color")));
-	RegisterFeature (NUIE::UINodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
+	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
 NE::ValuePtr ColorNode::Calculate (NE::EvaluationEnv& env) const
@@ -138,8 +138,8 @@ DrawableNode::DrawableNode (const std::wstring& name, const NUIE::Point& positio
 
 void DrawableNode::Initialize ()
 {
-	RegisterFeature (NUIE::UINodeFeaturePtr (new BI::EnableDisableFeature (true)));
-	RegisterFeature (NUIE::UINodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
+	RegisterFeature (NUIE::NodeFeaturePtr (new BI::EnableDisableFeature (true)));
+	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
 void DrawableNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const

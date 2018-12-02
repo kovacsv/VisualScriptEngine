@@ -14,7 +14,7 @@ void DrawStatusHeaderWithSlotsLayout (	const NUIE::UINode& uiNode,
 		nodeStatus = NodeUIStatusHeaderPanel::NodeStatus::HasValue;
 	}
 
-	NUIE::NodeUIPanelDrawer drawer;
+	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIStatusHeaderPanel (uiNode.GetNodeName (), nodeStatus)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
 	drawer.Draw (env, drawingImage);
@@ -36,7 +36,7 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 		}
 	}
 
-	NUIE::NodeUIPanelDrawer drawer;
+	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName ())));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, nodeText, env)));
