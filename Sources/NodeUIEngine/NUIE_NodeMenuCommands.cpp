@@ -465,7 +465,10 @@ public:
 
 		std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group));
 		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
-			paramInterface->ApplyChanges (uiManager, uiEnvironment);
+			CustomUndoableCommand command ([&] () {
+				paramInterface->ApplyChanges (uiManager, uiEnvironment);
+			});
+			uiManager.ExecuteCommand (command);
 		}
 	}
 
