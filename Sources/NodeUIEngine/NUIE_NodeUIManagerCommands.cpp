@@ -112,7 +112,6 @@ void DisconnectAllInputSlotsCommand::Do (NodeUIManager& uiManager)
 	uiManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
 }
 
-
 DisconnectAllOutputSlotsCommand::DisconnectAllOutputSlotsCommand (const UIInputSlotConstPtr& inputSlot) :
 	UndoableCommand (),
 	inputSlot (inputSlot)
