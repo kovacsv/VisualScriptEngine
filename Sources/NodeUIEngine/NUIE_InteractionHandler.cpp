@@ -142,6 +142,8 @@ public:
 
 		MoveNodesCommand command (relevantNodes, offset);
 		uiManager.ExecuteCommand (command);
+
+		uiManager.RequestRedraw ();
 	}
 
 	virtual void HandleAbort () override
@@ -166,7 +168,6 @@ private:
 			uiManager.InvalidateNodeGroupDrawing (nodeId);
 			return true;
 		});
-		uiManager.RequestRedraw ();
 	}
 
 	NodeUIManager&		uiManager;

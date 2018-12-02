@@ -43,7 +43,6 @@ AddNodeCommand::AddNodeCommand (const UINodePtr& uiNode, NE::EvaluationEnv& eval
 void AddNodeCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.AddNode (uiNode, evaluationEnv);
-	uiManager.RequestRedraw ();
 }
 
 DeleteNodesCommand::DeleteNodesCommand (const NE::NodeCollection& nodes, NE::EvaluationEnv& evaluationEnv) :
@@ -59,7 +58,6 @@ void DeleteNodesCommand::Do (NodeUIManager& uiManager)
 		uiManager.DeleteNode (nodeId, evaluationEnv);
 		return true;
 	});
-	uiManager.RequestRedraw ();
 }
 
 MoveNodesCommand::MoveNodesCommand (const NE::NodeCollection& nodes, const Point& offset) :
@@ -77,7 +75,6 @@ void MoveNodesCommand::Do (NodeUIManager& uiManager)
 		uiManager.InvalidateNodeGroupDrawing (uiNode);
 		return true;
 	});
-	uiManager.RequestRedraw ();	
 }
 
 ConnectSlotsCommand::ConnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
@@ -90,7 +87,6 @@ ConnectSlotsCommand::ConnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot
 void ConnectSlotsCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
-	uiManager.RequestRedraw ();
 }
 
 DisconnectSlotsCommand::DisconnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
@@ -103,7 +99,6 @@ DisconnectSlotsCommand::DisconnectSlotsCommand (const UIOutputSlotConstPtr& outp
 void DisconnectSlotsCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
-	uiManager.RequestRedraw ();
 }
 
 DisconnectAllInputSlotsCommand::DisconnectAllInputSlotsCommand (const UIOutputSlotConstPtr& outputSlot) :
@@ -115,7 +110,6 @@ DisconnectAllInputSlotsCommand::DisconnectAllInputSlotsCommand (const UIOutputSl
 void DisconnectAllInputSlotsCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
-	uiManager.RequestRedraw ();
 }
 
 
@@ -128,7 +122,6 @@ DisconnectAllOutputSlotsCommand::DisconnectAllOutputSlotsCommand (const UIInputS
 void DisconnectAllOutputSlotsCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
-	uiManager.RequestRedraw ();
 }
 
 CopyNodesCommand::CopyNodesCommand (const NE::NodeCollection& nodes) :

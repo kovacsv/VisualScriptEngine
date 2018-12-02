@@ -110,6 +110,7 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv&)
 		return nullptr;
 	}
 	status.RequestRecalculate ();
+	status.RequestRedraw ();
 	return uiNode;
 }
 
@@ -125,6 +126,7 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 		return false;
 	}
 	status.RequestRecalculate ();
+	status.RequestRedraw ();
 	return true;
 }
 
@@ -332,6 +334,7 @@ void NodeUIManager::InvalidateNodeGroupDrawing (const NE::NodeId& nodeid)
 
 	UINodeGroupPtr uiGroup = std::static_pointer_cast<UINodeGroup> (group);
 	uiGroup->InvalidateGroupDrawing ();
+	RequestRedraw ();
 }
 
 void NodeUIManager::InvalidateNodeGroupDrawing (const UINodePtr& uiNode)
