@@ -20,11 +20,12 @@ function (SetCompilerOptions module maxWarningLevel)
 	target_compile_options(${module} PUBLIC "$<$<CONFIG:RELEASE>:${ReleaseOptions}>")
 endfunction ()
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
 set (CMAKE_SUPPRESS_REGENERATION 1)
 set (CMAKE_CONFIGURATION_TYPES Debug;Release)
 set (CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/DevKit CACHE PATH "Install prefix.")
+set (CMAKE_DEBUG_POSTFIX "Debug")
 set (WXWIDGETS_DIR $ENV{WXWIDGETS_DIR} CACHE PATH "wxWidgets binary directory.")
 
 add_definitions (-DUNICODE -D_UNICODE)
@@ -47,8 +48,7 @@ source_group ("Sources" FILES ${NodeEngineFiles})
 add_library (NodeEngine STATIC ${NodeEngineFiles})
 target_include_directories (NodeEngine PUBLIC ${NodeEngineSourcesFolder})
 SetCompilerOptions (NodeEngine ON)
-install (TARGETS NodeEngine DESTINATION lib_debug CONFIGURATIONS Debug)
-install (TARGETS NodeEngine DESTINATION lib_release CONFIGURATIONS Release)
+install (TARGETS NodeEngine DESTINATION lib)
 install (FILES ${NodeEngineHeaderFiles} DESTINATION include)
 
 # NodeUIEngine
@@ -66,8 +66,7 @@ add_library (NodeUIEngine STATIC ${NodeUIEngineFiles})
 target_include_directories (NodeUIEngine PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder})
 target_link_libraries (NodeUIEngine NodeEngine)
 SetCompilerOptions (NodeUIEngine ON)
-install (TARGETS NodeUIEngine DESTINATION lib_debug CONFIGURATIONS Debug)
-install (TARGETS NodeUIEngine DESTINATION lib_release CONFIGURATIONS Release)
+install (TARGETS NodeUIEngine DESTINATION lib)
 install (FILES ${NodeUIEngineHeaderFiles} DESTINATION include)
 
 # BuiltInNodes
@@ -85,8 +84,7 @@ add_library (BuiltInNodes STATIC ${BuiltInNodesFiles})
 target_include_directories (BuiltInNodes PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${BuiltInNodesSourcesFolder})
 target_link_libraries (BuiltInNodes NodeEngine NodeUIEngine)
 SetCompilerOptions (BuiltInNodes ON)
-install (TARGETS BuiltInNodes DESTINATION lib_debug CONFIGURATIONS Debug)
-install (TARGETS BuiltInNodes DESTINATION lib_release CONFIGURATIONS Release)
+install (TARGETS BuiltInNodes DESTINATION lib)
 install (FILES ${BuiltInNodesHeaderFiles} DESTINATION include)
 
 # NodeEngineTest
@@ -135,8 +133,7 @@ if (MSVC)
 	target_include_directories (WindowsAppSupport PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${BuiltInNodesSourcesFolder} ${WindowsAppSupportSourcesFolder})
 	target_link_libraries (WindowsAppSupport NodeEngine NodeUIEngine BuiltInNodes)
 	SetCompilerOptions (WindowsAppSupport OFF)
-	install (TARGETS WindowsAppSupport DESTINATION lib_debug CONFIGURATIONS Debug)
-	install (TARGETS WindowsAppSupport DESTINATION lib_release CONFIGURATIONS Release)
+	install (TARGETS WindowsAppSupport DESTINATION lib)
 	install (FILES ${WindowsAppSupportHeaderFiles} DESTINATION include)
 
 	# WindowsEmbeddingDemo
@@ -189,8 +186,7 @@ if (MSVC)
 		target_link_libraries (wxWidgetsAppSupport NodeEngine NodeUIEngine BuiltInNodes)
 		target_compile_definitions (wxWidgetsAppSupport PUBLIC _CRT_SECURE_NO_WARNINGS)
 		SetCompilerOptions (wxWidgetsAppSupport OFF)
-		install (TARGETS wxWidgetsAppSupport DESTINATION lib_debug CONFIGURATIONS Debug)
-		install (TARGETS wxWidgetsAppSupport DESTINATION lib_release CONFIGURATIONS Release)
+		install (TARGETS wxWidgetsAppSupport DESTINATION lib)
 		install (FILES ${wxWidgetsAppSupportHeaderFiles} DESTINATION include)
 		
 		# WindowsTestApp
