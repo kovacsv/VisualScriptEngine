@@ -109,7 +109,7 @@ source_group ("Sources" FILES ${NodeEngineTestTestFiles})
 add_executable (NodeEngineTest ${NodeEngineTestFiles})
 target_include_directories (NodeEngineTest PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${BuiltInNodesSourcesFolder} ${TestFrameworkSourcesFolder})
 target_link_libraries (NodeEngineTest NodeEngine NodeUIEngine BuiltInNodes)
-get_filename_component(NodeEngineTestSourcesFolderAbsolute "${CMAKE_CURRENT_LIST_DIR}/${NodeEngineTestSourcesFolder}" ABSOLUTE)
+get_filename_component (NodeEngineTestSourcesFolderAbsolute "${CMAKE_CURRENT_LIST_DIR}/${NodeEngineTestSourcesFolder}" ABSOLUTE)
 add_custom_command (TARGET NodeEngineTest POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${NodeEngineTestSourcesFolderAbsolute}/VisualTestFiles $<TARGET_FILE_DIR:NodeEngineTest>/VisualTestFiles
 )
