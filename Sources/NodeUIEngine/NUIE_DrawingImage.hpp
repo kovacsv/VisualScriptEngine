@@ -11,8 +11,8 @@ namespace NUIE
 {
 
 class DrawingItem;
-typedef std::shared_ptr<DrawingItem> DrawingItemPtr;
-typedef std::shared_ptr<const DrawingItem> DrawingItemConstPtr;
+using DrawingItemPtr = std::shared_ptr<DrawingItem>;
+using DrawingItemConstPtr = std::shared_ptr<const DrawingItem>;
 
 class DrawingItem
 {

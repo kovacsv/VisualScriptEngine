@@ -89,8 +89,8 @@ public:
 	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) = 0;
 };
 
-typedef std::shared_ptr<NodeCommand> NodeCommandPtr;
-typedef std::shared_ptr<NodeGroupCommand<NodeCommandPtr>> NodeGroupCommandPtr;
+using NodeCommandPtr = std::shared_ptr<NodeCommand>;
+using NodeGroupCommandPtr = std::shared_ptr<NodeGroupCommand<NodeCommandPtr>>;
 
 class InputSlotCommand : public NodeCommandBase
 {
@@ -101,8 +101,8 @@ public:
 	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIInputSlotPtr& inputSlot) = 0;
 };
 
-typedef std::shared_ptr<InputSlotCommand> InputSlotCommandPtr;
-typedef std::shared_ptr<NodeGroupCommand<InputSlotCommandPtr>> InputSlotGroupCommandPtr;
+using InputSlotCommandPtr = std::shared_ptr<InputSlotCommand>;
+using InputSlotGroupCommandPtr = std::shared_ptr<NodeGroupCommand<InputSlotCommandPtr>>;
 
 class OutputSlotCommand : public NodeCommandBase
 {
@@ -113,8 +113,8 @@ public:
 	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIOutputSlotPtr& outputSlot) = 0;
 };
 
-typedef std::shared_ptr<OutputSlotCommand> OutputSlotCommandPtr;
-typedef std::shared_ptr<NodeGroupCommand<OutputSlotCommandPtr>> OutputSlotGroupCommandPtr;
+using OutputSlotCommandPtr = std::shared_ptr<OutputSlotCommand>;
+using OutputSlotGroupCommandPtr = std::shared_ptr<NodeGroupCommand<OutputSlotCommandPtr>>;
 
 class NodeCommandRegistrator
 {

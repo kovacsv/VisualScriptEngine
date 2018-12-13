@@ -17,8 +17,8 @@ public:
 	virtual void	Draw (NodeUIDrawingEnvironment& env, const Rect& rect, NodeDrawingImage& drawingImage) const = 0;
 };
 
-typedef std::shared_ptr<NodePanel> NodeUIPanelPtr;
-typedef std::shared_ptr<const NodePanel> NodeUIPanelConstPtr;
+using NodeUIPanelPtr = std::shared_ptr<NodePanel>;
+using NodeUIPanelConstPtr = std::shared_ptr<const NodePanel>;
 
 }
 

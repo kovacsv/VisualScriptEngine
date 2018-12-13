@@ -13,16 +13,16 @@ namespace NE
 {
 
 class Value;
-typedef std::shared_ptr<Value> ValuePtr;
+using ValuePtr = std::shared_ptr<Value>;
 
 class SingleValue;
-typedef std::shared_ptr<SingleValue> SingleValuePtr;
+using SingleValuePtr = std::shared_ptr<SingleValue>;
 
 class ListValue;
-typedef std::shared_ptr<ListValue> ListValuePtr;
+using ListValuePtr = std::shared_ptr<ListValue>;
 
 class IListValue;
-typedef std::shared_ptr<IListValue> IListValuePtr;
+using IListValuePtr = std::shared_ptr<IListValue>;
 
 class Value : public DynamicSerializable
 {

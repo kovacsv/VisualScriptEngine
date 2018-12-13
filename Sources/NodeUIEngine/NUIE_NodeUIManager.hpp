@@ -30,7 +30,7 @@ public:
 	virtual void Do (NodeUIManager& uiManager) = 0;
 };
 
-typedef std::shared_ptr<NodeUIManagerCommand> NodeUIManagerCommandPtr;
+using NodeUIManagerCommandPtr = std::shared_ptr<NodeUIManagerCommand>;
 
 class NodeUIManager
 {

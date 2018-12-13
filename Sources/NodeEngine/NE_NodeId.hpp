@@ -9,7 +9,7 @@
 namespace NE
 {
 
-typedef size_t NodeIdType;
+using NodeIdType = size_t;
 
 class NodeIdGenerator
 {

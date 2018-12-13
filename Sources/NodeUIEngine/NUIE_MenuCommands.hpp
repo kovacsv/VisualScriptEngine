@@ -11,13 +11,13 @@ namespace NUIE
 {
 
 class MenuCommand;
-typedef std::shared_ptr<MenuCommand> MenuCommandPtr;
+using MenuCommandPtr = std::shared_ptr<MenuCommand>;
 
 class SingleMenuCommand;
-typedef std::shared_ptr<SingleMenuCommand> SingleMenuCommandPtr;
+using SingleMenuCommandPtr = std::shared_ptr<SingleMenuCommand>;
 
 class GroupMenuCommand;
-typedef std::shared_ptr<GroupMenuCommand> GroupMenuCommandPtr;
+using GroupMenuCommandPtr = std::shared_ptr<GroupMenuCommand>;
 
 class MenuCommand
 {

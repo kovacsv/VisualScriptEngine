@@ -40,8 +40,8 @@ public:
 	virtual bool						SetParameterValue (size_t index, const NE::ValuePtr& value) = 0;
 };
 
-typedef std::shared_ptr<ParameterInterface> ParameterInterfacePtr;
-typedef std::shared_ptr<const ParameterInterface> ParameterInterfaceConstPtr;
+using ParameterInterfacePtr = std::shared_ptr<ParameterInterface>;
+using ParameterInterfaceConstPtr = std::shared_ptr<const ParameterInterface>;
 
 }
 

@@ -58,8 +58,8 @@ private:
 	mutable GroupDrawingImage	drawingImage;
 };
 
-typedef std::shared_ptr<UINodeGroup> UINodeGroupPtr;
-typedef std::shared_ptr<const UINodeGroup> UINodeGroupConstPtr;
+using UINodeGroupPtr = std::shared_ptr<UINodeGroup>;
+using UINodeGroupConstPtr = std::shared_ptr<const UINodeGroup>;
 
 }
 

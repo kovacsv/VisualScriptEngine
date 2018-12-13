@@ -119,8 +119,8 @@ private:
 	mutable NodeDrawingImage		nodeDrawingImage;
 };
 
-typedef std::shared_ptr<UINode> UINodePtr;
-typedef std::shared_ptr<const UINode> UINodeConstPtr;
+using UINodePtr = std::shared_ptr<UINode>;
+using UINodeConstPtr = std::shared_ptr<const UINode>;
 
 template <class FeatureType>
 std::shared_ptr<FeatureType> GetUINodeFeature (const UINode* uiNode, const FeatureId& featureId)

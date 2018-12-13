@@ -38,8 +38,8 @@ private:
 };
 
 class NodeFeature;
-typedef std::shared_ptr<NodeFeature> NodeFeaturePtr;
-typedef std::shared_ptr<const NodeFeature> NodeFeatureConstPtr;
+using NodeFeaturePtr = std::shared_ptr<NodeFeature>;
+using NodeFeatureConstPtr = std::shared_ptr<const NodeFeature>;
 
 class NodeFeature : public NE::DynamicSerializable
 {

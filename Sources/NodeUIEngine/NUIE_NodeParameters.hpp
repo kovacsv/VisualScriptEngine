@@ -32,8 +32,8 @@ private:
 	ParameterType	type;
 };
 
-typedef std::shared_ptr<NodeParameter> NodeParameterPtr;
-typedef std::shared_ptr<const NodeParameter> NodeParameterConstPtr;
+using NodeParameterPtr = std::shared_ptr<NodeParameter>;
+using NodeParameterConstPtr = std::shared_ptr<const NodeParameter>;
 
 class NodeParameterList
 {
@@ -51,8 +51,8 @@ private:
 	std::vector<NodeParameterPtr>	parameters;
 };
 
-typedef std::shared_ptr<NodeParameterList> NodeParameterListPtr;
-typedef std::shared_ptr<const NodeParameterList> NodeParameterListConstPtr;
+using NodeParameterListPtr = std::shared_ptr<NodeParameterList>;
+using NodeParameterListConstPtr = std::shared_ptr<const NodeParameterList>;
 
 std::wstring	ParameterValueToString (const NE::ValuePtr& value, const ParameterType& type);
 NE::ValuePtr	StringToParameterValue (const std::wstring& str, const ParameterType& type);

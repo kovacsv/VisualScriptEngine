@@ -29,8 +29,8 @@ private:
 	std::wstring				name;
 };
 
-typedef std::shared_ptr<UIOutputSlot> UIOutputSlotPtr;
-typedef std::shared_ptr<const UIOutputSlot> UIOutputSlotConstPtr;
+using UIOutputSlotPtr = std::shared_ptr<UIOutputSlot>;
+using UIOutputSlotConstPtr = std::shared_ptr<const UIOutputSlot>;
 
 }
 
