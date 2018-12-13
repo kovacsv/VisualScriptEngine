@@ -63,7 +63,7 @@ void NodeId::SetUniqueId (const NodeIdType& uniqueId)
 
 size_t NodeId::GenerateHashValue () const
 {
-	return std::hash<size_t> {} (id);
+	return std::hash<NodeIdType> {} (id);
 }
 
 bool NodeId::operator< (const NodeId& rhs) const
