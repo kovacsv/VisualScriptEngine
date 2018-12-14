@@ -58,7 +58,7 @@ private:
 };
 
 class DynamicSerializable;
-typedef DynamicSerializable* (*CreatorFunction)();
+using CreatorFunction = DynamicSerializable* (*)();
 
 class DynamicSerializationInfo : public SerializationInfo
 {
