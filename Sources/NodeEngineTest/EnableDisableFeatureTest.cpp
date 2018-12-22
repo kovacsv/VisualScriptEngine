@@ -34,7 +34,7 @@ public:
 
 	}
 
-	virtual NE::EvaluationEnv& GetEvaluationEnv ()
+	virtual NE::EvaluationEnv& GetEvaluationEnv () override
 	{
 		return evalEnv;
 	}
@@ -49,12 +49,12 @@ public:
 
 	}
 	
-	virtual void OnValuesRecalculated ()
+	virtual void OnValuesRecalculated () override
 	{
 
 	}
 
-	virtual void OnRedrawRequested ()
+	virtual void OnRedrawRequested () override
 	{
 
 	}
