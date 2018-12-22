@@ -280,7 +280,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				WORD commandId = LOWORD (wParam);
 				switch (commandId) {
 					case MENU_FILE_NEW:
-						nodeEditor.Clear ();
+						nodeEditor.New ();
 						break;
 					case MENU_FILE_QUIT:
 						PostQuitMessage (0);

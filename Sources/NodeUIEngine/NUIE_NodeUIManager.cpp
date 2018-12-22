@@ -7,7 +7,6 @@
 
 namespace NUIE
 {
-
 static const size_t NodeUIManagerVersion = 1;
 
 class NodeUIManagerMergeEventHandler : public NE::MergeEventHandler
@@ -45,14 +44,14 @@ private:
 
 NodeUIManager::Status::Status ()
 {
-	needToRecalculate = true;
-	needToRedraw = true;
+	Reset ();
 }
 
 void NodeUIManager::Status::Reset ()
 {
 	needToRecalculate = false;
 	needToRedraw = false;
+	needToSave = false;
 }
 
 void NodeUIManager::Status::RequestRecalculate ()
@@ -60,9 +59,9 @@ void NodeUIManager::Status::RequestRecalculate ()
 	needToRecalculate = true;
 }
 
-void NodeUIManager::Status::RequestRedraw ()
+void NodeUIManager::Status::ResetRecalculate ()
 {
-	needToRedraw = true;
+	needToRecalculate = false;
 }
 
 bool NodeUIManager::Status::NeedToRecalculate () const
@@ -70,9 +69,34 @@ bool NodeUIManager::Status::NeedToRecalculate () const
 	return needToRecalculate;
 }
 
+void NodeUIManager::Status::RequestRedraw ()
+{
+	needToRedraw = true;
+}
+
+void NodeUIManager::Status::ResetRedraw ()
+{
+	needToRedraw = true;
+}
+
 bool NodeUIManager::Status::NeedToRedraw () const
 {
 	return needToRedraw;
+}
+
+void NodeUIManager::Status::RequestSave ()
+{
+	needToSave = true;
+}
+
+void NodeUIManager::Status::ResetSave ()
+{
+	needToSave = false;
+}
+
+bool NodeUIManager::Status::NeedToSave () const
+{
+	return needToSave;
 }
 
 NodeUIManagerCommand::NodeUIManagerCommand ()
@@ -92,7 +116,7 @@ NodeUIManager::NodeUIManager () :
 	viewBox (Point (0, 0), 1.0),
 	status ()
 {
-
+	New ();
 }
 
 NodeUIManager::~NodeUIManager ()
@@ -410,20 +434,16 @@ void NodeUIManager::SetUpdateMode (UpdateMode newUpdateMode)
 	}
 }
 
-void NodeUIManager::Clear ()
+void NodeUIManager::New ()
 {
-	selectedNodes.Clear ();
-	copyPasteHandler.Clear ();
-	undoHandler.Clear ();
-	nodeManager.Clear ();
-	viewBox.Reset ();
+	Clear ();
 	status.RequestRecalculate ();
+	status.NeedToRedraw ();
 }
 
 bool NodeUIManager::Load (NE::InputStream& inputStream)
 {
 	Clear ();
-
 	size_t version;
 	inputStream.Read (version);
 	nodeManager.Read (inputStream);
@@ -437,7 +457,13 @@ bool NodeUIManager::Save (NE::OutputStream& outputStream) const
 	outputStream.Write (NodeUIManagerVersion);
 	nodeManager.Write (outputStream);
 	bool success = (outputStream.GetStatus () == NE::Stream::Status::NoError);
+	status.ResetSave ();
 	return success;
+}
+
+bool NodeUIManager::NeedToSave () const
+{
+	return status.NeedToSave ();
 }
 
 bool NodeUIManager::CanPaste () const
@@ -524,11 +550,22 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommand& command)
 		SaveUndoState ();
 	}
 	command.Do (*this);
+	status.RequestSave ();
 }
 
 void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
 {
 	ExecuteCommand (*command);
+}
+
+void NodeUIManager::Clear ()
+{
+	selectedNodes.Clear ();
+	copyPasteHandler.Clear ();
+	undoHandler.Clear ();
+	nodeManager.Clear ();
+	viewBox.Reset ();
+	status.Reset ();
 }
 
 void NodeUIManager::InvalidateDrawingsForInvalidatedNodes ()
@@ -561,7 +598,8 @@ void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalU
 	if (status.NeedToRedraw ()) {
 		env.OnRedrawRequested ();
 	}
-	status.Reset ();
+	status.ResetRecalculate ();
+	status.ResetRedraw ();
 }
 
 }

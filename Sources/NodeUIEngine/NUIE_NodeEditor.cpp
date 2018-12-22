@@ -201,9 +201,9 @@ void NodeEditor::FitToWindow ()
 	Update ();
 }
 
-void NodeEditor::Clear ()
+void NodeEditor::New ()
 {
-	uiManager.Clear ();
+	uiManager.New ();
 	Update ();
 }
 
@@ -220,7 +220,11 @@ bool NodeEditor::Load (const std::string& fileName)
 	file.close ();
 
 	NE::MemoryInputStream inputStream (buffer);
-	
+	return Load (inputStream);
+}
+
+bool NodeEditor::Load (NE::InputStream& inputStream)
+{
 	std::string fileMarker;
 	inputStream.Read (fileMarker);
 	if (DBGERROR (fileMarker != NodeEditorFileMarker)) {
@@ -244,9 +248,7 @@ bool NodeEditor::Load (const std::string& fileName)
 bool NodeEditor::Save (const std::string& fileName) const
 {
 	NE::MemoryOutputStream outputStream;
-	outputStream.Write (NodeEditorFileMarker);
-	outputStream.Write (NodeEditorFileVersion);
-	if (DBGERROR (!uiManager.Save (outputStream))) {
+	if (DBGERROR (!Save (outputStream))) {
 		return false;
 	}
 
@@ -261,6 +263,21 @@ bool NodeEditor::Save (const std::string& fileName) const
 	file.close ();
 
 	return true;
+}
+
+bool NodeEditor::Save (NE::OutputStream& outputStream) const
+{
+	outputStream.Write (NodeEditorFileMarker);
+	outputStream.Write (NodeEditorFileVersion);
+	if (DBGERROR (!uiManager.Save (outputStream))) {
+		return false;
+	}
+	return true;
+}
+
+bool NodeEditor::NeedToSave () const
+{
+	return uiManager.NeedToSave ();
 }
 
 void NodeEditor::Undo ()

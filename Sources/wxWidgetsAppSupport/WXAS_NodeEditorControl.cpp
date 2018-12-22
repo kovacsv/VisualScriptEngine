@@ -281,7 +281,7 @@ void NodeEditorControl::FitToWindow ()
 
 void NodeEditorControl::New ()
 {
-	nodeEditor->Clear ();
+	nodeEditor->New ();
 }
  
 bool NodeEditorControl::Open (const std::string& fileName)

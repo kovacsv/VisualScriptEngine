@@ -100,9 +100,10 @@ public:
 	UpdateMode					GetUpdateMode () const;
 	void						SetUpdateMode (UpdateMode newUpdateMode);
 
-	void						Clear ();
+	void						New ();
 	bool						Load (NE::InputStream& inputStream);
 	bool						Save (NE::OutputStream& outputStream) const;
+	bool						NeedToSave () const;
 
 	bool						CanPaste () const;
 	bool						Copy (const NE::NodeCollection& nodeCollection);
@@ -130,14 +131,21 @@ private:
 		void	Reset ();
 
 		void	RequestRecalculate ();
-		void	RequestRedraw ();
-
+		void	ResetRecalculate ();
 		bool	NeedToRecalculate () const;
+
+		void	RequestRedraw ();
+		void	ResetRedraw ();
 		bool	NeedToRedraw () const;
+
+		void	RequestSave ();
+		void	ResetSave ();
+		bool	NeedToSave () const;
 
 	private:
 		bool	needToRecalculate;
 		bool	needToRedraw;
+		bool	needToSave;
 	};
 
 	enum class InternalUpdateMode
@@ -146,6 +154,7 @@ private:
 		Manual
 	};
 
+	void				Clear ();
 	void				InvalidateDrawingsForInvalidatedNodes ();
 	void				UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode);
 
@@ -154,7 +163,7 @@ private:
 	CopyPasteHandler	copyPasteHandler;
 	UndoHandler			undoHandler;
 	ViewBox				viewBox;
-	Status				status;
+	mutable Status		status;
 };
 
 }

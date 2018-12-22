@@ -44,9 +44,12 @@ public:
 	Point						ViewToModel (const Point& viewPoint) const;
 	void						FitToWindow ();
 	
-	void						Clear ();
+	void						New ();
 	bool						Load (const std::string& fileName);
+	bool						Load (NE::InputStream& inputStream);
 	bool						Save (const std::string& fileName) const;
+	bool						Save (NE::OutputStream& outputStream) const;
+	bool						NeedToSave () const;
 	void						Undo ();
 	void						Redo ();
 
