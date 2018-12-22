@@ -50,7 +50,7 @@ public:
 	void						Undo ();
 	void						Redo ();
 
-protected:
+private:
 	NodeUIManager				uiManager;
 	InteractionHandler			interactionHandler;
 	MouseEventTranslator		mouseEventTranslator;
