@@ -45,8 +45,8 @@ public:
 	void						FitToWindow ();
 	
 	void						New ();
-	bool						Load (const std::string& fileName);
-	bool						Load (NE::InputStream& inputStream);
+	bool						Open (const std::string& fileName);
+	bool						Open (NE::InputStream& inputStream);
 	bool						Save (const std::string& fileName) const;
 	bool						Save (NE::OutputStream& outputStream) const;
 	bool						NeedToSave () const;

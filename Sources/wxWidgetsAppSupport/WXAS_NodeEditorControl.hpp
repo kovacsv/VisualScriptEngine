@@ -109,6 +109,7 @@ public:
 	void			New ();
 	bool			Open (const std::string& fileName);
 	bool			Save (const std::string& fileName);
+	bool			NeedToSave () const;
 	void			Undo ();
 	void			Redo ();
 

@@ -286,18 +286,17 @@ void NodeEditorControl::New ()
  
 bool NodeEditorControl::Open (const std::string& fileName)
 {
-	if (!nodeEditor->Load (fileName)) {
-		return false;
-	}
-	return true;
+	return nodeEditor->Open (fileName);
 }
  
 bool NodeEditorControl::Save (const std::string& fileName)
 {
-	if (!nodeEditor->Save (fileName)) {
-		return false;
-	}
-	return true;
+	return nodeEditor->Save (fileName);
+}
+
+bool NodeEditorControl::NeedToSave () const
+{
+	return nodeEditor->NeedToSave ();
 }
 
 void NodeEditorControl::Undo ()

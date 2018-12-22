@@ -207,7 +207,7 @@ void NodeEditor::New ()
 	Update ();
 }
 
-bool NodeEditor::Load (const std::string& fileName)
+bool NodeEditor::Open (const std::string& fileName)
 {
 	std::ifstream file;
 	file.open (fileName, std::ios::binary);
@@ -220,10 +220,10 @@ bool NodeEditor::Load (const std::string& fileName)
 	file.close ();
 
 	NE::MemoryInputStream inputStream (buffer);
-	return Load (inputStream);
+	return Open (inputStream);
 }
 
-bool NodeEditor::Load (NE::InputStream& inputStream)
+bool NodeEditor::Open (NE::InputStream& inputStream)
 {
 	std::string fileMarker;
 	inputStream.Read (fileMarker);
@@ -237,7 +237,7 @@ bool NodeEditor::Load (NE::InputStream& inputStream)
 		return false;
 	}
 
-	if (DBGERROR (!uiManager.Load (inputStream))) {
+	if (DBGERROR (!uiManager.Open (inputStream))) {
 		return false;
 	}
 

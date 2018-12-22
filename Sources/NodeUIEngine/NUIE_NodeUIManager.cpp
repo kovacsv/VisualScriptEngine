@@ -441,7 +441,7 @@ void NodeUIManager::New ()
 	status.NeedToRedraw ();
 }
 
-bool NodeUIManager::Load (NE::InputStream& inputStream)
+bool NodeUIManager::Open (NE::InputStream& inputStream)
 {
 	Clear ();
 	size_t version;

@@ -101,7 +101,7 @@ public:
 	void						SetUpdateMode (UpdateMode newUpdateMode);
 
 	void						New ();
-	bool						Load (NE::InputStream& inputStream);
+	bool						Open (NE::InputStream& inputStream);
 	bool						Save (NE::OutputStream& outputStream) const;
 	bool						NeedToSave () const;
 
