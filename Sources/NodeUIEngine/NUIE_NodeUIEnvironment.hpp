@@ -36,6 +36,8 @@ public:
 	virtual ~NodeUICalculationEnvironment ();
 
 	virtual NE::EvaluationEnv&	GetEvaluationEnv () = 0;
+	virtual void				OnEvaluationBegin () = 0;
+	virtual void				OnEvaluationEnd () = 0;
 	virtual void				OnValuesRecalculated () = 0;
 	virtual void				OnRedrawRequested () = 0;
 };

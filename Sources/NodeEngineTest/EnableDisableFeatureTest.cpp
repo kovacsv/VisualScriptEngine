@@ -39,6 +39,16 @@ public:
 		return evalEnv;
 	}
 
+	virtual void OnEvaluationBegin () override
+	{
+
+	}
+
+	virtual void OnEvaluationEnd () override
+	{
+
+	}
+	
 	virtual void OnValuesRecalculated ()
 	{
 

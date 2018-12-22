@@ -47,6 +47,8 @@ public:
 	virtual const NUIE::SkinParams&		GetSkinParams () override;
 	virtual NUIE::DrawingContext&		GetDrawingContext () override;
 	virtual NE::EvaluationEnv&			GetEvaluationEnv () override;
+	virtual void						OnEvaluationBegin () override;
+	virtual void						OnEvaluationEnd () override;
 	virtual void						OnValuesRecalculated () override;
 	virtual void						OnRedrawRequested () override;
 	virtual NUIE::EventHandlers&		GetEventHandlers () override;

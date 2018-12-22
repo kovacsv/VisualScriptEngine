@@ -411,6 +411,7 @@ public:
 				{
 					nodeEditorControl->ManualUpdate ();
 				}
+				break;
 			case MenuBar::CommandId::View_FitToWindow:
 				{
 					nodeEditorControl->FitToWindow ();

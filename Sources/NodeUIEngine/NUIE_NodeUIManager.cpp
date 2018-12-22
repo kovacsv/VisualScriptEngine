@@ -589,11 +589,13 @@ void NodeUIManager::InvalidateDrawingsForInvalidatedNodes ()
 void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode)
 {
 	if (status.NeedToRecalculate ()) {
+		env.OnEvaluationBegin ();
 		if (mode == InternalUpdateMode::Normal) {
 			nodeManager.EvaluateAllNodes (env.GetEvaluationEnv ());
 		} else if (mode == InternalUpdateMode::Manual) {
 			nodeManager.ForceEvaluateAllNodes (env.GetEvaluationEnv ());
 		}
+		env.OnEvaluationEnd ();
 	}
 	if (status.NeedToRecalculate ()) {
 		env.OnValuesRecalculated ();

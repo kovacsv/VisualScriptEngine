@@ -218,6 +218,16 @@ EvaluationEnv& TestNodeUIEnvironment::GetEvaluationEnv ()
 	return evaluationEnv;
 }
 
+void TestNodeUIEnvironment::OnEvaluationBegin ()
+{
+
+}
+
+void TestNodeUIEnvironment::OnEvaluationEnd ()
+{
+
+}
+
 void TestNodeUIEnvironment::OnValuesRecalculated ()
 {
 

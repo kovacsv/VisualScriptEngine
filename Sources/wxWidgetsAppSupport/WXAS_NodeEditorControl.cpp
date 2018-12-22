@@ -102,6 +102,16 @@ NE::EvaluationEnv& NodeEditorUIEnvironment::GetEvaluationEnv ()
 	return evaluationEnv;
 }
 
+void NodeEditorUIEnvironment::OnEvaluationBegin ()
+{
+	wxBeginBusyCursor ();
+}
+
+void NodeEditorUIEnvironment::OnEvaluationEnd ()
+{
+	wxEndBusyCursor ();
+}
+
 void NodeEditorUIEnvironment::OnValuesRecalculated ()
 {
 	

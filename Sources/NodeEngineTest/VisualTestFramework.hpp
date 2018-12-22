@@ -40,6 +40,8 @@ public:
 	virtual const SkinParams&		GetSkinParams () override;
 	virtual DrawingContext&			GetDrawingContext () override;
 	virtual EvaluationEnv&			GetEvaluationEnv () override;
+	virtual void					OnEvaluationBegin () override;
+	virtual void					OnEvaluationEnd () override;
 	virtual void					OnValuesRecalculated () override;
 	virtual void					OnRedrawRequested () override;
 	virtual EventHandlers&			GetEventHandlers () override;
