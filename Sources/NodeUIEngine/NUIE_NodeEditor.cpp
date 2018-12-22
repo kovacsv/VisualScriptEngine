@@ -172,6 +172,13 @@ void NodeEditor::AddNode (const UINodePtr& uiNode)
 	Update ();
 }
 
+void NodeEditor::ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot)
+{
+	ConnectSlotsCommand command (outputSlot, inputSlot);
+	uiManager.ExecuteCommand (command);
+	Update ();
+}
+
 Point NodeEditor::ViewToModel (const Point& viewPoint) const
 {
 	const ViewBox& viewBox = uiManager.GetViewBox ();
@@ -192,11 +199,6 @@ void NodeEditor::FitToWindow ()
 	ViewBox newViewBox = FitRectToSize (contextSize, viewPadding, boundingRect);
 	uiManager.SetViewBox (newViewBox);
 	Update ();
-}
-
-NodeUIManager& NodeEditor::GetNodeUIManager ()
-{
-	return uiManager;
 }
 
 void NodeEditor::Clear ()

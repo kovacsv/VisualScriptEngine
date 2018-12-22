@@ -203,31 +203,35 @@ public:
 
 	 virtual void OnInit () override
 	 {
-		NUIE::NodeUIManager& uiManager = nodeEditor->GetNodeUIManager ();
-
 		static const bool isStressTest = false;
 		if (isStressTest) {
 			static int count = 10;
 			for (int i = 0; i < count; i++) {
 				for (int j = 0; j < count; j++) {
-					uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleRangeNode (L"Range", NUIE::Point (i * 150, j * 150))), uiEnvironment->GetEvaluationEnv ());
+					nodeEditor->AddNode (NUIE::UINodePtr (new BI::DoubleRangeNode (L"Range", NUIE::Point (i * 150, j * 150))));
 				}
 			}
 			nodeEditor->Update ();
 		} else {
-			NUIE::UINodePtr startInputNode = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (70, 70), 20, 5)), uiEnvironment->GetEvaluationEnv ());
-			NUIE::UINodePtr stepInputNode = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (70, 180), 20, 5)), uiEnvironment->GetEvaluationEnv ());
-			NUIE::UINodePtr intRangeNodeX = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleRangeNode (L"Range", NUIE::Point (220, 100))), uiEnvironment->GetEvaluationEnv ());
-			NUIE::UINodePtr inputNodeY = uiManager.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (220, 220), 20, 5)), uiEnvironment->GetEvaluationEnv ());
+			NUIE::UINodePtr startInputNode (new BI::DoubleUpDownNode (L"Number", NUIE::Point (70, 70), 20, 5));
+			NUIE::UINodePtr stepInputNode (new BI::DoubleUpDownNode (L"Number", NUIE::Point (70, 180), 20, 5));
+			NUIE::UINodePtr intRangeNodeX (new BI::DoubleRangeNode (L"Range", NUIE::Point (220, 100)));
+			NUIE::UINodePtr inputNodeY (new BI::DoubleUpDownNode (L"Number", NUIE::Point (220, 220), 20, 5));
 			std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
-			uiManager.AddNode (pointNode, uiEnvironment->GetEvaluationEnv ());
-			NUIE::UINodePtr viewerNode = uiManager.AddNode (NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (600, 150), 5)), uiEnvironment->GetEvaluationEnv ());
+			NUIE::UINodePtr viewerNode (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (600, 150), 5));
 
-			uiManager.ConnectOutputSlotToInputSlot (startInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("start")));
-			uiManager.ConnectOutputSlotToInputSlot (stepInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("step")));
-			uiManager.ConnectOutputSlotToInputSlot (intRangeNodeX->GetUIOutputSlot (NE::SlotId ("out")), pointNode->GetUIInputSlot (NE::SlotId ("x")));
-			uiManager.ConnectOutputSlotToInputSlot (inputNodeY->GetUIOutputSlot (NE::SlotId ("out")), pointNode->GetUIInputSlot (NE::SlotId ("y")));
-			uiManager.ConnectOutputSlotToInputSlot (pointNode->GetUIOutputSlot (NE::SlotId ("point")), viewerNode->GetUIInputSlot (NE::SlotId ("in")));
+			nodeEditor->AddNode (startInputNode);
+			nodeEditor->AddNode (stepInputNode);
+			nodeEditor->AddNode (intRangeNodeX);
+			nodeEditor->AddNode (inputNodeY);
+			nodeEditor->AddNode (pointNode);
+			nodeEditor->AddNode (viewerNode);
+
+			nodeEditor->ConnectOutputSlotToInputSlot (startInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("start")));
+			nodeEditor->ConnectOutputSlotToInputSlot (stepInputNode->GetUIOutputSlot (NE::SlotId ("out")), intRangeNodeX->GetUIInputSlot (NE::SlotId ("step")));
+			nodeEditor->ConnectOutputSlotToInputSlot (intRangeNodeX->GetUIOutputSlot (NE::SlotId ("out")), pointNode->GetUIInputSlot (NE::SlotId ("x")));
+			nodeEditor->ConnectOutputSlotToInputSlot (inputNodeY->GetUIOutputSlot (NE::SlotId ("out")), pointNode->GetUIInputSlot (NE::SlotId ("y")));
+			nodeEditor->ConnectOutputSlotToInputSlot (pointNode->GetUIOutputSlot (NE::SlotId ("point")), viewerNode->GetUIInputSlot (NE::SlotId ("in")));
 			nodeEditor->Update ();
 		}
 	 }

@@ -17,12 +17,15 @@ public:
 	SimpleNodeEditorTestEnv () :
 		NodeEditorTestEnv ()
 	{
-		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
-
-		doubleUpDownNode = uiManager.AddNode (NUIE::UINodePtr (new DoubleUpDownNode (L"Number", NUIE::Point (100, 200), 20, 10)), uiEnvironment.GetEvaluationEnv ());
-		rangeInputNode = uiManager.AddNode (NUIE::UINodePtr (new DoubleRangeNode (L"Range", NUIE::Point (300, 400))), uiEnvironment.GetEvaluationEnv ());
-		viewerUINode1 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerNode (L"Viewer", NUIE::Point (600, 100), 5)), uiEnvironment.GetEvaluationEnv ());
-		viewerUINode2 = uiManager.AddNode (NUIE::UINodePtr (new MultiLineViewerNode (L"Viewer 2", NUIE::Point (600, 400), 5)), uiEnvironment.GetEvaluationEnv ());
+		doubleUpDownNode.reset (new DoubleUpDownNode (L"Number", NUIE::Point (100, 200), 20, 10));
+		rangeInputNode.reset (new DoubleRangeNode (L"Range", NUIE::Point (300, 400)));
+		viewerUINode1.reset (new MultiLineViewerNode (L"Viewer", NUIE::Point (600, 100), 5));
+		viewerUINode2.reset (new MultiLineViewerNode (L"Viewer 2", NUIE::Point (600, 400), 5));
+		
+		nodeEditor.AddNode (doubleUpDownNode);
+		nodeEditor.AddNode (rangeInputNode);
+		nodeEditor.AddNode (viewerUINode1);
+		nodeEditor.AddNode (viewerUINode2); 
 
 		nodeEditor.Update ();
 		RecalcPositions ();
@@ -61,12 +64,10 @@ public:
 	SimpleNodeEditorTestEnvWithConnections () :
 		SimpleNodeEditorTestEnv ()
 	{
-		NodeUIManager& uiManager = nodeEditor.GetNodeUIManager ();
-
-		uiManager.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("start")));
-		uiManager.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("step")));
-		uiManager.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), viewerUINode1->GetUIInputSlot (SlotId ("in")));
-		uiManager.ConnectOutputSlotToInputSlot (rangeInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode2->GetUIInputSlot (SlotId ("in")));
+		nodeEditor.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("start")));
+		nodeEditor.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("step")));
+		nodeEditor.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), viewerUINode1->GetUIInputSlot (SlotId ("in")));
+		nodeEditor.ConnectOutputSlotToInputSlot (rangeInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode2->GetUIInputSlot (SlotId ("in")));
 
 		nodeEditor.Update ();
 		RecalcPositions ();

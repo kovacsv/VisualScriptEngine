@@ -39,11 +39,11 @@ public:
 	void						Draw ();
 
 	void						AddNode (const UINodePtr& uiNode);
+	void						ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
+
 	Point						ViewToModel (const Point& viewPoint) const;
 	void						FitToWindow ();
 	
-	NodeUIManager&				GetNodeUIManager ();
-
 	void						Clear ();
 	bool						Load (const std::string& fileName);
 	bool						Save (const std::string& fileName) const;
