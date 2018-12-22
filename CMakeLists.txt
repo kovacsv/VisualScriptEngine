@@ -189,20 +189,20 @@ if (MSVC)
 		install (TARGETS wxWidgetsAppSupport DESTINATION lib)
 		install (FILES ${wxWidgetsAppSupportHeaderFiles} DESTINATION include)
 		
-		# WindowsTestApp
+		# wxWidgetsTestApp
 
-		set (WindowsTestAppSourcesFolder Sources/WindowsTestApp)
-		file (GLOB WindowsTestAppHeaderFiles ${WindowsTestAppSourcesFolder}/*.hpp)
-		file (GLOB WindowsTestAppSourceFiles ${WindowsTestAppSourcesFolder}/*.cpp)
+		set (wxWidgetsTestAppSourcesFolder Sources/wxWidgetsTestApp)
+		file (GLOB wxWidgetsTestAppHeaderFiles ${wxWidgetsTestAppSourcesFolder}/*.hpp)
+		file (GLOB wxWidgetsTestAppSourceFiles ${wxWidgetsTestAppSourcesFolder}/*.cpp)
 		set (
-			WindowsTestAppFiles
-			${WindowsTestAppHeaderFiles}
-			${WindowsTestAppSourceFiles}
+			wxWidgetsTestAppFiles
+			${wxWidgetsTestAppHeaderFiles}
+			${wxWidgetsTestAppSourceFiles}
 		)
-		source_group ("Sources" FILES ${WindowsTestAppFiles})
-		add_executable (WindowsTestApp WIN32 ${WindowsTestAppFiles})
+		source_group ("Sources" FILES ${wxWidgetsTestAppFiles})
+		add_executable (wxWidgetsTestApp WIN32 ${wxWidgetsTestAppFiles})
 		target_include_directories (
-			WindowsTestApp PUBLIC
+			wxWidgetsTestApp PUBLIC
 			${NodeEngineSourcesFolder}
 			${NodeUIEngineSourcesFolder}
 			${BuiltInNodesSourcesFolder}
@@ -212,9 +212,9 @@ if (MSVC)
 			${WXWIDGETS_DIR}/include
 			${WXWIDGETS_DIR}/include/msvc		
 		)
-		target_link_libraries (WindowsTestApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport wxWidgetsAppSupport)
-		target_compile_definitions (WindowsTestApp PUBLIC _CRT_SECURE_NO_WARNINGS)
-		SetCompilerOptions (WindowsTestApp OFF)
+		target_link_libraries (wxWidgetsTestApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport wxWidgetsAppSupport)
+		target_compile_definitions (wxWidgetsTestApp PUBLIC _CRT_SECURE_NO_WARNINGS)
+		SetCompilerOptions (wxWidgetsTestApp OFF)
 	
 	endif ()
 	
