@@ -399,7 +399,7 @@ EventHandlerResult NodeInputEventHandler::ForwardEventToNode (const std::functio
 	if (DBGVERIFY (uiNode != nullptr)) {
 		handlerResult = forwardEvent ();
 		if (handlerResult == EventHandlerResult::EventHandled) {
-			uiManager.RequestRecalculate ();
+			uiManager.RequestRecalculateAndRedraw ();
 			uiManager.InvalidateNodeDrawing (uiNode);
 		}
 	}

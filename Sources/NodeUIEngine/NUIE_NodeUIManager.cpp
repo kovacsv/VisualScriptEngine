@@ -133,8 +133,7 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv&)
 	if (resultNode == nullptr) {
 		return nullptr;
 	}
-	status.RequestRecalculate ();
-	status.RequestRedraw ();
+	RequestRecalculateAndRedraw ();
 	return uiNode;
 }
 
@@ -149,8 +148,7 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 	if (!nodeManager.DeleteNode (uiNode)) {
 		return false;
 	}
-	status.RequestRecalculate ();
-	status.RequestRedraw ();
+	RequestRecalculateAndRedraw ();
 	return true;
 }
 
@@ -192,28 +190,28 @@ bool NodeUIManager::CanConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr&
 bool NodeUIManager::ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot)
 {
 	DBGASSERT (CanConnectOutputSlotToInputSlot (outputSlot, inputSlot));
-	status.RequestRecalculate ();
+	RequestRecalculateAndRedraw ();
 	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
 	return nodeManager.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
 }
 
 bool NodeUIManager::DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot)
 {
-	status.RequestRecalculate ();
+	RequestRecalculateAndRedraw ();
 	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
 	return nodeManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
 }
 
 bool NodeUIManager::DisconnectAllInputSlotsFromOutputSlot (const UIOutputSlotConstPtr& outputSlot)
 {
-	status.RequestRecalculate ();
+	RequestRecalculateAndRedraw ();
 	InvalidateNodeDrawing (outputSlot->GetOwnerNodeId ());
 	return nodeManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
 }
 
 bool NodeUIManager::DisconnectAllOutputSlotsFromInputSlot (const UIInputSlotConstPtr& inputSlot)
 {
-	status.RequestRecalculate ();
+	RequestRecalculateAndRedraw ();
 	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
 	return nodeManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
 }
@@ -288,6 +286,12 @@ void NodeUIManager::EnumerateUINodes (const std::function<bool (const UINodeCons
 	});
 }
 
+void NodeUIManager::RequestRecalculateAndRedraw ()
+{
+	status.RequestRecalculate ();
+	status.RequestRedraw ();
+}
+
 void NodeUIManager::RequestRecalculate ()
 {
 	status.RequestRecalculate ();
@@ -331,7 +335,7 @@ void NodeUIManager::InvalidateNodeValue (const NE::NodeId& nodeId)
 void NodeUIManager::InvalidateNodeValue (const UINodePtr& uiNode)
 {
 	uiNode->InvalidateValue ();
-	status.RequestRecalculate ();
+	RequestRecalculateAndRedraw ();
 }
 
 void NodeUIManager::InvalidateNodeDrawing (const NE::NodeId& nodeId)
@@ -437,8 +441,7 @@ void NodeUIManager::SetUpdateMode (UpdateMode newUpdateMode)
 void NodeUIManager::New ()
 {
 	Clear ();
-	status.RequestRecalculate ();
-	status.NeedToRedraw ();
+	RequestRecalculateAndRedraw ();
 }
 
 bool NodeUIManager::Open (NE::InputStream& inputStream)
@@ -447,7 +450,7 @@ bool NodeUIManager::Open (NE::InputStream& inputStream)
 	size_t version;
 	inputStream.Read (version);
 	nodeManager.Read (inputStream);
-	status.RequestRecalculate ();
+	RequestRecalculateAndRedraw ();
 	bool success = (inputStream.GetStatus () == NE::Stream::Status::NoError);
 	return success;
 }
@@ -479,8 +482,7 @@ bool NodeUIManager::Copy (const NE::NodeCollection& nodeCollection)
 bool NodeUIManager::Paste ()
 {
 	bool success = copyPasteHandler.PasteTo (nodeManager);
-	RequestRecalculate ();
-	RequestRedraw ();
+	RequestRecalculateAndRedraw ();
 	return success;
 }
 
@@ -494,7 +496,7 @@ bool NodeUIManager::Undo (NE::EvaluationEnv& env)
 	NodeUIManagerMergeEventHandler eventHandler (*this, env);
 	bool success = undoHandler.Undo (nodeManager, eventHandler);
 	InvalidateDrawingsForInvalidatedNodes ();
-	RequestRecalculate ();
+	RequestRecalculateAndRedraw ();
 	return success;
 }
 
@@ -503,7 +505,7 @@ bool NodeUIManager::Redo (NE::EvaluationEnv& env)
 	NodeUIManagerMergeEventHandler eventHandler (*this, env);
 	bool success = undoHandler.Redo (nodeManager, eventHandler);
 	InvalidateDrawingsForInvalidatedNodes ();
-	RequestRecalculate ();
+	RequestRecalculateAndRedraw ();
 	return success;
 }
 
@@ -592,14 +594,15 @@ void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalU
 		} else if (mode == InternalUpdateMode::Manual) {
 			nodeManager.ForceEvaluateAllNodes (env.GetEvaluationEnv ());
 		}
+	}
+	if (status.NeedToRecalculate ()) {
 		env.OnValuesRecalculated ();
-		status.RequestRedraw ();
+		status.ResetRecalculate ();
 	}
 	if (status.NeedToRedraw ()) {
 		env.OnRedrawRequested ();
+		status.ResetRedraw ();
 	}
-	status.ResetRecalculate ();
-	status.ResetRedraw ();
 }
 
 }

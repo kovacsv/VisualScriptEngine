@@ -159,7 +159,7 @@ TEST (EnableDisableTest)
 	std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (node3);
 	enableDisable->SetEnableState (false);
 	node3->OnFeatureChange (EnableDisableFeatureId, calcEnv.evalEnv);
-	uiManager.RequestRecalculate ();
+	uiManager.RequestRecalculateAndRedraw ();
 	
 	uiManager.Update (calcEnv);
 	ASSERT (calcEnv.collector->values.size () == 3);

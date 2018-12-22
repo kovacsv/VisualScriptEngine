@@ -155,8 +155,7 @@ void NodeEditor::Update ()
 
 void NodeEditor::ManualUpdate ()
 {
-	uiManager.RequestRecalculate ();
-	uiManager.RequestRedraw ();
+	uiManager.RequestRecalculateAndRedraw ();
 	uiManager.ManualUpdate (uiEnvironment);
 }
 

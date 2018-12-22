@@ -75,6 +75,7 @@ public:
 	void						EnumerateUINodes (const std::function<bool (const UINodePtr&)>& processor);
 	void						EnumerateUINodes (const std::function<bool (const UINodeConstPtr&)>& processor) const;
 
+	void						RequestRecalculateAndRedraw ();
 	void						RequestRecalculate ();
 	void						RequestRedraw ();
 
