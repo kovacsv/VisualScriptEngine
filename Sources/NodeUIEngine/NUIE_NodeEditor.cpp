@@ -1,6 +1,7 @@
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeUIManagerCommands.hpp"
+#include "NUIE_VersionInfo.hpp"
 #include "NE_MemoryStream.hpp"
 
 #include <fstream>
@@ -9,7 +10,7 @@ namespace NUIE
 {
 
 static const std::string NodeEditorFileMarker = "NodeEditorFile";
-static const size_t NodeEditorFileVersion = 1;
+
 static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, Rect& boundingRect)
 {
 	class StaticNodeRectGetter : public NodeRectGetter
@@ -230,9 +231,13 @@ bool NodeEditor::Open (NE::InputStream& inputStream)
 		return false;
 	}
 
-	size_t fileVersion = 0;
-	inputStream.Read (fileVersion);
-	if (DBGERROR (fileVersion != NodeEditorFileVersion)) {
+	int version1 = 0;
+	int version2 = 0;
+	int version3 = 0;
+	inputStream.Read (version1);
+	inputStream.Read (version2);
+	inputStream.Read (version3);
+	if (DBGERROR (version1 != VSE_VERSION_1 || version2 != VSE_VERSION_2 || version3 != VSE_VERSION_3)) {
 		return false;
 	}
 
@@ -267,7 +272,9 @@ bool NodeEditor::Save (const std::string& fileName) const
 bool NodeEditor::Save (NE::OutputStream& outputStream) const
 {
 	outputStream.Write (NodeEditorFileMarker);
-	outputStream.Write (NodeEditorFileVersion);
+	outputStream.Write ((int) VSE_VERSION_1);
+	outputStream.Write ((int) VSE_VERSION_2);
+	outputStream.Write ((int) VSE_VERSION_3);
 	if (DBGERROR (!uiManager.Save (outputStream))) {
 		return false;
 	}
