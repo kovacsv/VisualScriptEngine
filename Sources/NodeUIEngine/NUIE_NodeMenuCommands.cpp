@@ -226,6 +226,119 @@ void SetParametersCommand::Do ()
 	}
 }
 
+SetGroupParametersCommand::~SetGroupParametersCommand ()
+{
+
+}
+
+void SetGroupParametersCommand::Do ()
+{
+	class GroupParameterInterface : public ParameterInterface
+	{
+	public:
+		struct GroupParameter
+		{
+			std::wstring	name;
+			ParameterType	type;
+		};
+
+		GroupParameterInterface (const UINodeGroupPtr& currentGroup) :
+			currentGroup (currentGroup),
+			groupParameters ({
+				{ L"Name", ParameterType::String }
+				})
+		{
+
+		}
+
+		void ApplyChanges (NodeUIManager& uiManager)
+		{
+			for (const auto& it : changedParameterValues) {
+				switch (it.first) {
+				case 0:
+					currentGroup->SetName (NE::StringValue::Get (it.second));
+					break;
+				default:
+					DBGBREAK ();
+					break;
+				}
+			}
+			uiManager.RequestRedraw ();
+		}
+
+		virtual size_t GetParameterCount () const override
+		{
+			return groupParameters.size ();
+		}
+
+		virtual const std::wstring& GetParameterName (size_t index) const override
+		{
+			return groupParameters[index].name;
+		}
+
+		virtual NE::ValuePtr GetParameterValue (size_t index) const override
+		{
+			switch (index) {
+			case 0:
+				return NE::ValuePtr (new NE::StringValue (currentGroup->GetName ()));
+			default:
+				DBGBREAK ();
+				return nullptr;
+			}
+		}
+
+		virtual std::vector<std::wstring> GetParameterValueChoices (size_t) const override
+		{
+			DBGBREAK ();
+			return {};
+		}
+
+		virtual const ParameterType& GetParameterType (size_t index) const override
+		{
+			return groupParameters[index].type;
+		}
+
+		virtual bool IsValidParameterValue (size_t index, const NE::ValuePtr& value) const override
+		{
+			switch (index) {
+			case 0:
+				return NE::Value::IsType<NE::StringValue> (value) && !NE::StringValue::Get (value).empty ();
+			default:
+				DBGBREAK ();
+			}
+			return false;
+		}
+
+		virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+		{
+			if (DBGERROR (!IsValidParameterValue (index, value))) {
+				return false;
+			}
+
+			auto found = changedParameterValues.find (index);
+			if (found != changedParameterValues.end ()) {
+				found->second = value;
+			} else {
+				changedParameterValues.insert ({ index, value });
+			}
+			return true;
+		}
+
+	private:
+		const UINodeGroupPtr&						currentGroup;
+		std::vector<GroupParameter>					groupParameters;
+		std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
+	};
+
+	std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group));
+	if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
+		CustomUndoableCommand command ([&] () {
+			paramInterface->ApplyChanges (uiManager);
+		});
+		uiManager.ExecuteCommand (command);
+	}
+}
+
 class DisconnectFromInputSlotMenuCommand : public InputSlotCommand
 {
 public:
@@ -345,136 +458,16 @@ private:
 	std::vector<UINodePtr>		uiNodes;
 };
 
-class SetGroupParametersCommand : public SingleMenuCommand
+SetGroupParametersCommand::SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
+	SingleMenuCommand (L"Set Parameters", false),
+	uiManager (uiManager),
+	uiEnvironment (uiEnvironment),
+	group (group)
 {
-public:
-	SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
-		SingleMenuCommand (L"Set Parameters", false),
-		uiManager (uiManager),
-		uiEnvironment (uiEnvironment),
-		group (group)
-	{
 
-	}
+}
 
-	virtual ~SetGroupParametersCommand ()
-	{
 
-	}
-
-	virtual void Do () override
-	{
-		class GroupParameterInterface : public ParameterInterface
-		{
-		public:
-			struct GroupParameter
-			{
-				std::wstring	name;
-				ParameterType	type;
-			};
-
-			GroupParameterInterface (const UINodeGroupPtr& currentGroup) :
-				currentGroup (currentGroup),
-				groupParameters ({
-					{ L"Name", ParameterType::String }
-				})
-			{
-			
-			}
-
-			void ApplyChanges (NodeUIManager& uiManager)
-			{
-				for (const auto& it : changedParameterValues) {
-					switch (it.first) {
-						case 0:
-							currentGroup->SetName (NE::StringValue::Get (it.second));
-							break;
-						default:
-							DBGBREAK ();
-							break;
-					}
-				}
-				uiManager.RequestRedraw ();
-			}
-
-			virtual size_t GetParameterCount () const override
-			{
-				return groupParameters.size ();
-			}
-
-			virtual const std::wstring& GetParameterName (size_t index) const override
-			{
-				return groupParameters[index].name;
-			}
-
-			virtual NE::ValuePtr GetParameterValue (size_t index) const override
-			{
-				switch (index) {
-					case 0:
-						return NE::ValuePtr (new NE::StringValue (currentGroup->GetName ()));
-					default:
-						DBGBREAK ();
-						return nullptr;
-				}
-			}
-
-			virtual std::vector<std::wstring> GetParameterValueChoices (size_t) const override
-			{
-				DBGBREAK ();
-				return {};
-			}
-
-			virtual const ParameterType& GetParameterType (size_t index) const override
-			{
-				return groupParameters[index].type;
-			}
-
-			virtual bool IsValidParameterValue (size_t index, const NE::ValuePtr& value) const override
-			{
-				switch (index) {
-					case 0:
-						return NE::Value::IsType<NE::StringValue> (value) && !NE::StringValue::Get (value).empty ();
-					default:
-						DBGBREAK ();
-				}
-				return false;
-			}
-
-			virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
-			{
-				if (DBGERROR (!IsValidParameterValue (index, value))) {
-					return false;
-				}
-
-				auto found = changedParameterValues.find (index);
-				if (found != changedParameterValues.end ()) {
-					found->second = value;
-				} else {
-					changedParameterValues.insert ({ index, value });
-				}
-				return true;
-			}
-
-		private:
-			const UINodeGroupPtr&						currentGroup;
-			std::vector<GroupParameter>					groupParameters;
-			std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
-		};
-
-		std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group));
-		if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
-			CustomUndoableCommand command ([&] () {
-				paramInterface->ApplyChanges (uiManager);
-			});
-			uiManager.ExecuteCommand (command);
-		}
-	}
-
-private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
-	UINodeGroupPtr		group;
-};
 
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
 {

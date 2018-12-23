@@ -91,6 +91,20 @@ private:
 	NodeParameterList	relevantParameters;
 };
 
+class SetGroupParametersCommand : public SingleMenuCommand
+{
+public:
+	SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
+	virtual ~SetGroupParametersCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	UINodeGroupPtr		group;
+};
+
 NE::NodeCollection		GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
 
 MenuCommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
