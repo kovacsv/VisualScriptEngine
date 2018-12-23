@@ -65,6 +65,11 @@ static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnviro
 	return true;
 }
 
+ExternalHeaderIO::~ExternalHeaderIO ()
+{
+
+}
+
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (),
 	interactionHandler (uiManager),
@@ -207,7 +212,7 @@ void NodeEditor::New ()
 	Update ();
 }
 
-bool NodeEditor::Open (const std::string& fileName)
+bool NodeEditor::Open (const std::string& fileName, const ExternalHeaderIO* externalHeader)
 {
 	std::ifstream file;
 	file.open (fileName, std::ios::binary);
@@ -220,11 +225,17 @@ bool NodeEditor::Open (const std::string& fileName)
 	file.close ();
 
 	NE::MemoryInputStream inputStream (buffer);
-	return Open (inputStream);
+	return Open (inputStream, externalHeader);
 }
 
-bool NodeEditor::Open (NE::InputStream& inputStream)
+bool NodeEditor::Open (NE::InputStream& inputStream, const ExternalHeaderIO* externalHeader)
 {
+	if (externalHeader != nullptr) {
+		if (DBGERROR (!externalHeader->Read (inputStream))) {
+			return false;
+		}
+	}
+
 	std::string fileMarker;
 	inputStream.Read (fileMarker);
 	if (DBGERROR (fileMarker != NodeEditorFileMarker)) {
@@ -249,10 +260,10 @@ bool NodeEditor::Open (NE::InputStream& inputStream)
 	return true;
 }
 
-bool NodeEditor::Save (const std::string& fileName) const
+bool NodeEditor::Save (const std::string& fileName, const ExternalHeaderIO* externalHeader) const
 {
 	NE::MemoryOutputStream outputStream;
-	if (DBGERROR (!Save (outputStream))) {
+	if (DBGERROR (!Save (outputStream, externalHeader))) {
 		return false;
 	}
 
@@ -269,8 +280,12 @@ bool NodeEditor::Save (const std::string& fileName) const
 	return true;
 }
 
-bool NodeEditor::Save (NE::OutputStream& outputStream) const
+bool NodeEditor::Save (NE::OutputStream& outputStream, const ExternalHeaderIO* externalHeader) const
 {
+	if (externalHeader != nullptr) {
+		externalHeader->Write (outputStream);
+	}
+
 	outputStream.Write (NodeEditorFileMarker);
 	outputStream.Write ((int) VSE_VERSION_1);
 	outputStream.Write ((int) VSE_VERSION_2);

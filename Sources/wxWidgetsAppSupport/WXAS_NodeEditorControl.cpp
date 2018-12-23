@@ -294,14 +294,14 @@ void NodeEditorControl::New ()
 	nodeEditor->New ();
 }
  
-bool NodeEditorControl::Open (const std::string& fileName)
+bool NodeEditorControl::Open (const std::string& fileName, const NUIE::ExternalHeaderIO* externalHeader)
 {
-	return nodeEditor->Open (fileName);
+	return nodeEditor->Open (fileName, externalHeader);
 }
  
-bool NodeEditorControl::Save (const std::string& fileName)
+bool NodeEditorControl::Save (const std::string& fileName, const NUIE::ExternalHeaderIO* externalHeader)
 {
-	return nodeEditor->Save (fileName);
+	return nodeEditor->Save (fileName, externalHeader);
 }
 
 bool NodeEditorControl::NeedToSave () const

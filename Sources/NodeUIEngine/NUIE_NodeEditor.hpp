@@ -11,6 +11,15 @@
 namespace NUIE
 {
 
+class ExternalHeaderIO
+{
+public:
+	virtual ~ExternalHeaderIO ();
+
+	virtual bool	Read (NE::InputStream& inputStream) const = 0;
+	virtual void	Write (NE::OutputStream& outputStream) const = 0;
+};
+
 class NodeEditor
 {
 public:
@@ -45,10 +54,10 @@ public:
 	void						FitToWindow ();
 	
 	void						New ();
-	bool						Open (const std::string& fileName);
-	bool						Open (NE::InputStream& inputStream);
-	bool						Save (const std::string& fileName) const;
-	bool						Save (NE::OutputStream& outputStream) const;
+	bool						Open (const std::string& fileName, const ExternalHeaderIO* externalHeader);
+	bool						Open (NE::InputStream& inputStream, const ExternalHeaderIO* externalHeader);
+	bool						Save (const std::string& fileName, const ExternalHeaderIO* externalHeader) const;
+	bool						Save (NE::OutputStream& outputStream, const ExternalHeaderIO* externalHeader) const;
 	bool						NeedToSave () const;
 	void						Undo ();
 	void						Redo ();
