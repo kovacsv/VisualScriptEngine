@@ -1,9 +1,5 @@
 cmake_minimum_required (VERSION 3.6)
 
-set (VSE_VERSION_1 0)
-set (VSE_VERSION_2 0)
-set (VSE_VERSION_3 1)
-
 function (SetCompilerOptions module maxWarningLevel)
 	set (DebugOptions)
 	set (ReleaseOptions)
@@ -58,15 +54,12 @@ install (FILES ${NodeEngineHeaderFiles} DESTINATION include)
 # NodeUIEngine
 
 set (NodeUIEngineSourcesFolder Sources/NodeUIEngine)
-configure_file (${NodeUIEngineSourcesFolder}/NUIE_VersionInfo.hpp.in ${PROJECT_BINARY_DIR}/NUIE_VersionInfo.hpp)
-include_directories (${PROJECT_BINARY_DIR})
 file (GLOB NodeUIEngineHeaderFiles ${NodeUIEngineSourcesFolder}/*.hpp)
 file (GLOB NodeUIEngineSourceFiles ${NodeUIEngineSourcesFolder}/*.cpp)
 set (
 	NodeUIEngineFiles
 	${NodeUIEngineHeaderFiles}
 	${NodeUIEngineSourceFiles}
-	${PROJECT_BINARY_DIR}/NUIE_VersionInfo.hpp
 )
 source_group ("Sources" FILES ${NodeUIEngineFiles})
 add_library (NodeUIEngine STATIC ${NodeUIEngineFiles})
