@@ -13,9 +13,14 @@ platform:
   - x64
 
 before_build:
-  - mkdir build
-  - cd build
+  - mkdir Build
+  - cd Build
   - cmake -G "Visual Studio 15 2017 Win64" ..
 
 build:
-  project: c:\projects\VisualScriptEngine\build\VisualScriptEngine.sln
+  project: c:\projects\VisualScriptEngine\Build\VisualScriptEngine.sln
+  verbosity: minimal
+  parallel: true
+
+test_script:
+  - c:\projects\VisualScriptEngine\Build\$(CONFIGURATION)\NodeEngineTest.exe
