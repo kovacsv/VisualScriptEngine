@@ -18,8 +18,8 @@ before_build:
   - cmake -G "Visual Studio 15 2017 Win64" ..
 
 build:
-  project: %APPVEYOR_BUILD_FOLDER%\Build\VisualScriptEngine.sln
+  project: c:\projects\VisualScriptEngine\Build\VisualScriptEngine.sln
   verbosity: minimal
 
 test_script:
-  - %APPVEYOR_BUILD_FOLDER%\Build\%CONFIGURATION%\NodeEngineTest.exe
+  - c:\projects\VisualScriptEngine\Build\$(configuration)\NodeEngineTest.exe
