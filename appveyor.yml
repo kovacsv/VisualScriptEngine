@@ -22,4 +22,4 @@ build:
   verbosity: minimal
 
 test_script:
-  - c:\projects\VisualScriptEngine\Build\$(configuration)\NodeEngineTest.exe
+  - ctest --build-config %configuration%
