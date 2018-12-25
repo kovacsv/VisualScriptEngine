@@ -22,4 +22,4 @@ build:
   verbosity: minimal
 
 test_script:
-  - ctest --build-config %configuration%
+  - ctest --verbose --build-config %configuration%
