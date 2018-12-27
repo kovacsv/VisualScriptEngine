@@ -156,8 +156,8 @@ void Direct2DContext::BeginDraw ()
 void Direct2DContext::EndDraw ()
 {
 	// TODO: recreate in case of error
-	HRESULT a = renderTarget->EndDraw ();
-	DBGASSERT (SUCCEEDED (a));
+	HRESULT success = renderTarget->EndDraw ();
+	DBGASSERT (SUCCEEDED (success));
 }
 
 void Direct2DContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
