@@ -38,7 +38,7 @@ def Main (argv):
 	wxWidgetsZipUrl = 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
 	wxWidgetsZipPath = os.path.join (targetFolder, wxWidgetsName + '.7z')
 	wxWidgetsFolderPath = os.path.join (targetFolder, wxWidgetsName)
-	if not os.path.exists (wxWidgetsZipPath):
+	if not os.path.exists (wxWidgetsFolderPath):
 		DownloadFile (wxWidgetsZipUrl, wxWidgetsZipPath)
 	if not os.path.exists (wxWidgetsFolderPath):
 		UnzipFile (wxWidgetsZipPath, wxWidgetsFolderPath)

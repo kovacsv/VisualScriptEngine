@@ -6,7 +6,7 @@ image:
   - Visual Studio 2017
 
 cache:
-  - C:\Dependencies -> appveyor.yml
+  - C:\Dependencies\wxWidgets-3.1.2\lib\vc_x64_lib -> appveyor.yml
 
 configuration:
   - Debug
