@@ -1,5 +1,10 @@
 cmake_minimum_required (VERSION 3.6)
 
+set (VSE_VERSION_1 0)
+set (VSE_VERSION_2 0)
+set (VSE_VERSION_3 1)
+set (VSE_APP_NAME VisualScriptEngine)
+
 function (SetCompilerOptions module maxWarningLevel)
 	set (DebugOptions)
 	set (ReleaseOptions)
@@ -54,7 +59,9 @@ install (FILES ${NodeEngineHeaderFiles} DESTINATION include)
 # NodeUIEngine
 
 set (NodeUIEngineSourcesFolder Sources/NodeUIEngine)
-file (GLOB NodeUIEngineHeaderFiles ${NodeUIEngineSourcesFolder}/*.hpp)
+configure_file (${NodeUIEngineSourcesFolder}/NUIE_VersionInfo.hpp.in ${PROJECT_BINARY_DIR}/NUIE_VersionInfo.hpp)
+include_directories (${PROJECT_BINARY_DIR})
+file (GLOB NodeUIEngineHeaderFiles ${NodeUIEngineSourcesFolder}/*.hpp ${PROJECT_BINARY_DIR}/NUIE_VersionInfo.hpp)
 file (GLOB NodeUIEngineSourceFiles ${NodeUIEngineSourcesFolder}/*.cpp)
 set (
 	NodeUIEngineFiles

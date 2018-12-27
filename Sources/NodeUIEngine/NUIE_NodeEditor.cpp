@@ -1,6 +1,7 @@
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeUIManagerCommands.hpp"
+#include "NUIE_VersionInfo.hpp"
 #include "NE_MemoryStream.hpp"
 
 #include <fstream>
@@ -248,6 +249,13 @@ bool NodeEditor::Open (NE::InputStream& inputStream, const ExternalHeaderIO* ext
 		return false;
 	}
 
+	int vseVersion1 = 0;
+	int vseVersion2 = 0;
+	int vseVersion3 = 0;
+	inputStream.Read (vseVersion1);
+	inputStream.Read (vseVersion2);
+	inputStream.Read (vseVersion3);
+
 	if (DBGERROR (!uiManager.Open (inputStream))) {
 		return false;
 	}
@@ -284,6 +292,9 @@ bool NodeEditor::Save (NE::OutputStream& outputStream, const ExternalHeaderIO* e
 
 	outputStream.Write (NodeEditorFileMarker);
 	outputStream.Write (NodeEditorFileVersion);
+	outputStream.Write ((int) VSE_VERSION_1);
+	outputStream.Write ((int) VSE_VERSION_2);
+	outputStream.Write ((int) VSE_VERSION_3);
 	if (DBGERROR (!uiManager.Save (outputStream))) {
 		return false;
 	}
