@@ -1,9 +1,1 @@
 Build/*
-DevKit/*
-*.db
-*.db-shm
-*.db-wal
-*.opendb
-*.suo
-*.vcxproj.user
-*.ipch
