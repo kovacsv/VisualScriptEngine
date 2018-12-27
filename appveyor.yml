@@ -5,6 +5,9 @@ clone_folder: c:\projects\VisualScriptEngine
 image:
   - Visual Studio 2017
 
+cache:
+  - C:\Dependencies -> appveyor.yml
+
 configuration:
   - Debug
   - Release
@@ -13,8 +16,8 @@ platform:
   - x64
 
 before_build:
-  - set DEPENDENCIES_FOLDER=C:\Dependencies\
-  - python installdepswin.py %DEPENDENCIES_FOLDER% msbuild
+  - python installdepswin.py C:\Dependencies msbuild
+  - set WXWIDGETS_DIR=C:\Dependencies\wxWidgets-3.1.2
   - mkdir Build
   - cd Build
   - cmake -G "Visual Studio 15 2017 Win64" ..
