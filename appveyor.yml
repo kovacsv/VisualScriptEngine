@@ -13,6 +13,8 @@ platform:
   - x64
 
 before_build:
+  - set DEPENDENCIES_FOLDER=C:\Dependencies\
+  - python installdepswin.py %DEPENDENCIES_FOLDER% msbuild
   - mkdir Build
   - cd Build
   - cmake -G "Visual Studio 15 2017 Win64" ..
