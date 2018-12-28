@@ -38,8 +38,9 @@ def Main (argv):
 	wxWidgetsZipUrl = 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
 	wxWidgetsZipPath = os.path.join (targetFolder, wxWidgetsName + '.7z')
 	wxWidgetsFolderPath = os.path.join (targetFolder, wxWidgetsName)
+	wxWidgetsIncludeFolderPath = os.path.join (wxWidgetsFolderPath, 'include')
 	wxWidgetsLibFolderPath = os.path.join (wxWidgetsFolderPath, 'lib', 'vc_x64_lib')
-	if not os.path.exists (wxWidgetsLibFolderPath):
+	if not os.path.exists (wxWidgetsIncludeFolderPath) or not os.path.exists (wxWidgetsLibFolderPath):
 		DownloadFile (wxWidgetsZipUrl, wxWidgetsZipPath)
 		UnzipFile (wxWidgetsZipPath, wxWidgetsFolderPath)
 		solutionPath = os.path.join (wxWidgetsFolderPath, 'build', 'msw', 'wx_vc15.sln')
