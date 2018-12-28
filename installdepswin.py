@@ -27,7 +27,7 @@ def InstallwxWidgets (targetFolder, msBuildPath):
 	wxWidgetsFolderPath = os.path.join (targetFolder, wxWidgetsName)
 	wxWidgetsIncludeFolderPath = os.path.join (wxWidgetsFolderPath, 'include')
 	wxWidgetsLibFolderPath = os.path.join (wxWidgetsFolderPath, 'lib', 'vc_x64_lib')
-	if not os.path.exists (wxWidgetsIncludeFolderPath) or not os.path.exists (wxWidgetsLibFolderPath):
+	if not os.path.exists (wxWidgetsFolderPath):
 		DownloadFile (wxWidgetsZipUrl, wxWidgetsZipPath)
 		UnzipFile (wxWidgetsZipPath, wxWidgetsFolderPath)
 		solutionPath = os.path.join (wxWidgetsFolderPath, 'build', 'msw', 'wx_vc15.sln')
