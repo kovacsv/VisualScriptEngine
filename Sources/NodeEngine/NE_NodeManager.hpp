@@ -33,71 +33,75 @@ public:
 	NodeManager (NodeManager&& src) = delete;
 	~NodeManager ();
 
-	NodeManager&		operator= (const NodeManager& rhs) = delete;
-	NodeManager&		operator= (NodeManager&& rhs) = delete;
+	NodeManager&			operator= (const NodeManager& rhs) = delete;
+	NodeManager&			operator= (NodeManager&& rhs) = delete;
 
-	void				Clear ();
-	bool				IsEmpty () const;
-	size_t				GetNodeCount () const;
-	size_t				GetConnectionCount () const;
+	void					Clear ();
+	bool					IsEmpty () const;
+	size_t					GetNodeCount () const;
+	size_t					GetConnectionCount () const;
 
-	void				EnumerateNodes (const std::function<bool (const NodePtr&)>& processor);
-	void				EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const;
+	void					EnumerateNodes (const std::function<bool (const NodePtr&)>& processor);
+	void					EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const;
 
-	bool				ContainsNode (const NodeId& id) const;
-	NodeConstPtr		GetNode (const NodeId& id) const;
+	bool					ContainsNode (const NodeId& id) const;
+	NodeConstPtr			GetNode (const NodeId& id) const;
 
-	NodePtr				GetNode (const NodeId& id);
-	NodePtr				AddNode (const NodePtr& node);
-	bool				DeleteNode (const NodeId& id);
-	bool				DeleteNode (const NodePtr& node);
+	NodePtr					GetNode (const NodeId& id);
+	NodePtr					AddNode (const NodePtr& node);
+	bool					DeleteNode (const NodeId& id);
+	bool					DeleteNode (const NodePtr& node);
 
-	bool				IsOutputSlotConnectedToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const;
-	bool				CanConnectMoreOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const;
-	bool				CanConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const;
+	bool					IsOutputSlotConnectedToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const;
+	bool					CanConnectMoreOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const;
+	bool					CanConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const;
 	
-	bool				ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
-	bool				DisconnectOutputSlotFromInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
-	bool				DisconnectAllInputSlotsFromOutputSlot (const OutputSlotConstPtr& outputSlot);
-	bool				DisconnectAllOutputSlotsFromInputSlot (const InputSlotConstPtr& inputSlot);
+	bool					ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
+	bool					DisconnectOutputSlotFromInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
+	bool					DisconnectAllInputSlotsFromOutputSlot (const OutputSlotConstPtr& outputSlot);
+	bool					DisconnectAllOutputSlotsFromInputSlot (const InputSlotConstPtr& inputSlot);
 
-	bool				HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const;
-	bool				HasConnectedInputSlots (const OutputSlotConstPtr& outputSlot) const;
-	size_t				GetConnectedOutputSlotCount (const InputSlotConstPtr& inputSlot) const;
-	size_t				GetConnectedInputSlotCount (const OutputSlotConstPtr& outputSlot) const;
-	void				EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const;
-	void				EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const;
+	bool					HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const;
+	bool					HasConnectedInputSlots (const OutputSlotConstPtr& outputSlot) const;
+	size_t					GetConnectedOutputSlotCount (const InputSlotConstPtr& inputSlot) const;
+	size_t					GetConnectedInputSlotCount (const OutputSlotConstPtr& outputSlot) const;
+	void					EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const;
+	void					EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const;
 
-	void				EvaluateAllNodes (EvaluationEnv& env) const;
-	void				ForceEvaluateAllNodes (EvaluationEnv& env) const;
-	void				InvalidateNodeValue (const NodeId& nodeId) const;
-	void				InvalidateNodeValue (const NodeConstPtr& node) const;
+	void					EvaluateAllNodes (EvaluationEnv& env) const;
+	void					ForceEvaluateAllNodes (EvaluationEnv& env) const;
+	void					InvalidateNodeValue (const NodeId& nodeId) const;
+	void					InvalidateNodeValue (const NodeConstPtr& node) const;
 	
-	void				EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeId&)>& processor) const;
-	void				EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeId&)>& processor) const;
+	void					EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeId&)>& processor) const;
+	void					EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeId&)>& processor) const;
 
-	void				EnumerateDependentNodes (const NodePtr& node, const std::function<void (const NodePtr&)>& processor);
-	void				EnumerateDependentNodesRecursive (const NodePtr& node, const std::function<void (const NodePtr&)>& processor);
+	void					EnumerateDependentNodes (const NodePtr& node, const std::function<void (const NodePtr&)>& processor);
+	void					EnumerateDependentNodesRecursive (const NodePtr& node, const std::function<void (const NodePtr&)>& processor);
 
-	void				EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
-	void				EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
+	void					EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
+	void					EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 
-	bool				AddNodeGroup (const NodeGroupPtr& group);
-	void				DeleteNodeGroup (const NodeGroupPtr& group);
-	void				DeleteAllNodeGroups ();
-	NodeGroupPtr		GetNodeGroup (const NodeId& nodeId);
-	void				RemoveNodeFromGroup (const NodeId& nodeId);
-	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
-	void				EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor);
+	bool					AddNodeGroup (const NodeGroupPtr& group);
+	void					DeleteNodeGroup (const NodeGroupPtr& group);
+	void					AddNodeToGroup (const NodeGroupPtr& group, const NodeId& nodeId);
+	void					RemoveNodeFromGroup (const NodeId& nodeId);
 
-	bool				IsCalculationEnabled () const;
-	UpdateMode			GetUpdateMode () const;
-	void				SetUpdateMode (UpdateMode newUpdateMode);
+	NodeGroupConstPtr		GetNodeGroup (const NodeId& nodeId) const;
+	const NodeCollection&	GetGroupNodes (const NodeGroupConstPtr& group) const;
 
-	Stream::Status		Read (InputStream& inputStream);
-	Stream::Status		Write (OutputStream& outputStream) const;
+	void					EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
+	void					EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor);
+	void					DeleteAllNodeGroups ();
 
-	static bool			Clone (const NodeManager& source, NodeManager& target);
+	bool					IsCalculationEnabled () const;
+	UpdateMode				GetUpdateMode () const;
+	void					SetUpdateMode (UpdateMode newUpdateMode);
+
+	Stream::Status			Read (InputStream& inputStream);
+	Stream::Status			Write (OutputStream& outputStream) const;
+
+	static bool				Clone (const NodeManager& source, NodeManager& target);
 
 private:
 	enum class IdHandlingPolicy

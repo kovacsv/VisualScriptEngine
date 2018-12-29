@@ -74,13 +74,13 @@ class TestGroup : public NodeGroup
 
 public:
 	TestGroup () :
-		TestGroup (L"", NodeCollection ())
+		TestGroup (L"")
 	{
 	
 	}
 
-	TestGroup (const std::wstring& name, const NodeCollection& nodes) :
-		NodeGroup (nodes),
+	TestGroup (const std::wstring& name) :
+		NodeGroup (),
 		name (name)
 	{
 	}
@@ -170,12 +170,15 @@ TEST (NodeGroupSerializationTest)
 	source.AddNode (sourceNode3);
 	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("c")), sourceNode3->GetInputSlot (SlotId ("a")));
 	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("c")), sourceNode3->GetInputSlot (SlotId ("b")));
-	source.AddNodeGroup (NodeGroupPtr (new TestGroup (L"Test", NodeCollection ({ sourceNode1->GetId (), sourceNode2->GetId () }))));
+	NodeGroupPtr testGroup (new TestGroup (L"Test"));
+	source.AddNodeGroup (testGroup);
+	source.AddNodeToGroup (testGroup, sourceNode1->GetId ());
+	source.AddNodeToGroup (testGroup, sourceNode2->GetId ());
 
 	NodeManager target;
 	ASSERT (NodeManager::Clone (source, target));
-	ASSERT (std::static_pointer_cast<TestGroup> (target.GetNodeGroup (sourceNode1->GetId ()))->GetName () == L"Test");
-	ASSERT (std::static_pointer_cast<TestGroup> (target.GetNodeGroup (sourceNode2->GetId ()))->GetName () == L"Test");
+	ASSERT (std::static_pointer_cast<const TestGroup> (target.GetNodeGroup (sourceNode1->GetId ()))->GetName () == L"Test");
+	ASSERT (std::static_pointer_cast<const TestGroup> (target.GetNodeGroup (sourceNode2->GetId ()))->GetName () == L"Test");
 }
 
 }

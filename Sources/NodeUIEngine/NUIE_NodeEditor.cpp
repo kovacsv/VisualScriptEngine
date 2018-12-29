@@ -55,7 +55,7 @@ static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnviro
 
 	StaticNodeRectGetter nodeRectGetter (uiManager, env);
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
-		Rect groupRect = uiGroup->GetRect (env, nodeRectGetter);
+		Rect groupRect = uiGroup->GetRect (env, nodeRectGetter, uiManager.GetUIGroupNodes (uiGroup));
 		boundingRect = Rect::FromTwoPoints (
 			Point (std::min (groupRect.GetLeft (), boundingRect.GetLeft ()), std::min (groupRect.GetTop (), boundingRect.GetTop ())),
 			Point (std::max (groupRect.GetRight (), boundingRect.GetRight ()), std::max (groupRect.GetBottom (), boundingRect.GetBottom ()))

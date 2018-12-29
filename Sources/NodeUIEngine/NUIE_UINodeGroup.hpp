@@ -37,22 +37,22 @@ class UINodeGroup : public NE::NodeGroup
 
 public:
 	UINodeGroup ();
-	UINodeGroup (const std::wstring& name, const NE::NodeCollection& nodes);
+	UINodeGroup (const std::wstring& name);
 	~UINodeGroup ();
 
 	const std::wstring&			GetName () const;
 	void						SetName (const std::wstring& newName);
 
-	Rect						GetRect (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
-	void						Draw (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
-	void						InvalidateGroupDrawing ();
+	Rect						GetRect (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
+	void						Draw (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
+	void						InvalidateGroupDrawing () const;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
-	const GroupDrawingImage&	GetDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
-	void						UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const;
+	const GroupDrawingImage&	GetDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
+	void						UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
 
 	std::wstring				name;
 	mutable GroupDrawingImage	drawingImage;

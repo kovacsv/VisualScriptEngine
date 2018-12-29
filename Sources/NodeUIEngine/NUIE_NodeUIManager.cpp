@@ -319,7 +319,7 @@ void NodeUIManager::InvalidateAllNodesDrawing ()
 
 void NodeUIManager::InvalidateAllNodeGroupsDrawing ()
 {
-	EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
+	EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& group) {
 		group->InvalidateGroupDrawing ();
 		return true;
 	});
@@ -357,12 +357,12 @@ void NodeUIManager::InvalidateNodeDrawing (const UINodePtr& uiNode)
 
 void NodeUIManager::InvalidateNodeGroupDrawing (const NE::NodeId& nodeid)
 {
-	NE::NodeGroupPtr group = nodeManager.GetNodeGroup (nodeid);
+	NE::NodeGroupConstPtr group = nodeManager.GetNodeGroup (nodeid);
 	if (group == nullptr) {
 		return;
 	}
 
-	UINodeGroupPtr uiGroup = std::static_pointer_cast<UINodeGroup> (group);
+	UINodeGroupConstPtr uiGroup = std::static_pointer_cast<const UINodeGroup> (group);
 	uiGroup->InvalidateGroupDrawing ();
 	RequestRedraw ();
 }
@@ -522,7 +522,16 @@ void NodeUIManager::DeleteUINodeGroup (const UINodeGroupPtr& group)
 	RequestRedraw ();
 }
 
-bool NodeUIManager::RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection)
+void NodeUIManager::AddNodesToUIGroup (const UINodeGroupPtr& group, const NE::NodeCollection& nodeCollection)
+{
+	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
+		nodeManager.AddNodeToGroup (group, nodeId);
+		return true;
+	});
+	InvalidateAllNodeGroupsDrawing ();
+}
+
+bool NodeUIManager::RemoveNodesFromUIGroup (const NE::NodeCollection& nodeCollection)
 {
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
 		nodeManager.RemoveNodeFromGroup (nodeId);
@@ -530,6 +539,16 @@ bool NodeUIManager::RemoveNodesFromGroup (const NE::NodeCollection& nodeCollecti
 	});
 	InvalidateAllNodeGroupsDrawing ();
 	return true;
+}
+
+const NE::NodeCollection& NodeUIManager::GetUIGroupNodes (const UINodeGroupConstPtr& group) const
+{
+	return nodeManager.GetGroupNodes (group);
+}
+
+UINodeGroupConstPtr NodeUIManager::GetUINodeGroup (const NE::NodeId& nodeId) const
+{
+	return std::static_pointer_cast<const UINodeGroup> (nodeManager.GetNodeGroup (nodeId));
 }
 
 void NodeUIManager::EnumerateUINodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const

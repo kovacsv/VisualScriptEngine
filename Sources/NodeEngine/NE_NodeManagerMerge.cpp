@@ -180,44 +180,20 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 		}
 	}
 
-	// recreate groups if there are different groups
-	std::unordered_set<NodeGroupConstPtr> sourceGroups;
-	std::unordered_set<NodeGroupConstPtr> targetGroups;
+	// recreate groups in target
+	target.DeleteAllNodeGroups ();
 	source.EnumerateNodeGroups ([&] (const NodeGroupConstPtr& sourceGroup) {
-		sourceGroups.insert (sourceGroup);
+		NodeGroupPtr targetGroup (NodeGroup::Clone (sourceGroup));
+		target.AddNodeGroup (targetGroup);
+		const NodeCollection& sourceGroupNodes = source.GetGroupNodes (sourceGroup);
+		sourceGroupNodes.Enumerate ([&] (const NodeId& sourceNodeId) {
+			if (target.ContainsNode (sourceNodeId)) {
+				target.AddNodeToGroup (targetGroup, sourceNodeId);
+			}
+			return true;
+		});
 		return true;
 	});
-	target.EnumerateNodeGroups ([&] (const NodeGroupConstPtr& targetGroup) {
-		targetGroups.insert (targetGroup);
-		return true;
-	});
-
-	bool recreateGroups = false;
-	if (sourceGroups.size () != targetGroups.size ()) {
-		recreateGroups = true;
-	} else {
-		for (const NodeGroupConstPtr& sourceGroup : sourceGroups) {
-			bool hasSameGroup = false;
-			for (const NodeGroupConstPtr& targetGroup : targetGroups) {
-				if (NodeGroup::IsEqual (sourceGroup, targetGroup)) {
-					hasSameGroup = true;
-					targetGroups.erase (targetGroup);
-					break;
-				}
-			}
-			if (!hasSameGroup) {
-				recreateGroups = true;
-				break;
-			}
-		}
-	}
-	
-	if (recreateGroups) {
-		target.DeleteAllNodeGroups ();
-		for (const NodeGroupConstPtr& sourceGroup : sourceGroups) {
-			target.AddNodeGroup (NodeGroup::Clone (sourceGroup));
-		}
-	}
 
 	return true;
 }

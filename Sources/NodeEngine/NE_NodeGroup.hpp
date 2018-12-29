@@ -17,24 +17,12 @@ class NodeGroup : public DynamicSerializable
 
 public:
 	NodeGroup ();
-	NodeGroup (const NodeCollection& nodes);
 	~NodeGroup ();
-
-	bool					IsEmpty () const;
-	bool					ContainsNode (const NodeId& nodeId) const;
-
-	bool					AddNode (const NodeId& nodeId);
-	bool					DeleteNode (const NodeId& nodeId);
-	const NodeCollection&	GetNodes () const;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 
-	static NodeGroupPtr		Clone (const NodeGroupConstPtr& group);
-	static bool				IsEqual (const NodeGroupConstPtr& aGroup, const NodeGroupConstPtr& bGroup);
-
-protected:
-	NodeCollection nodes;
+	static NodeGroupPtr		Clone (const NodeGroupConstPtr& node);
 };
 
 }

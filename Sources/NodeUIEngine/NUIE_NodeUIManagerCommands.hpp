@@ -131,12 +131,13 @@ private:
 class AddGroupCommand : public UndoableCommand
 {
 public:
-	AddGroupCommand (const UINodeGroupPtr& uiGroup);
+	AddGroupCommand (const UINodeGroupPtr& uiGroup, const NE::NodeCollection& nodes);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
 	const UINodeGroupPtr& uiGroup;
+	const NE::NodeCollection& nodes;
 };
 
 class DeleteGroupCommand : public UndoableCommand

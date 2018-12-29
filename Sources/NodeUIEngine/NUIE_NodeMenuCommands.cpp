@@ -625,8 +625,8 @@ public:
 
 	virtual void Do () override
 	{
-		UINodeGroupPtr group (new UINodeGroup (L"Group", relevantNodes));
-		AddGroupCommand command (group);
+		UINodeGroupPtr group (new UINodeGroup (L"Group"));
+		AddGroupCommand command (group, relevantNodes);
 		uiManager.ExecuteCommand (command);
 	}
 
@@ -720,14 +720,8 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 
 	GroupMenuCommandPtr groupingCommandGroup (new GroupMenuCommand (L"Grouping"));
 	groupingCommandGroup->AddChildCommand (MenuCommandPtr (new CreateGroupMenuCommand (uiManager, relevantNodes)));
-	bool isNodeGrouped = false;
-	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
-		if (group->ContainsNode (uiNode->GetId ())) {
-			isNodeGrouped = true;
-		}
-		return !isNodeGrouped;
-	});
-	if (isNodeGrouped) {
+	UINodeGroupConstPtr nodeGroup = uiManager.GetUINodeGroup (uiNode->GetId ());
+	if (nodeGroup != nullptr) {
 		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new RemoveNodesFromGroupMenuCommand (uiManager, relevantNodes)));
 	}
 	commandStructureBuilder.RegisterCommand (groupingCommandGroup);

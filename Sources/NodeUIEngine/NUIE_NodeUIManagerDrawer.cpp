@@ -96,9 +96,9 @@ void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& env, const NodeD
 
 	NodeUIManagerNodeRectGetter rectGetter (uiManager, drawModifier, env);
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& group) {
-		Rect groupRect = group->GetRect (env, rectGetter);
+		Rect groupRect = group->GetRect (env, rectGetter, uiManager.GetUIGroupNodes (group));
 		if (IsRectVisible (env, groupRect)) {
-			group->Draw (env, rectGetter);
+			group->Draw (env, rectGetter, uiManager.GetUIGroupNodes (group));
 		}
 		return true;
 	});

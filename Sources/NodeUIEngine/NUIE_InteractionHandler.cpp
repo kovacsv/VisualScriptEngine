@@ -451,7 +451,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 				}
 			},
 			[&] (UINodeGroupPtr& foundGroup) {
-				NE::NodeCollection nodesToMove = foundGroup->GetNodes ();
+				NE::NodeCollection nodesToMove = uiManager.GetUIGroupNodes (foundGroup);
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			}
 		);

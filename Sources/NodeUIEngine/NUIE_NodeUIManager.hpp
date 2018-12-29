@@ -116,7 +116,12 @@ public:
 
 	bool						AddUINodeGroup (const UINodeGroupPtr& group);
 	void						DeleteUINodeGroup (const UINodeGroupPtr& group);
-	bool						RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection);
+	void						AddNodesToUIGroup (const UINodeGroupPtr& group, const NE::NodeCollection& nodeCollection);
+	bool						RemoveNodesFromUIGroup (const NE::NodeCollection& nodeCollection);
+
+	const NE::NodeCollection&	GetUIGroupNodes (const UINodeGroupConstPtr& group) const;
+	UINodeGroupConstPtr			GetUINodeGroup (const NE::NodeId& nodeId) const;
+
 	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
 	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
 

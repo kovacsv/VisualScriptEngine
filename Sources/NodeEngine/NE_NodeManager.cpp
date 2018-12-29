@@ -425,19 +425,25 @@ void NodeManager::DeleteNodeGroup (const NodeGroupPtr& group)
 	return nodeGroupList.DeleteGroup (group);
 }
 
-void NodeManager::DeleteAllNodeGroups ()
+void NodeManager::AddNodeToGroup (const NodeGroupPtr& group, const NodeId& nodeId)
 {
-	nodeGroupList.Clear ();
-}
-
-NodeGroupPtr NodeManager::GetNodeGroup (const NodeId& nodeId)
-{
-	return nodeGroupList.GetGroup (nodeId);
+	DBGASSERT (ContainsNode (nodeId));
+	nodeGroupList.AddNodeToGroup (group, nodeId);
 }
 
 void NodeManager::RemoveNodeFromGroup (const NodeId& nodeId)
 {
 	nodeGroupList.RemoveNodeFromGroup (nodeId);
+}
+
+NodeGroupConstPtr NodeManager::GetNodeGroup (const NodeId& nodeId) const
+{
+	return nodeGroupList.GetNodeGroup (nodeId);
+}
+
+const NodeCollection& NodeManager::GetGroupNodes (const NodeGroupConstPtr& group) const
+{
+	return nodeGroupList.GetGroupNodes (group);
 }
 
 void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const
@@ -448,6 +454,11 @@ void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroup
 void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor)
 {
 	nodeGroupList.Enumerate (processor);
+}
+
+void NodeManager::DeleteAllNodeGroups ()
+{
+	nodeGroupList.Clear ();
 }
 
 bool NodeManager::IsCalculationEnabled () const

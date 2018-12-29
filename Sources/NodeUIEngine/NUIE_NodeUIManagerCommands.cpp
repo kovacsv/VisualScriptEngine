@@ -176,9 +176,10 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 	uiManager.SetSelectedNodes (newSelection);
 }
 
-AddGroupCommand::AddGroupCommand (const UINodeGroupPtr& uiGroup) :
+AddGroupCommand::AddGroupCommand (const UINodeGroupPtr& uiGroup, const NE::NodeCollection& nodes) :
 	UndoableCommand (),
-	uiGroup (uiGroup)
+	uiGroup (uiGroup),
+	nodes (nodes)
 {
 
 }
@@ -186,6 +187,7 @@ AddGroupCommand::AddGroupCommand (const UINodeGroupPtr& uiGroup) :
 void AddGroupCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.AddUINodeGroup (uiGroup);
+	uiManager.AddNodesToUIGroup (uiGroup, nodes);
 }
 
 DeleteGroupCommand::DeleteGroupCommand (const UINodeGroupPtr& uiGroup) :
@@ -209,7 +211,7 @@ RemoveNodesFromGroupCommand::RemoveNodesFromGroupCommand (const NE::NodeCollecti
 
 void RemoveNodesFromGroupCommand::Do (NodeUIManager& uiManager)
 {
-	uiManager.RemoveNodesFromGroup (nodes);
+	uiManager.RemoveNodesFromUIGroup (nodes);
 }
 
 UndoCommand::UndoCommand (NE::EvaluationEnv& evaluationEnv) :

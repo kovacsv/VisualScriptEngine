@@ -45,13 +45,13 @@ NodeRectGetter::~NodeRectGetter ()
 }
 
 UINodeGroup::UINodeGroup () :
-	UINodeGroup (L"", NE::NodeCollection ())
+	UINodeGroup (L"")
 {
 
 }
 
-UINodeGroup::UINodeGroup (const std::wstring& name, const NE::NodeCollection& nodes) :
-	NE::NodeGroup (nodes),
+UINodeGroup::UINodeGroup (const std::wstring& name) :
+	NE::NodeGroup (),
 	name (name)
 {
 
@@ -73,18 +73,18 @@ void UINodeGroup::SetName (const std::wstring& newName)
 	InvalidateGroupDrawing ();
 }
 
-Rect UINodeGroup::GetRect (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
+Rect UINodeGroup::GetRect (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const
 {
-	return GetDrawingImage (env, rectGetter).GetRect ();
+	return GetDrawingImage (env, rectGetter, nodes).GetRect ();
 }
 
-void UINodeGroup::Draw (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
+void UINodeGroup::Draw (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
-	GetDrawingImage (env, rectGetter).Draw (drawingContext);
+	GetDrawingImage (env, rectGetter, nodes).Draw (drawingContext);
 }
 
-void UINodeGroup::InvalidateGroupDrawing ()
+void UINodeGroup::InvalidateGroupDrawing () const
 {
 	drawingImage.Reset ();
 }
@@ -105,15 +105,15 @@ NE::Stream::Status UINodeGroup::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-const GroupDrawingImage& UINodeGroup::GetDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
+const GroupDrawingImage& UINodeGroup::GetDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const
 {
 	if (drawingImage.IsEmpty ()) {
-		UpdateDrawingImage (env, rectGetter);
+		UpdateDrawingImage (env, rectGetter, nodes);
 	}
 	return drawingImage;
 }
 
-void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter) const
+void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const
 {
 	const SkinParams& skinParams = env.GetSkinParams ();
 	DrawingContext& drawingContext = env.GetDrawingContext ();
