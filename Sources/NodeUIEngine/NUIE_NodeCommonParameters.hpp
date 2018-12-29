@@ -132,6 +132,17 @@ public:
 };
 
 template <typename NodeType>
+class FloatNodeParameter : public TypedNodeParameter<NodeType, NE::FloatValue>
+{
+public:
+	FloatNodeParameter (const std::wstring& name) :
+		TypedNodeParameter<NodeType, NE::FloatValue> (name, ParameterType::Float)
+	{
+
+	}
+};
+
+template <typename NodeType>
 class DoubleNodeParameter : public TypedNodeParameter<NodeType, NE::DoubleValue>
 {
 public:

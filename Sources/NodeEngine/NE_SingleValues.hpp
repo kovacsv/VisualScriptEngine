@@ -14,10 +14,13 @@ public:
 	virtual ~NumberValue ();
 
 	virtual int		ToInteger () const = 0;
+	virtual float	ToFloat () const = 0;
 	virtual double	ToDouble () const = 0;
 
 	static int		ToInteger (const ValuePtr& val);
 	static int		ToInteger (Value* val);
+	static float	ToFloat (const ValuePtr& val);
+	static float	ToFloat (Value* val);
 	static double	ToDouble (const ValuePtr& val);
 	static double	ToDouble (Value* val);
 };
@@ -36,6 +39,28 @@ public:
 	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
 
 	virtual int				ToInteger () const override;
+	virtual float			ToFloat () const override;
+	virtual double			ToDouble () const override;
+
+	virtual Stream::Status	Read (InputStream& inputStream) override;
+	virtual Stream::Status	Write (OutputStream& outputStream) const override;
+};
+
+class FloatValue :	public NumberValue,
+					public GenericValue<float>
+{
+	DYNAMIC_SERIALIZABLE (FloatValue);
+
+public:
+	FloatValue ();
+	FloatValue (float val);
+	virtual ~FloatValue ();
+
+	virtual ValuePtr		Clone () const override;
+	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
+
+	virtual int				ToInteger () const override;
+	virtual float			ToFloat () const override;
 	virtual double			ToDouble () const override;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
@@ -56,6 +81,7 @@ public:
 	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
 
 	virtual int				ToInteger () const override;
+	virtual float			ToFloat () const override;
 	virtual double			ToDouble () const override;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;

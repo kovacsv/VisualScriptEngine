@@ -127,6 +127,11 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
 				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
 			}
+		} else if (type == NUIE::ParameterType::Float) {
+			if (DBGVERIFY (NE::Value::IsType<NE::FloatValue> (value))) {
+				std::wstring controlText = NUIE::ParameterValueToString (value, type);
+				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
+			}
 		} else if (type == NUIE::ParameterType::Double) {
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
@@ -186,7 +191,7 @@ bool ParameterDialog::CollectChangedValues (HWND hwnd)
 		NUIE::ParameterType type = paramInterface->GetParameterType (paramId);
 
 		NE::ValuePtr value;
-		if (type == NUIE::ParameterType::String || type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Double) {
+		if (type == NUIE::ParameterType::String || type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double) {
 			wchar_t itemText[1024];
 			GetDlgItemText (hwnd, controlId, itemText, 1024);
 			value = NUIE::StringToParameterValue (std::wstring (itemText), type);

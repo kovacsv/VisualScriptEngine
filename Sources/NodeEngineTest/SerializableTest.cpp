@@ -261,7 +261,12 @@ TEST (ValueTest)
 	ASSERT (Value::IsType<IntValue> (newIntVal));
 	ASSERT (IntValue::Get (intVal) == IntValue::Get (newIntVal));
 
-	ValuePtr doubleVal (new DoubleValue (16.0));
+	ValuePtr floatVal (new FloatValue (16.0f));
+	ValuePtr newFloatVal (WriteAndReadValue (floatVal));
+	ASSERT (Value::IsType<FloatValue> (newFloatVal));
+	ASSERT (FloatValue::Get (floatVal) == FloatValue::Get (newFloatVal));
+
+	ValuePtr doubleVal (new DoubleValue (17.0));
 	ValuePtr newDoubleVal (WriteAndReadValue (doubleVal));
 	ASSERT (Value::IsType<DoubleValue> (newDoubleVal));
 	ASSERT (DoubleValue::Get (doubleVal) == DoubleValue::Get (newDoubleVal));

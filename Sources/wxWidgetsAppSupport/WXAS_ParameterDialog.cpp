@@ -56,6 +56,12 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 				SetTextValidator (textControl, L"0123456789-");
 				control = textControl;
 			}
+		} else if (type == NUIE::ParameterType::Float) {
+			if (DBGVERIFY (NE::Value::IsType<NE::FloatValue> (value))) {
+				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
+				SetTextValidator (textControl, L"0123456789.-");
+				control = textControl;
+			}
 		} else if (type == NUIE::ParameterType::Double) {
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
 				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
@@ -102,7 +108,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
 		NE::ValuePtr value = nullptr;
-		if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
+		if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
 			value = NUIE::StringToParameterValue (uiData.GetStringValue (), type);
 		} else if (type == NUIE::ParameterType::Enumeration) {
 			value = NE::ValuePtr (new NE::IntValue (uiData.GetIntegerValue ()));
@@ -134,7 +140,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
 		NE::ValuePtr value = nullptr;
-		if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
+		if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
 			value = NUIE::StringToParameterValue (uiData.GetStringValue (), type);
 		} else if (type == NUIE::ParameterType::Enumeration) {
 			value = NE::ValuePtr (new NE::IntValue (uiData.GetIntegerValue ()));

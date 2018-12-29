@@ -18,6 +18,7 @@ public:
 	static ParameterType Undefined;
 	static ParameterType String;
 	static ParameterType Integer;
+	static ParameterType Float;
 	static ParameterType Double;
 	static ParameterType Enumeration;
 
