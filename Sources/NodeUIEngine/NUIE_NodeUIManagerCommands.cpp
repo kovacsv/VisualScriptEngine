@@ -202,6 +202,19 @@ void DeleteGroupCommand::Do (NodeUIManager& uiManager)
 	uiManager.DeleteUINodeGroup (uiGroup);
 }
 
+AddNodesToGroupCommand::AddNodesToGroupCommand (const UINodeGroupPtr& uiGroup, const NE::NodeCollection& nodes) :
+	UndoableCommand (),
+	uiGroup (uiGroup),
+	nodes (nodes)
+{
+
+}
+
+void AddNodesToGroupCommand::Do (NodeUIManager& uiManager)
+{
+	uiManager.AddNodesToUIGroup (uiGroup, nodes);
+}
+
 RemoveNodesFromGroupCommand::RemoveNodesFromGroupCommand (const NE::NodeCollection& nodes) :
 	UndoableCommand (),
 	nodes (nodes)

@@ -151,6 +151,18 @@ private:
 	const UINodeGroupPtr& uiGroup;
 };
 
+class AddNodesToGroupCommand : public UndoableCommand
+{
+public:
+	AddNodesToGroupCommand (const UINodeGroupPtr& uiGroup, const NE::NodeCollection& nodes);
+
+	virtual void Do (NodeUIManager& uiManager) override;
+
+private:
+	const UINodeGroupPtr& uiGroup;
+	const NE::NodeCollection& nodes;
+};
+
 class RemoveNodesFromGroupCommand : public UndoableCommand
 {
 public:

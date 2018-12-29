@@ -55,6 +55,10 @@ void NodeGroupList::DeleteGroup (const NodeGroupConstPtr& group)
 
 void NodeGroupList::AddNodeToGroup (const NodeGroupPtr& group, const NodeId& nodeId)
 {
+	NodeGroupConstPtr existingGroup = GetNodeGroup (nodeId);
+	if (existingGroup != nullptr && group == existingGroup) {
+		return;
+	}
 	RemoveNodeFromGroup (nodeId);
 	groupToNodes[group].Insert (nodeId);
 	nodeToGroup.insert ({ nodeId, group });

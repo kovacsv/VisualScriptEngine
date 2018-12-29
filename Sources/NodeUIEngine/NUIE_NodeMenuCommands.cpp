@@ -689,6 +689,35 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
+class AddNodesToGroupMenuCommand : public SingleMenuCommand
+{
+public:
+	AddNodesToGroupMenuCommand (NodeUIManager& uiManager, const UINodeGroupPtr& uiNodeGroup, const NE::NodeCollection& relevantNodes) :
+		SingleMenuCommand (std::wstring (L"Add To Group \"") + uiNodeGroup->GetName () + std::wstring (L"\""), false),
+		uiManager (uiManager),
+		uiNodeGroup (uiNodeGroup),
+		relevantNodes (relevantNodes)
+	{
+
+	}
+
+	virtual ~AddNodesToGroupMenuCommand ()
+	{
+
+	}
+
+	virtual void Do () override
+	{
+		AddNodesToGroupCommand command (uiNodeGroup, relevantNodes);
+		uiManager.ExecuteCommand (command);
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	UINodeGroupPtr		uiNodeGroup;
+	NE::NodeCollection	relevantNodes;
+};
+
 NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode)
 {
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
@@ -720,10 +749,17 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 
 	GroupMenuCommandPtr groupingCommandGroup (new GroupMenuCommand (L"Grouping"));
 	groupingCommandGroup->AddChildCommand (MenuCommandPtr (new CreateGroupMenuCommand (uiManager, relevantNodes)));
+	
 	UINodeGroupConstPtr nodeGroup = uiManager.GetUINodeGroup (uiNode->GetId ());
 	if (nodeGroup != nullptr) {
 		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new RemoveNodesFromGroupMenuCommand (uiManager, relevantNodes)));
 	}
+	
+	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
+		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new AddNodesToGroupMenuCommand (uiManager, group, relevantNodes)));
+		return true;
+	});
+
 	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
 
 	return commandStructureBuilder.GetCommandStructure ();
