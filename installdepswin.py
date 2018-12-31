@@ -20,7 +20,7 @@ def BuildSolution (msBuildPath, solutionPath, configuration):
 	print ('Building ' + solutionPath)
 	subprocess.call ([msBuildPath, solutionPath, '/property:Configuration=' + configuration, '/property:Platform=x64'])
 
-def InstallwxWidgets (targetFolder, msBuildPath):
+def InstallwxWidgets (targetFolder, msBuildPath, msBuildConfiguration):
 	wxWidgetsName = 'wxWidgets-3.1.2'
 	wxWidgetsZipUrl = 'https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.7z'
 	wxWidgetsZipPath = os.path.join (targetFolder, wxWidgetsName + '.7z')
@@ -31,12 +31,11 @@ def InstallwxWidgets (targetFolder, msBuildPath):
 		DownloadFile (wxWidgetsZipUrl, wxWidgetsZipPath)
 		UnzipFile (wxWidgetsZipPath, wxWidgetsFolderPath)
 		solutionPath = os.path.join (wxWidgetsFolderPath, 'build', 'msw', 'wx_vc15.sln')
-		BuildSolution (msBuildPath, solutionPath, 'Debug')
-		BuildSolution (msBuildPath, solutionPath, 'Release')	
+		BuildSolution (msBuildPath, solutionPath, msBuildConfiguration)
 
 def Main (argv):
-	if len (argv) != 3:
-		print 'usage: installdepswin.py <targetFolder> <msBuildPath>'
+	if len (argv) != 4:
+		print 'usage: installdepswin.py <targetFolder> <msBuildPath> <msBuildConfiguration>'
 		return 1
 	
 	currentDir = os.path.dirname (os.path.abspath (__file__))
@@ -44,11 +43,12 @@ def Main (argv):
 
 	targetFolder = sys.argv[1]
 	msBuildPath = sys.argv[2] # "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe"
+	msBuildConfiguration = sys.argv[3]
 
 	if not os.path.exists (targetFolder):
 		os.makedirs (targetFolder)
 	
-	InstallwxWidgets (targetFolder, msBuildPath)
+	InstallwxWidgets (targetFolder, msBuildPath, msBuildConfiguration)
 	return 0
 	
 sys.exit (Main (sys.argv))

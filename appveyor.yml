@@ -17,8 +17,8 @@ platform:
   - x64
 
 before_build:
-  - python installdepswin.py C:\Dependencies msbuild
   - set WXWIDGETS_DIR=C:\Dependencies\wxWidgets-3.1.2
+  - python installdepswin.py C:\Dependencies msbuild %configuration%
   - mkdir Build
   - cd Build
   - cmake -G "Visual Studio 15 2017 Win64" ..
