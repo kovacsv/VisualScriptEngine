@@ -9,8 +9,7 @@
 namespace NUIE
 {
 
-static const std::string	NodeEditorFileMarker = "NodeEditorFile";
-static const int			NodeEditorFileVersion = 1;
+static const std::string NodeEditorFileMarker = "NodeEditorFile";
 
 static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, Rect& boundingRect)
 {
@@ -232,25 +231,28 @@ bool NodeEditor::Open (const std::string& fileName, const ExternalHeaderIO* exte
 bool NodeEditor::Open (NE::InputStream& inputStream, const ExternalHeaderIO* externalHeader)
 {
 	if (externalHeader != nullptr) {
-		if (DBGERROR (!externalHeader->Read (inputStream))) {
+		if (!externalHeader->Read (inputStream)) {
 			return false;
 		}
 	}
 
 	std::string fileMarker;
 	inputStream.Read (fileMarker);
-	if (DBGERROR (fileMarker != NodeEditorFileMarker)) {
+	if (fileMarker != NodeEditorFileMarker) {
 		return false;
 	}
 
-	int fileVersion = 0;
-	inputStream.Read (fileVersion);
-	if (DBGERROR (fileVersion != NodeEditorFileVersion)) {
+	int readFileVersion = 0;
+	inputStream.Read (readFileVersion);
+	if (readFileVersion > FileVersion) {
 		return false;
 	}
 
 	Version readVersion;
 	readVersion.Read (inputStream);
+	if (readVersion > EngineVersion) {
+		return false;
+	}
 
 	if (DBGERROR (!uiManager.Open (inputStream))) {
 		return false;
@@ -287,8 +289,8 @@ bool NodeEditor::Save (NE::OutputStream& outputStream, const ExternalHeaderIO* e
 	}
 
 	outputStream.Write (NodeEditorFileMarker);
-	outputStream.Write (NodeEditorFileVersion);
-	currentVersion.Write (outputStream);
+	outputStream.Write (FileVersion);
+	EngineVersion.Write (outputStream);
 	if (DBGERROR (!uiManager.Save (outputStream))) {
 		return false;
 	}

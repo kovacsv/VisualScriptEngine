@@ -20,6 +20,34 @@ Version::Version (int version1, int version2, int version3) :
 
 }
 
+bool Version::operator< (const Version& rhs) const
+{
+	if (version1 < rhs.version1) {
+		return true;
+	}
+	if (version2 < rhs.version2) {
+		return true;
+	}
+	if (version3 < rhs.version3) {
+		return true;
+	}
+	return false;
+}
+
+bool Version::operator> (const Version& rhs) const
+{
+	if (version1 > rhs.version1) {
+		return true;
+	}
+	if (version2 > rhs.version2) {
+		return true;
+	}
+	if (version3 > rhs.version3) {
+		return true;
+	}
+	return false;
+}
+
 NE::Stream::Status Version::Read (NE::InputStream& inputStream)
 {
 	inputStream.Read (version1);
@@ -36,6 +64,7 @@ NE::Stream::Status Version::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-const Version currentVersion (VSE_VERSION_1, VSE_VERSION_2, VSE_VERSION_3);
+const Version EngineVersion (VSE_VERSION_1, VSE_VERSION_2, VSE_VERSION_3);
+const int FileVersion = 1;
 
 }
