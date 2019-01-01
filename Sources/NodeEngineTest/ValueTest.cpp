@@ -148,4 +148,12 @@ TEST (ListCloneTest)
 	ASSERT (AValue::Get (typedCloned->GetValue (2)) == A (3));
 }
 
+TEST (ConstNonConstTest)
+{
+	ValuePtr val (new IntValue (5));
+	ValueConstPtr cval (new IntValue (5));
+	ASSERT (IntValue::Get (val) == 5);
+	ASSERT (IntValue::Get (cval) == 5);
+}
+
 }
