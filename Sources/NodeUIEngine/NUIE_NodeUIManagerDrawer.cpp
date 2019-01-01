@@ -135,7 +135,7 @@ void NodeUIManagerDrawer::DrawConnection (NodeUIDrawingEnvironment& env, const P
 	const SkinParams& skinParams = env.GetSkinParams ();
 	const Pen& pen = skinParams.GetConnectionLinePen ();
 
-	double bezierOffsetVal = fabs (beg.GetX () - end.GetX ()) / 2.0;
+	double bezierOffsetVal = std::fabs (beg.GetX () - end.GetX ()) / 2.0;
 	Point bezierOffset (bezierOffsetVal, 0.0);
 	env.GetDrawingContext ().DrawBezier (beg, beg + bezierOffset, end - bezierOffset, end, pen);
 }

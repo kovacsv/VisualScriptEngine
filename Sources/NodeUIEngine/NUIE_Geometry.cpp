@@ -450,7 +450,7 @@ void AddRectToChecksum (NE::Checksum& checksum, const Rect& rect)
 
 bool IsEqual (double a, double b)
 {
-	return fabs (a - b) < EPS;
+	return std::fabs (a - b) < EPS;
 }
 
 bool IsLower (double a, double b)
