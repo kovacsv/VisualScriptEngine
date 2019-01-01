@@ -3,6 +3,8 @@
 #include "NUIE_ContextDecorators.hpp"
 #include "NUIE_SkinParams.hpp"
 
+#include <cmath>
+
 namespace NUIE
 {
 
