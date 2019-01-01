@@ -2,10 +2,10 @@
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(240,240,240);"/>
 <rect x="24" y="107" width="393" height="394" style="fill:rgb(160,200,240);"/>
 <text x="34" y="130" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:18px;">Group</text>
-<path d="M186,208 C287,208 133,403 233,403" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
-<path d="M186,208 C304,208 116,437 233,437" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
-<path d="M186,208 C351,208 333,98 497,98" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
-<path d="M407,403 C464,403 428,320 484,320" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<path d="M186,208 C210,208 210,403 233,403" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<path d="M186,208 C210,208 210,437 233,437" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<path d="M186,208 C342,208 342,98 497,98" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<path d="M407,403 C446,403 446,320 484,320" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
 <rect x="34" y="154" width="152" height="34" style="fill:rgb(100,100,100);"/>
 <text x="110" y="171" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Number</text>
 <rect x="34" y="188" width="152" height="39" style="fill:rgb(200,200,200);"/>

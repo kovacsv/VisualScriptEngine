@@ -1,7 +1,7 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(240,240,240);"/>
-<path d="M176,198 C345,198 329,98 497,98" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
-<path d="M387,383 C443,383 442,398 497,398" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<path d="M176,198 C337,198 337,98 497,98" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<path d="M387,383 C442,383 442,398 497,398" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
 <rect x="24" y="144" width="152" height="34" style="fill:rgb(100,100,100);"/>
 <text x="100" y="161" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Number</text>
 <rect x="24" y="178" width="152" height="39" style="fill:rgb(200,200,200);"/>
