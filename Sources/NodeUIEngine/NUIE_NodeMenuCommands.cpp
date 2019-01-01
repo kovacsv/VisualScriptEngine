@@ -157,7 +157,7 @@ void SetParametersCommand::Do ()
 			return parameter->GetName ();
 		}
 
-		virtual NE::ValuePtr GetParameterValue (size_t index) const override
+		virtual NE::ValueConstPtr GetParameterValue (size_t index) const override
 		{
 			NodeParameterPtr parameter = paramList.GetParameter (index);
 			if (DBGERROR (parameter == nullptr)) {
@@ -184,7 +184,7 @@ void SetParametersCommand::Do ()
 			return parameter->GetType ();
 		}
 
-		virtual bool IsValidParameterValue (size_t index, const NE::ValuePtr& value) const override
+		virtual bool IsValidParameterValue (size_t index, const NE::ValueConstPtr& value) const override
 		{
 			NodeParameterPtr parameter = paramList.GetParameter (index);
 			if (DBGERROR (parameter == nullptr)) {
@@ -194,7 +194,7 @@ void SetParametersCommand::Do ()
 			return parameter->CanSetValue (currentNode, value);
 		}
 
-		virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+		virtual bool SetParameterValue (size_t index, const NE::ValueConstPtr& value) override
 		{
 			if (DBGERROR (!IsValidParameterValue (index, value))) {
 				return false;
@@ -211,9 +211,9 @@ void SetParametersCommand::Do ()
 		}
 
 	private:
-		NodeParameterList&							paramList;
-		const UINodePtr&							currentNode;
-		std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
+		NodeParameterList&								paramList;
+		const UINodePtr&								currentNode;
+		std::unordered_map<size_t, NE::ValueConstPtr>	changedParameterValues;
 	};
 
 	RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
@@ -276,7 +276,7 @@ void SetGroupParametersCommand::Do ()
 			return groupParameters[index].name;
 		}
 
-		virtual NE::ValuePtr GetParameterValue (size_t index) const override
+		virtual NE::ValueConstPtr GetParameterValue (size_t index) const override
 		{
 			switch (index) {
 			case 0:
@@ -298,7 +298,7 @@ void SetGroupParametersCommand::Do ()
 			return groupParameters[index].type;
 		}
 
-		virtual bool IsValidParameterValue (size_t index, const NE::ValuePtr& value) const override
+		virtual bool IsValidParameterValue (size_t index, const NE::ValueConstPtr& value) const override
 		{
 			switch (index) {
 			case 0:
@@ -309,7 +309,7 @@ void SetGroupParametersCommand::Do ()
 			return false;
 		}
 
-		virtual bool SetParameterValue (size_t index, const NE::ValuePtr& value) override
+		virtual bool SetParameterValue (size_t index, const NE::ValueConstPtr& value) override
 		{
 			if (DBGERROR (!IsValidParameterValue (index, value))) {
 				return false;
@@ -325,9 +325,9 @@ void SetGroupParametersCommand::Do ()
 		}
 
 	private:
-		const UINodeGroupPtr&						currentGroup;
-		std::vector<GroupParameter>					groupParameters;
-		std::unordered_map<size_t, NE::ValuePtr>	changedParameterValues;
+		const UINodeGroupPtr&							currentGroup;
+		std::vector<GroupParameter>						groupParameters;
+		std::unordered_map<size_t, NE::ValueConstPtr>	changedParameterValues;
 	};
 
 	std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group));

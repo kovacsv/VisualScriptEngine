@@ -112,9 +112,9 @@ IntegerUpDownNode::~IntegerUpDownNode ()
 
 }
 
-NE::ValuePtr IntegerUpDownNode::Calculate (NE::EvaluationEnv&) const
+NE::ValueConstPtr IntegerUpDownNode::Calculate (NE::EvaluationEnv&) const
 {
-	return NE::ValuePtr (new NE::IntValue (val));
+	return NE::ValueConstPtr (new NE::IntValue (val));
 }
 
 void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
@@ -128,12 +128,12 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetValue (NE::IntValue::Get (value));
 			uiManager.InvalidateNodeValue (uiNode);
@@ -151,12 +151,12 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetStep (NE::IntValue::Get (value));
 			return true;
@@ -238,9 +238,9 @@ DoubleUpDownNode::~DoubleUpDownNode ()
 
 }
 
-NE::ValuePtr DoubleUpDownNode::Calculate (NE::EvaluationEnv&) const
+NE::ValueConstPtr DoubleUpDownNode::Calculate (NE::EvaluationEnv&) const
 {
-	return NE::ValuePtr (new NE::DoubleValue (val));
+	return NE::ValueConstPtr (new NE::DoubleValue (val));
 }
 
 void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
@@ -254,12 +254,12 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetValue (NE::DoubleValue::Get (value));
 			uiManager.InvalidateNodeValue (uiNode);
@@ -277,12 +277,12 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetStep (NE::DoubleValue::Get (value));
 			return true;
@@ -406,11 +406,11 @@ void IntegerRangeNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
 }
 
-NE::ValuePtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
-	NE::ValuePtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
-	NE::ValuePtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
+	NE::ValueConstPtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
+	NE::ValueConstPtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
+	NE::ValueConstPtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
 	if (!NE::IsSingleType<NE::NumberValue> (start) || !NE::IsSingleType<NE::NumberValue> (step) || !NE::IsSingleType<NE::NumberValue> (count)) {
 		return nullptr;
 	}
@@ -437,7 +437,7 @@ void IntegerRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0.0;
 		}
@@ -488,11 +488,11 @@ void DoubleRangeNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
 }
 
-NE::ValuePtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
-	NE::ValuePtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
-	NE::ValuePtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
+	NE::ValueConstPtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
+	NE::ValueConstPtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
+	NE::ValueConstPtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
 	if (!NE::IsSingleType<NE::NumberValue> (start) || !NE::IsSingleType<NE::NumberValue> (step) || !NE::IsSingleType<NE::NumberValue> (count)) {
 		return nullptr;
 	}
@@ -519,7 +519,7 @@ void DoubleRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0.0;
 		}

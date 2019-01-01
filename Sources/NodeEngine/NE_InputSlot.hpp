@@ -20,18 +20,18 @@ class InputSlot : public Slot
 
 public:
 	InputSlot ();
-	InputSlot (const SlotId& id, const ValuePtr& defaultValue, OutputSlotConnectionMode outputSlotConnectionMode);
+	InputSlot (const SlotId& id, const ValueConstPtr& defaultValue, OutputSlotConnectionMode outputSlotConnectionMode);
 	virtual ~InputSlot ();
 
 	OutputSlotConnectionMode	GetOutputSlotConnectionMode () const;
-	ValuePtr					GetDefaultValue () const;
-	void						SetDefaultValue (const ValuePtr& newDefaultValue);
+	ValueConstPtr				GetDefaultValue () const;
+	void						SetDefaultValue (const ValueConstPtr& newDefaultValue);
 	
 	virtual Stream::Status		Read (InputStream& inputStream) override;
 	virtual Stream::Status		Write (OutputStream& outputStream) const override;
 
 private:
-	ValuePtr					defaultValue;
+	ValueConstPtr				defaultValue;
 	OutputSlotConnectionMode	outputSlotConnectionMode;
 };
 

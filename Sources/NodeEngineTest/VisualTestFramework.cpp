@@ -35,9 +35,9 @@ public:
 		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Out")));
 	}
 
-	NE::ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	NE::ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		NE::ValuePtr inValue = EvaluateSingleInputSlot (NE::SlotId ("in"), env);
+		NE::ValueConstPtr inValue = EvaluateSingleInputSlot (NE::SlotId ("in"), env);
 		if (!IsSingleType<NE::IntValue> (inValue)) {
 			return nullptr;
 		}

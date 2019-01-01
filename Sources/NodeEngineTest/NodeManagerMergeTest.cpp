@@ -47,10 +47,10 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr a = EvaluateSingleInputSlot (SlotId ("a"), env);
-		ValuePtr b = EvaluateSingleInputSlot (SlotId ("b"), env);
+		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("a"), env);
+		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("b"), env);
 		int result = IntValue::Get (a) + IntValue::Get (b);
 		return ValuePtr (new IntValue (result));
 	}
@@ -118,8 +118,8 @@ static bool IsEqualNodeManagers (const NodeManager& source, const NodeManager& t
 		if (!Node::IsEqual (sourceNode, targetNode)) {
 			isEqual = false;
 		}
-		ValuePtr sourceResult = sourceNode->Evaluate (EmptyEvaluationEnv);
-		ValuePtr targetResult = targetNode->Evaluate (EmptyEvaluationEnv);
+		ValueConstPtr sourceResult = sourceNode->Evaluate (EmptyEvaluationEnv);
+		ValueConstPtr targetResult = targetNode->Evaluate (EmptyEvaluationEnv);
 		if (IntValue::Get (sourceResult) != IntValue::Get (targetResult)) {
 			isEqual = false;
 		}
@@ -193,7 +193,7 @@ TEST (MergeAllNodesTest)
 	ASSERT (FindNodesByName (target, L"4").size () == 1);
 	
 	NodeConstPtr targetNode4 = FindNodesByName (target, L"4")[0];
-	ValuePtr result = targetNode4->Evaluate (EmptyEvaluationEnv);
+	ValueConstPtr result = targetNode4->Evaluate (EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (result) == 5);
 }
 
@@ -216,7 +216,7 @@ TEST (MergeAllNodesTest_Scope)
 	ASSERT (FindNodesByName (target, L"4").size () == 1);
 	
 	NodeConstPtr targetNode4 = FindNodesByName (target, L"4")[0];
-	ValuePtr result = targetNode4->Evaluate (EmptyEvaluationEnv);
+	ValueConstPtr result = targetNode4->Evaluate (EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (result) == 5);
 }
 
@@ -240,7 +240,7 @@ TEST (MergeAllNodesTwiceTest)
 	
 	std::vector<NodeConstPtr> targetNode4 = FindNodesByName (target, L"4");
 	for (const NodeConstPtr& node : targetNode4) {
-		ValuePtr result = node->Evaluate (EmptyEvaluationEnv);
+		ValueConstPtr result = node->Evaluate (EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (result) == 5);
 	}
 }
@@ -262,7 +262,7 @@ TEST (MergeAllNodesToSameManager)
 	
 	std::vector<NodeConstPtr> sourceNode4 = FindNodesByName (source, L"4");
 	for (const NodeConstPtr& node : sourceNode4) {
-		ValuePtr result = node->Evaluate (EmptyEvaluationEnv);
+		ValueConstPtr result = node->Evaluate (EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (result) == 5);
 	}
 }
@@ -295,7 +295,7 @@ TEST (MergeMultipleNodes)
 	ASSERT (target.GetConnectionCount () == 2);
 
 	NodeConstPtr targetNode3 = FindNodesByName (target, L"3")[0];
-	ValuePtr result = targetNode3->Evaluate (EmptyEvaluationEnv);
+	ValueConstPtr result = targetNode3->Evaluate (EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (result) == 4);
 }
 

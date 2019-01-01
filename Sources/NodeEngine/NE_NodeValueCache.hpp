@@ -14,15 +14,15 @@ public:
 	NodeValueCache ();
 	~NodeValueCache ();
 
-	bool				Add (const NodeId& id, const ValuePtr& value);
-	bool				Remove (const NodeId& id);
-	void				Clear ();
+	bool					Add (const NodeId& id, const ValueConstPtr& value);
+	bool					Remove (const NodeId& id);
+	void					Clear ();
 	
-	bool				Contains (const NodeId& id) const;
-	const ValuePtr&		Get (const NodeId& id) const;
+	bool					Contains (const NodeId& id) const;
+	const ValueConstPtr&	Get (const NodeId& id) const;
 
 private:
-	std::unordered_map<NodeId, ValuePtr>	cache;
+	std::unordered_map<NodeId, ValueConstPtr>	cache;
 };
 
 }

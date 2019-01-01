@@ -42,7 +42,7 @@ public:
 	IntegerUpDownNode (const std::wstring& name, const NUIE::Point& position, int val, int step);
 	virtual ~IntegerUpDownNode ();
 
-	virtual NE::ValuePtr				Calculate (NE::EvaluationEnv& env) const override;
+	virtual NE::ValueConstPtr			Calculate (NE::EvaluationEnv& env) const override;
 	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 
 	virtual NE::Stream::Status			Read (NE::InputStream& inputStream) override;
@@ -71,7 +71,7 @@ public:
 	DoubleUpDownNode (const std::wstring& name, const NUIE::Point& position, double val, double step);
 	virtual ~DoubleUpDownNode ();
 
-	virtual NE::ValuePtr				Calculate (NE::EvaluationEnv& env) const override;
+	virtual NE::ValueConstPtr			Calculate (NE::EvaluationEnv& env) const override;
 	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 
 	virtual NE::Stream::Status			Read (NE::InputStream& inputStream) override;
@@ -116,7 +116,7 @@ public:
 	virtual ~IntegerRangeNode ();
 	
 	virtual void				Initialize () override;
-	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual NE::ValueConstPtr	Calculate (NE::EvaluationEnv& env) const override;
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
@@ -133,7 +133,7 @@ public:
 	virtual ~DoubleRangeNode ();
 	
 	virtual void				Initialize () override;
-	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual NE::ValueConstPtr	Calculate (NE::EvaluationEnv& env) const override;
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;

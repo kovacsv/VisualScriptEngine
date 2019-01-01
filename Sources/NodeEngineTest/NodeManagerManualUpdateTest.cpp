@@ -25,7 +25,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
 		return ValuePtr (new IntValue (val));
 	}
@@ -60,9 +60,9 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
+		ValueConstPtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
 		return ValuePtr (new IntValue (IntValue::Get (in) + 1));
 	}
 };
@@ -83,9 +83,9 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
+		ValueConstPtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
 		if (in == nullptr) {
 			return nullptr;
 		}
@@ -113,13 +113,13 @@ TEST (ManualUpdateTest_Automatic)
 	manager.ConnectOutputSlotToInputSlot (incNode2->GetOutputSlot (SlotId ("out")), incNode3->GetInputSlot (SlotId ("in")));
 
 	{
-		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 5);
-		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode1Val) == 6);
-		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode2Val) == 6);
-		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode3Val) == 7);
 	}
 
@@ -128,13 +128,13 @@ TEST (ManualUpdateTest_Automatic)
 	ASSERT (!incNode2->HasCalculatedValue ());
 
 	{
-		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 10);
-		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode1Val) == 11);
-		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode2Val) == 11);
-		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode3Val) == 12);
 	}
 }
@@ -154,26 +154,26 @@ TEST (ManualUpdateTest_Manual)
 	manager.ConnectOutputSlotToInputSlot (incNode2->GetOutputSlot (SlotId ("out")), incNode3->GetInputSlot (SlotId ("in")));
 
 	{
-		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 5);
-		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode1Val == nullptr);
-		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode2Val == nullptr);
-		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode3Val == nullptr);
 	}
 
 	manager.EvaluateAllNodes (EmptyEvaluationEnv);
 
 	{
-		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 5);
-		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode1Val == nullptr);
-		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode2Val == nullptr);
-		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode3Val == nullptr);
 	}
 }
@@ -192,50 +192,49 @@ TEST (ManualUpdateTest_ManualForced)
 	manager.ConnectOutputSlotToInputSlot (valueNode->GetOutputSlot (SlotId ("out")), incNode2->GetInputSlot (SlotId ("in")));
 	manager.ConnectOutputSlotToInputSlot (incNode2->GetOutputSlot (SlotId ("out")), incNode3->GetInputSlot (SlotId ("in")));
 
-
 	{
-		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 5);
-		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode1Val == nullptr);
-		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode2Val == nullptr);
-		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode3Val == nullptr);
 	}
 
 	manager.ForceEvaluateAllNodes (EmptyEvaluationEnv);
 
 	{
-		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode1Val) == 6);
-		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode2Val) == 6);
-		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode3Val) == 7);
 	}
 
 	NE::Node::Cast<ValueNode> (valueNode)->SetValue (10);
 
 	{
-		NE::ValuePtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr valueNodeVal = valueNode->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (valueNodeVal) == 10);
-		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode1Val == nullptr);
-		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode2Val == nullptr);
-		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
 		ASSERT (incNode3Val == nullptr);
 	}
 
 	manager.ForceEvaluateAllNodes (EmptyEvaluationEnv);
 
 	{
-		NE::ValuePtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode1Val = incNode1->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode1Val) == 11);
-		NE::ValuePtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode2Val = incNode2->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode2Val) == 11);
-		NE::ValuePtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
+		NE::ValueConstPtr incNode3Val = incNode3->Evaluate (EmptyEvaluationEnv);
 		ASSERT (NE::IntValue::Get (incNode3Val) == 12);
 	}
 }
@@ -277,11 +276,11 @@ TEST (ManualUpdateTest_RandomForced)
 
 		manager.ForceEvaluateAllNodes (EmptyEvaluationEnv);
 
-		NE::ValuePtr incNode1Val = incNode1->GetCalculatedValue ();
+		NE::ValueConstPtr incNode1Val = incNode1->GetCalculatedValue ();
 		ASSERT (NE::IntValue::Get (incNode1Val) == 6);
-		NE::ValuePtr incNode2Val = incNode2->GetCalculatedValue ();
+		NE::ValueConstPtr incNode2Val = incNode2->GetCalculatedValue ();
 		ASSERT (NE::IntValue::Get (incNode2Val) == 6);
-		NE::ValuePtr incNode3Val = incNode3->GetCalculatedValue ();
+		NE::ValueConstPtr incNode3Val = incNode3->GetCalculatedValue ();
 		ASSERT (NE::IntValue::Get (incNode3Val) == 7);
 	}
 }

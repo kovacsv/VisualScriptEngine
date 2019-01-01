@@ -41,11 +41,11 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("c"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr firstResult = EvaluateSingleInputSlot (SlotId ("a"), env);
-		ValuePtr secondResult = EvaluateSingleInputSlot (SlotId ("b"), env);
-		return ValuePtr (new IntValue (val + IntValue::Get (firstResult) + IntValue::Get (secondResult)));
+		ValueConstPtr firstResult = EvaluateSingleInputSlot (SlotId ("a"), env);
+		ValueConstPtr secondResult = EvaluateSingleInputSlot (SlotId ("b"), env);
+		return ValueConstPtr (new IntValue (val + IntValue::Get (firstResult) + IntValue::Get (secondResult)));
 	}
 
 	virtual Stream::Status Read (InputStream& inputStream) override
@@ -148,14 +148,14 @@ TEST (ConnectionSerializationTest)
 	source.AddNode (sourceNode3);
 	source.ConnectOutputSlotToInputSlot (sourceNode1->GetOutputSlot (SlotId ("c")), sourceNode3->GetInputSlot (SlotId ("a")));
 	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("c")), sourceNode3->GetInputSlot (SlotId ("b")));
-	ValuePtr sourceValue = sourceNode3->Evaluate (EmptyEvaluationEnv);
+	ValueConstPtr sourceValue = sourceNode3->Evaluate (EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (sourceValue) == 6);
 
 	NodeManager target;
 	ASSERT (NodeManager::Clone (source, target));
 	ASSERT (source.GetNodeCount () == target.GetNodeCount ());
 	std::shared_ptr<TestNode> targetNode3 = std::dynamic_pointer_cast<TestNode> (target.GetNode (sourceNode3->GetId ()));
-	ValuePtr targetValue = targetNode3->Evaluate (EmptyEvaluationEnv);
+	ValueConstPtr targetValue = targetNode3->Evaluate (EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (targetValue) == 6);
 }
 

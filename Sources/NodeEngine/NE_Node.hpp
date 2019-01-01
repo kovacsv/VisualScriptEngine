@@ -22,14 +22,14 @@ public:
 	NodeEvaluator ();
 	virtual ~NodeEvaluator ();
 
-	virtual void		InvalidateNodeValue (const NodeId& nodeId) const = 0;
-	virtual bool		HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const = 0;
-	virtual void		EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const = 0;
+	virtual void			InvalidateNodeValue (const NodeId& nodeId) const = 0;
+	virtual bool			HasConnectedOutputSlots (const InputSlotConstPtr& inputSlot) const = 0;
+	virtual void			EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const = 0;
 
-	virtual bool		IsCalculationEnabled () const = 0;
-	virtual bool		HasCalculatedNodeValue (const NodeId& nodeId) const = 0;
-	virtual ValuePtr	GetCalculatedNodeValue (const NodeId& nodeId) const = 0;
-	virtual void		SetCalculatedNodeValue (const NodeId& nodeId, const ValuePtr& valuePtr) const = 0;
+	virtual bool			IsCalculationEnabled () const = 0;
+	virtual bool			HasCalculatedNodeValue (const NodeId& nodeId) const = 0;
+	virtual ValueConstPtr	GetCalculatedNodeValue (const NodeId& nodeId) const = 0;
+	virtual void			SetCalculatedNodeValue (const NodeId& nodeId, const ValueConstPtr& valuePtr) const = 0;
 };
 
 enum class InitializationMode
@@ -86,8 +86,8 @@ public:
 	void					EnumerateInputSlots (const std::function<bool (const InputSlotConstPtr&)>& processor) const;
 	void					EnumerateOutputSlots (const std::function<bool (const OutputSlotConstPtr&)>& processor) const;
 
-	ValuePtr				Evaluate (EvaluationEnv& env) const;
-	ValuePtr				GetCalculatedValue () const;
+	ValueConstPtr			Evaluate (EvaluationEnv& env) const;
+	ValueConstPtr			GetCalculatedValue () const;
 	bool					HasCalculatedValue () const;
 	CalculationStatus		GetCalculationStatus () const;
 	void					InvalidateValue () const;
@@ -130,17 +130,17 @@ protected:
 	virtual bool			RegisterInputSlot (const InputSlotPtr& newInputSlot);
 	virtual bool			RegisterOutputSlot (const OutputSlotPtr& newOutputSlot);
 
-	ValuePtr				EvaluateSingleInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
-	ListValuePtr			EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
+	ValueConstPtr			EvaluateSingleInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
+	ListValueConstPtr		EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
 
 private:
 	virtual void			Initialize () = 0;
-	virtual ValuePtr		Calculate (EvaluationEnv& env) const = 0;
+	virtual ValueConstPtr	Calculate (EvaluationEnv& env) const = 0;
 
 	virtual bool			IsForceCalculated () const;
-	virtual void			ProcessValue (const ValuePtr& value, EvaluationEnv& env) const;
+	virtual void			ProcessValue (const ValueConstPtr& value, EvaluationEnv& env) const;
 
-	ListValuePtr			EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
+	ListValueConstPtr		EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
 
 	NodeId					nodeId;
 	NodeEvaluatorConstPtr	nodeEvaluator;

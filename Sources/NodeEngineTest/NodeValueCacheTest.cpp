@@ -48,14 +48,14 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		calculationCount++;
-		ValuePtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
+		ValueConstPtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
 		return ValuePtr (new IntValue (IntValue::Get (in) + 1));
 	}
 
-	virtual void ProcessValue (const ValuePtr&, NE::EvaluationEnv& env) const override
+	virtual void ProcessValue (const ValueConstPtr&, NE::EvaluationEnv& env) const override
 	{
 		Evaluate (env); // should not call calculation again
 		calculationPostProcessCount++;
@@ -90,12 +90,12 @@ public:
 
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
-		return ValuePtr (new IntValue (5));
+		return ValueConstPtr (new IntValue (5));
 	}
 
-	virtual void ProcessValue (const ValuePtr&, NE::EvaluationEnv& env) const override
+	virtual void ProcessValue (const ValueConstPtr&, NE::EvaluationEnv& env) const override
 	{
 		std::shared_ptr<DummyEvaluationData> dummyData = env.GetData<DummyEvaluationData> ();
 		dummyData->x += 1;
@@ -110,13 +110,13 @@ TEST (SimpleCacheTest)
 	manager.AddNode (node);
 
 	{
-		ValuePtr result = node->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = node->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (result) == 1);
 		ASSERT (node->calculationCount == 1);
 		ASSERT (node->CheckPreAndPostProcessCount ());
 	}
 	{
-		ValuePtr result = node->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = node->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (result) == 1);
 		ASSERT (node->calculationCount == 1);
 		ASSERT (node->CheckPreAndPostProcessCount ());
@@ -258,19 +258,19 @@ TEST (DeleteInvalidationTest)
 	}
 
 	{
-		ValuePtr val = nodes.back ()->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr val = nodes.back ()->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (val) == 5);
 	}
 
 	manager.DeleteNode (nodes[2]);
 	{
-		ValuePtr val = nodes.back ()->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr val = nodes.back ()->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (val) == 2);
 	}
 
 	manager.ConnectOutputSlotToInputSlot (nodes[1]->GetOutputSlot (SlotId ("out")), nodes[3]->GetInputSlot (SlotId ("in")));
 	{
-		ValuePtr val = nodes.back ()->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr val = nodes.back ()->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (val) == 4);
 	}
 }
@@ -326,13 +326,13 @@ TEST (EvaluationEnvTest)
 
 	{
 		NE::EvaluationEnv env (evalData);
-		ValuePtr result = node->Evaluate (env);
+		ValueConstPtr result = node->Evaluate (env);
 		ASSERT (IntValue::Get (result) == 5);
 		ASSERT (evalData->x == 6);
 	}
 
 	{
-		ValuePtr result = node->GetCalculatedValue ();
+		ValueConstPtr result = node->GetCalculatedValue ();
 		ASSERT (IntValue::Get (result) == 5);
 		ASSERT (evalData->x == 6);
 	}

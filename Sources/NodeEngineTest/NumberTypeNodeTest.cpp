@@ -25,7 +25,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
 		return ValuePtr (new IntValue (5));
 	}
@@ -45,7 +45,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
 		return ValuePtr (new DoubleValue (6.0));
 	}
@@ -76,10 +76,10 @@ public:
 		RegisterInputSlot (InputSlotPtr (new NumberInputSlot (SlotId ("second"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr a = EvaluateSingleInputSlot (SlotId ("first"), env);
-		ValuePtr b = EvaluateSingleInputSlot (SlotId ("second"), env);
+		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("first"), env);
+		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("second"), env);
 		double result = NumberValue::ToDouble (a) + NumberValue::ToDouble (b);
 		return ValuePtr (new DoubleValue (result));
 	}
@@ -96,7 +96,7 @@ TEST (NumberConnectionTest)
 	ASSERT (manager.ConnectOutputSlotToInputSlot (intNode->GetOutputSlot (SlotId ("out")), adderNode->GetInputSlot (SlotId ("first"))));
 	ASSERT (manager.ConnectOutputSlotToInputSlot (doubleNode->GetOutputSlot (SlotId ("out")), adderNode->GetInputSlot (SlotId ("second"))));
 
-	ValuePtr result = adderNode->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr result = adderNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (Value::IsType<NumberValue> (result));
 	ASSERT (Value::IsType<DoubleValue> (result));
 	ASSERT (Value::Cast<NumberValue> (result.get ())->ToDouble () == 11.0);

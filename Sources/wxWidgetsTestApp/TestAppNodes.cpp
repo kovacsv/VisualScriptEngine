@@ -34,11 +34,11 @@ void ColorNode::Initialize ()
 	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
-NE::ValuePtr ColorNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr ColorNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr r = EvaluateSingleInputSlot (NE::SlotId ("r"), env);
-	NE::ValuePtr g = EvaluateSingleInputSlot (NE::SlotId ("g"), env);
-	NE::ValuePtr b = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
+	NE::ValueConstPtr r = EvaluateSingleInputSlot (NE::SlotId ("r"), env);
+	NE::ValueConstPtr g = EvaluateSingleInputSlot (NE::SlotId ("g"), env);
+	NE::ValueConstPtr b = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
 	if (!NE::IsComplexType<NE::NumberValue> (r) || !NE::IsComplexType<NE::NumberValue> (g) || !NE::IsComplexType<NE::NumberValue> (b)) {
 		return nullptr;
 	}
@@ -68,7 +68,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0 && value->GetValue () <= 255;
 		}
@@ -83,7 +83,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0 && value->GetValue () <= 255;
 		}
@@ -98,7 +98,7 @@ void ColorNode::RegisterParameters (NUIE::NodeParameterList& parameterList) cons
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
 		{
 			return value->GetValue () >= 0 && value->GetValue () <= 255;
 		}
@@ -147,7 +147,7 @@ void DrawableNode::RegisterParameters (NUIE::NodeParameterList& parameterList) c
 	BI::BasicUINode::RegisterParameters (parameterList);
 }
 
-void DrawableNode::ProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::ProcessValue (const NE::ValueConstPtr& value, NE::EvaluationEnv& env) const
 {
 	std::shared_ptr<BI::EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
 	if (enableDisable->GetEnableState ()) {
@@ -155,7 +155,7 @@ void DrawableNode::ProcessValue (const NE::ValuePtr& value, NE::EvaluationEnv& e
 	}
 }
 
-void DrawableNode::OnCalculated (const NE::ValuePtr&, NE::EvaluationEnv& env) const
+void DrawableNode::OnCalculated (const NE::ValueConstPtr&, NE::EvaluationEnv& env) const
 {
 	RemoveItem (env);
 	AddItem (env);
@@ -189,14 +189,14 @@ void DrawableNode::OnDelete (NE::EvaluationEnv& env) const
 	RemoveItem (env);
 }
 
-NUIE::DrawingItemConstPtr DrawableNode::CreateDrawingItem (const NE::ValuePtr& value) const
+NUIE::DrawingItemConstPtr DrawableNode::CreateDrawingItem (const NE::ValueConstPtr& value) const
 {
 	if (!NE::Value::IsType<NE::ListValue> (value)) {
 		return nullptr;
 	}
 	std::shared_ptr<NUIE::MultiDrawingItem> result (new NUIE::MultiDrawingItem ());
-	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValuePtr& innerValue) {
-		DrawableValue* drawableValue = NE::Value::Cast<DrawableValue> (innerValue.get ());
+	NE::Value::Cast<NE::ListValue> (value)->Enumerate ([&] (const NE::ValueConstPtr& innerValue) {
+		const DrawableValue* drawableValue = NE::Value::Cast<DrawableValue> (innerValue.get ());
 		if (DBGVERIFY (drawableValue != nullptr)) {
 			result->AddItem (drawableValue->CreateDrawingItem ());
 		}
@@ -209,7 +209,7 @@ void DrawableNode::AddItem (NE::EvaluationEnv& env) const
 	if (DBGERROR (!env.IsDataType<ResultImageEvaluationData> ())) {
 		return;
 	}
-	NE::ValuePtr value = GetCalculatedValue ();
+	NE::ValueConstPtr value = GetCalculatedValue ();
 	drawingItem = CreateDrawingItem (value);
 	if (drawingItem != nullptr) {
 		std::shared_ptr<ResultImageEvaluationData> evalData = env.GetData<ResultImageEvaluationData> ();
@@ -271,10 +271,10 @@ void PointNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("point"), L"Point")));
 }
 
-NE::ValuePtr PointNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr PointNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
-	NE::ValuePtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
+	NE::ValueConstPtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
+	NE::ValueConstPtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
 	if (!NE::IsComplexType<NE::NumberValue> (x) || !NE::IsComplexType<NE::NumberValue> (y)) {
 		return nullptr;
 	}
@@ -337,11 +337,11 @@ void LineNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("line"), L"Line")));
 }
 
-NE::ValuePtr LineNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr LineNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr beg = EvaluateSingleInputSlot (NE::SlotId ("beg"), env);
-	NE::ValuePtr end = EvaluateSingleInputSlot (NE::SlotId ("end"), env);
-	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
+	NE::ValueConstPtr beg = EvaluateSingleInputSlot (NE::SlotId ("beg"), env);
+	NE::ValueConstPtr end = EvaluateSingleInputSlot (NE::SlotId ("end"), env);
+	NE::ValueConstPtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
 	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<PointValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
@@ -398,11 +398,11 @@ void CircleNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("circle"), L"Circle")));
 }
 
-NE::ValuePtr CircleNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr beg = EvaluateSingleInputSlot (NE::SlotId ("center"), env);
-	NE::ValuePtr end = EvaluateSingleInputSlot (NE::SlotId ("radius"), env);
-	NE::ValuePtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
+	NE::ValueConstPtr beg = EvaluateSingleInputSlot (NE::SlotId ("center"), env);
+	NE::ValueConstPtr end = EvaluateSingleInputSlot (NE::SlotId ("radius"), env);
+	NE::ValueConstPtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
 	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::NumberValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
@@ -435,7 +435,7 @@ void CircleNode::RegisterParameters (NUIE::NodeParameterList& parameterList) con
 
 		}
 
-		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<NE::DoubleValue>& value) const override
+		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::DoubleValue>& value) const override
 		{
 			return value->GetValue () >= 0.0;
 		}
@@ -480,11 +480,11 @@ void OffsetNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("geometry"), L"Geometry")));
 }
 
-NE::ValuePtr OffsetNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr OffsetNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
-	NE::ValuePtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
-	NE::ValuePtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
+	NE::ValueConstPtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
+	NE::ValueConstPtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
+	NE::ValueConstPtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
 	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<NE::NumberValue> (x) || !NE::IsComplexType<NE::NumberValue> (y)) {
 		return nullptr;
 	}
@@ -493,7 +493,7 @@ NE::ValuePtr OffsetNode::Calculate (NE::EvaluationEnv& env) const
 
 	NE::ListValuePtr result (new NE::ListValue ());
 	valueCombination->CombineValues ({ geometry, x, y }, [&] (const NE::ValueCombination& combination) {
-		GeometricValue* geomValue = NE::Value::Cast<GeometricValue> (combination.GetValue (0).get ());
+		const GeometricValue* geomValue = NE::Value::Cast<GeometricValue> (combination.GetValue (0).get ());
 		Transformation transformation = Transformation::Translation (
 			NE::NumberValue::ToDouble (combination.GetValue (1)),
 			NE::NumberValue::ToDouble (combination.GetValue (2))

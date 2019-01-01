@@ -45,7 +45,7 @@ public:
 
 	NE::ValueCombinationMode	GetValueCombinationMode () const;
 	void						SetValueCombinationMode (NE::ValueCombinationMode newValueCombinationMode);
-	bool						CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor) const;
+	bool						CombineValues (const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor) const;
 
 	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;

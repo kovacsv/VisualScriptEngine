@@ -14,7 +14,7 @@ public:
 	SerializableTestNode ();
 
 	virtual void				Initialize () override;
-	virtual ValuePtr			Calculate (NE::EvaluationEnv&) const override;
+	virtual ValueConstPtr		Calculate (NE::EvaluationEnv&) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
@@ -29,7 +29,7 @@ public:
 	SerializableTestUINode (const std::wstring& nodeName, const Point& nodePosition);
 
 	virtual void				Initialize () override;
-	virtual ValuePtr			Calculate (NE::EvaluationEnv&) const override;
+	virtual ValueConstPtr		Calculate (NE::EvaluationEnv&) const override;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;

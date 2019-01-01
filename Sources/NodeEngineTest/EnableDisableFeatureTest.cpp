@@ -80,10 +80,10 @@ public:
 		RegisterFeature (NodeFeaturePtr (new EnableDisableFeature ()));
 	}
 
-	virtual ValuePtr Calculate (EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (EvaluationEnv& env) const override
 	{
-		ValuePtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
-		ValuePtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
+		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
 		int result = IntValue::Get (a) + IntValue::Get (b);
 		return ValuePtr (new IntValue (result));
 	}
@@ -103,7 +103,7 @@ public:
 		}
 	}
 
-	virtual void ProcessValue (const ValuePtr& value, EvaluationEnv& env) const override
+	virtual void ProcessValue (const ValueConstPtr& value, EvaluationEnv& env) const override
 	{
 		std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
 		if (enableDisable->GetEnableState ()) {
@@ -111,7 +111,7 @@ public:
 		}
 	}
 
-	void OnCalculated (const ValuePtr& /*value*/, EvaluationEnv& env) const
+	void OnCalculated (const ValueConstPtr& /*value*/, EvaluationEnv& env) const
 	{
 		RemoveValue (env);
 		InsertValue (env);
@@ -137,7 +137,7 @@ public:
 	void InsertValue (EvaluationEnv& env) const
 	{
 		std::shared_ptr<CalculatedCollector> collector = env.GetData<CalculatedCollector> ();
-		ValuePtr value = GetCalculatedValue ();
+		ValueConstPtr value = GetCalculatedValue ();
 		collector->values.insert ({ GetId (), IntValue::Get (value) });
 	}
 };

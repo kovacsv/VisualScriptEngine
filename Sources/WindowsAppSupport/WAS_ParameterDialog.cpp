@@ -115,7 +115,7 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 		NUIE::ParameterType type = paramInterface->GetParameterType (paramIndex);
 		dialog.AddStatic (paramInterface->GetParameterName (paramIndex).c_str (), padding, currentY, staticWidth, controlHeight, controlId + StaticControlIdOffset);
 
-		NE::ValuePtr value = paramInterface->GetParameterValue (paramIndex);
+		NE::ValueConstPtr value = paramInterface->GetParameterValue (paramIndex);
 		if (type == NUIE::ParameterType::String) {
 			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
@@ -208,7 +208,7 @@ bool ParameterDialog::CollectChangedValues (HWND hwnd)
 			ChangedParameter param (paramId, value);
 			paramValues.push_back (param);
 		} else {
-			NE::ValuePtr oldValue = paramInterface->GetParameterValue (paramId);
+			NE::ValueConstPtr oldValue = paramInterface->GetParameterValue (paramId);
 			std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
 			SetDlgItemText (hwnd, controlId, oldValueString.c_str ());
 			isAllParameterValid = false;

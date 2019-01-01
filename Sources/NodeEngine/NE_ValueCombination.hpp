@@ -22,11 +22,11 @@ public:
 	ValueCombination ();
 	~ValueCombination ();
 
-	virtual size_t				GetSize () const = 0;
-	virtual const ValuePtr&		GetValue (size_t index) const = 0;
+	virtual size_t					GetSize () const = 0;
+	virtual const ValueConstPtr&	GetValue (size_t index) const = 0;
 };
 
-bool CombineValues (ValueCombinationMode combinationMode, const std::vector<ValuePtr>& values,
+bool CombineValues (ValueCombinationMode combinationMode, const std::vector<ValueConstPtr>& values,
 					const std::function<bool (const ValueCombination&)>& processor);
 
 }

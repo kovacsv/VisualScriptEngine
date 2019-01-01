@@ -18,6 +18,7 @@ public:
 	void					SetValue (const Type& newVal);
 	const Type&				GetValue () const;
 
+	static const Type&		Get (const ValueConstPtr& val);
 	static const Type&		Get (const ValuePtr& val);
 	static const Type&		Get (Value* val);
 
@@ -52,6 +53,12 @@ template <class Type>
 const Type& GenericValue<Type>::GetValue () const
 {
 	return val;
+}
+
+template <class Type>
+const Type& GenericValue<Type>::Get (const ValueConstPtr& val)
+{
+	return Value::Cast<GenericValue<Type>> (val.get ())->GetValue ();
 }
 
 template <class Type>

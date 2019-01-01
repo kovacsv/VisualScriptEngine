@@ -30,7 +30,7 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 {
 	std::wstring nodeText = L"<empty>";
 	if (uiNode.HasCalculatedValue ()) {
-		NE::ValuePtr nodeValue = uiNode.GetCalculatedValue ();
+		NE::ValueConstPtr nodeValue = uiNode.GetCalculatedValue ();
 		if (nodeValue != nullptr) {
 			nodeText = nodeValue->ToString (env.GetStringSettings ());
 		}

@@ -41,7 +41,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 	gridSizer->SetRows (paramInterface->GetParameterCount ());
 	for (size_t paramIndex = 0; paramIndex < paramInterface->GetParameterCount (); ++paramIndex) {
 		NUIE::ParameterType type = paramInterface->GetParameterType (paramIndex);
-		NE::ValuePtr value = paramInterface->GetParameterValue (paramIndex);
+		NE::ValueConstPtr value = paramInterface->GetParameterValue (paramIndex);
 
 		int controlId = ParamIdToControlId (paramIndex);
 		wxControl* control = nullptr;
@@ -120,7 +120,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 		}
 
 		if (!paramInterface->IsValidParameterValue (i, value)) {
-			NE::ValuePtr oldValue = paramInterface->GetParameterValue (i);
+			NE::ValueConstPtr oldValue = paramInterface->GetParameterValue (i);
 			std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
 			uiData.SetStringValue (oldValueString);
 			uiData.isChanged = false;

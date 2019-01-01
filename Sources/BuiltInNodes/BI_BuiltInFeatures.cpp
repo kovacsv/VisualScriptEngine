@@ -133,14 +133,14 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			bool enableState = GetEnableDisableFeature (uiNode)->GetEnableState ();
 			int enableStateInt = (enableState ? 0 : 1);
 			return NE::ValuePtr (new NE::IntValue (enableStateInt));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			int enableStateInt = NE::IntValue::Get (value);
 			bool enableState = (enableStateInt == 0 ? true : false);
@@ -207,7 +207,7 @@ void ValueCombinationFeature::SetValueCombinationMode (NE::ValueCombinationMode 
 	valueCombinationMode = newValueCombinationMode;
 }
 
-bool ValueCombinationFeature::CombineValues (const std::vector<NE::ValuePtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor) const
+bool ValueCombinationFeature::CombineValues (const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor) const
 {
 	return NE::CombineValues (valueCombinationMode, values, processor);
 }
@@ -232,14 +232,14 @@ void ValueCombinationFeature::RegisterParameters (NUIE::NodeParameterList& param
 		
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			NE::ValueCombinationMode valueCombination = GetValueCombinationFeature (uiNode)->GetValueCombinationMode ();
 			int valueCombinationInt = (int) valueCombination;
 			return NE::ValuePtr (new NE::IntValue (valueCombinationInt));
 		}
 		
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			int valueCombinationInt = NE::IntValue::Get (value);
 			NE::ValueCombinationMode valueCombination = (NE::ValueCombinationMode) valueCombinationInt;

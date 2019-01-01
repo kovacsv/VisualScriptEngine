@@ -36,7 +36,7 @@ void MultiLineViewerNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
-NE::ValuePtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
 {
 	return EvaluateSingleInputSlot (NE::SlotId ("in"), env);
 }
@@ -52,12 +52,12 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 
 		}
 
-		virtual NE::ValuePtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
 			return NE::ValuePtr (new NE::IntValue ((int) GetTypedNode (uiNode)->GetTextsPerPage ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValuePtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetTextsPerPage (NE::IntValue::Get (value));
 			uiManager.InvalidateNodeDrawing (uiNode);
@@ -125,11 +125,11 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 
 	std::vector<std::wstring> nodeTexts;
 	if (HasCalculatedValue ()) {
-		NE::ValuePtr nodeValue = GetCalculatedValue ();
+		NE::ValueConstPtr nodeValue = GetCalculatedValue ();
 		if (nodeValue != nullptr) {
-			NE::IListValuePtr listValue = NE::CreateListValue (nodeValue);
+			NE::IListValueConstPtr listValue = NE::CreateListValue (nodeValue);
 			nodeTexts.clear ();
-			listValue->Enumerate ([&] (const NE::ValuePtr& value) {
+			listValue->Enumerate ([&] (const NE::ValueConstPtr& value) {
 				nodeTexts.push_back (value->ToString (env.GetStringSettings ()));
 			});
 		}

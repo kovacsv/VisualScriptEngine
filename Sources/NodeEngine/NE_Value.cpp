@@ -69,7 +69,7 @@ ListValue::ListValue ()
 
 }
 
-ListValue::ListValue (const std::vector<ValuePtr>& values) :
+ListValue::ListValue (const std::vector<ValueConstPtr>& values) :
 	values (values)
 {
 
@@ -83,7 +83,7 @@ ListValue::~ListValue ()
 ValuePtr ListValue::Clone () const
 {
 	ListValuePtr result (new ListValue ());
-	for (const ValuePtr& value : values) {
+	for (const ValueConstPtr& value : values) {
 		result->Push (value->Clone ());
 	}
 	return result;
@@ -122,7 +122,7 @@ Stream::Status ListValue::Write (OutputStream& outputStream) const
 	ObjectHeader header (outputStream, serializationInfo);
 	Value::Write (outputStream);
 	outputStream.Write (values.size ());
-	for (const ValuePtr& value : values) {
+	for (const ValueConstPtr& value : values) {
 		WriteDynamicObject (outputStream, value.get ());
 	}
 	return outputStream.GetStatus ();
@@ -133,24 +133,24 @@ size_t ListValue::GetSize () const
 	return values.size ();
 }
 
-const NE::ValuePtr& ListValue::GetValue (size_t index) const
+const NE::ValueConstPtr& ListValue::GetValue (size_t index) const
 {
 	return values[index];
 }
 
-void ListValue::Enumerate (const std::function<void (const ValuePtr&)>& processor) const
+void ListValue::Enumerate (const std::function<void (const ValueConstPtr&)>& processor) const
 {
-	for (const ValuePtr& value : values) {
+	for (const ValueConstPtr& value : values) {
 		processor (value);
 	}
 }
 
-void ListValue::Push (const ValuePtr& value)
+void ListValue::Push (const ValueConstPtr& value)
 {
 	values.push_back (value);
 }
 
-ValueToListValueAdapter::ValueToListValueAdapter (const ValuePtr& val) :
+ValueToListValueAdapter::ValueToListValueAdapter (const ValueConstPtr& val) :
 	val (val)
 {
 
@@ -161,22 +161,22 @@ size_t ValueToListValueAdapter::GetSize () const
 	return 1;
 }
 
-const NE::ValuePtr& ValueToListValueAdapter::GetValue (size_t) const
+const NE::ValueConstPtr& ValueToListValueAdapter::GetValue (size_t) const
 {
 	return val;
 }
 
-void ValueToListValueAdapter::Enumerate (const std::function<void (const ValuePtr&)>& processor) const
+void ValueToListValueAdapter::Enumerate (const std::function<void (const ValueConstPtr&)>& processor) const
 {
 	processor (val);
 }
 
-ValuePtr CreateSingleValue (const ValuePtr& value)
+ValueConstPtr CreateSingleValue (const ValueConstPtr& value)
 {
 	if (Value::IsType<SingleValue> (value)) {
 		return value;
 	} else if (Value::IsType<ListValue> (value)) {
-		ListValuePtr listVal = Value::Cast<ListValue> (value);
+		ListValueConstPtr listVal = Value::Cast<ListValue> (value);
 		if (listVal->GetSize () != 1) {
 			return nullptr;
 		}
@@ -188,22 +188,22 @@ ValuePtr CreateSingleValue (const ValuePtr& value)
 
 }
 
-IListValuePtr CreateListValue (const ValuePtr& value)
+IListValueConstPtr CreateListValue (const ValueConstPtr& value)
 {
 	if (Value::IsType<SingleValue> (value)) {
-		return IListValuePtr (new ValueToListValueAdapter (value));
+		return IListValueConstPtr (new ValueToListValueAdapter (value));
 	} else if (Value::IsType<ListValue> (value)) {
-		return std::dynamic_pointer_cast<IListValue> (value);
+		return std::dynamic_pointer_cast<const IListValue> (value);
 	}
 
 	DBGBREAK ();
 	return nullptr;
 }
 
-void FlatEnumerate (const ValuePtr& value, const std::function<void (const ValuePtr&)>& processor)
+void FlatEnumerate (const ValueConstPtr& value, const std::function<void (const ValueConstPtr&)>& processor)
 {
-	IListValuePtr listValue = CreateListValue (value);
-	listValue->Enumerate ([&] (const ValuePtr& innerValue) {
+	IListValueConstPtr listValue = CreateListValue (value);
+	listValue->Enumerate ([&] (const ValueConstPtr& innerValue) {
 		if (Value::IsType<SingleValue> (innerValue)) {
 			processor (innerValue);
 		} else {

@@ -46,12 +46,12 @@ public:
 		return nodeValueCache.Contains (nodeId);
 	}
 
-	virtual ValuePtr GetCalculatedNodeValue (const NodeId& nodeId) const override
+	virtual ValueConstPtr GetCalculatedNodeValue (const NodeId& nodeId) const override
 	{
 		return nodeValueCache.Get (nodeId);
 	}
 
-	virtual void SetCalculatedNodeValue (const NodeId& nodeId, const ValuePtr& valuePtr) const override
+	virtual void SetCalculatedNodeValue (const NodeId& nodeId, const ValueConstPtr& valuePtr) const override
 	{
 		nodeValueCache.Add (nodeId, valuePtr);
 	}

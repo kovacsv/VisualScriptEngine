@@ -132,10 +132,10 @@ public:
 		
 		}
 
-		virtual ValuePtr Evaluate (NE::EvaluationEnv& env) const override
+		virtual ValueConstPtr Evaluate (NE::EvaluationEnv& env) const override
 		{
-			ValuePtr ownerVal = EvaluateOwnerNode (env);
-			GenericValue<ABPair>* pair = Value::Cast<ABPairValue> (ownerVal.get ());
+			ValueConstPtr ownerVal = EvaluateOwnerNode (env);
+			const GenericValue<ABPair>* pair = Value::Cast<ABPairValue> (ownerVal.get ());
 			return ValuePtr (new AValue (pair->GetValue ().a));
 		}
 	};
@@ -149,10 +149,10 @@ public:
 		
 		}
 
-		virtual ValuePtr Evaluate (NE::EvaluationEnv& env) const override
+		virtual ValueConstPtr Evaluate (NE::EvaluationEnv& env) const override
 		{
-			ValuePtr ownerVal = EvaluateOwnerNode (env);
-			GenericValue<ABPair>* pair = Value::Cast<ABPairValue> (ownerVal.get ());
+			ValueConstPtr ownerVal = EvaluateOwnerNode (env);
+			const GenericValue<ABPair>* pair = Value::Cast<ABPairValue> (ownerVal.get ());
 			return ValuePtr (new BValue (pair->GetValue ().b));
 		}
 	};
@@ -169,7 +169,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlotB (SlotId ("outB"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
 		ABPair pair;
 		pair.a.x = 5;
@@ -202,7 +202,7 @@ public:
 		RegisterInputSlot (InputSlotPtr (new InputSlotA (SlotId ("inA"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		return EvaluateSingleInputSlot (SlotId ("inA"), env);
 	}
@@ -232,7 +232,7 @@ public:
 		RegisterInputSlot (InputSlotPtr (new InputSlotB (SlotId ("inB"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		return EvaluateSingleInputSlot (SlotId ("inB"), env);
 	}
@@ -249,14 +249,14 @@ TEST (TypeHandlingTest)
 	ASSERT (manager.ConnectOutputSlotToInputSlot (diffTypesNode->GetOutputSlot (SlotId ("outA")), outputA->GetInputSlot (SlotId ("inA"))));
 	ASSERT (manager.ConnectOutputSlotToInputSlot (diffTypesNode->GetOutputSlot (SlotId ("outB")), outputB->GetInputSlot (SlotId ("inB"))));
 
-	ValuePtr origVal = diffTypesNode->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr origVal = diffTypesNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (Value::IsType<GenericValue<ABPair>> (origVal));
 
-	ValuePtr aVal = outputA->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr aVal = outputA->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (Value::IsType<GenericValue<A>> (aVal));
 	ASSERT (Value::Cast<GenericValue<A>> (aVal.get ())->GetValue ().x == 5);
 
-	ValuePtr bVal = outputB->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr bVal = outputB->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (Value::IsType<GenericValue<B>> (bVal));
 	ASSERT (Value::Cast<GenericValue<B>> (bVal.get ())->GetValue ().x == 6);
 }

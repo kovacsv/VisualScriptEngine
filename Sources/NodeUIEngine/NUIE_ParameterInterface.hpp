@@ -34,11 +34,11 @@ public:
 
 	virtual size_t						GetParameterCount () const = 0;
 	virtual const std::wstring&			GetParameterName (size_t index) const = 0;
-	virtual NE::ValuePtr				GetParameterValue (size_t index) const = 0;
+	virtual NE::ValueConstPtr			GetParameterValue (size_t index) const = 0;
 	virtual std::vector<std::wstring>	GetParameterValueChoices (size_t index) const = 0;
 	virtual const ParameterType&		GetParameterType (size_t index) const = 0;
-	virtual bool						IsValidParameterValue (size_t index, const NE::ValuePtr& value) const = 0;
-	virtual bool						SetParameterValue (size_t index, const NE::ValuePtr& value) = 0;
+	virtual bool						IsValidParameterValue (size_t index, const NE::ValueConstPtr& value) const = 0;
+	virtual bool						SetParameterValue (size_t index, const NE::ValueConstPtr& value) = 0;
 };
 
 using ParameterInterfacePtr = std::shared_ptr<ParameterInterface>;

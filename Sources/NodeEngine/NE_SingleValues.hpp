@@ -17,10 +17,13 @@ public:
 	virtual float	ToFloat () const = 0;
 	virtual double	ToDouble () const = 0;
 
+	static int		ToInteger (const ValueConstPtr& val);
 	static int		ToInteger (const ValuePtr& val);
 	static int		ToInteger (Value* val);
+	static float	ToFloat (const ValueConstPtr& val);
 	static float	ToFloat (const ValuePtr& val);
 	static float	ToFloat (Value* val);
+	static double	ToDouble (const ValueConstPtr& val);
 	static double	ToDouble (const ValuePtr& val);
 	static double	ToDouble (Value* val);
 };

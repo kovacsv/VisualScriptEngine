@@ -40,9 +40,9 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 	
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
-		return ValuePtr (new IntValue (val));
+		return ValueConstPtr (new IntValue (val));
 	}
 
 	int val;
@@ -63,9 +63,8 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 	
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		std::vector<int> result;
 		return EvaluateInputSlot (SlotId ("in"), env);
 	}
 };
@@ -85,15 +84,15 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 	
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		NE::ValuePtr val = EvaluateSingleInputSlot (SlotId ("in"), env);
-		ListValue* input = Value::Cast<ListValue> (val.get ());
+		NE::ValueConstPtr val = EvaluateSingleInputSlot (SlotId ("in"), env);
+		const ListValue* input = Value::Cast<ListValue> (val.get ());
 		int result = 0;
-		input->Enumerate ([&] (const ValuePtr& value) {
+		input->Enumerate ([&] (const ValueConstPtr& value) {
 			result += IntValue::Get (value);
 		});
-		return ValuePtr (new IntValue (result));
+		return ValueConstPtr (new IntValue (result));
 	}
 };
 
@@ -113,12 +112,12 @@ TEST (ListValueNodeTest)
 	ASSERT (manager.ConnectOutputSlotToInputSlot (listMakerNode->GetOutputSlot (SlotId ("out")), listSummerNode->GetInputSlot (SlotId ("in"))));
 
 	{
-		ValuePtr result = listMakerNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = listMakerNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (Value::IsType<ListValue> (result));
 	}
 
 	{
-		ValuePtr result = listSummerNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = listSummerNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 6);
 	}

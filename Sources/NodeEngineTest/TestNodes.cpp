@@ -14,7 +14,7 @@ void SerializableTestNode::Initialize ()
 	DBGBREAK ();
 }
 
-ValuePtr SerializableTestNode::Calculate (NE::EvaluationEnv&) const
+ValueConstPtr SerializableTestNode::Calculate (NE::EvaluationEnv&) const
 {
 	DBGBREAK ();
 	return nullptr;
@@ -49,7 +49,7 @@ void SerializableTestUINode::Initialize ()
 	DBGBREAK ();
 }
 
-ValuePtr SerializableTestUINode::Calculate (NE::EvaluationEnv&) const
+ValueConstPtr SerializableTestUINode::Calculate (NE::EvaluationEnv&) const
 {
 	DBGBREAK ();
 	return nullptr;

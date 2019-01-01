@@ -18,13 +18,13 @@ ValueCombination::~ValueCombination ()
 
 }
 
-static bool EnumerateShortestCombinations (	const std::vector<IListValuePtr>& values,
+static bool EnumerateShortestCombinations (	const std::vector<IListValueConstPtr>& values,
 											const std::function<bool (const ValueCombination&)>& processor)
 {
 	class ShortestPairValueCombination : public ValueCombination
 	{
 	public:
-		ShortestPairValueCombination (size_t combinationIndex, const std::vector<IListValuePtr>& values) :
+		ShortestPairValueCombination (size_t combinationIndex, const std::vector<IListValueConstPtr>& values) :
 			combinationIndex (combinationIndex),
 			values (values)
 		{
@@ -36,18 +36,18 @@ static bool EnumerateShortestCombinations (	const std::vector<IListValuePtr>& va
 			return values.size ();
 		}
 
-		virtual const ValuePtr& GetValue (size_t valueIndex) const
+		virtual const ValueConstPtr& GetValue (size_t valueIndex) const
 		{
 			return values[valueIndex]->GetValue (combinationIndex);
 		}
 
 	private:
-		size_t								combinationIndex;
-		const std::vector<IListValuePtr>&	values;
+		size_t									combinationIndex;
+		const std::vector<IListValueConstPtr>&	values;
 	};
 
 	size_t minSize = std::numeric_limits<size_t>::max ();
-	for (const IListValuePtr& value : values) {
+	for (const IListValueConstPtr& value : values) {
 		size_t currentSize = value->GetSize ();
 		minSize = std::min (currentSize, minSize);
 	}
@@ -62,13 +62,13 @@ static bool EnumerateShortestCombinations (	const std::vector<IListValuePtr>& va
 	return true;
 }
 
-static bool EnumerateLongestCombinations (	const std::vector<IListValuePtr>& values,
+static bool EnumerateLongestCombinations (	const std::vector<IListValueConstPtr>& values,
 											const std::function<bool (const ValueCombination&)>& processor)
 {
 	class LongestPairValueCombination : public ValueCombination
 	{
 	public:
-		LongestPairValueCombination (size_t combinationIndex, const std::vector<IListValuePtr>& values) :
+		LongestPairValueCombination (size_t combinationIndex, const std::vector<IListValueConstPtr>& values) :
 			combinationIndex (combinationIndex),
 			values (values)
 		{
@@ -80,9 +80,9 @@ static bool EnumerateLongestCombinations (	const std::vector<IListValuePtr>& val
 			return values.size ();
 		}
 
-		virtual const ValuePtr& GetValue (size_t valueIndex) const
+		virtual const ValueConstPtr& GetValue (size_t valueIndex) const
 		{
-			const IListValuePtr& value = values[valueIndex];
+			const IListValueConstPtr& value = values[valueIndex];
 			if (combinationIndex < value->GetSize ()) {
 				return value->GetValue (combinationIndex);
 			} else {
@@ -92,11 +92,11 @@ static bool EnumerateLongestCombinations (	const std::vector<IListValuePtr>& val
 
 	private:
 		size_t									combinationIndex;
-		const std::vector<IListValuePtr>&	values;
+		const std::vector<IListValueConstPtr>&	values;
 	};
 
 	size_t maxSize = 0;
-	for (const IListValuePtr& value : values) {
+	for (const IListValueConstPtr& value : values) {
 		size_t currentSize = value->GetSize ();
 		maxSize = std::max (currentSize, maxSize);
 	}
@@ -111,13 +111,13 @@ static bool EnumerateLongestCombinations (	const std::vector<IListValuePtr>& val
 	return true;
 }
 
-static bool EnumerateCrossProductCombinations (	const std::vector<IListValuePtr>& values,
+static bool EnumerateCrossProductCombinations (	const std::vector<IListValueConstPtr>& values,
 												const std::function<bool (const ValueCombination&)>& processor)
 {
 	class CrossProductValueCombination : public ValueCombination
 	{
 	public:
-		CrossProductValueCombination (const std::vector<IListValuePtr>& values, const std::vector<size_t>& indices) :
+		CrossProductValueCombination (const std::vector<IListValueConstPtr>& values, const std::vector<size_t>& indices) :
 			values (values),
 			indices (indices)
 		{
@@ -129,18 +129,18 @@ static bool EnumerateCrossProductCombinations (	const std::vector<IListValuePtr>
 			return values.size ();
 		}
 
-		virtual const ValuePtr& GetValue (size_t valueIndex) const
+		virtual const ValueConstPtr& GetValue (size_t valueIndex) const
 		{
 			return values[valueIndex]->GetValue (indices[valueIndex]);
 		}
 
 	private:
-		const std::vector<IListValuePtr>&	values;
-		const std::vector<size_t>&			indices;
+		const std::vector<IListValueConstPtr>&	values;
+		const std::vector<size_t>&				indices;
 	};
 
 	std::vector<size_t> maxIndices;
-	for (const IListValuePtr& value : values) {
+	for (const IListValueConstPtr& value : values) {
 		if (value->GetSize () == 0) {
 			return false;
 		}
@@ -157,12 +157,12 @@ static bool EnumerateCrossProductCombinations (	const std::vector<IListValuePtr>
 	return result;
 }
 
-bool CombineValues (ValueCombinationMode combinationMode, const std::vector<ValuePtr>& values,
+bool CombineValues (ValueCombinationMode combinationMode, const std::vector<ValueConstPtr>& values,
 					const std::function<bool (const ValueCombination&)>& processor)
 {
-	std::vector<IListValuePtr> listValues;
-	for (const ValuePtr& value : values) {
-		IListValuePtr listValue = CreateListValue (value);
+	std::vector<IListValueConstPtr> listValues;
+	for (const ValueConstPtr& value : values) {
+		IListValueConstPtr listValue = CreateListValue (value);
 		if (DBGERROR (listValue == nullptr || listValue->GetSize () == 0)) {
 			return false;
 		}

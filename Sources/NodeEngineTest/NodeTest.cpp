@@ -47,7 +47,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
 		return nullptr;
 	}

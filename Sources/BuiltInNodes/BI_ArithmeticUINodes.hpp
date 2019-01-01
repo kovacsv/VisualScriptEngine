@@ -18,7 +18,7 @@ public:
 	virtual ~BinaryOperationNode ();
 
 	virtual void				Initialize () override;
-	virtual NE::ValuePtr		Calculate (NE::EvaluationEnv& env) const override;
+	virtual NE::ValueConstPtr	Calculate (NE::EvaluationEnv& env) const override;
 		
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 	virtual bool				IsForceCalculated () const override;

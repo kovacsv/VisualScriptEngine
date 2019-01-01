@@ -111,7 +111,7 @@ void Node::EnumerateOutputSlots (const std::function<bool (const OutputSlotConst
 	outputSlots.Enumerate (processor);
 }
 
-ValuePtr Node::Evaluate (EvaluationEnv& env) const
+ValueConstPtr Node::Evaluate (EvaluationEnv& env) const
 {
 	if (DBGERROR (nodeEvaluator == nullptr)) {
 		return nullptr;
@@ -126,14 +126,14 @@ ValuePtr Node::Evaluate (EvaluationEnv& env) const
 		return nullptr;
 	}
 
-	ValuePtr value = Calculate (env);
+	ValueConstPtr value = Calculate (env);
 	nodeEvaluator->SetCalculatedNodeValue (nodeId, value);
 	ProcessValue (value, env);
 
 	return value;
 }
 
-ValuePtr Node::GetCalculatedValue () const
+ValueConstPtr Node::GetCalculatedValue () const
 {
 	if (DBGERROR (nodeEvaluator == nullptr)) {
 		return nullptr;
@@ -275,7 +275,7 @@ bool Node::RegisterOutputSlot (const OutputSlotPtr& newOutputSlot)
 	return true;
 }
 
-ValuePtr Node::EvaluateSingleInputSlot (const SlotId& slotId, EvaluationEnv& env) const
+ValueConstPtr Node::EvaluateSingleInputSlot (const SlotId& slotId, EvaluationEnv& env) const
 {
 	if (DBGERROR (!HasInputSlot (slotId))) {
 		return nullptr;
@@ -291,7 +291,7 @@ ValuePtr Node::EvaluateSingleInputSlot (const SlotId& slotId, EvaluationEnv& env
 		return nullptr;
 	}
 
-	ListValuePtr result = EvaluateInputSlot (inputSlot, env);
+	ListValueConstPtr result = EvaluateInputSlot (inputSlot, env);
 	if (DBGERROR (result->GetSize () != 1)) {
 		return nullptr;
 	}
@@ -299,7 +299,7 @@ ValuePtr Node::EvaluateSingleInputSlot (const SlotId& slotId, EvaluationEnv& env
 	return result->GetValue (0);
 }
 
-ListValuePtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const
+ListValueConstPtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const
 {
 	if (DBGERROR (!HasInputSlot (slotId))) {
 		return nullptr;
@@ -318,12 +318,12 @@ bool Node::IsForceCalculated () const
 	return false;
 }
 
-void Node::ProcessValue (const ValuePtr&, EvaluationEnv&) const
+void Node::ProcessValue (const ValueConstPtr&, EvaluationEnv&) const
 {
 
 }
 
-ListValuePtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const
+ListValueConstPtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const
 {
 	if (DBGERROR (nodeEvaluator == nullptr)) {
 		return nullptr;

@@ -16,7 +16,7 @@ InputSlot::InputSlot () :
 
 }
 
-InputSlot::InputSlot (const SlotId& id, const ValuePtr& defaultValue, OutputSlotConnectionMode outputSlotConnectionMode) :
+InputSlot::InputSlot (const SlotId& id, const ValueConstPtr& defaultValue, OutputSlotConnectionMode outputSlotConnectionMode) :
 	Slot (id),
 	defaultValue (defaultValue),
 	outputSlotConnectionMode (outputSlotConnectionMode)
@@ -34,12 +34,12 @@ OutputSlotConnectionMode InputSlot::GetOutputSlotConnectionMode () const
 	return outputSlotConnectionMode;
 }
 
-ValuePtr InputSlot::GetDefaultValue () const
+ValueConstPtr InputSlot::GetDefaultValue () const
 {
 	return defaultValue;
 }
 
-void InputSlot::SetDefaultValue (const ValuePtr& newDefaultValue)
+void InputSlot::SetDefaultValue (const ValueConstPtr& newDefaultValue)
 {
 	defaultValue = newDefaultValue;
 	if (ownerNode != nullptr) {

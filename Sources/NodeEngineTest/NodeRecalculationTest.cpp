@@ -26,10 +26,10 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		calculationCounter++;
-		ValuePtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
+		ValueConstPtr in = EvaluateSingleInputSlot (SlotId ("in"), env);
 		return ValuePtr (new IntValue (IntValue::Get (in) + 1));
 	}
 
@@ -64,7 +64,7 @@ TEST (RecalculationTest)
 			ASSERT (node->calculationCounter == 1);
 			ASSERT (node->HasCalculatedValue ());
 		}
-		ValuePtr lastVal = nodes[4]->Evaluate (EmptyEvaluationEnv);
+		ValueConstPtr lastVal = nodes[4]->Evaluate (EmptyEvaluationEnv);
 		ASSERT (Value::IsType<IntValue> (lastVal));
 		ASSERT (IntValue::Get (lastVal) == 5);
 		for (std::shared_ptr<TestNode> node : nodes) {

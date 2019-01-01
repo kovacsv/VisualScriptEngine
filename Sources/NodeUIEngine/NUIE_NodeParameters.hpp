@@ -22,10 +22,10 @@ public:
 	const ParameterType&				GetType () const;
 	virtual std::vector<std::wstring>	GetValueChoices () const;
 
-	virtual NE::ValuePtr				GetValue (const UINodeConstPtr& uiNode) const = 0;
+	virtual NE::ValueConstPtr			GetValue (const UINodeConstPtr& uiNode) const = 0;
 	virtual bool						IsApplicableTo (const UINodeConstPtr& uiNode) const = 0;
-	virtual bool						CanSetValue (const UINodeConstPtr& uiNode, const NE::ValuePtr& value) const = 0;
-	virtual bool						SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
+	virtual bool						CanSetValue (const UINodeConstPtr& uiNode, const NE::ValueConstPtr& value) const = 0;
+	virtual bool						SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 
 private:
 	std::wstring	name;
@@ -54,11 +54,11 @@ private:
 using NodeParameterListPtr = std::shared_ptr<NodeParameterList>;
 using NodeParameterListConstPtr = std::shared_ptr<const NodeParameterList>;
 
-std::wstring	ParameterValueToString (const NE::ValuePtr& value, const ParameterType& type);
+std::wstring	ParameterValueToString (const NE::ValueConstPtr& value, const ParameterType& type);
 NE::ValuePtr	StringToParameterValue (const std::wstring& str, const ParameterType& type);
 
 void			RegisterCommonParameters (const NodeUIManager& uiManager, const NE::NodeCollection& nodeCollection, NodeParameterList& parameterList);
-bool			ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NE::NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value);
+bool			ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NE::NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValueConstPtr& value);
 
 }
 

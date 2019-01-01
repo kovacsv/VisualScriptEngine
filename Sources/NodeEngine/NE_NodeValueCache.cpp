@@ -14,7 +14,7 @@ NodeValueCache::~NodeValueCache ()
 
 }
 
-bool NodeValueCache::Add (const NodeId& id, const ValuePtr& value)
+bool NodeValueCache::Add (const NodeId& id, const ValueConstPtr& value)
 {
 	if (DBGERROR (Contains (id))) {
 		return false;
@@ -42,9 +42,9 @@ bool NodeValueCache::Contains (const NodeId& id) const
 	return cache.find (id) != cache.end ();
 }
 
-const ValuePtr& NodeValueCache::Get (const NodeId& id) const
+const ValueConstPtr& NodeValueCache::Get (const NodeId& id) const
 {
-	return cache.find (id)->second;
+	return cache.at (id);
 }
 
 }

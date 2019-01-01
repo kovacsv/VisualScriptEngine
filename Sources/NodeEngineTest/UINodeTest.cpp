@@ -32,10 +32,10 @@ public:
 		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), L"Single Output")));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
-		ValuePtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
+		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
 		int result = IntValue::Get (a) + IntValue::Get (b);
 		return ValuePtr (new IntValue (result));
 	}
@@ -78,10 +78,10 @@ public:
 		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), L"Single Output")));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
-		ValuePtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
+		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
 		int result = IntValue::Get (a) + IntValue::Get (b);
 		return ValuePtr (new IntValue (result));
 	}
@@ -132,10 +132,10 @@ public:
 		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), L"Single Output")));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
-		ValuePtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
+		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
 		int result = IntValue::Get (a) + IntValue::Get (b);
 		return ValuePtr (new IntValue (result));
 	}
@@ -151,12 +151,12 @@ public:
 
 			}
 
-			virtual NE::ValuePtr GetValueInternal (const UINodeConstPtr& uiNode) const override
+			virtual NE::ValueConstPtr GetValueInternal (const UINodeConstPtr& uiNode) const override
 			{
 				return NE::ValuePtr (new NE::IntValue ((int) GetTypedNode (uiNode)->GetMyEnumValue ()));
 			}
 
-			virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+			virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 			{
 				GetTypedNode (uiNode)->SetMyEnumValue ((MyEnumValue) NE::IntValue::Get (value));
 				return true;
@@ -195,7 +195,7 @@ TEST (NodeParametersTest)
 
 	NodeParameterList paramList;
 	node->RegisterParameters (paramList);
-	ValuePtr nodeValue = node->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr nodeValue = node->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (nodeValue) == 3);
 
 	ASSERT (paramList.GetParameterCount () == 2);

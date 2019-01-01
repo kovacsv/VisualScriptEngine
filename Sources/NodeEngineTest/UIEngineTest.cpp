@@ -52,7 +52,7 @@ public:
 		RegisterUIOutputSlot (UIOutputSlotPtr (new TestOutputSlot (SlotId ("out"), L"Single Output")));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
 		return ValuePtr (new IntValue (42));
 	}

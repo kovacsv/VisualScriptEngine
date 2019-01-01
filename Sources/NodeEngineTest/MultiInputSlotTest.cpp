@@ -23,9 +23,9 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
-		return ValuePtr (new IntValue (val));
+		return ValueConstPtr (new IntValue (val));
 	}
 
 private:
@@ -47,7 +47,7 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
 		ListValuePtr result (new ListValue ());
 		for (int val : arr) {
@@ -75,11 +75,11 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ListValuePtr val = EvaluateInputSlot (SlotId ("in"), env);
+		ListValueConstPtr val = EvaluateInputSlot (SlotId ("in"), env);
 		ListValuePtr result (new ListValue ());
-		FlatEnumerate (val, [&] (const ValuePtr& flatVal) {
+		FlatEnumerate (val, [&] (const ValueConstPtr& flatVal) {
 			result->Push (flatVal->Clone ());
 		});
 		return result;
@@ -97,8 +97,8 @@ TEST (FlattenerNodeTest_SingleValue)
 	manager.AddNode (flattenerNode);
 	manager.ConnectOutputSlotToInputSlot (integerNode->GetOutputSlot (SlotId ("out")), flattenerNode->GetInputSlot (SlotId ("in")));
 
-	ValuePtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
-	ListValuePtr listVal = Value::Cast<ListValue> (val);
+	ValueConstPtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
+	ListValueConstPtr listVal = Value::Cast<ListValue> (val);
 	ASSERT (listVal->GetSize () == 1);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (0)) == 1);
 }
@@ -117,8 +117,8 @@ TEST (FlattenerNodeTest_MultiValue)
 	manager.ConnectOutputSlotToInputSlot (integerNode1->GetOutputSlot (SlotId ("out")), flattenerNode->GetInputSlot (SlotId ("in")));
 	manager.ConnectOutputSlotToInputSlot (integerNode2->GetOutputSlot (SlotId ("out")), flattenerNode->GetInputSlot (SlotId ("in")));
 
-	ValuePtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
-	ListValuePtr listVal = Value::Cast<ListValue> (val);
+	ValueConstPtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
+	ListValueConstPtr listVal = Value::Cast<ListValue> (val);
 	ASSERT (listVal->GetSize () == 2);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (0)) == 1);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (1)) == 2);
@@ -135,8 +135,8 @@ TEST (FlattenerNodeTest_SingleListValue)
 	manager.AddNode (flattenerNode);
 	manager.ConnectOutputSlotToInputSlot (integerListNode->GetOutputSlot (SlotId ("out")), flattenerNode->GetInputSlot (SlotId ("in")));
 
-	ValuePtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
-	ListValuePtr listVal = Value::Cast<ListValue> (val);
+	ValueConstPtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
+	ListValueConstPtr listVal = Value::Cast<ListValue> (val);
 	ASSERT (listVal->GetSize () == 2);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (0)) == 1);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (1)) == 2);
@@ -156,8 +156,8 @@ TEST (FlattenerNodeTest_MultiListValue)
 	manager.ConnectOutputSlotToInputSlot (integerListNode1->GetOutputSlot (SlotId ("out")), flattenerNode->GetInputSlot (SlotId ("in")));
 	manager.ConnectOutputSlotToInputSlot (integerListNode2->GetOutputSlot (SlotId ("out")), flattenerNode->GetInputSlot (SlotId ("in")));
 
-	ValuePtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
-	ListValuePtr listVal = Value::Cast<ListValue> (val);
+	ValueConstPtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
+	ListValueConstPtr listVal = Value::Cast<ListValue> (val);
 	ASSERT (listVal->GetSize () == 4);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (0)) == 1);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (1)) == 2);
@@ -185,8 +185,8 @@ TEST (FlattenerNodeTest_MixedSingleAndListValue)
 	manager.ConnectOutputSlotToInputSlot (integerListNode2->GetOutputSlot (SlotId ("out")), flattenerNode->GetInputSlot (SlotId ("in")));
 	manager.ConnectOutputSlotToInputSlot (integerNode2->GetOutputSlot (SlotId ("out")), flattenerNode->GetInputSlot (SlotId ("in")));
 
-	ValuePtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
-	ListValuePtr listVal = Value::Cast<ListValue> (val);
+	ValueConstPtr val = flattenerNode->Evaluate (EmptyEvaluationEnv);
+	ListValueConstPtr listVal = Value::Cast<ListValue> (val);
 	ASSERT (listVal->GetSize () == 6);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (0)) == 3);
 	ASSERT (NE::IntValue::Get (listVal->GetValue (1)) == 4);

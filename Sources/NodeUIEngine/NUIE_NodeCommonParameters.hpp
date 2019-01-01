@@ -23,24 +23,24 @@ public:
 
 	}
 
-	virtual NE::ValuePtr GetValue (const UINodeConstPtr& uiNode) const override
+	virtual NE::ValueConstPtr GetValue (const UINodeConstPtr& uiNode) const override
 	{
 		return GetValueInternal (uiNode);
 	}
 
-	virtual bool CanSetValue (const UINodeConstPtr& uiNode, const NE::ValuePtr& value) const override
+	virtual bool CanSetValue (const UINodeConstPtr& uiNode, const NE::ValueConstPtr& value) const override
 	{
 		if (!NE::Value::IsType<ValueType> (value)) {
 			return false;
 		}
-		std::shared_ptr<ValueType> typedValue = NE::Value::Cast<ValueType> (value);
+		std::shared_ptr<const ValueType> typedValue = NE::Value::Cast<ValueType> (value);
 		if (!IsValidValue (uiNode, typedValue)) {
 			return false;
 		}
 		return true;
 	}
 
-	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) override
+	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 	{
 		if (DBGERROR (!CanSetValue (uiNode, value))) {
 			return false;
@@ -48,13 +48,13 @@ public:
 		return SetValueInternal (uiManager, evaluationEnv, uiNode, value);
 	}
 
-	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<ValueType>&) const
+	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<const ValueType>&) const
 	{
 		return true;
 	}
 
-	virtual NE::ValuePtr	GetValueInternal (const UINodeConstPtr& uiNode) const = 0;
-	virtual bool			SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValuePtr& value) = 0;
+	virtual NE::ValueConstPtr	GetValueInternal (const UINodeConstPtr& uiNode) const = 0;
+	virtual bool				SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 };
 
 template <typename NodeType, typename ValueType>
@@ -98,7 +98,7 @@ public:
 
 	}
 
-	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<NE::StringValue>& value) const override
+	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<const NE::StringValue>& value) const override
 	{
 		return !value->GetValue ().empty ();
 	}
@@ -125,7 +125,7 @@ public:
 
 	}
 
-	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
+	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
 	{
 		return value->GetValue () > 0;
 	}
@@ -164,9 +164,9 @@ public:
 
 	}
 
-	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
+	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
 	{
-		int valueInt = NE::IntValue::Get (value);
+		int valueInt = value->GetValue ();
 		return valueInt >= 0 && valueInt < (int) valueChoices.size ();
 	}
 
@@ -190,7 +190,7 @@ public:
 
 	}
 
-	virtual NE::ValuePtr GetValueInternal (const UINodeConstPtr& uiNode) const override
+	virtual NE::ValueConstPtr GetValueInternal (const UINodeConstPtr& uiNode) const override
 	{
 		NE::InputSlotConstPtr inputSlot = uiNode->GetInputSlot (slotId);
 		if (DBGERROR (inputSlot == nullptr)) {
@@ -199,7 +199,7 @@ public:
 		return inputSlot->GetDefaultValue ();
 	}
 
-	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValuePtr& value) override
+	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 	{
 		uiNode->GetInputSlot (slotId)->SetDefaultValue (value);
 		uiManager.InvalidateNodeValue (uiNode->GetId ());
@@ -263,9 +263,9 @@ public:
 
 	}
 
-	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<NE::IntValue>& value) const override
+	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
 	{
-		int valueInt = NE::IntValue::Get (value);
+		int valueInt = value->GetValue ();
 		return valueInt >= 0 && valueInt < (int) valueChoices.size ();
 	}
 

@@ -185,7 +185,7 @@ TEST (ValueCombinationTest)
 	list->Push (ValuePtr (new IntValue (3)));
 	ValuePtr single (new IntValue (4));
 
-	std::vector<ValuePtr> values = { list, single };
+	std::vector<ValueConstPtr> values = { list, single };
 
 	{
 		std::vector<std::vector<int>> combinations;
@@ -239,7 +239,7 @@ TEST (ValueCombinationTest2)
 	list2->Push (ValuePtr (new IntValue (5)));
 	list2->Push (ValuePtr (new IntValue (6)));
 
-	std::vector<ValuePtr> values = { list, list2 };
+	std::vector<ValueConstPtr> values = { list, list2 };
 	{
 		std::vector<std::vector<int>> combinations;
 		bool success = CombineValues (ValueCombinationMode::Shortest, values, [&] (const ValueCombination& current) {
@@ -297,7 +297,7 @@ TEST (ValueCombinationTest3)
 	list2->Push (ValuePtr (new IntValue (5)));
 	list2->Push (ValuePtr (new IntValue (6)));
 
-	std::vector<ValuePtr> values = { list, single, list2 };
+	std::vector<ValueConstPtr> values = { list, single, list2 };
 	{
 		std::vector<std::vector<int>> combinations;
 		bool success = CombineValues (ValueCombinationMode::Shortest, values, [&] (const ValueCombination& current) {

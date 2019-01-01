@@ -36,10 +36,10 @@ void BinaryOperationNode::Initialize ()
 	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
-NE::ValuePtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValuePtr aValue = EvaluateSingleInputSlot (NE::SlotId ("a"), env);
-	NE::ValuePtr bValue = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
+	NE::ValueConstPtr aValue = EvaluateSingleInputSlot (NE::SlotId ("a"), env);
+	NE::ValueConstPtr bValue = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
 	if (!NE::IsComplexType<NE::NumberValue> (aValue) || !NE::IsComplexType<NE::NumberValue> (bValue)) {
 		return nullptr;
 	}

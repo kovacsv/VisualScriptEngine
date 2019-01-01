@@ -20,6 +20,11 @@ NumberValue::~NumberValue ()
 
 }
 
+int NumberValue::ToInteger (const ValueConstPtr& val)
+{
+	return Value::Cast<NumberValue> (val)->ToInteger ();
+}
+
 int NumberValue::ToInteger (const ValuePtr& val)
 {
 	return Value::Cast<NumberValue> (val)->ToInteger ();
@@ -35,9 +40,19 @@ float NumberValue::ToFloat (const ValuePtr& val)
 	return Value::Cast<NumberValue> (val)->ToFloat ();
 }
 
+float NumberValue::ToFloat (const ValueConstPtr& val)
+{
+	return Value::Cast<NumberValue> (val)->ToFloat ();
+}
+
 float NumberValue::ToFloat (Value* val)
 {
 	return Value::Cast<NumberValue> (val)->ToFloat ();
+}
+
+double NumberValue::ToDouble (const ValueConstPtr& val)
+{
+	return Value::Cast<NumberValue> (val)->ToDouble ();
 }
 
 double NumberValue::ToDouble (const ValuePtr& val)

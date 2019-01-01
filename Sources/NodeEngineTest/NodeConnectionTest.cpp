@@ -54,9 +54,9 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
-		return ValuePtr (new IntValue (val));
+		return ValueConstPtr (new IntValue (val));
 	}
 
 private:
@@ -78,9 +78,9 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out2"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
-		return ValuePtr (new IntValue (5));
+		return ValueConstPtr (new IntValue (5));
 	}
 };
 
@@ -99,9 +99,9 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out2"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv&) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override
 	{
-		return ValuePtr (new IntValue (5));
+		return ValueConstPtr (new IntValue (5));
 	}
 };
 
@@ -141,10 +141,10 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr firstResult = EvaluateSingleInputSlot (SlotId ("first"), env);
-		ValuePtr secondResult = EvaluateSingleInputSlot (SlotId ("second"), env);
+		ValueConstPtr firstResult = EvaluateSingleInputSlot (SlotId ("first"), env);
+		ValueConstPtr secondResult = EvaluateSingleInputSlot (SlotId ("second"), env);
 		return ValuePtr (new IntValue (IntValue::Get (firstResult) + IntValue::Get (secondResult)));
 	}
 };
@@ -164,11 +164,11 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ListValuePtr result = EvaluateInputSlot (SlotId ("in"), env);
+		ListValueConstPtr result = EvaluateInputSlot (SlotId ("in"), env);
 		int sum = 0;
-		result->Enumerate ([&] (const ValuePtr& val) {
+		result->Enumerate ([&] (const ValueConstPtr& val) {
 			sum += IntValue::Get (val);
 		});
 		return ValuePtr (new IntValue (sum));
@@ -191,10 +191,10 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr firstResult = EvaluateSingleInputSlot (SlotId ("first"), env);
-		ValuePtr secondResult = EvaluateSingleInputSlot (SlotId ("second"), env);
+		ValueConstPtr firstResult = EvaluateSingleInputSlot (SlotId ("first"), env);
+		ValueConstPtr secondResult = EvaluateSingleInputSlot (SlotId ("second"), env);
 		return ValuePtr (new IntValue (IntValue::Get (firstResult) + IntValue::Get (secondResult)));
 	}
 };
@@ -215,9 +215,9 @@ public:
 		RegisterOutputSlot (OutputSlotPtr (new TestOutputSlot (SlotId ("out"))));
 	}
 
-	virtual ValuePtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValuePtr inputVal = EvaluateSingleInputSlot (SlotId ("in"), env);
+		ValueConstPtr inputVal = EvaluateSingleInputSlot (SlotId ("in"), env);
 		return ValuePtr (new IntValue (IntValue::Get (inputVal) + toAdd));
 	}
 
@@ -287,7 +287,7 @@ TEST (MultiInputSlotEvaluation)
 	manager.AddNode (additionNode);
 
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 0);
@@ -295,7 +295,7 @@ TEST (MultiInputSlotEvaluation)
 
 	ASSERT (manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 5);
@@ -304,7 +304,7 @@ TEST (MultiInputSlotEvaluation)
 	ASSERT (manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
 	ASSERT (manager.ConnectOutputSlotToInputSlot (thirdNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 18);
@@ -326,7 +326,7 @@ TEST (AdditionNodeTest)
 	manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first")));
 	manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("second")));
 
-	ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
 	ASSERT (Value::IsType<IntValue> (result));
 	ASSERT (IntValue::Get (result) == 11);
@@ -351,7 +351,7 @@ TEST (MultipleAdditionNodeTest)
 	manager.ConnectOutputSlotToInputSlot (additionNode->GetOutputSlot (SlotId ("out")), additionNode2->GetInputSlot (SlotId ("first")));
 	manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode2->GetInputSlot (SlotId ("second")));
 
-	ValuePtr result = additionNode2->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr result = additionNode2->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
 	ASSERT (Value::IsType<IntValue> (result));
 	ASSERT (IntValue::Get (result) == 17);
@@ -374,7 +374,7 @@ TEST (DisabledNodeTest)
 	ASSERT (!manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first"))));
 	ASSERT (!manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("second"))));
 
-	ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
 	ASSERT (Value::IsType<IntValue> (result));
 	ASSERT (IntValue::Get (result) == 5);
@@ -393,7 +393,7 @@ TEST (ConnectSameOutputNodesTest)
 	manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first")));
 	manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("second")));
 
-	ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
 	ASSERT (Value::IsType<IntValue> (result));
 	ASSERT (IntValue::Get (result) == 10);
@@ -411,7 +411,7 @@ TEST (InputSlotDefaultValueTest)
 
 	manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first")));
 
-	ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
 	ASSERT (Value::IsType<IntValue> (result));
 	ASSERT (IntValue::Get (result) == 5);
@@ -427,7 +427,7 @@ TEST (InputSlotDefaultValueTest2)
 	manager.AddNode (firstNode);
 	manager.AddNode (additionNode);
 
-	ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
 	ASSERT (Value::IsType<IntValue> (result));
 	ASSERT (IntValue::Get (result) == 0);
@@ -448,7 +448,7 @@ TEST (ChainedNodesTest)
 	manager.ConnectOutputSlotToInputSlot (node3->GetOutputSlot (SlotId ("out")), node4->GetInputSlot (SlotId ("in")));
 	manager.ConnectOutputSlotToInputSlot (node4->GetOutputSlot (SlotId ("out")), node5->GetInputSlot (SlotId ("in")));
 
-	ValuePtr result = node5->Evaluate (NE::EmptyEvaluationEnv);
+	ValueConstPtr result = node5->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
 	ASSERT (Value::IsType<IntValue> (result));
 	ASSERT (IntValue::Get (result) == 5);
@@ -466,7 +466,7 @@ TEST (NodeValueChangeTest)
 	manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out")), node2->GetInputSlot (SlotId ("in")));
 
 	{
-		ValuePtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 2);
@@ -474,7 +474,7 @@ TEST (NodeValueChangeTest)
 
 	{
 		node1->SetToAdd (2);
-		ValuePtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 3);
@@ -493,14 +493,14 @@ TEST (MultipleOutputSlotsTests)
 	manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out2")), node3->GetInputSlot (SlotId ("in")));
 
 	{
-		ValuePtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 5);
 	}
 
 	{
-		ValuePtr result = node3->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = node3->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 5);
@@ -543,7 +543,7 @@ TEST (DeleteNodeTest)
 	manager.ConnectOutputSlotToInputSlot (secondNodeValueNode->GetOutputSlot (SlotId ("out")), secondNode->GetInputSlot (SlotId ("in")));
 
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 12);
@@ -552,7 +552,7 @@ TEST (DeleteNodeTest)
 	ASSERT (manager.DeleteNode (secondNode));
 	ASSERT (secondNode->GetId () == NullNodeId);
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 5);
@@ -574,28 +574,28 @@ TEST (DeleteNodeTest2)
 	ASSERT (manager.GetNodeCount () == 4);
 
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (result) == 12);
 	}
 
 	ASSERT (manager.DeleteNode (secondNodeValueNode));
 	ASSERT (manager.GetNodeCount () == 3);
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (result) == 6);
 	}
 
 	ASSERT (manager.DeleteNode (secondNode->GetId ()));
 	ASSERT (manager.GetNodeCount () == 2);
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (result) == 5);
 	}
 
 	ASSERT (manager.DeleteNode (firstNode));
 	ASSERT (manager.GetNodeCount () == 1);
 	{
-		ValuePtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (IntValue::Get (result) == 0);
 	}
 }
@@ -611,7 +611,7 @@ TEST (DeleteConnectionTest)
 
 	manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out")), node2->GetInputSlot (SlotId ("in")));
 	{
-		ValuePtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 2);
@@ -619,7 +619,7 @@ TEST (DeleteConnectionTest)
 
 	manager.DisconnectOutputSlotFromInputSlot (node1->GetOutputSlot (SlotId ("out")), node2->GetInputSlot (SlotId ("in")));
 	{
-		ValuePtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
+		ValueConstPtr result = node2->Evaluate (NE::EmptyEvaluationEnv);
 		ASSERT (result != nullptr);
 		ASSERT (Value::IsType<IntValue> (result));
 		ASSERT (IntValue::Get (result) == 1);

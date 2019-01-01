@@ -74,7 +74,7 @@ static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vec
 	return true;
 }
 
-std::wstring ParameterValueToString (const NE::ValuePtr& value, const ParameterType& type)
+std::wstring ParameterValueToString (const NE::ValueConstPtr& value, const ParameterType& type)
 {
 	std::wstring result = L"";
 	if (type == ParameterType::String) {
@@ -148,7 +148,7 @@ void RegisterCommonParameters (const NodeUIManager& uiManager, const NE::NodeCol
 	}
 }
 
-bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NE::NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValuePtr& value)
+bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, const NE::NodeCollection& nodeCollection, NodeParameterPtr& parameter, const NE::ValueConstPtr& value)
 {
 	std::vector<UINodePtr> uiNodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
