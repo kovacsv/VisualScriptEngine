@@ -109,8 +109,8 @@ public:
 	void			FitToWindow ();
 
 	void			New ();
-	bool			Open (const std::string& fileName, const NUIE::ExternalHeaderIO* externalHeader);
-	bool			Save (const std::string& fileName, const NUIE::ExternalHeaderIO* externalHeader);
+	bool			Open (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader);
+	bool			Save (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader);
 	bool			NeedToSave () const;
 	void			Undo ();
 	void			Redo ();

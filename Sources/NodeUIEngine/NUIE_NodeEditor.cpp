@@ -70,6 +70,11 @@ ExternalHeaderIO::~ExternalHeaderIO ()
 
 }
 
+ExternalFileIO::~ExternalFileIO ()
+{
+
+}
+
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (),
 	interactionHandler (uiManager),
@@ -212,17 +217,12 @@ void NodeEditor::New ()
 	Update ();
 }
 
-bool NodeEditor::Open (const std::string& fileName, const ExternalHeaderIO* externalHeader)
+bool NodeEditor::Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader)
 {
-	std::ifstream file;
-	file.open (fileName, std::ios::binary);
-	if (DBGERROR (!file.is_open ())) {
+	std::vector<char> buffer;
+	if (DBGERROR (!externalFileIO->ReadBufferFromFile (fileName, buffer))) {
 		return false;
 	}
-
-	std::vector<char> buffer;
-	buffer.assign (std::istreambuf_iterator<char> (file), std::istreambuf_iterator<char> ());
-	file.close ();
 
 	NE::MemoryInputStream inputStream (buffer);
 	return Open (inputStream, externalHeader);
@@ -262,22 +262,17 @@ bool NodeEditor::Open (NE::InputStream& inputStream, const ExternalHeaderIO* ext
 	return true;
 }
 
-bool NodeEditor::Save (const std::string& fileName, const ExternalHeaderIO* externalHeader) const
+bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader) const
 {
 	NE::MemoryOutputStream outputStream;
 	if (DBGERROR (!Save (outputStream, externalHeader))) {
 		return false;
 	}
 
-	std::ofstream file;
-	file.open (fileName, std::ios::binary);
-	if (DBGERROR (!file.is_open ())) {
+	const std::vector<char>& buffer = outputStream.GetBuffer ();
+	if (DBGERROR (!externalFileIO->WriteBufferToFile (fileName, buffer))) {
 		return false;
 	}
-
-	const std::vector<char>& buffer = outputStream.GetBuffer ();
-	file.write (buffer.data (), buffer.size ());
-	file.close ();
 
 	return true;
 }

@@ -4,6 +4,7 @@
 #include "BI_InputUINodes.hpp"
 #include "BI_ArithmeticUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
+#include "WXAS_wxFileIO.hpp"
 #include "WXAS_ParameterDialog.hpp"
 #include "WXAS_NodeEditorControl.hpp"
 
@@ -14,12 +15,6 @@
 
 #include <wx/wx.h>
 #include <wx/splitter.h>
-
-static std::string WideStringToNormalString (const std::wstring& str)
-{
-	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-	return converter.to_bytes (str);
-}
 
 class ApplicationState
 {
@@ -364,6 +359,7 @@ public:
 
 	void OnCommand (wxCommandEvent& evt)
 	{
+		WXAS::wxFileIO fileIO;
 		MenuBar::CommandId commandId = (MenuBar::CommandId) evt.GetId ();
 		switch (commandId) {
 			case MenuBar::CommandId::File_New:
@@ -378,7 +374,7 @@ public:
 						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
 						drawingControl->ClearImage ();
 						// TODO: handle when open fails
-						if (nodeEditorControl->Open (WideStringToNormalString (fileName), &headerIO)) {
+						if (nodeEditorControl->Open (fileName, &fileIO, &headerIO)) {
 							applicationState.SetCurrentFileName (fileName);
 						} else {
 							Reset ();
@@ -390,10 +386,10 @@ public:
 				{
 					wxFileDialog fileDialog (this, L"Save", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
 					if (applicationState.HasCurrentFileName ()) {
-						nodeEditorControl->Save (WideStringToNormalString (applicationState.GetCurrentFileName ()), &headerIO);
+						nodeEditorControl->Save (applicationState.GetCurrentFileName (), &fileIO, &headerIO);
 					} else if (fileDialog.ShowModal () == wxID_OK) {
 						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
-						nodeEditorControl->Save (WideStringToNormalString (fileName), &headerIO);
+						nodeEditorControl->Save (fileName, &fileIO, &headerIO);
 						applicationState.SetCurrentFileName (fileName);
 					}
 				}
@@ -403,7 +399,7 @@ public:
 					wxFileDialog fileDialog (this, L"Save As", L"", L"", L"Node Engine Files (*.ne)|*.ne", wxFD_SAVE);
 					if (fileDialog.ShowModal () == wxID_OK) {
 						std::wstring fileName = fileDialog.GetPath ().ToStdWstring ();
-						nodeEditorControl->Save (WideStringToNormalString (fileName), &headerIO);
+						nodeEditorControl->Save (fileName, &fileIO, &headerIO);
 						applicationState.SetCurrentFileName (fileName);
 					}
 				}

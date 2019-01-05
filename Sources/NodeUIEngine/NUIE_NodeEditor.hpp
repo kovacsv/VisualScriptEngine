@@ -20,6 +20,15 @@ public:
 	virtual void	Write (NE::OutputStream& outputStream) const = 0;
 };
 
+class ExternalFileIO
+{
+public:
+	virtual ~ExternalFileIO ();
+
+	virtual bool	ReadBufferFromFile (const std::wstring& fileName, std::vector<char>& buffer) const = 0;
+	virtual bool	WriteBufferToFile (const std::wstring& fileName, const std::vector<char>& buffer) const = 0;
+};
+
 class NodeEditor
 {
 public:
@@ -54,9 +63,9 @@ public:
 	void						FitToWindow ();
 	
 	void						New ();
-	bool						Open (const std::string& fileName, const ExternalHeaderIO* externalHeader);
+	bool						Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader);
 	bool						Open (NE::InputStream& inputStream, const ExternalHeaderIO* externalHeader);
-	bool						Save (const std::string& fileName, const ExternalHeaderIO* externalHeader) const;
+	bool						Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader) const;
 	bool						Save (NE::OutputStream& outputStream, const ExternalHeaderIO* externalHeader) const;
 	bool						NeedToSave () const;
 	void						Undo ();
