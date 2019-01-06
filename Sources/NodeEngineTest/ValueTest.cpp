@@ -89,6 +89,15 @@ TEST (ValueTest)
 	ASSERT (NumberValue::ToDouble (intValuePtr) == 6.0);
 }
 
+TEST (BooleanValueTest)
+{
+	BooleanValue val (true);
+	ASSERT (Value::IsType<BooleanValue> (&val));
+	ASSERT (BooleanValue::Get (&val) == true);
+	ASSERT (val.ToString (DefaultStringSettings) == L"true");
+	ASSERT (GenericValue<bool>::Get (&val) == true);
+}
+
 TEST (StringValueTest)
 {
 	StringValue val (L"Example");

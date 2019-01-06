@@ -29,8 +29,9 @@ private:
 		ParamUIData (wxControl* control);
 
 		std::wstring	GetStringValue () const;
-		int				GetIntegerValue () const;
+		int				GetChoiceValue () const;
 		void			SetStringValue (const std::wstring& value);
+		NE::ValuePtr	GetValue (NUIE::ParameterType type) const;
 
 		wxControl*		control;
 		bool			isChanged;

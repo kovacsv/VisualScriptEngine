@@ -45,9 +45,18 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 
 		int controlId = ParamIdToControlId (paramIndex);
 		wxControl* control = nullptr;
-		if (type == NUIE::ParameterType::String) {
-			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
+		if (type == NUIE::ParameterType::Boolean) {
+			if (DBGVERIFY (NE::Value::IsType<NE::BooleanValue> (value))) {
+				wxChoice* choiceControl = new wxChoice (this, controlId);
+				choiceControl->Append (wxString (L"true"));
+				choiceControl->Append (wxString (L"false"));
+				choiceControl->Select (NE::BooleanValue::Get (value) ? 0 : 1);
+				control = choiceControl;
+			}
+		} else if (type == NUIE::ParameterType::Integer) {
+			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
+				SetTextValidator (textControl, L"0123456789-");
 				control = textControl;
 			}
 		} else if (type == NUIE::ParameterType::Integer) {
@@ -66,6 +75,11 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
 				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
 				SetTextValidator (textControl, L"0123456789.-");
+				control = textControl;
+			}
+		} else if (type == NUIE::ParameterType::String) {
+			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
+				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
 				control = textControl;
 			}
 		} else if (type == NUIE::ParameterType::Enumeration) {
@@ -107,13 +121,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 		}
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		NE::ValuePtr value = nullptr;
-		if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
-			value = NUIE::StringToParameterValue (uiData.GetStringValue (), type);
-		} else if (type == NUIE::ParameterType::Enumeration) {
-			value = NE::ValuePtr (new NE::IntValue (uiData.GetIntegerValue ()));
-		}
-		
+		NE::ValuePtr value = uiData.GetValue (type);
 		if (DBGERROR (value == nullptr)) {
 			isAllParameterValid = false;
 			continue;
@@ -139,13 +147,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
 		}
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		NE::ValuePtr value = nullptr;
-		if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
-			value = NUIE::StringToParameterValue (uiData.GetStringValue (), type);
-		} else if (type == NUIE::ParameterType::Enumeration) {
-			value = NE::ValuePtr (new NE::IntValue (uiData.GetIntegerValue ()));
-		}
-		
+		NE::ValuePtr value = uiData.GetValue (type);
 		if (DBGERROR (value == nullptr)) {
 			continue;
 		}
@@ -187,7 +189,7 @@ std::wstring ParameterDialog::ParamUIData::GetStringValue () const
 	}
 }
 
-int ParameterDialog::ParamUIData::GetIntegerValue () const
+int ParameterDialog::ParamUIData::GetChoiceValue () const
 {
 	if (dynamic_cast<wxChoice*> (control) != nullptr) {
 		return dynamic_cast<wxChoice*> (control)->GetSelection ();
@@ -204,6 +206,20 @@ void ParameterDialog::ParamUIData::SetStringValue (const std::wstring& value)
 	} else {
 		DBGBREAK ();
 	}
+}
+
+NE::ValuePtr ParameterDialog::ParamUIData::GetValue (NUIE::ParameterType type) const
+{
+	NE::ValuePtr value = nullptr;
+	if (type == NUIE::ParameterType::Boolean) {
+		int choiceValue = GetChoiceValue ();
+		value = NE::ValuePtr (new NE::BooleanValue (choiceValue == 0 ? true : false));
+	} else if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
+		value = NUIE::StringToParameterValue (GetStringValue (), type);
+	} else if (type == NUIE::ParameterType::Enumeration) {
+		value = NE::ValuePtr (new NE::IntValue (GetChoiceValue ()));
+	}
+	return value;
 }
 
 BEGIN_EVENT_TABLE (ParameterDialog, wxDialog)

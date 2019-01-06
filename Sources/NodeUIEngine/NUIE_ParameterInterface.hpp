@@ -16,10 +16,11 @@ public:
 	bool				operator!= (const ParameterType& rhs) const;
 
 	static ParameterType Undefined;
-	static ParameterType String;
+	static ParameterType Boolean;
 	static ParameterType Integer;
 	static ParameterType Float;
 	static ParameterType Double;
+	static ParameterType String;
 	static ParameterType Enumeration;
 
 private:

@@ -17,6 +17,7 @@ class MyCreateNodeCommand : public BI::CreateNodeCommand
 public:
 	enum class NodeType
 	{
+		Boolean,
 		Integer,
 		Number,
 		IntegerRange,
@@ -37,6 +38,8 @@ public:
 	virtual NUIE::UINodePtr CreateNode (const NUIE::Point& modelPosition) override
 	{
 		switch (nodeType) {
+			case NodeType::Boolean:
+				return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", modelPosition, true));
 			case NodeType::Integer:
 				return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", modelPosition, 0, 5));
 			case NodeType::Number:
@@ -85,6 +88,7 @@ public:
 		const NUIE::MenuCommandStructure& commands) override
 	{
 		NUIE::MenuCommandStructure finalCommands = commands;
+		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Boolean, uiManager, uiEnvironment, L"Boolean", position)));
 		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
 		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
 		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));

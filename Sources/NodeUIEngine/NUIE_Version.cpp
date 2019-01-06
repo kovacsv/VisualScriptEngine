@@ -65,6 +65,6 @@ NE::Stream::Status Version::Write (NE::OutputStream& outputStream) const
 }
 
 const Version EngineVersion (VSE_VERSION_1, VSE_VERSION_2, VSE_VERSION_3);
-const int FileVersion = 1;
+const int FileVersion = 2;
 
 }

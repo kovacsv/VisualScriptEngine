@@ -116,11 +116,11 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 		dialog.AddStatic (paramInterface->GetParameterName (paramIndex).c_str (), padding, currentY, staticWidth, controlHeight, controlId + StaticControlIdOffset);
 
 		NE::ValueConstPtr value = paramInterface->GetParameterValue (paramIndex);
-		if (type == NUIE::ParameterType::String) {
-			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
-				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
-
+		if (type == NUIE::ParameterType::Boolean) {
+			if (DBGVERIFY (NE::Value::IsType<NE::BooleanValue> (value))) {
+				int selectedChoice = NE::BooleanValue::Get (value) ? 0 : 1;
+				std::vector<std::wstring> choices = { L"true", L"false" };
+				dialog.AddComboBox (selectedChoice, choices, staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Integer) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
@@ -137,12 +137,17 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
 				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
 			}
+		} else if (type == NUIE::ParameterType::String) {
+			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
+				std::wstring controlText = NUIE::ParameterValueToString (value, type);
+				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
+			}
 		} else if (type == NUIE::ParameterType::Enumeration) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 				int selectedChoice = NE::IntValue::Get (value);
 				std::vector<std::wstring> choices = paramInterface->GetParameterValueChoices (paramIndex);
 				dialog.AddComboBox (selectedChoice, choices, staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
-			}		
+			}
 		} else {
 			DBGBREAK ();
 		}
@@ -191,7 +196,11 @@ bool ParameterDialog::CollectChangedValues (HWND hwnd)
 		NUIE::ParameterType type = paramInterface->GetParameterType (paramId);
 
 		NE::ValuePtr value;
-		if (type == NUIE::ParameterType::String || type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double) {
+		if (type == NUIE::ParameterType::Boolean) {
+			HWND comboBoxHwnd = GetDlgItem (hwnd, controlId);
+			LRESULT selected = SendMessage (comboBoxHwnd, CB_GETCURSEL, 0, 0);
+			value = NE::ValuePtr (new NE::BooleanValue (selected == 0 ? true : false));
+		} else if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
 			wchar_t itemText[1024];
 			GetDlgItemText (hwnd, controlId, itemText, 1024);
 			value = NUIE::StringToParameterValue (std::wstring (itemText), type);

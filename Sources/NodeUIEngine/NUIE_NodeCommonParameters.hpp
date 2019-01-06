@@ -105,6 +105,17 @@ public:
 };
 
 template <typename NodeType>
+class BooleanNodeParameter : public TypedNodeParameter<NodeType, NE::BooleanValue>
+{
+public:
+	BooleanNodeParameter (const std::wstring& name) :
+		TypedNodeParameter<NodeType, NE::BooleanValue> (name, ParameterType::Boolean)
+	{
+
+	}
+};
+
+template <typename NodeType>
 class IntegerNodeParameter : public TypedNodeParameter<NodeType, NE::IntValue>
 {
 public:

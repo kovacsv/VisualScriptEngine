@@ -35,10 +35,11 @@ ParameterInterface::~ParameterInterface ()
 }
 
 ParameterType ParameterType::Undefined ("undefined");
-ParameterType ParameterType::String ("string");
+ParameterType ParameterType::Boolean ("boolean");
 ParameterType ParameterType::Integer ("integer");
 ParameterType ParameterType::Float ("float");
 ParameterType ParameterType::Double ("double");
+ParameterType ParameterType::String ("string");
 ParameterType ParameterType::Enumeration ("enumeration");
 
 }

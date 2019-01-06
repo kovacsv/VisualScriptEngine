@@ -7,6 +7,22 @@
 namespace NE
 {
 
+class BooleanValue : public GenericValue<bool>
+{
+	DYNAMIC_SERIALIZABLE (BooleanValue);
+
+public:
+	BooleanValue ();
+	BooleanValue (bool val);
+	virtual ~BooleanValue ();
+
+	virtual ValuePtr		Clone () const override;
+	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
+
+	virtual Stream::Status	Read (InputStream& inputStream) override;
+	virtual Stream::Status	Write (OutputStream& outputStream) const override;
+};
+
 class NumberValue
 {
 public:

@@ -20,6 +20,14 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 											NUIE::NodeUIDrawingEnvironment& env,
 											NUIE::NodeDrawingImage& drawingImage);
 
+void DrawHeaderWithSlotsAndSwitchLayout (	const NUIE::UINode& uiNode,
+											const std::string& switchButtonId,
+											const std::wstring& leftSwitchText,
+											const std::wstring& rightSwitchText,
+											short selectedIndex,
+											NUIE::NodeUIDrawingEnvironment& env,
+											NUIE::NodeDrawingImage& drawingImage);
+
 }
 
 #endif

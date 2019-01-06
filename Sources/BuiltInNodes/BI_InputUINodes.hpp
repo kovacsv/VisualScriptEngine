@@ -7,7 +7,38 @@
 namespace BI
 {
 
-class NumericUpDownNode : public NUIE::UINode
+class BooleanNode : public BasicUINode
+{
+	DYNAMIC_SERIALIZABLE (BooleanNode);
+
+public:
+	BooleanNode ();
+	BooleanNode (const std::wstring& name, const NUIE::Point& position, bool val);
+	virtual ~BooleanNode ();
+
+	virtual void						Initialize () override;
+
+	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
+	virtual NUIE::EventHandlerResult	HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
+
+	virtual bool						IsForceCalculated () const override;
+
+	virtual NE::ValueConstPtr			Calculate (NE::EvaluationEnv& env) const override;
+	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
+
+	virtual NE::Stream::Status			Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status			Write (NE::OutputStream& outputStream) const override;
+
+	bool								GetValue () const;
+	void								SetValue (bool newVal);
+
+private:
+	virtual void						UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
+
+	bool val;
+};
+
+class NumericUpDownNode : public BasicUINode
 {
 	SERIALIZABLE;
 

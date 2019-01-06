@@ -43,4 +43,19 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 	drawer.Draw (env, drawingImage);
 }
 
+void DrawHeaderWithSlotsAndSwitchLayout (	const NUIE::UINode& uiNode,
+											const std::string& switchButtonId,
+											const std::wstring& leftSwitchText,
+											const std::wstring& rightSwitchText,
+											short selectedIndex,
+											NUIE::NodeUIDrawingEnvironment& env,
+											NUIE::NodeDrawingImage& drawingImage)
+{
+	NUIE::NodePanelDrawer drawer;
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName ())));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISwitchPanel (switchButtonId, leftSwitchText, rightSwitchText, selectedIndex, env)));
+	drawer.Draw (env, drawingImage);
+}
+
 }

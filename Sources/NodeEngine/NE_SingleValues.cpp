@@ -5,10 +5,97 @@
 namespace NE
 {
 
+DynamicSerializationInfo	BooleanValue::serializationInfo (ObjectId ("{70071F15-3F3D-45CF-B7D5-CD4AF3E759FA}"), ObjectVersion (1), BooleanValue::CreateSerializableInstance);
 DynamicSerializationInfo	IntValue::serializationInfo (ObjectId ("{FE348A6B-C5B8-42E2-9AD1-167BE291AEE8}"), ObjectVersion (1), IntValue::CreateSerializableInstance);
 DynamicSerializationInfo	FloatValue::serializationInfo (ObjectId ("{D7FB2FE0-90E3-4A85-9C0F-9D90AFC8CD8A}"), ObjectVersion (1), FloatValue::CreateSerializableInstance);
 DynamicSerializationInfo	DoubleValue::serializationInfo (ObjectId ("{4D6581DC-7A20-4F2A-A1A3-95BF6DDFFDB6}"), ObjectVersion (1), DoubleValue::CreateSerializableInstance);
 DynamicSerializationInfo	StringValue::serializationInfo (ObjectId ("{FABFAA20-48F4-4F15-A9FB-FD8F05581F31}"), ObjectVersion (1), StringValue::CreateSerializableInstance);
+
+BooleanValue::BooleanValue () :
+	BooleanValue (false)
+{
+
+}
+
+BooleanValue::BooleanValue (bool val) :
+	GenericValue<bool> (val)
+{
+
+}
+
+BooleanValue::~BooleanValue ()
+{
+
+}
+
+ValuePtr BooleanValue::Clone () const
+{
+	return ValuePtr (new BooleanValue (val));
+}
+
+std::wstring BooleanValue::ToString (const StringSettings&) const
+{
+	return val ? L"true" : L"false";
+}
+
+Stream::Status BooleanValue::Read (InputStream& inputStream)
+{
+	ObjectHeader header (inputStream);
+	SingleValue::Read (inputStream);
+	inputStream.Read (val);
+	return inputStream.GetStatus ();
+}
+
+Stream::Status BooleanValue::Write (OutputStream& outputStream) const
+{
+	ObjectHeader header (outputStream, serializationInfo);
+	SingleValue::Write (outputStream);
+	outputStream.Write (val);
+	return outputStream.GetStatus ();
+}
+
+StringValue::StringValue () :
+	StringValue (L"")
+{
+
+}
+
+StringValue::StringValue (const std::wstring& val) :
+	GenericValue<std::wstring> (val)
+{
+
+}
+
+StringValue::~StringValue ()
+{
+
+}
+
+ValuePtr StringValue::Clone () const
+{
+	return ValuePtr (new StringValue (val));
+}
+
+std::wstring StringValue::ToString (const StringSettings&) const
+{
+	return val;
+}
+
+Stream::Status StringValue::Read (InputStream& inputStream)
+{
+	ObjectHeader header (inputStream);
+	SingleValue::Read (inputStream);
+	inputStream.Read (val);
+	return inputStream.GetStatus ();
+}
+
+Stream::Status StringValue::Write (OutputStream& outputStream) const
+{
+	ObjectHeader header (outputStream, serializationInfo);
+	SingleValue::Write (outputStream);
+	outputStream.Write (val);
+	return outputStream.GetStatus ();
+}
 
 NumberValue::NumberValue ()
 {
@@ -235,49 +322,6 @@ Stream::Status DoubleValue::Read (InputStream& inputStream)
 }
 
 Stream::Status DoubleValue::Write (OutputStream& outputStream) const
-{
-	ObjectHeader header (outputStream, serializationInfo);
-	SingleValue::Write (outputStream);
-	outputStream.Write (val);
-	return outputStream.GetStatus ();
-}
-
-StringValue::StringValue () :
-	StringValue (L"")
-{
-
-}
-
-StringValue::StringValue (const std::wstring& val) :
-	GenericValue<std::wstring> (val)
-{
-
-}
-
-StringValue::~StringValue ()
-{
-
-}
-
-ValuePtr StringValue::Clone () const
-{
-	return ValuePtr (new StringValue (val));
-}
-
-std::wstring StringValue::ToString (const StringSettings&) const
-{
-	return val;
-}
-
-Stream::Status StringValue::Read (InputStream& inputStream)
-{
-	ObjectHeader header (inputStream);
-	SingleValue::Read (inputStream);
-	inputStream.Read (val);
-	return inputStream.GetStatus ();
-}
-
-Stream::Status StringValue::Write (OutputStream& outputStream) const
 {
 	ObjectHeader header (outputStream, serializationInfo);
 	SingleValue::Write (outputStream);

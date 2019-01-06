@@ -126,22 +126,13 @@ public:
 									const std::wstring& leftButtonText,
 									const std::string& rightButtonId,
 									const std::wstring& rightButtonText,
-									const std::wstring& nodeText,
+									const std::wstring& panelText,
 									NUIE::NodeUIDrawingEnvironment& env);
 
 	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 protected:
-	static const NUIE::Pen		DefaultButtonBorderPen;
-	static const NUIE::Color	DefaultButtonBackgroundColor;
-
-	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const;
-	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const;
-
-	virtual NUIE::Pen		GetButtonBorderPen (NUIE::NodeUIDrawingEnvironment& env) const;
-	virtual NUIE::Color		GetButtonBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const;
-
 	std::string		leftButtonId;
 	std::wstring	leftButtonText;
 	std::string		rightButtonId;
@@ -150,6 +141,27 @@ protected:
 	NUIE::Size		leftButtonSize;
 	NUIE::Size		panelTextSize;
 	NUIE::Size		rightButtonSize;
+};
+
+class NodeUISwitchPanel : public NUIE::NodePanel
+{
+public:
+	NodeUISwitchPanel (	const std::string& switchRectId,
+						const std::wstring& leftSwitchText,
+						const std::wstring& rightSwitchText,
+						short selectedIndex,
+						NUIE::NodeUIDrawingEnvironment& env);
+
+	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
+
+protected:
+	std::string		switchRectId;
+	std::wstring	leftSwitchText;
+	std::wstring	rightSwitchText;
+	short			selectedIndex;
+	NUIE::Size		leftSwitchSize;
+	NUIE::Size		rightSwitchSize;
 };
 
 }

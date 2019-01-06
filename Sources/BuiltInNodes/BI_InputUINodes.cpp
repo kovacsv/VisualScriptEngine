@@ -11,6 +11,8 @@
 namespace BI
 {
 
+NE::DynamicSerializationInfo	BooleanNode::serializationInfo (NE::ObjectId ("{72E14D86-E5DC-4AD6-A7E4-F60D47BFB114}"), NE::ObjectVersion (1), BooleanNode::CreateSerializableInstance);
+
 NE::SerializationInfo			NumericUpDownNode::serializationInfo (NE::ObjectVersion (1));
 NE::DynamicSerializationInfo	IntegerUpDownNode::serializationInfo (NE::ObjectId ("{98ADBB4A-8E55-4FE5-B0F9-EC5DD776C000}"), NE::ObjectVersion (1), IntegerUpDownNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	DoubleUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), DoubleUpDownNode::CreateSerializableInstance);
@@ -19,6 +21,123 @@ NE::SerializationInfo			NumericRangeNode::serializationInfo (NE::ObjectVersion (
 NE::DynamicSerializationInfo	IntegerRangeNode::serializationInfo (NE::ObjectId ("{74527771-58A4-42D4-850F-1C63FA9A4732}"), NE::ObjectVersion (1), IntegerRangeNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	DoubleRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), DoubleRangeNode::CreateSerializableInstance);
 
+BooleanNode::BooleanNode () :
+	BooleanNode (L"", NUIE::Point (), false)
+{
+
+}
+
+BooleanNode::BooleanNode (const std::wstring& name, const NUIE::Point& position, bool val) :
+	BasicUINode (name, position),
+	val (val)
+{
+
+}
+
+BooleanNode::~BooleanNode ()
+{
+
+}
+
+void BooleanNode::Initialize ()
+{
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
+}
+
+NUIE::EventHandlerResult BooleanNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
+{
+	if (mouseButton != NUIE::MouseButton::Left) {
+		return NUIE::EventHandlerResult::EventNotHandled;
+	}
+	
+	NUIE::Rect switchRect = GetSpecialRect (env, "switch");
+	
+	if (switchRect.Contains (position)) {
+		commandInterface.RunUndoableCommand ([&] () {
+			SetValue (!val);
+		});
+		return NUIE::EventHandlerResult::EventHandled;
+	}
+	return NUIE::EventHandlerResult::EventNotHandled;
+}
+
+NUIE::EventHandlerResult BooleanNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
+{
+	return HandleMouseClick (env, keys, mouseButton, position, commandInterface);
+}
+
+bool BooleanNode::IsForceCalculated () const
+{
+	return true;
+}
+
+NE::ValueConstPtr BooleanNode::Calculate (NE::EvaluationEnv&) const
+{
+	return NE::ValueConstPtr (new NE::BooleanValue (val));
+}
+
+void BooleanNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	class ValueParameter : public NUIE::BooleanNodeParameter<BooleanNode>
+	{
+	public:
+		ValueParameter () :
+			NUIE::BooleanNodeParameter<BooleanNode> (L"Value")
+		{
+	
+		}
+	
+		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+		{
+			return NE::ValuePtr (new NE::BooleanValue (GetTypedNode (uiNode)->GetValue ()));
+		}
+	
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		{
+			GetTypedNode (uiNode)->SetValue (NE::BooleanValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
+			return true;
+		}
+	};
+
+	BasicUINode::RegisterParameters (parameterList);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new ValueParameter ()));
+}
+
+NE::Stream::Status BooleanNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	BasicUINode::Read (inputStream);
+	inputStream.Read (val);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status BooleanNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	BasicUINode::Write (outputStream);
+	outputStream.Write (val);
+	return outputStream.GetStatus ();
+}
+
+bool BooleanNode::GetValue () const
+{
+	return val;
+}
+
+void BooleanNode::SetValue (bool newVal)
+{
+	val = newVal;
+	InvalidateValue ();
+}
+
+void BooleanNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+{
+	short selectedIndex = val ? 0 : 1;
+	DrawHeaderWithSlotsAndSwitchLayout (*this, "switch", L"true", L"false", selectedIndex, env, drawingImage);
+}
+
 NumericUpDownNode::NumericUpDownNode () :
 	NumericUpDownNode (L"", NUIE::Point ())
 {
@@ -26,7 +145,7 @@ NumericUpDownNode::NumericUpDownNode () :
 }
 
 NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::UINode (name, position)
+	BasicUINode (name, position)
 {
 
 }
@@ -77,14 +196,14 @@ bool NumericUpDownNode::IsForceCalculated () const
 NE::Stream::Status NumericUpDownNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
-	NUIE::UINode::Read (inputStream);
+	BasicUINode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status NumericUpDownNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
-	NUIE::UINode::Write (outputStream);
+	BasicUINode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
@@ -163,7 +282,7 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 		}
 	};
 
-	NUIE::UINode::RegisterParameters (parameterList);
+	NumericUpDownNode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new ValueParameter ()));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new StepParameter ()));
 }
@@ -289,7 +408,7 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 		}
 	};
 
-	NUIE::UINode::RegisterParameters (parameterList);
+	NumericUpDownNode::RegisterParameters (parameterList);
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new ValueParameter ()));
 	parameterList.AddParameter (NUIE::NodeParameterPtr (new StepParameter ()));
 }
