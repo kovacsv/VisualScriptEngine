@@ -102,40 +102,40 @@ public:
 	}
 
 	virtual NUIE::MenuCommandPtr OnContextMenu (
-		NUIE::NodeUIManager& uiManager,
-		NUIE::NodeUIEnvironment& env,
+		NUIE::NodeUIManager&,
+		NUIE::NodeUIEnvironment&,
 		const NUIE::Point& position,
-		const NUIE::UINodePtr& uiNode,
+		const NUIE::UINodePtr&,
 		const NUIE::MenuCommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
 	virtual NUIE::MenuCommandPtr OnContextMenu (
-		NUIE::NodeUIManager& uiManager,
-		NUIE::NodeUIEnvironment& env,
+		NUIE::NodeUIManager&,
+		NUIE::NodeUIEnvironment&,
 		const NUIE::Point& position,
-		const NUIE::UIOutputSlotPtr& outputSlot,
+		const NUIE::UIOutputSlotPtr&,
 		const NUIE::MenuCommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
 	virtual NUIE::MenuCommandPtr OnContextMenu (
-		NUIE::NodeUIManager& uiManager,
-		NUIE::NodeUIEnvironment& env,
+		NUIE::NodeUIManager&,
+		NUIE::NodeUIEnvironment&,
 		const NUIE::Point& position,
-		const NUIE::UIInputSlotPtr& inputSlot,
+		const NUIE::UIInputSlotPtr&,
 		const NUIE::MenuCommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 	}
 
 	virtual NUIE::MenuCommandPtr OnContextMenu (
-		NUIE::NodeUIManager& uiManager,
-		NUIE::NodeUIEnvironment& env,
+		NUIE::NodeUIManager&,
+		NUIE::NodeUIEnvironment&,
 		const NUIE::Point& position,
-		const NUIE::UINodeGroupPtr& group,
+		const NUIE::UINodeGroupPtr&,
 		const NUIE::MenuCommandStructure& commands) override
 	{
 		return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
@@ -316,7 +316,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
-int wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
+int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
 	WNDCLASSEX windowClass;
 	memset (&windowClass, 0, sizeof (WNDCLASSEX));
@@ -326,7 +326,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, in
 	windowClass.style = CS_DBLCLKS;
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
-	windowClass.hInstance = NULL;
+	windowClass.hInstance = hInstance;
 	windowClass.hIcon = LoadIcon (NULL, IDI_APPLICATION);
 	windowClass.hCursor = LoadCursor (NULL, IDC_ARROW);
 	windowClass.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);

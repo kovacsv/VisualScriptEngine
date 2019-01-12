@@ -13,7 +13,7 @@ DrawingControl::DrawingControl (wxWindow *parent, const std::shared_ptr<ResultIm
 	drawingContext->Init (this);
 }
 
-void DrawingControl::OnPaint (wxPaintEvent& evt)
+void DrawingControl::OnPaint (wxPaintEvent&)
 {
 	drawingContext->FillRect (NUIE::Rect (-10, -10, drawingContext->GetWidth () + 20, drawingContext->GetHeight () + 20), NUIE::Color (255, 255, 255));
 	NUIE::ViewBoxContextDecorator viewBoxDecorator (*drawingContext, viewBox);
@@ -22,7 +22,7 @@ void DrawingControl::OnPaint (wxPaintEvent& evt)
 	drawingContext->BlitToWindow (this);
 }
 
-void DrawingControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
+void DrawingControl::OnMouseCaptureLost (wxMouseCaptureLostEvent&)
 {
 	captureHandler.OnCaptureLost ();
 }
@@ -39,7 +39,7 @@ void DrawingControl::OnRightButtonDown (wxMouseEvent& evt)
 	lastMousePos.reset (new NUIE::Point (evt.GetX (), evt.GetY ()));
 }
 
-void DrawingControl::OnRightButtonUp (wxMouseEvent& evt)
+void DrawingControl::OnRightButtonUp (wxMouseEvent&)
 {
 	captureHandler.OnMouseUp ();
 	lastMousePos.reset (nullptr);

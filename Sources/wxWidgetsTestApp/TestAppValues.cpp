@@ -24,7 +24,7 @@ Color::Color (unsigned char r, unsigned char g, unsigned char b) :
 
 }
 
-std::wstring Color::ToString (const NE::StringSettings& stringSettings) const
+std::wstring Color::ToString (const NE::StringSettings&) const
 {
 	std::wstring result = L"";
 	result += L"Color (";

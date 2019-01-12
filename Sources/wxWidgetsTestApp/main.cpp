@@ -332,13 +332,16 @@ public:
 		nodeEditorControl (new MyNodeEditorControl (mainWindow)),
 		applicationState ()
 	{
+		std::shared_ptr<NE::StringSettings> stringSettings (new NE::BasicStringSettings (L'.', L',', 2));
+		std::shared_ptr<NUIE::SkinParams> skinParams (new NUIE::DefaultSkinParams ());
+		std::shared_ptr<NUIE::EventHandlers> eventHandlers (new MyNodeEditorEventHandlers (nodeEditorControl));
 		std::shared_ptr<WXAS::NodeEditorUIEnvironment> uiEnvironment = std::shared_ptr<WXAS::NodeEditorUIEnvironment> (
 			new MyNodeEditorUIEnvironment (
 				nodeEditorControl,
 				drawingControl,
-				std::shared_ptr<NE::StringSettings> (new NE::BasicStringSettings (L'.', L',', 2)),
-				std::shared_ptr<NUIE::SkinParams> (new NUIE::DefaultSkinParams ()),
-				std::shared_ptr<NUIE::EventHandlers> (new MyNodeEditorEventHandlers (nodeEditorControl)),
+				stringSettings,
+				skinParams,
+				eventHandlers,
 				evaluationEnv
 			)
 		);
