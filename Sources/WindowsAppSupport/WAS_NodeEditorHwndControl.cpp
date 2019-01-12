@@ -161,6 +161,9 @@ static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LP
 				bool isControlPressed = (GetKeyState (VK_CONTROL) < 0);
 				if (isControlPressed) {
 					switch (wParam) {
+						case 'A':
+							pressedKey = NUIE::PressedKeyCode::SelectAll;
+							break;
 						case 'C':
 							pressedKey = NUIE::PressedKeyCode::Copy;
 							break;

@@ -622,6 +622,16 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 				command.reset (new DeleteNodesMenuCommand (uiManager, env, selectedNodes));
 			}
 			break;
+		case PressedKeyCode::SelectAll:
+			{
+				NE::NodeCollection allSelectedNodes;
+				uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+					allSelectedNodes.Insert (uiNode->GetId ());
+					return true;
+				});
+				uiManager.SetSelectedNodes (allSelectedNodes);
+			}
+			break;
 		case PressedKeyCode::Copy:
 			{
 				command.reset (new CopyNodesMenuCommand (uiManager, selectedNodes));

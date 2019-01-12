@@ -34,6 +34,7 @@ enum class PressedKeyCode
 	Undefined,
 	Escape,
 	Delete,
+	SelectAll,
 	Copy,
 	Paste,
 	Undo,
