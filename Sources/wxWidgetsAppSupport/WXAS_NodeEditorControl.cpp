@@ -18,27 +18,27 @@ NodeEditorEventHandlers::~NodeEditorEventHandlers ()
 
 }
 
-NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::UINodePtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& outputSlot, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::UIOutputSlotPtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::UIInputSlotPtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
 
-NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::UINodeGroupPtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return SelectCommandFromContextMenu (panel, position, commands);
 }
@@ -72,7 +72,7 @@ NodeEditorUIEnvironment::~NodeEditorUIEnvironment ()
 
 }
 
-void NodeEditorUIEnvironment::OnPaint (wxPanel* panel, wxPaintEvent& evt)
+void NodeEditorUIEnvironment::OnPaint (wxPanel*, wxPaintEvent&)
 {
 	drawingContext->BlitToWindow (GetNativeHandle (nodeEditorControl));
 }
@@ -169,7 +169,7 @@ void NodeEditorControl::OnResize (wxSizeEvent& evt)
 	nodeEditor->OnResize (size.GetWidth (), size.GetHeight ());
 }
 
-void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent& evt)
+void NodeEditorControl::OnMouseCaptureLost (wxMouseCaptureLostEvent&)
 {
 	captureHandler.OnCaptureLost ();
 }

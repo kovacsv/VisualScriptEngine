@@ -111,7 +111,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 	SetSizerAndFit (boxSizer);
 }
 
-void ParameterDialog::OnOkButtonClick (wxCommandEvent& evt)
+void ParameterDialog::OnOkButtonClick (wxCommandEvent&)
 {
 	bool isAllParameterValid = true;
 	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
