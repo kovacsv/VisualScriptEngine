@@ -45,7 +45,7 @@ ID2D1SolidColorBrush* CreateValue (ID2D1RenderTarget* renderTarget, const BrushC
 }
 
 template <>
-IDWriteTextFormat* CreateValue (ID2D1RenderTarget* renderTarget, const FontCacheKey& key)
+IDWriteTextFormat* CreateValue (ID2D1RenderTarget*, const FontCacheKey& key)
 {
 	IDWriteTextFormat* textFormat = nullptr;
 	direct2DHandler.directWriteFactory->CreateTextFormat (

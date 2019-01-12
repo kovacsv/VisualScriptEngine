@@ -96,19 +96,19 @@ ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface) :
 
 bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 {
-	static const int padding = 5;
-	static const int staticWidth = 60;
-	static const int editWidth = 100;
-	static const int controlHeight = 12;
-	static const int buttonHeight = 16;
+	static const WORD padding = 5;
+	static const WORD staticWidth = 60;
+	static const WORD editWidth = 100;
+	static const WORD controlHeight = 12;
+	static const WORD buttonHeight = 16;
 
 	size_t paramCount = paramInterface->GetParameterCount ();
-	int paramCountInt = (int) paramCount;
-	int dialogWidth = staticWidth + editWidth + 3 * padding;
-	int dialogHeight = paramCountInt * controlHeight + (paramCountInt + 2) * padding + buttonHeight;
+	WORD paramCountWord = (WORD) paramCount;
+	WORD dialogWidth = staticWidth + editWidth + 3 * padding;
+	WORD dialogHeight = paramCountWord * controlHeight + (paramCountWord + 2) * padding + buttonHeight;
 	InMemoryDialog dialog (L"Parameters", x, y, dialogWidth, dialogHeight);
 
-	int currentY = padding;
+	WORD currentY = padding;
 	for (size_t paramIndex = 0; paramIndex < paramCount; ++paramIndex) {
 		DWORD controlId = ParamIdToControlId (paramIndex);
 

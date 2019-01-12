@@ -4,6 +4,11 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <minmax.h>
+
+#pragma warning (push)
+#pragma warning (disable : 4244)
+#pragma warning (disable : 4458)
 #include <gdiplus.h>
+#pragma warning (pop)
 
 #endif

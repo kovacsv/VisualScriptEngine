@@ -29,7 +29,7 @@ void wxDrawingContext::DrawToDC (wxDC* targetDC)
 	targetDC->Blit (0, 0, width, height, memoryDC, 0, 0);
 }
 
-void wxDrawingContext::Init (void* nativeHandle)
+void wxDrawingContext::Init (void*)
 {
 
 }
@@ -197,8 +197,8 @@ wxColour wxDrawingContext::GetColor (const NUIE::Color& color)
 
 wxPen wxDrawingContext::GetPen (const NUIE::Pen& pen)
 {
-	int width = (int) pen.GetThickness ();
-	return wxPen (GetColor (pen.GetColor ()), width);
+	int thickness = (int) pen.GetThickness ();
+	return wxPen (GetColor (pen.GetColor ()), thickness);
 }
 
 wxFont wxDrawingContext::GetFont (const NUIE::Font& font)
