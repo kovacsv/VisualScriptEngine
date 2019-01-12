@@ -156,7 +156,7 @@ void Direct2DContext::BeginDraw ()
 void Direct2DContext::EndDraw ()
 {
 	// TODO: recreate in case of error
-	HRESULT success = renderTarget->EndDraw ();
+	DBGONLY (HRESULT success =) renderTarget->EndDraw ();
 	DBGASSERT (SUCCEEDED (success));
 }
 

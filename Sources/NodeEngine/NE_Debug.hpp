@@ -6,11 +6,13 @@
 #define DBGASSERT(condition) DbgAssert(condition)
 #define DBGERROR(condition) DbgError(condition)
 #define DBGVERIFY(condition) DbgVerify(condition)
+#define DBGONLY(text) text
 #else
 #define DBGBREAK()
 #define DBGASSERT(condition)
 #define DBGERROR(condition) (condition)
 #define DBGVERIFY(condition) (condition)
+#define DBGONLY(text)
 #endif
 
 void DbgBreak ();

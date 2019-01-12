@@ -11,7 +11,7 @@ public:
 	{
 		Gdiplus::GdiplusStartupInput input;
 		Gdiplus::GdiplusStartupOutput output;
-		Gdiplus::Status status = Gdiplus::GdiplusStartup (&gdiPlusToken, &input, &output);
+		DBGONLY (Gdiplus::Status status =) Gdiplus::GdiplusStartup (&gdiPlusToken, &input, &output);
 		DBGASSERT (status == Gdiplus::Ok);
 	}
 
