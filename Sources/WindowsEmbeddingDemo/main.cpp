@@ -165,9 +165,14 @@ public:
 	
 	}
 
-	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height)
+	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
 	{
-		nodeEditorControl.Init (nodeEditorPtr, parentHandle, x, y, width, height);
+		RECT clientRect;
+		GetClientRect (parentHandle, &clientRect);
+		int width = clientRect.right - clientRect.left;
+		int height = clientRect.bottom - clientRect.top;
+
+		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
 		eventHandlers.Init (nodeEditorControl.GetWindowHandle ());
 	}
 
@@ -265,11 +270,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	switch (msg) {
 		case WM_CREATE:
 			{
-				RECT clientRect;
-				GetClientRect (hwnd, &clientRect);
-				int width = clientRect.right - clientRect.left;
-				int height = clientRect.bottom - clientRect.top;
-				uiEnvironment.Init (&nodeEditor, hwnd, 0, 0, width, height);
+				uiEnvironment.Init (&nodeEditor, hwnd);
 
 				nodeEditor.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10)));
 				nodeEditor.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10)));
