@@ -11,20 +11,6 @@ using namespace NE;
 namespace ListValueNodeTest
 {
 
-class MultiInputSlot : public InputSlot
-{
-public:
-	MultiInputSlot (const SlotId& id, const ValuePtr& defaultValue) :
-		InputSlot (id, defaultValue, OutputSlotConnectionMode::Multiple)
-	{
-	}
-
-	~MultiInputSlot ()
-	{
-
-	}
-};
-
 class IntegerInputNode : public SerializableTestNode
 {
 public:
@@ -59,7 +45,7 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterInputSlot (InputSlotPtr (new MultiInputSlot (SlotId ("in"), ValuePtr (new IntValue (0)))));
+		RegisterInputSlot (InputSlotPtr (new InputSlot (SlotId ("in"), nullptr, OutputSlotConnectionMode::Multiple)));
 		RegisterOutputSlot (OutputSlotPtr (new OutputSlot (SlotId ("out"))));
 	}
 	
@@ -87,16 +73,38 @@ public:
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
 		NE::ValueConstPtr val = EvaluateSingleInputSlot (SlotId ("in"), env);
-		const ListValue* input = Value::Cast<ListValue> (val.get ());
 		int result = 0;
-		input->Enumerate ([&] (const ValueConstPtr& value) {
-			result += IntValue::Get (value);
-		});
+		if (IsComplexType<NumberValue> (val)) {
+			NE::FlatEnumerate (val, [&] (const NE::ValueConstPtr& value) {
+				result += IntValue::Get (value);
+			});
+		}
 		return ValueConstPtr (new IntValue (result));
 	}
 };
 
-TEST (ListValueNodeTest)
+TEST (ListValueNodeTest_Node)
+{
+	NodeManager manager;
+
+	NodePtr listMakerNode = manager.AddNode (NodePtr (new ListMakerNode ()));
+	NodePtr listSummerNode = manager.AddNode (NodePtr (new ListSummer ()));
+
+	ASSERT (manager.ConnectOutputSlotToInputSlot (listMakerNode->GetOutputSlot (SlotId ("out")), listSummerNode->GetInputSlot (SlotId ("in"))));
+
+	{
+		ValueConstPtr result = listMakerNode->Evaluate (NE::EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+	}
+	
+	{
+		ValueConstPtr result = listSummerNode->Evaluate (NE::EmptyEvaluationEnv);
+		ASSERT (Value::IsType<IntValue> (result));
+		ASSERT (IntValue::Get (result) == 0);
+	}
+}
+
+TEST (ListValueNodeTest_WithConnections)
 {
 	NodeManager manager;
 

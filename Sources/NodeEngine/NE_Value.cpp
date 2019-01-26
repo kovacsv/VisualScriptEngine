@@ -202,6 +202,10 @@ IListValueConstPtr CreateListValue (const ValueConstPtr& value)
 
 void FlatEnumerate (const ValueConstPtr& value, const std::function<void (const ValueConstPtr&)>& processor)
 {
+	if (value == nullptr) {
+		processor (value);
+		return;
+	}
 	IListValueConstPtr listValue = CreateListValue (value);
 	listValue->Enumerate ([&] (const ValueConstPtr& innerValue) {
 		if (Value::IsType<SingleValue> (innerValue)) {
