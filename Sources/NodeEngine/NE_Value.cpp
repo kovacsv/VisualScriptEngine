@@ -212,4 +212,13 @@ void FlatEnumerate (const ValueConstPtr& value, const std::function<void (const 
 	});
 }
 
+ValueConstPtr FlattenValue (const ValueConstPtr& value)
+{
+	ListValuePtr listValue (new ListValue ());
+	FlatEnumerate (value, [&] (const ValueConstPtr& value) {
+		listValue->Push (value);
+	});
+	return listValue;
+}
+
 }

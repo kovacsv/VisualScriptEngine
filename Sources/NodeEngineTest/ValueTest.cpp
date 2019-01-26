@@ -165,4 +165,25 @@ TEST (ConstNonConstTest)
 	ASSERT (IntValue::Get (cval) == 5);
 }
 
+TEST (FlattenTest)
+{
+	ListValuePtr theListValue (new ListValue ());
+
+	ValuePtr innerSingleValue (new IntValue (1));
+	ListValuePtr innerListValue (new ListValue ());
+	innerListValue->Push (ValuePtr (new IntValue (2)));
+	innerListValue->Push (ValuePtr (new IntValue (3)));
+
+	theListValue->Push (innerSingleValue);
+	theListValue->Push (innerListValue);
+
+	ValueConstPtr flatten = FlattenValue (theListValue);
+	ASSERT (Value::IsType<ListValue> (flatten));
+	ListValueConstPtr flattenList = Value::Cast<ListValue> (flatten);
+	ASSERT (flattenList->GetSize () == 3);
+	ASSERT (IntValue::Get (flattenList->GetValue (0)) == 1);
+	ASSERT (IntValue::Get (flattenList->GetValue (1)) == 2);
+	ASSERT (IntValue::Get (flattenList->GetValue (2)) == 3);
+}
+
 }
