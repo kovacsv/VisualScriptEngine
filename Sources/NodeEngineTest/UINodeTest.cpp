@@ -34,8 +34,8 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
-		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		ValueConstPtr a = EvaluateInputSlot (SlotId ("in1"), env);
+		ValueConstPtr b = EvaluateInputSlot (SlotId ("in2"), env);
 		int result = IntValue::Get (a) + IntValue::Get (b);
 		return ValuePtr (new IntValue (result));
 	}
@@ -80,8 +80,8 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
-		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		ValueConstPtr a = EvaluateInputSlot (SlotId ("in1"), env);
+		ValueConstPtr b = EvaluateInputSlot (SlotId ("in2"), env);
 		int result = IntValue::Get (a) + IntValue::Get (b);
 		return ValuePtr (new IntValue (result));
 	}
@@ -134,8 +134,8 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("in1"), env);
-		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("in2"), env);
+		ValueConstPtr a = EvaluateInputSlot (SlotId ("in1"), env);
+		ValueConstPtr b = EvaluateInputSlot (SlotId ("in2"), env);
 		int result = IntValue::Get (a) + IntValue::Get (b);
 		return ValuePtr (new IntValue (result));
 	}

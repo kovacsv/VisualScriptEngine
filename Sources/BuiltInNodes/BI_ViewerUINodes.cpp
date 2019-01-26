@@ -38,7 +38,7 @@ void MultiLineViewerNode::Initialize ()
 
 NE::ValueConstPtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
 {
-	return EvaluateSingleInputSlot (NE::SlotId ("in"), env);
+	return EvaluateInputSlot (NE::SlotId ("in"), env);
 }
 
 void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const

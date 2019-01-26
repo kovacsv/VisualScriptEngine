@@ -72,7 +72,7 @@ public:
 	
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		NE::ValueConstPtr val = EvaluateSingleInputSlot (SlotId ("in"), env);
+		NE::ValueConstPtr val = EvaluateInputSlot (SlotId ("in"), env);
 		int result = 0;
 		if (IsComplexType<NumberValue> (val)) {
 			NE::FlatEnumerate (val, [&] (const NE::ValueConstPtr& value) {
@@ -94,7 +94,7 @@ TEST (ListValueNodeTest_Node)
 
 	{
 		ValueConstPtr result = listMakerNode->Evaluate (NE::EmptyEvaluationEnv);
-		ASSERT (Value::IsType<ListValue> (result));
+		ASSERT (result == nullptr);
 	}
 	
 	{

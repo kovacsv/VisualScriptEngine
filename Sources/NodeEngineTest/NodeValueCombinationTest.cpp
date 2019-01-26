@@ -33,8 +33,8 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		NE::ValueConstPtr a = EvaluateSingleInputSlot (NE::SlotId ("a"), env);
-		NE::ValueConstPtr b = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
+		NE::ValueConstPtr a = EvaluateInputSlot (NE::SlotId ("a"), env);
+		NE::ValueConstPtr b = EvaluateInputSlot (NE::SlotId ("b"), env);
 		if (!NE::IsComplexType<NE::IntValue> (a) || !NE::IsComplexType<NE::IntValue> (b)) {
 			return nullptr;
 		}

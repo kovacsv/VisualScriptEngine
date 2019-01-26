@@ -143,8 +143,8 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValueConstPtr firstResult = EvaluateSingleInputSlot (SlotId ("first"), env);
-		ValueConstPtr secondResult = EvaluateSingleInputSlot (SlotId ("second"), env);
+		ValueConstPtr firstResult = EvaluateInputSlot (SlotId ("first"), env);
+		ValueConstPtr secondResult = EvaluateInputSlot (SlotId ("second"), env);
 		return ValuePtr (new IntValue (IntValue::Get (firstResult) + IntValue::Get (secondResult)));
 	}
 };
@@ -166,9 +166,9 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ListValueConstPtr result = EvaluateInputSlot (SlotId ("in"), env);
+		ValueConstPtr result = EvaluateInputSlot (SlotId ("in"), env);
 		int sum = 0;
-		result->Enumerate ([&] (const ValueConstPtr& val) {
+		FlatEnumerate (result, [&] (const ValueConstPtr& val) {
 			sum += IntValue::Get (val);
 		});
 		return ValuePtr (new IntValue (sum));
@@ -193,8 +193,8 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValueConstPtr firstResult = EvaluateSingleInputSlot (SlotId ("first"), env);
-		ValueConstPtr secondResult = EvaluateSingleInputSlot (SlotId ("second"), env);
+		ValueConstPtr firstResult = EvaluateInputSlot (SlotId ("first"), env);
+		ValueConstPtr secondResult = EvaluateInputSlot (SlotId ("second"), env);
 		return ValuePtr (new IntValue (IntValue::Get (firstResult) + IntValue::Get (secondResult)));
 	}
 };
@@ -217,7 +217,7 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValueConstPtr inputVal = EvaluateSingleInputSlot (SlotId ("in"), env);
+		ValueConstPtr inputVal = EvaluateInputSlot (SlotId ("in"), env);
 		return ValuePtr (new IntValue (IntValue::Get (inputVal) + toAdd));
 	}
 

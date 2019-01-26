@@ -37,7 +37,7 @@ public:
 
 	NE::ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		NE::ValueConstPtr inValue = EvaluateSingleInputSlot (NE::SlotId ("in"), env);
+		NE::ValueConstPtr inValue = EvaluateInputSlot (NE::SlotId ("in"), env);
 		if (!IsSingleType<NE::IntValue> (inValue)) {
 			return nullptr;
 		}

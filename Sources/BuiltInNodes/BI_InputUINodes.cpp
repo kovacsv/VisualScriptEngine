@@ -527,9 +527,9 @@ void IntegerRangeNode::Initialize ()
 
 NE::ValueConstPtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValueConstPtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
-	NE::ValueConstPtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
-	NE::ValueConstPtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
+	NE::ValueConstPtr start = EvaluateInputSlot (NE::SlotId ("start"), env);
+	NE::ValueConstPtr step = EvaluateInputSlot (NE::SlotId ("step"), env);
+	NE::ValueConstPtr count = EvaluateInputSlot (NE::SlotId ("count"), env);
 	if (!NE::IsSingleType<NE::NumberValue> (start) || !NE::IsSingleType<NE::NumberValue> (step) || !NE::IsSingleType<NE::NumberValue> (count)) {
 		return nullptr;
 	}
@@ -609,9 +609,9 @@ void DoubleRangeNode::Initialize ()
 
 NE::ValueConstPtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValueConstPtr start = EvaluateSingleInputSlot (NE::SlotId ("start"), env);
-	NE::ValueConstPtr step = EvaluateSingleInputSlot (NE::SlotId ("step"), env);
-	NE::ValueConstPtr count = EvaluateSingleInputSlot (NE::SlotId ("count"), env);
+	NE::ValueConstPtr start = EvaluateInputSlot (NE::SlotId ("start"), env);
+	NE::ValueConstPtr step = EvaluateInputSlot (NE::SlotId ("step"), env);
+	NE::ValueConstPtr count = EvaluateInputSlot (NE::SlotId ("count"), env);
 	if (!NE::IsSingleType<NE::NumberValue> (start) || !NE::IsSingleType<NE::NumberValue> (step) || !NE::IsSingleType<NE::NumberValue> (count)) {
 		return nullptr;
 	}

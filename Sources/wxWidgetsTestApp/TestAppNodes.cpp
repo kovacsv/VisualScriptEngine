@@ -36,9 +36,9 @@ void ColorNode::Initialize ()
 
 NE::ValueConstPtr ColorNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValueConstPtr r = EvaluateSingleInputSlot (NE::SlotId ("r"), env);
-	NE::ValueConstPtr g = EvaluateSingleInputSlot (NE::SlotId ("g"), env);
-	NE::ValueConstPtr b = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
+	NE::ValueConstPtr r = EvaluateInputSlot (NE::SlotId ("r"), env);
+	NE::ValueConstPtr g = EvaluateInputSlot (NE::SlotId ("g"), env);
+	NE::ValueConstPtr b = EvaluateInputSlot (NE::SlotId ("b"), env);
 	if (!NE::IsComplexType<NE::NumberValue> (r) || !NE::IsComplexType<NE::NumberValue> (g) || !NE::IsComplexType<NE::NumberValue> (b)) {
 		return nullptr;
 	}
@@ -273,8 +273,8 @@ void PointNode::Initialize ()
 
 NE::ValueConstPtr PointNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValueConstPtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
-	NE::ValueConstPtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
+	NE::ValueConstPtr x = EvaluateInputSlot (NE::SlotId ("x"), env);
+	NE::ValueConstPtr y = EvaluateInputSlot (NE::SlotId ("y"), env);
 	if (!NE::IsComplexType<NE::NumberValue> (x) || !NE::IsComplexType<NE::NumberValue> (y)) {
 		return nullptr;
 	}
@@ -339,9 +339,9 @@ void LineNode::Initialize ()
 
 NE::ValueConstPtr LineNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValueConstPtr beg = EvaluateSingleInputSlot (NE::SlotId ("beg"), env);
-	NE::ValueConstPtr end = EvaluateSingleInputSlot (NE::SlotId ("end"), env);
-	NE::ValueConstPtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
+	NE::ValueConstPtr beg = EvaluateInputSlot (NE::SlotId ("beg"), env);
+	NE::ValueConstPtr end = EvaluateInputSlot (NE::SlotId ("end"), env);
+	NE::ValueConstPtr color = EvaluateInputSlot (NE::SlotId ("color"), env);
 	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<PointValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
@@ -400,9 +400,9 @@ void CircleNode::Initialize ()
 
 NE::ValueConstPtr CircleNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValueConstPtr beg = EvaluateSingleInputSlot (NE::SlotId ("center"), env);
-	NE::ValueConstPtr end = EvaluateSingleInputSlot (NE::SlotId ("radius"), env);
-	NE::ValueConstPtr color = EvaluateSingleInputSlot (NE::SlotId ("color"), env);
+	NE::ValueConstPtr beg = EvaluateInputSlot (NE::SlotId ("center"), env);
+	NE::ValueConstPtr end = EvaluateInputSlot (NE::SlotId ("radius"), env);
+	NE::ValueConstPtr color = EvaluateInputSlot (NE::SlotId ("color"), env);
 	if (!NE::IsComplexType<PointValue> (beg) || !NE::IsComplexType<NE::NumberValue> (end) || !NE::IsComplexType<ColorValue> (color)) {
 		return nullptr;
 	}
@@ -482,9 +482,9 @@ void OffsetNode::Initialize ()
 
 NE::ValueConstPtr OffsetNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValueConstPtr geometry = EvaluateSingleInputSlot (NE::SlotId ("geometry"), env);
-	NE::ValueConstPtr x = EvaluateSingleInputSlot (NE::SlotId ("x"), env);
-	NE::ValueConstPtr y = EvaluateSingleInputSlot (NE::SlotId ("y"), env);
+	NE::ValueConstPtr geometry = EvaluateInputSlot (NE::SlotId ("geometry"), env);
+	NE::ValueConstPtr x = EvaluateInputSlot (NE::SlotId ("x"), env);
+	NE::ValueConstPtr y = EvaluateInputSlot (NE::SlotId ("y"), env);
 	if (!NE::IsComplexType<GeometricValue> (geometry) || !NE::IsComplexType<NE::NumberValue> (x) || !NE::IsComplexType<NE::NumberValue> (y)) {
 		return nullptr;
 	}

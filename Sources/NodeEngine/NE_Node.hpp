@@ -129,9 +129,7 @@ public:
 protected:
 	virtual bool			RegisterInputSlot (const InputSlotPtr& newInputSlot);
 	virtual bool			RegisterOutputSlot (const OutputSlotPtr& newOutputSlot);
-
-	ValueConstPtr			EvaluateSingleInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
-	ListValueConstPtr		EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
+	ValueConstPtr			EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
 
 private:
 	virtual void			Initialize () = 0;
@@ -140,7 +138,7 @@ private:
 	virtual bool			IsForceCalculated () const;
 	virtual void			ProcessValue (const ValueConstPtr& value, EvaluationEnv& env) const;
 
-	ListValueConstPtr		EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
+	ValueConstPtr			EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
 
 	NodeId					nodeId;
 	NodeEvaluatorConstPtr	nodeEvaluator;

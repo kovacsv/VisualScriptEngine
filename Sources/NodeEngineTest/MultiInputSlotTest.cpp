@@ -77,7 +77,7 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ListValueConstPtr val = EvaluateInputSlot (SlotId ("in"), env);
+		ValueConstPtr val = EvaluateInputSlot (SlotId ("in"), env);
 		ListValuePtr result (new ListValue ());
 		FlatEnumerate (val, [&] (const ValueConstPtr& flatVal) {
 			result->Push (flatVal->Clone ());

@@ -78,8 +78,8 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		ValueConstPtr a = EvaluateSingleInputSlot (SlotId ("first"), env);
-		ValueConstPtr b = EvaluateSingleInputSlot (SlotId ("second"), env);
+		ValueConstPtr a = EvaluateInputSlot (SlotId ("first"), env);
+		ValueConstPtr b = EvaluateInputSlot (SlotId ("second"), env);
 		double result = NumberValue::ToDouble (a) + NumberValue::ToDouble (b);
 		return ValuePtr (new DoubleValue (result));
 	}

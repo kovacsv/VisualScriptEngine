@@ -275,31 +275,7 @@ bool Node::RegisterOutputSlot (const OutputSlotPtr& newOutputSlot)
 	return true;
 }
 
-ValueConstPtr Node::EvaluateSingleInputSlot (const SlotId& slotId, EvaluationEnv& env) const
-{
-	if (DBGERROR (!HasInputSlot (slotId))) {
-		return nullptr;
-	}
-
-	InputSlotConstPtr inputSlot = GetInputSlot (slotId);
-	if (DBGERROR (inputSlot == nullptr)) {
-		return nullptr;
-	}
-
-	OutputSlotConnectionMode outputSlotConnectionMode = inputSlot->GetOutputSlotConnectionMode ();
-	if (DBGERROR (outputSlotConnectionMode == OutputSlotConnectionMode::Multiple)) {
-		return nullptr;
-	}
-
-	ListValueConstPtr result = EvaluateInputSlot (inputSlot, env);
-	if (DBGERROR (result->GetSize () != 1)) {
-		return nullptr;
-	}
-
-	return result->GetValue (0);
-}
-
-ListValueConstPtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const
+ValueConstPtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const
 {
 	if (DBGERROR (!HasInputSlot (slotId))) {
 		return nullptr;
@@ -323,22 +299,35 @@ void Node::ProcessValue (const ValueConstPtr&, EvaluationEnv&) const
 
 }
 
-ListValueConstPtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const
+ValueConstPtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const
 {
 	if (DBGERROR (nodeEvaluator == nullptr)) {
 		return nullptr;
 	}
 
-	ListValuePtr result (new ListValue ());
 	if (!nodeEvaluator->HasConnectedOutputSlots (inputSlot)) {
-		result->Push (inputSlot->GetDefaultValue ());
+		return inputSlot->GetDefaultValue ();
+	}
+
+	std::vector<OutputSlotConstPtr> connectedOutputSlots;
+	nodeEvaluator->EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
+		connectedOutputSlots.push_back (outputSlot);
+	});
+
+	OutputSlotConnectionMode outputSlotConnectionMode = inputSlot->GetOutputSlotConnectionMode ();
+	if (outputSlotConnectionMode == OutputSlotConnectionMode::Single) {
+		DBGASSERT (connectedOutputSlots.size () == 1);
+		return connectedOutputSlots[0]->Evaluate (env);
+	} else if (inputSlot->GetOutputSlotConnectionMode () == OutputSlotConnectionMode::Multiple) {
+		ListValuePtr result (new ListValue ());
+		for (const OutputSlotConstPtr& outputSlot : connectedOutputSlots) {
+			result->Push (outputSlot->Evaluate (env));
+		}
 		return result;
 	}
 
-	nodeEvaluator->EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
-		result->Push (outputSlot->Evaluate (env));
-	});
-	return result;
+	DBGBREAK ();
+	return nullptr;
 }
 
 NodePtr Node::Clone (const NodeConstPtr& node)

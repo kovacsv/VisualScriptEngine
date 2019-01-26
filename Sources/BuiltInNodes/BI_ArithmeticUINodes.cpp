@@ -38,8 +38,8 @@ void BinaryOperationNode::Initialize ()
 
 NE::ValueConstPtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 {
-	NE::ValueConstPtr aValue = EvaluateSingleInputSlot (NE::SlotId ("a"), env);
-	NE::ValueConstPtr bValue = EvaluateSingleInputSlot (NE::SlotId ("b"), env);
+	NE::ValueConstPtr aValue = EvaluateInputSlot (NE::SlotId ("a"), env);
+	NE::ValueConstPtr bValue = EvaluateInputSlot (NE::SlotId ("b"), env);
 	if (!NE::IsComplexType<NE::NumberValue> (aValue) || !NE::IsComplexType<NE::NumberValue> (bValue)) {
 		return nullptr;
 	}

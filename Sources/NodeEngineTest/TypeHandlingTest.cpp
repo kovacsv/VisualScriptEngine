@@ -204,7 +204,7 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		return EvaluateSingleInputSlot (SlotId ("inA"), env);
+		return EvaluateInputSlot (SlotId ("inA"), env);
 	}
 };
 
@@ -234,7 +234,7 @@ public:
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
 	{
-		return EvaluateSingleInputSlot (SlotId ("inB"), env);
+		return EvaluateInputSlot (SlotId ("inB"), env);
 	}
 };
 
