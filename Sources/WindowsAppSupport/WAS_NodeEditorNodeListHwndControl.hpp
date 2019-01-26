@@ -47,13 +47,17 @@ public:
 	void					TreeViewDoubleClick (LPNMHDR lpnmhdr);
 	void					TreeViewSelectionChanged (LPNMTREEVIEW lpnmtv);
 	void					TreeViewBeginDrag (LPNMTREEVIEW lpnmtv);
+	void					TreeViewEndDrag (int x, int y);
 
 private:
+	void					CreateNode (LPARAM nodeId, int screenX, int screenY);
+
 	NodeTreeView									nodeTreeView;
 	NodeEditorHwndControl							nodeEditorControl;
 	HWND											mainHandle;
 
 	LPARAM											selectedNode;
+	LPARAM											draggedNode;
 	LPARAM											nextNodeId;
 	std::unordered_map<LPARAM, CreatorFunction>		nodeIdToCreator;
 };

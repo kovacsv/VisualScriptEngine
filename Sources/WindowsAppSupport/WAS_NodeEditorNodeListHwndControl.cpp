@@ -22,6 +22,14 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 	}
 
 	switch (msg) {
+		case WM_LBUTTONUP:
+			{
+				ReleaseCapture ();
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				control->TreeViewEndDrag (x, y);
+			}
+			break;
 		case WM_NOTIFY:
 			{
 				LPNMHDR header = (LPNMHDR) lParam;
@@ -126,6 +134,7 @@ NodeEditorNodeListHwndControl::NodeEditorNodeListHwndControl () :
 	nodeEditorControl (),
 	mainHandle (NULL),
 	selectedNode (-1),
+	draggedNode (-1),
 	nextNodeId (0)
 {
 
@@ -199,22 +208,15 @@ void NodeEditorNodeListHwndControl::TreeViewDoubleClick (LPNMHDR lpnmhdr)
 		return;
 	}
 
-	if (selectedNode == -1) {
-		return;
-	}
-
-	auto found = nodeIdToCreator.find (selectedNode);
-	if (DBGERROR (found == nodeIdToCreator.end ())) {
+	if (selectedNode == (LPARAM) -1) {
 		return;
 	}
 
 	RECT clientRect;
 	GetClientRect (nodeEditorControl.GetWindowHandle (), &clientRect);
-
-	NUIE::NodeEditor* nodeEditor = nodeEditorControl.GetNodeEditor ();
 	NUIE::Rect viewRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (0.0, 0.0), NUIE::Size (clientRect.right - clientRect.left, clientRect.bottom - clientRect.top));
-	NUIE::Point modelPosition = nodeEditor->ViewToModel (viewRect.GetCenter ());
-	nodeEditor->AddNode (found->second (modelPosition));
+	NUIE::Point center = viewRect.GetCenter ();
+	CreateNode (selectedNode, (int) center.GetX (), (int) center.GetY ());
 }
 
 void NodeEditorNodeListHwndControl::TreeViewBeginDrag (LPNMTREEVIEW lpnmtv)
@@ -227,9 +229,43 @@ void NodeEditorNodeListHwndControl::TreeViewBeginDrag (LPNMTREEVIEW lpnmtv)
 		return;
 	}
 
-	HTREEITEM item = lpnmtv->itemOld.hItem;
+	HTREEITEM item = lpnmtv->itemNew.hItem;
 	TreeView_SelectItem (lpnmtv->hdr.hwndFrom, item);
-	(void) item;
+	SetCapture (mainHandle);
+	SetCursor (LoadCursor (NULL, IDC_CROSS));
+
+	draggedNode = lpnmtv->itemNew.lParam;
+}
+
+void NodeEditorNodeListHwndControl::TreeViewEndDrag (int x, int y)
+{
+	if (DBGERROR (draggedNode == (LPARAM) -1)) {
+		return;
+	}
+
+	RECT editorRect;
+	GetClientRect (nodeEditorControl.GetWindowHandle (), &editorRect);
+	MapWindowPoints (nodeEditorControl.GetWindowHandle (), mainHandle, (LPPOINT) &editorRect, 2);
+
+	if (x < editorRect.left || x > editorRect.right || y < editorRect.top || y > editorRect.bottom) {
+		draggedNode = (LPARAM) -1;
+		return;
+	}
+
+	CreateNode (draggedNode, x - editorRect.left, y - editorRect.top);
+	draggedNode = (LPARAM) -1;
+}
+
+void NodeEditorNodeListHwndControl::CreateNode (LPARAM nodeId, int screenX, int screenY)
+{
+	auto found = nodeIdToCreator.find (nodeId);
+	if (DBGERROR (found == nodeIdToCreator.end ())) {
+		return;
+	}
+
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl.GetNodeEditor ();
+	NUIE::Point modelPosition = nodeEditor->ViewToModel (NUIE::Point (screenX, screenY));
+	nodeEditor->AddNode (found->second (modelPosition));
 }
 
 }
