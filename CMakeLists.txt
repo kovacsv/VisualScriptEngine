@@ -161,6 +161,29 @@ if (MSVC)
 	target_link_libraries (WindowsEmbeddingDemo NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
 	SetCompilerOptions (WindowsEmbeddingDemo)
 	
+	# WindowsEmbeddingDemo2
+
+	set (WindowsEmbeddingDemo2SourcesFolder Sources/WindowsEmbeddingDemo2)
+	file (GLOB WindowsEmbeddingDemo2HeaderFiles ${WindowsEmbeddingDemo2SourcesFolder}/*.hpp)
+	file (GLOB WindowsEmbeddingDemo2SourceFiles ${WindowsEmbeddingDemo2SourcesFolder}/*.cpp)
+	set (
+		WindowsEmbeddingDemo2Files
+		${WindowsEmbeddingDemo2HeaderFiles}
+		${WindowsEmbeddingDemo2SourceFiles}
+	)
+	source_group ("Sources" FILES ${WindowsEmbeddingDemo2Files})
+	add_executable (WindowsEmbeddingDemo2 WIN32 ${WindowsEmbeddingDemo2Files})
+	target_include_directories (
+		WindowsEmbeddingDemo2 PUBLIC
+		${NodeEngineSourcesFolder}
+		${NodeUIEngineSourcesFolder}
+		${BuiltInNodesSourcesFolder}
+		${TestFrameworkSourcesFolder}
+		${WindowsAppSupportSourcesFolder}
+	)
+	target_link_libraries (WindowsEmbeddingDemo2 NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
+	SetCompilerOptions (WindowsEmbeddingDemo2)
+	
 	if (NOT ${WXWIDGETS_DIR} STREQUAL "")
 		link_directories (${WXWIDGETS_DIR}/lib/vc_x64_lib)
 

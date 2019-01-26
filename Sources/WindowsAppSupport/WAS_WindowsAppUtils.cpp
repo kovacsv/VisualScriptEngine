@@ -80,9 +80,12 @@ HWND CreateCustomControl (HWND parentHandle, WNDPROC windowProc, LPCWSTR classNa
 
 	RegisterClassEx (&windowClass);
 	HWND hwnd = CreateWindowEx (
-		0, windowClass.lpszClassName, L"", WS_CHILD,
+		0, windowClass.lpszClassName, L"", WS_CHILD | WS_CLIPCHILDREN,
 		CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, parentHandle, NULL, NULL, lParam
 	);
+
+	ShowWindow (hwnd, SW_SHOW);
+	UpdateWindow (hwnd);
 
 	return hwnd;
 }

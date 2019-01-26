@@ -35,7 +35,7 @@ private:
 	int counter;
 };
 
-static LRESULT CALLBACK StaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	static SetCaptureHandler setCaptureHandler;
 
@@ -214,15 +214,12 @@ bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 	nodeEditor = nodeEditorPtr;
 	DBGASSERT (nodeEditor != nullptr);
 
-	hwnd = CreateCustomControl (parentHandle, StaticWindowProc, L"NodeEditorHwndControl", this);
+	hwnd = CreateCustomControl (parentHandle, NodeEditorStaticWindowProc, L"NodeEditorHwndControl", this);
 	if (DBGERROR (hwnd == NULL)) {
 		return false;
 	}
 
 	bitmapContext.Init (hwnd);
-
-	ShowWindow (hwnd, SW_SHOW);
-	UpdateWindow (hwnd);
 	MoveWindow (hwnd, x, y, width, height, TRUE);
 
 	return true;

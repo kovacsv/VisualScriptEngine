@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <minmax.h>
+#include <CommCtrl.h>
 
 #pragma warning (push)
 #pragma warning (disable : 4244)
