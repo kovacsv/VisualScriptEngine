@@ -109,6 +109,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 	boxSizer->Add (okButton, 0, wxEXPAND | wxALL, 5);
 
 	SetSizerAndFit (boxSizer);
+	CenterOnParent ();
 }
 
 void ParameterDialog::OnOkButtonClick (wxCommandEvent&)
