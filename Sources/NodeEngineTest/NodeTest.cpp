@@ -67,7 +67,7 @@ public:
 
 TEST (EvaluationEnvTest)
 {
-	EvaluationEnv env (std::shared_ptr<EvaluationData> (new DummyEvaluationData (5)));
+	EvaluationEnv env (EvaluationDataPtr (new DummyEvaluationData (5)));
 	ASSERT (!env.IsDataType<TestNode> ());
 	ASSERT (env.IsDataType<EvaluationData> ());
 	ASSERT (env.IsDataType<DummyEvaluationData> ());

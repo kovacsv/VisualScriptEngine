@@ -13,10 +13,13 @@ public:
 	virtual ~EvaluationData ();
 };
 
+typedef std::shared_ptr<EvaluationData> EvaluationDataPtr;
+typedef std::shared_ptr<const EvaluationData> EvaluationDataConstPtr;
+
 class EvaluationEnv
 {
 public:
-	EvaluationEnv (const std::shared_ptr<EvaluationData>& data);
+	EvaluationEnv (const EvaluationDataPtr& data);
 	~EvaluationEnv ();
 
 	template <typename T>
@@ -26,7 +29,7 @@ public:
 	std::shared_ptr<T> GetData ();
 
 private:
-	std::shared_ptr<EvaluationData> data;
+	EvaluationDataPtr data;
 };
 
 template <typename T>

@@ -13,7 +13,7 @@ EvaluationData::~EvaluationData ()
 
 }
 
-EvaluationEnv::EvaluationEnv (const std::shared_ptr<EvaluationData>& data) :
+EvaluationEnv::EvaluationEnv (const EvaluationDataPtr& data) :
 	data (data)
 {
 

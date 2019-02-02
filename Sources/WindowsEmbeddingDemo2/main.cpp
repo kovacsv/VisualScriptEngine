@@ -2,7 +2,7 @@
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandlers.hpp"
-#include "WAS_NodeEditorNodeListHwndControl.hpp"
+#include "WAS_HwndNodeUIEnvironment.hpp"
 #include "WAS_ParameterDialog.hpp"
 
 #include "BI_InputUINodes.hpp"
@@ -13,126 +13,7 @@
 #include <windows.h>
 #include <windowsx.h>
 
-class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
-{
-public:
-	MyNodeUIEnvironment () :
-		NUIE::NodeUIEnvironment (),
-		stringSettings (L'.', L',', 2),
-		skinParams (),
-		eventHandlers (),
-		evaluationEnv (nullptr),
-		nodeEditorControl ()
-	{
-	
-	}
-
-	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
-	{
-		RECT clientRect;
-		GetClientRect (parentHandle, &clientRect);
-		int width = clientRect.right - clientRect.left;
-		int height = clientRect.bottom - clientRect.top;
-
-		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-		eventHandlers.Init (nodeEditorControl.GetEditorHandle ());
-
-		nodeEditorControl.RegisterNode (L"Input Nodes", L"Boolean", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
-		});
-		nodeEditorControl.RegisterNode (L"Input Nodes", L"Integer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
-		});
-		nodeEditorControl.RegisterNode (L"Input Nodes", L"Number", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
-		});
-		nodeEditorControl.RegisterNode (L"Input Nodes", L"Integer Range", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", position));
-		});
-		nodeEditorControl.RegisterNode (L"Input Nodes", L"Number Range", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", position));
-		});
-		nodeEditorControl.RegisterNode (L"Arithmetic Nodes", L"Addition", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
-		});
-		nodeEditorControl.RegisterNode (L"Arithmetic Nodes", L"Subtraction", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
-		});
-		nodeEditorControl.RegisterNode (L"Arithmetic Nodes", L"Multiplication", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
-		});
-		nodeEditorControl.RegisterNode (L"Arithmetic Nodes", L"Division", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
-		});
-		nodeEditorControl.RegisterNode (L"Other Nodes", L"Viewer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
-		});
-	}
-
-	void OnResize (int x, int y, int width, int height)
-	{
-		nodeEditorControl.Resize (x, y, width, height);
-	}
-
-	virtual const NE::StringSettings& GetStringSettings () override
-	{
-		return stringSettings;
-	}
-
-	virtual const NUIE::SkinParams& GetSkinParams () override
-	{
-		return skinParams;
-	}
-
-	virtual NUIE::DrawingContext& GetDrawingContext () override
-	{
-		return nodeEditorControl.GetEditorContext ();
-	}
-	
-	virtual NE::EvaluationEnv& GetEvaluationEnv () override
-	{
-		return evaluationEnv;
-	}
-
-	virtual void OnEvaluationBegin () override
-	{
-
-	}
-
-	virtual void OnEvaluationEnd () override
-	{
-
-	}
-
-	virtual void OnValuesRecalculated () override
-	{
-		
-	}
-
-	virtual void OnRedrawRequested () override
-	{
-		nodeEditorControl.InvalidateEditor ();
-	}
-
-	virtual NUIE::EventHandlers& GetEventHandlers () override
-	{
-		return eventHandlers;
-	}
-
-	virtual double GetMouseMoveMinOffset () override
-	{
-		return 2.0;
-	}
-
-private:
-	NE::BasicStringSettings				stringSettings;
-	NUIE::DefaultSkinParams				skinParams;
-	WAS::HwndEventHandlers				eventHandlers;
-	NE::EvaluationEnv					evaluationEnv;
-	WAS::NodeEditorNodeListHwndControl	nodeEditorControl;
-};
-
-static MyNodeUIEnvironment uiEnvironment;
+static WAS::HwndNodeUIEnvironment uiEnvironment (nullptr);
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
 #define MENU_FILE_NEW	1000
@@ -164,6 +45,37 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 		case WM_CREATE:
 			{
 				uiEnvironment.Init (&nodeEditor, hwnd);
+
+				uiEnvironment.RegisterNode (L"Input Nodes", L"Boolean", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
+				});
+				uiEnvironment.RegisterNode (L"Input Nodes", L"Integer", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
+				});
+				uiEnvironment.RegisterNode (L"Input Nodes", L"Number", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
+				});
+				uiEnvironment.RegisterNode (L"Input Nodes", L"Integer Range", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", position));
+				});
+				uiEnvironment.RegisterNode (L"Input Nodes", L"Number Range", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", position));
+				});
+				uiEnvironment.RegisterNode (L"Arithmetic Nodes", L"Addition", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
+				});
+				uiEnvironment.RegisterNode (L"Arithmetic Nodes", L"Subtraction", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
+				});
+				uiEnvironment.RegisterNode (L"Arithmetic Nodes", L"Multiplication", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
+				});
+				uiEnvironment.RegisterNode (L"Arithmetic Nodes", L"Division", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
+				});
+				uiEnvironment.RegisterNode (L"Other Nodes", L"Viewer", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
+				});
 
 				nodeEditor.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10)));
 				nodeEditor.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10)));
