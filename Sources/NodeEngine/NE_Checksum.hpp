@@ -23,7 +23,10 @@ public:
 	bool	operator!= (const Checksum& rhs) const;
 
 private:
-	int checksum;
+	void	AddInteger (int val);
+
+	int		checksum;
+	int		counter;
 };
 
 }

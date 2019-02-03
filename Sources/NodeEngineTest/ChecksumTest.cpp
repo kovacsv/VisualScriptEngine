@@ -96,4 +96,24 @@ TEST (ChecksumStringTest)
 	ASSERT (c1 != c2);
 }
 
+TEST (ChecksumMultipleZerosTest)
+{
+	Checksum c1;
+	Checksum c2;
+	c1.Add (0);
+	c2.Add (0);
+	c2.Add (0);
+	ASSERT (c1 != c2);
+}
+
+TEST (ChecksumMultipleOnesTest)
+{
+	Checksum c1;
+	Checksum c2;
+	c1.Add (1);
+	c2.Add (1);
+	c2.Add (1);
+	ASSERT (c1 != c2);
+}
+
 }
