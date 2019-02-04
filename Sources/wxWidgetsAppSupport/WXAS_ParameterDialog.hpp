@@ -14,9 +14,10 @@ class ParameterDialog : public wxDialog
 public:
 	ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr& paramInterface);
 
-	void	OnOkButtonClick (wxCommandEvent& evt);
+	void	OnButtonClick (wxCommandEvent& evt);
 	void	OnTextChanged (wxCommandEvent& evt);
 	void	OnChoiceChanged (wxCommandEvent& evt);
+	void	OnKeyDown (wxKeyEvent& evt);
 
 private:
 	struct ParamUIData

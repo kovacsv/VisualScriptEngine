@@ -113,52 +113,54 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 	SetEscapeId (wxID_CANCEL);
 }
 
-void ParameterDialog::OnOkButtonClick (wxCommandEvent&)
+void ParameterDialog::OnButtonClick (wxCommandEvent& evt)
 {
-	bool isAllParameterValid = true;
-	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
-		ParamUIData& uiData = paramUIDataList[i];
-		if (!uiData.isChanged) {
-			continue;
+	if (evt.GetId () == wxID_OK) {
+		bool isAllParameterValid = true;
+		for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
+			ParamUIData& uiData = paramUIDataList[i];
+			if (!uiData.isChanged) {
+				continue;
+			}
+
+			NUIE::ParameterType type = paramInterface->GetParameterType (i);
+			NE::ValuePtr value = uiData.GetValue (type);
+			if (DBGERROR (value == nullptr)) {
+				isAllParameterValid = false;
+				continue;
+			}
+
+			if (!paramInterface->IsValidParameterValue (i, value)) {
+				NE::ValueConstPtr oldValue = paramInterface->GetParameterValue (i);
+				std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
+				uiData.SetStringValue (oldValueString);
+				uiData.isChanged = false;
+				isAllParameterValid = false;
+			}
 		}
 
-		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		NE::ValuePtr value = uiData.GetValue (type);
-		if (DBGERROR (value == nullptr)) {
-			isAllParameterValid = false;
-			continue;
+		if (!isAllParameterValid) {
+			return;
 		}
 
-		if (!paramInterface->IsValidParameterValue (i, value)) {
-			NE::ValueConstPtr oldValue = paramInterface->GetParameterValue (i);
-			std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
-			uiData.SetStringValue (oldValueString);
-			uiData.isChanged = false;
-			isAllParameterValid = false;
-		}
-	}
+		for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
+			const ParamUIData& uiData = paramUIDataList[i];
+			if (!uiData.isChanged) {
+				continue;
+			}
 
-	if (!isAllParameterValid) {
-		return;
-	}
+			NUIE::ParameterType type = paramInterface->GetParameterType (i);
+			NE::ValuePtr value = uiData.GetValue (type);
+			if (DBGERROR (value == nullptr)) {
+				continue;
+			}
 
-	for (size_t i = 0; i < paramInterface->GetParameterCount (); ++i) {
-		const ParamUIData& uiData = paramUIDataList[i];
-		if (!uiData.isChanged) {
-			continue;
+			paramInterface->SetParameterValue (i, value);
 		}
 
-		NUIE::ParameterType type = paramInterface->GetParameterType (i);
-		NE::ValuePtr value = uiData.GetValue (type);
-		if (DBGERROR (value == nullptr)) {
-			continue;
+		if (isAllParameterValid) {
+			EndModal (wxID_OK);
 		}
-
-		paramInterface->SetParameterValue (i, value);
-	}
-
-	if (isAllParameterValid) {
-		EndModal (wxID_OK);
 	}
 }
 
@@ -172,6 +174,14 @@ void ParameterDialog::OnChoiceChanged (wxCommandEvent& evt)
 {
 	int paramIndex = ControlIdToParamId (evt.GetId ());
 	paramUIDataList[paramIndex].isChanged = true;
+}
+
+void ParameterDialog::OnKeyDown (wxKeyEvent& evt)
+{
+	if (evt.GetKeyCode () == WXK_ESCAPE) {
+		EndModal (wxID_CANCEL);
+	}
+	evt.Skip ();
 }
 
 ParameterDialog::ParamUIData::ParamUIData (wxControl* control) :
@@ -225,9 +235,10 @@ NE::ValuePtr ParameterDialog::ParamUIData::GetValue (NUIE::ParameterType type) c
 }
 
 BEGIN_EVENT_TABLE (ParameterDialog, wxDialog)
-EVT_BUTTON (wxID_OK, ParameterDialog::OnOkButtonClick)
+EVT_BUTTON (wxID_ANY, ParameterDialog::OnButtonClick)
 EVT_TEXT (wxID_ANY, ParameterDialog::OnTextChanged)
 EVT_CHOICE (wxID_ANY, ParameterDialog::OnChoiceChanged)
+EVT_CHAR_HOOK (ParameterDialog::OnKeyDown)
 END_EVENT_TABLE ()
 
 }
