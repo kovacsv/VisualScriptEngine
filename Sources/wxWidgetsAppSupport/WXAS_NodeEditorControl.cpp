@@ -46,7 +46,7 @@ NUIE::MenuCommandPtr NodeEditorEventHandlers::OnContextMenu (NUIE::NodeUIManager
 bool NodeEditorEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramInterface)
 {
 	ParameterDialog paramDialog (panel, paramInterface);
-	if (paramDialog.ShowModal () == ParameterDialog::DialogIds::OkButtonId) {
+	if (paramDialog.ShowModal () == wxID_OK) {
 		return true;
 	}
 	return false;

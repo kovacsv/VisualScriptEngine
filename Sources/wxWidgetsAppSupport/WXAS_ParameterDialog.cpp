@@ -36,7 +36,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 	paramInterface (paramInterface),
 	gridSizer (new wxGridSizer (2, 5, 5)),
 	boxSizer (new wxBoxSizer (wxVERTICAL)),
-	okButton (new wxButton (this, DialogIds::OkButtonId, L"OK"))
+	okButton (new wxButton (this, wxID_OK, L"OK"))
 {
 	gridSizer->SetRows (paramInterface->GetParameterCount ());
 	for (size_t paramIndex = 0; paramIndex < paramInterface->GetParameterCount (); ++paramIndex) {
@@ -110,6 +110,7 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 
 	SetSizerAndFit (boxSizer);
 	CenterOnParent ();
+	SetEscapeId (wxID_CANCEL);
 }
 
 void ParameterDialog::OnOkButtonClick (wxCommandEvent&)
@@ -157,7 +158,7 @@ void ParameterDialog::OnOkButtonClick (wxCommandEvent&)
 	}
 
 	if (isAllParameterValid) {
-		EndModal (DialogIds::OkButtonId);
+		EndModal (wxID_OK);
 	}
 }
 
@@ -224,7 +225,7 @@ NE::ValuePtr ParameterDialog::ParamUIData::GetValue (NUIE::ParameterType type) c
 }
 
 BEGIN_EVENT_TABLE (ParameterDialog, wxDialog)
-EVT_BUTTON (DialogIds::OkButtonId, ParameterDialog::OnOkButtonClick)
+EVT_BUTTON (wxID_OK, ParameterDialog::OnOkButtonClick)
 EVT_TEXT (wxID_ANY, ParameterDialog::OnTextChanged)
 EVT_CHOICE (wxID_ANY, ParameterDialog::OnChoiceChanged)
 END_EVENT_TABLE ()

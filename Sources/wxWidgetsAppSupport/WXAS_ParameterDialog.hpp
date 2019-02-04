@@ -12,11 +12,6 @@ namespace WXAS
 class ParameterDialog : public wxDialog
 {
 public:
-	enum DialogIds
-	{
-		OkButtonId = 1001
-	};
-
 	ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr& paramInterface);
 
 	void	OnOkButtonClick (wxCommandEvent& evt);
