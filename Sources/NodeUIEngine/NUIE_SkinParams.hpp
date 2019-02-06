@@ -33,6 +33,10 @@ public:
 	virtual const Color&	GetHasValueStatusColor () const = 0;
 	virtual const Color&	GetHasNoValueStatusColor () const = 0;
 
+	virtual const Pen&		GetButtonBorderPen () const = 0;
+	virtual const Color&	GetButtonBackgroundColor () const = 0;
+	virtual const Color&	GetSelectedButtonBackgroundColor () const = 0;
+
 	virtual const Font&		GetGroupNameFont () const = 0;
 	virtual const Color&	GetGroupNameColor () const = 0;
 	virtual const Color&	GetGroupBackgroundColor () const = 0;
@@ -65,6 +69,10 @@ public:
 	virtual const Color&	GetHasValueStatusColor () const override;
 	virtual const Color&	GetHasNoValueStatusColor () const override;
 
+	virtual const Pen&		GetButtonBorderPen () const override;
+	virtual const Color&	GetButtonBackgroundColor () const override;
+	virtual const Color&	GetSelectedButtonBackgroundColor () const override;
+
 	virtual const Font&		GetGroupNameFont () const override;
 	virtual const Color&	GetGroupNameColor () const override;
 	virtual const Color&	GetGroupBackgroundColor () const override;
@@ -90,6 +98,10 @@ protected:
 
 	Color	hasValueStatusColor;
 	Color	hasNoValueStatusColor;
+
+	Pen		buttonBorderPen;
+	Color	buttonBackgroundColor;
+	Color	selectedButtonBackgroundColor;
 
 	Font	groupNameFont;
 	Color	groupNameColor;

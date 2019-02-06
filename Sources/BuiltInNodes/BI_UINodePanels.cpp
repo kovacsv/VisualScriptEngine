@@ -5,10 +5,6 @@
 namespace BI
 {
 
-static const NUIE::Pen ButtonBorderPen = NUIE::Pen (NUIE::Color (50, 75, 100), 1.0);
-static const NUIE::Color ButtonBackgroundColor = NUIE::Color (150, 175, 200);
-static const NUIE::Color ButtonSelectedBackgroundColor = NUIE::Color (190, 215, 240);
-
 SlotRectCollection::SlotRectCollection ()
 {
 
@@ -304,14 +300,14 @@ void NodeUILeftRightButtonsPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, con
 	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (leftButtonRect.GetTopRight (), NUIE::Size (rightButtonRect.GetLeft () - leftButtonRect.GetRight (), panelTextSize.GetHeight ()));
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), panelText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
 
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (leftButtonRect, ButtonBackgroundColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (leftButtonRect, skinParams.GetButtonBackgroundColor ())));
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (leftButtonRect, skinParams.GetNodeTextFont (), leftButtonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (leftButtonRect, ButtonBorderPen)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (leftButtonRect, skinParams.GetButtonBorderPen ())));
 	drawingImage.AddSpecialRect (leftButtonId, leftButtonRect);
 
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rightButtonRect, ButtonBackgroundColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rightButtonRect, skinParams.GetButtonBackgroundColor ())));
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rightButtonRect, skinParams.GetNodeTextFont (), rightButtonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (rightButtonRect, ButtonBorderPen)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (rightButtonRect, skinParams.GetButtonBorderPen ())));
 	drawingImage.AddSpecialRect (rightButtonId, rightButtonRect);
 }
 
@@ -358,17 +354,17 @@ void NodeUISwitchPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::R
 	NUIE::Rect leftSwitchRect = NUIE::Rect::FromPositionAndSize (switchRect.GetTopLeft (), leftSwitchSize);
 	NUIE::Rect rightSwitchRect = NUIE::Rect::FromPositionAndSize (leftSwitchRect.GetTopRight (), rightSwitchSize);
 
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (switchRect, ButtonBackgroundColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (switchRect, skinParams.GetButtonBackgroundColor ())));
 	if (selectedIndex == 0) {
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (leftSwitchRect, ButtonSelectedBackgroundColor)));
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (leftSwitchRect, skinParams.GetSelectedButtonBackgroundColor ())));
 	} else if (selectedIndex == 1) {
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rightSwitchRect, ButtonSelectedBackgroundColor)));
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rightSwitchRect, skinParams.GetSelectedButtonBackgroundColor ())));
 	}
 
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (leftSwitchRect, skinParams.GetNodeTextFont (), leftSwitchText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rightSwitchRect, skinParams.GetNodeTextFont (), rightSwitchText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
 	
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (switchRect, ButtonBorderPen)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (switchRect, skinParams.GetButtonBorderPen ())));
 	drawingImage.AddSpecialRect (switchRectId, switchRect);
 }
 

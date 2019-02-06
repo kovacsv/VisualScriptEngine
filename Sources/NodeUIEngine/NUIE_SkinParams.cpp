@@ -29,6 +29,9 @@ DefaultSkinParams::DefaultSkinParams () :
 	selectionRectPen (Color (0, 138, 184), 1.0),
 	hasValueStatusColor (Color (0, 255, 0)),
 	hasNoValueStatusColor (Color (255, 0, 0)),
+	buttonBorderPen (Color (50, 75, 100), 1.0),
+	buttonBackgroundColor (150, 175, 200),
+	selectedButtonBackgroundColor (190, 215, 240),
 	groupNameFont (L"Arial", 18.0),
 	groupNameColor (Color (0, 0, 0)),
 	groupBackgroundColor (Color (160, 200, 240)),
@@ -115,6 +118,21 @@ const Color& DefaultSkinParams::GetHasValueStatusColor () const
 const Color& DefaultSkinParams::GetHasNoValueStatusColor () const
 {
 	return hasNoValueStatusColor;
+}
+
+const Pen& DefaultSkinParams::GetButtonBorderPen () const
+{
+	return buttonBorderPen;
+}
+
+const Color& DefaultSkinParams::GetButtonBackgroundColor () const
+{
+	return buttonBackgroundColor;
+}
+
+const Color& DefaultSkinParams::GetSelectedButtonBackgroundColor () const
+{
+	return selectedButtonBackgroundColor;
 }
 
 const Font& DefaultSkinParams::GetGroupNameFont () const
