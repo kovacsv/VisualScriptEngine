@@ -107,22 +107,6 @@ bool MultiLineViewerNode::IsForceCalculated () const
 
 void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
-	class NodeUIMultiLineTextViewerPanel : public NodeUIMultiLineTextPanel
-	{
-	public:
-		NodeUIMultiLineTextViewerPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t textsPerPage) :
-			NodeUIMultiLineTextPanel (nodeTexts, env, textsPerPage)
-		{
-		
-		}
-
-	private:
-		virtual NUIE::Color GetBackgroundColor (NUIE::NodeUIDrawingEnvironment&) const override
-		{
-			return NUIE::Color (255, 255, 100);
-		}
-	};
-
 	std::vector<std::wstring> nodeTexts;
 	if (HasCalculatedValue ()) {
 		NE::ValueConstPtr nodeValue = GetCalculatedValue ();
@@ -154,7 +138,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (GetNodeName ())));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
-	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextViewerPanel (nodeTextsToShow, env, textsPerPage)));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextPanel (nodeTextsToShow, env, textsPerPage)));
 	if (textCount > textsPerPage) {
 		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
 	}

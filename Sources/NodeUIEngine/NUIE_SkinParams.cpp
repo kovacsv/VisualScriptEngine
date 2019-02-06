@@ -27,11 +27,13 @@ DefaultSkinParams::DefaultSkinParams () :
 	slotTextBackgroundColor (225, 225, 225),
 	selectionBlendColor (0, 255, 0),
 	selectionRectPen (Color (0, 138, 184), 1.0),
-	hasValueStatusColor (Color (0, 255, 0)),
-	hasNoValueStatusColor (Color (255, 0, 0)),
+	hasValueStatusColor (0, 255, 0),
+	hasNoValueStatusColor (255, 0, 0),
 	buttonBorderPen (Color (50, 75, 100), 1.0),
 	buttonBackgroundColor (150, 175, 200),
 	selectedButtonBackgroundColor (190, 215, 240),
+	textPanelTextColor (0, 0, 0),
+	textPanelBackgroundColor (255, 255, 100),
 	groupNameFont (L"Arial", 18.0),
 	groupNameColor (Color (0, 0, 0)),
 	groupBackgroundColor (Color (160, 200, 240)),
@@ -133,6 +135,16 @@ const Color& DefaultSkinParams::GetButtonBackgroundColor () const
 const Color& DefaultSkinParams::GetSelectedButtonBackgroundColor () const
 {
 	return selectedButtonBackgroundColor;
+}
+
+const Color& DefaultSkinParams::GetTextPanelTextColor () const
+{
+	return textPanelTextColor;
+}
+
+const Color& DefaultSkinParams::GetTextPanelBackgroundColor () const
+{
+	return textPanelBackgroundColor;
 }
 
 const Font& DefaultSkinParams::GetGroupNameFont () const

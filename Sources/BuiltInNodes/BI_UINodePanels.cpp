@@ -184,12 +184,12 @@ void NodeUIMultiLineTextPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const 
 
 NUIE::Color NodeUIMultiLineTextPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	return env.GetSkinParams ().GetNodeContentTextColor ();
+	return env.GetSkinParams ().GetTextPanelTextColor ();
 }
 
 NUIE::Color NodeUIMultiLineTextPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	return env.GetSkinParams ().GetNodeContentBackgroundColor ();
+	return env.GetSkinParams ().GetTextPanelBackgroundColor ();
 }
 
 NodeUISlotPanel::NodeUISlotPanel (const NUIE::UINode& node, NUIE::NodeUIDrawingEnvironment& env) :
