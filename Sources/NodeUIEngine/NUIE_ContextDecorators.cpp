@@ -101,9 +101,9 @@ ColorBlenderContextDecorator::ColorBlenderContextDecorator (DrawingContext& deco
 Color ColorBlenderContextDecorator::GetChangedColor (const Color& origColor)
 {
 	return Color (
-		(unsigned char) ((origColor.GetR () + blendColor.GetR ()) / 2.0),
-		(unsigned char) ((origColor.GetG () + blendColor.GetG ()) / 2.0),
-		(unsigned char) ((origColor.GetB () + blendColor.GetB ()) / 2.0)
+		(unsigned char) ((4 * origColor.GetR () + blendColor.GetR ()) / 5.0),
+		(unsigned char) ((4 * origColor.GetG () + blendColor.GetG ()) / 5.0),
+		(unsigned char) ((4 * origColor.GetB () + blendColor.GetB ()) / 5.0)
 	);
 }
 

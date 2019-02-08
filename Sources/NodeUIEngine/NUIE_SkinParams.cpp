@@ -25,8 +25,9 @@ DefaultSkinParams::DefaultSkinParams () :
 	nodeBorderPen (Color (0, 0, 0), 1.0),
 	slotTextColor (0, 0, 0),
 	slotTextBackgroundColor (225, 225, 225),
-	selectionBlendColor (0, 255, 0),
+	selectionBlendColor (0, 138, 184),
 	selectionRectPen (Color (0, 138, 184), 1.0),
+	nodeSelectionRectPen (Color (0, 138, 184), 5.0),
 	hasValueStatusColor (0, 255, 0),
 	hasNoValueStatusColor (255, 0, 0),
 	buttonBorderPen (Color (50, 75, 100), 1.0),
@@ -102,7 +103,7 @@ const Color& DefaultSkinParams::GetSlotTextBackgroundColor () const
 	return slotTextBackgroundColor;
 }
 
-const NUIE::Color& DefaultSkinParams::GetSelectionBlendColor () const
+const Color& DefaultSkinParams::GetSelectionBlendColor () const
 {
 	return selectionBlendColor;
 }
@@ -110,6 +111,11 @@ const NUIE::Color& DefaultSkinParams::GetSelectionBlendColor () const
 const NUIE::Pen& DefaultSkinParams::GetSelectionRectPen () const
 {
 	return selectionRectPen;
+}
+
+const NUIE::Pen& DefaultSkinParams::GetNodeSelectionRectPen () const
+{
+	return nodeSelectionRectPen;
 }
 
 const Color& DefaultSkinParams::GetHasValueStatusColor () const

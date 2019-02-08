@@ -29,6 +29,7 @@ public:
 
 	virtual const Color&	GetSelectionBlendColor () const = 0;
 	virtual const Pen&		GetSelectionRectPen () const = 0;
+	virtual const Pen&		GetNodeSelectionRectPen () const = 0;
 
 	virtual const Color&	GetHasValueStatusColor () const = 0;
 	virtual const Color&	GetHasNoValueStatusColor () const = 0;
@@ -68,6 +69,7 @@ public:
 
 	virtual const Color&	GetSelectionBlendColor () const override;
 	virtual const Pen&		GetSelectionRectPen () const override;
+	virtual const Pen&		GetNodeSelectionRectPen () const override;
 
 	virtual const Color&	GetHasValueStatusColor () const override;
 	virtual const Color&	GetHasNoValueStatusColor () const override;
@@ -101,6 +103,7 @@ protected:
 
 	Color	selectionBlendColor;
 	Pen		selectionRectPen;
+	Pen		nodeSelectionRectPen;
 
 	Color	hasValueStatusColor;
 	Color	hasNoValueStatusColor;
