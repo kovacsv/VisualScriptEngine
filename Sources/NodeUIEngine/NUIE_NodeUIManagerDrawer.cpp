@@ -114,7 +114,6 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& env, double
 	Pen selectionPen (skinParams.GetNodeSelectionRectPen ().GetColor (), selectionThickness);
 
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
-
 	for (const UINode* uiNode : sortedNodeList) {
 		bool begSelected = selectedNodes.Contains (uiNode->GetId ());
 		uiNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
