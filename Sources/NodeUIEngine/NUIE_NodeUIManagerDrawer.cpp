@@ -173,7 +173,7 @@ void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& env, const UINode*
 
 	if (uiManager.GetSelectedNodes ().Contains (uiNode->GetId ())) {
 		env.GetDrawingContext ().FillRect (selectionRect, env.GetSkinParams ().GetNodeSelectionRectPen ().GetColor ());
-		ColorBlenderContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor ());
+		ColorBlenderContextDecorator selectionContext (env.GetDrawingContext (), env.GetSkinParams ().GetSelectionBlendColor (), 4, 1);
 		NodeUIDrawingEnvironmentContextDecorator selectionEnv (env, selectionContext);
 		uiNode->Draw (selectionEnv);
 	} else {

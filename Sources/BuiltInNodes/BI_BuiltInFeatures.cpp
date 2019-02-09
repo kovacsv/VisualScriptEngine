@@ -157,7 +157,7 @@ void EnableDisableFeature::DrawInplace (NUIE::NodeUIDrawingEnvironment& env, con
 	if (nodeEnabled) {
 		drawer (env);
 	} else {
-		NUIE::ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor ());
+		NUIE::ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetBackgroundColor (), 1, 1);
 		NUIE::NodeUIDrawingEnvironmentContextDecorator disabledEnv (env, disabledContext);
 		drawer (disabledEnv);
 	}

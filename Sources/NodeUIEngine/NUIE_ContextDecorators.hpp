@@ -47,12 +47,15 @@ private:
 class ColorBlenderContextDecorator : public ColorChangerContextDecorator
 {
 public:
-	ColorBlenderContextDecorator (DrawingContext& decorated, const Color& blendColor);
+	ColorBlenderContextDecorator (DrawingContext& decorated, const Color& blendColor, unsigned int origRatio, unsigned int blendRatio);
 
 private:
 	virtual Color	GetChangedColor (const Color& origColor) override;
 
-	Color blendColor;
+	Color			blendColor;
+	unsigned int	origRatio;
+	unsigned int	blendRatio;
+
 };
 
 class TextSkipperContextDecorator : public DrawingContextDecorator

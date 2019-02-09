@@ -91,9 +91,11 @@ Pen ColorChangerContextDecorator::GetChangedPen (const Pen& origPen)
 	return Pen (GetChangedColor (origPen.GetColor ()), origPen.GetThickness ());
 }
 
-ColorBlenderContextDecorator::ColorBlenderContextDecorator (DrawingContext& decorated, const Color& blendColor) :
+ColorBlenderContextDecorator::ColorBlenderContextDecorator (DrawingContext& decorated, const Color& blendColor, unsigned int origRatio, unsigned int blendRatio) :
 	ColorChangerContextDecorator (decorated),
-	blendColor (blendColor)
+	blendColor (blendColor),
+	origRatio (origRatio),
+	blendRatio (blendRatio)
 {
 
 }
@@ -101,9 +103,9 @@ ColorBlenderContextDecorator::ColorBlenderContextDecorator (DrawingContext& deco
 Color ColorBlenderContextDecorator::GetChangedColor (const Color& origColor)
 {
 	return Color (
-		(unsigned char) ((4 * origColor.GetR () + blendColor.GetR ()) / 5.0),
-		(unsigned char) ((4 * origColor.GetG () + blendColor.GetG ()) / 5.0),
-		(unsigned char) ((4 * origColor.GetB () + blendColor.GetB ()) / 5.0)
+		(unsigned char) ((origRatio * (unsigned int) origColor.GetR () + blendRatio * (unsigned int) blendColor.GetR ()) / (origRatio + blendRatio)),
+		(unsigned char) ((origRatio * (unsigned int) origColor.GetG () + blendRatio * (unsigned int) blendColor.GetG ()) / (origRatio + blendRatio)),
+		(unsigned char) ((origRatio * (unsigned int) origColor.GetB () + blendRatio * (unsigned int) blendColor.GetB ()) / (origRatio + blendRatio))
 	);
 }
 
