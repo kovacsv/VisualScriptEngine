@@ -54,7 +54,7 @@ private:
 	NodeEditor&				nodeEditor;
 
 	BasicStringSettings		stringSettings;
-	DefaultSkinParams		skinParams;
+	BasicSkinParams		skinParams;
 	SvgDrawingContext		drawingContext;
 	TestEventHandlers		eventHandlers;
 	EvaluationEnv			evaluationEnv;

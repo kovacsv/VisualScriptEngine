@@ -34,9 +34,9 @@ class NodeEditorUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
 	NodeEditorUIEnvironment	(	NodeEditorControl* nodeEditorControl,
-								std::shared_ptr<NE::StringSettings>& stringSettings,
-								std::shared_ptr<NUIE::SkinParams>& skinParams,
-								std::shared_ptr<NUIE::EventHandlers>& eventHandlers,
+								NE::StringSettingsPtr& stringSettings,
+								NUIE::SkinParamsPtr& skinParams,
+								NUIE::EventHandlersPtr& eventHandlers,
 								NE::EvaluationEnv& evaluationEnv);
 	virtual ~NodeEditorUIEnvironment ();
 
@@ -58,9 +58,9 @@ private:
 	NodeEditorControl*								nodeEditorControl;
 	NE::EvaluationEnv&								evaluationEnv;
 
-	std::shared_ptr<NE::StringSettings>				stringSettings;
-	std::shared_ptr<NUIE::SkinParams>				skinParams;
-	std::shared_ptr<NUIE::EventHandlers>			eventHandlers;
+	NE::StringSettingsPtr							stringSettings;
+	NUIE::SkinParamsPtr								skinParams;
+	NUIE::EventHandlersPtr							eventHandlers;
 	std::shared_ptr<NUIE::NativeDrawingContext>		drawingContext;
 };
 

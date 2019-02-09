@@ -189,8 +189,8 @@ MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandPtr& com
 TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor) :
 	NUIE::NodeUIEnvironment (),
 	nodeEditor (nodeEditor),
-	stringSettings (L'.', L',', 2),
-	skinParams (),
+	stringSettings (GetDefaultStringSettings ()),
+	skinParams (GetDefaultSkinParams ()),
 	drawingContext (800, 600),
 	eventHandlers (),
 	evaluationEnv (nullptr)

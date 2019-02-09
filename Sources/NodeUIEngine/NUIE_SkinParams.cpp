@@ -13,164 +13,222 @@ SkinParams::~SkinParams ()
 
 }
 
-DefaultSkinParams::DefaultSkinParams () :
-	backgroundColor (240, 240, 240),
-	connectionLinePen (Color (0, 0, 0), 1.0),
-	nodePadding (5.0),
-	nodeTextFont (L"Arial", 16.0),
-	nodeHeaderTextColor (255, 255, 255),
-	nodeContentTextColor (0, 0, 0),
-	nodeHeaderBackgroundColor (100, 100, 100),
-	nodeContentBackgroundColor (200, 200, 200),
-	nodeBorderPen (Color (0, 0, 0), 1.0),
-	slotTextColor (0, 0, 0),
-	slotTextBackgroundColor (225, 225, 225),
-	selectionBlendColor (0, 138, 184),
-	selectionRectPen (Color (0, 138, 184), 1.0),
-	nodeSelectionRectPen (Color (0, 138, 184), 5.0),
-	hasValueStatusColor (0, 255, 0),
-	hasNoValueStatusColor (255, 0, 0),
-	buttonBorderPen (Color (50, 75, 100), 1.0),
-	buttonBackgroundColor (150, 175, 200),
-	selectedButtonBackgroundColor (190, 215, 240),
-	textPanelTextColor (0, 0, 0),
-	textPanelBackgroundColor (255, 255, 100),
-	groupNameFont (L"Arial", 18.0),
-	groupNameColor (Color (0, 0, 0)),
-	groupBackgroundColor (Color (160, 200, 240)),
-	groupPadding (10.0)
+BasicSkinParams::BasicSkinParams (
+	const Color&	backgroundColor,
+	const Pen&		connectionLinePen,
+	const double&	nodePadding,
+	const Font&		nodeTextFont,
+	const Color&	nodeHeaderTextColor,
+	const Color&	nodeContentTextColor,
+	const Color&	nodeHeaderBackgroundColor,
+	const Color&	nodeContentBackgroundColor,
+	const Pen&		nodeBorderPen,
+	const Color&	slotTextColor,
+	const Color&	slotTextBackgroundColor,
+	const Color&	selectionBlendColor,
+	const Pen&		selectionRectPen,
+	const Pen&		nodeSelectionRectPen,
+	const Color&	hasValueStatusColor,
+	const Color&	hasNoValueStatusColor,
+	const Pen&		buttonBorderPen,
+	const Color&	buttonBackgroundColor,
+	const Color&	selectedButtonBackgroundColor,
+	const Color&	textPanelTextColor,
+	const Color&	textPanelBackgroundColor,
+	const Font&		groupNameFont,
+	const Color&	groupNameColor,
+	const Color&	groupBackgroundColor,
+	const double&	groupPadding
+) :
+	backgroundColor (backgroundColor),
+	connectionLinePen (connectionLinePen),
+	nodePadding (nodePadding),
+	nodeTextFont (nodeTextFont),
+	nodeHeaderTextColor (nodeHeaderTextColor),
+	nodeContentTextColor (nodeContentTextColor),
+	nodeHeaderBackgroundColor (nodeHeaderBackgroundColor),
+	nodeContentBackgroundColor (nodeContentBackgroundColor),
+	nodeBorderPen (nodeBorderPen),
+	slotTextColor (slotTextColor),
+	slotTextBackgroundColor (slotTextBackgroundColor),
+	selectionBlendColor (selectionBlendColor),
+	selectionRectPen (selectionRectPen),
+	nodeSelectionRectPen (nodeSelectionRectPen),
+	hasValueStatusColor (hasValueStatusColor),
+	hasNoValueStatusColor (hasNoValueStatusColor),
+	buttonBorderPen (buttonBorderPen),
+	buttonBackgroundColor (buttonBackgroundColor),
+	selectedButtonBackgroundColor (selectedButtonBackgroundColor),
+	textPanelTextColor (textPanelTextColor),
+	textPanelBackgroundColor (textPanelBackgroundColor),
+	groupNameFont (groupNameFont),
+	groupNameColor (groupNameColor),
+	groupBackgroundColor (groupBackgroundColor),
+	groupPadding (groupPadding)
 {
 
 }
 
-DefaultSkinParams::~DefaultSkinParams ()
+BasicSkinParams::~BasicSkinParams ()
 {
 
 }
 
-const Color& DefaultSkinParams::GetBackgroundColor () const
+const Color& BasicSkinParams::GetBackgroundColor () const
 {
 	return backgroundColor;
 }
 
-const Pen& DefaultSkinParams::GetConnectionLinePen () const
+const Pen& BasicSkinParams::GetConnectionLinePen () const
 {
 	return connectionLinePen;
 }
 
-double DefaultSkinParams::GetNodePadding () const
+double BasicSkinParams::GetNodePadding () const
 {
 	return nodePadding;
 }
 
-const Font& DefaultSkinParams::GetNodeTextFont () const
+const Font& BasicSkinParams::GetNodeTextFont () const
 {
 	return nodeTextFont;
 }
 
-const Color& DefaultSkinParams::GetNodeHeaderTextColor () const
+const Color& BasicSkinParams::GetNodeHeaderTextColor () const
 {
 	return nodeHeaderTextColor;
 }
 
-const Color& DefaultSkinParams::GetNodeContentTextColor () const
+const Color& BasicSkinParams::GetNodeContentTextColor () const
 {
 	return nodeContentTextColor;
 }
 
-const Color& DefaultSkinParams::GetNodeHeaderBackgroundColor () const
+const Color& BasicSkinParams::GetNodeHeaderBackgroundColor () const
 {
 	return nodeHeaderBackgroundColor;
 }
 
-const Color& DefaultSkinParams::GetNodeContentBackgroundColor () const
+const Color& BasicSkinParams::GetNodeContentBackgroundColor () const
 {
 	return nodeContentBackgroundColor;
 }
 
-const Pen& DefaultSkinParams::GetNodeBorderPen () const
+const Pen& BasicSkinParams::GetNodeBorderPen () const
 {
 	return nodeBorderPen;
 }
 
-const Color& DefaultSkinParams::GetSlotTextColor () const
+const Color& BasicSkinParams::GetSlotTextColor () const
 {
 	return slotTextColor;
 }
 
-const Color& DefaultSkinParams::GetSlotTextBackgroundColor () const
+const Color& BasicSkinParams::GetSlotTextBackgroundColor () const
 {
 	return slotTextBackgroundColor;
 }
 
-const Color& DefaultSkinParams::GetSelectionBlendColor () const
+const Color& BasicSkinParams::GetSelectionBlendColor () const
 {
 	return selectionBlendColor;
 }
 
-const NUIE::Pen& DefaultSkinParams::GetSelectionRectPen () const
+const NUIE::Pen& BasicSkinParams::GetSelectionRectPen () const
 {
 	return selectionRectPen;
 }
 
-const NUIE::Pen& DefaultSkinParams::GetNodeSelectionRectPen () const
+const NUIE::Pen& BasicSkinParams::GetNodeSelectionRectPen () const
 {
 	return nodeSelectionRectPen;
 }
 
-const Color& DefaultSkinParams::GetHasValueStatusColor () const
+const Color& BasicSkinParams::GetHasValueStatusColor () const
 {
 	return hasValueStatusColor;
 }
 
-const Color& DefaultSkinParams::GetHasNoValueStatusColor () const
+const Color& BasicSkinParams::GetHasNoValueStatusColor () const
 {
 	return hasNoValueStatusColor;
 }
 
-const Pen& DefaultSkinParams::GetButtonBorderPen () const
+const Pen& BasicSkinParams::GetButtonBorderPen () const
 {
 	return buttonBorderPen;
 }
 
-const Color& DefaultSkinParams::GetButtonBackgroundColor () const
+const Color& BasicSkinParams::GetButtonBackgroundColor () const
 {
 	return buttonBackgroundColor;
 }
 
-const Color& DefaultSkinParams::GetSelectedButtonBackgroundColor () const
+const Color& BasicSkinParams::GetSelectedButtonBackgroundColor () const
 {
 	return selectedButtonBackgroundColor;
 }
 
-const Color& DefaultSkinParams::GetTextPanelTextColor () const
+const Color& BasicSkinParams::GetTextPanelTextColor () const
 {
 	return textPanelTextColor;
 }
 
-const Color& DefaultSkinParams::GetTextPanelBackgroundColor () const
+const Color& BasicSkinParams::GetTextPanelBackgroundColor () const
 {
 	return textPanelBackgroundColor;
 }
 
-const Font& DefaultSkinParams::GetGroupNameFont () const
+const Font& BasicSkinParams::GetGroupNameFont () const
 {
 	return groupNameFont;
 }
 
-const Color& DefaultSkinParams::GetGroupNameColor () const
+const Color& BasicSkinParams::GetGroupNameColor () const
 {
 	return groupNameColor;
 }
 
-const Color& DefaultSkinParams::GetGroupBackgroundColor () const
+const Color& BasicSkinParams::GetGroupBackgroundColor () const
 {
 	return groupBackgroundColor;
 }
 
-double DefaultSkinParams::GetGroupPadding () const
+double BasicSkinParams::GetGroupPadding () const
 {
 	return groupPadding;
+}
+
+const BasicSkinParams& GetDefaultSkinParams ()
+{
+	static const BasicSkinParams defaultSkinParams (
+		/*backgroundColor*/ Color (240, 240, 240),
+		/*connectionLinePen*/ Pen (Color (0, 0, 0), 1.0),
+		/*nodePadding*/ 5.0,
+		/*nodeTextFont*/ Font (L"Arial", 16.0),
+		/*nodeHeaderTextColor*/ Color (255, 255, 255),
+		/*nodeContentTextColor*/ Color (0, 0, 0),
+		/*nodeHeaderBackgroundColor*/ Color (100, 100, 100),
+		/*nodeContentBackgroundColor*/ Color (200, 200, 200),
+		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
+		/*slotTextColor*/ Color (0, 0, 0),
+		/*slotTextBackgroundColor*/ Color (225, 225, 225),
+		/*selectionBlendColor*/ Color (0, 138, 184),
+		/*selectionRectPen*/ Pen (Color (0, 138, 184), 1.0),
+		/*nodeSelectionRectPen*/ Pen (Color (0, 138, 184), 5.0),
+		/*hasValueStatusColor*/ Color (0, 255, 0),
+		/*hasNoValueStatusColor*/ Color (255, 0, 0),
+		/*buttonBorderPen*/ Pen (Color (50, 75, 100), 1.0),
+		/*buttonBackgroundColor*/ Color (150, 175, 200),
+		/*selectedButtonBackgroundColor*/ Color (190, 215, 240),
+		/*textPanelTextColor*/ Color (0, 0, 0),
+		/*textPanelBackgroundColor*/ Color (255, 255, 100),
+		/*groupNameFont*/ Font (L"Arial", 18.0),
+		/*groupNameColor*/ Color (0, 0, 0),
+		/*groupBackgroundColor*/ Color (160, 200, 240),
+		/*groupPadding*/ 10.0
+	);
+	return defaultSkinParams;
 }
 
 }

@@ -12,7 +12,9 @@ namespace WAS
 class HwndNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
-	HwndNodeUIEnvironment (const NE::EvaluationDataPtr& evalData);
+	HwndNodeUIEnvironment (	const NE::StringSettingsPtr& stringSettings,
+							const NUIE::SkinParamsPtr& skinParams,
+							const NE::EvaluationDataPtr& evalData);
 
 	void								Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle);
 	void								RegisterNode (const std::wstring& group, const std::wstring& text, const std::function<NUIE::UINodePtr (const NUIE::Point&)>& creator);
@@ -32,8 +34,8 @@ public:
 	virtual double						GetMouseMoveMinOffset () override;
 
 private:
-	NE::BasicStringSettings				stringSettings;
-	NUIE::DefaultSkinParams				skinParams;
+	NE::StringSettingsPtr				stringSettings;
+	NUIE::SkinParamsPtr					skinParams;
 	WAS::HwndEventHandlers				eventHandlers;
 	NE::EvaluationEnv					evaluationEnv;
 	WAS::NodeEditorNodeListHwndControl	nodeEditorControl;

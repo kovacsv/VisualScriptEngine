@@ -26,6 +26,9 @@ public:
 	virtual bool					OnParameterSettings (ParameterInterfacePtr paramAccessor) = 0;
 };
 
+typedef std::shared_ptr<EventHandlers>			EventHandlersPtr;
+typedef std::shared_ptr<const EventHandlers>	EventHandlersConstPtr;
+
 }
 
 #endif

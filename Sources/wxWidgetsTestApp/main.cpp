@@ -197,9 +197,9 @@ class MyNodeEditorUIEnvironment : public WXAS::NodeEditorUIEnvironment
 public:
 	MyNodeEditorUIEnvironment (	WXAS::NodeEditorControl* nodeEditorControl,
 								DrawingControl* drawingControl,
-								std::shared_ptr<NE::StringSettings>& stringSettings,
-								std::shared_ptr<NUIE::SkinParams>& skinParams,
-								std::shared_ptr<NUIE::EventHandlers>& eventHandlers,
+								NE::StringSettingsPtr& stringSettings,
+								NUIE::SkinParamsPtr& skinParams,
+								NUIE::EventHandlersPtr& eventHandlers,
 								NE::EvaluationEnv& evaluationEnv) :
 		WXAS::NodeEditorUIEnvironment (nodeEditorControl, stringSettings, skinParams, eventHandlers, evaluationEnv),
 		drawingControl (drawingControl)
@@ -332,9 +332,9 @@ public:
 		nodeEditorControl (new MyNodeEditorControl (mainWindow)),
 		applicationState ()
 	{
-		std::shared_ptr<NE::StringSettings> stringSettings (new NE::BasicStringSettings (L'.', L',', 2));
-		std::shared_ptr<NUIE::SkinParams> skinParams (new NUIE::DefaultSkinParams ());
-		std::shared_ptr<NUIE::EventHandlers> eventHandlers (new MyNodeEditorEventHandlers (nodeEditorControl));
+		NE::StringSettingsPtr stringSettings (new NE::BasicStringSettings (NE::GetDefaultStringSettings ()));
+		NUIE::SkinParamsPtr skinParams (new NUIE::BasicSkinParams (NUIE::GetDefaultSkinParams ()));
+		NUIE::EventHandlersPtr eventHandlers (new MyNodeEditorEventHandlers (nodeEditorControl));
 		std::shared_ptr<WXAS::NodeEditorUIEnvironment> uiEnvironment = std::shared_ptr<WXAS::NodeEditorUIEnvironment> (
 			new MyNodeEditorUIEnvironment (
 				nodeEditorControl,

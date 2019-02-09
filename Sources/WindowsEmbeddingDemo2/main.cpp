@@ -13,7 +13,11 @@
 #include <windows.h>
 #include <windowsx.h>
 
-static WAS::HwndNodeUIEnvironment uiEnvironment (nullptr);
+static WAS::HwndNodeUIEnvironment uiEnvironment (
+	NE::StringSettingsPtr (new NE::BasicStringSettings (NE::GetDefaultStringSettings ())),
+	NUIE::SkinParamsPtr (new NUIE::BasicSkinParams (NUIE::GetDefaultSkinParams ())),
+	nullptr
+);
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
 #define MENU_FILE_NEW	1000

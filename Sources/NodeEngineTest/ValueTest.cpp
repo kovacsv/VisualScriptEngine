@@ -72,6 +72,8 @@ public:
 DynamicSerializationInfo AValue::serializationInfo (ObjectId ("{789CD6F8-A998-4A94-8B0A-96B5FD0925F4}"), ObjectVersion (1), AValue::CreateSerializableInstance);
 DynamicSerializationInfo AListValue::serializationInfo (ObjectId ("{7427D535-508F-44E5-A076-3FAF1A35A413}"), ObjectVersion (1), AListValue::CreateSerializableInstance);
 
+static const BasicStringSettings DefaultStringSettings = GetDefaultStringSettings ();
+
 TEST (ValueTest)
 {
 	IntValue intValue (5);

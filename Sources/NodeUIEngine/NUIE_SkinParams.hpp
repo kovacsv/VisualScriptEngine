@@ -47,11 +47,41 @@ public:
 	virtual double			GetGroupPadding () const = 0;
 };
 
-class DefaultSkinParams : public SkinParams
+typedef std::shared_ptr<SkinParams>			SkinParamsPtr;
+typedef std::shared_ptr<const SkinParams>	SkinParamsConstPtr;
+
+class BasicSkinParams : public SkinParams
 {
 public:
-	DefaultSkinParams ();
-	virtual ~DefaultSkinParams ();
+	BasicSkinParams () = delete;
+	BasicSkinParams (
+		const Color&	backgroundColor,
+		const Pen&		connectionLinePen,
+		const double&	nodePadding,
+		const Font&		nodeTextFont,
+		const Color&	nodeHeaderTextColor,
+		const Color&	nodeContentTextColor,
+		const Color&	nodeHeaderBackgroundColor,
+		const Color&	nodeContentBackgroundColor,
+		const Pen&		nodeBorderPen,
+		const Color&	slotTextColor,
+		const Color&	slotTextBackgroundColor,
+		const Color&	selectionBlendColor,
+		const Pen&		selectionRectPen,
+		const Pen&		nodeSelectionRectPen,
+		const Color&	hasValueStatusColor,
+		const Color&	hasNoValueStatusColor,
+		const Pen&		buttonBorderPen,
+		const Color&	buttonBackgroundColor,
+		const Color&	selectedButtonBackgroundColor,
+		const Color&	textPanelTextColor,
+		const Color&	textPanelBackgroundColor,
+		const Font&		groupNameFont,
+		const Color&	groupNameColor,
+		const Color&	groupBackgroundColor,
+		const double&	groupPadding	
+	);
+	virtual ~BasicSkinParams ();
 
 	virtual const Color&	GetBackgroundColor () const override;
 	virtual const Pen&		GetConnectionLinePen () const override;
@@ -120,6 +150,8 @@ protected:
 	Color	groupBackgroundColor;
 	double	groupPadding;
 };
+
+const BasicSkinParams& GetDefaultSkinParams ();
 
 }
 

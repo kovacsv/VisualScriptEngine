@@ -3,10 +3,12 @@
 namespace WAS
 {
 
-HwndNodeUIEnvironment::HwndNodeUIEnvironment (const NE::EvaluationDataPtr& evalData) :
+HwndNodeUIEnvironment::HwndNodeUIEnvironment	(const NE::StringSettingsPtr& stringSettings,
+												const NUIE::SkinParamsPtr& skinParams,
+												const NE::EvaluationDataPtr& evalData) :
 	NUIE::NodeUIEnvironment (),
-	stringSettings (L'.', L',', 2),
-	skinParams (),
+	stringSettings (stringSettings),
+	skinParams (skinParams),
 	eventHandlers (),
 	evaluationEnv (evalData),
 	nodeEditorControl ()
@@ -37,12 +39,12 @@ void HwndNodeUIEnvironment::OnResize (int x, int y, int width, int height)
 
 const NE::StringSettings& HwndNodeUIEnvironment::GetStringSettings ()
 {
-	return stringSettings;
+	return *stringSettings;
 }
 
 const NUIE::SkinParams& HwndNodeUIEnvironment::GetSkinParams ()
 {
-	return skinParams;
+	return *skinParams;
 }
 
 NUIE::DrawingContext& HwndNodeUIEnvironment::GetDrawingContext ()

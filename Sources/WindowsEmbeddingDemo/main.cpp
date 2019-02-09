@@ -102,8 +102,8 @@ class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 public:
 	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
-		stringSettings (L'.', L',', 2),
-		skinParams (),
+		stringSettings (NE::GetDefaultStringSettings ()),
+		skinParams (NUIE::GetDefaultSkinParams ()),
 		eventHandlers (),
 		evaluationEnv (nullptr),
 		nodeEditorControl ()
@@ -179,7 +179,7 @@ public:
 
 private:
 	NE::BasicStringSettings		stringSettings;
-	NUIE::DefaultSkinParams		skinParams;
+	NUIE::BasicSkinParams		skinParams;
 	MyEventHandlers				eventHandlers;
 	NE::EvaluationEnv			evaluationEnv;
 	WAS::NodeEditorHwndControl	nodeEditorControl;

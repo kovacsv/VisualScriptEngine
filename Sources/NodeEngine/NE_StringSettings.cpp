@@ -41,6 +41,10 @@ int BasicStringSettings::GetPrecision () const
 	return precision;
 }
 
-BasicStringSettings DefaultStringSettings (L'.', L',', 2);
+const BasicStringSettings& GetDefaultStringSettings ()
+{
+	static const BasicStringSettings defaultStringSettings (L'.', L',', 2);
+	return defaultStringSettings;
+}
 
 }

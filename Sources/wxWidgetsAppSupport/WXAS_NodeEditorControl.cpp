@@ -53,9 +53,9 @@ bool NodeEditorEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr p
 }
 
 NodeEditorUIEnvironment::NodeEditorUIEnvironment (	NodeEditorControl* nodeEditorControl,
-													std::shared_ptr<NE::StringSettings>& stringSettings,
-													std::shared_ptr<NUIE::SkinParams>& skinParams,
-													std::shared_ptr<NUIE::EventHandlers>& eventHandlers,
+													NE::StringSettingsPtr& stringSettings,
+													NUIE::SkinParamsPtr& skinParams,
+													NUIE::EventHandlersPtr& eventHandlers,
 													NE::EvaluationEnv& evaluationEnv) :
 	nodeEditorControl (nodeEditorControl),
 	evaluationEnv (evaluationEnv),
