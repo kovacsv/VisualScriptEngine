@@ -32,11 +32,12 @@ private:
 	void				DrawConnections (NodeUIDrawingEnvironment& env, double selectionThickness, const NodeDrawingModifier* drawModifier) const;
 	void				DrawConnection (NodeUIDrawingEnvironment& env, const Pen& pen, const Point& beg, const Point& end) const;
 	void				DrawNodes (NodeUIDrawingEnvironment& env, double selectionThickness, const NodeDrawingModifier* drawModifier) const;
-	void				DrawNode (NodeUIDrawingEnvironment& env, const UINode* uiNode, double selectionThickness) const;
+	void				DrawNode (NodeUIDrawingEnvironment& env, double selectionThickness, const UINode* uiNode) const;
 	void				DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const;
 
 	void				InitSortedNodeList () const;
 	bool				IsConnectionVisible (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;
+	bool				IsNodeVisible (NodeUIDrawingEnvironment& env, double selectionThickness, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
 	bool				IsRectVisible (NodeUIDrawingEnvironment& env, const Rect& rect) const;
 
 	Rect				GetNodeRect (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
