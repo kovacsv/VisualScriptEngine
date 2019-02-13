@@ -19,6 +19,17 @@ private:
 	std::unordered_map<NE::NodeId, const UINode*>	nodeIdToNodeMap;
 };
 
+class NodeUIScaleIndependentData
+{
+public:
+	NodeUIScaleIndependentData (const NodeUIManager& uiManager, const SkinParams& skinParams);
+
+	double	GetSelectionThickness () const;
+
+private:
+	double selectionThickness;
+};
+
 class NodeUIManagerDrawer
 {
 public:
@@ -29,15 +40,15 @@ public:
 private:
 	void				DrawBackground (NodeUIDrawingEnvironment& env) const;
 	void				DrawGroups (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const;
-	void				DrawConnections (NodeUIDrawingEnvironment& env, double selectionThickness, const NodeDrawingModifier* drawModifier) const;
+	void				DrawConnections (NodeUIDrawingEnvironment& env, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier) const;
 	void				DrawConnection (NodeUIDrawingEnvironment& env, const Pen& pen, const Point& beg, const Point& end) const;
-	void				DrawNodes (NodeUIDrawingEnvironment& env, double selectionThickness, const NodeDrawingModifier* drawModifier) const;
-	void				DrawNode (NodeUIDrawingEnvironment& env, double selectionThickness, const UINode* uiNode) const;
+	void				DrawNodes (NodeUIDrawingEnvironment& env, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier) const;
+	void				DrawNode (NodeUIDrawingEnvironment& env, const NodeUIScaleIndependentData& scaleIndependentData, const UINode* uiNode) const;
 	void				DrawSelectionRect (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const;
 
 	void				InitSortedNodeList () const;
 	bool				IsConnectionVisible (NodeUIDrawingEnvironment& env, const Point& beg, const Point& end) const;
-	bool				IsNodeVisible (NodeUIDrawingEnvironment& env, double selectionThickness, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
+	bool				IsNodeVisible (NodeUIDrawingEnvironment& env, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
 	bool				IsRectVisible (NodeUIDrawingEnvironment& env, const Rect& rect) const;
 
 	Rect				GetNodeRect (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
