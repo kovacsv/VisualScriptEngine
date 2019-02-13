@@ -1,9 +1,7 @@
 #include "VisualTestFramework.hpp"
 #include "NUIE_InputEventHandler.hpp"
 #include "BI_BuiltInCommands.hpp"
-#include "BI_InputUINodes.hpp"
-#include "BI_ArithmeticUINodes.hpp"
-#include "BI_ViewerUINodes.hpp"
+#include "BI_BuiltInNodes.hpp"
 #include "SimpleTest.hpp"
 
 #include <iostream>

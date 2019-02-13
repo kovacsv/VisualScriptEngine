@@ -4,11 +4,7 @@
 #include "WAS_HwndEventHandlers.hpp"
 #include "WAS_HwndNodeUIEnvironment.hpp"
 #include "WAS_ParameterDialog.hpp"
-
-#include "BI_InputUINodes.hpp"
-#include "BI_ViewerUINodes.hpp"
-#include "BI_ArithmeticUINodes.hpp"
-#include "BI_BuiltInCommands.hpp"
+#include "BI_BuiltInNodes.hpp"
 
 #include <windows.h>
 #include <windowsx.h>
