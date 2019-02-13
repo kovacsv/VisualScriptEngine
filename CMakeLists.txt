@@ -50,6 +50,7 @@ target_include_directories (NodeEngine PUBLIC ${NodeEngineSourcesFolder})
 SetCompilerOptions (NodeEngine)
 install (TARGETS NodeEngine DESTINATION lib)
 install (FILES ${NodeEngineHeaderFiles} DESTINATION include)
+install (FILES ${NodeEngineSourceFiles} DESTINATION source)
 
 # NodeUIEngine
 
@@ -70,6 +71,7 @@ target_link_libraries (NodeUIEngine NodeEngine)
 SetCompilerOptions (NodeUIEngine)
 install (TARGETS NodeUIEngine DESTINATION lib)
 install (FILES ${NodeUIEngineHeaderFiles} DESTINATION include)
+install (FILES ${NodeUIEngineSourceFiles} DESTINATION source)
 
 # BuiltInNodes
 
@@ -88,6 +90,7 @@ target_link_libraries (BuiltInNodes NodeEngine NodeUIEngine)
 SetCompilerOptions (BuiltInNodes)
 install (TARGETS BuiltInNodes DESTINATION lib)
 install (FILES ${BuiltInNodesHeaderFiles} DESTINATION include)
+install (FILES ${BuiltInNodesSourceFiles} DESTINATION source)
 
 # NodeEngineTest
 
@@ -137,6 +140,7 @@ if (MSVC)
 	SetCompilerOptions (WindowsAppSupport)
 	install (TARGETS WindowsAppSupport DESTINATION lib)
 	install (FILES ${WindowsAppSupportHeaderFiles} DESTINATION include)
+	install (FILES ${WindowsAppSupportSourceFiles} DESTINATION source)
 
 	# WindowsEmbeddingDemo
 
@@ -213,6 +217,7 @@ if (MSVC)
 		SetCompilerOptions (wxWidgetsAppSupport)
 		install (TARGETS wxWidgetsAppSupport DESTINATION lib)
 		install (FILES ${wxWidgetsAppSupportHeaderFiles} DESTINATION include)
+		install (FILES ${wxWidgetsAppSupportSourceFiles} DESTINATION source)
 		
 		# wxWidgetsTestApp
 
