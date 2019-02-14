@@ -116,7 +116,7 @@ public:
 		int height = clientRect.bottom - clientRect.top;
 
 		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-		eventHandlers.Init (nodeEditorControl.GetWindowHandle ());
+		eventHandlers.Init (nodeEditorControl.GetEditorHandle ());
 	}
 
 	void OnResize (int x, int y, int width, int height)

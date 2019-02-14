@@ -3,15 +3,16 @@
 namespace WAS
 {
 
-HwndNodeUIEnvironment::HwndNodeUIEnvironment	(const NE::StringSettingsPtr& stringSettings,
+HwndNodeUIEnvironment::HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedControlPtr& nodeEditorControl,
+												const NE::StringSettingsPtr& stringSettings,
 												const NUIE::SkinParamsPtr& skinParams,
 												const NE::EvaluationDataPtr& evalData) :
 	NUIE::NodeUIEnvironment (),
+	nodeEditorControl (nodeEditorControl),
 	stringSettings (stringSettings),
 	skinParams (skinParams),
 	eventHandlers (),
-	evaluationEnv (evalData),
-	nodeEditorControl ()
+	evaluationEnv (evalData)
 {
 	
 }
@@ -23,18 +24,13 @@ void HwndNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 	int width = clientRect.right - clientRect.left;
 	int height = clientRect.bottom - clientRect.top;
 
-	nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-	eventHandlers.Init (nodeEditorControl.GetEditorHandle ());
-}
-
-void HwndNodeUIEnvironment::RegisterNode (const std::wstring& group, const std::wstring& text, const std::function<NUIE::UINodePtr (const NUIE::Point&)>& creator)
-{
-	nodeEditorControl.RegisterNode (group, text, creator);
+	nodeEditorControl->Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
+	eventHandlers.Init (nodeEditorControl->GetEditorHandle ());
 }
 
 void HwndNodeUIEnvironment::OnResize (int x, int y, int width, int height)
 {
-	nodeEditorControl.Resize (x, y, width, height);
+	nodeEditorControl->Resize (x, y, width, height);
 }
 
 const NE::StringSettings& HwndNodeUIEnvironment::GetStringSettings ()
@@ -49,7 +45,7 @@ const NUIE::SkinParams& HwndNodeUIEnvironment::GetSkinParams ()
 
 NUIE::DrawingContext& HwndNodeUIEnvironment::GetDrawingContext ()
 {
-	return nodeEditorControl.GetEditorContext ();
+	return nodeEditorControl->GetDrawingContext ();
 }
 	
 NE::EvaluationEnv& HwndNodeUIEnvironment::GetEvaluationEnv ()
@@ -74,7 +70,7 @@ void HwndNodeUIEnvironment::OnValuesRecalculated ()
 
 void HwndNodeUIEnvironment::OnRedrawRequested ()
 {
-	nodeEditorControl.InvalidateEditor ();
+	nodeEditorControl->Invalidate ();
 }
 
 NUIE::EventHandlers& HwndNodeUIEnvironment::GetEventHandlers ()
@@ -85,6 +81,11 @@ NUIE::EventHandlers& HwndNodeUIEnvironment::GetEventHandlers ()
 double HwndNodeUIEnvironment::GetMouseMoveMinOffset ()
 {
 	return 2.0;
+}
+
+WAS::NodeEditorHwndBasedControlPtr HwndNodeUIEnvironment::GetNodeEditorControl ()
+{
+	return nodeEditorControl;
 }
 
 }

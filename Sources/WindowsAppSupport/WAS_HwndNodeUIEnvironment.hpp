@@ -4,7 +4,7 @@
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeEditor.hpp"
 #include "WAS_HwndEventHandlers.hpp"
-#include "WAS_NodeEditorNodeListHwndControl.hpp"
+#include "WAS_NodeEditorHwndControl.hpp"
 
 namespace WAS
 {
@@ -12,12 +12,12 @@ namespace WAS
 class HwndNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
-	HwndNodeUIEnvironment (	const NE::StringSettingsPtr& stringSettings,
+	HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedControlPtr& nodeEditorControl,
+							const NE::StringSettingsPtr& stringSettings,
 							const NUIE::SkinParamsPtr& skinParams,
 							const NE::EvaluationDataPtr& evalData);
 
 	void								Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle);
-	void								RegisterNode (const std::wstring& group, const std::wstring& text, const std::function<NUIE::UINodePtr (const NUIE::Point&)>& creator);
 	void								OnResize (int x, int y, int width, int height);
 
 	virtual const NE::StringSettings&	GetStringSettings () override;
@@ -33,12 +33,14 @@ public:
 	virtual NUIE::EventHandlers&		GetEventHandlers () override;
 	virtual double						GetMouseMoveMinOffset () override;
 
+	WAS::NodeEditorHwndBasedControlPtr	GetNodeEditorControl ();
+
 private:
+	WAS::NodeEditorHwndBasedControlPtr	nodeEditorControl;
 	NE::StringSettingsPtr				stringSettings;
 	NUIE::SkinParamsPtr					skinParams;
 	WAS::HwndEventHandlers				eventHandlers;
 	NE::EvaluationEnv					evaluationEnv;
-	WAS::NodeEditorNodeListHwndControl	nodeEditorControl;
 };
 
 }
