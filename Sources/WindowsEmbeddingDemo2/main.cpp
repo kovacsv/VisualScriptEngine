@@ -45,44 +45,39 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	switch (msg) {
 		case WM_CREATE:
 			{
-				uiEnvironment.Init (&nodeEditor, hwnd);
+				WAS::NodeTree nodeTree;
+				nodeTree.AddItem (L"Input Nodes", L"Boolean", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
+				});
+				nodeTree.AddItem (L"Input Nodes", L"Integer", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
+				});
+				nodeTree.AddItem (L"Input Nodes", L"Number", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
+				});
+				nodeTree.AddItem (L"Input Nodes", L"Integer Range", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", position));
+				});
+				nodeTree.AddItem (L"Input Nodes", L"Number Range", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", position));
+				});
+				nodeTree.AddItem (L"Arithmetic Nodes", L"Addition", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
+				});
+				nodeTree.AddItem (L"Arithmetic Nodes", L"Subtraction", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
+				});
+				nodeTree.AddItem (L"Arithmetic Nodes", L"Multiplication", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
+				});
+				nodeTree.AddItem (L"Arithmetic Nodes", L"Division", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
+				});
+				nodeTree.AddItem (L"Other Nodes", L"Viewer", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
+				});
 
-				WAS::NodeEditorHwndBasedControlPtr control = uiEnvironment.GetNodeEditorControl ();
-				std::shared_ptr<WAS::NodeEditorNodeListHwndControl> nodeListControl = std::dynamic_pointer_cast<WAS::NodeEditorNodeListHwndControl> (control);
-
-				if (DBGVERIFY (nodeListControl != nullptr)) {
-					nodeListControl->RegisterNode (L"Input Nodes", L"Boolean", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
-					});
-					nodeListControl->RegisterNode (L"Input Nodes", L"Integer", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
-					});
-					nodeListControl->RegisterNode (L"Input Nodes", L"Number", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
-					});
-					nodeListControl->RegisterNode (L"Input Nodes", L"Integer Range", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", position));
-					});
-					nodeListControl->RegisterNode (L"Input Nodes", L"Number Range", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", position));
-					});
-					nodeListControl->RegisterNode (L"Arithmetic Nodes", L"Addition", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
-					});
-					nodeListControl->RegisterNode (L"Arithmetic Nodes", L"Subtraction", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
-					});
-					nodeListControl->RegisterNode (L"Arithmetic Nodes", L"Multiplication", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
-					});
-					nodeListControl->RegisterNode (L"Arithmetic Nodes", L"Division", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
-					});
-					nodeListControl->RegisterNode (L"Other Nodes", L"Viewer", [&] (const NUIE::Point& position) {
-						return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
-					});
-				}
-
+				uiEnvironment.Init (&nodeEditor, nodeTree, hwnd);
 				CreateMenuBar (hwnd);
 			}
 			break;

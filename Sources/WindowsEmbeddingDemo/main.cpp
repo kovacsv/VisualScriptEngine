@@ -10,90 +10,6 @@
 #include <windows.h>
 #include <windowsx.h>
 
-class MyCreateNodeCommand : public BI::CreateNodeCommand
-{
-public:
-	enum class NodeType
-	{
-		Boolean,
-		Integer,
-		Number,
-		IntegerRange,
-		NumberRange,
-		Addition,
-		Subtraction,
-		Multiplication,
-		Division,
-		Viewer
-	};
-
-	MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
-		BI::CreateNodeCommand (name, uiManager, uiEnvironment, position),
-		nodeType (nodeType)
-	{
-	}
-
-	virtual NUIE::UINodePtr CreateNode (const NUIE::Point& modelPosition) override
-	{
-		switch (nodeType) {
-			case NodeType::Boolean:
-				return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", modelPosition, true));
-			case NodeType::Integer:
-				return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", modelPosition, 0, 5));
-			case NodeType::Number:
-				return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0.0, 5.0));
-			case NodeType::IntegerRange:
-				return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", modelPosition));
-			case NodeType::NumberRange:
-				return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", modelPosition));
-			case NodeType::Addition:
-				return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
-			case NodeType::Subtraction:
-				return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", modelPosition));
-			case NodeType::Multiplication:
-				return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", modelPosition));
-			case NodeType::Division:
-				return NUIE::UINodePtr (new BI::DivisionNode (L"Division", modelPosition));
-			case NodeType::Viewer:
-				return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
-		}
-		return nullptr;
-	}
-
-private:
-	NodeType nodeType;
-};
-
-class MyEventHandlers : public WAS::HwndEventHandlers
-{
-public:
-	MyEventHandlers () :
-		WAS::HwndEventHandlers ()
-	{
-	
-	}
-
-	virtual NUIE::MenuCommandPtr OnContextMenu (
-		NUIE::NodeUIManager& uiManager,
-		NUIE::NodeUIEnvironment& uiEnvironment,
-		const NUIE::Point& position,
-		const NUIE::MenuCommandStructure& commands) override
-	{
-		NUIE::MenuCommandStructure finalCommands = commands;
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Boolean, uiManager, uiEnvironment, L"Boolean", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberRange, uiManager, uiEnvironment, L"Number Range", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Addition", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Subtraction, uiManager, uiEnvironment, L"Subtraction", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Multiplication, uiManager, uiEnvironment, L"Multiplication", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Division, uiManager, uiEnvironment, L"Division", position)));
-		finalCommands.AddCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Viewer", position)));
-		return WAS::SelectCommandFromContextMenu (hwnd, position, finalCommands);
-	}
-};
-
 class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
@@ -115,8 +31,40 @@ public:
 		int width = clientRect.right - clientRect.left;
 		int height = clientRect.bottom - clientRect.top;
 
-		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-		eventHandlers.Init (nodeEditorControl.GetEditorHandle ());
+		WAS::NodeTree nodeTree;
+		nodeTree.AddItem (L"Input Nodes", L"Boolean", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
+		});
+		nodeTree.AddItem (L"Input Nodes", L"Integer", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
+		});
+		nodeTree.AddItem (L"Input Nodes", L"Number", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
+		});
+		nodeTree.AddItem (L"Input Nodes", L"Integer Range", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", position));
+		});
+		nodeTree.AddItem (L"Input Nodes", L"Number Range", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", position));
+		});
+		nodeTree.AddItem (L"Arithmetic Nodes", L"Addition", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
+		});
+		nodeTree.AddItem (L"Arithmetic Nodes", L"Subtraction", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
+		});
+		nodeTree.AddItem (L"Arithmetic Nodes", L"Multiplication", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
+		});
+		nodeTree.AddItem (L"Arithmetic Nodes", L"Division", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
+		});
+		nodeTree.AddItem (L"Other Nodes", L"Viewer", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
+		});
+
+		nodeEditorControl.Init (nodeEditorPtr, nodeTree, parentHandle, 0, 0, width, height);
+		eventHandlers.Init (&nodeEditorControl);
 	}
 
 	void OnResize (int x, int y, int width, int height)
@@ -177,7 +125,7 @@ public:
 private:
 	NE::BasicStringSettings		stringSettings;
 	NUIE::BasicSkinParams		skinParams;
-	MyEventHandlers				eventHandlers;
+	WAS::HwndEventHandlers		eventHandlers;
 	NE::EvaluationEnv			evaluationEnv;
 	WAS::NodeEditorHwndControl	nodeEditorControl;
 };

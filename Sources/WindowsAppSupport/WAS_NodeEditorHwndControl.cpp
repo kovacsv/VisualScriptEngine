@@ -65,7 +65,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+				nodeEditor->OnMouseDown (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
 			}
 			break;
 		case WM_MBUTTONDOWN:
@@ -73,7 +73,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+				nodeEditor->OnMouseDown (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
 			}
 			break;
 		case WM_RBUTTONDOWN:
@@ -81,7 +81,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				setCaptureHandler.HandleMouseDown (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+				nodeEditor->OnMouseDown (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
 			}
 			break;
 		case WM_LBUTTONUP:
@@ -89,7 +89,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+				nodeEditor->OnMouseUp (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
 			}
 			break;
 		case WM_MBUTTONUP:
@@ -97,7 +97,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+				nodeEditor->OnMouseUp (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
 			}
 			break;
 		case WM_RBUTTONUP:
@@ -105,7 +105,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				setCaptureHandler.HandleMouseUp ();
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+				nodeEditor->OnMouseUp (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
 			}
 			break;
 		case WM_MOUSEMOVE:
@@ -113,7 +113,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				SetFocus (hwnd); // before Windows 10 only the focused window catches the mouse wheel message
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseMove (WAS::GetModiferKeysFromEvent (wParam), x, y);
+				nodeEditor->OnMouseMove (GetModiferKeysFromEvent (wParam), x, y);
 			}
 			break;
 		case WM_MOUSEWHEEL:
@@ -124,28 +124,28 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				ScreenToClient (hwnd, &mousePos);
 				int delta = GET_WHEEL_DELTA_WPARAM (wParam);
 				NUIE::MouseWheelRotation rotation = delta > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
-				nodeEditor->OnMouseWheel (WAS::GetModiferKeysFromEvent (wParam), rotation, mousePos.x, mousePos.y);
+				nodeEditor->OnMouseWheel (GetModiferKeysFromEvent (wParam), rotation, mousePos.x, mousePos.y);
 			}
 			break;
 		case WM_LBUTTONDBLCLK:
 			{
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+				nodeEditor->OnMouseDoubleClick (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
 			}
 			break;
 		case WM_MBUTTONDBLCLK:
 			{
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+				nodeEditor->OnMouseDoubleClick (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
 			}
 			break;
 		case WM_RBUTTONDBLCLK:
 			{
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
-				nodeEditor->OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+				nodeEditor->OnMouseDoubleClick (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
 			}
 			break;
 		case WM_SIZE:
@@ -241,6 +241,47 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
+
+NodeTree::Item::Item (const std::wstring& name, const CreatorFunction& creator) :
+	name (name),
+	creator (creator)
+{
+
+}
+
+NodeTree::Group::Group (const std::wstring& name) :
+	name (name)
+{
+
+}
+
+NodeTree::NodeTree ()
+{
+
+}
+
+void NodeTree::AddItem (const std::wstring& groupName, const std::wstring& itemName, const CreatorFunction& creator)
+{
+	Group* group = nullptr;
+	auto foundGroup = std::find_if (groups.begin (), groups.end (), [&] (const Group& group) {
+		return group.name == groupName;
+	});
+	if (foundGroup != groups.end ()) {
+		group = &*foundGroup;
+	} else {
+		groups.push_back (Group (groupName));
+		group = &groups.back ();
+	}
+	group->items.push_back (Item (itemName, creator));
+}
+
+const std::vector<NodeTree::Group>& NodeTree::GetGroups () const
+{
+	return groups;
+}
+
+const NodeTree EmptyNodeTree;
+
 NodeEditorHwndBasedControl::NodeEditorHwndBasedControl ()
 {
 
@@ -254,6 +295,8 @@ NodeEditorHwndBasedControl::~NodeEditorHwndBasedControl ()
 NodeEditorHwndControl::NodeEditorHwndControl () :
 	NodeEditorHwndBasedControl (),
 	nodeEditor (nullptr),
+	bitmapContext (),
+	nodeTree (),
 	hwnd (NULL)
 {
 
@@ -264,7 +307,7 @@ NodeEditorHwndControl::~NodeEditorHwndControl ()
 
 }
 
-bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height)
+bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& newNodeTree, HWND parentHandle, int x, int y, int width, int height)
 {
 	nodeEditor = nodeEditorPtr;
 	DBGASSERT (nodeEditor != nullptr);
@@ -277,10 +320,16 @@ bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 	bitmapContext.Init (hwnd);
 	MoveWindow (hwnd, x, y, width, height, TRUE);
 
+	nodeTree = newNodeTree;
 	return true;
 }
 
-HWND NodeEditorHwndControl::GetEditorHandle ()
+NodeTree NodeEditorHwndControl::GetNodeTree () const
+{
+	return nodeTree;
+}
+
+HWND NodeEditorHwndControl::GetEditorHandle () const
 {
 	return hwnd;
 }
@@ -306,6 +355,11 @@ NUIE::DrawingContext& NodeEditorHwndControl::GetDrawingContext ()
 NUIE::NodeEditor* NodeEditorHwndControl::GetNodeEditor ()
 {
 	return nodeEditor;
+}
+
+const NodeTree& NodeEditorHwndControl::GetNodeTree ()
+{
+	return nodeTree;
 }
 
 void NodeEditorHwndControl::Draw ()
@@ -400,8 +454,7 @@ NodeEditorNodeListHwndControl::NodeEditorNodeListHwndControl () :
 	nodeEditorControl (),
 	mainHandle (NULL),
 	selectedNode (-1),
-	draggedNode (-1),
-	nextNodeId (0)
+	draggedNode (-1)
 {
 
 }
@@ -411,7 +464,7 @@ NodeEditorNodeListHwndControl::~NodeEditorNodeListHwndControl ()
 
 }
 
-bool NodeEditorNodeListHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height)
+bool NodeEditorNodeListHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& nodeTree, HWND parentHandle, int x, int y, int width, int height)
 {
 	mainHandle = CreateCustomControl (parentHandle, NodeEditorNodeListStaticWindowProc, L"NodeEditorNodeListHwndControl", this);
 	if (DBGERROR (mainHandle == NULL)) {
@@ -420,12 +473,28 @@ bool NodeEditorNodeListHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND 
 
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
 	nodeTreeView.Init (mainHandle, 0, 0, NodeListWidth, height);
-	nodeEditorControl.Init (nodeEditorPtr, mainHandle, NodeListWidth, 0, width - NodeListWidth, height);
+	nodeEditorControl.Init (nodeEditorPtr, nodeTree, mainHandle, NodeListWidth, 0, width - NodeListWidth, height);
+
+	LPARAM nextNodeId = 0;
+	for (const NodeTree::Group& group : nodeTree.GetGroups ()) {
+		nodeTreeView.AddGroup (group.name);
+		for (const NodeTree::Item& item : group.items) {
+			nodeTreeView.AddItem (group.name, item.name, nextNodeId);
+			nodeIdToCreator.insert ({ nextNodeId, item.creator });
+			nextNodeId++;
+		}
+	}
+	nodeTreeView.ExpandAll ();
 
 	return true;
 }
 
-HWND NodeEditorNodeListHwndControl::GetEditorHandle ()
+NodeTree NodeEditorNodeListHwndControl::GetNodeTree () const
+{
+	return nodeEditorControl.GetNodeTree ();
+}
+
+HWND NodeEditorNodeListHwndControl::GetEditorHandle () const
 {
 	return nodeEditorControl.GetEditorHandle ();
 }
@@ -444,19 +513,6 @@ void NodeEditorNodeListHwndControl::Invalidate ()
 NUIE::DrawingContext& NodeEditorNodeListHwndControl::GetDrawingContext ()
 {
 	return nodeEditorControl.GetDrawingContext ();
-}
-
-void NodeEditorNodeListHwndControl::RegisterNode (const std::wstring& group, const std::wstring& text, const CreatorFunction& creator)
-{
-	if (!nodeTreeView.HasGroup (group)) {
-		nodeTreeView.AddGroup (group);
-	}
-
-	nodeTreeView.AddItem (group, text, nextNodeId);
-	nodeIdToCreator.insert ({ nextNodeId, creator });
-	nextNodeId++;
-
-	nodeTreeView.ExpandAll ();
 }
 
 void NodeEditorNodeListHwndControl::TreeViewSelectionChanged (LPNMTREEVIEW lpnmtv)

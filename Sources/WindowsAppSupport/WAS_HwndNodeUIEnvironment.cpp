@@ -17,15 +17,15 @@ HwndNodeUIEnvironment::HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedCon
 	
 }
 
-void HwndNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
+void HwndNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& nodeTree, HWND parentHandle)
 {
 	RECT clientRect;
 	GetClientRect (parentHandle, &clientRect);
 	int width = clientRect.right - clientRect.left;
 	int height = clientRect.bottom - clientRect.top;
 
-	nodeEditorControl->Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-	eventHandlers.Init (nodeEditorControl->GetEditorHandle ());
+	nodeEditorControl->Init (nodeEditorPtr, nodeTree, parentHandle, 0, 0, width, height);
+	eventHandlers.Init (&*nodeEditorControl);
 }
 
 void HwndNodeUIEnvironment::OnResize (int x, int y, int width, int height)
