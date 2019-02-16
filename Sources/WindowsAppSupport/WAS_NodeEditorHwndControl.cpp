@@ -473,7 +473,7 @@ bool NodeEditorNodeListHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, const
 
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
 	nodeTreeView.Init (mainHandle, 0, 0, NodeListWidth, height);
-	nodeEditorControl.Init (nodeEditorPtr, nodeTree, mainHandle, NodeListWidth, 0, width - NodeListWidth, height);
+	nodeEditorControl.Init (nodeEditorPtr, EmptyNodeTree, mainHandle, NodeListWidth, 0, width - NodeListWidth, height);
 
 	LPARAM nextNodeId = 0;
 	for (const NodeTree::Group& group : nodeTree.GetGroups ()) {

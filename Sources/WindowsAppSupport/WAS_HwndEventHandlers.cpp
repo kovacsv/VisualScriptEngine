@@ -20,10 +20,10 @@ void HwndEventHandlers::Init (const NodeEditorHwndBasedControl*	nodeEditorContro
 
 NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
-	class MyCreateNodeCommand : public BI::CreateNodeCommand
+	class CreateNodeCommand : public BI::CreateNodeCommand
 	{
 	public:
-		MyCreateNodeCommand (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position, const CreatorFunction& creator) :
+		CreateNodeCommand (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position, const CreatorFunction& creator) :
 			BI::CreateNodeCommand (name, uiManager, uiEnvironment, position),
 			creator (creator)
 		{
@@ -44,7 +44,7 @@ NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (NUIE::NodeUIManager& uiMa
 	for (const NodeTree::Group& group : nodeTree.GetGroups ()) {
 		NUIE::GroupMenuCommandPtr groupCommand (new NUIE::GroupMenuCommand (group.name));
 		for (const NodeTree::Item& item : group.items) {
-			groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (uiManager, uiEnvironment, item.name, position, item.creator)));
+			groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (uiManager, uiEnvironment, item.name, position, item.creator)));
 		}
 		finalCommands.AddCommand (groupCommand);
 	}	
