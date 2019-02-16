@@ -34,6 +34,16 @@ void MouseCaptureHandler::OnCaptureLost ()
 	counter--;
 }
 
+BusyCursorGuard::BusyCursorGuard ()
+{
+	wxBeginBusyCursor ();
+}
+
+BusyCursorGuard::~BusyCursorGuard ()
+{
+	wxEndBusyCursor ();
+}
+
 NUIE::ModifierKeys GetModiferKeysFromEvent (wxKeyboardState& evt)
 {
 	std::unordered_set<NUIE::ModifierKeyCode> keys;

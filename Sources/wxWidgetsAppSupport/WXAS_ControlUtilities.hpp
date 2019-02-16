@@ -23,10 +23,17 @@ private:
 	int			counter;
 };
 
+class BusyCursorGuard
+{
+public:
+	BusyCursorGuard ();
+	~BusyCursorGuard ();
+};
+
 NUIE::ModifierKeys		GetModiferKeysFromEvent (wxKeyboardState& evt);
 NUIE::Key				GetKeyFromEvent (wxKeyEvent& evt);
 
-NUIE::MenuCommandPtr		SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
+NUIE::MenuCommandPtr	SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
 
 }
 
