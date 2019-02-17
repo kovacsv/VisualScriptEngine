@@ -1,5 +1,5 @@
 #include "NE_Checksum.hpp"
-#include <memory>
+#include <memory.h>
 #include <cstddef>
 
 namespace NE
