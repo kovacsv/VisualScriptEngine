@@ -190,11 +190,6 @@ public:
 	
 	}
 
-	virtual void HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
-	{
-		currentPosition = position;
-	}
-
 	virtual void HandleAbort () override
 	{
 		uiManager.RequestRedraw ();
@@ -205,7 +200,6 @@ protected:
 	StartSlotType	startSlot;
 	EndSlotType		endSlot;
 	Point			sourceNodePosition;
-	Point			currentPosition;
 };
 
 class NodeOutputToInputConnectionHandler : public NodeConnectionHandler<UIOutputSlotConstPtr, UIInputSlotConstPtr>

@@ -59,12 +59,6 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 				SetTextValidator (textControl, L"0123456789-");
 				control = textControl;
 			}
-		} else if (type == NUIE::ParameterType::Integer) {
-			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
-				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
-				SetTextValidator (textControl, L"0123456789-");
-				control = textControl;
-			}
 		} else if (type == NUIE::ParameterType::Float) {
 			if (DBGVERIFY (NE::Value::IsType<NE::FloatValue> (value))) {
 				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));

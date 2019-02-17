@@ -20,7 +20,7 @@ class ValueCombination
 {
 public:
 	ValueCombination ();
-	~ValueCombination ();
+	virtual ~ValueCombination ();
 
 	virtual size_t					GetSize () const = 0;
 	virtual const ValueConstPtr&	GetValue (size_t index) const = 0;

@@ -7,7 +7,7 @@ namespace NE
 template <typename CharType, typename StringType>
 Stream::Status ReadString (MemoryInputStream& stream, StringType& val)
 {
-	size_t count;
+	size_t count = 0;
 	if (stream.Read (count) != Stream::Status::NoError) {
 		return stream.GetStatus ();
 	}
