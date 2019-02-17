@@ -40,14 +40,14 @@ static void EnumerateConnectionsOrdered (const NodeManager& nodeManager, const s
 
 static void Sort (std::vector<NodeId>& nodes)
 {
-	std::sort (nodes.begin (), nodes.end (), [&] (const NodeId& a, const NodeId& b) -> bool {
+	std::sort (nodes.begin (), nodes.end (), [&] (const NodeId& a, const NodeId& b) {
 		return a < b;
 	});
 }
 
 static void Sort (std::vector<NodeConstPtr>& nodes)
 {
-	std::sort (nodes.begin (), nodes.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) -> bool {
+	std::sort (nodes.begin (), nodes.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) {
 		return a->GetId () < b->GetId ();
 	});
 }
