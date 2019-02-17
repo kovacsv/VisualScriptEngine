@@ -17,15 +17,20 @@ platform:
   - x64
 
 before_build:
+  - choco install "msbuild-sonarqube-runner" -y
   - set WXWIDGETS_DIR=C:\Dependencies\wxWidgets-3.1.2
   - python installdepswin.py C:\Dependencies msbuild %configuration%
   - mkdir Build
   - cd Build
   - cmake -G "Visual Studio 15 2017 Win64" ..
+  - MSBuild.SonarQube.Runner.exe begin /k:"kovacsv_VisualScriptEngine" /d:sonar.organization="kovacsv-github" /d:sonar.cfamily.build-wrapper-output=bw-output /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="e500043bc7e5e882c710a025dcaf2eee77822d5f" /d:sonar.projectBaseDir="c:\projects\VisualScriptEngine\Sources"
 
 build:
   project: c:\projects\VisualScriptEngine\Build\VisualScriptEngine.sln
   verbosity: minimal
 
+after_build:
+  - SonarQube.Scanner.MSBuild.exe end /d:sonar.login="e500043bc7e5e882c710a025dcaf2eee77822d5f"
+  
 test_script:
   - ctest --verbose --build-config %configuration%
