@@ -145,6 +145,7 @@ void NodeUIStatusHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const N
 NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t textsPerPage) :
 	NodePanel (),
 	nodeTexts (nodeTexts),
+	maxTextSize (0.0, 0.0),
 	textsPerPage (textsPerPage)
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
