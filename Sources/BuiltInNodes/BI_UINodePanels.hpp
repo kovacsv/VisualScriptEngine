@@ -90,7 +90,7 @@ private:
 class NodeUIMultiLineTextPanel : public NUIE::NodePanel
 {
 public:
-	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t textsPerPage);
+	NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t allTextCount, size_t textsPerPage);
 
 	virtual NUIE::Size		GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void			Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
@@ -102,6 +102,7 @@ protected:
 private:
 	std::vector<std::wstring>	nodeTexts;
 	NUIE::Size					maxTextSize;
+	size_t						allTextCount;
 	size_t						textsPerPage;
 };
 

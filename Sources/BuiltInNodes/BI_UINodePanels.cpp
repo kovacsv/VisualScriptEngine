@@ -142,10 +142,11 @@ void NodeUIStatusHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const N
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (statusRect, statusColor)));
 }
 
-NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t textsPerPage) :
+NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t allTextCount, size_t textsPerPage) :
 	NodePanel (),
 	nodeTexts (nodeTexts),
 	maxTextSize (0.0, 0.0),
+	allTextCount (allTextCount),
 	textsPerPage (textsPerPage)
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
@@ -161,7 +162,12 @@ NUIE::Size NodeUIMultiLineTextPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment&
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
-	NUIE::Size minSize (maxTextSize.GetWidth (), maxTextSize.GetHeight () * std::min (nodeTexts.size (), textsPerPage));
+	double minHeight = maxTextSize.GetHeight () * textsPerPage;
+	if (allTextCount <= textsPerPage) {
+		minHeight = maxTextSize.GetHeight () * std::min (nodeTexts.size (), textsPerPage);
+	}
+
+	NUIE::Size minSize (maxTextSize.GetWidth (), minHeight);
 	return minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 }
 
