@@ -280,7 +280,6 @@ std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINod
 	return NUIE::GetUINodeFeature<EnableDisableFeature> (uiNode, EnableDisableFeatureId);
 }
 
-
 std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINode* uiNode)
 {
 	return NUIE::GetUINodeFeature<ValueCombinationFeature> (uiNode, ValueCombinationFeatureId);
