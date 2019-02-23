@@ -135,6 +135,21 @@ private:
 	int height;
 };
 
+class BoundingRectCalculator
+{
+public:
+	BoundingRectCalculator ();
+
+	void			AddRect (const Rect& rect);
+
+	bool			IsValid () const;
+	const Rect&		GetRect () const;
+
+private:
+	Rect	boundingRect;
+	bool	isValid;
+};
+
 NE::Stream::Status ReadPoint (NE::InputStream& inputStream, Point& point);
 NE::Stream::Status ReadSize (NE::InputStream& inputStream, Size& size);
 NE::Stream::Status ReadRect (NE::InputStream& inputStream, Rect& rect);

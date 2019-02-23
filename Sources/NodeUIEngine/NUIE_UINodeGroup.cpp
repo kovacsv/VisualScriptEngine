@@ -118,38 +118,30 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 	const SkinParams& skinParams = env.GetSkinParams ();
 	DrawingContext& drawingContext = env.GetDrawingContext ();
 
-	Rect boundingRect;
-	bool isEmptyRect = true;
+	BoundingRectCalculator boundingRectCalculator;
 	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 		Rect nodeRect = rectGetter.GetNodeRect (nodeId);
-		if (isEmptyRect) {
-			boundingRect = nodeRect;
-			isEmptyRect = false;
-		} else {
-			boundingRect = Rect::FromTwoPoints (
-				Point (std::min (nodeRect.GetLeft (), boundingRect.GetLeft ()), std::min (nodeRect.GetTop (), boundingRect.GetTop ())),
-				Point (std::max (nodeRect.GetRight (), boundingRect.GetRight ()), std::max (nodeRect.GetBottom (), boundingRect.GetBottom ()))
-			);
-		}
+		boundingRectCalculator.AddRect (nodeRect);
 		return true;
 	});
 
 	double groupPadding = skinParams.GetGroupPadding ();
 
 	Size textSize = drawingContext.MeasureText (skinParams.GetGroupNameFont (), name);
+	Rect boundingRect = boundingRectCalculator.GetRect ();
 	double maxWidth = std::max (textSize.GetWidth (), boundingRect.GetWidth ());
-	boundingRect = Rect::FromPositionAndSize (
+	Rect fullRect = Rect::FromPositionAndSize (
 		boundingRect.GetTopLeft () - Point (groupPadding, 2.0 * groupPadding + textSize.GetHeight ()),
 		Size (maxWidth, boundingRect.GetHeight ()) + Size (2.0 * groupPadding, 3.0 * groupPadding + textSize.GetHeight ())
 	);
 
 	Rect textRect = Rect::FromPositionAndSize (
-		Point (boundingRect.GetX () + groupPadding, boundingRect.GetY () + groupPadding),
+		Point (fullRect.GetX () + groupPadding, fullRect.GetY () + groupPadding),
 		Size (maxWidth, textSize.GetHeight ())
 	);
 
-	drawingImage.SetRect (boundingRect);
-	drawingImage.AddItem (DrawingItemPtr (new DrawingFillRect (boundingRect, skinParams.GetGroupBackgroundColor ())));
+	drawingImage.SetRect (fullRect);
+	drawingImage.AddItem (DrawingItemPtr (new DrawingFillRect (fullRect, skinParams.GetGroupBackgroundColor ())));
 	drawingImage.AddItem (DrawingItemPtr (new DrawingText (textRect, skinParams.GetGroupNameFont (), name, HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetGroupNameColor ())));
 }
 

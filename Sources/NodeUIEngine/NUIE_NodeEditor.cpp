@@ -33,35 +33,25 @@ static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnviro
 		NodeUIDrawingEnvironment& env;
 	};
 
-	bool isEmptyRect = true;
+	BoundingRectCalculator boundingRectCalculator;
 	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
 		Rect nodeRect = uiNode->GetNodeRect (env);
-		if (isEmptyRect) {
-			boundingRect = nodeRect;
-			isEmptyRect = false;
-		} else {
-			boundingRect = Rect::FromTwoPoints (
-				Point (std::min (nodeRect.GetLeft (), boundingRect.GetLeft ()), std::min (nodeRect.GetTop (), boundingRect.GetTop ())),
-				Point (std::max (nodeRect.GetRight (), boundingRect.GetRight ()), std::max (nodeRect.GetBottom (), boundingRect.GetBottom ()))
-			);
-		}
+		boundingRectCalculator.AddRect (nodeRect);
 		return true;
 	});
-
-	if (isEmptyRect) {
-		return false;
-	}
 
 	StaticNodeRectGetter nodeRectGetter (uiManager, env);
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
 		Rect groupRect = uiGroup->GetRect (env, nodeRectGetter, uiManager.GetUIGroupNodes (uiGroup));
-		boundingRect = Rect::FromTwoPoints (
-			Point (std::min (groupRect.GetLeft (), boundingRect.GetLeft ()), std::min (groupRect.GetTop (), boundingRect.GetTop ())),
-			Point (std::max (groupRect.GetRight (), boundingRect.GetRight ()), std::max (groupRect.GetBottom (), boundingRect.GetBottom ()))
-		);
+		boundingRectCalculator.AddRect (groupRect);
 		return true;
 	});
 
+	if (!boundingRectCalculator.IsValid ()) {
+		return false;
+	}
+
+	boundingRect = boundingRectCalculator.GetRect ();
 	return true;
 }
 

@@ -378,6 +378,36 @@ int IntRect::GetHeight () const
 	return height;
 }
 
+BoundingRectCalculator::BoundingRectCalculator () :
+	boundingRect (),
+	isValid (false)
+{
+}
+
+void BoundingRectCalculator::AddRect (const Rect& rect)
+{
+	if (!isValid) {
+		boundingRect = rect;
+		isValid = true;
+	} else {
+		boundingRect = Rect::FromTwoPoints (
+			Point (std::min (rect.GetLeft (), boundingRect.GetLeft ()), std::min (rect.GetTop (), boundingRect.GetTop ())),
+			Point (std::max (rect.GetRight (), boundingRect.GetRight ()), std::max (rect.GetBottom (), boundingRect.GetBottom ()))
+		);
+	}
+}
+
+bool BoundingRectCalculator::IsValid () const
+{
+	return isValid;
+}
+
+const Rect& BoundingRectCalculator::GetRect () const
+{
+	DBGASSERT (isValid);
+	return boundingRect;
+}
+
 NE::Stream::Status ReadPoint (NE::InputStream& inputStream, Point& point)
 {
 	double x = 0.0;
