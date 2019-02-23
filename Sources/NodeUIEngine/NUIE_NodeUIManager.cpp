@@ -260,6 +260,11 @@ void NodeUIManager::EnumerateConnectedOutputSlots (const UIInputSlotConstPtr& in
 	});
 }
 
+bool NodeUIManager::ContainsUINode (const NE::NodeId& nodeId) const
+{
+	return nodeManager.ContainsNode (nodeId);
+}
+
 UINodePtr NodeUIManager::GetUINode (const NE::NodeId& nodeId)
 {
 	NE::NodePtr node = nodeManager.GetNode (nodeId);

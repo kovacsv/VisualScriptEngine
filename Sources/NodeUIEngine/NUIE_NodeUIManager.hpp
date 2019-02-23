@@ -69,6 +69,7 @@ public:
 	void						EnumerateConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const;
 	void						EnumerateConnectedOutputSlots (const UIInputSlotConstPtr& inputSlot, const std::function<void (UIOutputSlotConstPtr)>& processor) const;
 
+	bool						ContainsUINode (const NE::NodeId& nodeId) const;
 	UINodePtr					GetUINode (const NE::NodeId& nodeId);
 	UINodeConstPtr				GetUINode (const NE::NodeId& nodeId) const;
 
