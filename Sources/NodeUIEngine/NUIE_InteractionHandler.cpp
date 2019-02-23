@@ -315,7 +315,7 @@ PastePositionCalculator::PastePositionCalculator () :
 
 }
 
-Point PastePositionCalculator::CalculatePastePosition (NodeUIManager& uiManager, NodeUIEnvironment& env)
+Point PastePositionCalculator::CalculatePastePosition (const NodeUIManager& uiManager, NodeUIEnvironment& env)
 {
 	static Point pasteOffset (20.0, 20.0);
 	const ViewBox& viewBox = uiManager.GetViewBox ();

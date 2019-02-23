@@ -18,7 +18,7 @@ class PastePositionCalculator
 public:
 	PastePositionCalculator ();
 
-	Point	CalculatePastePosition (NodeUIManager& uiManager, NodeUIEnvironment& env);
+	Point	CalculatePastePosition (const NodeUIManager& uiManager, NodeUIEnvironment& env);
 
 private:
 	Point	lastPastePosition;
