@@ -214,7 +214,7 @@ void NodeUIManagerDrawer::InitSortedNodeList () const
 		sortedNodeList.push_back (uiNode);
 	});
 
-	std::sort (sortedNodeList.begin (), sortedNodeList.end (), [&] (const UINode* a, const UINode* b) -> bool {
+	std::sort (sortedNodeList.begin (), sortedNodeList.end (), [&] (const UINode* a, const UINode* b) {
 		return a->GetId () < b->GetId ();
 	});
 }

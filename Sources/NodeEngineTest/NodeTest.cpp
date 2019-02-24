@@ -108,7 +108,7 @@ TEST (NodeSlotEnumerationTest)
 
 	{
 		int count = 0;
-		node->EnumerateInputSlots ([&] (const InputSlotPtr&) -> bool {
+		node->EnumerateInputSlots ([&] (const InputSlotPtr&) {
 			count++;
 			return true;
 		});
@@ -117,7 +117,7 @@ TEST (NodeSlotEnumerationTest)
 
 	{
 		int count = 0;
-		node->EnumerateOutputSlots ([&] (const OutputSlotPtr&) -> bool {
+		node->EnumerateOutputSlots ([&] (const OutputSlotPtr&) {
 			count++;
 			return true;
 		});
@@ -126,7 +126,7 @@ TEST (NodeSlotEnumerationTest)
 
 	{
 		int count = 0;
-		node->EnumerateSlots<InputSlotPtr> ([&] (const InputSlotPtr&) -> bool {
+		node->EnumerateSlots<InputSlotPtr> ([&] (const InputSlotPtr&) {
 			count++;
 			return true;
 		});
@@ -135,7 +135,7 @@ TEST (NodeSlotEnumerationTest)
 
 	{
 		int count = 0;
-		node->EnumerateSlots<OutputSlotPtr> ([&] (const OutputSlotPtr&) -> bool {
+		node->EnumerateSlots<OutputSlotPtr> ([&] (const OutputSlotPtr&) {
 			count++;
 			return true;
 		});

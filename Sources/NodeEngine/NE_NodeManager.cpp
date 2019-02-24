@@ -202,12 +202,12 @@ bool NodeManager::DeleteNode (const NodePtr& node)
 	nodeGroupList.RemoveNodeFromGroup (node->GetId ());
 	node->InvalidateValue ();
 
-	node->EnumerateInputSlots ([&] (const InputSlotPtr& inputSlot) -> bool {
+	node->EnumerateInputSlots ([&] (const InputSlotPtr& inputSlot) {
 		connectionManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
 		return true;
 	});
 
-	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) -> bool {
+	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
 		connectionManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
 		return true;
 	});
@@ -325,7 +325,7 @@ void NodeManager::EnumerateConnectedInputSlots (const OutputSlotConstPtr& output
 
 void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 {
-	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
+	EnumerateNodes ([&] (const NodeConstPtr& node) {
 		node->Evaluate (env);
 		return true;
 	});
@@ -335,7 +335,7 @@ void NodeManager::ForceEvaluateAllNodes (EvaluationEnv& env) const
 {
 	NE::ValueGuard<bool> isForceCalculateGuard (isForceCalculate, true);
 	std::vector<NodeConstPtr> nodesToRecalculate;
-	EnumerateNodes ([&] (const NodeConstPtr& node) -> bool {
+	EnumerateNodes ([&] (const NodeConstPtr& node) {
 		Node::CalculationStatus calcStatus = node->GetCalculationStatus ();
 		DBGASSERT (calcStatus != Node::CalculationStatus::NeedToCalculateButDisabled);
 		if (calcStatus == Node::CalculationStatus::NeedToCalculate) {
@@ -368,7 +368,7 @@ void NodeManager::InvalidateNodeValue (const NodeConstPtr& node) const
 
 void NodeManager::EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeId&)>& processor) const
 {
-	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) -> bool {
+	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
 		if (connectionManager.HasConnectedInputSlots (outputSlot)) {
 			connectionManager.EnumerateConnectedInputSlots (outputSlot, [&] (const InputSlotConstPtr& inputSlot) {
 				processor (inputSlot->GetOwnerNodeId ());
@@ -620,7 +620,7 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
 		nodesToWrite.push_back (node);
 		return true;
 	});
-	std::sort (nodesToWrite.begin (), nodesToWrite.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) -> bool {
+	std::sort (nodesToWrite.begin (), nodesToWrite.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) {
 		return a->GetId () < b->GetId ();
 	});
 

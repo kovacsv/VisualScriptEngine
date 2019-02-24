@@ -153,7 +153,7 @@ UIOutputSlotConstPtr UINode::GetUIOutputSlot (const NE::SlotId& slotId) const
 
 void UINode::EnumerateUIInputSlots (const std::function<bool (const UIInputSlotPtr&)>& processor)
 {
-	EnumerateInputSlots ([&] (const NE::InputSlotPtr& inputSlot) -> bool {
+	EnumerateInputSlots ([&] (const NE::InputSlotPtr& inputSlot) {
 		UIInputSlotPtr uiInputSlot = std::dynamic_pointer_cast<UIInputSlot> (inputSlot);
 		if (DBGERROR (uiInputSlot == nullptr)) {
 			return false;
@@ -164,7 +164,7 @@ void UINode::EnumerateUIInputSlots (const std::function<bool (const UIInputSlotP
 
 void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotPtr&)>& processor)
 {
-	EnumerateOutputSlots ([&] (const NE::OutputSlotPtr& outputSlot) -> bool {
+	EnumerateOutputSlots ([&] (const NE::OutputSlotPtr& outputSlot) {
 		UIOutputSlotPtr uiOutputSlot = std::dynamic_pointer_cast<UIOutputSlot> (outputSlot);
 		if (DBGERROR (uiOutputSlot == nullptr)) {
 			return false;
@@ -175,7 +175,7 @@ void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlo
 
 void UINode::EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const
 {
-	EnumerateInputSlots ([&] (const NE::InputSlotConstPtr& inputSlot) -> bool {
+	EnumerateInputSlots ([&] (const NE::InputSlotConstPtr& inputSlot) {
 		UIInputSlotConstPtr uiInputSlot = std::dynamic_pointer_cast<const UIInputSlot> (inputSlot);
 		if (DBGERROR (uiInputSlot == nullptr)) {
 			return false;
@@ -186,7 +186,7 @@ void UINode::EnumerateUIInputSlots (const std::function<bool (const UIInputSlotC
 
 void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const
 {
-	EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) -> bool {
+	EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
 		UIOutputSlotConstPtr uiOutputSlot = std::dynamic_pointer_cast<const UIOutputSlot> (outputSlot);
 		if (DBGERROR (uiOutputSlot == nullptr)) {
 			return false;

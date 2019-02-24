@@ -205,14 +205,14 @@ NodeUISlotPanel::NodeUISlotPanel (const NUIE::UINode& node, NUIE::NodeUIDrawingE
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 
-	node.EnumerateUIInputSlots ([&] (const NUIE::UIInputSlotConstPtr& slot) -> bool {
+	node.EnumerateUIInputSlots ([&] (const NUIE::UIInputSlotConstPtr& slot) {
 		NUIE::Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), slot->GetName ());
 		slotRectSize = slotRectSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
 		inputSlots.AddSlotSize (slot->GetId (), slotRectSize);
 		return true;
 	});
 
-	node.EnumerateUIOutputSlots ([&] (const NUIE::UIOutputSlotConstPtr& slot) -> bool {
+	node.EnumerateUIOutputSlots ([&] (const NUIE::UIOutputSlotConstPtr& slot) {
 		NUIE::Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), slot->GetName ());
 		slotRectSize = slotRectSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
 		outputSlots.AddSlotSize (slot->GetId (), slotRectSize);

@@ -11,8 +11,8 @@ static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIDrawingE
 	SlotType foundSlot = nullptr;
 	double minDistance = INF;
 	const ViewBox& viewBox = uiManager.GetViewBox ();
-	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) -> bool {
-		uiNode->EnumerateUISlots<SlotType> ([&] (const SlotType& currentSlot) -> bool {
+	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) {
+		uiNode->EnumerateUISlots<SlotType> ([&] (const SlotType& currentSlot) {
 			Point slotConnPosition = viewBox.ModelToView (uiNode->GetSlotConnPosition<SlotType> (env, currentSlot->GetId ()));
 			double distance = viewPosition.DistanceTo (slotConnPosition);
 			if (distance < minDistance) {
@@ -34,7 +34,7 @@ static SlotType FindSlotInNode (const UINodePtr& uiNode, NodeUIManager& uiManage
 {
 	SlotType foundSlot = nullptr;
 	const ViewBox& viewBox = uiManager.GetViewBox ();
-	uiNode->EnumerateUISlots<SlotType> ([&] (const SlotType& currentSlot) -> bool {
+	uiNode->EnumerateUISlots<SlotType> ([&] (const SlotType& currentSlot) {
 		if (uiNode->HasSlotRect<SlotType> (env, currentSlot->GetId ())) {
 			Rect slotRect = viewBox.ModelToView (uiNode->GetSlotRect<SlotType> (env, currentSlot->GetId ()));
 			if (slotRect.Contains (viewPosition)) {
@@ -51,7 +51,7 @@ UINodePtr FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironm
 {
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	UINodePtr foundNode = nullptr;
-	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) -> bool {
+	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) {
 		Rect nodeRect = viewBox.ModelToView (uiNode->GetNodeRect (env));
 		if (nodeRect.Contains (viewPosition)) {
 			if (foundNode == nullptr || foundNode->GetId () < uiNode->GetId ()) {
@@ -89,7 +89,7 @@ UINodeGroupPtr FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawi
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	NodeUIManagerNodeRectGetter rectGetter (uiManager, env);
 	UINodeGroupPtr foundGroup = nullptr;
-	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) -> bool {
+	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
 		Rect groupRect = viewBox.ModelToView (group->GetRect (env, rectGetter, uiManager.GetUIGroupNodes (group)));
 		if (groupRect.Contains (viewPosition)) {
 			foundGroup = group;
