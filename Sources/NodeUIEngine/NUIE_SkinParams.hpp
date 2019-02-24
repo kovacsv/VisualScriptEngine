@@ -118,7 +118,7 @@ public:
 	virtual const Color&	GetGroupBackgroundColor () const override;
 	virtual double			GetGroupPadding () const override;
 
-protected:
+private:
 	Color	backgroundColor;
 	Pen		connectionLinePen;
 

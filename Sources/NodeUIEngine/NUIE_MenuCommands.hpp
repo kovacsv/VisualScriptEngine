@@ -33,7 +33,7 @@ public:
 
 	virtual void			Do () = 0;
 
-protected:
+private:
 	std::wstring			name;
 };
 

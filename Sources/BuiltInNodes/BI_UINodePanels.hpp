@@ -38,11 +38,10 @@ public:
 	virtual NUIE::Size		GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void			Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
-protected:
+private:
 	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const = 0;
 	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const = 0;
 
-private:
 	std::wstring nodeText;
 };
 
@@ -95,11 +94,10 @@ public:
 	virtual NUIE::Size		GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void			Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
-protected:
+private:
 	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const;
 	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const;
 
-private:
 	std::vector<std::wstring>	nodeTexts;
 	NUIE::Size					maxTextSize;
 	size_t						allTextCount;
@@ -133,7 +131,7 @@ public:
 	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
-protected:
+private:
 	std::string		leftButtonId;
 	std::wstring	leftButtonText;
 	std::string		rightButtonId;
@@ -156,7 +154,7 @@ public:
 	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
-protected:
+private:
 	std::string		switchRectId;
 	std::wstring	leftSwitchText;
 	std::wstring	rightSwitchText;

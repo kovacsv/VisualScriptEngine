@@ -44,10 +44,8 @@ public:
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
-protected:
-	virtual void				DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const override;
-
 private:
+	virtual void				DrawInplace (NUIE::NodeUIDrawingEnvironment& env) const override;
 	NUIE::DrawingItemConstPtr	CreateDrawingItem (const NE::ValueConstPtr& value) const;
 	void						AddItem (NE::EvaluationEnv& env) const;
 	void						RemoveItem (NE::EvaluationEnv& env) const;

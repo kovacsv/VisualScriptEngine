@@ -22,7 +22,7 @@ public:
 	virtual void	FillEllipse (const Rect& rect, const Color& color) override;
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 
-private:
+protected:
 	const ViewBox& viewBox;
 };
 
