@@ -202,12 +202,12 @@ bool NodeManager::DeleteNode (const NodePtr& node)
 	nodeGroupList.RemoveNodeFromGroup (node->GetId ());
 	node->InvalidateValue ();
 
-	node->EnumerateInputSlots ([this] (const InputSlotPtr& inputSlot) -> bool {
+	node->EnumerateInputSlots ([&] (const InputSlotPtr& inputSlot) -> bool {
 		connectionManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
 		return true;
 	});
 
-	node->EnumerateOutputSlots ([this] (const OutputSlotConstPtr& outputSlot) -> bool {
+	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) -> bool {
 		connectionManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
 		return true;
 	});
