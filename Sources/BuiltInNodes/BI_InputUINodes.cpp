@@ -21,6 +21,26 @@ NE::SerializationInfo			NumericRangeNode::serializationInfo (NE::ObjectVersion (
 NE::DynamicSerializationInfo	IntegerRangeNode::serializationInfo (NE::ObjectId ("{74527771-58A4-42D4-850F-1C63FA9A4732}"), NE::ObjectVersion (1), IntegerRangeNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	DoubleRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), DoubleRangeNode::CreateSerializableInstance);
 
+template <typename NodeType>
+class MinValueIntegerParameter : public NUIE::SlotDefaultValueNodeParameter<NodeType, NE::IntValue>
+{
+public:
+	MinValueIntegerParameter (const std::wstring& name, const NUIE::ParameterType& type, const NE::SlotId& slotId, int minValue) :
+		NUIE::SlotDefaultValueNodeParameter<NodeType, NE::IntValue> (name, type, slotId),
+		minValue (minValue)
+	{
+
+	}
+
+	virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
+	{
+		return value->GetValue () >= minValue;
+	}
+
+private:
+	int minValue;
+};
+
 BooleanNode::BooleanNode () :
 	BooleanNode (L"", NUIE::Point (), false)
 {
@@ -547,25 +567,10 @@ NE::ValueConstPtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
 
 void IntegerRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class CountParameter : public NUIE::SlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue>
-	{
-	public:
-		CountParameter () :
-			NUIE::SlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
-		{
-
-		}
-
-		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
-		{
-			return value->GetValue () >= 0.0;
-		}
-	};
-
 	BasicUINode::RegisterParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Start", NUIE::ParameterType::Integer, NE::SlotId ("start"));
 	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Step", NUIE::ParameterType::Integer, NE::SlotId ("step"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<IntegerRangeNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
 }
 
 NE::Stream::Status IntegerRangeNode::Read (NE::InputStream& inputStream)
@@ -629,25 +634,10 @@ NE::ValueConstPtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
 
 void DoubleRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
-	class CountParameter : public NUIE::SlotDefaultValueNodeParameter<DoubleRangeNode, NE::IntValue>
-	{
-	public:
-		CountParameter () :
-			NUIE::SlotDefaultValueNodeParameter<DoubleRangeNode, NE::IntValue> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"))
-		{
-
-		}
-
-		virtual bool IsValidValue (const NUIE::UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
-		{
-			return value->GetValue () >= 0.0;
-		}
-	};
-
 	BasicUINode::RegisterParameters (parameterList);
 	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
 	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new CountParameter ()));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleRangeNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
 }
 
 NE::Stream::Status DoubleRangeNode::Read (NE::InputStream& inputStream)
