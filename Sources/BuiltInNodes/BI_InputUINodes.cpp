@@ -18,8 +18,9 @@ NE::DynamicSerializationInfo	IntegerUpDownNode::serializationInfo (NE::ObjectId 
 NE::DynamicSerializationInfo	DoubleUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), DoubleUpDownNode::CreateSerializableInstance);
 
 NE::SerializationInfo			NumericRangeNode::serializationInfo (NE::ObjectVersion (1));
-NE::DynamicSerializationInfo	IntegerRangeNode::serializationInfo (NE::ObjectId ("{74527771-58A4-42D4-850F-1C63FA9A4732}"), NE::ObjectVersion (1), IntegerRangeNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	DoubleRangeNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), DoubleRangeNode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	IntegerIncrementedNode::serializationInfo (NE::ObjectId ("{74527771-58A4-42D4-850F-1C63FA9A4732}"), NE::ObjectVersion (1), IntegerIncrementedNode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	DoubleIncrementedNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), DoubleIncrementedNode::CreateSerializableInstance);
+NE::DynamicSerializationInfo	DoubleDistributedNode::serializationInfo (NE::ObjectId ("{DDD3DF7C-AEA5-4E1E-B48A-2A10EA3FC7EF}"), NE::ObjectVersion (1), DoubleDistributedNode::CreateSerializableInstance);
 
 template <typename NodeType>
 class MinValueIntegerParameter : public NUIE::SlotDefaultValueNodeParameter<NodeType, NE::IntValue>
@@ -520,24 +521,24 @@ NE::Stream::Status NumericRangeNode::Write (NE::OutputStream& outputStream) cons
 	return outputStream.GetStatus ();
 }
 
-IntegerRangeNode::IntegerRangeNode () :
-	IntegerRangeNode (L"", NUIE::Point ())
+IntegerIncrementedNode::IntegerIncrementedNode () :
+	IntegerIncrementedNode (L"", NUIE::Point ())
 {
 
 }
 
-IntegerRangeNode::IntegerRangeNode (const std::wstring& name, const NUIE::Point& position) :
+IntegerIncrementedNode::IntegerIncrementedNode (const std::wstring& name, const NUIE::Point& position) :
 	NumericRangeNode (name, position)
 {
 
 }
 
-IntegerRangeNode::~IntegerRangeNode ()
+IntegerIncrementedNode::~IntegerIncrementedNode ()
 {
 
 }
 
-void IntegerRangeNode::Initialize ()
+void IntegerIncrementedNode::Initialize ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
@@ -545,7 +546,7 @@ void IntegerRangeNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
 }
 
-NE::ValueConstPtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr IntegerIncrementedNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValueConstPtr start = EvaluateInputSlot (NE::SlotId ("start"), env);
 	NE::ValueConstPtr step = EvaluateInputSlot (NE::SlotId ("step"), env);
@@ -557,6 +558,10 @@ NE::ValueConstPtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
 	int startNum = NE::NumberValue::ToInteger (NE::CreateSingleValue (start));
 	int stepNum = NE::NumberValue::ToInteger (NE::CreateSingleValue (step));
 	int countNum = NE::NumberValue::ToInteger (NE::CreateSingleValue (count));
+	if (countNum < 0) {
+		return nullptr;
+	}
+
 	NE::ListValuePtr list (new NE::ListValue ());
 	for (int i = 0; i < countNum; ++i) {
 		list->Push (NE::ValuePtr (new NE::IntValue (startNum + i * stepNum)));
@@ -565,46 +570,46 @@ NE::ValueConstPtr IntegerRangeNode::Calculate (NE::EvaluationEnv& env) const
 	return list;
 }
 
-void IntegerRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+void IntegerIncrementedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Start", NUIE::ParameterType::Integer, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerRangeNode, NE::IntValue> (parameterList, L"Step", NUIE::ParameterType::Integer, NE::SlotId ("step"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<IntegerRangeNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
+	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, L"Start", NUIE::ParameterType::Integer, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, L"Step", NUIE::ParameterType::Integer, NE::SlotId ("step"));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<IntegerIncrementedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
 }
 
-NE::Stream::Status IntegerRangeNode::Read (NE::InputStream& inputStream)
+NE::Stream::Status IntegerIncrementedNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NumericRangeNode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status IntegerRangeNode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status IntegerIncrementedNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NumericRangeNode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
-DoubleRangeNode::DoubleRangeNode () :
-	DoubleRangeNode (L"", NUIE::Point ())
+DoubleIncrementedNode::DoubleIncrementedNode () :
+	DoubleIncrementedNode (L"", NUIE::Point ())
 {
 
 }
 
-DoubleRangeNode::DoubleRangeNode (const std::wstring& name, const NUIE::Point& position) :
+DoubleIncrementedNode::DoubleIncrementedNode (const std::wstring& name, const NUIE::Point& position) :
 	NumericRangeNode (name, position)
 {
 
 }
 
-DoubleRangeNode::~DoubleRangeNode ()
+DoubleIncrementedNode::~DoubleIncrementedNode ()
 {
 
 }
 
-void DoubleRangeNode::Initialize ()
+void DoubleIncrementedNode::Initialize ()
 {
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
@@ -612,7 +617,7 @@ void DoubleRangeNode::Initialize ()
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
 }
 
-NE::ValueConstPtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
+NE::ValueConstPtr DoubleIncrementedNode::Calculate (NE::EvaluationEnv& env) const
 {
 	NE::ValueConstPtr start = EvaluateInputSlot (NE::SlotId ("start"), env);
 	NE::ValueConstPtr step = EvaluateInputSlot (NE::SlotId ("step"), env);
@@ -624,6 +629,10 @@ NE::ValueConstPtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
 	double startNum = NE::NumberValue::ToDouble (NE::CreateSingleValue (start));
 	double stepNum = NE::NumberValue::ToDouble (NE::CreateSingleValue (step));
 	int countNum = NE::NumberValue::ToInteger (NE::CreateSingleValue (count));
+	if (countNum < 0) {
+		return nullptr;
+	}
+
 	NE::ListValuePtr list (new NE::ListValue ());
 	for (int i = 0; i < countNum; ++i) {
 		list->Push (NE::ValuePtr (new NE::DoubleValue (startNum + i * stepNum)));
@@ -632,22 +641,94 @@ NE::ValueConstPtr DoubleRangeNode::Calculate (NE::EvaluationEnv& env) const
 	return list;
 }
 
-void DoubleRangeNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+void DoubleIncrementedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleRangeNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleRangeNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleIncrementedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
 }
 
-NE::Stream::Status DoubleRangeNode::Read (NE::InputStream& inputStream)
+NE::Stream::Status DoubleIncrementedNode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NumericRangeNode::Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status DoubleRangeNode::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status DoubleIncrementedNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	NumericRangeNode::Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+DoubleDistributedNode::DoubleDistributedNode () :
+	DoubleDistributedNode (L"", NUIE::Point ())
+{
+
+}
+
+DoubleDistributedNode::DoubleDistributedNode (const std::wstring& name, const NUIE::Point& position) :
+	NumericRangeNode (name, position)
+{
+
+}
+
+DoubleDistributedNode::~DoubleDistributedNode ()
+{
+
+}
+
+void DoubleDistributedNode::Initialize ()
+{
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("end"), L"End", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
+}
+
+NE::ValueConstPtr DoubleDistributedNode::Calculate (NE::EvaluationEnv& env) const
+{
+	NE::ValueConstPtr start = EvaluateInputSlot (NE::SlotId ("start"), env);
+	NE::ValueConstPtr end = EvaluateInputSlot (NE::SlotId ("end"), env);
+	NE::ValueConstPtr count = EvaluateInputSlot (NE::SlotId ("count"), env);
+	if (!NE::IsSingleType<NE::NumberValue> (start) || !NE::IsSingleType<NE::NumberValue> (end) || !NE::IsSingleType<NE::NumberValue> (count)) {
+		return nullptr;
+	}
+
+	double startNum = NE::NumberValue::ToDouble (NE::CreateSingleValue (start));
+	double endNum = NE::NumberValue::ToDouble (NE::CreateSingleValue (end));
+	int countNum = NE::NumberValue::ToInteger (NE::CreateSingleValue (count));
+	if (countNum < 2) {
+		return nullptr;
+	}
+
+	double segmentVal = fabs (startNum - endNum) / (double) (countNum - 1);
+	NE::ListValuePtr list (new NE::ListValue ());
+	for (int i = 0; i < countNum; ++i) {
+		list->Push (NE::ValuePtr (new NE::DoubleValue (startNum + i * segmentVal)));
+	}
+
+	return list;
+}
+
+void DoubleDistributedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	BasicUINode::RegisterParameters (parameterList);
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, L"End", NUIE::ParameterType::Double, NE::SlotId ("end"));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleDistributedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 2)));
+}
+
+NE::Stream::Status DoubleDistributedNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	NumericRangeNode::Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status DoubleDistributedNode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NumericRangeNode::Write (outputStream);

@@ -18,7 +18,7 @@ public:
 		NodeEditorTestEnv ()
 	{
 		doubleUpDownNode.reset (new DoubleUpDownNode (L"Number", NUIE::Point (100, 200), 20, 10));
-		rangeInputNode.reset (new DoubleRangeNode (L"Range", NUIE::Point (300, 400)));
+		rangeInputNode.reset (new DoubleIncrementedNode (L"Range", NUIE::Point (300, 400)));
 		viewerUINode1.reset (new MultiLineViewerNode (L"Viewer", NUIE::Point (600, 100), 5));
 		viewerUINode2.reset (new MultiLineViewerNode (L"Viewer 2", NUIE::Point (600, 400), 5));
 		

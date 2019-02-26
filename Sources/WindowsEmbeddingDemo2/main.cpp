@@ -55,11 +55,14 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				nodeTree.AddItem (L"Input Nodes", L"Number", [&] (const NUIE::Point& position) {
 					return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
 				});
-				nodeTree.AddItem (L"Input Nodes", L"Integer Range", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", position));
+				nodeTree.AddItem (L"Input Nodes", L"Integer Increment", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::IntegerIncrementedNode (L"Integer Increment", position));
 				});
-				nodeTree.AddItem (L"Input Nodes", L"Number Range", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", position));
+				nodeTree.AddItem (L"Input Nodes", L"Number Increment", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::DoubleIncrementedNode (L"Number Increment", position));
+				});
+				nodeTree.AddItem (L"Input Nodes", L"Number Distribution", [&] (const NUIE::Point& position) {
+					return NUIE::UINodePtr (new BI::DoubleDistributedNode (L"Number Distribution", position));
 				});
 				nodeTree.AddItem (L"Arithmetic Nodes", L"Addition", [&] (const NUIE::Point& position) {
 					return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));

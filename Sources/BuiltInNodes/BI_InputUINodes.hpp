@@ -137,14 +137,14 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class IntegerRangeNode : public NumericRangeNode
+class IntegerIncrementedNode : public NumericRangeNode
 {
-	DYNAMIC_SERIALIZABLE (IntegerRangeNode);
+	DYNAMIC_SERIALIZABLE (IntegerIncrementedNode);
 
 public:
-	IntegerRangeNode ();
-	IntegerRangeNode (const std::wstring& name, const NUIE::Point& position);
-	virtual ~IntegerRangeNode ();
+	IntegerIncrementedNode ();
+	IntegerIncrementedNode (const std::wstring& name, const NUIE::Point& position);
+	virtual ~IntegerIncrementedNode ();
 	
 	virtual void				Initialize () override;
 	virtual NE::ValueConstPtr	Calculate (NE::EvaluationEnv& env) const override;
@@ -154,15 +154,32 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 };
 
-class DoubleRangeNode : public NumericRangeNode
+class DoubleIncrementedNode : public NumericRangeNode
 {
-	DYNAMIC_SERIALIZABLE (DoubleRangeNode);
+	DYNAMIC_SERIALIZABLE (DoubleIncrementedNode);
 
 public:
-	DoubleRangeNode ();
-	DoubleRangeNode (const std::wstring& name, const NUIE::Point& position);
-	virtual ~DoubleRangeNode ();
+	DoubleIncrementedNode ();
+	DoubleIncrementedNode (const std::wstring& name, const NUIE::Point& position);
+	virtual ~DoubleIncrementedNode ();
 	
+	virtual void				Initialize () override;
+	virtual NE::ValueConstPtr	Calculate (NE::EvaluationEnv& env) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
+
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
+};
+
+class DoubleDistributedNode : public NumericRangeNode
+{
+	DYNAMIC_SERIALIZABLE (DoubleDistributedNode);
+
+public:
+	DoubleDistributedNode ();
+	DoubleDistributedNode (const std::wstring& name, const NUIE::Point& position);
+	virtual ~DoubleDistributedNode ();
+
 	virtual void				Initialize () override;
 	virtual NE::ValueConstPtr	Calculate (NE::EvaluationEnv& env) const override;
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;

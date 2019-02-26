@@ -55,8 +55,9 @@ public:
 		Boolean,
 		Integer,
 		Number,
-		IntegerRange,
-		NumberRange,
+		IntegerIncrement,
+		NumberIncrement,
+		NumberDistribution,
 		Addition,
 		Subtraction,
 		Multiplication,
@@ -85,10 +86,12 @@ public:
 				return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", modelPosition, 0, 5));
 			case NodeType::Number:
 				return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0.0, 5.0));
-			case NodeType::IntegerRange:
-				return NUIE::UINodePtr (new BI::IntegerRangeNode (L"Integer Range", modelPosition));
-			case NodeType::NumberRange:
-				return NUIE::UINodePtr (new BI::DoubleRangeNode (L"Number Range", modelPosition));
+			case NodeType::IntegerIncrement:
+				return NUIE::UINodePtr (new BI::IntegerIncrementedNode (L"Integer Increment", modelPosition));
+			case NodeType::NumberIncrement:
+				return NUIE::UINodePtr (new BI::DoubleIncrementedNode (L"Number Increment", modelPosition));
+			case NodeType::NumberDistribution:
+				return NUIE::UINodePtr (new BI::DoubleDistributedNode (L"Number Distribution", modelPosition));
 			case NodeType::Addition:
 				return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
 			case NodeType::Subtraction:
@@ -135,8 +138,9 @@ public:
 		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Boolean, uiManager, uiEnvironment, L"Boolean", position)));
 		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Integer", position)));
 		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Number", position)));
-		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerRange, uiManager, uiEnvironment, L"Integer Range", position)));
-		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberRange, uiManager, uiEnvironment, L"Number Range", position)));
+		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerIncrement, uiManager, uiEnvironment, L"Integer Increment", position)));
+		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberIncrement, uiManager, uiEnvironment, L"Number Increment", position)));
+		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberDistribution, uiManager, uiEnvironment, L"Number Distribution", position)));
 		createCommandGroup->AddChildCommand (inputCommandGroup);
 
 		NUIE::GroupMenuCommandPtr arithmeticCommandGroup (new NUIE::GroupMenuCommand (L"Arithmetic Nodes"));
@@ -229,14 +233,14 @@ public:
 			static int count = 10;
 			for (int i = 0; i < count; i++) {
 				for (int j = 0; j < count; j++) {
-					nodeEditor->AddNode (NUIE::UINodePtr (new BI::DoubleRangeNode (L"Range", NUIE::Point (i * 150, j * 150))));
+					nodeEditor->AddNode (NUIE::UINodePtr (new BI::DoubleIncrementedNode (L"Range", NUIE::Point (i * 150, j * 150))));
 				}
 			}
 			nodeEditor->Update ();
 		} else {
 			NUIE::UINodePtr startInputNode (new BI::DoubleUpDownNode (L"Number", NUIE::Point (70, 70), 20, 5));
 			NUIE::UINodePtr stepInputNode (new BI::DoubleUpDownNode (L"Number", NUIE::Point (70, 180), 20, 5));
-			NUIE::UINodePtr intRangeNodeX (new BI::DoubleRangeNode (L"Range", NUIE::Point (220, 100)));
+			NUIE::UINodePtr intRangeNodeX (new BI::DoubleIncrementedNode (L"Increment", NUIE::Point (220, 100)));
 			NUIE::UINodePtr inputNodeY (new BI::DoubleUpDownNode (L"Number", NUIE::Point (220, 220), 20, 5));
 			std::shared_ptr<PointNode> pointNode (new PointNode (L"Point", NUIE::Point (400, 150)));
 			NUIE::UINodePtr viewerNode (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (600, 150), 5));
