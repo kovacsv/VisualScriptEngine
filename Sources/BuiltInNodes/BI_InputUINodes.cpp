@@ -6,6 +6,7 @@
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_SkinParams.hpp"
 
+#include <cmath>
 #include <algorithm>
 
 namespace BI
@@ -704,7 +705,7 @@ NE::ValueConstPtr DoubleDistributedNode::Calculate (NE::EvaluationEnv& env) cons
 		return nullptr;
 	}
 
-	double segmentVal = fabs (startNum - endNum) / (double) (countNum - 1);
+	double segmentVal = std::fabs (startNum - endNum) / (double) (countNum - 1);
 	NE::ListValuePtr list (new NE::ListValue ());
 	for (int i = 0; i < countNum; ++i) {
 		list->Push (NE::ValuePtr (new NE::DoubleValue (startNum + i * segmentVal)));
