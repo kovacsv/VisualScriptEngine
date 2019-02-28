@@ -9,7 +9,6 @@ Color::Color () :
 
 }
 
-
 Color::Color (unsigned char r, unsigned char g, unsigned char b) :
 	r (r),
 	g (g),
@@ -46,6 +45,33 @@ bool Color::operator== (const Color& rhs) const
 }
 
 bool Color::operator!= (const Color& rhs) const
+{
+	return !operator== (rhs);
+}
+
+BlendColor::BlendColor (const Color& color, double ratio) :
+	color (color),
+	ratio (ratio)
+{
+
+}
+
+const Color& BlendColor::GetColor () const
+{
+	return color;
+}
+
+double BlendColor::GetRatio () const
+{
+	return ratio;
+}
+
+bool BlendColor::operator== (const BlendColor& rhs) const
+{
+	return color == rhs.color && ratio == rhs.ratio;
+}
+
+bool BlendColor::operator!= (const BlendColor& rhs) const
 {
 	return !operator== (rhs);
 }

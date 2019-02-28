@@ -14,31 +14,31 @@ SkinParams::~SkinParams ()
 }
 
 BasicSkinParams::BasicSkinParams (
-	const Color&	backgroundColor,
-	const Pen&		connectionLinePen,
-	const double&	nodePadding,
-	const Font&		nodeTextFont,
-	const Color&	nodeHeaderTextColor,
-	const Color&	nodeContentTextColor,
-	const Color&	nodeHeaderBackgroundColor,
-	const Color&	nodeContentBackgroundColor,
-	const Pen&		nodeBorderPen,
-	const Color&	slotTextColor,
-	const Color&	slotTextBackgroundColor,
-	const Color&	selectionBlendColor,
-	const Pen&		selectionRectPen,
-	const Pen&		nodeSelectionRectPen,
-	const Color&	hasValueStatusColor,
-	const Color&	hasNoValueStatusColor,
-	const Pen&		buttonBorderPen,
-	const Color&	buttonBackgroundColor,
-	const Color&	selectedButtonBackgroundColor,
-	const Color&	textPanelTextColor,
-	const Color&	textPanelBackgroundColor,
-	const Font&		groupNameFont,
-	const Color&	groupNameColor,
-	const Color&	groupBackgroundColor,
-	const double&	groupPadding
+	const Color&		backgroundColor,
+	const Pen&			connectionLinePen,
+	const double&		nodePadding,
+	const Font&			nodeTextFont,
+	const Color&		nodeHeaderTextColor,
+	const Color&		nodeContentTextColor,
+	const Color&		nodeHeaderBackgroundColor,
+	const Color&		nodeContentBackgroundColor,
+	const Pen&			nodeBorderPen,
+	const Color&		slotTextColor,
+	const Color&		slotTextBackgroundColor,
+	const BlendColor&	selectionBlendColor,
+	const Pen&			selectionRectPen,
+	const Pen&			nodeSelectionRectPen,
+	const Color&		hasValueStatusColor,
+	const Color&		hasNoValueStatusColor,
+	const Pen&			buttonBorderPen,
+	const Color&		buttonBackgroundColor,
+	const Color&		selectedButtonBackgroundColor,
+	const Color&		textPanelTextColor,
+	const Color&		textPanelBackgroundColor,
+	const Font&			groupNameFont,
+	const Color&		groupNameColor,
+	const Color&		groupBackgroundColor,
+	const double&		groupPadding
 ) :
 	backgroundColor (backgroundColor),
 	connectionLinePen (connectionLinePen),
@@ -129,7 +129,7 @@ const Color& BasicSkinParams::GetSlotTextBackgroundColor () const
 	return slotTextBackgroundColor;
 }
 
-const Color& BasicSkinParams::GetSelectionBlendColor () const
+const BlendColor& BasicSkinParams::GetSelectionBlendColor () const
 {
 	return selectionBlendColor;
 }
@@ -213,7 +213,7 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
 		/*slotTextColor*/ Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ Color (225, 225, 225),
-		/*selectionBlendColor*/ Color (0, 138, 184),
+		/*selectionBlendColor*/ BlendColor (Color (0, 138, 184), 0.2),
 		/*selectionRectPen*/ Pen (Color (0, 138, 184), 1.0),
 		/*nodeSelectionRectPen*/ Pen (Color (0, 138, 184), 5.0),
 		/*hasValueStatusColor*/ Color (0, 255, 0),

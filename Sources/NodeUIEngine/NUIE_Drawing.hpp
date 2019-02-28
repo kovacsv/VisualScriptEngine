@@ -42,6 +42,22 @@ private:
 	unsigned char b;
 };
 
+class BlendColor
+{
+public:
+	BlendColor (const Color& color, double ratio);
+
+	const Color&	GetColor () const;
+	double			GetRatio () const;
+
+	bool	operator== (const BlendColor& rhs) const;
+	bool	operator!= (const BlendColor& rhs) const;
+
+private:
+	Color	color;
+	double	ratio;
+};
+
 class Pen
 {
 public:
