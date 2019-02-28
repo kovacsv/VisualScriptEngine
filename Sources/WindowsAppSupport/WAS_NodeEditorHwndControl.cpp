@@ -502,6 +502,7 @@ HWND NodeEditorNodeListHwndControl::GetEditorHandle () const
 void NodeEditorNodeListHwndControl::Resize (int x, int y, int width, int height)
 {
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
+	// TODO: resize tree control
 	nodeEditorControl.Resize (x + NodeListWidth, y, width - NodeListWidth, height);
 }
 
