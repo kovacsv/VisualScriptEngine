@@ -393,6 +393,11 @@ bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
 	return true;
 }
 
+void NodeTreeView::Resize (int x, int y, int width, int height)
+{
+	MoveWindow (hwnd, x, y, width, height, TRUE);
+}
+
 bool NodeTreeView::HasGroup (const std::wstring& group) const
 {
 	return groups.find (group) != groups.end ();
@@ -502,7 +507,7 @@ HWND NodeEditorNodeListHwndControl::GetEditorHandle () const
 void NodeEditorNodeListHwndControl::Resize (int x, int y, int width, int height)
 {
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
-	// TODO: resize tree control
+	nodeTreeView.Resize (x, y, NodeListWidth, height);
 	nodeEditorControl.Resize (x + NodeListWidth, y, width - NodeListWidth, height);
 }
 

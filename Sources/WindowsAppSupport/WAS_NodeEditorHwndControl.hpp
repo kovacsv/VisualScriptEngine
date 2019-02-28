@@ -91,6 +91,8 @@ public:
 	~NodeTreeView ();
 
 	bool	Init (HWND parentHandle, int x, int y, int width, int height);
+	void	Resize (int x, int y, int width, int height);
+
 	bool	HasGroup (const std::wstring& group) const;
 	void	AddGroup (const std::wstring& group);
 	void	AddItem (const std::wstring& group, const std::wstring& text, LPARAM lParam);
