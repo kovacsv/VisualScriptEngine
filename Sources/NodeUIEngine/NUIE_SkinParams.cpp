@@ -25,6 +25,7 @@ BasicSkinParams::BasicSkinParams (
 	const Pen&			nodeBorderPen,
 	const Color&		slotTextColor,
 	const Color&		slotTextBackgroundColor,
+	const BlendColor&	disabledBlendColor,
 	const BlendColor&	selectionBlendColor,
 	const Pen&			selectionRectPen,
 	const Pen&			nodeSelectionRectPen,
@@ -51,6 +52,7 @@ BasicSkinParams::BasicSkinParams (
 	nodeBorderPen (nodeBorderPen),
 	slotTextColor (slotTextColor),
 	slotTextBackgroundColor (slotTextBackgroundColor),
+	disabledBlendColor (disabledBlendColor),
 	selectionBlendColor (selectionBlendColor),
 	selectionRectPen (selectionRectPen),
 	nodeSelectionRectPen (nodeSelectionRectPen),
@@ -127,6 +129,11 @@ const Color& BasicSkinParams::GetSlotTextColor () const
 const Color& BasicSkinParams::GetSlotTextBackgroundColor () const
 {
 	return slotTextBackgroundColor;
+}
+
+const BlendColor& BasicSkinParams::GetDisabledBlendColor () const
+{
+	return disabledBlendColor;
 }
 
 const BlendColor& BasicSkinParams::GetSelectionBlendColor () const
@@ -213,7 +220,8 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
 		/*slotTextColor*/ Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ Color (225, 225, 225),
-		/*selectionBlendColor*/ BlendColor (Color (0, 138, 184), 0.2),
+		/*selectionBlendColor*/ BlendColor (Color (240, 240, 240), 0.5),
+		/*disabledBlendColor*/ BlendColor (Color (0, 138, 184), 0.2),
 		/*selectionRectPen*/ Pen (Color (0, 138, 184), 1.0),
 		/*nodeSelectionRectPen*/ Pen (Color (0, 138, 184), 5.0),
 		/*hasValueStatusColor*/ Color (0, 255, 0),

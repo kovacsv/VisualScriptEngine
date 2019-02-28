@@ -29,6 +29,7 @@ public:
 	virtual const Color&		GetSlotTextColor () const = 0;
 	virtual const Color&		GetSlotTextBackgroundColor () const = 0;
 
+	virtual const BlendColor&	GetDisabledBlendColor () const = 0;
 	virtual const BlendColor&	GetSelectionBlendColor () const = 0;
 	virtual const Pen&			GetSelectionRectPen () const = 0;
 	virtual const Pen&			GetNodeSelectionRectPen () const = 0;
@@ -68,6 +69,7 @@ public:
 		const Pen&			nodeBorderPen,
 		const Color&		slotTextColor,
 		const Color&		slotTextBackgroundColor,
+		const BlendColor&	disabledBlendColor,
 		const BlendColor&	selectionBlendColor,
 		const Pen&			selectionRectPen,
 		const Pen&			nodeSelectionRectPen,
@@ -99,6 +101,7 @@ public:
 	virtual const Color&		GetSlotTextColor () const override;
 	virtual const Color&		GetSlotTextBackgroundColor () const override;
 
+	virtual const BlendColor&	GetDisabledBlendColor () const override;
 	virtual const BlendColor&	GetSelectionBlendColor () const override;
 	virtual const Pen&			GetSelectionRectPen () const override;
 	virtual const Pen&			GetNodeSelectionRectPen () const override;
@@ -133,6 +136,7 @@ private:
 	Color		slotTextColor;
 	Color		slotTextBackgroundColor;
 
+	BlendColor	disabledBlendColor;
 	BlendColor	selectionBlendColor;
 	Pen			selectionRectPen;
 	Pen			nodeSelectionRectPen;
