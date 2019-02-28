@@ -228,6 +228,7 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*groupBackgroundColor*/ Color (160, 200, 240),
 		/*groupPadding*/ 10.0
 	);
+	// TODO: disabled blend color
 	return defaultSkinParams;
 }
 
