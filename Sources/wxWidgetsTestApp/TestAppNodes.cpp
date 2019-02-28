@@ -5,13 +5,12 @@
 #include "TestAppValues.hpp"
 #include "ResultImage.hpp"
 
-NE::DynamicSerializationInfo	ColorNode::serializationInfo (NE::ObjectId ("{CBB0BCBD-488B-4A35-A796-9A7FED2E9420}"), NE::ObjectVersion (1), ColorNode::CreateSerializableInstance);
-
-NE::SerializationInfo			DrawableNode::serializationInfo (NE::ObjectVersion (1));
-NE::DynamicSerializationInfo	PointNode::serializationInfo (NE::ObjectId ("{E19AC155-90A7-43EA-9406-8E0876BAE05F}"), NE::ObjectVersion (1), PointNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	LineNode::serializationInfo (NE::ObjectId ("{3EEBD3D1-7D67-4513-9F29-60E2D7B5DE2B}"), NE::ObjectVersion (1), LineNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	CircleNode::serializationInfo (NE::ObjectId ("{651FEFFD-4F77-4E31-8765-CAF542491261}"), NE::ObjectVersion (1), CircleNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	OffsetNode::serializationInfo (NE::ObjectId ("{76B41F97-8819-4F7E-8377-BD0FC0491C1A}"), NE::ObjectVersion (1), OffsetNode::CreateSerializableInstance);
+SERIALIZATION_INFO (DrawableNode, 1);
+DYNAMIC_SERIALIZATION_INFO (ColorNode, 1, "{CBB0BCBD-488B-4A35-A796-9A7FED2E9420}");
+DYNAMIC_SERIALIZATION_INFO (PointNode, 1, "{E19AC155-90A7-43EA-9406-8E0876BAE05F}");
+DYNAMIC_SERIALIZATION_INFO (LineNode, 1, "{3EEBD3D1-7D67-4513-9F29-60E2D7B5DE2B}");
+DYNAMIC_SERIALIZATION_INFO (CircleNode, 1, "{651FEFFD-4F77-4E31-8765-CAF542491261}");
+DYNAMIC_SERIALIZATION_INFO (OffsetNode, 1, "{76B41F97-8819-4F7E-8377-BD0FC0491C1A}");
 
 ColorNode::ColorNode () :
 	ColorNode (L"", NUIE::Point ())

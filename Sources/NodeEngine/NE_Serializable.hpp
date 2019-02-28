@@ -146,4 +146,10 @@ private:																					\
 static NE::DynamicSerializationInfo serializationInfo;										\
 private:																					\
 
+#define SERIALIZATION_INFO(ClassName,ObjectVersionNumber) \
+NE::SerializationInfo ClassName::serializationInfo (NE::ObjectVersion (ObjectVersionNumber))
+
+#define DYNAMIC_SERIALIZATION_INFO(ClassName,ObjectVersionNumber,ObjectIdString) \
+NE::DynamicSerializationInfo ClassName::serializationInfo (NE::ObjectId (ObjectIdString), NE::ObjectVersion (ObjectVersionNumber), ClassName::CreateSerializableInstance)
+
 #endif
