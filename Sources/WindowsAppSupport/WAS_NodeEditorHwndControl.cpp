@@ -44,6 +44,8 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
 	}
 
+	// TODO: Remove window ptr on WM_DESTROY
+
 	NodeEditorHwndControl* control = (NodeEditorHwndControl*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
 	if (control == nullptr) {
 		return DefWindowProc (hwnd, msg, wParam, lParam);
