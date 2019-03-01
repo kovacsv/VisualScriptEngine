@@ -42,9 +42,9 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 	if (msg == WM_CREATE) {
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
+	} else if (msg == WM_DESTROY) {
+		SetWindowLongPtr (hwnd, GWLP_USERDATA, NULL);
 	}
-
-	// TODO: Remove window ptr on WM_DESTROY
 
 	NodeEditorHwndControl* control = (NodeEditorHwndControl*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
 	if (control == nullptr) {
@@ -206,6 +206,8 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 	if (msg == WM_CREATE) {
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
+	} else if (msg == WM_DESTROY) {
+		SetWindowLongPtr (hwnd, GWLP_USERDATA, NULL);
 	}
 
 	NodeEditorNodeListHwndControl* control = (NodeEditorNodeListHwndControl*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
