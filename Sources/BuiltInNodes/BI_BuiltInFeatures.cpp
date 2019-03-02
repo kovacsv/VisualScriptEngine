@@ -290,4 +290,22 @@ std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE:
 	return NUIE::GetUINodeFeature<ValueCombinationFeature> (uiNode, ValueCombinationFeatureId);
 }
 
+bool CombineValues (const NUIE::UINode* uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor)
+{
+	std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (uiNode);
+	if (DBGERROR (valueCombination == nullptr)) {
+		return false;
+	}
+	return valueCombination->CombineValues (values, processor);
+}
+
+bool CombineValues (const NUIE::UINodeConstPtr& uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor)
+{
+	std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (uiNode);
+	if (DBGERROR (valueCombination == nullptr)) {
+		return false;
+	}
+	return valueCombination->CombineValues (values, processor);
+}
+
 }
