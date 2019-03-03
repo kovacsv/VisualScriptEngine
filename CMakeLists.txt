@@ -187,65 +187,65 @@ if (MSVC)
 	)
 	target_link_libraries (WindowsEmbeddingDemo2 NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
 	SetCompilerOptions (WindowsEmbeddingDemo2)
-	
-	if (NOT ${WXWIDGETS_DIR} STREQUAL "")
-		link_directories (${WXWIDGETS_DIR}/lib/vc_x64_lib)
 
-		# wxWidgetsAppSupport
-		
-		set (wxWidgetsAppSupportSourcesFolder Sources/wxWidgetsAppSupport)
-		file (GLOB wxWidgetsAppSupportHeaderFiles ${wxWidgetsAppSupportSourcesFolder}/*.hpp)
-		file (GLOB wxWidgetsAppSupportSourceFiles ${wxWidgetsAppSupportSourcesFolder}/*.cpp)
-		set (
-			wxWidgetsAppSupportFiles
-			${wxWidgetsAppSupportHeaderFiles}
-			${wxWidgetsAppSupportSourceFiles}
-		)
-		source_group ("Sources" FILES ${wxWidgetsAppSupportFiles})
-		add_library (wxWidgetsAppSupport STATIC ${wxWidgetsAppSupportFiles})
-		target_include_directories (
-			wxWidgetsAppSupport PUBLIC
-			${wxWidgetsAppSupport}
-			${NodeUIEngineSourcesFolder}
-			${BuiltInNodesSourcesFolder}
-			${WindowsAppSupportSourcesFolder}
-			${WXWIDGETS_DIR}/include
-			${WXWIDGETS_DIR}/include/msvc
-		)
-		target_link_libraries (wxWidgetsAppSupport NodeEngine NodeUIEngine BuiltInNodes)
-		target_compile_definitions (wxWidgetsAppSupport PUBLIC _CRT_SECURE_NO_WARNINGS)
-		SetCompilerOptions (wxWidgetsAppSupport)
-		install (TARGETS wxWidgetsAppSupport DESTINATION lib)
-		install (FILES ${wxWidgetsAppSupportHeaderFiles} DESTINATION include)
-		install (FILES ${wxWidgetsAppSupportSourceFiles} DESTINATION source)
-		
-		# wxWidgetsTestApp
+endif ()	
 
-		set (wxWidgetsTestAppSourcesFolder Sources/wxWidgetsTestApp)
-		file (GLOB wxWidgetsTestAppHeaderFiles ${wxWidgetsTestAppSourcesFolder}/*.hpp)
-		file (GLOB wxWidgetsTestAppSourceFiles ${wxWidgetsTestAppSourcesFolder}/*.cpp)
-		set (
-			wxWidgetsTestAppFiles
-			${wxWidgetsTestAppHeaderFiles}
-			${wxWidgetsTestAppSourceFiles}
-		)
-		source_group ("Sources" FILES ${wxWidgetsTestAppFiles})
-		add_executable (wxWidgetsTestApp WIN32 ${wxWidgetsTestAppFiles})
-		target_include_directories (
-			wxWidgetsTestApp PUBLIC
-			${NodeEngineSourcesFolder}
-			${NodeUIEngineSourcesFolder}
-			${BuiltInNodesSourcesFolder}
-			${TestFrameworkSourcesFolder}
-			${WindowsAppSupportSourcesFolder}
-			${wxWidgetsAppSupportSourcesFolder}
-			${WXWIDGETS_DIR}/include
-			${WXWIDGETS_DIR}/include/msvc		
-		)
-		target_link_libraries (wxWidgetsTestApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport wxWidgetsAppSupport)
-		target_compile_definitions (wxWidgetsTestApp PUBLIC _CRT_SECURE_NO_WARNINGS)
-		SetCompilerOptions (wxWidgetsTestApp)
+if (MSVC AND NOT ${WXWIDGETS_DIR} STREQUAL "")
+	link_directories (${WXWIDGETS_DIR}/lib/vc_x64_lib)
+
+	# wxWidgetsAppSupport
 	
-	endif ()
+	set (wxWidgetsAppSupportSourcesFolder Sources/wxWidgetsAppSupport)
+	file (GLOB wxWidgetsAppSupportHeaderFiles ${wxWidgetsAppSupportSourcesFolder}/*.hpp)
+	file (GLOB wxWidgetsAppSupportSourceFiles ${wxWidgetsAppSupportSourcesFolder}/*.cpp)
+	set (
+		wxWidgetsAppSupportFiles
+		${wxWidgetsAppSupportHeaderFiles}
+		${wxWidgetsAppSupportSourceFiles}
+	)
+	source_group ("Sources" FILES ${wxWidgetsAppSupportFiles})
+	add_library (wxWidgetsAppSupport STATIC ${wxWidgetsAppSupportFiles})
+	target_include_directories (
+		wxWidgetsAppSupport PUBLIC
+		${wxWidgetsAppSupport}
+		${NodeUIEngineSourcesFolder}
+		${BuiltInNodesSourcesFolder}
+		${WindowsAppSupportSourcesFolder}
+		${WXWIDGETS_DIR}/include
+		${WXWIDGETS_DIR}/include/msvc
+	)
+	target_link_libraries (wxWidgetsAppSupport NodeEngine NodeUIEngine BuiltInNodes)
+	target_compile_definitions (wxWidgetsAppSupport PUBLIC _CRT_SECURE_NO_WARNINGS)
+	SetCompilerOptions (wxWidgetsAppSupport)
+	install (TARGETS wxWidgetsAppSupport DESTINATION lib)
+	install (FILES ${wxWidgetsAppSupportHeaderFiles} DESTINATION include)
+	install (FILES ${wxWidgetsAppSupportSourceFiles} DESTINATION source)
 	
+	# wxWidgetsTestApp
+
+	set (wxWidgetsTestAppSourcesFolder Sources/wxWidgetsTestApp)
+	file (GLOB wxWidgetsTestAppHeaderFiles ${wxWidgetsTestAppSourcesFolder}/*.hpp)
+	file (GLOB wxWidgetsTestAppSourceFiles ${wxWidgetsTestAppSourcesFolder}/*.cpp)
+	set (
+		wxWidgetsTestAppFiles
+		${wxWidgetsTestAppHeaderFiles}
+		${wxWidgetsTestAppSourceFiles}
+	)
+	source_group ("Sources" FILES ${wxWidgetsTestAppFiles})
+	add_executable (wxWidgetsTestApp WIN32 ${wxWidgetsTestAppFiles})
+	target_include_directories (
+		wxWidgetsTestApp PUBLIC
+		${NodeEngineSourcesFolder}
+		${NodeUIEngineSourcesFolder}
+		${BuiltInNodesSourcesFolder}
+		${TestFrameworkSourcesFolder}
+		${WindowsAppSupportSourcesFolder}
+		${wxWidgetsAppSupportSourcesFolder}
+		${WXWIDGETS_DIR}/include
+		${WXWIDGETS_DIR}/include/msvc		
+	)
+	target_link_libraries (wxWidgetsTestApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport wxWidgetsAppSupport)
+	target_compile_definitions (wxWidgetsTestApp PUBLIC _CRT_SECURE_NO_WARNINGS)
+	SetCompilerOptions (wxWidgetsTestApp)
+
 endif ()
