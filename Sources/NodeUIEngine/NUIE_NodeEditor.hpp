@@ -41,6 +41,7 @@ public:
 	NodeEditor (NodeUIEnvironment& uiEnvironment);
 	virtual ~NodeEditor ();
 
+	// TODO: return if the event was handled or not
 	void						OnMouseDown (const ModifierKeys& modifierKeys, MouseButton button, int x, int y);
 	void						OnMouseUp (const ModifierKeys& modifierKeys, MouseButton button, int x, int y);
 	void						OnMouseMove (const ModifierKeys& modifierKeys, int x, int y);
