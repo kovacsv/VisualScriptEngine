@@ -191,7 +191,13 @@ if (MSVC)
 endif ()	
 
 if (MSVC AND NOT ${WXWIDGETS_DIR} STREQUAL "")
-	link_directories (${WXWIDGETS_DIR}/lib/vc_x64_lib)
+	set (WX_LIBS_DIR)
+	set (WX_PLATFORM_INCLUDE_DIR)
+	if (MSVC)
+		set (WX_LIBS_DIR ${WXWIDGETS_DIR}/lib/vc_x64_lib)
+		set (WX_PLATFORM_INCLUDE_DIR ${WXWIDGETS_DIR}/include/msvc)
+	endif ()
+	link_directories (${WX_LIBS_DIR})
 
 	# wxWidgetsAppSupport
 	
@@ -212,7 +218,7 @@ if (MSVC AND NOT ${WXWIDGETS_DIR} STREQUAL "")
 		${BuiltInNodesSourcesFolder}
 		${WindowsAppSupportSourcesFolder}
 		${WXWIDGETS_DIR}/include
-		${WXWIDGETS_DIR}/include/msvc
+		${WX_PLATFORM_INCLUDE_DIR}
 	)
 	target_link_libraries (wxWidgetsAppSupport NodeEngine NodeUIEngine BuiltInNodes)
 	target_compile_definitions (wxWidgetsAppSupport PUBLIC _CRT_SECURE_NO_WARNINGS)
@@ -242,7 +248,7 @@ if (MSVC AND NOT ${WXWIDGETS_DIR} STREQUAL "")
 		${WindowsAppSupportSourcesFolder}
 		${wxWidgetsAppSupportSourcesFolder}
 		${WXWIDGETS_DIR}/include
-		${WXWIDGETS_DIR}/include/msvc		
+		${WX_PLATFORM_INCLUDE_DIR}		
 	)
 	target_link_libraries (wxWidgetsTestApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport wxWidgetsAppSupport)
 	target_compile_definitions (wxWidgetsTestApp PUBLIC _CRT_SECURE_NO_WARNINGS)
