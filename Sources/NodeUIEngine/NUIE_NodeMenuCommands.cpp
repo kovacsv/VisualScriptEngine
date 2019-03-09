@@ -836,9 +836,9 @@ public:
 			case Mode::Bottom:
 				return L"Bottom";
 			case Mode::HCenter:
-				return L"Center horizontally";
+				return L"Center Horizontally";
 			case Mode::VCenter:
-				return L"Center vertically";
+				return L"Center Vertically";
 		}
 		DBGBREAK ();
 		return L"";
