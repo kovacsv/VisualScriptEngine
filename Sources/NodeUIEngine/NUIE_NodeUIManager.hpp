@@ -42,7 +42,12 @@ public:
 	};
 
 	NodeUIManager ();
-	virtual ~NodeUIManager ();
+	NodeUIManager (const NodeUIManager& src) = delete;
+	NodeUIManager (NodeUIManager&& src) = delete;
+	~NodeUIManager ();
+
+	NodeUIManager&				operator= (const NodeUIManager& rhs) = delete;
+	NodeUIManager&				operator= (NodeUIManager&& rhs) = delete;
 
 	UINodePtr					AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& env);
 	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env);
