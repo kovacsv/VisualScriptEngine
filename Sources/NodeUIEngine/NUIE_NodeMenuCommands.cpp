@@ -6,6 +6,7 @@
 #include "NE_Debug.hpp"
 
 #include <limits>
+#include <algorithm>
 
 namespace NUIE
 {
@@ -718,6 +719,101 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
+class AlignNodesMenuCommand : public SingleMenuCommand
+{
+public:
+	enum class Mode
+	{
+		Left,
+		Right,
+		Center
+	};
+
+	AlignNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes, Mode mode) :
+		SingleMenuCommand (GetCommandName (mode), false),
+		uiManager (uiManager),
+		uiEnvironment (uiEnvironment),
+		relevantNodes (relevantNodes),
+		mode (mode)
+	{
+
+	}
+
+	virtual ~AlignNodesMenuCommand ()
+	{
+
+	}
+
+	virtual void Do () override
+	{
+		if (DBGERROR (relevantNodes.Count () < 2)) {
+			return;
+		}
+
+		std::vector<Rect> nodeRects;
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+			UINodePtr uiNode = uiManager.GetUINode (nodeId);
+			nodeRects.push_back (uiNode->GetNodeRect (uiEnvironment));
+			return true;
+		});
+		std::vector<Point> offsets;
+		if (mode == Mode::Left) {
+			auto min = std::min_element (nodeRects.begin (), nodeRects.end (), [&] (const Rect& a, const Rect& b) {
+				return a.GetLeft () < b.GetLeft ();
+			});
+			Rect minRect = *min;
+			for (const Rect& nodeRect : nodeRects) {
+				double offsetX = minRect.GetLeft () - nodeRect.GetLeft ();
+				offsets.push_back (Point (offsetX, 0.0));
+			}
+		} else if (mode == Mode::Right) {
+			auto max = std::max_element (nodeRects.begin (), nodeRects.end (), [&] (const Rect& a, const Rect& b) {
+				return a.GetRight () < b.GetRight ();
+			});
+			Rect maxRect = *max;
+			for (const Rect& nodeRect : nodeRects) {
+				double offsetX = maxRect.GetRight () - nodeRect.GetRight ();
+				offsets.push_back (Point (offsetX, 0.0));
+			}
+		} else if (mode == Mode::Center) {
+			double avgCenterX = 0.0;
+			for (const Rect& nodeRect : nodeRects) {
+				avgCenterX += nodeRect.GetCenter ().GetX ();
+			}
+			avgCenterX /= (double) nodeRects.size ();
+			for (const Rect& nodeRect : nodeRects) {
+				double offsetX = avgCenterX - nodeRect.GetCenter ().GetX ();
+				offsets.push_back (Point (offsetX, 0.0));
+			}
+		} else {
+			DBGBREAK ();
+			return;
+		}
+		MoveNodesCommand command (relevantNodes, offsets);
+		uiManager.ExecuteCommand (command);
+	}
+
+	static std::wstring GetCommandName (Mode mode)
+	{
+		switch (mode) {
+			case Mode::Left:
+				return L"Left";
+			case Mode::Right:
+				return L"Right";
+			case Mode::Center:
+				return L"Center";
+		}
+		DBGBREAK ();
+		return L"";
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	NE::NodeCollection	relevantNodes;
+	Mode				mode;
+};
+
 NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode)
 {
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
@@ -749,18 +845,23 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 
 	GroupMenuCommandPtr groupingCommandGroup (new GroupMenuCommand (L"Grouping"));
 	groupingCommandGroup->AddChildCommand (MenuCommandPtr (new CreateGroupMenuCommand (uiManager, relevantNodes)));
-	
 	UINodeGroupConstPtr nodeGroup = uiManager.GetUINodeGroup (uiNode->GetId ());
 	if (nodeGroup != nullptr) {
 		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new RemoveNodesFromGroupMenuCommand (uiManager, relevantNodes)));
 	}
-	
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
 		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new AddNodesToGroupMenuCommand (uiManager, group, relevantNodes)));
 		return true;
 	});
-
 	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
+
+	if (relevantNodes.Count () > 1) {
+		GroupMenuCommandPtr alignCommandGroup (new GroupMenuCommand (L"Align"));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::Left)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::Right)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::Center)));
+		commandStructureBuilder.RegisterCommand (alignCommandGroup);
+	}
 
 	return commandStructureBuilder.GetCommandStructure ();
 }

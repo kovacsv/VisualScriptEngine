@@ -21,7 +21,7 @@ public:
 	bool				IsEmpty () const;
 	bool				Contains (const NodeId& nodeId) const;
 	size_t				Count () const;
-	NodeId				GetLast () const;
+	const NodeId&		Get (size_t index) const;
 
 	void				Enumerate (const std::function<bool (const NodeId&)>& processor) const;
 	void				Insert (const NodeId& nodeId);

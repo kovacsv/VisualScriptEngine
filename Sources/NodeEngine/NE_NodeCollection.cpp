@@ -40,12 +40,9 @@ size_t NodeCollection::Count () const
 	return nodes.size ();
 }
 
-NodeId NodeCollection::GetLast () const
+const NodeId& NodeCollection::Get (size_t index) const
 {
-	if (nodes.empty ()) {
-		return NullNodeId;
-	}
-	return nodes.back ();
+	return nodes[index];
 }
 
 void NodeCollection::Enumerate (const std::function<bool (const NodeId&)>& processor) const

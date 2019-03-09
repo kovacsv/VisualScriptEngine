@@ -60,21 +60,25 @@ void DeleteNodesCommand::Do (NodeUIManager& uiManager)
 	});
 }
 
-MoveNodesCommand::MoveNodesCommand (const NE::NodeCollection& nodes, const Point& offset) :
+MoveNodesCommand::MoveNodesCommand (const NE::NodeCollection& nodes, const std::vector<Point>& offsets) :
 	UndoableCommand (),
 	nodes (nodes),
-	offset (offset)
+	offsets (offsets)
 {
 }
 
 void MoveNodesCommand::Do (NodeUIManager& uiManager)
 {
-	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+	if (DBGERROR (nodes.Count () != offsets.size ())) {
+		return;
+	}
+	for (size_t i = 0; i < nodes.Count (); i++) {
+		const NE::NodeId& nodeId = nodes.Get (i);
+		const Point& offset = offsets[i];
 		UINodePtr uiNode = uiManager.GetUINode (nodeId);
 		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
 		uiManager.InvalidateNodeGroupDrawing (uiNode);
-		return true;
-	});
+	}
 }
 
 ConnectSlotsCommand::ConnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
