@@ -732,12 +732,12 @@ public:
 		VCenter
 	};
 
-	AlignNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes, Mode mode) :
-		SingleMenuCommand (GetCommandName (mode), false),
+	AlignNodesMenuCommand (const std::wstring& name, Mode mode, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
+		SingleMenuCommand (name, false),
+		mode (mode),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
-		relevantNodes (relevantNodes),
-		mode (mode)
+		relevantNodes (relevantNodes)
 	{
 
 	}
@@ -824,31 +824,11 @@ public:
 		uiManager.ExecuteCommand (command);
 	}
 
-	static std::wstring GetCommandName (Mode mode)
-	{
-		switch (mode) {
-			case Mode::Left:
-				return L"Left";
-			case Mode::Right:
-				return L"Right";
-			case Mode::Top:
-				return L"Top";
-			case Mode::Bottom:
-				return L"Bottom";
-			case Mode::HCenter:
-				return L"Center Horizontally";
-			case Mode::VCenter:
-				return L"Center Vertically";
-		}
-		DBGBREAK ();
-		return L"";
-	}
-
 private:
+	Mode				mode;
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
 	NE::NodeCollection	relevantNodes;
-	Mode				mode;
 };
 
 NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode)
@@ -893,13 +873,13 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
 
 	if (relevantNodes.Count () > 1) {
-		GroupMenuCommandPtr alignCommandGroup (new GroupMenuCommand (L"Align"));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::Left)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::Right)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::Top)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::Bottom)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::HCenter)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (uiManager, uiEnvironment, relevantNodes, AlignNodesMenuCommand::Mode::VCenter)));
+		GroupMenuCommandPtr alignCommandGroup (new GroupMenuCommand (L"Aligning"));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Align Left", AlignNodesMenuCommand::Mode::Left, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Align Right", AlignNodesMenuCommand::Mode::Right, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Align Top", AlignNodesMenuCommand::Mode::Top, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Align Bottom", AlignNodesMenuCommand::Mode::Bottom, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Center Horizontically", AlignNodesMenuCommand::Mode::HCenter, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Center Vertically", AlignNodesMenuCommand::Mode::VCenter, uiManager, uiEnvironment, relevantNodes)));
 		commandStructureBuilder.RegisterCommand (alignCommandGroup);
 	}
 
