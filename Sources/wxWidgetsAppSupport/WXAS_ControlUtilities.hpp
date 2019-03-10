@@ -33,6 +33,7 @@ public:
 NUIE::ModifierKeys		GetModiferKeysFromEvent (wxKeyboardState& evt);
 NUIE::Key				GetKeyFromEvent (wxKeyEvent& evt);
 
+void					SetTextControlValidator (wxTextCtrl* textCtrl, const std::wstring& validChars);
 NUIE::MenuCommandPtr	SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
 
 }

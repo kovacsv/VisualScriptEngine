@@ -1,4 +1,5 @@
 #include "WXAS_ParameterDialog.hpp"
+#include "WXAS_ControlUtilities.hpp"
 #include "NUIE_NodeParameters.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Debug.hpp"
@@ -16,19 +17,6 @@ static wxWindowID ParamIdToControlId (size_t paramId)
 static size_t ControlIdToParamId (wxWindowID controlId)
 {
 	return (size_t) controlId - FirstControlId;
-}
-
-static void SetTextValidator (wxTextCtrl* textCtrl, const std::wstring& validChars)
-{
-	wxTextValidator validator (wxFILTER_INCLUDE_CHAR_LIST);
-	wxArrayString includeList;
-
-	for (const wchar_t& character : validChars) {
-		includeList.Add (character);
-	}
-
-	validator.SetIncludes (includeList);
-	textCtrl->SetValidator (validator);
 }
 
 ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr& paramInterface) :
@@ -56,19 +44,19 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 		} else if (type == NUIE::ParameterType::Integer) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
-				SetTextValidator (textControl, L"0123456789-");
+				SetTextControlValidator (textControl, L"0123456789-");
 				control = textControl;
 			}
 		} else if (type == NUIE::ParameterType::Float) {
 			if (DBGVERIFY (NE::Value::IsType<NE::FloatValue> (value))) {
 				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
-				SetTextValidator (textControl, L"0123456789.-");
+				SetTextControlValidator (textControl, L"0123456789.-");
 				control = textControl;
 			}
 		} else if (type == NUIE::ParameterType::Double) {
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
 				wxTextCtrl* textControl = new wxTextCtrl (this, controlId, NUIE::ParameterValueToString (value, type));
-				SetTextValidator (textControl, L"0123456789.-");
+				SetTextControlValidator (textControl, L"0123456789.-");
 				control = textControl;
 			}
 		} else if (type == NUIE::ParameterType::String) {

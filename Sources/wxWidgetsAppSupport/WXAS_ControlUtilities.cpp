@@ -88,6 +88,19 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 	return NUIE::InvalidKey;
 }
 
+void SetTextControlValidator (wxTextCtrl* textCtrl, const std::wstring& validChars)
+{
+	wxTextValidator validator (wxFILTER_INCLUDE_CHAR_LIST);
+	wxArrayString includeList;
+
+	for (const wchar_t& character : validChars) {
+		includeList.Add (character);
+	}
+
+	validator.SetIncludes (includeList);
+	textCtrl->SetValidator (validator);
+}
+
 NUIE::MenuCommandPtr SelectCommandFromContextMenu (wxPanel* panel, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
 	if (commands.IsEmpty ()) {
