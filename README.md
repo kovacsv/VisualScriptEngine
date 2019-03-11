@@ -11,7 +11,7 @@ VisualScriptEngine is a node based visual scripting engine designed for embeddin
 
 ## License
 
-Although this work is licensed under the MIT license there are two folders with separate licensing. Codes in the Sources/wxWidgetsAppSupport and Sources/wxWidgetsTestApp folders are licensed under GPL-3.0 license.
+Although this work is licensed under the MIT license there are two folders with separate licensing. Codes in the Sources/wxWidgetsAppSupport and Sources/wxWidgetsTestApp folders are licensed under the GPL-3.0 license.
 
 ## Screenshots
 
