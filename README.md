@@ -5,9 +5,9 @@
 
 VisualScriptEngine is a node based visual scripting engine designed for embedding.
 
-## Documentation
+## Links
 
-[VisualScriptEngine Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki)
+[Releases](https://github.com/kovacsv/VisualScriptEngine/releases) - [Issues](https://github.com/kovacsv/VisualScriptEngine/issues) - [Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki)
 
 ## Screenshots
 
