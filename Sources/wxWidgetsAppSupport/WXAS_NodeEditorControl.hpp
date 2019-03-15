@@ -110,7 +110,9 @@ public:
 
 	void			New ();
 	bool			Open (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader);
+	bool			Open (NE::InputStream& inputStream, const NUIE::ExternalHeaderIO* externalHeader);
 	bool			Save (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader);
+	bool			Save (NE::OutputStream& outputStream, const NUIE::ExternalHeaderIO* externalHeader) const;
 	bool			NeedToSave () const;
 	void			Undo ();
 	void			Redo ();

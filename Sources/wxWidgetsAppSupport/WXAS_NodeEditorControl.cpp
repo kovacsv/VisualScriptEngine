@@ -298,10 +298,20 @@ bool NodeEditorControl::Open (const std::wstring& fileName, const NUIE::External
 {
 	return nodeEditor->Open (fileName, externalFileIO, externalHeader);
 }
+
+bool NodeEditorControl::Open (NE::InputStream& inputStream, const NUIE::ExternalHeaderIO* externalHeader)
+{
+	return nodeEditor->Open (inputStream, externalHeader);
+}
  
 bool NodeEditorControl::Save (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader)
 {
 	return nodeEditor->Save (fileName, externalFileIO, externalHeader);
+}
+
+bool NodeEditorControl::Save (NE::OutputStream& outputStream, const NUIE::ExternalHeaderIO* externalHeader) const
+{
+	return nodeEditor->Save (outputStream, externalHeader);
 }
 
 bool NodeEditorControl::NeedToSave () const
