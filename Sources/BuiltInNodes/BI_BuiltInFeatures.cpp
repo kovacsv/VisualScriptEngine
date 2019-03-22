@@ -1,4 +1,5 @@
 #include "BI_BuiltInFeatures.hpp"
+#include "NE_Localization.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_ContextDecorators.hpp"
 #include "NUIE_SkinParams.hpp"
@@ -116,9 +117,9 @@ void EnableDisableFeature::SetEnableState (bool isNodeEnabled)
 
 void EnableDisableFeature::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (L"Set Node Status"));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", nodeEnabled, true)));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Disable", !nodeEnabled, false)));
+	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (NE::Localize (L"Set Node Status")));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Enable"), nodeEnabled, true)));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Disable"), !nodeEnabled, false)));
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
 }
 
@@ -128,7 +129,7 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 	{
 	public:
 		EnableDisableParameter () :
-			NUIE::EnumerationFeatureParameter<EnableDisableFeature> (L"Status", { L"Enable", L"Disable" }, EnableDisableFeatureId)
+			NUIE::EnumerationFeatureParameter<EnableDisableFeature> (NE::Localize (L"Status"), { NE::Localize (L"Enable"), NE::Localize (L"Disable") }, EnableDisableFeatureId)
 		{
 
 		}
@@ -214,10 +215,10 @@ bool ValueCombinationFeature::CombineValues (const std::vector<NE::ValueConstPtr
 
 void ValueCombinationFeature::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NUIE::NodeGroupCommandPtr setValueCombinationModeGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (L"Set Value Combination"));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Shortest", valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Longest", valueCombinationMode == NE::ValueCombinationMode::Longest, NE::ValueCombinationMode::Longest)));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Cross Product", valueCombinationMode == NE::ValueCombinationMode::CrossProduct, NE::ValueCombinationMode::CrossProduct)));
+	NUIE::NodeGroupCommandPtr setValueCombinationModeGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (NE::Localize (L"Set Value Combination")));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::Localize (L"Shortest"), valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::Localize (L"Longest"), valueCombinationMode == NE::ValueCombinationMode::Longest, NE::ValueCombinationMode::Longest)));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::Localize (L"Cross Product"), valueCombinationMode == NE::ValueCombinationMode::CrossProduct, NE::ValueCombinationMode::CrossProduct)));
 	commandRegistrator.RegisterNodeGroupCommand (setValueCombinationModeGroup);
 }
 
@@ -227,7 +228,7 @@ void ValueCombinationFeature::RegisterParameters (NUIE::NodeParameterList& param
 	{
 	public:
 		ValueCombinationParameter () :
-			NUIE::EnumerationFeatureParameter<ValueCombinationFeature> (L"Value Combination", { L"Shortest", L"Longest", L"Cross Product" }, ValueCombinationFeatureId)
+			NUIE::EnumerationFeatureParameter<ValueCombinationFeature> (NE::Localize (L"Value Combination"), { NE::Localize (L"Shortest"), NE::Localize (L"Longest"), NE::Localize (L"Cross Product") }, ValueCombinationFeatureId)
 		{
 		
 		}

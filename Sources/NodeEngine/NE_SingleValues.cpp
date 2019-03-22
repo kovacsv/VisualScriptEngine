@@ -1,5 +1,6 @@
 #include "NE_SingleValues.hpp"
 #include "NE_StringUtils.hpp"
+#include "NE_Localization.hpp"
 #include "NE_Debug.hpp"
 
 namespace NE
@@ -35,7 +36,7 @@ ValuePtr BooleanValue::Clone () const
 
 std::wstring BooleanValue::ToString (const StringSettings&) const
 {
-	return val ? L"true" : L"false";
+	return val ? Localize (L"true") : Localize (L"false");
 }
 
 Stream::Status BooleanValue::Read (InputStream& inputStream)
@@ -55,7 +56,7 @@ Stream::Status BooleanValue::Write (OutputStream& outputStream) const
 }
 
 StringValue::StringValue () :
-	StringValue (L"")
+	StringValue (std::wstring ())
 {
 
 }

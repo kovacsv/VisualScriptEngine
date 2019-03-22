@@ -1,5 +1,6 @@
 #include "BI_ViewerUINodes.hpp"
 #include "BI_UINodePanels.hpp"
+#include "NE_Localization.hpp"
 #include "NUIE_NodeCommonParameters.hpp"
 #include "NUIE_SkinParams.hpp"
 
@@ -11,7 +12,7 @@ namespace BI
 NE::DynamicSerializationInfo MultiLineViewerNode::serializationInfo (NE::ObjectId ("{2BACB82D-84A6-4472-82CB-786C98A50EF0}"), NE::ObjectVersion (1), MultiLineViewerNode::CreateSerializableInstance);
 
 MultiLineViewerNode::MultiLineViewerNode () :
-	MultiLineViewerNode (L"", NUIE::Point (), 0)
+	MultiLineViewerNode (std::wstring (), NUIE::Point (), 0)
 {
 
 }
@@ -32,8 +33,8 @@ MultiLineViewerNode::~MultiLineViewerNode ()
 
 void MultiLineViewerNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::Localize (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
 }
 
 NE::ValueConstPtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
@@ -47,7 +48,7 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 	{
 	public:
 		TextPerPageParameter () :
-			PositiveIntegerNodeParameter<MultiLineViewerNode> (L"Texts per page")
+			PositiveIntegerNodeParameter<MultiLineViewerNode> (NE::Localize (L"Texts per page"))
 		{
 
 		}
@@ -132,7 +133,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 	}
 
 	if (nodeTextsToShow.empty ()) {
-		nodeTextsToShow.push_back (L"<empty>");
+		nodeTextsToShow.push_back (NE::Localize (L"<empty>"));
 		textCount += 1;
 	}
 
@@ -141,7 +142,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextPanel (nodeTextsToShow, env, textCount, textsPerPage)));
 	if (textCount > textsPerPage) {
-		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", L"<", "plus", L">", std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
+		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", NE::Localize (L"<"), "plus", NE::Localize (L">"), std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
 	}
 	drawer.Draw (env, drawingImage);
 }

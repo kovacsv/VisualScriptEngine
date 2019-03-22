@@ -1,6 +1,7 @@
 #include "BI_InputUINodes.hpp"
 #include "BI_UINodePanels.hpp"
 #include "BI_UINodeLayouts.hpp"
+#include "NE_Localization.hpp"
 #include "NUIE_NodeParameters.hpp"
 #include "NUIE_NodeCommonParameters.hpp"
 #include "NUIE_NodeUIManager.hpp"
@@ -44,7 +45,7 @@ private:
 };
 
 BooleanNode::BooleanNode () :
-	BooleanNode (L"", NUIE::Point (), false)
+	BooleanNode (std::wstring (), NUIE::Point (), false)
 {
 
 }
@@ -63,7 +64,7 @@ BooleanNode::~BooleanNode ()
 
 void BooleanNode::Initialize ()
 {
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
 }
 
 NUIE::EventHandlerResult BooleanNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
@@ -104,7 +105,7 @@ void BooleanNode::RegisterParameters (NUIE::NodeParameterList& parameterList) co
 	{
 	public:
 		ValueParameter () :
-			NUIE::BooleanNodeParameter<BooleanNode> (L"Value")
+			NUIE::BooleanNodeParameter<BooleanNode> (NE::Localize (L"Value"))
 		{
 	
 		}
@@ -157,11 +158,11 @@ void BooleanNode::SetValue (bool newVal)
 void BooleanNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	short selectedIndex = val ? 0 : 1;
-	DrawHeaderWithSlotsAndSwitchLayout (*this, "switch", L"true", L"false", selectedIndex, env, drawingImage);
+	DrawHeaderWithSlotsAndSwitchLayout (*this, "switch", NE::Localize (L"true"), NE::Localize (L"false"), selectedIndex, env, drawingImage);
 }
 
 NumericUpDownNode::NumericUpDownNode () :
-	NumericUpDownNode (L"", NUIE::Point ())
+	NumericUpDownNode (std::wstring (), NUIE::Point ())
 {
 
 }
@@ -179,7 +180,7 @@ NumericUpDownNode::~NumericUpDownNode ()
 
 void NumericUpDownNode::Initialize ()
 {
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
 }
 
 NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
@@ -231,11 +232,11 @@ NE::Stream::Status NumericUpDownNode::Write (NE::OutputStream& outputStream) con
 
 void NumericUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
-	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", L"<", "plus", L">", env, drawingImage);
+	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", NE::Localize (L"<"), "plus", NE::Localize (L">"), env, drawingImage);
 }
 
 IntegerUpDownNode::IntegerUpDownNode () :
-	IntegerUpDownNode (L"", NUIE::Point (), 0, 0)
+	IntegerUpDownNode (std::wstring (), NUIE::Point (), 0, 0)
 {
 
 }
@@ -264,7 +265,7 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 	{
 	public:
 		ValueParameter () :
-			NUIE::IntegerNodeParameter<IntegerUpDownNode> (L"Value")
+			NUIE::IntegerNodeParameter<IntegerUpDownNode> (NE::Localize (L"Value"))
 		{
 
 		}
@@ -287,7 +288,7 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 	{
 	public:
 		StepParameter () :
-			NUIE::IntegerNodeParameter<IntegerUpDownNode> (L"Step")
+			NUIE::IntegerNodeParameter<IntegerUpDownNode> (NE::Localize (L"Step"))
 		{
 
 		}
@@ -361,7 +362,7 @@ void IntegerUpDownNode::SetStep (int newStep)
 }
 
 DoubleUpDownNode::DoubleUpDownNode () :
-	DoubleUpDownNode (L"", NUIE::Point (), 0.0, 0.0)
+	DoubleUpDownNode (std::wstring (), NUIE::Point (), 0.0, 0.0)
 {
 
 }
@@ -390,7 +391,7 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 	{
 	public:
 		ValueParameter () :
-			NUIE::DoubleNodeParameter<DoubleUpDownNode> (L"Value")
+			NUIE::DoubleNodeParameter<DoubleUpDownNode> (NE::Localize (L"Value"))
 		{
 
 		}
@@ -413,7 +414,7 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 	{
 	public:
 		StepParameter () :
-			NUIE::DoubleNodeParameter<DoubleUpDownNode> (L"Step")
+			NUIE::DoubleNodeParameter<DoubleUpDownNode> (NE::Localize (L"Step"))
 		{
 
 		}
@@ -487,7 +488,7 @@ void DoubleUpDownNode::SetStep (double newStep)
 }
 
 NumericRangeNode::NumericRangeNode () :
-	NumericRangeNode (L"", NUIE::Point ())
+	NumericRangeNode (std::wstring (), NUIE::Point ())
 {
 
 }
@@ -523,7 +524,7 @@ NE::Stream::Status NumericRangeNode::Write (NE::OutputStream& outputStream) cons
 }
 
 IntegerIncrementedNode::IntegerIncrementedNode () :
-	IntegerIncrementedNode (L"", NUIE::Point ())
+	IntegerIncrementedNode (std::wstring (), NUIE::Point ())
 {
 
 }
@@ -541,10 +542,10 @@ IntegerIncrementedNode::~IntegerIncrementedNode ()
 
 void IntegerIncrementedNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), NE::Localize (L"Start"), NE::ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), NE::Localize (L"Step"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("count"), NE::Localize (L"Count"), NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"List"))));
 }
 
 NE::ValueConstPtr IntegerIncrementedNode::Calculate (NE::EvaluationEnv& env) const
@@ -574,9 +575,9 @@ NE::ValueConstPtr IntegerIncrementedNode::Calculate (NE::EvaluationEnv& env) con
 void IntegerIncrementedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, L"Start", NUIE::ParameterType::Integer, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, L"Step", NUIE::ParameterType::Integer, NE::SlotId ("step"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<IntegerIncrementedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
+	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, NE::Localize (L"Start"), NUIE::ParameterType::Integer, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, NE::Localize (L"Step"), NUIE::ParameterType::Integer, NE::SlotId ("step"));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<IntegerIncrementedNode> (NE::Localize (L"Count"), NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
 }
 
 NE::Stream::Status IntegerIncrementedNode::Read (NE::InputStream& inputStream)
@@ -594,7 +595,7 @@ NE::Stream::Status IntegerIncrementedNode::Write (NE::OutputStream& outputStream
 }
 
 DoubleIncrementedNode::DoubleIncrementedNode () :
-	DoubleIncrementedNode (L"", NUIE::Point ())
+	DoubleIncrementedNode (std::wstring (), NUIE::Point ())
 {
 
 }
@@ -612,10 +613,10 @@ DoubleIncrementedNode::~DoubleIncrementedNode ()
 
 void DoubleIncrementedNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), L"Step", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), NE::Localize (L"Start"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("step"), NE::Localize (L"Step"), NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("count"), NE::Localize (L"Count"), NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"List"))));
 }
 
 NE::ValueConstPtr DoubleIncrementedNode::Calculate (NE::EvaluationEnv& env) const
@@ -645,9 +646,9 @@ NE::ValueConstPtr DoubleIncrementedNode::Calculate (NE::EvaluationEnv& env) cons
 void DoubleIncrementedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleIncrementedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, NE::Localize (L"Start"), NUIE::ParameterType::Double, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, NE::Localize (L"Step"), NUIE::ParameterType::Double, NE::SlotId ("step"));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleIncrementedNode> (NE::Localize (L"Count"), NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
 }
 
 NE::Stream::Status DoubleIncrementedNode::Read (NE::InputStream& inputStream)
@@ -665,7 +666,7 @@ NE::Stream::Status DoubleIncrementedNode::Write (NE::OutputStream& outputStream)
 }
 
 DoubleDistributedNode::DoubleDistributedNode () :
-	DoubleDistributedNode (L"", NUIE::Point ())
+	DoubleDistributedNode (std::wstring (), NUIE::Point ())
 {
 
 }
@@ -683,10 +684,10 @@ DoubleDistributedNode::~DoubleDistributedNode ()
 
 void DoubleDistributedNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), L"Start", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("end"), L"End", NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("count"), L"Count", NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"List")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("start"), NE::Localize (L"Start"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("end"), NE::Localize (L"End"), NE::ValuePtr (new NE::DoubleValue (1.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("count"), NE::Localize (L"Count"), NE::ValuePtr (new NE::IntValue (10)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"List"))));
 }
 
 NE::ValueConstPtr DoubleDistributedNode::Calculate (NE::EvaluationEnv& env) const
@@ -717,9 +718,9 @@ NE::ValueConstPtr DoubleDistributedNode::Calculate (NE::EvaluationEnv& env) cons
 void DoubleDistributedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, L"End", NUIE::ParameterType::Double, NE::SlotId ("end"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleDistributedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 2)));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, NE::Localize (L"Start"), NUIE::ParameterType::Double, NE::SlotId ("start"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, NE::Localize (L"End"), NUIE::ParameterType::Double, NE::SlotId ("end"));
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleDistributedNode> (NE::Localize (L"Count"), NUIE::ParameterType::Integer, NE::SlotId ("count"), 2)));
 }
 
 NE::Stream::Status DoubleDistributedNode::Read (NE::InputStream& inputStream)

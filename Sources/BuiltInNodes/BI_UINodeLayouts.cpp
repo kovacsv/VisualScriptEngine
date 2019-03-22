@@ -1,5 +1,6 @@
 #include "BI_UINodeLayouts.hpp"
 #include "BI_UINodePanels.hpp"
+#include "NE_Localization.hpp"
 #include "NUIE_UINode.hpp"
 
 namespace BI
@@ -28,7 +29,7 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 											NUIE::NodeUIDrawingEnvironment& env,
 											NUIE::NodeDrawingImage& drawingImage)
 {
-	std::wstring nodeText = L"<empty>";
+	std::wstring nodeText = NE::Localize (L"<empty>");
 	if (uiNode.HasCalculatedValue ()) {
 		NE::ValueConstPtr nodeValue = uiNode.GetCalculatedValue ();
 		if (nodeValue != nullptr) {

@@ -58,7 +58,7 @@ bool BrushCacheKey::operator!= (const BrushCacheKey& rhs) const
 }
 
 FontCacheKey::FontCacheKey () :
-	family (L""),
+	family (),
 	size (0)
 {
 

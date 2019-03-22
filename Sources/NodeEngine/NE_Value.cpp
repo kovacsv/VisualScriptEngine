@@ -91,7 +91,7 @@ ValuePtr ListValue::Clone () const
 
 std::wstring ListValue::ToString (const StringSettings& stringSettings) const
 {
-	std::wstring result = L"";
+	std::wstring result;
 	for (size_t i = 0; i < GetSize (); ++i) {
 		result += values[i]->ToString (stringSettings);
 		if (i < GetSize () - 1) {

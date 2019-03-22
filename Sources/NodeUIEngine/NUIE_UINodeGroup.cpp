@@ -45,7 +45,7 @@ NodeRectGetter::~NodeRectGetter ()
 }
 
 UINodeGroup::UINodeGroup () :
-	UINodeGroup (L"")
+	UINodeGroup (std::wstring ())
 {
 
 }

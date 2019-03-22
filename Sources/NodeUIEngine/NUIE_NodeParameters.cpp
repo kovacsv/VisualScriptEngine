@@ -76,7 +76,7 @@ static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vec
 
 std::wstring ParameterValueToString (const NE::ValueConstPtr& value, const ParameterType& type)
 {
-	std::wstring result = L"";
+	std::wstring result;
 	if (type == ParameterType::String) {
 		if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
 			result = NE::StringValue::Get (value);

@@ -9,7 +9,7 @@ namespace BI
 NE::SerializationInfo BasicUINode::serializationInfo (NE::ObjectVersion (1));
 
 BasicUINode::BasicUINode () :
-	BasicUINode (L"", NUIE::Point ())
+	BasicUINode (std::wstring (), NUIE::Point ())
 {
 
 }

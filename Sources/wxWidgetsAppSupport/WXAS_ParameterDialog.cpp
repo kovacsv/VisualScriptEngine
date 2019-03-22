@@ -2,6 +2,7 @@
 #include "WXAS_ControlUtilities.hpp"
 #include "NUIE_NodeParameters.hpp"
 #include "NE_SingleValues.hpp"
+#include "NE_Localization.hpp"
 #include "NE_Debug.hpp"
 
 namespace WXAS
@@ -20,11 +21,11 @@ static size_t ControlIdToParamId (wxWindowID controlId)
 }
 
 ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr& paramInterface) :
-	wxDialog (parent, wxID_ANY, L"Set Parameters", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE),
+	wxDialog (parent, wxID_ANY, NE::Localize (L"Set Parameters"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE),
 	paramInterface (paramInterface),
 	gridSizer (new wxGridSizer (2, 5, 5)),
 	boxSizer (new wxBoxSizer (wxVERTICAL)),
-	okButton (new wxButton (this, wxID_OK, L"OK"))
+	okButton (new wxButton (this, wxID_OK, NE::Localize (L"OK")))
 {
 	gridSizer->SetRows (paramInterface->GetParameterCount ());
 	for (size_t paramIndex = 0; paramIndex < paramInterface->GetParameterCount (); ++paramIndex) {
@@ -36,8 +37,8 @@ ParameterDialog::ParameterDialog (wxWindow* parent, NUIE::ParameterInterfacePtr&
 		if (type == NUIE::ParameterType::Boolean) {
 			if (DBGVERIFY (NE::Value::IsType<NE::BooleanValue> (value))) {
 				wxChoice* choiceControl = new wxChoice (this, controlId);
-				choiceControl->Append (wxString (L"true"));
-				choiceControl->Append (wxString (L"false"));
+				choiceControl->Append (wxString (NE::Localize (L"true")));
+				choiceControl->Append (wxString (NE::Localize (L"false")));
 				choiceControl->Select (NE::BooleanValue::Get (value) ? 0 : 1);
 				control = choiceControl;
 			}
@@ -179,7 +180,7 @@ std::wstring ParameterDialog::ParamUIData::GetStringValue () const
 		return dynamic_cast<wxTextCtrl*> (control)->GetValue ().ToStdWstring ();
 	} else {
 		DBGBREAK ();
-		return L"";
+		return std::wstring ();
 	}
 }
 

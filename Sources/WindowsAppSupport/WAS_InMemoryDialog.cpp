@@ -57,7 +57,7 @@ DialogParameters::DialogParameters () :
 	y (0),
 	width (0),
 	height (0),
-	dialogTitle (L"")
+	dialogTitle ()
 {
 
 }

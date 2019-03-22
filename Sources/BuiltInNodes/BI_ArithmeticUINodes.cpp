@@ -1,4 +1,5 @@
 #include "BI_ArithmeticUINodes.hpp"
+#include "NE_Localization.hpp"
 #include "NUIE_NodeCommonParameters.hpp"
 
 #include <cmath>
@@ -13,7 +14,7 @@ NE::DynamicSerializationInfo	MultiplicationNode::serializationInfo (NE::ObjectId
 NE::DynamicSerializationInfo	DivisionNode::serializationInfo (NE::ObjectId ("{652DDDFC-A441-40B1-87AC-0BED247F35E7}"), NE::ObjectVersion (1), DivisionNode::CreateSerializableInstance);
 
 BinaryOperationNode::BinaryOperationNode () :
-	BinaryOperationNode (L"", NUIE::Point ())
+	BinaryOperationNode (std::wstring (), NUIE::Point ())
 {
 
 }
@@ -30,9 +31,9 @@ BinaryOperationNode::~BinaryOperationNode ()
 
 void BinaryOperationNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), L"A", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), L"B", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), L"Result")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), NE::Localize (L"A"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), NE::Localize (L"B"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), NE::Localize (L"Result"))));
 	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
@@ -65,8 +66,8 @@ NE::ValueConstPtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 void BinaryOperationNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", NUIE::ParameterType::Double, NE::SlotId ("a"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", NUIE::ParameterType::Double, NE::SlotId ("b"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, NE::Localize (L"A"), NUIE::ParameterType::Double, NE::SlotId ("a"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, NE::Localize (L"B"), NUIE::ParameterType::Double, NE::SlotId ("b"));
 }
 
 bool BinaryOperationNode::IsForceCalculated () const

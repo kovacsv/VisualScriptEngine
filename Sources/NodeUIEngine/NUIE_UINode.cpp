@@ -1,6 +1,7 @@
 #include "NUIE_UINode.hpp"
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
+#include "NE_Localization.hpp"
 #include "NE_Debug.hpp"
 #include "NUIE_ContextDecorators.hpp"
 #include "NUIE_NodeParameters.hpp"
@@ -221,7 +222,7 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 	{
 	public:
 		NodeNameParameter () :
-			NotEmptyStringNodeParameter<UINode> (L"Name")
+			NotEmptyStringNodeParameter<UINode> (NE::Localize (L"Name"))
 		{
 		
 		}
