@@ -63,14 +63,14 @@ TEST (SimplePoFileWithFormatTest)
 	std::wstring poContent = LR"(
 		msgid "apple"
 		msgstr "alma"
-		msgid "this is an %s"
-		msgstr "ez itt egy %s"
+		msgid "this is an %ls"
+		msgstr "ez itt egy %ls"
 	)";
 	Dictionary dictionary;
 	PoDictionarySource poDictionarySource (poContent);
 	ASSERT (FillDictionary (dictionary, poDictionarySource));
 	ASSERT (dictionary.GetLocalizedString (L"apple") == L"alma");
-	ASSERT (FormatString (dictionary.GetLocalizedString (L"this is an %s"), dictionary.GetLocalizedString (L"apple").c_str ()) == L"ez itt egy alma");
+	ASSERT (FormatString (dictionary.GetLocalizedString (L"this is an %ls"), dictionary.GetLocalizedString (L"apple").c_str ()) == L"ez itt egy alma");
 }
 
 TEST (SimplePoFileWithInvalidFormatTest)

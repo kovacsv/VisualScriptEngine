@@ -695,7 +695,7 @@ class AddNodesToGroupMenuCommand : public SingleMenuCommand
 {
 public:
 	AddNodesToGroupMenuCommand (NodeUIManager& uiManager, const UINodeGroupPtr& uiNodeGroup, const NE::NodeCollection& relevantNodes) :
-		SingleMenuCommand (NE::FormatString (NE::Localize (L"Add To Group \"%s\""), uiNodeGroup->GetName ().c_str ()), false),
+		SingleMenuCommand (NE::FormatString (NE::Localize (L"Add To Group \"%ls\""), uiNodeGroup->GetName ().c_str ()), false),
 		uiManager (uiManager),
 		uiNodeGroup (uiNodeGroup),
 		relevantNodes (relevantNodes)
@@ -895,7 +895,7 @@ MenuCommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager,
 		OutputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<OutputSlotCommandPtr> (NE::Localize (L"Disconnect")));
 		uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (UIInputSlotConstPtr inputSlot) {
 			UINodeConstPtr uiNode = uiManager.GetUINode (inputSlot->GetOwnerNodeId ());
-			std::wstring disconnectCommandName = NE::FormatString (L"%s (%s)", uiNode->GetNodeName ().c_str (), inputSlot->GetName ().c_str ());
+			std::wstring disconnectCommandName = NE::FormatString (L"%ls (%ls)", uiNode->GetNodeName ().c_str (), inputSlot->GetName ().c_str ());
 			disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectFromOutputSlotMenuCommand (disconnectCommandName, inputSlot)));
 		});
 		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectAllFromOutputSlotMenuCommand (NE::Localize (L"All"))));
@@ -914,7 +914,7 @@ MenuCommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, 
 		InputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<InputSlotCommandPtr> (NE::Localize (L"Disconnect")));
 		uiManager.EnumerateConnectedOutputSlots (inputSlot, [&] (UIOutputSlotConstPtr outputSlot) {
 			UINodeConstPtr uiNode = uiManager.GetUINode (outputSlot->GetOwnerNodeId ());
-			std::wstring disconnectCommandName = NE::FormatString (L"%s (%s)", uiNode->GetNodeName ().c_str (), outputSlot->GetName ().c_str ());
+			std::wstring disconnectCommandName = NE::FormatString (L"%ls (%ls)", uiNode->GetNodeName ().c_str (), outputSlot->GetName ().c_str ());
 			disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectFromInputSlotMenuCommand (disconnectCommandName, outputSlot)));
 		});
 		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectAllFromInputSlotMenuCommand (NE::Localize (L"All"))));
