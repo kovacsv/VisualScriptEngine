@@ -47,7 +47,7 @@ template<typename... Args>
 std::wstring FormatString (const std::wstring& format, Args... args)
 {
 	wchar_t resultString[2048];
-	swprintf_s (resultString, 2048, format.c_str (), args...);
+	swprintf (resultString, 2048, format.c_str (), args...);
 	return std::wstring (resultString);
 }
 
