@@ -112,10 +112,12 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 	if (HasCalculatedValue ()) {
 		NE::ValueConstPtr nodeValue = GetCalculatedValue ();
 		if (nodeValue != nullptr) {
-			NE::IListValueConstPtr listValue = NE::CreateListValue (nodeValue);
-			nodeTexts.clear ();
-			listValue->Enumerate ([&] (const NE::ValueConstPtr& value) {
-				nodeTexts.push_back (value->ToString (env.GetStringSettings ()));
+			NE::FlatEnumerate (nodeValue, [&] (const NE::ValueConstPtr& value) {
+				if (value != nullptr) {
+					nodeTexts.push_back (value->ToString (env.GetStringSettings ()));
+				} else {
+					nodeTexts.push_back (NE::Localize (L"<empty>"));
+				}
 			});
 		}
 	}

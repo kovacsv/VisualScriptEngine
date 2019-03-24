@@ -50,6 +50,9 @@ public:
 		nodeTree.AddItem (L"Input Nodes", L"Number Distribution", [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleDistributedNode (L"Number Distribution", position));
 		});
+		nodeTree.AddItem (L"Input Nodes", L"List Builder", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::ListBuilderNode (L"List Builder", position));
+		});
 		nodeTree.AddItem (L"Arithmetic Nodes", L"Addition", [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
 		});

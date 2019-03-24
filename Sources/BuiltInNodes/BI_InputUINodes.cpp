@@ -24,6 +24,8 @@ NE::DynamicSerializationInfo	IntegerIncrementedNode::serializationInfo (NE::Obje
 NE::DynamicSerializationInfo	DoubleIncrementedNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), DoubleIncrementedNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo	DoubleDistributedNode::serializationInfo (NE::ObjectId ("{DDD3DF7C-AEA5-4E1E-B48A-2A10EA3FC7EF}"), NE::ObjectVersion (1), DoubleDistributedNode::CreateSerializableInstance);
 
+NE::DynamicSerializationInfo	ListBuilderNode::serializationInfo (NE::ObjectId ("{FE9C19DE-4847-458D-8F2D-5D943E7CF8AF}"), NE::ObjectVersion (1), ListBuilderNode::CreateSerializableInstance);
+
 template <typename NodeType>
 class MinValueIntegerParameter : public NUIE::SlotDefaultValueNodeParameter<NodeType, NE::IntValue>
 {
@@ -734,6 +736,57 @@ NE::Stream::Status DoubleDistributedNode::Write (NE::OutputStream& outputStream)
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NumericRangeNode::Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+ListBuilderNode::ListBuilderNode () :
+	ListBuilderNode (std::wstring (), NUIE::Point ())
+{
+
+}
+
+ListBuilderNode::ListBuilderNode (const std::wstring& name, const NUIE::Point& position) :
+	BasicUINode (name, position)
+{
+
+}
+
+ListBuilderNode::~ListBuilderNode ()
+{
+
+}
+
+void ListBuilderNode::Initialize ()
+{
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::Localize (L"Input"), nullptr, NE::OutputSlotConnectionMode::Multiple)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
+}
+
+NE::ValueConstPtr ListBuilderNode::Calculate (NE::EvaluationEnv& env) const
+{
+	NE::ValueConstPtr in = EvaluateInputSlot (NE::SlotId ("in"), env);
+	if (in == nullptr) {
+		return nullptr;
+	}
+
+	NE::ListValuePtr list (new NE::ListValue ());
+	NE::FlatEnumerate (in, [&] (const NE::ValueConstPtr& innerVal) {
+		list->Push (innerVal);
+	});
+	return list;
+}
+
+NE::Stream::Status ListBuilderNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	BasicUINode::Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status ListBuilderNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	BasicUINode::Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

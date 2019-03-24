@@ -58,6 +58,7 @@ public:
 		IntegerIncrement,
 		NumberIncrement,
 		NumberDistribution,
+		ListBuilder,
 		Addition,
 		Subtraction,
 		Multiplication,
@@ -92,6 +93,8 @@ public:
 				return NUIE::UINodePtr (new BI::DoubleIncrementedNode (L"Number Increment", modelPosition));
 			case NodeType::NumberDistribution:
 				return NUIE::UINodePtr (new BI::DoubleDistributedNode (L"Number Distribution", modelPosition));
+			case NodeType::ListBuilder:
+				return NUIE::UINodePtr (new BI::ListBuilderNode (L"List Builder", modelPosition));
 			case NodeType::Addition:
 				return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
 			case NodeType::Subtraction:
@@ -141,6 +144,7 @@ public:
 		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::IntegerIncrement, uiManager, uiEnvironment, L"Integer Increment", position)));
 		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberIncrement, uiManager, uiEnvironment, L"Number Increment", position)));
 		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::NumberDistribution, uiManager, uiEnvironment, L"Number Distribution", position)));
+		inputCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::ListBuilder, uiManager, uiEnvironment, L"List Builder", position)));
 		createCommandGroup->AddChildCommand (inputCommandGroup);
 
 		NUIE::GroupMenuCommandPtr arithmeticCommandGroup (new NUIE::GroupMenuCommand (L"Arithmetic Nodes"));
