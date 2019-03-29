@@ -180,6 +180,8 @@ TEST (FlattenTest)
 	theListValue->Push (innerListValue);
 
 	ValueConstPtr flatten = FlattenValue (theListValue);
+	ASSERT (IsComplexType<IntValue> (theListValue));
+	ASSERT (IsComplexType<IntValue> (flatten));
 	ASSERT (Value::IsType<ListValue> (flatten));
 	ListValueConstPtr flattenList = Value::Cast<ListValue> (flatten);
 	ASSERT (flattenList->GetSize () == 3);

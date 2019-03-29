@@ -196,7 +196,7 @@ bool IsComplexType (const ValueConstPtr& val)
 		}
 		bool isType = true;
 		listVal->Enumerate ([&] (const ValueConstPtr& innerVal) {
-			if (!Value::IsType<Type> (innerVal)) {
+			if (!IsComplexType<Type> (innerVal)) {
 				isType = false;
 			}
 		});
