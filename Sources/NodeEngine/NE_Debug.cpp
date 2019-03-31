@@ -2,12 +2,8 @@
 #include <assert.h>
 
 #if defined(DEBUG) && defined(_MSC_VER)
-	#include <crtdbg.h>
 	#define _CRTDBG_MAP_ALLOC
-	#ifndef DBG_NEW
-		#define DBG_NEW new (_NORMAL_BLOCK, __FILE__ ,__LINE__ )
-		#define new DBG_NEW
-	#endif
+	#include <crtdbg.h>
 #endif
 
 static void Assert (bool condition)
