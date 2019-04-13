@@ -12,7 +12,7 @@ NodeRegistry::NodeData::NodeData (NodeRegistryId id, const std::wstring& name, c
 
 NodeRegistry::GroupData::GroupData (const std::wstring& name) :
 	name (name),
-	nodes (nodes)
+	nodes ()
 {
 }
 
