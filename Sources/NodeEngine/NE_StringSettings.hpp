@@ -17,8 +17,8 @@ public:
 	virtual int			GetPrecision () const = 0;
 };
 
-typedef std::shared_ptr<StringSettings>			StringSettingsPtr;
-typedef std::shared_ptr<const StringSettings>	StringSettingsConstPtr;
+using StringSettingsPtr = std::shared_ptr<StringSettings>;
+using StringSettingsConstPtr = std::shared_ptr<const StringSettings>;
 
 class BasicStringSettings : public StringSettings
 {

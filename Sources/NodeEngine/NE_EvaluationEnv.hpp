@@ -13,8 +13,8 @@ public:
 	virtual ~EvaluationData ();
 };
 
-typedef std::shared_ptr<EvaluationData> EvaluationDataPtr;
-typedef std::shared_ptr<const EvaluationData> EvaluationDataConstPtr;
+using EvaluationDataPtr = std::shared_ptr<EvaluationData>;
+using EvaluationDataConstPtr = std::shared_ptr<const EvaluationData>;
 
 class EvaluationEnv
 {

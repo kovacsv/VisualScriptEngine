@@ -50,8 +50,8 @@ public:
 	virtual double				GetGroupPadding () const = 0;
 };
 
-typedef std::shared_ptr<SkinParams>			SkinParamsPtr;
-typedef std::shared_ptr<const SkinParams>	SkinParamsConstPtr;
+using SkinParamsPtr = std::shared_ptr<SkinParams>;
+using SkinParamsConstPtr = std::shared_ptr<const SkinParams>;
 
 class BasicSkinParams : public SkinParams
 {

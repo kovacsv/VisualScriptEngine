@@ -57,7 +57,7 @@ public:
 	virtual NUIE::DrawingContext&	GetDrawingContext () = 0;
 };
 
-typedef std::shared_ptr<NodeEditorHwndBasedControl> NodeEditorHwndBasedControlPtr;
+using NodeEditorHwndBasedControlPtr = std::shared_ptr<NodeEditorHwndBasedControl>;
 
 class NodeEditorHwndControl : public NodeEditorHwndBasedControl
 {
