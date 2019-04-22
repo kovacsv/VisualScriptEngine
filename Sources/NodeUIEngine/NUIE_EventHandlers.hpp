@@ -29,6 +29,20 @@ public:
 using EventHandlersPtr = std::shared_ptr<EventHandlers>;
 using EventHandlersConstPtr = std::shared_ptr<const EventHandlers>;
 
+class NullEventHandlers : public EventHandlers
+{
+public:
+	NullEventHandlers ();
+	virtual ~NullEventHandlers ();
+
+	virtual NUIE::MenuCommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UINodePtr& uiNode, const MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UIOutputSlotPtr& inputSlot, const MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UIInputSlotPtr& inputSlot, const MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& env, const Point& position, const UINodeGroupPtr& group, const MenuCommandStructure& commands) override;
+	virtual bool					OnParameterSettings (ParameterInterfacePtr paramAccessor) override;
+};
+
 }
 
 #endif
