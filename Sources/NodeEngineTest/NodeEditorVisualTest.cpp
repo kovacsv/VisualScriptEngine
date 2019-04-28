@@ -436,4 +436,12 @@ TEST (FitToWindowTest)
 	ASSERT (env.CheckReference ("10_FitToWindow_Fit.svg"));
 }
 
+TEST (AlignToWindowTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env;
+	ASSERT (env.CheckReference ("11_AlignToWindow_Basic.svg"));
+	env.nodeEditor.AlignToWindow ();
+	ASSERT (env.CheckReference ("11_AlignToWindow_Align.svg"));
+}
+
 }

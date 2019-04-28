@@ -284,6 +284,11 @@ NUIE::Point NodeEditorControl::ViewToModel (const NUIE::Point& viewPoint) const
 	return nodeEditor->ViewToModel (viewPoint);
 }
 
+void NodeEditorControl::AlignToWindow ()
+{
+	nodeEditor->AlignToWindow ();
+}
+
 void NodeEditorControl::FitToWindow ()
 {
 	nodeEditor->FitToWindow ();

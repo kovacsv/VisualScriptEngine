@@ -185,6 +185,21 @@ Point NodeEditor::ViewToModel (const Point& viewPoint) const
 	return viewBox.ViewToModel (viewPoint);
 }
 
+void NodeEditor::AlignToWindow ()
+{
+	Rect boundingRect;
+	if (!GetBoundingRect (uiManager, uiEnvironment, boundingRect)) {
+		return;
+	}
+
+	double viewPadding = uiEnvironment.GetSkinParams ().GetNodePadding ();
+	const DrawingContext& drawingContext = uiEnvironment.GetDrawingContext ();
+	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
+	ViewBox newViewBox (-boundingRect.GetTopLeft () + Point (viewPadding, viewPadding), 1.0);
+	uiManager.SetViewBox (newViewBox);
+	Update ();
+}
+
 void NodeEditor::FitToWindow ()
 {
 	Rect boundingRect;
@@ -193,7 +208,6 @@ void NodeEditor::FitToWindow ()
 	}
 
 	double viewPadding = uiEnvironment.GetSkinParams ().GetNodePadding ();
-
 	const DrawingContext& drawingContext = uiEnvironment.GetDrawingContext ();
 	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
 	ViewBox newViewBox = FitRectToSize (contextSize, viewPadding, boundingRect);

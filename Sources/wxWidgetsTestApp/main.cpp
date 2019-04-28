@@ -281,7 +281,8 @@ public:
 		Mode_Automatic		= 8,
 		Mode_Manual			= 9,
 		Mode_Update			= 10,
-		View_FitToWindow	= 11
+		View_AlignToWindow	= 11,
+		View_FitToWindow	= 12
 	};
 
 	MenuBar () :
@@ -309,6 +310,7 @@ public:
 		Append (modeMenu, L"&Mode");
 
 		wxMenu* viewMenu = new wxMenu ();
+		viewMenu->Append (CommandId::View_AlignToWindow, "Align To Window");
 		viewMenu->Append (CommandId::View_FitToWindow, "Fit To Window");
 		Append (viewMenu, L"&View");
 	}
@@ -445,6 +447,11 @@ public:
 			case MenuBar::CommandId::Mode_Update:
 				{
 					nodeEditorControl->ManualUpdate ();
+				}
+				break;
+			case MenuBar::CommandId::View_AlignToWindow:
+				{
+					nodeEditorControl->AlignToWindow ();
 				}
 				break;
 			case MenuBar::CommandId::View_FitToWindow:

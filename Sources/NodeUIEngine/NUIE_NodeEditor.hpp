@@ -60,6 +60,7 @@ public:
 	void						ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
 
 	Point						ViewToModel (const Point& viewPoint) const;
+	void						AlignToWindow ();
 	void						FitToWindow ();
 	
 	void						New ();
