@@ -294,6 +294,16 @@ void NodeEditorControl::FitToWindow ()
 	nodeEditor->FitToWindow ();
 }
 
+const NE::NodeCollection& NodeEditorControl::GetSelectedNodes () const
+{
+	return nodeEditor->GetSelectedNodes ();
+}
+
+void NodeEditorControl::SetSelectedNodes (const NE::NodeCollection& newSelectedNodes)
+{
+	nodeEditor->SetSelectedNodes (newSelectedNodes);
+}
+
 void NodeEditorControl::New ()
 {
 	nodeEditor->New ();

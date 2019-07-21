@@ -76,47 +76,50 @@ public:
 	NodeEditorControl (wxWindow *parent);
 	virtual ~NodeEditorControl ();
 
-	void			Init (std::shared_ptr<NodeEditorUIEnvironment>& editorUIEnvironment);
-	virtual void	OnInit ();
+	void						Init (std::shared_ptr<NodeEditorUIEnvironment>& editorUIEnvironment);
+	virtual void				OnInit ();
 
-	void			OnPaint (wxPaintEvent& evt);
-	void			OnResize (wxSizeEvent& evt);
-	void			OnMouseCaptureLost (wxMouseCaptureLostEvent& evt);
+	void						OnPaint (wxPaintEvent& evt);
+	void						OnResize (wxSizeEvent& evt);
+	void						OnMouseCaptureLost (wxMouseCaptureLostEvent& evt);
 
-	void			OnLeftButtonDown (wxMouseEvent& evt);
-	void			OnLeftButtonUp (wxMouseEvent& evt);
-	void			OnLeftButtonDoubleClick (wxMouseEvent& evt);
+	void						OnLeftButtonDown (wxMouseEvent& evt);
+	void						OnLeftButtonUp (wxMouseEvent& evt);
+	void						OnLeftButtonDoubleClick (wxMouseEvent& evt);
 
-	void			OnRightButtonDown (wxMouseEvent& evt);
-	void			OnRightButtonUp (wxMouseEvent& evt);
-	void			OnRightButtonDoubleClick (wxMouseEvent& evt);
+	void						OnRightButtonDown (wxMouseEvent& evt);
+	void						OnRightButtonUp (wxMouseEvent& evt);
+	void						OnRightButtonDoubleClick (wxMouseEvent& evt);
 
-	void			OnMiddleButtonDown (wxMouseEvent& evt);
-	void			OnMiddleButtonUp (wxMouseEvent& evt);
-	void			OnMiddleButtonDoubleClick (wxMouseEvent& evt);
+	void						OnMiddleButtonDown (wxMouseEvent& evt);
+	void						OnMiddleButtonUp (wxMouseEvent& evt);
+	void						OnMiddleButtonDoubleClick (wxMouseEvent& evt);
 
-	void			OnMouseMove (wxMouseEvent& evt);
-	void			OnMouseWheel (wxMouseEvent& evt);
+	void						OnMouseMove (wxMouseEvent& evt);
+	void						OnMouseWheel (wxMouseEvent& evt);
 
-	void			OnKeyDown (wxKeyEvent& evt);
+	void						OnKeyDown (wxKeyEvent& evt);
 
-	UpdateMode		GetUpdateMode () const;
-	void			SetUpdateMode (UpdateMode mode) const;
-	void			ManualUpdate ();
+	UpdateMode					GetUpdateMode () const;
+	void						SetUpdateMode (UpdateMode mode) const;
+	void						ManualUpdate ();
 
-	void			AddNode (const NUIE::UINodePtr& uiNode);
-	NUIE::Point		ViewToModel (const NUIE::Point& viewPoint) const;
-	void			AlignToWindow ();
-	void			FitToWindow ();
+	void						AddNode (const NUIE::UINodePtr& uiNode);
+	NUIE::Point					ViewToModel (const NUIE::Point& viewPoint) const;
+	void						AlignToWindow ();
+	void						FitToWindow ();
 
-	void			New ();
-	bool			Open (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader);
-	bool			Open (NE::InputStream& inputStream, const NUIE::ExternalHeaderIO* externalHeader);
-	bool			Save (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader);
-	bool			Save (NE::OutputStream& outputStream, const NUIE::ExternalHeaderIO* externalHeader) const;
-	bool			NeedToSave () const;
-	void			Undo ();
-	void			Redo ();
+	const NE::NodeCollection&	GetSelectedNodes () const;
+	void						SetSelectedNodes (const NE::NodeCollection& newSelectedNodes);
+
+	void						New ();
+	bool						Open (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader);
+	bool						Open (NE::InputStream& inputStream, const NUIE::ExternalHeaderIO* externalHeader);
+	bool						Save (const std::wstring& fileName, const NUIE::ExternalFileIO* externalFileIO, const NUIE::ExternalHeaderIO* externalHeader);
+	bool						Save (NE::OutputStream& outputStream, const NUIE::ExternalHeaderIO* externalHeader) const;
+	bool						NeedToSave () const;
+	void						Undo ();
+	void						Redo ();
 
 protected:
 	MouseCaptureHandler							captureHandler;

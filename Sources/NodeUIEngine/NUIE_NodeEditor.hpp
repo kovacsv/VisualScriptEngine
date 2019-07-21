@@ -62,7 +62,10 @@ public:
 	Point						ViewToModel (const Point& viewPoint) const;
 	void						AlignToWindow ();
 	void						FitToWindow ();
-	
+
+	const NE::NodeCollection&	GetSelectedNodes () const;
+	void						SetSelectedNodes (const NE::NodeCollection& newSelectedNodes);
+
 	void						New ();
 	bool						Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader);
 	bool						Open (NE::InputStream& inputStream, const ExternalHeaderIO* externalHeader);

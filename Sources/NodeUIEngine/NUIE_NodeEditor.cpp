@@ -215,6 +215,17 @@ void NodeEditor::FitToWindow ()
 	Update ();
 }
 
+const NE::NodeCollection& NodeEditor::GetSelectedNodes () const
+{
+	return uiManager.GetSelectedNodes ();
+}
+
+void NodeEditor::SetSelectedNodes (const NE::NodeCollection& newSelectedNodes)
+{
+	uiManager.SetSelectedNodes (newSelectedNodes);
+	Update ();
+}
+
 void NodeEditor::New ()
 {
 	uiManager.New ();
