@@ -207,15 +207,27 @@ public:
 		if (DBGERROR (inputSlot == nullptr)) {
 			return nullptr;
 		}
-		return inputSlot->GetDefaultValue ();
+		NE::ValueConstPtr convertedValue = ConvertValueForGet (inputSlot->GetDefaultValue ());
+		return convertedValue;
 	}
 
 	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 	{
-		uiNode->GetInputSlot (slotId)->SetDefaultValue (value);
+		NE::ValueConstPtr convertedValue = ConvertValueForSet (value);
+		uiNode->GetInputSlot (slotId)->SetDefaultValue (convertedValue);
 		uiManager.InvalidateNodeValue (uiNode->GetId ());
 		uiManager.InvalidateNodeDrawing (uiNode->GetId ());
 		return true;
+	}
+
+	virtual NE::ValueConstPtr ConvertValueForGet (const NE::ValueConstPtr& value) const
+	{
+		return value;
+	}
+
+	virtual NE::ValueConstPtr ConvertValueForSet (const NE::ValueConstPtr& value) const
+	{
+		return value;
 	}
 
 private:
