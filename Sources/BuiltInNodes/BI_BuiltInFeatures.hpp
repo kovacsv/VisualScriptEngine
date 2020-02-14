@@ -22,12 +22,19 @@ public:
 		Enabled		= 1
 	};
 
+	enum class Mode
+	{
+		DoNotInvalidate = 0,
+		Invalidate = 1
+	};
+
 	EnableDisableFeature ();
-	EnableDisableFeature (State state);
+	EnableDisableFeature (State state, Mode mode);
 	virtual ~EnableDisableFeature ();
 
-	State				GetEnableState () const;
-	void				SetEnableState (State newState);
+	State				GetState () const;
+	Mode				GetMode () const;
+	void				SetState (State newState);
 	void				DrawInplace (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
 
 	virtual void		RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
@@ -38,6 +45,7 @@ public:
 
 private:
 	State		state;
+	Mode		mode;
 };
 
 class ValueCombinationFeature : public NUIE::NodeFeature

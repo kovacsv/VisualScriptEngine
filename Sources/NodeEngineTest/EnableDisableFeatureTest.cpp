@@ -96,7 +96,7 @@ public:
 	virtual void OnFeatureChange (const FeatureId&, EvaluationEnv& env) const override
 	{
 		std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
-		if (enableDisable->GetEnableState () == EnableDisableFeature::State::Enabled) {
+		if (enableDisable->GetState () == EnableDisableFeature::State::Enabled) {
 			OnEnabled (env);
 		} else {
 			OnDisabled (env);
@@ -106,7 +106,7 @@ public:
 	virtual void ProcessCalculatedValue (const ValueConstPtr& value, EvaluationEnv& env) const override
 	{
 		std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
-		if (enableDisable->GetEnableState () == EnableDisableFeature::State::Enabled) {
+		if (enableDisable->GetState () == EnableDisableFeature::State::Enabled) {
 			OnCalculated (value, env);
 		}
 	}
@@ -167,7 +167,7 @@ TEST (EnableDisableTest)
 	ASSERT (calcEnv.collector->values.find (node3->GetId ()) != calcEnv.collector->values.end ());
 
 	std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (node3);
-	enableDisable->SetEnableState (EnableDisableFeature::State::Disabled);
+	enableDisable->SetState (EnableDisableFeature::State::Disabled);
 	node3->OnFeatureChange (EnableDisableFeatureId, calcEnv.evalEnv);
 	uiManager.RequestRecalculateAndRedraw ();
 	

@@ -135,7 +135,7 @@ DrawableNode::DrawableNode (const std::wstring& name, const NUIE::Point& positio
 
 void DrawableNode::Initialize ()
 {
-	RegisterFeature (NUIE::NodeFeaturePtr (new BI::EnableDisableFeature (BI::EnableDisableFeature::State::Enabled)));
+	RegisterFeature (NUIE::NodeFeaturePtr (new BI::EnableDisableFeature (BI::EnableDisableFeature::State::Enabled, BI::EnableDisableFeature::Mode::DoNotInvalidate)));
 	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
@@ -147,7 +147,7 @@ void DrawableNode::RegisterParameters (NUIE::NodeParameterList& parameterList) c
 void DrawableNode::ProcessCalculatedValue (const NE::ValueConstPtr& value, NE::EvaluationEnv& env) const
 {
 	std::shared_ptr<BI::EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
-	if (enableDisable->GetEnableState () == BI::EnableDisableFeature::State::Enabled) {
+	if (enableDisable->GetState () == BI::EnableDisableFeature::State::Enabled) {
 		OnCalculated (value, env);
 	}
 }
@@ -173,7 +173,7 @@ void DrawableNode::OnFeatureChange (const NUIE::FeatureId& featureId, NE::Evalua
 {
 	if (featureId == BI::EnableDisableFeatureId) {
 		std::shared_ptr<BI::EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
-		if (enableDisable->GetEnableState () == BI::EnableDisableFeature::State::Enabled) {
+		if (enableDisable->GetState () == BI::EnableDisableFeature::State::Enabled) {
 			OnEnabled (env);
 		} else {
 			OnDisabled (env);

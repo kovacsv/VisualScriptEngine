@@ -14,14 +14,17 @@ const NUIE::FeatureId ValueCombinationFeatureId ("{B8F03216-5CB8-49FC-B748-94479
 NE::DynamicSerializationInfo EnableDisableFeature::serializationInfo (NE::ObjectId ("{1C89FD8B-085E-45C8-B0B8-E75883F53C68}"), NE::ObjectVersion (1), EnableDisableFeature::CreateSerializableInstance);
 NE::DynamicSerializationInfo ValueCombinationFeature::serializationInfo (NE::ObjectId ("{7BC21A4E-4D2E-4B00-BD73-9897DB3616BA}"), NE::ObjectVersion (1), ValueCombinationFeature::CreateSerializableInstance);
 
-static void EnableDisableNode (EnableDisableFeature::State state, NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
+static void EnableDisableNode (EnableDisableFeature::State state, EnableDisableFeature::Mode mode, NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
 {
 	std::shared_ptr<EnableDisableFeature> enableDisableFeature = GetEnableDisableFeature (uiNode);
 	if (DBGERROR (enableDisableFeature == nullptr)) {
 		return;
 	}
-	enableDisableFeature->SetEnableState (state);
+	enableDisableFeature->SetState (state);
 	uiNode->OnFeatureChange (EnableDisableFeatureId, env);
+	if (mode == EnableDisableFeature::Mode::Invalidate) {
+		uiManager.InvalidateNodeValue (uiNode);
+	}
 	uiManager.InvalidateNodeDrawing (uiNode);
 	uiManager.RequestRecalculateAndRedraw ();
 }
@@ -29,9 +32,10 @@ static void EnableDisableNode (EnableDisableFeature::State state, NUIE::NodeUIMa
 class EnableDisableNodeCommand : public NUIE::NodeCommand
 {
 public:
-	EnableDisableNodeCommand (const std::wstring& name, bool isChecked, EnableDisableFeature::State state) :
+	EnableDisableNodeCommand (const std::wstring& name, bool isChecked, EnableDisableFeature::State state, EnableDisableFeature::Mode mode) :
 		NUIE::NodeCommand (name, isChecked),
-		state (state)
+		state (state),
+		mode (mode)
 	{
 
 	}
@@ -43,11 +47,12 @@ public:
 
 	virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, NUIE::UINodePtr& uiNode) override
 	{
-		EnableDisableNode (state, uiManager, uiEnvironment.GetEvaluationEnv (), uiNode);
+		EnableDisableNode (state, mode, uiManager, uiEnvironment.GetEvaluationEnv (), uiNode);
 	}
 
 private:
-	EnableDisableFeature::State state;
+	EnableDisableFeature::State		state;
+	EnableDisableFeature::Mode		mode;
 };
 
 static void SetNodeValueCombination (NE::ValueCombinationMode valueCombination, NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
@@ -88,14 +93,15 @@ private:
 };
 
 EnableDisableFeature::EnableDisableFeature () :
-	EnableDisableFeature (State::Enabled)
+	EnableDisableFeature (State::Enabled, Mode::DoNotInvalidate)
 {
 
 }
 
-EnableDisableFeature::EnableDisableFeature (State state) :
+EnableDisableFeature::EnableDisableFeature (State state, Mode mode) :
 	NUIE::NodeFeature (EnableDisableFeatureId),
-	state (state)
+	state (state),
+	mode (mode)
 {
 
 }
@@ -105,12 +111,17 @@ EnableDisableFeature::~EnableDisableFeature ()
 
 }
 
-EnableDisableFeature::State EnableDisableFeature::GetEnableState () const
+EnableDisableFeature::State EnableDisableFeature::GetState () const
 {
 	return state;
 }
 
-void EnableDisableFeature::SetEnableState (State newState)
+EnableDisableFeature::Mode EnableDisableFeature::GetMode () const
+{
+	return mode;
+}
+
+void EnableDisableFeature::SetState (State newState)
 {
 	state = newState;
 }
@@ -118,8 +129,8 @@ void EnableDisableFeature::SetEnableState (State newState)
 void EnableDisableFeature::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
 	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (NE::Localize (L"Set Node Status")));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Enable"), state == State::Enabled, State::Enabled)));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Disable"), state == State::Disabled, State::Disabled)));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Enable"), state == State::Enabled, State::Enabled, mode)));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Disable"), state == State::Disabled, State::Disabled, mode)));
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
 }
 
@@ -136,16 +147,17 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 
 		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
-			EnableDisableFeature::State enableState = GetEnableDisableFeature (uiNode)->GetEnableState ();
-			int enableStateInt = (enableState == EnableDisableFeature::State::Enabled ? 0 : 1);
-			return NE::ValuePtr (new NE::IntValue (enableStateInt));
+			EnableDisableFeature::State state = GetEnableDisableFeature (uiNode)->GetState ();
+			int stateInt = (state == EnableDisableFeature::State::Enabled ? 0 : 1);
+			return NE::ValuePtr (new NE::IntValue (stateInt));
 		}
 
 		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
-			int enableStateInt = NE::IntValue::Get (value);
-			EnableDisableFeature::State enableState = (enableStateInt == 0 ? EnableDisableFeature::State::Enabled : EnableDisableFeature::State::Disabled);
-			EnableDisableNode (enableState, uiManager, evaluationEnv, uiNode);
+			int stateInt = NE::IntValue::Get (value);
+			EnableDisableFeature::State enableState = (stateInt == 0 ? EnableDisableFeature::State::Enabled : EnableDisableFeature::State::Disabled);
+			EnableDisableFeature::Mode mode = GetEnableDisableFeature (uiNode)->GetMode ();
+			EnableDisableNode (enableState, mode, uiManager, evaluationEnv, uiNode);
 			return true;
 		}
 	};
@@ -168,9 +180,12 @@ NE::Stream::Status EnableDisableFeature::Read (NE::InputStream & inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NodeFeature::Read (inputStream);
-	int nodeEnabledInt = 0;
-	inputStream.Read (nodeEnabledInt);
-	state = (State) nodeEnabledInt;
+	int stateInt = 0;
+	int modeInt = 0;
+	inputStream.Read (stateInt);
+	inputStream.Read (modeInt);
+	state = (State) stateInt;
+	mode = (Mode) modeInt;
 	return inputStream.GetStatus ();
 }
 
@@ -179,6 +194,7 @@ NE::Stream::Status EnableDisableFeature::Write (NE::OutputStream & outputStream)
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NodeFeature::Write (outputStream);
 	outputStream.Write ((int) state);
+	outputStream.Write ((int) mode);
 	return outputStream.GetStatus ();
 }
 
