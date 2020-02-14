@@ -103,7 +103,7 @@ public:
 		}
 	}
 
-	virtual void ProcessValue (const ValueConstPtr& value, EvaluationEnv& env) const override
+	virtual void ProcessCalculatedValue (const ValueConstPtr& value, EvaluationEnv& env) const override
 	{
 		std::shared_ptr<EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
 		if (enableDisable->GetEnableState ()) {

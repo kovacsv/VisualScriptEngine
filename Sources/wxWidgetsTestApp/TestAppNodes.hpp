@@ -33,7 +33,7 @@ public:
 
 	virtual void				Initialize () override;
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
-	virtual void				ProcessValue (const NE::ValueConstPtr& value, NE::EvaluationEnv& env) const override;
+	virtual void				ProcessCalculatedValue (const NE::ValueConstPtr& value, NE::EvaluationEnv& env) const override;
 	virtual void				OnFeatureChange (const NUIE::FeatureId& featureId, NE::EvaluationEnv& env) const override;
 	virtual void				OnDelete (NE::EvaluationEnv& env) const override;
 

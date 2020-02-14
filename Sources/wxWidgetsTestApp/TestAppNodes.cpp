@@ -144,7 +144,7 @@ void DrawableNode::RegisterParameters (NUIE::NodeParameterList& parameterList) c
 	BI::BasicUINode::RegisterParameters (parameterList);
 }
 
-void DrawableNode::ProcessValue (const NE::ValueConstPtr& value, NE::EvaluationEnv& env) const
+void DrawableNode::ProcessCalculatedValue (const NE::ValueConstPtr& value, NE::EvaluationEnv& env) const
 {
 	std::shared_ptr<BI::EnableDisableFeature> enableDisable = GetEnableDisableFeature (this);
 	if (enableDisable->GetEnableState ()) {

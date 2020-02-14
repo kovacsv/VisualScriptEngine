@@ -136,7 +136,7 @@ private:
 	virtual ValueConstPtr	Calculate (EvaluationEnv& env) const = 0;
 
 	virtual bool			IsForceCalculated () const;
-	virtual void			ProcessValue (const ValueConstPtr& value, EvaluationEnv& env) const;
+	virtual void			ProcessCalculatedValue (const ValueConstPtr& value, EvaluationEnv& env) const;
 
 	ValueConstPtr			EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
 

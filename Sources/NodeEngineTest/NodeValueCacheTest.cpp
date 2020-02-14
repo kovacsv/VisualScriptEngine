@@ -55,7 +55,7 @@ public:
 		return ValuePtr (new IntValue (IntValue::Get (in) + 1));
 	}
 
-	virtual void ProcessValue (const ValueConstPtr&, NE::EvaluationEnv& env) const override
+	virtual void ProcessCalculatedValue (const ValueConstPtr&, NE::EvaluationEnv& env) const override
 	{
 		Evaluate (env); // should not call calculation again
 		calculationPostProcessCount++;
@@ -95,7 +95,7 @@ public:
 		return ValueConstPtr (new IntValue (5));
 	}
 
-	virtual void ProcessValue (const ValueConstPtr&, NE::EvaluationEnv& env) const override
+	virtual void ProcessCalculatedValue (const ValueConstPtr&, NE::EvaluationEnv& env) const override
 	{
 		std::shared_ptr<DummyEvaluationData> dummyData = env.GetData<DummyEvaluationData> ();
 		dummyData->x += 1;

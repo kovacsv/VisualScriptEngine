@@ -128,7 +128,7 @@ ValueConstPtr Node::Evaluate (EvaluationEnv& env) const
 
 	ValueConstPtr value = Calculate (env);
 	nodeEvaluator->SetCalculatedNodeValue (nodeId, value);
-	ProcessValue (value, env);
+	ProcessCalculatedValue (value, env);
 
 	return value;
 }
@@ -294,7 +294,7 @@ bool Node::IsForceCalculated () const
 	return false;
 }
 
-void Node::ProcessValue (const ValueConstPtr&, EvaluationEnv&) const
+void Node::ProcessCalculatedValue (const ValueConstPtr&, EvaluationEnv&) const
 {
 
 }
