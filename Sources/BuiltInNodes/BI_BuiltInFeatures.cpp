@@ -14,13 +14,13 @@ const NUIE::FeatureId ValueCombinationFeatureId ("{B8F03216-5CB8-49FC-B748-94479
 NE::DynamicSerializationInfo EnableDisableFeature::serializationInfo (NE::ObjectId ("{1C89FD8B-085E-45C8-B0B8-E75883F53C68}"), NE::ObjectVersion (1), EnableDisableFeature::CreateSerializableInstance);
 NE::DynamicSerializationInfo ValueCombinationFeature::serializationInfo (NE::ObjectId ("{7BC21A4E-4D2E-4B00-BD73-9897DB3616BA}"), NE::ObjectVersion (1), ValueCombinationFeature::CreateSerializableInstance);
 
-static void EnableDisableNode (bool enable, NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
+static void EnableDisableNode (EnableDisableFeature::State state, NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
 {
 	std::shared_ptr<EnableDisableFeature> enableDisableFeature = GetEnableDisableFeature (uiNode);
 	if (DBGERROR (enableDisableFeature == nullptr)) {
 		return;
 	}
-	enableDisableFeature->SetEnableState (enable);
+	enableDisableFeature->SetEnableState (state);
 	uiNode->OnFeatureChange (EnableDisableFeatureId, env);
 	uiManager.InvalidateNodeDrawing (uiNode);
 	uiManager.RequestRecalculateAndRedraw ();
@@ -29,9 +29,9 @@ static void EnableDisableNode (bool enable, NUIE::NodeUIManager& uiManager, NE::
 class EnableDisableNodeCommand : public NUIE::NodeCommand
 {
 public:
-	EnableDisableNodeCommand (const std::wstring& name, bool isChecked, bool enable) :
+	EnableDisableNodeCommand (const std::wstring& name, bool isChecked, EnableDisableFeature::State state) :
 		NUIE::NodeCommand (name, isChecked),
-		enable (enable)
+		state (state)
 	{
 
 	}
@@ -43,11 +43,11 @@ public:
 
 	virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, NUIE::UINodePtr& uiNode) override
 	{
-		EnableDisableNode (enable, uiManager, uiEnvironment.GetEvaluationEnv (), uiNode);
+		EnableDisableNode (state, uiManager, uiEnvironment.GetEvaluationEnv (), uiNode);
 	}
 
 private:
-	bool enable;
+	EnableDisableFeature::State state;
 };
 
 static void SetNodeValueCombination (NE::ValueCombinationMode valueCombination, NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
@@ -88,14 +88,14 @@ private:
 };
 
 EnableDisableFeature::EnableDisableFeature () :
-	EnableDisableFeature (true)
+	EnableDisableFeature (State::Enabled)
 {
 
 }
 
-EnableDisableFeature::EnableDisableFeature (bool nodeEnabled) :
+EnableDisableFeature::EnableDisableFeature (State state) :
 	NUIE::NodeFeature (EnableDisableFeatureId),
-	nodeEnabled (nodeEnabled)
+	state (state)
 {
 
 }
@@ -105,21 +105,21 @@ EnableDisableFeature::~EnableDisableFeature ()
 
 }
 
-bool EnableDisableFeature::GetEnableState () const
+EnableDisableFeature::State EnableDisableFeature::GetEnableState () const
 {
-	return nodeEnabled;
+	return state;
 }
 
-void EnableDisableFeature::SetEnableState (bool isNodeEnabled)
+void EnableDisableFeature::SetEnableState (State newState)
 {
-	nodeEnabled = isNodeEnabled;
+	state = newState;
 }
 
 void EnableDisableFeature::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
 	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (NE::Localize (L"Set Node Status")));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Enable"), nodeEnabled, true)));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Disable"), !nodeEnabled, false)));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Enable"), state == State::Enabled, State::Enabled)));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::Localize (L"Disable"), state == State::Disabled, State::Disabled)));
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
 }
 
@@ -136,15 +136,15 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 
 		virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
 		{
-			bool enableState = GetEnableDisableFeature (uiNode)->GetEnableState ();
-			int enableStateInt = (enableState ? 0 : 1);
+			EnableDisableFeature::State enableState = GetEnableDisableFeature (uiNode)->GetEnableState ();
+			int enableStateInt = (enableState == EnableDisableFeature::State::Enabled ? 0 : 1);
 			return NE::ValuePtr (new NE::IntValue (enableStateInt));
 		}
 
 		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			int enableStateInt = NE::IntValue::Get (value);
-			bool enableState = (enableStateInt == 0 ? true : false);
+			EnableDisableFeature::State enableState = (enableStateInt == 0 ? EnableDisableFeature::State::Enabled : EnableDisableFeature::State::Disabled);
 			EnableDisableNode (enableState, uiManager, evaluationEnv, uiNode);
 			return true;
 		}
@@ -155,7 +155,7 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 
 void EnableDisableFeature::DrawInplace (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const
 {
-	if (nodeEnabled) {
+	if (state == State::Enabled) {
 		drawer (env);
 	} else {
 		NUIE::ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetDisabledBlendColor ());
@@ -168,7 +168,9 @@ NE::Stream::Status EnableDisableFeature::Read (NE::InputStream & inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NodeFeature::Read (inputStream);
-	inputStream.Read (nodeEnabled);
+	int nodeEnabledInt = 0;
+	inputStream.Read (nodeEnabledInt);
+	state = (State) nodeEnabledInt;
 	return inputStream.GetStatus ();
 }
 
@@ -176,7 +178,7 @@ NE::Stream::Status EnableDisableFeature::Write (NE::OutputStream & outputStream)
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NodeFeature::Write (outputStream);
-	outputStream.Write (nodeEnabled);
+	outputStream.Write ((int) state);
 	return outputStream.GetStatus ();
 }
 

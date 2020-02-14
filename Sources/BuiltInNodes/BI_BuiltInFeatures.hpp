@@ -16,12 +16,18 @@ class EnableDisableFeature : public NUIE::NodeFeature
 	DYNAMIC_SERIALIZABLE (EnableDisableFeature);
 
 public:
+	enum class State
+	{
+		Disabled	= 0,
+		Enabled		= 1
+	};
+
 	EnableDisableFeature ();
-	EnableDisableFeature (bool nodeEnabled);
+	EnableDisableFeature (State state);
 	virtual ~EnableDisableFeature ();
 
-	bool				GetEnableState () const;
-	void				SetEnableState (bool isNodeEnabled);
+	State				GetEnableState () const;
+	void				SetEnableState (State newState);
 	void				DrawInplace (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
 
 	virtual void		RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
@@ -31,7 +37,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
-	bool	nodeEnabled;
+	State		state;
 };
 
 class ValueCombinationFeature : public NUIE::NodeFeature
