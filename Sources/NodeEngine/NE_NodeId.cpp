@@ -56,7 +56,12 @@ NodeId::~NodeId ()
 
 }
 
-void NodeId::SetUniqueId (const NodeIdType& uniqueId)
+NodeIdType NodeId::GetUniqueId () const
+{
+	return id;
+}
+
+void NodeId::SetUniqueId (NodeIdType uniqueId)
 {
 	id = uniqueId;
 }

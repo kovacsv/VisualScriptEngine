@@ -37,7 +37,8 @@ public:
 	NodeId (const NodeIdType& uniqueId);
 	~NodeId ();
 
-	void			SetUniqueId (const NodeIdType& uniqueId);
+	NodeIdType		GetUniqueId () const;
+	void			SetUniqueId (NodeIdType uniqueId);
 	size_t			GenerateHashValue () const;
 
 	bool			operator< (const NodeId& rhs) const;
