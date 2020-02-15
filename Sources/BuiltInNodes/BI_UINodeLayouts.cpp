@@ -26,21 +26,14 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 											const std::wstring& leftButtonText,
 											const std::string& rightButtonId,
 											const std::wstring& rightButtonText,
+											const std::wstring& middleText,
 											NUIE::NodeUIDrawingEnvironment& env,
 											NUIE::NodeDrawingImage& drawingImage)
 {
-	std::wstring nodeText = NE::Localize (L"<empty>");
-	if (uiNode.HasCalculatedValue ()) {
-		NE::ValueConstPtr nodeValue = uiNode.GetCalculatedValue ();
-		if (nodeValue != nullptr) {
-			nodeText = nodeValue->ToString (env.GetStringSettings ());
-		}
-	}
-
 	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName ())));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
-	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, nodeText, env)));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, middleText, env)));
 	drawer.Draw (env, drawingImage);
 }
 

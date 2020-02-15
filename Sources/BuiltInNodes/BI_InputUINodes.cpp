@@ -239,7 +239,14 @@ NE::Stream::Status NumericUpDownNode::Write (NE::OutputStream& outputStream) con
 
 void NumericUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
-	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", NE::Localize (L"<"), "plus", NE::Localize (L">"), env, drawingImage);
+	std::wstring nodeText = NE::Localize (L"<empty>");
+	if (HasCalculatedValue ()) {
+		NE::ValueConstPtr nodeValue = GetCalculatedValue ();
+		if (nodeValue != nullptr) {
+			nodeText = nodeValue->ToString (env.GetStringSettings ());
+		}
+	}
+	DrawHeaderWithSlotsAndButtonsLayout (*this, "minus", NE::Localize (L"<"), "plus", NE::Localize (L">"), nodeText, env, drawingImage);
 }
 
 IntegerUpDownNode::IntegerUpDownNode () :

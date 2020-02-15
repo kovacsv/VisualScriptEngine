@@ -17,6 +17,7 @@ void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
 											const std::wstring& leftButtonText,
 											const std::string& rightButtonId,
 											const std::wstring& rightButtonText,
+											const std::wstring& middleText,
 											NUIE::NodeUIDrawingEnvironment& env,
 											NUIE::NodeDrawingImage& drawingImage);
 
