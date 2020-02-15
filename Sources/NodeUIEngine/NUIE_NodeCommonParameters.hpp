@@ -89,6 +89,17 @@ public:
 };
 
 template <typename NodeType>
+class StringNodeParameter : public TypedNodeParameter<NodeType, NE::StringValue>
+{
+public:
+	StringNodeParameter (const std::wstring& name) :
+		TypedNodeParameter<NodeType, NE::StringValue> (name, ParameterType::String)
+	{
+
+	}
+};
+
+template <typename NodeType>
 class NotEmptyStringNodeParameter : public TypedNodeParameter<NodeType, NE::StringValue>
 {
 public:
