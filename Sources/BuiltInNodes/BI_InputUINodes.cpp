@@ -187,25 +187,30 @@ void NumericUpDownNode::Initialize ()
 
 NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
 {
-	if (mouseButton != NUIE::MouseButton::Left) {
-		return NUIE::EventHandlerResult::EventNotHandled;
-	}
+	class ClickHandler : public ButtonClickHandler
+	{
+	public:
+		ClickHandler (NumericUpDownNode* node) :
+			node (node)
+		{
+		}
 
-	NUIE::Rect minusButtonRect = GetSpecialRect (env, "minus");
-	NUIE::Rect plusButtonRect = GetSpecialRect (env, "plus");
+		virtual void LeftButtonClicked () override
+		{
+			node->Decrease ();
+		}
+		
+		virtual void RightButtonClicked () override
+		{
+			node->Increase ();
+		}
 
-	if (minusButtonRect.Contains (position)) {
-		commandInterface.RunUndoableCommand ([&] () {
-			Decrease ();
-		});
-		return NUIE::EventHandlerResult::EventHandled;
-	} else if (plusButtonRect.Contains (position)) {
-		commandInterface.RunUndoableCommand ([&] () {
-			Increase ();
-		});
-		return NUIE::EventHandlerResult::EventHandled;
-	}
-	return NUIE::EventHandlerResult::EventNotHandled;
+	private:
+		NumericUpDownNode* node;
+	};
+
+	ClickHandler clickHandler (this);
+	return HandleMouseClickOnButtonsLayout (*this, "minus", "plus", env, mouseButton, position, commandInterface, clickHandler);
 }
 
 NUIE::EventHandlerResult NumericUpDownNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)

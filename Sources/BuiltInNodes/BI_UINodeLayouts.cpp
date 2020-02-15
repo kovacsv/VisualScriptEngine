@@ -59,4 +59,44 @@ void DrawHeaderWithSlotsAndSwitchLayout (	const NUIE::UINode& uiNode,
 	drawer.Draw (env, drawingImage);
 }
 
+ButtonClickHandler::ButtonClickHandler ()
+{
+
+}
+
+ButtonClickHandler::~ButtonClickHandler ()
+{
+
+}
+
+NUIE::EventHandlerResult HandleMouseClickOnButtonsLayout (	const NUIE::UINode& uiNode,
+															const std::string& leftButtonId,
+															const std::string& rightButtonId,
+															NUIE::NodeUIEnvironment& env,
+															NUIE::MouseButton mouseButton,
+															const NUIE::Point& position,
+															NUIE::UINodeCommandInterface& commandInterface,
+															ButtonClickHandler& clickHandler)
+{
+	if (mouseButton != NUIE::MouseButton::Left) {
+		return NUIE::EventHandlerResult::EventNotHandled;
+	}
+
+	NUIE::Rect minusButtonRect = uiNode.GetSpecialRect (env, leftButtonId);
+	NUIE::Rect plusButtonRect = uiNode.GetSpecialRect (env, rightButtonId);
+
+	if (minusButtonRect.Contains (position)) {
+		commandInterface.RunUndoableCommand ([&] () {
+			clickHandler.LeftButtonClicked ();
+		});
+		return NUIE::EventHandlerResult::EventHandled;
+	} else if (plusButtonRect.Contains (position)) {
+		commandInterface.RunUndoableCommand ([&] () {
+			clickHandler.RightButtonClicked ();
+		});
+		return NUIE::EventHandlerResult::EventHandled;
+	}
+	return NUIE::EventHandlerResult::EventNotHandled;
+}
+
 }
