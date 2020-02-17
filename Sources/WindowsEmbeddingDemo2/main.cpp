@@ -127,7 +127,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
 	WNDCLASSEX windowClass;
-	memset (&windowClass, 0, sizeof (WNDCLASSEX));
+	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
 	windowClass.cbSize = sizeof(WNDCLASSEX);
 	windowClass.style = 0;
 	windowClass.lpfnWndProc = ApplicationWindowProc;

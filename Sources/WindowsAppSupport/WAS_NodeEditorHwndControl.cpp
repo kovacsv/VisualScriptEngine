@@ -415,7 +415,7 @@ void NodeTreeView::AddGroup (const std::wstring& group)
 	}
 
 	TVINSERTSTRUCT tvInsertStruct;
-	memset (&tvInsertStruct, 0, sizeof (TVINSERTSTRUCT));
+	ZeroMemory (&tvInsertStruct, sizeof (TVINSERTSTRUCT));
 	tvInsertStruct.hParent = NULL;
 	tvInsertStruct.hInsertAfter = NULL;
 	tvInsertStruct.item.mask = TVIF_TEXT | TVIF_PARAM;
@@ -435,7 +435,7 @@ void NodeTreeView::AddItem (const std::wstring& group, const std::wstring& text,
 	}
 
 	TVINSERTSTRUCT tvInsertStruct;
-	memset (&tvInsertStruct, 0, sizeof (TVINSERTSTRUCT));
+	ZeroMemory (&tvInsertStruct, sizeof (TVINSERTSTRUCT));
 	tvInsertStruct.hParent = found->second;
 	tvInsertStruct.hInsertAfter = NULL;
 	tvInsertStruct.item.mask = TVIF_TEXT | TVIF_PARAM;
