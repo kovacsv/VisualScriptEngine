@@ -14,6 +14,7 @@ public:
 	virtual ~MemoryInputStream ();
 
 	virtual Status		Read (bool& val) override;
+	virtual Status		Read (char& val) override;
 	virtual Status		Read (unsigned char& val) override;
 	virtual Status		Read (size_t& val) override;
 	virtual Status		Read (int& val) override;
@@ -38,6 +39,7 @@ public:
 	const std::vector<char>&	GetBuffer () const;
 
 	virtual Status				Write (const bool& val) override;
+	virtual Status				Write (const char& val) override;
 	virtual Status				Write (const unsigned char& val) override;
 	virtual Status				Write (const size_t& val) override;
 	virtual Status				Write (const int& val) override;

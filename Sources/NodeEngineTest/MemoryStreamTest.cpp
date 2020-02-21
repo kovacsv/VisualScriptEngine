@@ -14,6 +14,7 @@ TEST (TypeTest)
 {
 	MemoryOutputStream outputStream;
 	ASSERT (outputStream.Write (true) == Stream::Status::NoError);
+	ASSERT (outputStream.Write ('a') == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((size_t) 1) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((int) 2) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((float) 3.0f) == Stream::Status::NoError);
@@ -22,6 +23,7 @@ TEST (TypeTest)
 	ASSERT (outputStream.Write (std::wstring (L"banana")) == Stream::Status::NoError);
 
 	bool boolVal;
+	char charVal;
 	size_t sizeVal;
 	int intVal;
 	float floatVal;
@@ -31,6 +33,7 @@ TEST (TypeTest)
 
 	MemoryInputStream inputStream (outputStream.GetBuffer ());
 	ASSERT (inputStream.Read (boolVal) == Stream::Status::NoError);
+	ASSERT (inputStream.Read (charVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (sizeVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (intVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (floatVal) == Stream::Status::NoError);
@@ -39,6 +42,7 @@ TEST (TypeTest)
 	ASSERT (inputStream.Read (wStringVal) == Stream::Status::NoError);
 
 	ASSERT (boolVal == true);
+	ASSERT (charVal == 'a');
 	ASSERT (sizeVal == 1);
 	ASSERT (intVal == 2);
 	ASSERT (floatVal == 3.0f);
