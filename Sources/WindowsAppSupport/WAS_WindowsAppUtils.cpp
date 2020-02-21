@@ -65,7 +65,7 @@ NUIE::MenuCommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point&
 HWND CreateCustomControl (HWND parentHandle, WNDPROC windowProc, LPCWSTR className, LPVOID lParam)
 {
 	WNDCLASSEX windowClass;
-	memset (&windowClass, 0, sizeof (WNDCLASSEX));
+	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
 	windowClass.cbSize = sizeof(WNDCLASSEX);
 	windowClass.style = 0;
 	windowClass.lpfnWndProc = windowProc;
