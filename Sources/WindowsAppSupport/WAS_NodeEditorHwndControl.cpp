@@ -216,30 +216,30 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 	}
 
 	switch (msg) {
-	case WM_LBUTTONUP:
-	{
-		ReleaseCapture ();
-		int x = GET_X_LPARAM (lParam);
-		int y = GET_Y_LPARAM (lParam);
-		control->TreeViewEndDrag (x, y);
-	}
-	break;
-	case WM_NOTIFY:
-	{
-		LPNMHDR header = (LPNMHDR) lParam;
-		switch (header->code) {
-		case TVN_BEGINDRAG:
-			control->TreeViewBeginDrag ((LPNMTREEVIEW) lParam);
+		case WM_LBUTTONUP:
+			{
+				ReleaseCapture ();
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				control->TreeViewEndDrag (x, y);
+			}
 			break;
-		case TVN_SELCHANGED:
-			control->TreeViewSelectionChanged ((LPNMTREEVIEW) lParam);
+		case WM_NOTIFY:
+			{
+				LPNMHDR header = (LPNMHDR) lParam;
+				switch (header->code) {
+				case TVN_BEGINDRAG:
+					control->TreeViewBeginDrag ((LPNMTREEVIEW) lParam);
+					break;
+				case TVN_SELCHANGED:
+					control->TreeViewSelectionChanged ((LPNMTREEVIEW) lParam);
+					break;
+				case NM_DBLCLK:
+					control->TreeViewDoubleClick (header);
+					break;
+				}
+			}
 			break;
-		case NM_DBLCLK:
-			control->TreeViewDoubleClick (header);
-			break;
-		}
-	}
-	break;
 	}
 
 	return DefWindowProc (hwnd, msg, wParam, lParam);
