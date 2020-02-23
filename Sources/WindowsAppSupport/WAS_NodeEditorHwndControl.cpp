@@ -340,6 +340,9 @@ HWND NodeEditorHwndControl::GetEditorHandle () const
 
 void NodeEditorHwndControl::Resize (int x, int y, int width, int height)
 {
+	if (hwnd == NULL) {
+		return;
+	}
 	MoveWindow (hwnd, x, y, width, height, TRUE);
 	if (nodeEditor != nullptr) {
 		nodeEditor->OnResize (width, height);
@@ -348,6 +351,9 @@ void NodeEditorHwndControl::Resize (int x, int y, int width, int height)
 
 void NodeEditorHwndControl::Invalidate ()
 {
+	if (hwnd == NULL) {
+		return;
+	}
 	InvalidateRect (hwnd, NULL, FALSE);
 }
 
@@ -368,6 +374,9 @@ const NodeTree& NodeEditorHwndControl::GetNodeTree ()
 
 void NodeEditorHwndControl::Draw ()
 {
+	if (hwnd == NULL) {
+		return;
+	}
 	if (nodeEditor != nullptr) {
 		nodeEditor->Draw ();
 	}
@@ -399,6 +408,9 @@ bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
 
 void NodeTreeView::Resize (int x, int y, int width, int height)
 {
+	if (hwnd == NULL) {
+		return;
+	}
 	MoveWindow (hwnd, x, y, width, height, TRUE);
 }
 
@@ -510,6 +522,9 @@ HWND NodeEditorNodeListHwndControl::GetEditorHandle () const
 
 void NodeEditorNodeListHwndControl::Resize (int x, int y, int width, int height)
 {
+	if (mainHandle == NULL) {
+		return;
+	}
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
 	nodeTreeView.Resize (x, y, NodeListWidth, height);
 	nodeEditorControl.Resize (x + NodeListWidth, y, width - NodeListWidth, height);
