@@ -71,19 +71,25 @@ void BooleanNode::Initialize ()
 
 NUIE::EventHandlerResult BooleanNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
 {
-	if (mouseButton != NUIE::MouseButton::Left) {
-		return NUIE::EventHandlerResult::EventNotHandled;
-	}
-	
-	NUIE::Rect switchRect = GetSpecialRect (env, "switch");
-	
-	if (switchRect.Contains (position)) {
-		commandInterface.RunUndoableCommand ([&] () {
-			SetValue (!val);
-		});
-		return NUIE::EventHandlerResult::EventHandled;
-	}
-	return NUIE::EventHandlerResult::EventNotHandled;
+	class ClickHandler : public SwitchClickHandler
+	{
+	public:
+		ClickHandler (BooleanNode* node) :
+			node (node)
+		{
+		}
+
+		virtual void SwitchClicked () override
+		{
+			node->SetValue (!node->GetValue ());
+		}
+
+	private:
+		BooleanNode* node;
+	};
+
+	ClickHandler clickHandler (this);
+	return HandleMouseClickOnSwitchLayout (*this, "switch", env, mouseButton, position, commandInterface, clickHandler);
 }
 
 NUIE::EventHandlerResult BooleanNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)

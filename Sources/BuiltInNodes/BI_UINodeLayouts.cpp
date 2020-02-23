@@ -62,6 +62,16 @@ ButtonClickHandler::~ButtonClickHandler ()
 
 }
 
+SwitchClickHandler::SwitchClickHandler ()
+{
+
+}
+
+SwitchClickHandler::~SwitchClickHandler ()
+{
+
+}
+
 NUIE::EventHandlerResult HandleMouseClickOnButtonsLayout (	const NUIE::UINode& uiNode,
 															const std::string& leftButtonId,
 															const std::string& rightButtonId,
@@ -86,6 +96,29 @@ NUIE::EventHandlerResult HandleMouseClickOnButtonsLayout (	const NUIE::UINode& u
 	} else if (plusButtonRect.Contains (position)) {
 		commandInterface.RunUndoableCommand ([&] () {
 			clickHandler.RightButtonClicked ();
+		});
+		return NUIE::EventHandlerResult::EventHandled;
+	}
+	return NUIE::EventHandlerResult::EventNotHandled;
+}
+
+NUIE::EventHandlerResult HandleMouseClickOnSwitchLayout (	const NUIE::UINode& uiNode,
+															const std::string& switchButtonId,
+															NUIE::NodeUIEnvironment& env,
+															NUIE::MouseButton mouseButton,
+															const NUIE::Point& position,
+															NUIE::UINodeCommandInterface& commandInterface,
+															SwitchClickHandler& clickHandler)
+{
+	if (mouseButton != NUIE::MouseButton::Left) {
+		return NUIE::EventHandlerResult::EventNotHandled;
+	}
+
+	NUIE::Rect switchRect = uiNode.GetSpecialRect (env, switchButtonId);
+
+	if (switchRect.Contains (position)) {
+		commandInterface.RunUndoableCommand ([&] () {
+			clickHandler.SwitchClicked ();
 		});
 		return NUIE::EventHandlerResult::EventHandled;
 	}

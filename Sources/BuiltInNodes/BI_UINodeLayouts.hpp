@@ -29,7 +29,6 @@ void DrawHeaderWithSlotsAndSwitchLayout (	const NUIE::UINode& uiNode,
 											NUIE::NodeUIDrawingEnvironment& env,
 											NUIE::NodeDrawingImage& drawingImage);
 
-
 class ButtonClickHandler
 {
 public:
@@ -40,6 +39,15 @@ public:
 	virtual void RightButtonClicked () = 0;
 };
 
+class SwitchClickHandler
+{
+public:
+	SwitchClickHandler ();
+	virtual ~SwitchClickHandler ();
+
+	virtual void SwitchClicked () = 0;
+};
+
 NUIE::EventHandlerResult HandleMouseClickOnButtonsLayout (	const NUIE::UINode& uiNode,
 															const std::string& leftButtonId,
 															const std::string& rightButtonId,
@@ -48,6 +56,14 @@ NUIE::EventHandlerResult HandleMouseClickOnButtonsLayout (	const NUIE::UINode& u
 															const NUIE::Point& position,
 															NUIE::UINodeCommandInterface& commandInterface,
 															ButtonClickHandler& clickHandler);
+
+NUIE::EventHandlerResult HandleMouseClickOnSwitchLayout (	const NUIE::UINode& uiNode,
+															const std::string& switchButtonId,
+															NUIE::NodeUIEnvironment& env,
+															NUIE::MouseButton mouseButton,
+															const NUIE::Point& position,
+															NUIE::UINodeCommandInterface& commandInterface,
+															SwitchClickHandler& clickHandler);
 
 }
 
