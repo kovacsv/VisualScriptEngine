@@ -22,10 +22,15 @@ public:
 				continue;
 			}
 		}
+		classNames.clear ();
 	}
 
 	bool RegisterWindowClass (WNDPROC windowProc, LPCWSTR className)
 	{
+		if (std::find (classNames.begin (), classNames.end (), className) != classNames.end ()) {
+			return true;
+		}
+
 		WNDCLASSEX windowClass;
 		ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
 		windowClass.cbSize = sizeof (WNDCLASSEX);
