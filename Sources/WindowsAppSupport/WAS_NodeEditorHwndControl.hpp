@@ -4,6 +4,7 @@
 #include "NUIE_NodeEditor.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"
 #include "WAS_BitmapContextGdi.hpp"
+#include "WAS_CustomControl.hpp"
 
 namespace WAS
 {
@@ -81,7 +82,7 @@ private:
 	NUIE::NodeEditor*		nodeEditor;
 	BitmapContextGdi		bitmapContext;
 	NodeTree				nodeTree;
-	HWND					hwnd;
+	CustomControl			control;
 };
 
 class NodeTreeView
@@ -129,7 +130,7 @@ private:
 
 	NodeTreeView									nodeTreeView;
 	NodeEditorHwndControl							nodeEditorControl;
-	HWND											mainHandle;
+	CustomControl									mainControl;
 
 	LPARAM											selectedNode;
 	LPARAM											draggedNode;

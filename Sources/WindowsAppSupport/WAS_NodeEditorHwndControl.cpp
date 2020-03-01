@@ -301,7 +301,7 @@ NodeEditorHwndControl::NodeEditorHwndControl () :
 	nodeEditor (nullptr),
 	bitmapContext (),
 	nodeTree (),
-	hwnd (NULL)
+	control ()
 {
 
 }
@@ -316,7 +316,12 @@ bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTre
 	nodeEditor = nodeEditorPtr;
 	DBGASSERT (nodeEditor != nullptr);
 
-	hwnd = CreateCustomControl (parentHandle, NodeEditorStaticWindowProc, L"NodeEditorHwndControl", this);
+	bool controlInited = control.Init (parentHandle, NodeEditorStaticWindowProc, L"NodeEditorHwndControl", this);
+	if (DBGERROR (!controlInited)) {
+		return false;
+	}
+
+	HWND hwnd = control.GetWindowHandle ();
 	if (DBGERROR (hwnd == NULL)) {
 		return false;
 	}
@@ -335,11 +340,12 @@ NodeTree NodeEditorHwndControl::GetNodeTree () const
 
 HWND NodeEditorHwndControl::GetEditorHandle () const
 {
-	return hwnd;
+	return control.GetWindowHandle ();
 }
 
 void NodeEditorHwndControl::Resize (int x, int y, int width, int height)
 {
+	HWND hwnd = control.GetWindowHandle ();
 	if (hwnd == NULL) {
 		return;
 	}
@@ -351,6 +357,7 @@ void NodeEditorHwndControl::Resize (int x, int y, int width, int height)
 
 void NodeEditorHwndControl::Invalidate ()
 {
+	HWND hwnd = control.GetWindowHandle ();
 	if (hwnd == NULL) {
 		return;
 	}
@@ -374,6 +381,7 @@ const NodeTree& NodeEditorHwndControl::GetNodeTree ()
 
 void NodeEditorHwndControl::Draw ()
 {
+	HWND hwnd = control.GetWindowHandle ();
 	if (hwnd == NULL) {
 		return;
 	}
@@ -473,7 +481,7 @@ NodeEditorNodeListHwndControl::NodeEditorNodeListHwndControl () :
 	NodeEditorHwndBasedControl (),
 	nodeTreeView (),
 	nodeEditorControl (),
-	mainHandle (NULL),
+	mainControl (),
 	selectedNode (-1),
 	draggedNode (-1)
 {
@@ -487,7 +495,12 @@ NodeEditorNodeListHwndControl::~NodeEditorNodeListHwndControl ()
 
 bool NodeEditorNodeListHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& nodeTree, HWND parentHandle, int x, int y, int width, int height)
 {
-	mainHandle = CreateCustomControl (parentHandle, NodeEditorNodeListStaticWindowProc, L"NodeEditorNodeListHwndControl", this);
+	bool controlInited = mainControl.Init (parentHandle, NodeEditorNodeListStaticWindowProc, L"NodeEditorNodeListHwndControl", this);
+	if (DBGERROR (!controlInited)) {
+		return false;
+	}
+
+	HWND mainHandle = mainControl.GetWindowHandle ();
 	if (DBGERROR (mainHandle == NULL)) {
 		return false;
 	}
@@ -522,6 +535,7 @@ HWND NodeEditorNodeListHwndControl::GetEditorHandle () const
 
 void NodeEditorNodeListHwndControl::Resize (int x, int y, int width, int height)
 {
+	HWND mainHandle = mainControl.GetWindowHandle ();
 	if (mainHandle == NULL) {
 		return;
 	}
@@ -576,6 +590,8 @@ void NodeEditorNodeListHwndControl::TreeViewBeginDrag (LPNMTREEVIEW lpnmtv)
 		return;
 	}
 
+	HWND mainHandle = mainControl.GetWindowHandle ();
+
 	HTREEITEM item = lpnmtv->itemNew.hItem;
 	TreeView_SelectItem (lpnmtv->hdr.hwndFrom, item);
 	SetCapture (mainHandle);
@@ -589,6 +605,8 @@ void NodeEditorNodeListHwndControl::TreeViewEndDrag (int x, int y)
 	if (DBGERROR (draggedNode == (LPARAM) -1)) {
 		return;
 	}
+
+	HWND mainHandle = mainControl.GetWindowHandle ();
 
 	RECT editorRect;
 	GetClientRect (nodeEditorControl.GetEditorHandle (), &editorRect);

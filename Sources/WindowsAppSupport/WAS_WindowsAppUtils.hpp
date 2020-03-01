@@ -12,8 +12,6 @@ namespace WAS
 NUIE::ModifierKeys		GetModiferKeysFromEvent (WPARAM wParam);
 NUIE::MenuCommandPtr	SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
 
-HWND					CreateCustomControl (HWND parentHandle, WNDPROC windowProc, LPCWSTR className, LPVOID lParam);
-
 }
 
 #endif
