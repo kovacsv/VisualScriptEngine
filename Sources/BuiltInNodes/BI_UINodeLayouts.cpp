@@ -106,14 +106,14 @@ HeaderWithSlotsAndSwitchLayout::HeaderWithSlotsAndSwitchLayout (const std::strin
 }
 
 void HeaderWithSlotsAndSwitchLayout::Draw (	const NUIE::UINode& uiNode,
-											short selectedIndex,
+											SelectedItem selectedItem,
 											NUIE::NodeUIDrawingEnvironment& env,
 											NUIE::NodeDrawingImage & drawingImage) const
 {
 	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName ())));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
-	std::wstring buttonText = (selectedIndex == 0 ? firstSwitchText : secondSwitchText);
+	std::wstring buttonText = (selectedItem == SelectedItem::First ? firstSwitchText : secondSwitchText);
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIButtonPanel (switchButtonId, buttonText, env)));
 	drawer.Draw (env, drawingImage);
 }

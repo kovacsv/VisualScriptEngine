@@ -165,8 +165,8 @@ void BooleanNode::SetValue (bool newVal)
 
 void BooleanNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
-	short selectedIndex = val ? 0 : 1;
-	layout.Draw (*this, selectedIndex, env, drawingImage);
+	HeaderWithSlotsAndSwitchLayout::SelectedItem selectedItem = val ? HeaderWithSlotsAndSwitchLayout::SelectedItem::First : HeaderWithSlotsAndSwitchLayout::SelectedItem::Second;
+	layout.Draw (*this, selectedItem, env, drawingImage);
 }
 
 NumericUpDownNode::NumericUpDownNode () :

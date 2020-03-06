@@ -36,18 +36,18 @@ public:
 										const std::string& rightButtonId,
 										const std::wstring& rightButtonText);
 
-	void Draw (	const NUIE::UINode& uiNode,
-				const std::wstring& middleText,
-				NUIE::NodeUIDrawingEnvironment& env,
-				NUIE::NodeDrawingImage& drawingImage) const;
+	void						Draw (	const NUIE::UINode& uiNode,
+										const std::wstring& middleText,
+										NUIE::NodeUIDrawingEnvironment& env,
+										NUIE::NodeDrawingImage& drawingImage) const;
 
 
-	NUIE::EventHandlerResult HandleMouseClick (	const NUIE::UINode& uiNode,
-												NUIE::NodeUIEnvironment& env,
-												NUIE::MouseButton mouseButton,
-												const NUIE::Point& position,
-												NUIE::UINodeCommandInterface& commandInterface,
-												ClickHandler& clickHandler);
+	NUIE::EventHandlerResult	HandleMouseClick (	const NUIE::UINode& uiNode,
+													NUIE::NodeUIEnvironment& env,
+													NUIE::MouseButton mouseButton,
+													const NUIE::Point& position,
+													NUIE::UINodeCommandInterface& commandInterface,
+													ClickHandler& clickHandler);
 
 private:
 	const std::string leftButtonId;
@@ -59,6 +59,12 @@ private:
 class HeaderWithSlotsAndSwitchLayout
 {
 public:
+	enum class SelectedItem
+	{
+		First,
+		Second
+	};
+
 	class ClickHandler
 	{
 	public:
@@ -72,18 +78,18 @@ public:
 									const std::wstring& firstSwitchText,
 									const std::wstring& secondSwitchText);
 
-	void Draw (	const NUIE::UINode& uiNode,
-				short selectedIndex,
-				NUIE::NodeUIDrawingEnvironment& env,
-				NUIE::NodeDrawingImage& drawingImage) const;
+	void						Draw (	const NUIE::UINode& uiNode,
+										SelectedItem selectedItem,
+										NUIE::NodeUIDrawingEnvironment& env,
+										NUIE::NodeDrawingImage& drawingImage) const;
 
 
-	NUIE::EventHandlerResult HandleMouseClick (	const NUIE::UINode& uiNode,
-												NUIE::NodeUIEnvironment& env,
-												NUIE::MouseButton mouseButton,
-												const NUIE::Point& position,
-												NUIE::UINodeCommandInterface& commandInterface,
-												ClickHandler& clickHandler);
+	NUIE::EventHandlerResult	HandleMouseClick (	const NUIE::UINode& uiNode,
+													NUIE::NodeUIEnvironment& env,
+													NUIE::MouseButton mouseButton,
+													const NUIE::Point& position,
+													NUIE::UINodeCommandInterface& commandInterface,
+													ClickHandler& clickHandler);
 
 private:
 	const std::string switchButtonId;
