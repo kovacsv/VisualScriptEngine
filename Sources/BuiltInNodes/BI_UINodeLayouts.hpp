@@ -8,62 +8,88 @@
 namespace BI
 {
 
-void DrawStatusHeaderWithSlotsLayout (	const NUIE::UINode& uiNode,
-										NUIE::NodeUIDrawingEnvironment& env,
-										NUIE::NodeDrawingImage& drawingImage);
-
-void DrawHeaderWithSlotsAndButtonsLayout (	const NUIE::UINode& uiNode,
-											const std::string& leftButtonId,
-											const std::wstring& leftButtonText,
-											const std::string& rightButtonId,
-											const std::wstring& rightButtonText,
-											const std::wstring& middleText,
-											NUIE::NodeUIDrawingEnvironment& env,
-											NUIE::NodeDrawingImage& drawingImage);
-
-void DrawHeaderWithSlotsAndSwitchLayout (	const NUIE::UINode& uiNode,
-											const std::string& switchButtonId,
-											const std::wstring& leftSwitchText,
-											const std::wstring& rightSwitchText,
-											short selectedIndex,
-											NUIE::NodeUIDrawingEnvironment& env,
-											NUIE::NodeDrawingImage& drawingImage);
-
-class ButtonClickHandler
+class StatusHeaderWithSlotsLayout
 {
 public:
-	ButtonClickHandler ();
-	virtual ~ButtonClickHandler ();
+	StatusHeaderWithSlotsLayout ();
 
-	virtual void LeftButtonClicked () = 0;
-	virtual void RightButtonClicked () = 0;
+	void Draw (	const NUIE::UINode& uiNode,
+				NUIE::NodeUIDrawingEnvironment& env,
+				NUIE::NodeDrawingImage& drawingImage) const;
 };
 
-class SwitchClickHandler
+class HeaderWithSlotsAndButtonsLayout
 {
 public:
-	SwitchClickHandler ();
-	virtual ~SwitchClickHandler ();
+	class ClickHandler
+	{
+	public:
+		ClickHandler ();
+		virtual ~ClickHandler ();
 
-	virtual void SwitchClicked () = 0;
+		virtual void LeftButtonClicked () = 0;
+		virtual void RightButtonClicked () = 0;
+	};
+
+	HeaderWithSlotsAndButtonsLayout (	const std::string& leftButtonId,
+										const std::wstring& leftButtonText,
+										const std::string& rightButtonId,
+										const std::wstring& rightButtonText);
+
+	void Draw (	const NUIE::UINode& uiNode,
+				const std::wstring& middleText,
+				NUIE::NodeUIDrawingEnvironment& env,
+				NUIE::NodeDrawingImage& drawingImage) const;
+
+
+	NUIE::EventHandlerResult HandleMouseClick (	const NUIE::UINode& uiNode,
+												NUIE::NodeUIEnvironment& env,
+												NUIE::MouseButton mouseButton,
+												const NUIE::Point& position,
+												NUIE::UINodeCommandInterface& commandInterface,
+												ClickHandler& clickHandler);
+
+private:
+	const std::string leftButtonId;
+	const std::wstring leftButtonText;
+	const std::string rightButtonId;
+	const std::wstring rightButtonText;
 };
 
-NUIE::EventHandlerResult HandleMouseClickOnButtonsLayout (	const NUIE::UINode& uiNode,
-															const std::string& leftButtonId,
-															const std::string& rightButtonId,
-															NUIE::NodeUIEnvironment& env,
-															NUIE::MouseButton mouseButton,
-															const NUIE::Point& position,
-															NUIE::UINodeCommandInterface& commandInterface,
-															ButtonClickHandler& clickHandler);
+class HeaderWithSlotsAndSwitchLayout
+{
+public:
+	class ClickHandler
+	{
+	public:
+		ClickHandler ();
+		virtual ~ClickHandler ();
 
-NUIE::EventHandlerResult HandleMouseClickOnSwitchLayout (	const NUIE::UINode& uiNode,
-															const std::string& switchButtonId,
-															NUIE::NodeUIEnvironment& env,
-															NUIE::MouseButton mouseButton,
-															const NUIE::Point& position,
-															NUIE::UINodeCommandInterface& commandInterface,
-															SwitchClickHandler& clickHandler);
+		virtual void SwitchClicked () = 0;
+	};
+
+	HeaderWithSlotsAndSwitchLayout (const std::string& switchButtonId,
+									const std::wstring& leftSwitchText,
+									const std::wstring& rightSwitchText);
+
+	void Draw (	const NUIE::UINode& uiNode,
+				short selectedIndex,
+				NUIE::NodeUIDrawingEnvironment& env,
+				NUIE::NodeDrawingImage& drawingImage) const;
+
+
+	NUIE::EventHandlerResult HandleMouseClick (	const NUIE::UINode& uiNode,
+												NUIE::NodeUIEnvironment& env,
+												NUIE::MouseButton mouseButton,
+												const NUIE::Point& position,
+												NUIE::UINodeCommandInterface& commandInterface,
+												ClickHandler& clickHandler);
+
+private:
+	const std::string switchButtonId;
+	const std::wstring leftSwitchText;
+	const std::wstring rightSwitchText;
+};
 
 }
 

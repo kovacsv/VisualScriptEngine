@@ -1,5 +1,4 @@
 #include "BI_BasicUINode.hpp"
-#include "BI_UINodeLayouts.hpp"
 
 #include <cmath>
 
@@ -15,7 +14,8 @@ BasicUINode::BasicUINode () :
 }
 
 BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position) :
-	NUIE::UINode (name, position)
+	NUIE::UINode (name, position),
+	layout ()
 {
 
 }
@@ -41,7 +41,7 @@ NE::Stream::Status BasicUINode::Write (NE::OutputStream& outputStream) const
 
 void BasicUINode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
-	DrawStatusHeaderWithSlotsLayout (*this, env, drawingImage);
+	layout.Draw (*this, env, drawingImage);
 }
 
 }

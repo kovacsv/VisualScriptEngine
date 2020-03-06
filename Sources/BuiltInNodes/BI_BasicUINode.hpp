@@ -2,6 +2,7 @@
 #define BI_BASICUINODE_HPP
 
 #include "NUIE_UINode.hpp"
+#include "BI_UINodeLayouts.hpp"
 
 namespace BI
 {
@@ -20,6 +21,8 @@ public:
 
 private:
 	virtual void UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
+
+	StatusHeaderWithSlotsLayout layout;
 };
 
 }

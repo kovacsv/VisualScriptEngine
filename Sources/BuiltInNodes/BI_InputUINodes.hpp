@@ -3,6 +3,7 @@
 
 #include "NE_SingleValues.hpp"
 #include "BI_BasicUINode.hpp"
+#include "BI_UINodeLayouts.hpp"
 
 namespace BI
 {
@@ -35,7 +36,8 @@ public:
 private:
 	virtual void						UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 
-	bool val;
+	HeaderWithSlotsAndSwitchLayout		layout;
+	bool								val;
 };
 
 class NumericUpDownNode : public BasicUINode
@@ -62,6 +64,8 @@ public:
 
 private:
 	virtual void						UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
+
+	HeaderWithSlotsAndButtonsLayout		layout;
 };
 
 class IntegerUpDownNode : public NumericUpDownNode
