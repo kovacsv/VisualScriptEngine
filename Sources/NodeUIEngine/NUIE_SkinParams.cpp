@@ -33,7 +33,6 @@ BasicSkinParams::BasicSkinParams (
 	const Color&		hasNoValueStatusColor,
 	const Pen&			buttonBorderPen,
 	const Color&		buttonBackgroundColor,
-	const Color&		selectedButtonBackgroundColor,
 	const Color&		textPanelTextColor,
 	const Color&		textPanelBackgroundColor,
 	const Font&			groupNameFont,
@@ -60,7 +59,6 @@ BasicSkinParams::BasicSkinParams (
 	hasNoValueStatusColor (hasNoValueStatusColor),
 	buttonBorderPen (buttonBorderPen),
 	buttonBackgroundColor (buttonBackgroundColor),
-	selectedButtonBackgroundColor (selectedButtonBackgroundColor),
 	textPanelTextColor (textPanelTextColor),
 	textPanelBackgroundColor (textPanelBackgroundColor),
 	groupNameFont (groupNameFont),
@@ -171,11 +169,6 @@ const Color& BasicSkinParams::GetButtonBackgroundColor () const
 	return buttonBackgroundColor;
 }
 
-const Color& BasicSkinParams::GetSelectedButtonBackgroundColor () const
-{
-	return selectedButtonBackgroundColor;
-}
-
 const Color& BasicSkinParams::GetTextPanelTextColor () const
 {
 	return textPanelTextColor;
@@ -228,7 +221,6 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*hasNoValueStatusColor*/ Color (255, 0, 0),
 		/*buttonBorderPen*/ Pen (Color (50, 75, 100), 1.0),
 		/*buttonBackgroundColor*/ Color (150, 175, 200),
-		/*selectedButtonBackgroundColor*/ Color (190, 215, 240),
 		/*textPanelTextColor*/ Color (0, 0, 0),
 		/*textPanelBackgroundColor*/ Color (255, 255, 100),
 		/*groupNameFont*/ Font (L"Arial", 18.0),

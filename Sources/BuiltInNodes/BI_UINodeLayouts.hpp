@@ -69,8 +69,8 @@ public:
 	};
 
 	HeaderWithSlotsAndSwitchLayout (const std::string& switchButtonId,
-									const std::wstring& leftSwitchText,
-									const std::wstring& rightSwitchText);
+									const std::wstring& firstSwitchText,
+									const std::wstring& secondSwitchText);
 
 	void Draw (	const NUIE::UINode& uiNode,
 				short selectedIndex,
@@ -87,8 +87,8 @@ public:
 
 private:
 	const std::string switchButtonId;
-	const std::wstring leftSwitchText;
-	const std::wstring rightSwitchText;
+	const std::wstring firstSwitchText;
+	const std::wstring secondSwitchText;
 };
 
 }

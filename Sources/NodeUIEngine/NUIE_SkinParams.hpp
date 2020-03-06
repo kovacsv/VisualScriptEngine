@@ -39,7 +39,6 @@ public:
 
 	virtual const Pen&			GetButtonBorderPen () const = 0;
 	virtual const Color&		GetButtonBackgroundColor () const = 0;
-	virtual const Color&		GetSelectedButtonBackgroundColor () const = 0;
 
 	virtual const Color&		GetTextPanelTextColor () const = 0;
 	virtual const Color&		GetTextPanelBackgroundColor () const = 0;
@@ -77,7 +76,6 @@ public:
 		const Color&		hasNoValueStatusColor,
 		const Pen&			buttonBorderPen,
 		const Color&		buttonBackgroundColor,
-		const Color&		selectedButtonBackgroundColor,
 		const Color&		textPanelTextColor,
 		const Color&		textPanelBackgroundColor,
 		const Font&			groupNameFont,
@@ -111,7 +109,6 @@ public:
 
 	virtual const Pen&			GetButtonBorderPen () const override;
 	virtual const Color&		GetButtonBackgroundColor () const override;
-	virtual const Color&		GetSelectedButtonBackgroundColor () const override;
 
 	virtual const Color&		GetTextPanelTextColor () const override;
 	virtual const Color&		GetTextPanelBackgroundColor () const override;
@@ -146,7 +143,6 @@ private:
 
 	Pen			buttonBorderPen;
 	Color		buttonBackgroundColor;
-	Color		selectedButtonBackgroundColor;
 
 	Color		textPanelTextColor;
 	Color		textPanelBackgroundColor;

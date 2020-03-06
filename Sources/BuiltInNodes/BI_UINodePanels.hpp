@@ -142,25 +142,20 @@ private:
 	NUIE::Size		rightButtonSize;
 };
 
-class NodeUISwitchPanel : public NUIE::NodePanel
+class NodeUIButtonPanel : public NUIE::NodePanel
 {
 public:
-	NodeUISwitchPanel (	const std::string& switchRectId,
-						const std::wstring& leftSwitchText,
-						const std::wstring& rightSwitchText,
-						short selectedIndex,
+	NodeUIButtonPanel (	const std::string& buttonRectId,
+						const std::wstring& buttonText,
 						NUIE::NodeUIDrawingEnvironment& env);
 
 	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
-	std::string		switchRectId;
-	std::wstring	leftSwitchText;
-	std::wstring	rightSwitchText;
-	short			selectedIndex;
-	NUIE::Size		leftSwitchSize;
-	NUIE::Size		rightSwitchSize;
+	std::string		buttonRectId;
+	std::wstring	buttonText;
+	NUIE::Size		buttonSize;
 };
 
 }

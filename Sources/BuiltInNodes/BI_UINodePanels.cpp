@@ -318,61 +318,40 @@ void NodeUILeftRightButtonsPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, con
 	drawingImage.AddSpecialRect (rightButtonId, rightButtonRect);
 }
 
-NodeUISwitchPanel::NodeUISwitchPanel (	const std::string& switchRectId,
-										const std::wstring& leftSwitchText,
-										const std::wstring& rightSwitchText,
-										short selectedIndex,
+NodeUIButtonPanel::NodeUIButtonPanel (	const std::string& buttonRectId,
+										const std::wstring& buttonText,
 										NUIE::NodeUIDrawingEnvironment& env) :
-	switchRectId (switchRectId),
-	leftSwitchText (leftSwitchText),
-	rightSwitchText (rightSwitchText),
-	selectedIndex (selectedIndex)
+	buttonRectId (buttonRectId),
+	buttonText (buttonText)
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
-	leftSwitchSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), leftSwitchText).Grow (2.0 * nodePadding, nodePadding);
-	rightSwitchSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), rightSwitchText).Grow (2.0 * nodePadding, nodePadding);
+	buttonSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), buttonText).Grow (2.0 * nodePadding, nodePadding);
 }
 
-NUIE::Size NodeUISwitchPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
+NUIE::Size NodeUIButtonPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
-	NUIE::Size minSize;
-	minSize.SetWidth (leftSwitchSize.GetWidth () + rightSwitchSize.GetWidth ());
-	minSize.SetHeight (std::max (leftSwitchSize.GetHeight (), rightSwitchSize.GetHeight ()));
+	NUIE::Size minSize = buttonSize;
 	minSize = minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 	return minSize;
 }
 
-void NodeUISwitchPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
+void NodeUIButtonPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
+	double nodePadding = skinParams.GetNodePadding ();
 	const NUIE::Color backgroundColor = skinParams.GetNodeContentBackgroundColor ();
 	const NUIE::Color textColor = skinParams.GetNodeContentTextColor ();
 
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, backgroundColor)));
 
-	NUIE::Size switchSize (
-		leftSwitchSize.GetWidth () + rightSwitchSize.GetWidth (),
-		std::max (leftSwitchSize.GetHeight (), rightSwitchSize.GetHeight ())
-	);
-	NUIE::Rect switchRect = NUIE::Rect::FromCenterAndSize (rect.GetCenter (), switchSize);
-	NUIE::Rect leftSwitchRect = NUIE::Rect::FromPositionAndSize (switchRect.GetTopLeft (), leftSwitchSize);
-	NUIE::Rect rightSwitchRect = NUIE::Rect::FromPositionAndSize (leftSwitchRect.GetTopRight (), rightSwitchSize);
-
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (switchRect, skinParams.GetButtonBackgroundColor ())));
-	if (selectedIndex == 0) {
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (leftSwitchRect, skinParams.GetSelectedButtonBackgroundColor ())));
-	} else if (selectedIndex == 1) {
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rightSwitchRect, skinParams.GetSelectedButtonBackgroundColor ())));
-	}
-
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (leftSwitchRect, skinParams.GetNodeTextFont (), leftSwitchText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rightSwitchRect, skinParams.GetNodeTextFont (), rightSwitchText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
-	
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (switchRect, skinParams.GetButtonBorderPen ())));
-	drawingImage.AddSpecialRect (switchRectId, switchRect);
+	NUIE::Rect buttonRect = NUIE::Rect::FromCenterAndSize (rect.GetCenter (), rect.GetSize ().Grow (-2.0 * nodePadding, -2.0 * nodePadding));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (buttonRect, skinParams.GetButtonBackgroundColor ())));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (buttonRect, skinParams.GetNodeTextFont (), buttonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (buttonRect, skinParams.GetButtonBorderPen ())));
+	drawingImage.AddSpecialRect (buttonRectId, buttonRect);
 }
 
 }
