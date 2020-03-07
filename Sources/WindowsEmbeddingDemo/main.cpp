@@ -10,28 +10,12 @@
 #include <windows.h>
 #include <windowsx.h>
 
-class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
+class MyEventHandlers : public WAS::HwndEventHandlers
 {
 public:
-	MyNodeUIEnvironment () :
-		NUIE::NodeUIEnvironment (),
-		stringSettings (NE::GetDefaultStringSettings ()),
-		skinParams (NUIE::GetDefaultSkinParams ()),
-		eventHandlers (),
-		evaluationEnv (nullptr),
-		nodeEditorControl ()
+	MyEventHandlers () :
+		WAS::HwndEventHandlers ()
 	{
-	
-	}
-
-	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
-	{
-		RECT clientRect;
-		GetClientRect (parentHandle, &clientRect);
-		int width = clientRect.right - clientRect.left;
-		int height = clientRect.bottom - clientRect.top;
-
-		WAS::NodeTree nodeTree;
 		nodeTree.AddItem (L"Input Nodes", L"Boolean", [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
 		});
@@ -68,8 +52,41 @@ public:
 		nodeTree.AddItem (L"Other Nodes", L"Viewer", [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
 		});
+	}
 
-		nodeEditorControl.Init (nodeEditorPtr, nodeTree, parentHandle, 0, 0, width, height);
+	virtual NUIE::MenuCommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
+	{
+		NUIE::MenuCommandStructure finalCommands = commands;
+		AddNodeTreeAsCommands (nodeTree, uiManager, uiEnvironment, position, finalCommands);
+		return WAS::SelectCommandFromContextMenu (control->GetEditorHandle (), position, finalCommands);
+	}
+
+private:
+	WAS::NodeTree nodeTree;
+};
+
+class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
+{
+public:
+	MyNodeUIEnvironment () :
+		NUIE::NodeUIEnvironment (),
+		stringSettings (NE::GetDefaultStringSettings ()),
+		skinParams (NUIE::GetDefaultSkinParams ()),
+		eventHandlers (),
+		evaluationEnv (nullptr),
+		nodeEditorControl ()
+	{
+	
+	}
+
+	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
+	{
+		RECT clientRect;
+		GetClientRect (parentHandle, &clientRect);
+		int width = clientRect.right - clientRect.left;
+		int height = clientRect.bottom - clientRect.top;
+
+		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
 		eventHandlers.Init (&nodeEditorControl);
 	}
 
@@ -131,7 +148,7 @@ public:
 private:
 	NE::BasicStringSettings		stringSettings;
 	NUIE::BasicSkinParams		skinParams;
-	WAS::HwndEventHandlers		eventHandlers;
+	MyEventHandlers				eventHandlers;
 	NE::EvaluationEnv			evaluationEnv;
 	WAS::NodeEditorHwndControl	nodeEditorControl;
 };

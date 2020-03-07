@@ -17,7 +17,7 @@ public:
 							const NUIE::SkinParamsPtr& skinParams,
 							const NE::EvaluationDataPtr& evalData);
 
-	void								Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& nodeTree, HWND parentHandle);
+	void								Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle);
 	void								OnResize (int x, int y, int width, int height);
 
 	virtual const NE::StringSettings&	GetStringSettings () override;

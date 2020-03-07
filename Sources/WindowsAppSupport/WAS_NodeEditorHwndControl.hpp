@@ -16,8 +16,7 @@ public:
 	NodeEditorHwndBasedControl ();
 	virtual ~NodeEditorHwndBasedControl ();
 
-	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& nodeTree, HWND parentHandle, int x, int y, int width, int height) = 0;
-	virtual const NodeTree&			GetNodeTree () const = 0;
+	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) = 0;
 	virtual HWND					GetEditorHandle () const = 0;
 
 	virtual void					Resize (int x, int y, int width, int height) = 0;
@@ -33,8 +32,7 @@ public:
 	NodeEditorHwndControl ();
 	~NodeEditorHwndControl ();
 
-	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& newNodeTree, HWND parentHandle, int x, int y, int width, int height) override;
-	virtual const NodeTree&			GetNodeTree () const override;
+	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
 	virtual HWND					GetEditorHandle () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;
@@ -47,24 +45,23 @@ public:
 private:
 	NUIE::NodeEditor*		nodeEditor;
 	BitmapContextGdi		bitmapContext;
-	NodeTree				nodeTree;
 	CustomControl			control;
 };
 
-class NodeEditorNodeListHwndControl : public NodeEditorHwndBasedControl
+class NodeEditorNodeTreeHwndControl : public NodeEditorHwndBasedControl
 {
 public:
-	NodeEditorNodeListHwndControl ();
-	~NodeEditorNodeListHwndControl ();
+	NodeEditorNodeTreeHwndControl ();
+	~NodeEditorNodeTreeHwndControl ();
 
-	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& nodeTree, HWND parentHandle, int x, int y, int width, int height) override;
-	virtual const NodeTree&			GetNodeTree () const override;
+	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
 	virtual HWND					GetEditorHandle () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;
 	virtual void					Invalidate () override;
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 
+	void							FillNodeTree (const NodeTree& nodeTree);
 	void							TreeViewDoubleClick (LPNMHDR lpnmhdr);
 	void							TreeViewSelectionChanged (LPNMTREEVIEW lpnmtv);
 	void							TreeViewBeginDrag (LPNMTREEVIEW lpnmtv);

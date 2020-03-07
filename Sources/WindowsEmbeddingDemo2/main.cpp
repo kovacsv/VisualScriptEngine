@@ -9,8 +9,9 @@
 #include <windows.h>
 #include <windowsx.h>
 
+static std::shared_ptr<WAS::NodeEditorNodeTreeHwndControl> nodeEditorControl (new WAS::NodeEditorNodeTreeHwndControl ());
 static WAS::HwndNodeUIEnvironment uiEnvironment (
-	WAS::NodeEditorHwndBasedControlPtr (new WAS::NodeEditorNodeListHwndControl ()),
+	nodeEditorControl,
 	NE::StringSettingsPtr (new NE::BasicStringSettings (NE::GetDefaultStringSettings ())),
 	NUIE::SkinParamsPtr (new NUIE::BasicSkinParams (NUIE::GetDefaultSkinParams ())),
 	nullptr
@@ -83,7 +84,8 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 					return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
 				});
 
-				uiEnvironment.Init (&nodeEditor, nodeTree, hwnd);
+				uiEnvironment.Init (&nodeEditor, hwnd);
+				nodeEditorControl->FillNodeTree (nodeTree);
 				CreateMenuBar (hwnd);
 			}
 			break;
