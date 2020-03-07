@@ -392,7 +392,7 @@ void NodeEditorHwndControl::Draw ()
 }
 
 NodeTreeView::NodeTreeView () :
-	hwnd (NULL)
+	listHandle (NULL)
 {
 
 }
@@ -404,11 +404,11 @@ NodeTreeView::~NodeTreeView ()
 
 bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
 {
-	hwnd = CreateWindowEx (
+	listHandle = CreateWindowEx (
 		0, WC_TREEVIEW, NULL, WS_VISIBLE | WS_CHILD | TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS, 
 		x, y, width, height, parentHandle, NULL, NULL, NULL
 	);
-	if (DBGERROR (hwnd == NULL)) {
+	if (DBGERROR (listHandle == NULL)) {
 		return false;
 	}
 	return true;
@@ -416,10 +416,10 @@ bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
 
 void NodeTreeView::Resize (int x, int y, int width, int height)
 {
-	if (hwnd == NULL) {
+	if (listHandle == NULL) {
 		return;
 	}
-	MoveWindow (hwnd, x, y, width, height, TRUE);
+	MoveWindow (listHandle, x, y, width, height, TRUE);
 }
 
 bool NodeTreeView::HasGroup (const std::wstring& group) const
@@ -443,7 +443,7 @@ void NodeTreeView::AddGroup (const std::wstring& group)
 	tvInsertStruct.item.cchTextMax = sizeof (tvInsertStruct.item.pszText) / sizeof (wchar_t);
 	tvInsertStruct.item.lParam = (LPARAM) -1;
 
-	HTREEITEM groupItem = (HTREEITEM) SendMessage (hwnd, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
+	HTREEITEM groupItem = (HTREEITEM) SendMessage (listHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
 	groups.insert ({ group, groupItem });
 }
 
@@ -462,19 +462,19 @@ void NodeTreeView::AddItem (const std::wstring& group, const std::wstring& text,
 	tvInsertStruct.item.pszText = (LPWSTR) text.c_str ();
 	tvInsertStruct.item.cchTextMax = sizeof (tvInsertStruct.item.pszText) / sizeof (wchar_t);
 	tvInsertStruct.item.lParam = lParam;
-	SendMessage (hwnd, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
+	SendMessage (listHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
 }
 
 void NodeTreeView::ExpandAll ()
 {
 	for (const auto& it : groups) {
-		TreeView_Expand (hwnd, it.second, TVM_EXPAND);
+		TreeView_Expand (listHandle, it.second, TVM_EXPAND);
 	}
 }
 
-HWND NodeTreeView::GetWindowHandle ()
+HWND NodeTreeView::GetListHandle ()
 {
-	return hwnd;
+	return listHandle;
 }
 
 NodeEditorNodeListHwndControl::NodeEditorNodeListHwndControl () :
@@ -556,7 +556,7 @@ NUIE::DrawingContext& NodeEditorNodeListHwndControl::GetDrawingContext ()
 
 void NodeEditorNodeListHwndControl::TreeViewSelectionChanged (LPNMTREEVIEW lpnmtv)
 {
-	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetWindowHandle ()) {
+	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetListHandle ()) {
 		return;
 	}
 
@@ -565,7 +565,7 @@ void NodeEditorNodeListHwndControl::TreeViewSelectionChanged (LPNMTREEVIEW lpnmt
 
 void NodeEditorNodeListHwndControl::TreeViewDoubleClick (LPNMHDR lpnmhdr)
 {
-	if (lpnmhdr->hwndFrom != nodeTreeView.GetWindowHandle ()) {
+	if (lpnmhdr->hwndFrom != nodeTreeView.GetListHandle ()) {
 		return;
 	}
 
@@ -582,7 +582,7 @@ void NodeEditorNodeListHwndControl::TreeViewDoubleClick (LPNMHDR lpnmhdr)
 
 void NodeEditorNodeListHwndControl::TreeViewBeginDrag (LPNMTREEVIEW lpnmtv)
 {
-	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetWindowHandle ()) {
+	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetListHandle ()) {
 		return;
 	}
 

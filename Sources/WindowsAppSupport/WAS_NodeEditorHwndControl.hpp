@@ -99,10 +99,10 @@ public:
 	void	AddItem (const std::wstring& group, const std::wstring& text, LPARAM lParam);
 	void	ExpandAll ();
 
-	HWND	GetWindowHandle ();
+	HWND	GetListHandle ();
 
 private:
-	HWND											hwnd;
+	HWND											listHandle;
 	std::unordered_map<std::wstring, HTREEITEM>		groups;
 };
 
