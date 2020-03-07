@@ -62,6 +62,8 @@ private:
 	std::unordered_map<std::wstring, HTREEITEM>		groups;
 };
 
+void AddNodeTreeAsCommands (const NodeTree& nodeTree, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, NUIE::MenuCommandStructure& commands);
+
 }
 
 #endif
