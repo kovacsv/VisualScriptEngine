@@ -333,7 +333,7 @@ bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTre
 	return true;
 }
 
-NodeTree NodeEditorHwndControl::GetNodeTree () const
+const NodeTree& NodeEditorHwndControl::GetNodeTree () const
 {
 	return nodeTree;
 }
@@ -372,11 +372,6 @@ NUIE::DrawingContext& NodeEditorHwndControl::GetDrawingContext ()
 NUIE::NodeEditor* NodeEditorHwndControl::GetNodeEditor ()
 {
 	return nodeEditor;
-}
-
-const NodeTree& NodeEditorHwndControl::GetNodeTree ()
-{
-	return nodeTree;
 }
 
 void NodeEditorHwndControl::Draw ()
@@ -523,7 +518,7 @@ bool NodeEditorNodeListHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, const
 	return true;
 }
 
-NodeTree NodeEditorNodeListHwndControl::GetNodeTree () const
+const NodeTree& NodeEditorNodeListHwndControl::GetNodeTree () const
 {
 	return nodeEditorControl.GetNodeTree ();
 }

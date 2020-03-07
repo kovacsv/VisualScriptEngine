@@ -50,7 +50,7 @@ public:
 	virtual ~NodeEditorHwndBasedControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& nodeTree, HWND parentHandle, int x, int y, int width, int height) = 0;
-	virtual NodeTree				GetNodeTree () const = 0;
+	virtual const NodeTree&			GetNodeTree () const = 0;
 	virtual HWND					GetEditorHandle () const = 0;
 
 	virtual void					Resize (int x, int y, int width, int height) = 0;
@@ -67,7 +67,7 @@ public:
 	~NodeEditorHwndControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& newNodeTree, HWND parentHandle, int x, int y, int width, int height) override;
-	virtual NodeTree				GetNodeTree () const override;
+	virtual const NodeTree&			GetNodeTree () const override;
 	virtual HWND					GetEditorHandle () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;
@@ -75,7 +75,6 @@ public:
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 
 	NUIE::NodeEditor*				GetNodeEditor ();
-	const NodeTree&					GetNodeTree ();
 	void							Draw ();
 
 private:
@@ -113,7 +112,7 @@ public:
 	~NodeEditorNodeListHwndControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, const NodeTree& nodeTree, HWND parentHandle, int x, int y, int width, int height) override;
-	virtual NodeTree				GetNodeTree () const override;
+	virtual const NodeTree&			GetNodeTree () const override;
 	virtual HWND					GetEditorHandle () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;
