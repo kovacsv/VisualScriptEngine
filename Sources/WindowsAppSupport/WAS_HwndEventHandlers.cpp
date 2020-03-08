@@ -12,6 +12,11 @@ HwndEventHandlers::HwndEventHandlers () :
 
 }
 
+HwndEventHandlers::~HwndEventHandlers ()
+{
+
+}
+
 void HwndEventHandlers::Init (const NodeEditorHwndBasedControl*	nodeEditorControl)
 {
 	control = nodeEditorControl;

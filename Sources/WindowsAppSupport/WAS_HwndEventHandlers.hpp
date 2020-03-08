@@ -12,6 +12,7 @@ class HwndEventHandlers : public NUIE::EventHandlers
 {
 public:
 	HwndEventHandlers ();
+	virtual ~HwndEventHandlers ();
 
 	void								Init (const NodeEditorHwndBasedControl*	nodeEditorControl);
 
