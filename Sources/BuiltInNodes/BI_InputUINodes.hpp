@@ -13,15 +13,22 @@ class BooleanNode : public BasicUINode
 	DYNAMIC_SERIALIZABLE (BooleanNode);
 
 public:
+	class Layout : public HeaderWithSlotsAndSwitchLayout
+	{
+	public:
+		Layout (const std::string& switchButtonId,
+				const std::wstring& firstSwitchText,
+				const std::wstring& secondSwitchText);
+
+		virtual HeaderWithSlotsAndSwitchLayout::SelectedItem					GetSelectedItem (const NUIE::UINode& uiNode) const override;
+		virtual std::shared_ptr<HeaderWithSlotsAndSwitchLayout::ClickHandler>	GetClickHandler (NUIE::UINode& uiNode) const override;
+	};
+
 	BooleanNode ();
 	BooleanNode (const std::wstring& name, const NUIE::Point& position, bool val);
 	virtual ~BooleanNode ();
 
 	virtual void						Initialize () override;
-
-	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
-	virtual NUIE::EventHandlerResult	HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
-
 	virtual bool						IsForceCalculated () const override;
 
 	virtual NE::ValueConstPtr			Calculate (NE::EvaluationEnv& env) const override;
@@ -34,9 +41,6 @@ public:
 	void								SetValue (bool newVal);
 
 private:
-	virtual void						UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
-
-	HeaderWithSlotsAndSwitchLayout		layout;
 	bool								val;
 };
 
@@ -45,14 +49,23 @@ class NumericUpDownNode : public BasicUINode
 	SERIALIZABLE;
 
 public:
+	class Layout : public HeaderWithSlotsAndButtonsLayout
+	{
+	public:
+		Layout (const std::string& leftButtonId,
+				const std::wstring& leftButtonText,
+				const std::string& rightButtonId,
+				const std::wstring& rightButtonText);
+
+		virtual std::wstring													GetMiddleText (const NUIE::UINode& uiNode, const NE::StringSettings& stringSettings) const override;
+		virtual std::shared_ptr<HeaderWithSlotsAndButtonsLayout::ClickHandler>	GetClickHandler (NUIE::UINode& uiNode) const override;
+	};
+
 	NumericUpDownNode ();
 	NumericUpDownNode (const std::wstring& name, const NUIE::Point& position);
 	virtual ~NumericUpDownNode ();
 
 	virtual void						Initialize () override;
-
-	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
-	virtual NUIE::EventHandlerResult	HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
 
 	virtual bool						IsForceCalculated () const override;
 
@@ -61,11 +74,6 @@ public:
 
 	virtual void						Increase () = 0;
 	virtual void						Decrease () = 0;
-
-private:
-	virtual void						UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
-
-	HeaderWithSlotsAndButtonsLayout		layout;
 };
 
 class IntegerUpDownNode : public NumericUpDownNode

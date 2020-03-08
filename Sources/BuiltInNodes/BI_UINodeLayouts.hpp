@@ -4,21 +4,29 @@
 #include "NUIE_UINode.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeDrawingImage.hpp"
+#include "BI_UINodeLayout.hpp"
 
 namespace BI
 {
 
-class StatusHeaderWithSlotsLayout
+class StatusHeaderWithSlotsLayout : public UINodeLayout
 {
 public:
 	StatusHeaderWithSlotsLayout ();
 
-	void Draw (	const NUIE::UINode& uiNode,
-				NUIE::NodeUIDrawingEnvironment& env,
-				NUIE::NodeDrawingImage& drawingImage) const;
+	virtual void						Draw (	const NUIE::UINode& uiNode,
+												NUIE::NodeUIDrawingEnvironment& env,
+												NUIE::NodeDrawingImage& drawingImage) const override;
+
+	virtual NUIE::EventHandlerResult	HandleMouseClick (	NUIE::UINode& uiNode,
+															NUIE::NodeUIEnvironment& env,
+															const NUIE::ModifierKeys& modifierKeys,
+															NUIE::MouseButton mouseButton,
+															const NUIE::Point& position,
+															NUIE::UINodeCommandInterface& commandInterface) const override;
 };
 
-class HeaderWithSlotsAndButtonsLayout
+class HeaderWithSlotsAndButtonsLayout : public UINodeLayout
 {
 public:
 	class ClickHandler
@@ -36,27 +44,28 @@ public:
 										const std::string& rightButtonId,
 										const std::wstring& rightButtonText);
 
-	void						Draw (	const NUIE::UINode& uiNode,
-										const std::wstring& middleText,
-										NUIE::NodeUIDrawingEnvironment& env,
-										NUIE::NodeDrawingImage& drawingImage) const;
+	virtual void							Draw (	const NUIE::UINode& uiNode,
+													NUIE::NodeUIDrawingEnvironment& env,
+													NUIE::NodeDrawingImage& drawingImage) const override;
 
+	virtual NUIE::EventHandlerResult		HandleMouseClick (	NUIE::UINode& uiNode,
+																NUIE::NodeUIEnvironment& env,
+																const NUIE::ModifierKeys& modifierKeys,
+																NUIE::MouseButton mouseButton,
+																const NUIE::Point& position,
+																NUIE::UINodeCommandInterface& commandInterface) const override;
 
-	NUIE::EventHandlerResult	HandleMouseClick (	const NUIE::UINode& uiNode,
-													NUIE::NodeUIEnvironment& env,
-													NUIE::MouseButton mouseButton,
-													const NUIE::Point& position,
-													NUIE::UINodeCommandInterface& commandInterface,
-													ClickHandler& clickHandler);
+	virtual std::wstring					GetMiddleText (const NUIE::UINode& uiNode, const NE::StringSettings& stringSettings) const = 0;
+	virtual std::shared_ptr<ClickHandler>	GetClickHandler (NUIE::UINode& uiNode) const = 0;
 
 private:
-	const std::string leftButtonId;
-	const std::wstring leftButtonText;
-	const std::string rightButtonId;
-	const std::wstring rightButtonText;
+	std::string leftButtonId;
+	std::wstring leftButtonText;
+	std::string rightButtonId;
+	std::wstring rightButtonText;
 };
 
-class HeaderWithSlotsAndSwitchLayout
+class HeaderWithSlotsAndSwitchLayout : public UINodeLayout
 {
 public:
 	enum class SelectedItem
@@ -78,23 +87,25 @@ public:
 									const std::wstring& firstSwitchText,
 									const std::wstring& secondSwitchText);
 
-	void						Draw (	const NUIE::UINode& uiNode,
-										SelectedItem selectedItem,
-										NUIE::NodeUIDrawingEnvironment& env,
-										NUIE::NodeDrawingImage& drawingImage) const;
+	virtual void							Draw (	const NUIE::UINode& uiNode,
+													NUIE::NodeUIDrawingEnvironment& env,
+													NUIE::NodeDrawingImage& drawingImage) const override;
 
 
-	NUIE::EventHandlerResult	HandleMouseClick (	const NUIE::UINode& uiNode,
-													NUIE::NodeUIEnvironment& env,
-													NUIE::MouseButton mouseButton,
-													const NUIE::Point& position,
-													NUIE::UINodeCommandInterface& commandInterface,
-													ClickHandler& clickHandler);
+	virtual NUIE::EventHandlerResult		HandleMouseClick (	NUIE::UINode& uiNode,
+																NUIE::NodeUIEnvironment& env,
+																const NUIE::ModifierKeys& modifierKeys,
+																NUIE::MouseButton mouseButton,
+																const NUIE::Point& position,
+																NUIE::UINodeCommandInterface& commandInterface) const override;
+
+	virtual SelectedItem					GetSelectedItem (const NUIE::UINode& uiNode) const = 0;
+	virtual std::shared_ptr<ClickHandler>	GetClickHandler (NUIE::UINode& uiNode) const = 0;
 
 private:
-	const std::string switchButtonId;
-	const std::wstring firstSwitchText;
-	const std::wstring secondSwitchText;
+	std::string switchButtonId;
+	std::wstring firstSwitchText;
+	std::wstring secondSwitchText;
 };
 
 }

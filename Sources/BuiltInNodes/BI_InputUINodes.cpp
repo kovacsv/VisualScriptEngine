@@ -45,31 +45,22 @@ private:
 	int minValue;
 };
 
-BooleanNode::BooleanNode () :
-	BooleanNode (std::wstring (), NUIE::Point (), false)
+BooleanNode::Layout::Layout (	const std::string& switchButtonId,
+								const std::wstring& firstSwitchText,
+								const std::wstring& secondSwitchText) :
+	HeaderWithSlotsAndSwitchLayout (switchButtonId, firstSwitchText, secondSwitchText)
 {
 
 }
 
-BooleanNode::BooleanNode (const std::wstring& name, const NUIE::Point& position, bool val) :
-	BasicUINode (name, position),
-	layout ("switch", NE::Localize (L"true"), NE::Localize (L"false")),
-	val (val)
+HeaderWithSlotsAndSwitchLayout::SelectedItem BooleanNode::Layout::GetSelectedItem (const NUIE::UINode& uiNode) const
 {
-
+	const BooleanNode* booleanNode = dynamic_cast<const BooleanNode*> (&uiNode);
+	bool nodeValue = booleanNode->GetValue ();
+	return nodeValue ? HeaderWithSlotsAndSwitchLayout::SelectedItem::First : HeaderWithSlotsAndSwitchLayout::SelectedItem::Second;
 }
 
-BooleanNode::~BooleanNode ()
-{
-
-}
-
-void BooleanNode::Initialize ()
-{
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
-}
-
-NUIE::EventHandlerResult BooleanNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
+std::shared_ptr<HeaderWithSlotsAndSwitchLayout::ClickHandler> BooleanNode::Layout::GetClickHandler (NUIE::UINode& uiNode) const
 {
 	class ClickHandler : public HeaderWithSlotsAndSwitchLayout::ClickHandler
 	{
@@ -88,13 +79,30 @@ NUIE::EventHandlerResult BooleanNode::HandleMouseClick (NUIE::NodeUIEnvironment&
 		BooleanNode* node;
 	};
 
-	ClickHandler clickHandler (this);
-	return layout.HandleMouseClick (*this, env, mouseButton, position, commandInterface, clickHandler);
+	return std::shared_ptr<HeaderWithSlotsAndSwitchLayout::ClickHandler> (new ClickHandler (dynamic_cast<BooleanNode*> (&uiNode)));
 }
 
-NUIE::EventHandlerResult BooleanNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
+BooleanNode::BooleanNode () :
+	BooleanNode (std::wstring (), NUIE::Point (), false)
 {
-	return HandleMouseClick (env, keys, mouseButton, position, commandInterface);
+
+}
+
+BooleanNode::BooleanNode (const std::wstring& name, const NUIE::Point& position, bool val) :
+	BasicUINode (name, position, UINodeLayoutPtr (new Layout ("switch", NE::Localize (L"true"), NE::Localize (L"false")))),
+	val (val)
+{
+
+}
+
+BooleanNode::~BooleanNode ()
+{
+
+}
+
+void BooleanNode::Initialize ()
+{
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
 }
 
 bool BooleanNode::IsForceCalculated () const
@@ -163,36 +171,28 @@ void BooleanNode::SetValue (bool newVal)
 	InvalidateValue ();
 }
 
-void BooleanNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
-{
-	HeaderWithSlotsAndSwitchLayout::SelectedItem selectedItem = val ? HeaderWithSlotsAndSwitchLayout::SelectedItem::First : HeaderWithSlotsAndSwitchLayout::SelectedItem::Second;
-	layout.Draw (*this, selectedItem, env, drawingImage);
-}
-
-NumericUpDownNode::NumericUpDownNode () :
-	NumericUpDownNode (std::wstring (), NUIE::Point ())
+NumericUpDownNode::Layout::Layout (	const std::string& leftButtonId,
+									const std::wstring& leftButtonText,
+									const std::string& rightButtonId,
+									const std::wstring& rightButtonText) :
+	HeaderWithSlotsAndButtonsLayout (leftButtonId, leftButtonText, rightButtonId, rightButtonText)
 {
 
 }
 
-NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const NUIE::Point& position) :
-	BasicUINode (name, position),
-	layout ("minus", NE::Localize (L"<"), "plus", NE::Localize (L">"))
+std::wstring NumericUpDownNode::Layout::GetMiddleText (const NUIE::UINode& uiNode, const NE::StringSettings& stringSettings) const
 {
-
+	std::wstring nodeText = NE::Localize (L"<empty>");
+	if (uiNode.HasCalculatedValue ()) {
+		NE::ValueConstPtr nodeValue = uiNode.GetCalculatedValue ();
+		if (nodeValue != nullptr) {
+			nodeText = nodeValue->ToString (stringSettings);
+		}
+	}
+	return nodeText;
 }
 
-NumericUpDownNode::~NumericUpDownNode ()
-{
-
-}
-
-void NumericUpDownNode::Initialize ()
-{
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
-}
-
-NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys&, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
+std::shared_ptr<HeaderWithSlotsAndButtonsLayout::ClickHandler> NumericUpDownNode::Layout::GetClickHandler (NUIE::UINode& uiNode) const
 {
 	class ClickHandler : public HeaderWithSlotsAndButtonsLayout::ClickHandler
 	{
@@ -206,7 +206,7 @@ NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnviro
 		{
 			node->Decrease ();
 		}
-		
+
 		virtual void RightButtonClicked () override
 		{
 			node->Increase ();
@@ -216,13 +216,29 @@ NUIE::EventHandlerResult NumericUpDownNode::HandleMouseClick (NUIE::NodeUIEnviro
 		NumericUpDownNode* node;
 	};
 
-	ClickHandler clickHandler (this);
-	return layout.HandleMouseClick (*this, env, mouseButton, position, commandInterface, clickHandler);
+	return std::shared_ptr<HeaderWithSlotsAndButtonsLayout::ClickHandler> (new ClickHandler (dynamic_cast<NumericUpDownNode*> (&uiNode)));
 }
 
-NUIE::EventHandlerResult NumericUpDownNode::HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& keys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)
+NumericUpDownNode::NumericUpDownNode () :
+	NumericUpDownNode (std::wstring (), NUIE::Point ())
 {
-	return HandleMouseClick (env, keys, mouseButton, position, commandInterface);
+
+}
+
+NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const NUIE::Point& position) :
+	BasicUINode (name, position, UINodeLayoutPtr (new Layout ("minus", NE::Localize (L"<"), "plus", NE::Localize (L">"))))
+{
+
+}
+
+NumericUpDownNode::~NumericUpDownNode ()
+{
+
+}
+
+void NumericUpDownNode::Initialize ()
+{
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
 }
 
 bool NumericUpDownNode::IsForceCalculated () const
@@ -242,18 +258,6 @@ NE::Stream::Status NumericUpDownNode::Write (NE::OutputStream& outputStream) con
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	BasicUINode::Write (outputStream);
 	return outputStream.GetStatus ();
-}
-
-void NumericUpDownNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
-{
-	std::wstring nodeText = NE::Localize (L"<empty>");
-	if (HasCalculatedValue ()) {
-		NE::ValueConstPtr nodeValue = GetCalculatedValue ();
-		if (nodeValue != nullptr) {
-			nodeText = nodeValue->ToString (env.GetStringSettings ());
-		}
-	}
-	layout.Draw (*this, nodeText, env, drawingImage);
 }
 
 IntegerUpDownNode::IntegerUpDownNode () :
