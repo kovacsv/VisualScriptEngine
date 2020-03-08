@@ -26,6 +26,9 @@ protected:
 	const NodeEditorHwndBasedControl*	control;
 };
 
+using HwndEventHandlersPtr = std::shared_ptr<HwndEventHandlers>;
+using HwndEventHandlersConstPtr = std::shared_ptr<const HwndEventHandlers>;
+
 }
 
 #endif

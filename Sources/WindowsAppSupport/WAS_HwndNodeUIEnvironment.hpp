@@ -15,6 +15,7 @@ public:
 	HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedControlPtr& nodeEditorControl,
 							const NE::StringSettingsPtr& stringSettings,
 							const NUIE::SkinParamsPtr& skinParams,
+							const WAS::HwndEventHandlersPtr eventHandlers,
 							const NE::EvaluationDataPtr& evalData);
 
 	void								Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle);
@@ -39,7 +40,7 @@ private:
 	WAS::NodeEditorHwndBasedControlPtr	nodeEditorControl;
 	NE::StringSettingsPtr				stringSettings;
 	NUIE::SkinParamsPtr					skinParams;
-	WAS::HwndEventHandlers				eventHandlers;
+	WAS::HwndEventHandlersPtr			eventHandlers;
 	NE::EvaluationEnv					evaluationEnv;
 };
 

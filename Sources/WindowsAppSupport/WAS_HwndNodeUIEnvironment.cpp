@@ -6,12 +6,13 @@ namespace WAS
 HwndNodeUIEnvironment::HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedControlPtr& nodeEditorControl,
 												const NE::StringSettingsPtr& stringSettings,
 												const NUIE::SkinParamsPtr& skinParams,
+												const WAS::HwndEventHandlersPtr eventHandlers,
 												const NE::EvaluationDataPtr& evalData) :
 	NUIE::NodeUIEnvironment (),
 	nodeEditorControl (nodeEditorControl),
 	stringSettings (stringSettings),
 	skinParams (skinParams),
-	eventHandlers (),
+	eventHandlers (eventHandlers),
 	evaluationEnv (evalData)
 {
 	
@@ -25,7 +26,7 @@ void HwndNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 	int height = clientRect.bottom - clientRect.top;
 
 	nodeEditorControl->Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-	eventHandlers.Init (&*nodeEditorControl);
+	eventHandlers->Init (&*nodeEditorControl);
 }
 
 void HwndNodeUIEnvironment::OnResize (int x, int y, int width, int height)
@@ -75,7 +76,7 @@ void HwndNodeUIEnvironment::OnRedrawRequested ()
 
 NUIE::EventHandlers& HwndNodeUIEnvironment::GetEventHandlers ()
 {
-	return eventHandlers;
+	return *eventHandlers;
 }
 
 double HwndNodeUIEnvironment::GetMouseMoveMinOffset ()

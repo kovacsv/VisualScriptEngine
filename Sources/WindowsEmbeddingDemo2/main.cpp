@@ -14,6 +14,7 @@ static WAS::HwndNodeUIEnvironment uiEnvironment (
 	nodeEditorControl,
 	NE::StringSettingsPtr (new NE::BasicStringSettings (NE::GetDefaultStringSettings ())),
 	NUIE::SkinParamsPtr (new NUIE::BasicSkinParams (NUIE::GetDefaultSkinParams ())),
+	WAS::HwndEventHandlersPtr (new WAS::HwndEventHandlers ()),
 	nullptr
 );
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
