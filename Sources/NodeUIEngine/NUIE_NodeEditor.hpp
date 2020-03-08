@@ -63,6 +63,9 @@ public:
 	void						AlignToWindow ();
 	void						FitToWindow ();
 
+	const ViewBox&				GetViewBox () const;
+	void						SetViewBox (const ViewBox& newViewBox);
+
 	const NE::NodeCollection&	GetSelectedNodes () const;
 	void						SetSelectedNodes (const NE::NodeCollection& newSelectedNodes);
 

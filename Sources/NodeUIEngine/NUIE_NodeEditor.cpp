@@ -215,6 +215,17 @@ void NodeEditor::FitToWindow ()
 	Update ();
 }
 
+const ViewBox& NodeEditor::GetViewBox () const
+{
+	return uiManager.GetViewBox ();
+}
+
+void NodeEditor::SetViewBox (const ViewBox& newViewBox)
+{
+	uiManager.SetViewBox (newViewBox);
+	Update ();
+}
+
 const NE::NodeCollection& NodeEditor::GetSelectedNodes () const
 {
 	return uiManager.GetSelectedNodes ();
