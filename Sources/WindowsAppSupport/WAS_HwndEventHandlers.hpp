@@ -17,8 +17,8 @@ public:
 
 	virtual NUIE::MenuCommandPtr		OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override;
 	virtual NUIE::MenuCommandPtr		OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::MenuCommandStructure& commands) override;
-	virtual NUIE::MenuCommandPtr		OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotPtr& inputSlot, const NUIE::MenuCommandStructure& commands) override;
-	virtual NUIE::MenuCommandPtr		OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotPtr& inputSlot, const NUIE::MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr		OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIOutputSlotConstPtr& inputSlot, const NUIE::MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr		OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UIInputSlotConstPtr& inputSlot, const NUIE::MenuCommandStructure& commands) override;
 	virtual NUIE::MenuCommandPtr		OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::MenuCommandStructure& commands) override;
 	virtual bool						OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor) override;
 

@@ -59,14 +59,8 @@ public:
 	bool						HasSpecialRect (NodeUIDrawingEnvironment& env, const std::string& rectId) const;
 	Rect						GetSpecialRect (NodeUIDrawingEnvironment& env, const std::string& rectId) const;
 
-	UIInputSlotPtr				GetUIInputSlot (const NE::SlotId& slotId);
-	UIOutputSlotPtr				GetUIOutputSlot (const NE::SlotId& slotId);
-
 	UIInputSlotConstPtr			GetUIInputSlot (const NE::SlotId& slotId) const;
 	UIOutputSlotConstPtr		GetUIOutputSlot (const NE::SlotId& slotId) const;
-
-	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotPtr&)>& processor);
-	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotPtr&)>& processor);
 
 	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const;
 	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
@@ -86,16 +80,13 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 	template <class SlotType>
-	Point GetSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId);
+	Point GetSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
 
 	template <class SlotType>
-	bool HasSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId);
+	bool HasSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
 
 	template <class SlotType>
-	Rect GetSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId);
-
-	template <class SlotType>
-	void EnumerateUISlots (const std::function<bool (const SlotType&)>& processor);
+	Rect GetSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
 
 	template <class SlotConstType>
 	void EnumerateUISlots (const std::function<bool (const SlotConstType&)>& processor) const;

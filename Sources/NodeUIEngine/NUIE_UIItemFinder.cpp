@@ -11,7 +11,7 @@ static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIDrawingE
 	SlotType foundSlot = nullptr;
 	double minDistance = INF;
 	const ViewBox& viewBox = uiManager.GetViewBox ();
-	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) {
+	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
 		uiNode->EnumerateUISlots<SlotType> ([&] (const SlotType& currentSlot) {
 			Point slotConnPosition = viewBox.ModelToView (uiNode->GetSlotConnPosition<SlotType> (env, currentSlot->GetId ()));
 			double distance = viewPosition.DistanceTo (slotConnPosition);
@@ -99,19 +99,19 @@ UINodeGroupPtr FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawi
 	return foundGroup;
 }
 
-UIInputSlotPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
+UIInputSlotConstPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
-	UIInputSlotPtr foundSlot = nullptr;
-	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, nullptr, [&] (const UIInputSlotPtr& inputSlot) {
+	UIInputSlotConstPtr foundSlot = nullptr;
+	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, nullptr, [&] (const UIInputSlotConstPtr& inputSlot) {
 		foundSlot = inputSlot;
 	}, nullptr);
 	return foundSlot;
 }
 
-UIOutputSlotPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
+UIOutputSlotConstPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
-	UIOutputSlotPtr foundSlot = nullptr;
-	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, [&] (const UIOutputSlotPtr& inputSlot) {
+	UIOutputSlotConstPtr foundSlot = nullptr;
+	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, [&] (const UIOutputSlotConstPtr& inputSlot) {
 		foundSlot = inputSlot;
 	}, nullptr, nullptr);
 	return foundSlot;
@@ -119,24 +119,24 @@ UIOutputSlotPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDra
 
 bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition,
 							const std::function<void (UINodePtr&)>& nodeFound,
-							const std::function<void (UIOutputSlotPtr&)>& outputSlotFound,
-							const std::function<void (UIInputSlotPtr&)>& inputSlotFound,
+							const std::function<void (UIOutputSlotConstPtr&)>& outputSlotFound,
+							const std::function<void (UIInputSlotConstPtr&)>& inputSlotFound,
 							const std::function<void (UINodeGroupPtr&)>& nodeGroupFound)
 {
 	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, viewPosition);
-	UIOutputSlotPtr foundOutputSlot = nullptr;
-	UIInputSlotPtr foundInputSlot = nullptr;
+	UIOutputSlotConstPtr foundOutputSlot = nullptr;
+	UIInputSlotConstPtr foundInputSlot = nullptr;
 
 	bool findItemsInsideNode = !uiManager.IsPreviewMode ();
 	if (findItemsInsideNode) {
 		if (foundNode != nullptr) {
-			foundOutputSlot = FindSlotInNode<UIOutputSlotPtr> (foundNode, uiManager, env, viewPosition);
+			foundOutputSlot = FindSlotInNode<UIOutputSlotConstPtr> (foundNode, uiManager, env, viewPosition);
 			if (foundOutputSlot != nullptr) {
 				foundNode = nullptr;
 			}
 		}
 		if (foundNode != nullptr) {
-			foundInputSlot = FindSlotInNode<UIInputSlotPtr> (foundNode, uiManager, env, viewPosition);
+			foundInputSlot = FindSlotInNode<UIInputSlotConstPtr> (foundNode, uiManager, env, viewPosition);
 			if (foundInputSlot != nullptr) {
 				foundNode = nullptr;
 			}
@@ -150,11 +150,11 @@ bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& 
 
 	if (findItemsInsideNode) {
 		if (foundOutputSlot == nullptr) {
-			foundOutputSlot = FindSlotByConnPosition<UIOutputSlotPtr> (uiManager, env, viewPosition);
+			foundOutputSlot = FindSlotByConnPosition<UIOutputSlotConstPtr> (uiManager, env, viewPosition);
 		}
 
 		if (foundInputSlot == nullptr) {
-			foundInputSlot = FindSlotByConnPosition<UIInputSlotPtr> (uiManager, env, viewPosition);
+			foundInputSlot = FindSlotByConnPosition<UIInputSlotConstPtr> (uiManager, env, viewPosition);
 		}
 
 		if (foundOutputSlot != nullptr && outputSlotFound != nullptr) {

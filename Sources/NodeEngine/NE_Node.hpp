@@ -71,17 +71,11 @@ public:
 	bool					HasInputSlot (const SlotId& slotId) const;
 	bool					HasOutputSlot (const SlotId& slotId) const;
 
-	InputSlotPtr			GetInputSlot (const SlotId& slotId);
-	OutputSlotPtr			GetOutputSlot (const SlotId& slotId);
-
 	InputSlotConstPtr		GetInputSlot (const SlotId& slotId) const;
 	OutputSlotConstPtr		GetOutputSlot (const SlotId& slotId) const;
 
 	size_t					GetInputSlotCount () const;
 	size_t					GetOutputSlotCount () const;
-
-	void					EnumerateInputSlots (const std::function<bool (const InputSlotPtr&)>& processor);
-	void					EnumerateOutputSlots (const std::function<bool (const OutputSlotPtr&)>& processor);
 
 	void					EnumerateInputSlots (const std::function<bool (const InputSlotConstPtr&)>& processor) const;
 	void					EnumerateOutputSlots (const std::function<bool (const OutputSlotConstPtr&)>& processor) const;
@@ -95,15 +89,15 @@ public:
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 
+	ValueConstPtr			GetInputSlotDefaultValue (const SlotId& slotId) const;
+	void					SetInputSlotDefaultValue (const SlotId& slotId, const ValueConstPtr& newDefaultValue);
+
 	void					SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter);
 	bool					HasNodeEvaluator () const;
 	void					ClearNodeEvaluator ();
 
 	static NodePtr			Clone (const NodeConstPtr& node);
 	static bool				IsEqual (const NodeConstPtr& aNode, const NodeConstPtr& bNode);
-
-	template <class SlotType>
-	void EnumerateSlots (const std::function<bool (const SlotType&)>& processor);
 
 	template <class SlotConstType>
 	void EnumerateSlots (const std::function<bool (const SlotConstType&)>& processor) const;

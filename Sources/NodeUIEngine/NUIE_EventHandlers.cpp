@@ -31,12 +31,12 @@ NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnv
 	return nullptr;
 }
 
-NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const MenuCommandStructure&)
+NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&)
 {
 	return nullptr;
 }
 
-NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const MenuCommandStructure&)
+NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&)
 {
 	return NUIE::MenuCommandPtr ();
 }

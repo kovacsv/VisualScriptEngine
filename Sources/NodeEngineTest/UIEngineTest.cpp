@@ -63,28 +63,6 @@ public:
 	}
 };
 
-TEST (UINodeDataTest)
-{
-	NodeUIManager uiManager;
-
-	UINodePtr node (new TestNode (Point (0, 0)));
-	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
-
-	ASSERT (node->GetNodeName () == L"Test Node");
-	node->SetNodeName (L"Test Node 2");
-	ASSERT (node->GetNodeName () == L"Test Node 2");
-
-	node->GetUIInputSlot (SlotId ("in1"))->SetName (L"A In");
-	node->GetUIInputSlot (SlotId ("in2"))->SetName (L"B In");
-	node->GetUIOutputSlot (SlotId ("out"))->SetName (L"A Out");
-	ASSERT (node->GetUIInputSlot (SlotId ("in1"))->GetName () == L"A In");
-	ASSERT (node->GetUIInputSlot (SlotId ("in2"))->GetName () == L"B In");
-	ASSERT (node->GetUIOutputSlot (SlotId ("out"))->GetName () == L"A Out");
-
-	node->GetUIInputSlot (SlotId ("in1"))->SetName (L"A In Modified");
-	ASSERT (node->GetUIInputSlot (SlotId ("in1"))->GetName () == L"A In Modified");
-}
-
 TEST (UIManagerBaseTest)
 {
 	NodeUIManager uiManager;

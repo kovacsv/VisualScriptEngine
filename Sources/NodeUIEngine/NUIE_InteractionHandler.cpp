@@ -434,12 +434,12 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 				NE::NodeCollection nodesToMove = GetNodesForCommand (uiManager, foundNode);
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			},
-			[&] (UIOutputSlotPtr& foundOutputSlot) {
+			[&] (UIOutputSlotConstPtr& foundOutputSlot) {
 				UINodePtr uiNode = uiManager.GetUINode (foundOutputSlot->GetOwnerNodeId ());
 				Point startNodePosition = uiNode->GetOutputSlotConnPosition (env, foundOutputSlot->GetId ());
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputConnectionHandler (uiManager, foundOutputSlot, startNodePosition));
 			},
-			[&] (UIInputSlotPtr& foundInputSlot) {
+			[&] (UIInputSlotConstPtr& foundInputSlot) {
 				if (uiManager.CanConnectMoreOutputSlotToInputSlot (foundInputSlot)) {
 					UINodePtr uiNode = uiManager.GetUINode (foundInputSlot->GetOwnerNodeId ());
 					Point startNodePosition = uiNode->GetInputSlotConnPosition (env, foundInputSlot->GetId ());
@@ -529,11 +529,11 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& env,
 				MenuCommandStructure commands = CreateNodeCommandStructure (uiManager, env, foundNode);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundNode, commands);
 			},
-			[&] (UIOutputSlotPtr& foundOutputSlot) {
+			[&] (UIOutputSlotConstPtr& foundOutputSlot) {
 				MenuCommandStructure commands = CreateOutputSlotCommandStructure (uiManager, env, foundOutputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundOutputSlot, commands);
 			},
-			[&] (UIInputSlotPtr& foundInputSlot) {
+			[&] (UIInputSlotConstPtr& foundInputSlot) {
 				MenuCommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundInputSlot, commands);
 			},

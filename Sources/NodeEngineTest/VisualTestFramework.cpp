@@ -125,12 +125,12 @@ MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironme
 	return SelectCommandByName (commands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotPtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotPtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }

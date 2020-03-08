@@ -98,7 +98,7 @@ public:
 	InputSlotCommand (const std::wstring& name, bool isChecked);
 	virtual ~InputSlotCommand ();
 
-	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIInputSlotPtr& inputSlot) = 0;
+	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIInputSlotConstPtr& inputSlot) = 0;
 };
 
 using InputSlotCommandPtr = std::shared_ptr<InputSlotCommand>;
@@ -110,7 +110,7 @@ public:
 	OutputSlotCommand (const std::wstring& name, bool isChecked);
 	virtual ~OutputSlotCommand ();
 
-	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIOutputSlotPtr& outputSlot) = 0;
+	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIOutputSlotConstPtr& outputSlot) = 0;
 };
 
 using OutputSlotCommandPtr = std::shared_ptr<OutputSlotCommand>;

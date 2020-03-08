@@ -61,16 +61,6 @@ bool Node::HasOutputSlot (const SlotId& slotId) const
 	return outputSlots.Contains (slotId);
 }
 
-InputSlotPtr Node::GetInputSlot (const SlotId& slotId)
-{
-	return inputSlots.Get (slotId);
-}
-
-OutputSlotPtr Node::GetOutputSlot (const SlotId& slotId)
-{
-	return outputSlots.Get (slotId);
-}
-
 InputSlotConstPtr Node::GetInputSlot (const SlotId& slotId) const
 {
 	return inputSlots.Get (slotId);
@@ -89,16 +79,6 @@ size_t Node::GetInputSlotCount () const
 size_t Node::GetOutputSlotCount () const
 {
 	return outputSlots.Count ();
-}
-
-void Node::EnumerateInputSlots (const std::function<bool (const InputSlotPtr&)>& processor)
-{
-	inputSlots.Enumerate (processor);
-}
-
-void Node::EnumerateOutputSlots (const std::function<bool (const OutputSlotPtr&)>& processor)
-{
-	outputSlots.Enumerate (processor);
 }
 
 void Node::EnumerateInputSlots (const std::function<bool (const InputSlotConstPtr&)>& processor) const
@@ -229,6 +209,24 @@ Stream::Status Node::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+NE::ValueConstPtr Node::GetInputSlotDefaultValue (const SlotId& slotId) const
+{
+	InputSlotConstPtr inputSlot = inputSlots.Get (slotId);
+	if (DBGERROR (inputSlot == nullptr)) {
+		return nullptr;
+	}
+	return inputSlot->GetDefaultValue ();
+}
+
+void Node::SetInputSlotDefaultValue (const SlotId& slotId, const ValueConstPtr& newDefaultValue)
+{
+	InputSlotPtr inputSlot = inputSlots.Get (slotId);
+	if (DBGERROR (inputSlot == nullptr)) {
+		return;
+	}
+	inputSlot->SetDefaultValue (newDefaultValue);
+}
+
 void Node::SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter)
 {
 	nodeId = evaluatorSetter.GetNodeId ();
@@ -356,18 +354,6 @@ bool Node::IsEqual (const NodeConstPtr& aNode, const NodeConstPtr& bNode)
 	bNode->Write (bStream);
 
 	return aStream.GetBuffer () == bStream.GetBuffer ();
-}
-
-template <>
-void Node::EnumerateSlots (const std::function<bool (const InputSlotPtr&)>& processor)
-{
-	EnumerateInputSlots (processor);
-}
-
-template <>
-void Node::EnumerateSlots (const std::function<bool (const OutputSlotPtr&)>& processor)
-{
-	EnumerateOutputSlots (processor);
 }
 
 template <>

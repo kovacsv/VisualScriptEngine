@@ -214,18 +214,18 @@ public:
 
 	virtual NE::ValueConstPtr GetValueInternal (const UINodeConstPtr& uiNode) const override
 	{
-		NE::InputSlotConstPtr inputSlot = uiNode->GetInputSlot (slotId);
-		if (DBGERROR (inputSlot == nullptr)) {
+		NE::ValueConstPtr value = uiNode->GetInputSlotDefaultValue (slotId);
+		if (DBGERROR (value == nullptr)) {
 			return nullptr;
 		}
-		NE::ValueConstPtr convertedValue = ConvertValueForGet (inputSlot->GetDefaultValue ());
+		NE::ValueConstPtr convertedValue = ConvertValueForGet (value);
 		return convertedValue;
 	}
 
 	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 	{
 		NE::ValueConstPtr convertedValue = ConvertValueForSet (value);
-		uiNode->GetInputSlot (slotId)->SetDefaultValue (convertedValue);
+		uiNode->SetInputSlotDefaultValue (slotId, convertedValue);
 		uiManager.InvalidateNodeValue (uiNode->GetId ());
 		uiManager.InvalidateNodeDrawing (uiNode->GetId ());
 		return true;
