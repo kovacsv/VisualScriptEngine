@@ -114,8 +114,6 @@ void Direct2DContext::Init (void* nativeHandle)
 
 	direct2DHandler.direct2DFactory->CreateHwndRenderTarget (renderTargetProperties, hwndRenderTargetProperties, &renderTarget);
 	DBGASSERT (renderTarget != nullptr);
-
-	renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
 }
 
 void Direct2DContext::BlitToWindow (void*)
@@ -148,18 +146,27 @@ double Direct2DContext::GetHeight () const
 	return height;
 }
 
-void Direct2DContext::BeginDraw ()
+void Direct2DContext::BeginDraw (Phase phase)
 {
-	renderTarget->BeginDraw ();
-	renderTarget->SetTransform (D2D1::Matrix3x2F::Identity ());
-	renderTarget->Clear (D2D1::ColorF (D2D1::ColorF::White));
+	if (phase == Phase::Draw) {
+		renderTarget->BeginDraw ();
+		renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
+		renderTarget->SetTransform (D2D1::Matrix3x2F::Identity ());
+		renderTarget->Clear (D2D1::ColorF (D2D1::ColorF::White));
+	} else if (phase == Phase::DrawConnections) {
+		renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+	}
 }
 
-void Direct2DContext::EndDraw ()
+void Direct2DContext::EndDraw (Phase phase)
 {
-	// TODO: recreate in case of error
-	DBGONLY (HRESULT success =) renderTarget->EndDraw ();
-	DBGASSERT (SUCCEEDED (success));
+	if (phase == Phase::Draw) {
+		// TODO: recreate in case of error
+		DBGONLY (HRESULT success = ) renderTarget->EndDraw ();
+		DBGASSERT (SUCCEEDED (success));
+	} else if (phase == Phase::DrawConnections) {
+		renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
+	}
 }
 
 void Direct2DContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)

@@ -50,8 +50,8 @@ public:
 	virtual void		Resize (int newWidth, int newHeight) override;
 	virtual double		GetWidth () const override;
 	virtual double		GetHeight () const override;
-	virtual void		BeginDraw () override;
-	virtual void		EndDraw () override;
+	virtual void		BeginDraw (Phase phase) override;
+	virtual void		EndDraw (Phase phase) override;
 	virtual void		DrawLine (const Point& beg, const Point& end, const Pen& pen) override;
 	virtual void		DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) override;
 	virtual void		DrawRect (const Rect& rect, const Pen& pen) override;

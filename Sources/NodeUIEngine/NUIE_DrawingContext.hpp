@@ -12,6 +12,14 @@ namespace NUIE
 class DrawingContext
 {
 public:
+	enum class Phase
+	{
+		Draw,
+		DrawGroups,
+		DrawNodes,
+		DrawConnections
+	};
+
 	DrawingContext ();
 	virtual ~DrawingContext ();
 
@@ -20,8 +28,8 @@ public:
 	virtual double	GetWidth () const = 0;
 	virtual double	GetHeight () const = 0;
 
-	virtual void	BeginDraw () = 0;
-	virtual void	EndDraw () = 0;
+	virtual void	BeginDraw (Phase phase) = 0;
+	virtual void	EndDraw (Phase phase) = 0;
 
 	virtual void	DrawLine (const Point& beg, const Point& end, const Pen& pen) = 0;
 	virtual void	DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) = 0;
@@ -47,8 +55,8 @@ public:
 	virtual double	GetWidth () const override;
 	virtual double	GetHeight () const override;
 
-	virtual void	BeginDraw () override;
-	virtual void	EndDraw () override;
+	virtual void	BeginDraw (Phase phase) override;
+	virtual void	EndDraw (Phase phase) override;
 
 	virtual void	DrawLine (const Point& beg, const Point& end, const Pen& pen) override;
 	virtual void	DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) override;
@@ -74,8 +82,8 @@ public:
 	virtual double	GetWidth () const override;
 	virtual double	GetHeight () const override;
 
-	virtual void	BeginDraw () override;
-	virtual void	EndDraw () override;
+	virtual void	BeginDraw (Phase phase) override;
+	virtual void	EndDraw (Phase phase) override;
 
 	virtual void	DrawLine (const Point& beg, const Point& end, const Pen& pen) override;
 	virtual void	DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) override;

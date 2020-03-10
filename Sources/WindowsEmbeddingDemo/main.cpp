@@ -10,6 +10,14 @@
 #include <windows.h>
 #include <windowsx.h>
 
+#define USE_DIRECT2D_CONTEXT 1
+
+#ifdef USE_DIRECT2D_CONTEXT
+#include "WAS_Direct2DContext.hpp"
+#pragma comment (lib, "d2d1.lib")
+#pragma comment (lib, "dwrite.lib")
+#endif
+
 class MyEventHandlers : public WAS::HwndEventHandlers
 {
 public:
@@ -74,7 +82,11 @@ public:
 		skinParams (NUIE::GetDefaultSkinParams ()),
 		eventHandlers (),
 		evaluationEnv (nullptr),
+#ifdef USE_DIRECT2D_CONTEXT
+		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext ()))
+#else
 		nodeEditorControl ()
+#endif
 	{
 	
 	}

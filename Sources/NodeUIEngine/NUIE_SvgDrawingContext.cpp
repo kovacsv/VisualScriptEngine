@@ -145,21 +145,25 @@ double SvgDrawingContext::GetHeight () const
 	return height;
 }
 	
-void SvgDrawingContext::BeginDraw ()
+void SvgDrawingContext::BeginDraw (Phase phase)
 {
-	svgBuilder.Clear ();
-	svgBuilder.AddOpenTag (L"svg", {
-		{ L"version", L"1.1" },
-		{ L"xmlns", L"http://www.w3.org/2000/svg" },
-		{ L"width", SvgBuilder::ToString (GetWidth ()) },
-		{ L"height", SvgBuilder::ToString (GetHeight ()) },
-		{ L"shape-rendering", L"crispEdges" }
-	});
+	if (phase == Phase::Draw) {
+		svgBuilder.Clear ();
+		svgBuilder.AddOpenTag (L"svg", {
+			{ L"version", L"1.1" },
+			{ L"xmlns", L"http://www.w3.org/2000/svg" },
+			{ L"width", SvgBuilder::ToString (GetWidth ()) },
+			{ L"height", SvgBuilder::ToString (GetHeight ()) },
+			{ L"shape-rendering", L"crispEdges" }
+			});
+	}
 }
 
-void SvgDrawingContext::EndDraw ()
+void SvgDrawingContext::EndDraw (Phase phase)
 {
-	svgBuilder.AddCloseTag (L"svg");
+	if (phase == Phase::Draw) {
+		svgBuilder.AddCloseTag (L"svg");
+	}
 }
 				 
 void SvgDrawingContext::DrawLine (const Point&, const Point&, const Pen&)

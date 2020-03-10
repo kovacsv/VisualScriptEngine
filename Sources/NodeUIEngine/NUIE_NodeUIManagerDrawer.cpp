@@ -63,21 +63,31 @@ NodeUIManagerDrawer::NodeUIManagerDrawer (const NodeUIManager& uiManager) :
 void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier) const
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
-	drawingContext.BeginDraw ();
-
+	
+	drawingContext.BeginDraw (DrawingContext::Phase::Draw);
 	DrawBackground (env);
+
 	{
 		NodeUIScaleIndependentData scaleIndependentData (uiManager, env.GetSkinParams ());
 		TextSkipperContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
 		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
 		NodeUIDrawingEnvironmentContextDecorator drawEnv (env, viewBoxContext);
+		
+		drawingContext.BeginDraw (DrawingContext::Phase::DrawGroups);
 		DrawGroups (drawEnv, drawModifier);
+		drawingContext.EndDraw (DrawingContext::Phase::DrawGroups);
+		
+		drawingContext.BeginDraw (DrawingContext::Phase::DrawConnections);
 		DrawConnections (drawEnv, scaleIndependentData, drawModifier);
-		DrawNodes (drawEnv, scaleIndependentData, drawModifier);
-	}
-	DrawSelectionRect (env, drawModifier);
+		drawingContext.EndDraw (DrawingContext::Phase::DrawConnections);
 
-	drawingContext.EndDraw ();
+		drawingContext.BeginDraw (DrawingContext::Phase::DrawNodes);
+		DrawNodes (drawEnv, scaleIndependentData, drawModifier);
+		drawingContext.EndDraw (DrawingContext::Phase::DrawNodes);
+	}
+
+	DrawSelectionRect (env, drawModifier);
+	drawingContext.EndDraw (DrawingContext::Phase::Draw);
 }
 
 void NodeUIManagerDrawer::DrawBackground (NodeUIDrawingEnvironment& env) const

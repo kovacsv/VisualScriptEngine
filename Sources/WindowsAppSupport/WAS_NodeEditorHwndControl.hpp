@@ -2,8 +2,8 @@
 #define WAS_NODEEDITORHWNDCONTROL_HPP
 
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_DrawingContext.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"
-#include "WAS_BitmapContextGdi.hpp"
 #include "WAS_CustomControl.hpp"
 #include "WAS_NodeTree.hpp"
 
@@ -30,6 +30,7 @@ class NodeEditorHwndControl : public NodeEditorHwndBasedControl
 {
 public:
 	NodeEditorHwndControl ();
+	NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
 	~NodeEditorHwndControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
@@ -43,9 +44,9 @@ public:
 	void							Draw ();
 
 private:
-	NUIE::NodeEditor*		nodeEditor;
-	BitmapContextGdi		bitmapContext;
-	CustomControl			control;
+	NUIE::NodeEditor*				nodeEditor;
+	NUIE::NativeDrawingContextPtr	nativeContext;
+	CustomControl					control;
 };
 
 class NodeEditorNodeTreeHwndControl : public NodeEditorHwndBasedControl

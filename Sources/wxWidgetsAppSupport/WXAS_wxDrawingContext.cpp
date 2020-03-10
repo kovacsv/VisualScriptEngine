@@ -72,12 +72,12 @@ double wxDrawingContext::GetHeight () const
 	return height;
 }
 
-void wxDrawingContext::BeginDraw ()
+void wxDrawingContext::BeginDraw (Phase)
 {
 
 }
 
-void wxDrawingContext::EndDraw ()
+void wxDrawingContext::EndDraw (Phase)
 {
 
 }

@@ -39,14 +39,14 @@ double DrawingContextDecorator::GetHeight () const
 	return decorated.GetHeight ();
 }
 
-void DrawingContextDecorator::BeginDraw ()
+void DrawingContextDecorator::BeginDraw (Phase phase)
 {
-	decorated.BeginDraw ();
+	decorated.BeginDraw (phase);
 }
 
-void DrawingContextDecorator::EndDraw ()
+void DrawingContextDecorator::EndDraw (Phase phase)
 {
-	decorated.EndDraw ();
+	decorated.EndDraw (phase);
 }
 
 void DrawingContextDecorator::DrawLine (const Point& beg, const Point& end, const Pen& pen)
@@ -104,12 +104,12 @@ double NullDrawingContext::GetHeight () const
 	return 0.0;
 }
 
-void NullDrawingContext::BeginDraw ()
+void NullDrawingContext::BeginDraw (Phase)
 {
 
 }
 
-void NullDrawingContext::EndDraw ()
+void NullDrawingContext::EndDraw (Phase)
 {
 
 }

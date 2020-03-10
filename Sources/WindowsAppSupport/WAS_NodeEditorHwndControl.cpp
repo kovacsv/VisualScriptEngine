@@ -1,4 +1,5 @@
 #include "WAS_NodeEditorHwndControl.hpp"
+#include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "NE_Debug.hpp"
 
@@ -256,9 +257,15 @@ NodeEditorHwndBasedControl::~NodeEditorHwndBasedControl ()
 }
 
 NodeEditorHwndControl::NodeEditorHwndControl () :
+	NodeEditorHwndControl (NUIE::NativeDrawingContextPtr (new BitmapContextGdi ()))
+{
+
+}
+
+NodeEditorHwndControl::NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext) :
 	NodeEditorHwndBasedControl (),
 	nodeEditor (nullptr),
-	bitmapContext (),
+	nativeContext (nativeContext),
 	control ()
 {
 
@@ -284,7 +291,7 @@ bool NodeEditorHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 		return false;
 	}
 
-	bitmapContext.Init (hwnd);
+	nativeContext->Init (hwnd);
 	MoveWindow (hwnd, x, y, width, height, TRUE);
 
 	return true;
@@ -318,7 +325,7 @@ void NodeEditorHwndControl::Invalidate ()
 
 NUIE::DrawingContext& NodeEditorHwndControl::GetDrawingContext ()
 {
-	return bitmapContext;
+	return *nativeContext;
 }
 
 NUIE::NodeEditor* NodeEditorHwndControl::GetNodeEditor ()
@@ -335,7 +342,7 @@ void NodeEditorHwndControl::Draw ()
 	if (nodeEditor != nullptr) {
 		nodeEditor->Draw ();
 	}
-	bitmapContext.BlitToWindow (hwnd);
+	nativeContext->BlitToWindow (hwnd);
 }
 
 NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl () :
