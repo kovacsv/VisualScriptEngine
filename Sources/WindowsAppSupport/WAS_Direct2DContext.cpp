@@ -276,6 +276,8 @@ void Direct2DContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Fon
 
 NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
+	static const float SafetyPadding = 1.05f;
+
 	IDWriteTextLayout* textLayout = nullptr;
 	IDWriteTextFormat* textFormat = CreateTextFormat (renderTarget, font);
 	direct2DHandler.directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, 1000.0, 1000.0, &textLayout);
@@ -283,7 +285,7 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 	textLayout->GetMetrics (&metrics);
 	SafeRelease (&textFormat);
 	SafeRelease (&textLayout);
-	return NUIE::Size (metrics.width * 1.1f, metrics.height * 1.1f);
+	return NUIE::Size (metrics.width * SafetyPadding, metrics.height * SafetyPadding);
 }
 
 }
