@@ -16,8 +16,8 @@ public:
 	{
 		Draw,
 		DrawGroups,
-		DrawNodes,
-		DrawConnections
+		DrawConnections,
+		DrawNodes
 	};
 
 	DrawingContext ();
