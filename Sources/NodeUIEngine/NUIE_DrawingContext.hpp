@@ -4,6 +4,7 @@
 #include "NUIE_Geometry.hpp"
 #include "NUIE_Drawing.hpp"
 #include <string>
+#include <memory>
 
 namespace NUIE
 {

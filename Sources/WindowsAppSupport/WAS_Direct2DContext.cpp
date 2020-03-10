@@ -4,9 +4,6 @@
 namespace WAS
 {
 
-#pragma comment (lib, "d2d1.lib")
-#pragma comment (lib, "dwrite.lib")
-
 class Direct2DHandler
 {
 public:
