@@ -4,6 +4,9 @@
 namespace WAS
 {
 
+#pragma comment (lib, "d2d1.lib")
+#pragma comment (lib, "dwrite.lib")
+
 class Direct2DHandler
 {
 public:
@@ -132,8 +135,10 @@ void Direct2DContext::Resize (int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
-	D2D1_SIZE_U size = D2D1::SizeU (width, height);
-	renderTarget->Resize (size);
+	if (width > 0 && height > 0) {
+		D2D1_SIZE_U size = D2D1::SizeU (width, height);
+		renderTarget->Resize (size);
+	}
 }
 
 double Direct2DContext::GetWidth () const

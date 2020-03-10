@@ -97,6 +97,9 @@ public:
 	virtual void	BlitToContext (void* nativeContext) = 0;
 };
 
+using NativeDrawingContextPtr = std::shared_ptr<NativeDrawingContext>;
+using NativeDrawingContextConstPtr = std::shared_ptr<const NativeDrawingContext>;
+
 }
 
 #endif
