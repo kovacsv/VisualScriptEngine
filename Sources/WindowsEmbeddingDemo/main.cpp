@@ -204,6 +204,10 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				nodeEditor.AddNode (numberNode1);
 				nodeEditor.AddNode (numberNode2);
 				nodeEditor.AddNode (viewerNode);
+				// performance test code
+				// for (int i = 0; i < 300; i++) {
+				// 	nodeEditor.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (i * 10, i * 10), 20, 10)));
+				// }
 				nodeEditor.ConnectOutputSlotToInputSlot (numberNode1->GetUIOutputSlot (NE::SlotId ("out")), viewerNode->GetUIInputSlot (NE::SlotId ("in")));
 				nodeEditor.Update ();
 

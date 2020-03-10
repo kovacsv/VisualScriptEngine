@@ -6,56 +6,9 @@
 
 #include "NUIE_DrawingContext.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"
-#include "WAS_DrawingCacheKeys.hpp"
-
-#include <unordered_map>
 
 namespace WAS
 {
-
-template<class Interface>
-inline void SafeRelease (Interface** interfaceToRelease)
-{
-	if (*interfaceToRelease != NULL) {
-		(*interfaceToRelease)->Release ();
-		(*interfaceToRelease) = NULL;
-	}
-}
-
-template <typename KeyType, typename ValueType>
-ValueType* CreateValue (ID2D1RenderTarget* renderTarget, const KeyType& key);
-
-template <typename KeyType, typename ValueType>
-class ObjectCache
-{
-public:
-	ObjectCache ()
-	{
-	
-	}
-
-	~ObjectCache ()
-	{
-		for (auto& it : cache) {
-			SafeRelease (&it.second);
-		}	
-	}
-
-	ValueType* Get (ID2D1RenderTarget* renderTarget, const KeyType& key)
-	{
-		KeyType cacheKey (key);
-		auto found = cache.find (cacheKey);
-		if (found != cache.end ()) {
-			return found->second;
-		}
-		ValueType* value = CreateValue<KeyType, ValueType> (renderTarget, key);
-		cache.insert ({ cacheKey, value });
-		return value;
-	}
-
-private:
-	std::unordered_map<KeyType, ValueType*> cache;
-};
 
 class Direct2DContext : public NUIE::NativeDrawingContext
 {
@@ -92,11 +45,9 @@ private:
 	int							width;
 	int							height;
 	ID2D1HwndRenderTarget*		renderTarget;
-
-	ObjectCache<BrushCacheKey, ID2D1SolidColorBrush>	brushCache;
-	ObjectCache<FontCacheKey, IDWriteTextFormat>		textFormatCache;
 };
 
 }
+
 
 #endif
