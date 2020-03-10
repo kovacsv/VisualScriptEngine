@@ -186,9 +186,13 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			{
 				uiEnvironment.Init (&nodeEditor, hwnd);
 
-				nodeEditor.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10)));
-				nodeEditor.AddNode (NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10)));
-				nodeEditor.AddNode (NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (300, 200), 5)));
+				NUIE::UINodePtr numberNode1 (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10));
+				NUIE::UINodePtr numberNode2 (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10));
+				NUIE::UINodePtr viewerNode (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (300, 200), 5));
+				nodeEditor.AddNode (numberNode1);
+				nodeEditor.AddNode (numberNode2);
+				nodeEditor.AddNode (viewerNode);
+				nodeEditor.ConnectOutputSlotToInputSlot (numberNode1->GetUIOutputSlot (NE::SlotId ("out")), viewerNode->GetUIInputSlot (NE::SlotId ("in")));
 				nodeEditor.Update ();
 
 				CreateMenuBar (hwnd);
