@@ -4,6 +4,8 @@
 namespace WAS
 {
 
+static const float SafetyTextRatio = 1.05f;
+
 template<class Interface>
 static void SafeRelease (Interface** interfaceToRelease)
 {
@@ -239,7 +241,6 @@ void Direct2DContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& co
 
 void Direct2DContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
-	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, textColor);
 	IDWriteTextFormat* textFormat = CreateTextFormat (renderTarget, font);
 
 	IDWriteTextLayout* textLayout = nullptr;
@@ -269,24 +270,24 @@ void Direct2DContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Fon
 			break;
 	}
 
+	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, textColor);
 	renderTarget->DrawTextLayout (CreatePoint (rect.GetTopLeft ()), textLayout, d2Brush);
+	SafeRelease (&d2Brush);
+
 	SafeRelease (&textLayout);
 	SafeRelease (&textFormat);
-	SafeRelease (&d2Brush);
 }
 
 NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	static const float SafetyPadding = 1.05f;
-
 	IDWriteTextLayout* textLayout = nullptr;
 	IDWriteTextFormat* textFormat = CreateTextFormat (renderTarget, font);
 	direct2DHandler.directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, 1000.0, 1000.0, &textLayout);
 	DWRITE_TEXT_METRICS metrics;
 	textLayout->GetMetrics (&metrics);
-	SafeRelease (&textFormat);
 	SafeRelease (&textLayout);
-	return NUIE::Size (metrics.width * SafetyPadding, metrics.height * SafetyPadding);
+	SafeRelease (&textFormat);
+	return NUIE::Size (metrics.width * SafetyTextRatio, metrics.height * SafetyTextRatio);
 }
 
 }
