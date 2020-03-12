@@ -96,6 +96,7 @@ static float GetPenThickness (const NUIE::Pen& pen)
 
 Direct2DContext::Direct2DContext () :
 	NUIE::NativeDrawingContext (),
+	hwnd (NULL),
 	width (0),
 	height (0),
 	renderTarget (nullptr)
@@ -110,20 +111,8 @@ Direct2DContext::~Direct2DContext ()
 
 void Direct2DContext::Init (void* nativeHandle)
 {
-	HWND hwnd = (HWND) nativeHandle;
-
-	RECT clientRect;
-	GetClientRect (hwnd, &clientRect);
-	width = clientRect.right - clientRect.left;
-	height = clientRect.bottom - clientRect.top;
-
-	D2D1_SIZE_U size = D2D1::SizeU (width, height);
-	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties = D2D1::RenderTargetProperties ();
-	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties = D2D1::HwndRenderTargetProperties (hwnd, size);
-
-	direct2DHandler.direct2DFactory->CreateHwndRenderTarget (renderTargetProperties, hwndRenderTargetProperties, &renderTarget);
-	renderTarget->SetDpi (96.0f, 96.0f);
-	DBGASSERT (renderTarget != nullptr);
+	hwnd = (HWND) nativeHandle;
+	CreateRenderTarget ();
 }
 
 void Direct2DContext::BlitToWindow (void*)
@@ -171,9 +160,10 @@ void Direct2DContext::BeginDraw (Phase phase)
 void Direct2DContext::EndDraw (Phase phase)
 {
 	if (phase == Phase::Draw) {
-		// TODO: recreate in case of error
-		DBGONLY (HRESULT success = ) renderTarget->EndDraw ();
-		DBGASSERT (SUCCEEDED (success));
+		HRESULT result = renderTarget->EndDraw ();
+		if (result == D2DERR_RECREATE_TARGET) {
+			CreateRenderTarget ();
+		}
 	} else if (phase == Phase::DrawConnections) {
 		renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
 	}
@@ -288,6 +278,23 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 	SafeRelease (&textLayout);
 	SafeRelease (&textFormat);
 	return NUIE::Size (metrics.width * SafetyTextRatio, metrics.height * SafetyTextRatio);
+}
+
+void Direct2DContext::CreateRenderTarget ()
+{
+	RECT clientRect;
+	GetClientRect (hwnd, &clientRect);
+	width = clientRect.right - clientRect.left;
+	height = clientRect.bottom - clientRect.top;
+
+	D2D1_SIZE_U size = D2D1::SizeU (width, height);
+	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties = D2D1::RenderTargetProperties ();
+	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties = D2D1::HwndRenderTargetProperties (hwnd, size);
+
+	SafeRelease (&renderTarget);
+	direct2DHandler.direct2DFactory->CreateHwndRenderTarget (renderTargetProperties, hwndRenderTargetProperties, &renderTarget);
+	renderTarget->SetDpi (96.0f, 96.0f);
+	DBGASSERT (renderTarget != nullptr);
 }
 
 }

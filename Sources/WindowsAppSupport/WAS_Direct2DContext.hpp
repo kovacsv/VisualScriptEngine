@@ -42,6 +42,9 @@ public:
 	virtual NUIE::Size			MeasureText (const NUIE::Font& font, const std::wstring& text) override;
 
 private:
+	void						CreateRenderTarget ();
+
+	HWND						hwnd;
 	int							width;
 	int							height;
 	ID2D1HwndRenderTarget*		renderTarget;
