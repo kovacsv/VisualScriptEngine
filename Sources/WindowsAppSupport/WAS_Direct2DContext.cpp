@@ -120,6 +120,7 @@ void Direct2DContext::Init (void* nativeHandle)
 	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties = D2D1::HwndRenderTargetProperties (hwnd, size);
 
 	direct2DHandler.direct2DFactory->CreateHwndRenderTarget (renderTargetProperties, hwndRenderTargetProperties, &renderTarget);
+	renderTarget->SetDpi (96.0f, 96.0f);
 	DBGASSERT (renderTarget != nullptr);
 }
 
