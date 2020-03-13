@@ -34,12 +34,12 @@ ParameterInterface::~ParameterInterface ()
 
 }
 
-ParameterType ParameterType::Undefined ("undefined");
-ParameterType ParameterType::Boolean ("boolean");
-ParameterType ParameterType::Integer ("integer");
-ParameterType ParameterType::Float ("float");
-ParameterType ParameterType::Double ("double");
-ParameterType ParameterType::String ("string");
-ParameterType ParameterType::Enumeration ("enumeration");
+const ParameterType ParameterType::Undefined ("undefined");
+const ParameterType ParameterType::Boolean ("boolean");
+const ParameterType ParameterType::Integer ("integer");
+const ParameterType ParameterType::Float ("float");
+const ParameterType ParameterType::Double ("double");
+const ParameterType ParameterType::String ("string");
+const ParameterType ParameterType::Enumeration ("enumeration");
 
 }

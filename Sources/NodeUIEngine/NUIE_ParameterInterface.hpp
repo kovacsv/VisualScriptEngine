@@ -15,13 +15,13 @@ public:
 	bool				operator== (const ParameterType& rhs) const;
 	bool				operator!= (const ParameterType& rhs) const;
 
-	static ParameterType Undefined;
-	static ParameterType Boolean;
-	static ParameterType Integer;
-	static ParameterType Float;
-	static ParameterType Double;
-	static ParameterType String;
-	static ParameterType Enumeration;
+	static const ParameterType Undefined;
+	static const ParameterType Boolean;
+	static const ParameterType Integer;
+	static const ParameterType Float;
+	static const ParameterType Double;
+	static const ParameterType String;
+	static const ParameterType Enumeration;
 
 private:
 	std::string id;
