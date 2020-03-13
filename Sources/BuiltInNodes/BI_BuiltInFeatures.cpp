@@ -180,12 +180,8 @@ NE::Stream::Status EnableDisableFeature::Read (NE::InputStream & inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NodeFeature::Read (inputStream);
-	int stateInt = 0;
-	int modeInt = 0;
-	inputStream.Read (stateInt);
-	inputStream.Read (modeInt);
-	state = (State) stateInt;
-	mode = (Mode) modeInt;
+	ReadEnum (inputStream, state);
+	ReadEnum (inputStream, mode);
 	return inputStream.GetStatus ();
 }
 
@@ -193,8 +189,8 @@ NE::Stream::Status EnableDisableFeature::Write (NE::OutputStream & outputStream)
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NodeFeature::Write (outputStream);
-	outputStream.Write ((int) state);
-	outputStream.Write ((int) mode);
+	WriteEnum (outputStream, state);
+	WriteEnum (outputStream, mode);
 	return outputStream.GetStatus ();
 }
 

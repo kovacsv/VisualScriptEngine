@@ -57,9 +57,7 @@ Stream::Status InputSlot::Read (InputStream& inputStream)
 	if (hasDefaultValue) {
 		defaultValue.reset (ReadDynamicObject<Value> (inputStream));
 	}
-	int outputSlotConnectionModeInt;
-	inputStream.Read (outputSlotConnectionModeInt);
-	outputSlotConnectionMode = (OutputSlotConnectionMode) outputSlotConnectionModeInt;
+	ReadEnum (inputStream, outputSlotConnectionMode);
 
 	return inputStream.GetStatus ();
 }
@@ -74,7 +72,7 @@ Stream::Status InputSlot::Write (OutputStream& outputStream) const
 	if (hasDefaultValue) {
 		WriteDynamicObject (outputStream, defaultValue.get ());
 	}
-	outputStream.Write ((int) outputSlotConnectionMode);
+	WriteEnum (outputStream, outputSlotConnectionMode);
 
 	return outputStream.GetStatus ();
 }

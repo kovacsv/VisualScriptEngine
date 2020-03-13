@@ -491,10 +491,7 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 	}
 
 	nodeGroupList.Read (inputStream);
-
-	int updateModeInt = 0;
-	inputStream.Read (updateModeInt);
-	updateMode = (UpdateMode) updateModeInt;
+	ReadEnum (inputStream, updateMode);
 
 	return inputStream.GetStatus ();
 }
@@ -510,7 +507,8 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	}
 
 	nodeGroupList.Write (outputStream);
-	outputStream.Write ((int) updateMode);
+	WriteEnum (outputStream, updateMode);
+
 	return outputStream.GetStatus ();
 }
 

@@ -10,6 +10,12 @@ using namespace NE;
 namespace MemoryStreamTest
 {
 
+enum class TestEnum
+{
+	A,
+	B
+};
+
 TEST (TypeTest)
 {
 	MemoryOutputStream outputStream;
@@ -21,6 +27,7 @@ TEST (TypeTest)
 	ASSERT (outputStream.Write ((double) 3.0) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::string ("apple")) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::wstring (L"banana")) == Stream::Status::NoError);
+	ASSERT (WriteEnum (outputStream, TestEnum::A) == Stream::Status::NoError);
 
 	bool boolVal;
 	char charVal;
@@ -30,6 +37,7 @@ TEST (TypeTest)
 	double doubleVal;
 	std::string stringVal;
 	std::wstring wStringVal;
+	TestEnum enumVal;
 
 	MemoryInputStream inputStream (outputStream.GetBuffer ());
 	ASSERT (inputStream.Read (boolVal) == Stream::Status::NoError);
@@ -40,6 +48,7 @@ TEST (TypeTest)
 	ASSERT (inputStream.Read (doubleVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (stringVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (wStringVal) == Stream::Status::NoError);
+	ASSERT (ReadEnum (inputStream, enumVal) == Stream::Status::NoError);
 
 	ASSERT (boolVal == true);
 	ASSERT (charVal == 'a');
@@ -49,6 +58,7 @@ TEST (TypeTest)
 	ASSERT (doubleVal == 3.0);
 	ASSERT (stringVal == "apple");
 	ASSERT (wStringVal == L"banana");
+	ASSERT (enumVal == TestEnum::A);
 }
 
 }

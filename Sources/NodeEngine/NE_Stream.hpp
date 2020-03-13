@@ -58,6 +58,21 @@ public:
 	virtual Status	Write (const std::wstring& val) = 0;
 };
 
+template <class EnumType>
+Stream::Status ReadEnum (InputStream& inputStream, EnumType& enumVal)
+{
+	int enumValInt = 0;
+	Stream::Status status = inputStream.Read (enumValInt);
+	enumVal = (EnumType) enumValInt;
+	return status;
+}
+
+template <class EnumType>
+Stream::Status WriteEnum (OutputStream& outputStream, const EnumType& enumVal)
+{
+	return outputStream.Write ((int) enumVal);
+}
+
 }
 
 #endif
