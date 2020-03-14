@@ -104,10 +104,10 @@ private:
 	virtual bool				RegisterInputSlot (const NE::InputSlotPtr& newInputSlot) override;
 	virtual bool				RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot) override;
 
-	std::wstring					nodeName;
-	Point							nodePosition;
-	UINodeFeatureSet				nodeFeatureSet;
-	mutable NodeDrawingImage		nodeDrawingImage;
+	std::wstring				nodeName;
+	Point						nodePosition;
+	UINodeFeatureSet			nodeFeatureSet;
+	mutable NodeDrawingImage	nodeDrawingImage;
 };
 
 using UINodePtr = std::shared_ptr<UINode>;

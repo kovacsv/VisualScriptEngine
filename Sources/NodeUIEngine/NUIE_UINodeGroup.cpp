@@ -155,6 +155,7 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 	);
 
 	drawingImage.SetRect (fullRect);
+
 	const std::vector<NamedColorSet::NamedColor>& backgroundColors = skinParams.GetGroupBackgroundColors ().GetColors ();
 	drawingImage.AddItem (DrawingItemPtr (new DrawingFillRect (fullRect, backgroundColors[backgroundColorIndex].color)));
 	drawingImage.AddItem (DrawingItemPtr (new DrawingText (textRect, skinParams.GetGroupNameFont (), name, HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetGroupNameColor ())));
