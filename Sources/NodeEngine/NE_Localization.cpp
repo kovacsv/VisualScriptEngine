@@ -88,9 +88,6 @@ bool FillDictionary (DictionarySource& source)
 std::wstring Localize (const std::wstring& str)
 {
 	const Dictionary& globalDictionary = GetGlobalDictionary ();
-	if (!globalDictionary.HasLocalizedString (str)) {
-		return str;
-	}
 	return Localize (globalDictionary, str);
 }
 
