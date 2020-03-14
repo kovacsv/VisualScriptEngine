@@ -2,6 +2,7 @@
 #include "NUIE_NodeMenuCommandRegistrator.hpp"
 #include "NUIE_NodeUIManagerCommands.hpp"
 #include "NUIE_EventHandlers.hpp"
+#include "NUIE_SkinParams.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Localization.hpp"
 #include "NE_Debug.hpp"
@@ -228,6 +229,15 @@ void SetParametersCommand::Do ()
 	}
 }
 
+SetGroupParametersCommand::SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
+	SingleMenuCommand (NE::Localize (L"Set Parameters"), false),
+	uiManager (uiManager),
+	uiEnvironment (uiEnvironment),
+	group (group)
+{
+
+}
+
 SetGroupParametersCommand::~SetGroupParametersCommand ()
 {
 
@@ -244,10 +254,12 @@ void SetGroupParametersCommand::Do ()
 			ParameterType	type;
 		};
 
-		GroupParameterInterface (const UINodeGroupPtr& currentGroup) :
+		GroupParameterInterface (const UINodeGroupPtr& currentGroup, const NamedColorSet& groupBackgroundColors) :
 			currentGroup (currentGroup),
+			groupBackgroundColors (groupBackgroundColors),
 			groupParameters ({
-				{ NE::Localize (L"Name"), ParameterType::String }
+				{ NE::Localize (L"Name"), ParameterType::String },
+				{ NE::Localize (L"Color"), ParameterType::Enumeration }
 			})
 		{
 
@@ -257,12 +269,15 @@ void SetGroupParametersCommand::Do ()
 		{
 			for (const auto& it : changedParameterValues) {
 				switch (it.first) {
-				case 0:
-					currentGroup->SetName (NE::StringValue::Get (it.second));
-					break;
-				default:
-					DBGBREAK ();
-					break;
+					case 0:
+						currentGroup->SetName (NE::StringValue::Get (it.second));
+						break;
+					case 1:
+						currentGroup->SetBackgroundColorIndex (NE::IntValue::Get (it.second));
+						break;
+					default:
+						DBGBREAK ();
+						break;
 				}
 			}
 			uiManager.RequestRedraw ();
@@ -281,18 +296,32 @@ void SetGroupParametersCommand::Do ()
 		virtual NE::ValueConstPtr GetParameterValue (size_t index) const override
 		{
 			switch (index) {
-			case 0:
-				return NE::ValuePtr (new NE::StringValue (currentGroup->GetName ()));
-			default:
-				DBGBREAK ();
-				return nullptr;
+				case 0:
+					return NE::ValuePtr (new NE::StringValue (currentGroup->GetName ()));
+				case 1:
+					return NE::ValuePtr (new NE::IntValue ((int) currentGroup->GetBackgroundColorIndex ()));
+				default:
+					DBGBREAK ();
+					return nullptr;
 			}
 		}
 
-		virtual std::vector<std::wstring> GetParameterValueChoices (size_t) const override
+		virtual std::vector<std::wstring> GetParameterValueChoices (size_t index) const override
 		{
-			DBGBREAK ();
-			return {};
+			switch (index) {
+				case 1:
+					{
+						std::vector<std::wstring> result;
+						const std::vector<NamedColorSet::NamedColor>& colors = groupBackgroundColors.GetColors ();
+						for (const NamedColorSet::NamedColor& color : colors) {
+							result.push_back (color.name);
+						}
+						return result;
+					}
+				default:
+					DBGBREAK ();
+					return {};
+			}
 		}
 
 		virtual const ParameterType& GetParameterType (size_t index) const override
@@ -303,10 +332,12 @@ void SetGroupParametersCommand::Do ()
 		virtual bool IsValidParameterValue (size_t index, const NE::ValueConstPtr& value) const override
 		{
 			switch (index) {
-			case 0:
-				return NE::Value::IsType<NE::StringValue> (value) && !NE::StringValue::Get (value).empty ();
-			default:
-				DBGBREAK ();
+				case 0:
+					return NE::Value::IsType<NE::StringValue> (value) && !NE::StringValue::Get (value).empty ();
+				case 1:
+					return true;
+				default:
+					DBGBREAK ();
 			}
 			return false;
 		}
@@ -328,11 +359,13 @@ void SetGroupParametersCommand::Do ()
 
 	private:
 		const UINodeGroupPtr&							currentGroup;
+		const NamedColorSet&							groupBackgroundColors;
 		std::vector<GroupParameter>						groupParameters;
 		std::unordered_map<size_t, NE::ValueConstPtr>	changedParameterValues;
 	};
 
-	std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group));
+	const NamedColorSet& groupBackgroundColors = uiEnvironment.GetSkinParams ().GetGroupBackgroundColors ();
+	std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group, groupBackgroundColors));
 	if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface)) {
 		CustomUndoableCommand command ([&] () {
 			paramInterface->ApplyChanges (uiManager);
@@ -459,17 +492,6 @@ private:
 	NodeCommandPtr				nodeCommand;
 	std::vector<UINodePtr>		uiNodes;
 };
-
-SetGroupParametersCommand::SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
-	SingleMenuCommand (NE::Localize (L"Set Parameters"), false),
-	uiManager (uiManager),
-	uiEnvironment (uiEnvironment),
-	group (group)
-{
-
-}
-
-
 
 class NodeCommandStructureBuilder : public NodeCommandRegistrator
 {

@@ -52,7 +52,8 @@ UINodeGroup::UINodeGroup () :
 
 UINodeGroup::UINodeGroup (const std::wstring& name) :
 	NE::NodeGroup (),
-	name (name)
+	name (name),
+	backgroundColorIndex (0)
 {
 
 }
@@ -70,6 +71,17 @@ const std::wstring& UINodeGroup::GetName () const
 void UINodeGroup::SetName (const std::wstring& newName)
 {
 	name = newName;
+	InvalidateGroupDrawing ();
+}
+
+size_t UINodeGroup::GetBackgroundColorIndex () const
+{
+	return backgroundColorIndex;
+}
+
+void UINodeGroup::SetBackgroundColorIndex (size_t newColorIndex)
+{
+	backgroundColorIndex = newColorIndex;
 	InvalidateGroupDrawing ();
 }
 
@@ -94,6 +106,7 @@ NE::Stream::Status UINodeGroup::Read (NE::InputStream& inputStream)
 	NE::ObjectHeader header (inputStream);
 	NE::NodeGroup::Read (inputStream);
 	inputStream.Read (name);
+	inputStream.Read (backgroundColorIndex);
 	return inputStream.GetStatus ();
 }
 
@@ -102,6 +115,7 @@ NE::Stream::Status UINodeGroup::Write (NE::OutputStream& outputStream) const
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NE::NodeGroup::Write (outputStream);
 	outputStream.Write (name);
+	outputStream.Write (backgroundColorIndex);
 	return outputStream.GetStatus ();
 }
 
@@ -141,7 +155,8 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 	);
 
 	drawingImage.SetRect (fullRect);
-	drawingImage.AddItem (DrawingItemPtr (new DrawingFillRect (fullRect, skinParams.GetGroupBackgroundColor ())));
+	const std::vector<NamedColorSet::NamedColor>& backgroundColors = skinParams.GetGroupBackgroundColors ().GetColors ();
+	drawingImage.AddItem (DrawingItemPtr (new DrawingFillRect (fullRect, backgroundColors[backgroundColorIndex].color)));
 	drawingImage.AddItem (DrawingItemPtr (new DrawingText (textRect, skinParams.GetGroupNameFont (), name, HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetGroupNameColor ())));
 }
 

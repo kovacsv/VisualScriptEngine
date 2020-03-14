@@ -18,15 +18,6 @@ public:
 	virtual bool EnumerateEntries (const std::function<bool (const std::wstring&, const std::wstring&)>& processor) = 0;
 };
 
-class NonLocalizedCollector
-{
-public:
-	NonLocalizedCollector ();
-	virtual ~NonLocalizedCollector ();
-
-	virtual void ProcessNonLocalizedId (const std::wstring& id) = 0;
-};
-
 class Dictionary
 {
 public:
@@ -54,7 +45,6 @@ std::wstring FormatString (const std::wstring& format, Args... args)
 bool			FillDictionary (Dictionary& dictionary, DictionarySource& source);
 std::wstring	Localize (const Dictionary& dictionary, const std::wstring& str);
 
-void			SetNonLocalizedCollector (NonLocalizedCollector* collector);
 bool			FillDictionary (DictionarySource& source);
 std::wstring	Localize (const std::wstring& str);
 

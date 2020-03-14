@@ -1,7 +1,18 @@
 #include "NUIE_SkinParams.hpp"
+#include "NE_Localization.hpp"
 
 namespace NUIE
 {
+
+NamedColorSet::NamedColorSet (const std::vector<NamedColor>& colors) :
+	colors (colors)
+{
+}
+
+const std::vector<NamedColorSet::NamedColor>& NamedColorSet::GetColors () const
+{
+	return colors;
+}
 
 SkinParams::SkinParams ()
 {
@@ -14,31 +25,31 @@ SkinParams::~SkinParams ()
 }
 
 BasicSkinParams::BasicSkinParams (
-	const Color&		backgroundColor,
-	const Pen&			connectionLinePen,
-	const double&		nodePadding,
-	const Font&			nodeTextFont,
-	const Color&		nodeHeaderTextColor,
-	const Color&		nodeContentTextColor,
-	const Color&		nodeHeaderBackgroundColor,
-	const Color&		nodeContentBackgroundColor,
-	const Pen&			nodeBorderPen,
-	const Color&		slotTextColor,
-	const Color&		slotTextBackgroundColor,
-	const BlendColor&	disabledBlendColor,
-	const BlendColor&	selectionBlendColor,
-	const Pen&			selectionRectPen,
-	const Pen&			nodeSelectionRectPen,
-	const Color&		hasValueStatusColor,
-	const Color&		hasNoValueStatusColor,
-	const Pen&			buttonBorderPen,
-	const Color&		buttonBackgroundColor,
-	const Color&		textPanelTextColor,
-	const Color&		textPanelBackgroundColor,
-	const Font&			groupNameFont,
-	const Color&		groupNameColor,
-	const Color&		groupBackgroundColor,
-	const double&		groupPadding
+	const Color&			backgroundColor,
+	const Pen&				connectionLinePen,
+	const double&			nodePadding,
+	const Font&				nodeTextFont,
+	const Color&			nodeHeaderTextColor,
+	const Color&			nodeContentTextColor,
+	const Color&			nodeHeaderBackgroundColor,
+	const Color&			nodeContentBackgroundColor,
+	const Pen&				nodeBorderPen,
+	const Color&			slotTextColor,
+	const Color&			slotTextBackgroundColor,
+	const BlendColor&		disabledBlendColor,
+	const BlendColor&		selectionBlendColor,
+	const Pen&				selectionRectPen,
+	const Pen&				nodeSelectionRectPen,
+	const Color&			hasValueStatusColor,
+	const Color&			hasNoValueStatusColor,
+	const Pen&				buttonBorderPen,
+	const Color&			buttonBackgroundColor,
+	const Color&			textPanelTextColor,
+	const Color&			textPanelBackgroundColor,
+	const Font&				groupNameFont,
+	const Color&			groupNameColor,
+	const NamedColorSet&	groupBackgroundColors,
+	const double&			groupPadding
 ) :
 	backgroundColor (backgroundColor),
 	connectionLinePen (connectionLinePen),
@@ -63,7 +74,7 @@ BasicSkinParams::BasicSkinParams (
 	textPanelBackgroundColor (textPanelBackgroundColor),
 	groupNameFont (groupNameFont),
 	groupNameColor (groupNameColor),
-	groupBackgroundColor (groupBackgroundColor),
+	groupBackgroundColors (groupBackgroundColors),
 	groupPadding (groupPadding)
 {
 
@@ -189,9 +200,9 @@ const Color& BasicSkinParams::GetGroupNameColor () const
 	return groupNameColor;
 }
 
-const Color& BasicSkinParams::GetGroupBackgroundColor () const
+const NamedColorSet& BasicSkinParams::GetGroupBackgroundColors () const
 {
-	return groupBackgroundColor;
+	return groupBackgroundColors;
 }
 
 double BasicSkinParams::GetGroupPadding () const
@@ -225,7 +236,11 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*textPanelBackgroundColor*/ Color (255, 255, 100),
 		/*groupNameFont*/ Font (L"Arial", 18.0),
 		/*groupNameColor*/ Color (0, 0, 0),
-		/*groupBackgroundColor*/ Color (160, 200, 240),
+		/*groupBackgroundColors*/ NamedColorSet ({
+			{ NE::Localize (L"Blue"), Color (160, 200, 240) },
+			{ NE::Localize (L"Green"), Color (160, 239, 160) },
+			{ NE::Localize (L"Red"), Color (239, 189, 160) }
+		}),
 		/*groupPadding*/ 10.0
 	);
 	return defaultSkinParams;

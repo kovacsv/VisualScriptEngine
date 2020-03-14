@@ -43,6 +43,9 @@ public:
 	const std::wstring&			GetName () const;
 	void						SetName (const std::wstring& newName);
 
+	size_t						GetBackgroundColorIndex () const;
+	void						SetBackgroundColorIndex (size_t newColorIndex);
+
 	Rect						GetRect (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
 	void						Draw (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
 	void						InvalidateGroupDrawing () const;
@@ -55,6 +58,7 @@ private:
 	void						UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
 
 	std::wstring				name;
+	size_t						backgroundColorIndex;
 	mutable GroupDrawingImage	drawingImage;
 };
 

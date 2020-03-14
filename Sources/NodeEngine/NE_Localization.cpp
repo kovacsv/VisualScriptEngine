@@ -14,16 +14,6 @@ DictionarySource::~DictionarySource ()
 
 }
 
-NonLocalizedCollector::NonLocalizedCollector ()
-{
-
-}
-
-NonLocalizedCollector::~NonLocalizedCollector ()
-{
-
-}
-
 Dictionary::Dictionary ()
 {
 
@@ -61,8 +51,11 @@ std::wstring Dictionary::GetLocalizedString (const std::wstring& id) const
 	return dictionary.at (id);
 }
 
-static Dictionary				globalDictionary;
-static NonLocalizedCollector*	globalNonLocalizedCollector = nullptr;
+static Dictionary& GetGlobalDictionary ()
+{
+	static Dictionary globalDictionary;
+	return globalDictionary;
+}
 
 bool FillDictionary (Dictionary& dictionary, DictionarySource& source)
 {
@@ -87,22 +80,15 @@ std::wstring Localize (const Dictionary& dictionary, const std::wstring& str)
 	return dictionary.GetLocalizedString (str);
 }
 
-void SetNonLocalizedCollector (NonLocalizedCollector* collector)
-{
-	globalNonLocalizedCollector = collector;
-}
-
 bool FillDictionary (DictionarySource& source)
 {
-	return FillDictionary (globalDictionary, source);
+	return FillDictionary (GetGlobalDictionary (), source);
 }
 
 std::wstring Localize (const std::wstring& str)
 {
+	const Dictionary& globalDictionary = GetGlobalDictionary ();
 	if (!globalDictionary.HasLocalizedString (str)) {
-		if (globalNonLocalizedCollector != nullptr) {
-			globalNonLocalizedCollector->ProcessNonLocalizedId (str);
-		}
 		return str;
 	}
 	return Localize (globalDictionary, str);
