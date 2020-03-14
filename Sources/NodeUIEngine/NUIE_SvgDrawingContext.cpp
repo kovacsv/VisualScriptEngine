@@ -155,7 +155,7 @@ void SvgDrawingContext::BeginDraw (Phase phase)
 			{ L"width", SvgBuilder::ToString (GetWidth ()) },
 			{ L"height", SvgBuilder::ToString (GetHeight ()) },
 			{ L"shape-rendering", L"crispEdges" }
-			});
+		});
 	}
 }
 
