@@ -123,6 +123,12 @@ NodeUIStatusHeaderPanel::NodeUIStatusHeaderPanel (const std::wstring& headerText
 
 NUIE::Color NodeUIStatusHeaderPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
+	if (nodeStatus == NodeUIStatusHeaderPanel::NodeStatus::HasValue) {
+		return env.GetSkinParams ().GetNodeHeaderTextColor ();
+	} else if (nodeStatus == NodeUIStatusHeaderPanel::NodeStatus::HasNoValue) {
+		return env.GetSkinParams ().GetNodeHeaderErrorTextColor ();
+	}
+	DBGBREAK ();
 	return env.GetSkinParams ().GetNodeHeaderTextColor ();
 }
 

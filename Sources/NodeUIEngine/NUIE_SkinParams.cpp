@@ -30,6 +30,7 @@ BasicSkinParams::BasicSkinParams (
 	const double&			nodePadding,
 	const Font&				nodeTextFont,
 	const Color&			nodeHeaderTextColor,
+	const Color&			nodeHeaderErrorTextColor,
 	const Color&			nodeContentTextColor,
 	const Color&			nodeHeaderBackgroundColor,
 	const Color&			nodeHeaderErrorBackgroundColor,
@@ -57,6 +58,7 @@ BasicSkinParams::BasicSkinParams (
 	nodePadding (nodePadding),
 	nodeTextFont (nodeTextFont),
 	nodeHeaderTextColor (nodeHeaderTextColor),
+	nodeHeaderErrorTextColor (nodeHeaderErrorTextColor),
 	nodeContentTextColor (nodeContentTextColor),
 	nodeHeaderBackgroundColor (nodeHeaderBackgroundColor),
 	nodeHeaderErrorBackgroundColor (nodeHeaderErrorBackgroundColor),
@@ -112,6 +114,11 @@ const Font& BasicSkinParams::GetNodeTextFont () const
 const Color& BasicSkinParams::GetNodeHeaderTextColor () const
 {
 	return nodeHeaderTextColor;
+}
+
+const Color& BasicSkinParams::GetNodeHeaderErrorTextColor () const
+{
+	return nodeHeaderErrorTextColor;
 }
 
 const Color& BasicSkinParams::GetNodeContentTextColor () const
@@ -227,6 +234,7 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*nodePadding*/ 5.0,
 		/*nodeTextFont*/ Font (L"Arial", 16.0),
 		/*nodeHeaderTextColor*/ Color (255, 255, 255),
+		/*nodeHeaderErrorTextColor*/ Color (255, 255, 255),
 		/*nodeContentTextColor*/ Color (0, 0, 0),
 		/*nodeHeaderBackgroundColor*/ Color (100, 100, 100),
 		/*nodeHeaderErrorBackgroundColor*/ Color (225, 0, 0),

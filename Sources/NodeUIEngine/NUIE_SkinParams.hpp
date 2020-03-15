@@ -40,6 +40,7 @@ public:
 	virtual double					GetNodePadding () const = 0;
 	virtual const Font&				GetNodeTextFont () const = 0;
 	virtual const Color&			GetNodeHeaderTextColor () const = 0;
+	virtual const Color&			GetNodeHeaderErrorTextColor () const = 0;
 	virtual const Color&			GetNodeContentTextColor () const = 0;
 	virtual const Color&			GetNodeHeaderBackgroundColor () const = 0;
 	virtual const Color&			GetNodeHeaderErrorBackgroundColor () const = 0;
@@ -81,6 +82,7 @@ public:
 		const double&			nodePadding,
 		const Font&				nodeTextFont,
 		const Color&			nodeHeaderTextColor,
+		const Color&			nodeHeaderErrorTextColor,
 		const Color&			nodeContentTextColor,
 		const Color&			nodeHeaderBackgroundColor,
 		const Color&			nodeHeaderErrorBackgroundColor,
@@ -111,6 +113,7 @@ public:
 	virtual double					GetNodePadding () const override;
 	virtual const Font&				GetNodeTextFont () const override;
 	virtual const Color&			GetNodeHeaderTextColor () const override;
+	virtual const Color&			GetNodeHeaderErrorTextColor () const override;
 	virtual const Color&			GetNodeContentTextColor () const override;
 	virtual const Color&			GetNodeHeaderBackgroundColor () const override;
 	virtual const Color&			GetNodeHeaderErrorBackgroundColor () const override;
@@ -145,6 +148,7 @@ private:
 	double			nodePadding;
 	Font			nodeTextFont;
 	Color			nodeHeaderTextColor;
+	Color			nodeHeaderErrorTextColor;
 	Color			nodeContentTextColor;
 	Color			nodeHeaderBackgroundColor;
 	Color			nodeHeaderErrorBackgroundColor;

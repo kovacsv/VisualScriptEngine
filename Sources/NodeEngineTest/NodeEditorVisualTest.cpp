@@ -452,6 +452,7 @@ TEST (SlotCirclesTest)
 		/*nodePadding*/ 5.0,
 		/*nodeTextFont*/ Font (L"Arial", 16.0),
 		/*nodeHeaderTextColor*/ Color (255, 255, 255),
+		/*nodeHeaderErrorTextColor*/ Color (255, 255, 255),
 		/*nodeContentTextColor*/ Color (0, 0, 0),
 		/*nodeHeaderBackgroundColor*/ Color (100, 100, 100),
 		/*nodeHeaderErrorBackgroundColor*/ Color (255, 0, 0),
