@@ -64,7 +64,7 @@ void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawing
 {
 	DrawingContext& drawingContext = env.GetDrawingContext ();
 	
-	drawingContext.BeginDraw (DrawingContext::Phase::Draw);
+	drawingContext.BeginDraw ();
 	DrawBackground (env);
 
 	{
@@ -73,21 +73,13 @@ void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawing
 		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
 		NodeUIDrawingEnvironmentContextDecorator drawEnv (env, viewBoxContext);
 		
-		drawingContext.BeginDraw (DrawingContext::Phase::DrawGroups);
 		DrawGroups (drawEnv, drawModifier);
-		drawingContext.EndDraw (DrawingContext::Phase::DrawGroups);
-		
-		drawingContext.BeginDraw (DrawingContext::Phase::DrawConnections);
 		DrawConnections (drawEnv, scaleIndependentData, drawModifier);
-		drawingContext.EndDraw (DrawingContext::Phase::DrawConnections);
-
-		drawingContext.BeginDraw (DrawingContext::Phase::DrawNodes);
 		DrawNodes (drawEnv, scaleIndependentData, drawModifier);
-		drawingContext.EndDraw (DrawingContext::Phase::DrawNodes);
 	}
 
 	DrawSelectionRect (env, drawModifier);
-	drawingContext.EndDraw (DrawingContext::Phase::Draw);
+	drawingContext.EndDraw ();
 }
 
 void NodeUIManagerDrawer::DrawBackground (NodeUIDrawingEnvironment& env) const

@@ -45,6 +45,26 @@ public:
 	IDWriteFactory*		directWriteFactory;
 };
 
+class Direct2DAntialiasGuard
+{
+public:
+	Direct2DAntialiasGuard (ID2D1RenderTarget* renderTarget, D2D1_ANTIALIAS_MODE newMode) :
+		renderTarget (renderTarget),
+		oldMode (renderTarget->GetAntialiasMode ())
+	{
+		renderTarget->SetAntialiasMode (newMode);
+	}
+
+	~Direct2DAntialiasGuard ()
+	{
+		renderTarget->SetAntialiasMode (oldMode);
+	}
+
+private:
+	ID2D1RenderTarget*		renderTarget;
+	D2D1_ANTIALIAS_MODE		oldMode;
+};
+
 static Direct2DHandler direct2DHandler;
 
 static ID2D1SolidColorBrush* CreateBrush (ID2D1RenderTarget* renderTarget, const NUIE::Color& color)
@@ -145,27 +165,19 @@ double Direct2DContext::GetHeight () const
 	return height;
 }
 
-void Direct2DContext::BeginDraw (Phase phase)
+void Direct2DContext::BeginDraw ()
 {
-	if (phase == Phase::Draw) {
-		renderTarget->BeginDraw ();
-		renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
-		renderTarget->SetTransform (D2D1::Matrix3x2F::Identity ());
-		renderTarget->Clear (D2D1::ColorF (D2D1::ColorF::White));
-	} else if (phase == Phase::DrawConnections) {
-		renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
-	}
+	renderTarget->BeginDraw ();
+	renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
+	renderTarget->SetTransform (D2D1::Matrix3x2F::Identity ());
+	renderTarget->Clear (D2D1::ColorF (D2D1::ColorF::White));
 }
 
-void Direct2DContext::EndDraw (Phase phase)
+void Direct2DContext::EndDraw ()
 {
-	if (phase == Phase::Draw) {
-		HRESULT result = renderTarget->EndDraw ();
-		if (result == D2DERR_RECREATE_TARGET) {
-			CreateRenderTarget ();
-		}
-	} else if (phase == Phase::DrawConnections) {
-		renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
+	HRESULT result = renderTarget->EndDraw ();
+	if (result == D2DERR_RECREATE_TARGET) {
+		CreateRenderTarget ();
 	}
 }
 
@@ -178,6 +190,8 @@ void Direct2DContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, 
 
 void Direct2DContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
+	Direct2DAntialiasGuard antialiasGuard (renderTarget, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+
 	ID2D1PathGeometry* path = nullptr;
 	direct2DHandler.direct2DFactory->CreatePathGeometry (&path);
 

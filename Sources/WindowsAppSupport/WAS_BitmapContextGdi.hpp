@@ -62,8 +62,8 @@ public:
 	virtual double				GetWidth () const override;
 	virtual double				GetHeight () const override;
 
-	virtual void				BeginDraw (Phase phase) override;
-	virtual void				EndDraw (Phase phase) override;
+	virtual void				BeginDraw () override;
+	virtual void				EndDraw () override;
 
 	virtual void				DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen) override;
 	virtual void				DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen) override;

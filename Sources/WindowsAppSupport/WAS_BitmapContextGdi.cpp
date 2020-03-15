@@ -108,12 +108,12 @@ double BitmapContextGdi::GetHeight () const
 	return height;
 }
 
-void BitmapContextGdi::BeginDraw (Phase)
+void BitmapContextGdi::BeginDraw ()
 {
 
 }
 
-void BitmapContextGdi::EndDraw (Phase)
+void BitmapContextGdi::EndDraw ()
 {
 
 }
