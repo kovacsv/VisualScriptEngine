@@ -396,6 +396,7 @@ EventHandlerResult NodeInputEventHandler::ForwardEventToNode (const std::functio
 		handlerResult = forwardEvent ();
 		if (handlerResult == EventHandlerResult::EventHandled) {
 			uiManager.RequestRecalculateAndRedraw ();
+			uiManager.InvalidateNodeValue (uiNode);
 			uiManager.InvalidateNodeDrawing (uiNode);
 		}
 	}

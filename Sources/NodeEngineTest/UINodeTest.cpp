@@ -156,9 +156,11 @@ public:
 				return NE::ValuePtr (new NE::IntValue ((int) GetTypedNode (uiNode)->GetMyEnumValue ()));
 			}
 
-			virtual bool SetValueInternal (NodeUIManager&, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+			virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 			{
 				GetTypedNode (uiNode)->SetMyEnumValue ((MyEnumValue) NE::IntValue::Get (value));
+				uiManager.InvalidateNodeValue (uiNode);
+				uiManager.InvalidateNodeDrawing (uiNode);
 				return true;
 			}
 		};

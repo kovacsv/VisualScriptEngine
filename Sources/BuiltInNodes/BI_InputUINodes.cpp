@@ -131,9 +131,11 @@ void BooleanNode::RegisterParameters (NUIE::NodeParameterList& parameterList) co
 			return NE::ValuePtr (new NE::BooleanValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 	
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetValue (NE::BooleanValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
 		}
 	};
@@ -166,7 +168,6 @@ bool BooleanNode::GetValue () const
 void BooleanNode::SetValue (bool newVal)
 {
 	val = newVal;
-	InvalidateValue ();
 }
 
 NumericUpDownNode::Layout::Layout (	const std::string& leftButtonId,
@@ -298,9 +299,11 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetValue (NE::IntValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
 		}
 	};
@@ -319,9 +322,11 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetStep (NE::IntValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
 		}
 	};
@@ -352,13 +357,11 @@ NE::Stream::Status IntegerUpDownNode::Write (NE::OutputStream& outputStream) con
 void IntegerUpDownNode::Increase ()
 {
 	val = val + step;
-	InvalidateValue ();
 }
 
 void IntegerUpDownNode::Decrease ()
 {
 	val = val - step;
-	InvalidateValue ();
 }
 
 int IntegerUpDownNode::GetValue () const
@@ -369,7 +372,6 @@ int IntegerUpDownNode::GetValue () const
 void IntegerUpDownNode::SetValue (int newValue)
 {
 	val = newValue;
-	InvalidateValue ();
 }
 
 int IntegerUpDownNode::GetStep () const
@@ -422,9 +424,11 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetValue (NE::DoubleValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
 		}
 	};
@@ -443,9 +447,11 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager&, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetStep (NE::DoubleValue::Get (value));
+			uiManager.InvalidateNodeValue (uiNode);
+			uiManager.InvalidateNodeDrawing (uiNode);
 			return true;
 		}
 	};
@@ -476,13 +482,11 @@ NE::Stream::Status DoubleUpDownNode::Write (NE::OutputStream& outputStream) cons
 void DoubleUpDownNode::Increase ()
 {
 	val = val + step;
-	InvalidateValue ();
 }
 
 void DoubleUpDownNode::Decrease ()
 {
 	val = val - step;
-	InvalidateValue ();
 }
 
 double DoubleUpDownNode::GetValue () const
@@ -493,7 +497,6 @@ double DoubleUpDownNode::GetValue () const
 void DoubleUpDownNode::SetValue (double newValue)
 {
 	val = newValue;
-	InvalidateValue ();
 }
 
 double DoubleUpDownNode::GetStep () const
