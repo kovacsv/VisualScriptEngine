@@ -72,8 +72,6 @@ BasicSkinParams::BasicSkinParams (
 	selectionBlendColor (selectionBlendColor),
 	selectionRectPen (selectionRectPen),
 	nodeSelectionRectPen (nodeSelectionRectPen),
-	hasValueStatusColor (hasValueStatusColor),
-	hasNoValueStatusColor (hasNoValueStatusColor),
 	buttonBorderPen (buttonBorderPen),
 	buttonBackgroundColor (buttonBackgroundColor),
 	textPanelTextColor (textPanelTextColor),

@@ -165,9 +165,6 @@ private:
 	Pen				selectionRectPen;
 	Pen				nodeSelectionRectPen;
 
-	Color			hasValueStatusColor;
-	Color			hasNoValueStatusColor;
-
 	Pen				buttonBorderPen;
 	Color			buttonBackgroundColor;
 
