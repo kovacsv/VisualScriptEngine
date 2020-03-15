@@ -32,6 +32,7 @@ BasicSkinParams::BasicSkinParams (
 	const Color&			nodeHeaderTextColor,
 	const Color&			nodeContentTextColor,
 	const Color&			nodeHeaderBackgroundColor,
+	const Color&			nodeHeaderErrorBackgroundColor,
 	const Color&			nodeContentBackgroundColor,
 	const Pen&				nodeBorderPen,
 	const Color&			slotTextColor,
@@ -42,8 +43,6 @@ BasicSkinParams::BasicSkinParams (
 	const BlendColor&		selectionBlendColor,
 	const Pen&				selectionRectPen,
 	const Pen&				nodeSelectionRectPen,
-	const Color&			hasValueStatusColor,
-	const Color&			hasNoValueStatusColor,
 	const Pen&				buttonBorderPen,
 	const Color&			buttonBackgroundColor,
 	const Color&			textPanelTextColor,
@@ -60,6 +59,7 @@ BasicSkinParams::BasicSkinParams (
 	nodeHeaderTextColor (nodeHeaderTextColor),
 	nodeContentTextColor (nodeContentTextColor),
 	nodeHeaderBackgroundColor (nodeHeaderBackgroundColor),
+	nodeHeaderErrorBackgroundColor (nodeHeaderErrorBackgroundColor),
 	nodeContentBackgroundColor (nodeContentBackgroundColor),
 	nodeBorderPen (nodeBorderPen),
 	slotTextColor (slotTextColor),
@@ -124,6 +124,11 @@ const Color& BasicSkinParams::GetNodeHeaderBackgroundColor () const
 	return nodeHeaderBackgroundColor;
 }
 
+const Color& BasicSkinParams::GetNodeHeaderErrorBackgroundColor () const
+{
+	return nodeHeaderErrorBackgroundColor;
+}
+
 const Color& BasicSkinParams::GetNodeContentBackgroundColor () const
 {
 	return nodeContentBackgroundColor;
@@ -172,16 +177,6 @@ const NUIE::Pen& BasicSkinParams::GetSelectionRectPen () const
 const NUIE::Pen& BasicSkinParams::GetNodeSelectionRectPen () const
 {
 	return nodeSelectionRectPen;
-}
-
-const Color& BasicSkinParams::GetHasValueStatusColor () const
-{
-	return hasValueStatusColor;
-}
-
-const Color& BasicSkinParams::GetHasNoValueStatusColor () const
-{
-	return hasNoValueStatusColor;
 }
 
 const Pen& BasicSkinParams::GetButtonBorderPen () const
@@ -234,6 +229,7 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*nodeHeaderTextColor*/ Color (255, 255, 255),
 		/*nodeContentTextColor*/ Color (0, 0, 0),
 		/*nodeHeaderBackgroundColor*/ Color (100, 100, 100),
+		/*nodeHeaderErrorBackgroundColor*/ Color (225, 0, 0),
 		/*nodeContentBackgroundColor*/ Color (200, 200, 200),
 		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
 		/*slotTextColor*/ Color (0, 0, 0),
@@ -244,8 +240,6 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*disabledBlendColor*/ BlendColor (Color (0, 138, 184), 0.2),
 		/*selectionRectPen*/ Pen (Color (0, 138, 184), 1.0),
 		/*nodeSelectionRectPen*/ Pen (Color (0, 138, 184), 5.0),
-		/*hasValueStatusColor*/ Color (0, 255, 0),
-		/*hasNoValueStatusColor*/ Color (255, 0, 0),
 		/*buttonBorderPen*/ Pen (Color (50, 75, 100), 1.0),
 		/*buttonBackgroundColor*/ Color (150, 175, 200),
 		/*textPanelTextColor*/ Color (0, 0, 0),

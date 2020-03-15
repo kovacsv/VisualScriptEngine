@@ -17,8 +17,7 @@
 <rect x="195" y="172" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
 <rect x="74" y="94" width="152" height="112" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
 <rect x="263" y="279" width="174" height="34" style="fill:rgb(100,100,100);"/>
-<text x="354" y="296" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Range</text>
-<rect x="267" y="283" width="4" height="26" style="fill:rgb(0,255,0);"/>
+<text x="350" y="296" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Range</text>
 <rect x="263" y="313" width="174" height="107" style="fill:rgb(200,200,200);"/>
 <rect x="263" y="318" width="90" height="29" style="fill:rgb(225,225,225);"/>
 <text x="268" y="333" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Start</text>

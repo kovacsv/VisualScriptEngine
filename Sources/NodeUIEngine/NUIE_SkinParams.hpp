@@ -42,6 +42,7 @@ public:
 	virtual const Color&			GetNodeHeaderTextColor () const = 0;
 	virtual const Color&			GetNodeContentTextColor () const = 0;
 	virtual const Color&			GetNodeHeaderBackgroundColor () const = 0;
+	virtual const Color&			GetNodeHeaderErrorBackgroundColor () const = 0;
 	virtual const Color&			GetNodeContentBackgroundColor () const = 0;
 	virtual const Pen&				GetNodeBorderPen () const = 0;
 
@@ -54,9 +55,6 @@ public:
 	virtual const BlendColor&		GetSelectionBlendColor () const = 0;
 	virtual const Pen&				GetSelectionRectPen () const = 0;
 	virtual const Pen&				GetNodeSelectionRectPen () const = 0;
-
-	virtual const Color&			GetHasValueStatusColor () const = 0;
-	virtual const Color&			GetHasNoValueStatusColor () const = 0;
 
 	virtual const Pen&				GetButtonBorderPen () const = 0;
 	virtual const Color&			GetButtonBackgroundColor () const = 0;
@@ -85,6 +83,7 @@ public:
 		const Color&			nodeHeaderTextColor,
 		const Color&			nodeContentTextColor,
 		const Color&			nodeHeaderBackgroundColor,
+		const Color&			nodeHeaderErrorBackgroundColor,
 		const Color&			nodeContentBackgroundColor,
 		const Pen&				nodeBorderPen,
 		const Color&			slotTextColor,
@@ -95,8 +94,6 @@ public:
 		const BlendColor&		selectionBlendColor,
 		const Pen&				selectionRectPen,
 		const Pen&				nodeSelectionRectPen,
-		const Color&			hasValueStatusColor,
-		const Color&			hasNoValueStatusColor,
 		const Pen&				buttonBorderPen,
 		const Color&			buttonBackgroundColor,
 		const Color&			textPanelTextColor,
@@ -116,6 +113,7 @@ public:
 	virtual const Color&			GetNodeHeaderTextColor () const override;
 	virtual const Color&			GetNodeContentTextColor () const override;
 	virtual const Color&			GetNodeHeaderBackgroundColor () const override;
+	virtual const Color&			GetNodeHeaderErrorBackgroundColor () const override;
 	virtual const Color&			GetNodeContentBackgroundColor () const override;
 	virtual const Pen&				GetNodeBorderPen () const override;
 
@@ -128,9 +126,6 @@ public:
 	virtual const BlendColor&		GetSelectionBlendColor () const override;
 	virtual const Pen&				GetSelectionRectPen () const override;
 	virtual const Pen&				GetNodeSelectionRectPen () const override;
-
-	virtual const Color&			GetHasValueStatusColor () const override;
-	virtual const Color&			GetHasNoValueStatusColor () const override;
 
 	virtual const Pen&				GetButtonBorderPen () const override;
 	virtual const Color&			GetButtonBackgroundColor () const override;
@@ -152,6 +147,7 @@ private:
 	Color			nodeHeaderTextColor;
 	Color			nodeContentTextColor;
 	Color			nodeHeaderBackgroundColor;
+	Color			nodeHeaderErrorBackgroundColor;
 	Color			nodeContentBackgroundColor;
 	Pen				nodeBorderPen;
 

@@ -65,7 +65,7 @@ private:
 	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
 };
 
-class NodeUIStatusHeaderPanel : public NUIE::NodePanel
+class NodeUIStatusHeaderPanel : public NodeUITextPanelBase
 {
 public:
 	enum class NodeStatus
@@ -76,13 +76,10 @@ public:
 
 	NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus);
 
-	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
-	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
-
 private:
-	static const int StatusRectSize = 4;
+	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
 
-	std::wstring	headerText;
 	NodeStatus		nodeStatus;
 };
 

@@ -28,15 +28,14 @@
 <text x="150" y="336" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">&gt;</text>
 <rect x="137" y="322" width="26" height="29" style="fill:none;stroke-width:1px;stroke:rgb(50,75,100);"/>
 <rect x="32" y="244" width="136" height="112" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
-<rect x="227" y="146" width="146" height="34" style="fill:rgb(100,100,100);"/>
-<text x="304" y="163" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Addition</text>
-<rect x="231" y="150" width="4" height="26" style="fill:rgb(0,255,0);"/>
-<rect x="227" y="180" width="146" height="73" style="fill:rgb(200,200,200);"/>
-<rect x="227" y="185" width="26" height="29" style="fill:rgb(225,225,225);"/>
-<text x="232" y="200" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">A</text>
-<rect x="227" y="219" width="26" height="29" style="fill:rgb(225,225,225);"/>
-<text x="232" y="234" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">B</text>
-<rect x="267" y="185" width="106" height="29" style="fill:rgb(225,225,225);"/>
-<text x="368" y="200" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Result</text>
-<rect x="227" y="146" width="146" height="107" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<rect x="229" y="146" width="142" height="34" style="fill:rgb(100,100,100);"/>
+<text x="300" y="163" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Addition</text>
+<rect x="229" y="180" width="142" height="73" style="fill:rgb(200,200,200);"/>
+<rect x="229" y="185" width="26" height="29" style="fill:rgb(225,225,225);"/>
+<text x="234" y="200" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">A</text>
+<rect x="229" y="219" width="26" height="29" style="fill:rgb(225,225,225);"/>
+<text x="234" y="234" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">B</text>
+<rect x="265" y="185" width="106" height="29" style="fill:rgb(225,225,225);"/>
+<text x="366" y="200" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Result</text>
+<rect x="229" y="146" width="142" height="107" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
 </svg>

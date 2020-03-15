@@ -115,31 +115,26 @@ NUIE::Color NodeUIHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironmen
 }
 
 NodeUIStatusHeaderPanel::NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus) :
-	NodePanel (),
-	headerText (headerText),
+	NodeUITextPanelBase (headerText),
 	nodeStatus (nodeStatus)
 {
-	
+
 }
 
-NUIE::Size NodeUIStatusHeaderPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
+NUIE::Color NodeUIStatusHeaderPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
-	NUIE::Size minSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeTextFont (), headerText);
-	minSize = minSize.Grow (2.0 * skinParams.GetNodePadding (), 2.0 * skinParams.GetNodePadding ());
-	minSize = minSize.Grow (StatusRectSize * 2, 0);
-	return minSize;
+	return env.GetSkinParams ().GetNodeHeaderTextColor ();
 }
 
-void NodeUIStatusHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
+NUIE::Color NodeUIStatusHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, skinParams.GetNodeHeaderBackgroundColor ())));
-	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + StatusRectSize * 2, rect.GetTop ()), NUIE::Size (rect.GetWidth () - StatusRectSize * 2, rect.GetHeight ()));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, skinParams.GetNodeHeaderTextColor ())));
-	NUIE::Rect statusRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + StatusRectSize, rect.GetTop () + StatusRectSize), NUIE::Size (StatusRectSize, rect.GetHeight () - StatusRectSize * 2));
-	NUIE::Color statusColor = (nodeStatus == NodeStatus::HasValue ? skinParams.GetHasValueStatusColor () : skinParams.GetHasNoValueStatusColor ());
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (statusRect, statusColor)));
+	if (nodeStatus == NodeUIStatusHeaderPanel::NodeStatus::HasValue) {
+		return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
+	} else if (nodeStatus == NodeUIStatusHeaderPanel::NodeStatus::HasNoValue) {
+		return env.GetSkinParams ().GetNodeHeaderErrorBackgroundColor ();
+	}
+	DBGBREAK ();
+	return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
 }
 
 NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, NUIE::NodeUIDrawingEnvironment& env, size_t allTextCount, size_t textsPerPage) :
