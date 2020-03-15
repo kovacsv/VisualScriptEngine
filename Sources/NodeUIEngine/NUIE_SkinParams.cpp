@@ -36,6 +36,8 @@ BasicSkinParams::BasicSkinParams (
 	const Pen&				nodeBorderPen,
 	const Color&			slotTextColor,
 	const Color&			slotTextBackgroundColor,
+	bool					needToDrawSlotCircles,
+	const Size&				slotCircleSize,
 	const BlendColor&		disabledBlendColor,
 	const BlendColor&		selectionBlendColor,
 	const Pen&				selectionRectPen,
@@ -62,6 +64,8 @@ BasicSkinParams::BasicSkinParams (
 	nodeBorderPen (nodeBorderPen),
 	slotTextColor (slotTextColor),
 	slotTextBackgroundColor (slotTextBackgroundColor),
+	needToDrawSlotCircles (needToDrawSlotCircles),
+	slotCircleSize (slotCircleSize),
 	disabledBlendColor (disabledBlendColor),
 	selectionBlendColor (selectionBlendColor),
 	selectionRectPen (selectionRectPen),
@@ -138,6 +142,16 @@ const Color& BasicSkinParams::GetSlotTextColor () const
 const Color& BasicSkinParams::GetSlotTextBackgroundColor () const
 {
 	return slotTextBackgroundColor;
+}
+
+bool BasicSkinParams::NeedToDrawSlotCircles () const
+{
+	return needToDrawSlotCircles;
+}
+
+const Size& BasicSkinParams::GetSlotCircleSize () const
+{
+	return slotCircleSize;
 }
 
 const BlendColor& BasicSkinParams::GetDisabledBlendColor () const
@@ -224,6 +238,8 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
 		/*slotTextColor*/ Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ Color (225, 225, 225),
+		/*needToDrawSlotCircles*/ false,
+		/*slotCircleSize*/ Size (8.0, 8.0),
 		/*selectionBlendColor*/ BlendColor (Color (240, 240, 240), 0.5),
 		/*disabledBlendColor*/ BlendColor (Color (0, 138, 184), 0.2),
 		/*selectionRectPen*/ Pen (Color (0, 138, 184), 1.0),

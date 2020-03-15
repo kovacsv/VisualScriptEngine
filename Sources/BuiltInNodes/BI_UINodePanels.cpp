@@ -246,6 +246,11 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 		NUIE::Rect textRect = slotRect.Expand (NUIE::Size (2.0 * -nodePadding, -nodePadding));
 		drawingImage.AddInputSlotConnPosition (slotId, slotRect.GetLeftCenter ());
 		drawingImage.AddInputSlotRect (slotId, slotRect);
+		if (skinParams.NeedToDrawSlotCircles ()) {
+			NUIE::Rect connCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetSlotCircleSize ());
+			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (connCircleRect, skinParams.GetSlotTextBackgroundColor ())));
+			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (connCircleRect, skinParams.GetConnectionLinePen ())));
+		}
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), NUIE::HorizontalAnchor::Left, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())));
 	});
@@ -256,6 +261,11 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 		NUIE::Rect textRect = slotRect.Expand (NUIE::Size (2.0 * -nodePadding, -nodePadding));
 		drawingImage.AddOutputSlotConnPosition (slotId, slotRect.GetRightCenter ());
 		drawingImage.AddOutputSlotRect (slotId, slotRect);
+		if (skinParams.NeedToDrawSlotCircles ()) {
+			NUIE::Rect connCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetRightCenter (), skinParams.GetSlotCircleSize ());
+			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (connCircleRect, skinParams.GetSlotTextBackgroundColor ())));
+			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (connCircleRect, skinParams.GetConnectionLinePen ())));
+		}
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeTextFont (), uiSlot->GetName (), NUIE::HorizontalAnchor::Right, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())));
 	});

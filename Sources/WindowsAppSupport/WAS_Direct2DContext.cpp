@@ -229,6 +229,8 @@ void Direct2DContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color
 
 void Direct2DContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
+	Direct2DAntialiasGuard antialiasGuard (renderTarget, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+
 	D2D1_ELLIPSE d2Ellipse = CreateEllipse (rect);
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
 	renderTarget->DrawEllipse (&d2Ellipse, d2Brush, GetPenThickness (pen));
@@ -237,6 +239,8 @@ void Direct2DContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 
 void Direct2DContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
+	Direct2DAntialiasGuard antialiasGuard (renderTarget, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+
 	D2D1_ELLIPSE d2Ellipse = CreateEllipse (rect);
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, color);
 	renderTarget->FillEllipse (&d2Ellipse, d2Brush);

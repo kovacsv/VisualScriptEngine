@@ -198,16 +198,26 @@ void SvgDrawingContext::FillRect (const Rect& rect, const Color& color)
 	});
 }
 				 
-void SvgDrawingContext::DrawEllipse (const Rect&, const Pen&)
+void SvgDrawingContext::DrawEllipse (const Rect& rect, const Pen& pen)
 {
-	// TODO: Not implemented
-	DBGBREAK ();
+	svgBuilder.AddTag (L"ellipse", {
+		{ L"cx", SvgBuilder::BegToString (rect.GetCenter ().GetX ()) },
+		{ L"cy", SvgBuilder::BegToString (rect.GetCenter ().GetY ()) },
+		{ L"rx", SvgBuilder::EndToString (rect.GetWidth () / 2.0) },
+		{ L"ry", SvgBuilder::EndToString (rect.GetHeight () / 2.0) },
+		{ L"style", L"fill:none;" + SvgBuilder::PenToStrokeStyle (pen) }
+	});
 }
 
-void SvgDrawingContext::FillEllipse (const Rect&, const Color&)
+void SvgDrawingContext::FillEllipse (const Rect& rect, const Color& color)
 {
-	// TODO: Not implemented
-	DBGBREAK ();
+	svgBuilder.AddTag (L"ellipse", {
+		{ L"cx", SvgBuilder::BegToString (rect.GetCenter ().GetX ()) },
+		{ L"cy", SvgBuilder::BegToString (rect.GetCenter ().GetY ()) },
+		{ L"rx", SvgBuilder::EndToString (rect.GetWidth () / 2.0) },
+		{ L"ry", SvgBuilder::EndToString (rect.GetHeight () / 2.0) },
+		{ L"style", SvgBuilder::ColorToFillStyle (color) }
+	});
 }
 				 
 void SvgDrawingContext::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const NUIE::Color& textColor)

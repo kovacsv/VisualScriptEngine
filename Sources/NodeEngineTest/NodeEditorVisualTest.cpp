@@ -14,8 +14,8 @@ namespace NodeEditorVisualTest
 class SimpleNodeEditorTestEnv : public NodeEditorTestEnv
 {
 public:
-	SimpleNodeEditorTestEnv () :
-		NodeEditorTestEnv ()
+	SimpleNodeEditorTestEnv (const BasicSkinParams& skinParams) :
+		NodeEditorTestEnv (skinParams)
 	{
 		doubleUpDownNode.reset (new DoubleUpDownNode (L"Number", NUIE::Point (100, 200), 20, 10));
 		rangeInputNode.reset (new DoubleIncrementedNode (L"Range", NUIE::Point (300, 400)));
@@ -61,8 +61,8 @@ public:
 class SimpleNodeEditorTestEnvWithConnections : public SimpleNodeEditorTestEnv
 {
 public:
-	SimpleNodeEditorTestEnvWithConnections () :
-		SimpleNodeEditorTestEnv ()
+	SimpleNodeEditorTestEnvWithConnections (const BasicSkinParams& skinParams) :
+		SimpleNodeEditorTestEnv (skinParams)
 	{
 		nodeEditor.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("start")));
 		nodeEditor.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("step")));
@@ -76,7 +76,7 @@ public:
 
 TEST (SelectionTest)
 {
-	SimpleNodeEditorTestEnv env;
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
 	
 	{ // deselect all
 		env.Click (env.pointInBackground);
@@ -165,7 +165,7 @@ TEST (SelectionTest)
 
 TEST (SlotConnectionTest)
 {
-	SimpleNodeEditorTestEnv env;
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
 
 	Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
 	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
@@ -231,7 +231,7 @@ TEST (SlotConnectionTest)
 
 TEST (PanAndZoomTest)
 {
-	SimpleNodeEditorTestEnv env;
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference ("03_PanAndZoom_Basic.svg"));
 
 	Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
@@ -277,7 +277,7 @@ TEST (PanAndZoomTest)
 
 TEST (DeleteNodeTest)
 {
-	SimpleNodeEditorTestEnvWithConnections env;
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference ("04_Delete_Basic.svg"));
 	env.SetNextCommandName (L"Delete Nodes");
 	env.RightClick (env.rangeInputHeaderPoint);
@@ -286,7 +286,7 @@ TEST (DeleteNodeTest)
 
 TEST (CopyPasteTest)
 {
-	SimpleNodeEditorTestEnvWithConnections env;
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference ("05_CopyPaste_Basic.svg"));
 	env.Click (env.rangeInputHeaderPoint);
 	env.CtrlClick (env.doubleInputHeaderPoint);
@@ -301,7 +301,7 @@ TEST (CopyPasteTest)
 
 TEST (NodeGroupingTest)
 {
-	SimpleNodeEditorTestEnvWithConnections env;
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference ("06_NodeGrouping_Basic.svg"));
 
 	{ // select nodes with selection rect
@@ -336,7 +336,7 @@ TEST (NodeGroupingTest)
 
 TEST (UndoTest)
 {
-	NodeEditorTestEnv env;
+	NodeEditorTestEnv env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference ("07_UndoTest_Empty.svg"));
 
 	env.SetNextCommandName (L"Create Number Node");
@@ -381,7 +381,7 @@ TEST (UndoTest)
 
 TEST (ManualUpdateTest)
 {
-	NodeEditorTestEnv env;
+	NodeEditorTestEnv env (GetDefaultSkinParams ());
 	env.SetNextCommandName (L"Create Integer Node");
 	env.RightClick (Point (100, 100));
 	env.SetNextCommandName (L"Create Increase Node");
@@ -405,7 +405,7 @@ TEST (ManualUpdateTest)
 
 TEST (ManualUpdateTestUndo)
 {
-	NodeEditorTestEnv env;
+	NodeEditorTestEnv env (GetDefaultSkinParams ());
 	env.nodeEditor.SetUpdateMode (NodeEditor::UpdateMode::Manual);
 
 	env.SetNextCommandName (L"Create Integer Node");
@@ -430,7 +430,7 @@ TEST (ManualUpdateTestUndo)
 
 TEST (FitToWindowTest)
 {
-	SimpleNodeEditorTestEnvWithConnections env;
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference ("10_FitToWindow_Basic.svg"));
 	env.nodeEditor.FitToWindow ();
 	ASSERT (env.CheckReference ("10_FitToWindow_Fit.svg"));
@@ -438,10 +438,49 @@ TEST (FitToWindowTest)
 
 TEST (AlignToWindowTest)
 {
-	SimpleNodeEditorTestEnvWithConnections env;
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference ("11_AlignToWindow_Basic.svg"));
 	env.nodeEditor.AlignToWindow ();
 	ASSERT (env.CheckReference ("11_AlignToWindow_Align.svg"));
+}
+
+TEST (SlotCirclesTest)
+{
+	BasicSkinParams mySkinParams (
+		/*backgroundColor*/ Color (240, 240, 240),
+		/*connectionLinePen*/ Pen (Color (0, 0, 0), 1.0),
+		/*nodePadding*/ 5.0,
+		/*nodeTextFont*/ Font (L"Arial", 16.0),
+		/*nodeHeaderTextColor*/ Color (255, 255, 255),
+		/*nodeContentTextColor*/ Color (0, 0, 0),
+		/*nodeHeaderBackgroundColor*/ Color (100, 100, 100),
+		/*nodeContentBackgroundColor*/ Color (200, 200, 200),
+		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
+		/*slotTextColor*/ Color (0, 0, 0),
+		/*slotTextBackgroundColor*/ Color (225, 225, 225),
+		/*needToDrawSlotCircles*/ true,
+		/*slotCircleSize*/ Size (12.0, 12.0),
+		/*selectionBlendColor*/ BlendColor (Color (240, 240, 240), 0.5),
+		/*disabledBlendColor*/ BlendColor (Color (0, 138, 184), 0.2),
+		/*selectionRectPen*/ Pen (Color (0, 138, 184), 1.0),
+		/*nodeSelectionRectPen*/ Pen (Color (0, 138, 184), 5.0),
+		/*hasValueStatusColor*/ Color (0, 255, 0),
+		/*hasNoValueStatusColor*/ Color (255, 0, 0),
+		/*buttonBorderPen*/ Pen (Color (50, 75, 100), 1.0),
+		/*buttonBackgroundColor*/ Color (150, 175, 200),
+		/*textPanelTextColor*/ Color (0, 0, 0),
+		/*textPanelBackgroundColor*/ Color (255, 255, 100),
+		/*groupNameFont*/ Font (L"Arial", 18.0),
+		/*groupNameColor*/ Color (0, 0, 0),
+		/*groupBackgroundColors*/ NamedColorSet ({
+			{ L"Blue", Color (160, 200, 240) },
+			{ L"Green", Color (160, 239, 160) },
+			{ L"Red", Color (239, 189, 160) }
+			}),
+		/*groupPadding*/ 10.0
+	);
+	SimpleNodeEditorTestEnvWithConnections env (mySkinParams);
+	ASSERT (env.CheckReference ("12_SlotCircles.svg"));
 }
 
 }

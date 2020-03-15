@@ -73,13 +73,47 @@ private:
 	WAS::NodeTree nodeTree;
 };
 
+static const NUIE::BasicSkinParams MySkinParams (
+	/*backgroundColor*/ NUIE::Color (240, 240, 240),
+	/*connectionLinePen*/ NUIE::Pen (NUIE::Color (0, 0, 0), 1.0),
+	/*nodePadding*/ 5.0,
+	/*nodeTextFont*/ NUIE::Font (L"Arial", 14.0),
+	/*nodeHeaderTextColor*/ NUIE::Color (255, 255, 255),
+	/*nodeContentTextColor*/ NUIE::Color (0, 0, 0),
+	/*nodeHeaderBackgroundColor*/ NUIE::Color (100, 100, 100),
+	/*nodeContentBackgroundColor*/ NUIE::Color (200, 200, 200),
+	/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (0, 0, 0), 1.0),
+	/*slotTextColor*/ NUIE::Color (0, 0, 0),
+	/*slotTextBackgroundColor*/ NUIE::Color (225, 225, 225),
+	/*needToDrawSlotCircles*/ true,
+	/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
+	/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (240, 240, 240), 0.5),
+	/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
+	/*selectionRectPen*/ NUIE::Pen (NUIE::Color (0, 138, 184), 1.0),
+	/*nodeSelectionRectPen*/ NUIE::Pen (NUIE::Color (0, 138, 184), 5.0),
+	/*hasValueStatusColor*/ NUIE::Color (0, 255, 0),
+	/*hasNoValueStatusColor*/ NUIE::Color (255, 0, 0),
+	/*buttonBorderPen*/ NUIE::Pen (NUIE::Color (50, 75, 100), 1.0),
+	/*buttonBackgroundColor*/ NUIE::Color (150, 175, 200),
+	/*textPanelTextColor*/ NUIE::Color (0, 0, 0),
+	/*textPanelBackgroundColor*/ NUIE::Color (255, 255, 100),
+	/*groupNameFont*/ NUIE::Font (L"Arial", 18.0),
+	/*groupNameColor*/ NUIE::Color (0, 0, 0),
+	/*groupBackgroundColors*/ NUIE::NamedColorSet ({
+		{ L"Blue", NUIE::Color (160, 200, 240) },
+		{ L"Green", NUIE::Color (160, 239, 160) },
+		{ L"Red", NUIE::Color (239, 189, 160) }
+		}),
+	/*groupPadding*/ 10.0
+);
+
 class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
 	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
 		stringSettings (NE::GetDefaultStringSettings ()),
-		skinParams (NUIE::GetDefaultSkinParams ()),
+		skinParams (MySkinParams),
 		eventHandlers (),
 		evaluationEnv (nullptr),
 #ifdef USE_DIRECT2D_CONTEXT

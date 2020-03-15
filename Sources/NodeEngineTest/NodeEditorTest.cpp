@@ -13,7 +13,7 @@ namespace NodeEditorTest
 
 TEST (NodeEditorNeedToSaveTest)
 {
-	NodeEditorTestEnv env;
+	NodeEditorTestEnv env (GetDefaultSkinParams ());
 	ASSERT (!env.nodeEditor.NeedToSave ());
 
 	env.nodeEditor.AddNode (UINodePtr (new IntegerUpDownNode (L"Integer", Point (0.0, 0.0), 0, 1)));

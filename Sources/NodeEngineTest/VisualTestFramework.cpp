@@ -184,11 +184,11 @@ MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandPtr& com
 	return nullptr;
 }
 
-TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor) :
+TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor, const BasicSkinParams& skinParams) :
 	NUIE::NodeUIEnvironment (),
 	nodeEditor (nodeEditor),
 	stringSettings (GetDefaultStringSettings ()),
-	skinParams (GetDefaultSkinParams ()),
+	skinParams (skinParams),
 	drawingContext (800, 600),
 	eventHandlers (),
 	evaluationEnv (nullptr)
@@ -256,8 +256,8 @@ const SvgDrawingContext& TestNodeUIEnvironment::GetSvgDrawingContext () const
 	return drawingContext;
 }
 
-NodeEditorTestEnv::NodeEditorTestEnv () :
-	uiEnvironment (nodeEditor),
+NodeEditorTestEnv::NodeEditorTestEnv (const BasicSkinParams& skinParams) :
+	uiEnvironment (nodeEditor, skinParams),
 	nodeEditor (uiEnvironment)
 {
 	nodeEditor.Update ();

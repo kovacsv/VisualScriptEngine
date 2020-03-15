@@ -47,6 +47,8 @@ public:
 
 	virtual const Color&			GetSlotTextColor () const = 0;
 	virtual const Color&			GetSlotTextBackgroundColor () const = 0;
+	virtual bool					NeedToDrawSlotCircles () const = 0;
+	virtual const Size&				GetSlotCircleSize () const = 0;
 
 	virtual const BlendColor&		GetDisabledBlendColor () const = 0;
 	virtual const BlendColor&		GetSelectionBlendColor () const = 0;
@@ -87,6 +89,8 @@ public:
 		const Pen&				nodeBorderPen,
 		const Color&			slotTextColor,
 		const Color&			slotTextBackgroundColor,
+		bool					needToDrawSlotCircles,
+		const Size&				slotCircleSize,
 		const BlendColor&		disabledBlendColor,
 		const BlendColor&		selectionBlendColor,
 		const Pen&				selectionRectPen,
@@ -117,6 +121,8 @@ public:
 
 	virtual const Color&			GetSlotTextColor () const override;
 	virtual const Color&			GetSlotTextBackgroundColor () const override;
+	virtual bool					NeedToDrawSlotCircles () const override;
+	virtual const Size&				GetSlotCircleSize () const override;
 
 	virtual const BlendColor&		GetDisabledBlendColor () const override;
 	virtual const BlendColor&		GetSelectionBlendColor () const override;
@@ -151,6 +157,8 @@ private:
 
 	Color			slotTextColor;
 	Color			slotTextBackgroundColor;
+	bool			needToDrawSlotCircles;
+	Size			slotCircleSize;
 
 	BlendColor		disabledBlendColor;
 	BlendColor		selectionBlendColor;

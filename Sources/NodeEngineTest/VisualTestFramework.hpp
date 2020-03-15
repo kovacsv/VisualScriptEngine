@@ -34,7 +34,7 @@ private:
 class TestNodeUIEnvironment : public NodeUIEnvironment
 {
 public:
-	TestNodeUIEnvironment (NodeEditor& nodeEditor);
+	TestNodeUIEnvironment (NodeEditor& nodeEditor, const BasicSkinParams& skinParams);
 
 	virtual const StringSettings&	GetStringSettings () override;
 	virtual const SkinParams&		GetSkinParams () override;
@@ -63,7 +63,7 @@ private:
 class NodeEditorTestEnv
 {
 public:
-	NodeEditorTestEnv ();
+	NodeEditorTestEnv (const BasicSkinParams& skinParams);
 
 	bool	CheckReference (const std::string& referenceFileName);
 	void	Click (const Point& point);
