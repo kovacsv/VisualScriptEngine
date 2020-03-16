@@ -455,7 +455,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 		if (!found) {
 			multiMouseMoveHandler.AddHandler (mouseButton, new SelectionRectHandler (uiManager));
 		}
-	} else if (mouseButton == MouseButton::Right) {
+	} else if (mouseButton == MouseButton::Middle || mouseButton == MouseButton::Right) {
 		multiMouseMoveHandler.AddHandler (mouseButton, new PanningHandler (uiManager));
 	}
 
