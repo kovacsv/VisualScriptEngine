@@ -31,7 +31,7 @@ class NodeEditorHwndControl : public NodeEditorHwndBasedControl
 public:
 	NodeEditorHwndControl ();
 	NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
-	~NodeEditorHwndControl ();
+	virtual ~NodeEditorHwndControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
 	virtual HWND					GetEditorHandle () const override;
@@ -53,7 +53,7 @@ class NodeEditorNodeTreeHwndControl : public NodeEditorHwndBasedControl
 {
 public:
 	NodeEditorNodeTreeHwndControl ();
-	~NodeEditorNodeTreeHwndControl ();
+	virtual ~NodeEditorNodeTreeHwndControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
 	virtual HWND					GetEditorHandle () const override;
