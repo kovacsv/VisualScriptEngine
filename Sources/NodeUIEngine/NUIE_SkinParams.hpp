@@ -38,14 +38,17 @@ public:
 	virtual const Pen&				GetConnectionLinePen () const = 0;
 
 	virtual double					GetNodePadding () const = 0;
-	virtual const Font&				GetNodeTextFont () const = 0;
+	virtual const Pen&				GetNodeBorderPen () const = 0;
+
+	virtual const Font&				GetNodeHeaderTextFont () const = 0;
 	virtual const Color&			GetNodeHeaderTextColor () const = 0;
 	virtual const Color&			GetNodeHeaderErrorTextColor () const = 0;
-	virtual const Color&			GetNodeContentTextColor () const = 0;
 	virtual const Color&			GetNodeHeaderBackgroundColor () const = 0;
 	virtual const Color&			GetNodeHeaderErrorBackgroundColor () const = 0;
+
+	virtual const Font&				GetNodeContentTextFont () const = 0;
+	virtual const Color&			GetNodeContentTextColor () const = 0;
 	virtual const Color&			GetNodeContentBackgroundColor () const = 0;
-	virtual const Pen&				GetNodeBorderPen () const = 0;
 
 	virtual const Color&			GetSlotTextColor () const = 0;
 	virtual const Color&			GetSlotTextBackgroundColor () const = 0;
@@ -80,14 +83,15 @@ public:
 		const Color&			backgroundColor,
 		const Pen&				connectionLinePen,
 		const double&			nodePadding,
-		const Font&				nodeTextFont,
+		const Pen&				nodeBorderPen,
+		const Font&				nodeHeaderTextFont,
 		const Color&			nodeHeaderTextColor,
 		const Color&			nodeHeaderErrorTextColor,
-		const Color&			nodeContentTextColor,
 		const Color&			nodeHeaderBackgroundColor,
 		const Color&			nodeHeaderErrorBackgroundColor,
+		const Font&				nodeContentTextFont,
+		const Color&			nodeContentTextColor,
 		const Color&			nodeContentBackgroundColor,
-		const Pen&				nodeBorderPen,
 		const Color&			slotTextColor,
 		const Color&			slotTextBackgroundColor,
 		bool					needToDrawSlotCircles,
@@ -102,8 +106,8 @@ public:
 		const Color&			textPanelBackgroundColor,
 		const Font&				groupNameFont,
 		const Color&			groupNameColor,
-		const NamedColorSet&	groupBackgroundColor,
-		const double&			groupPadding	
+		const NamedColorSet&	groupBackgroundColors,
+		const double&			groupPadding
 	);
 	virtual ~BasicSkinParams ();
 
@@ -111,7 +115,8 @@ public:
 	virtual const Pen&				GetConnectionLinePen () const override;
 
 	virtual double					GetNodePadding () const override;
-	virtual const Font&				GetNodeTextFont () const override;
+	virtual const Font&				GetNodeContentTextFont () const override;
+	virtual const Font&				GetNodeHeaderTextFont () const override;
 	virtual const Color&			GetNodeHeaderTextColor () const override;
 	virtual const Color&			GetNodeHeaderErrorTextColor () const override;
 	virtual const Color&			GetNodeContentTextColor () const override;
@@ -146,14 +151,17 @@ private:
 	Pen				connectionLinePen;
 
 	double			nodePadding;
-	Font			nodeTextFont;
+	Pen				nodeBorderPen;
+
+	Font			nodeHeaderTextFont;
 	Color			nodeHeaderTextColor;
 	Color			nodeHeaderErrorTextColor;
-	Color			nodeContentTextColor;
 	Color			nodeHeaderBackgroundColor;
 	Color			nodeHeaderErrorBackgroundColor;
+
+	Font			nodeContentTextFont;
+	Color			nodeContentTextColor;
 	Color			nodeContentBackgroundColor;
-	Pen				nodeBorderPen;
 
 	Color			slotTextColor;
 	Color			slotTextBackgroundColor;

@@ -28,14 +28,15 @@ BasicSkinParams::BasicSkinParams (
 	const Color&			backgroundColor,
 	const Pen&				connectionLinePen,
 	const double&			nodePadding,
-	const Font&				nodeTextFont,
+	const Pen&				nodeBorderPen,
+	const Font&				nodeHeaderTextFont,
 	const Color&			nodeHeaderTextColor,
 	const Color&			nodeHeaderErrorTextColor,
-	const Color&			nodeContentTextColor,
 	const Color&			nodeHeaderBackgroundColor,
 	const Color&			nodeHeaderErrorBackgroundColor,
+	const Font&				nodeContentTextFont,
+	const Color&			nodeContentTextColor,
 	const Color&			nodeContentBackgroundColor,
-	const Pen&				nodeBorderPen,
 	const Color&			slotTextColor,
 	const Color&			slotTextBackgroundColor,
 	bool					needToDrawSlotCircles,
@@ -56,14 +57,15 @@ BasicSkinParams::BasicSkinParams (
 	backgroundColor (backgroundColor),
 	connectionLinePen (connectionLinePen),
 	nodePadding (nodePadding),
-	nodeTextFont (nodeTextFont),
+	nodeBorderPen (nodeBorderPen),
+	nodeHeaderTextFont (nodeHeaderTextFont),
 	nodeHeaderTextColor (nodeHeaderTextColor),
 	nodeHeaderErrorTextColor (nodeHeaderErrorTextColor),
-	nodeContentTextColor (nodeContentTextColor),
 	nodeHeaderBackgroundColor (nodeHeaderBackgroundColor),
 	nodeHeaderErrorBackgroundColor (nodeHeaderErrorBackgroundColor),
+	nodeContentTextFont (nodeContentTextFont),
+	nodeContentTextColor (nodeContentTextColor),
 	nodeContentBackgroundColor (nodeContentBackgroundColor),
-	nodeBorderPen (nodeBorderPen),
 	slotTextColor (slotTextColor),
 	slotTextBackgroundColor (slotTextBackgroundColor),
 	needToDrawSlotCircles (needToDrawSlotCircles),
@@ -104,9 +106,14 @@ double BasicSkinParams::GetNodePadding () const
 	return nodePadding;
 }
 
-const Font& BasicSkinParams::GetNodeTextFont () const
+const Pen& BasicSkinParams::GetNodeBorderPen () const
 {
-	return nodeTextFont;
+	return nodeBorderPen;
+}
+
+const Font& BasicSkinParams::GetNodeHeaderTextFont () const
+{
+	return nodeHeaderTextFont;
 }
 
 const Color& BasicSkinParams::GetNodeHeaderTextColor () const
@@ -119,11 +126,6 @@ const Color& BasicSkinParams::GetNodeHeaderErrorTextColor () const
 	return nodeHeaderErrorTextColor;
 }
 
-const Color& BasicSkinParams::GetNodeContentTextColor () const
-{
-	return nodeContentTextColor;
-}
-
 const Color& BasicSkinParams::GetNodeHeaderBackgroundColor () const
 {
 	return nodeHeaderBackgroundColor;
@@ -134,14 +136,19 @@ const Color& BasicSkinParams::GetNodeHeaderErrorBackgroundColor () const
 	return nodeHeaderErrorBackgroundColor;
 }
 
+const Font& BasicSkinParams::GetNodeContentTextFont () const
+{
+	return nodeContentTextFont;
+}
+
+const Color& BasicSkinParams::GetNodeContentTextColor () const
+{
+	return nodeContentTextColor;
+}
+
 const Color& BasicSkinParams::GetNodeContentBackgroundColor () const
 {
 	return nodeContentBackgroundColor;
-}
-
-const Pen& BasicSkinParams::GetNodeBorderPen () const
-{
-	return nodeBorderPen;
 }
 
 const Color& BasicSkinParams::GetSlotTextColor () const
@@ -230,14 +237,15 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*backgroundColor*/ Color (240, 240, 240),
 		/*connectionLinePen*/ Pen (Color (0, 0, 0), 1.0),
 		/*nodePadding*/ 5.0,
-		/*nodeTextFont*/ Font (L"Arial", 16.0),
+		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
+		/*nodeHeaderTextFont*/ Font (L"Arial", 16.0),
 		/*nodeHeaderTextColor*/ Color (255, 255, 255),
 		/*nodeHeaderErrorTextColor*/ Color (255, 255, 255),
-		/*nodeContentTextColor*/ Color (0, 0, 0),
 		/*nodeHeaderBackgroundColor*/ Color (100, 100, 100),
 		/*nodeHeaderErrorBackgroundColor*/ Color (225, 0, 0),
+		/*nodeContentTextFont*/ Font (L"Arial", 16.0),
+		/*nodeContentTextColor*/ Color (0, 0, 0),
 		/*nodeContentBackgroundColor*/ Color (200, 200, 200),
-		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
 		/*slotTextColor*/ Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ Color (225, 225, 225),
 		/*needToDrawSlotCircles*/ false,

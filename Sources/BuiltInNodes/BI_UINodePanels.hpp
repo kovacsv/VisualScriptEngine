@@ -35,12 +35,13 @@ class NodeUITextPanelBase : public NUIE::NodePanel
 public:
 	NodeUITextPanelBase (const std::wstring& nodeText);
 
-	virtual NUIE::Size		GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
-	virtual void			Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
+	virtual NUIE::Size			GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual void				Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
-	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const = 0;
-	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const = 0;
+	virtual const NUIE::Font&	GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const = 0;
+	virtual const NUIE::Color&	GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const = 0;
+	virtual const NUIE::Color&	GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const = 0;
 
 	std::wstring nodeText;
 };
@@ -51,8 +52,9 @@ public:
 	NodeUITextPanel (const std::wstring& nodeText);
 
 private:
-	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
-	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Font&	GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Color&	GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Color&	GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
 };
 
 class NodeUIHeaderPanel : public NodeUITextPanelBase
@@ -61,8 +63,9 @@ public:
 	NodeUIHeaderPanel (const std::wstring& headerText);
 
 private:
-	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
-	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Font&	GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Color&	GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Color&	GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
 };
 
 class NodeUIStatusHeaderPanel : public NodeUITextPanelBase
@@ -77,8 +80,9 @@ public:
 	NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus);
 
 private:
-	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
-	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Font&	GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Color&	GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual const NUIE::Color&	GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
 
 	NodeStatus		nodeStatus;
 };
@@ -92,8 +96,8 @@ public:
 	virtual void			Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
-	virtual NUIE::Color		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const;
-	virtual NUIE::Color		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const;
+	const NUIE::Color&		GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const;
+	const NUIE::Color&		GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const;
 
 	std::vector<std::wstring>	nodeTexts;
 	NUIE::Size					maxTextSize;
