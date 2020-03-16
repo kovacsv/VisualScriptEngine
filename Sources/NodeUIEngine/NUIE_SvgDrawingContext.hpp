@@ -52,6 +52,7 @@ public:
 	virtual double		GetHeight () const override;
 	virtual void		BeginDraw () override;
 	virtual void		EndDraw () override;
+	virtual bool		NeedToDraw (ItemPreviewMode mode) override;
 	virtual void		DrawLine (const Point& beg, const Point& end, const Pen& pen) override;
 	virtual void		DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) override;
 	virtual void		DrawRect (const Rect& rect, const Pen& pen) override;

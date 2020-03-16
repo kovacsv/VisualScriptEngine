@@ -69,7 +69,7 @@ void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& env, const NodeDrawing
 
 	{
 		NodeUIScaleIndependentData scaleIndependentData (uiManager, env.GetSkinParams ());
-		TextSkipperContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
+		PreviewContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
 		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
 		NodeUIDrawingEnvironmentContextDecorator drawEnv (env, viewBoxContext);
 		

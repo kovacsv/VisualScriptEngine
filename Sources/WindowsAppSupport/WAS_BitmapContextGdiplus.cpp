@@ -107,6 +107,11 @@ void BitmapContextGdiplus::EndDraw ()
 
 }
 
+bool BitmapContextGdiplus::NeedToDraw (ItemPreviewMode)
+{
+	return true;
+}
+
 void BitmapContextGdiplus::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());

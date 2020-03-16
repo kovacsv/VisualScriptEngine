@@ -186,12 +186,19 @@ void DrawingImage::Clear ()
 
 void DrawingImage::AddItem (const DrawingItemConstPtr& item)
 {
-	items.push_back (item);
+	items.push_back ({ item, DrawingContext::ItemPreviewMode::ShowInPreview });
+}
+
+void DrawingImage::AddItem (const DrawingItemConstPtr& item, DrawingContext::ItemPreviewMode mode)
+{
+	items.push_back ({ item, mode });
 }
 
 void DrawingImage::RemoveItem (const DrawingItemConstPtr& item)
 {
-	auto found = std::find (items.begin (), items.end (), item);
+	auto found = std::find_if (items.begin (), items.end (), [&] (const DrawingItemClass& actItem) {
+		return actItem.item == item;
+	});
 	if (found != items.end ()) {
 		items.erase (found);
 	}
@@ -199,8 +206,11 @@ void DrawingImage::RemoveItem (const DrawingItemConstPtr& item)
 
 void DrawingImage::Draw (DrawingContext& context) const
 {
-	for (const DrawingItemConstPtr& item : items) {
-		item->Draw (context);
+	for (const DrawingItemClass& item : items) {
+		if (!context.NeedToDraw (item.mode)) {
+			continue;
+		}
+		item.item->Draw (context);
 	}
 }
 

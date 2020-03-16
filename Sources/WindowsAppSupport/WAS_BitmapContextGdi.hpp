@@ -65,6 +65,8 @@ public:
 	virtual void				BeginDraw () override;
 	virtual void				EndDraw () override;
 
+	virtual bool				NeedToDraw (ItemPreviewMode mode) override;
+
 	virtual void				DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen) override;
 	virtual void				DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen) override;
 

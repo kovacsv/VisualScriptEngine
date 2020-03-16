@@ -146,11 +146,19 @@ public:
 	void			Clear ();
 
 	void			AddItem (const DrawingItemConstPtr& item);
+	void			AddItem (const DrawingItemConstPtr& item, DrawingContext::ItemPreviewMode mode);
 	void			RemoveItem (const DrawingItemConstPtr& item);
 	void			Draw (DrawingContext& context) const;
 
 private:
-	std::vector<DrawingItemConstPtr> items;
+	class DrawingItemClass
+	{
+	public:
+		DrawingItemConstPtr					item;
+		DrawingContext::ItemPreviewMode		mode;
+	};
+
+	std::vector<DrawingItemClass> items;
 };
 
 }

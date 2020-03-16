@@ -110,18 +110,19 @@ Color ColorBlenderContextDecorator::GetChangedColor (const Color& origColor)
 	);
 }
 
-TextSkipperContextDecorator::TextSkipperContextDecorator (DrawingContext& decorated, bool isPreviewMode) :
+PreviewContextDecorator::PreviewContextDecorator (DrawingContext& decorated, bool isPreviewMode) :
 	DrawingContextDecorator (decorated),
 	isPreviewMode (isPreviewMode)
 {
 
 }
 
-void TextSkipperContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor)
+bool PreviewContextDecorator::NeedToDraw (ItemPreviewMode mode)
 {
-	if (!isPreviewMode) {
-		decorated.DrawFormattedText (rect, font, text, hAnchor, vAnchor, textColor);
+	if (isPreviewMode && mode == ItemPreviewMode::HideInPreview) {
+		return false;
 	}
+	return true;
 }
 
 }

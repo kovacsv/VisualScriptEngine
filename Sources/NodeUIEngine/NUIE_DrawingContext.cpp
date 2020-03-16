@@ -49,6 +49,11 @@ void DrawingContextDecorator::EndDraw ()
 	decorated.EndDraw ();
 }
 
+bool DrawingContextDecorator::NeedToDraw (ItemPreviewMode mode)
+{
+	return decorated.NeedToDraw (mode);
+}
+
 void DrawingContextDecorator::DrawLine (const Point& beg, const Point& end, const Pen& pen)
 {
 	decorated.DrawLine (beg, end, pen);
@@ -112,6 +117,11 @@ void NullDrawingContext::BeginDraw ()
 void NullDrawingContext::EndDraw ()
 {
 
+}
+
+bool NullDrawingContext::NeedToDraw (ItemPreviewMode)
+{
+	return false;
 }
 
 void NullDrawingContext::DrawLine (const Point&, const Point&, const Pen&)

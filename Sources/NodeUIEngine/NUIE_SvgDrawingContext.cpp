@@ -161,7 +161,12 @@ void SvgDrawingContext::EndDraw ()
 {
 	svgBuilder.AddCloseTag (L"svg");
 }
-				 
+			
+bool SvgDrawingContext::NeedToDraw (ItemPreviewMode)
+{
+	return true;
+}
+
 void SvgDrawingContext::DrawLine (const Point&, const Point&, const Pen&)
 {
 	// TODO: Not implemented

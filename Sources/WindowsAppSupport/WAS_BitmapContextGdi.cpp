@@ -118,6 +118,11 @@ void BitmapContextGdi::EndDraw ()
 
 }
 
+bool BitmapContextGdi::NeedToDraw (ItemPreviewMode)
+{
+	return true;
+}
+
 void BitmapContextGdi::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);

@@ -82,6 +82,11 @@ void wxDrawingContext::EndDraw ()
 
 }
 
+bool wxDrawingContext::NeedToDraw (ItemPreviewMode)
+{
+	return true;
+}
+
 void wxDrawingContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	graphicsContext->SetBrush (*wxTRANSPARENT_BRUSH);

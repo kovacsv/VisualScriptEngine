@@ -181,6 +181,11 @@ void Direct2DContext::EndDraw ()
 	}
 }
 
+bool Direct2DContext::NeedToDraw (ItemPreviewMode)
+{
+	return true;
+}
+
 void Direct2DContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());

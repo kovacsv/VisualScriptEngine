@@ -56,12 +56,12 @@ private:
 
 };
 
-class TextSkipperContextDecorator : public DrawingContextDecorator
+class PreviewContextDecorator : public DrawingContextDecorator
 {
 public:
-	TextSkipperContextDecorator (DrawingContext& decorated, bool isPreviewMode);
+	PreviewContextDecorator (DrawingContext& decorated, bool isPreviewMode);
 
-	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
+	virtual bool NeedToDraw (ItemPreviewMode mode) override;
 
 private:
 	bool isPreviewMode;
