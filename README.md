@@ -1,9 +1,9 @@
-<img align="left" width="55" height="55" src="Documentation/Logo/logo55.png?raw=true" alt="Logo">
-
 # VisualScriptEngine
 
 [![Build Status](https://travis-ci.org/kovacsv/VisualScriptEngine.svg?branch=master)](https://travis-ci.org/kovacsv/VisualScriptEngine)
 [![Build Status](https://ci.appveyor.com/api/projects/status/c0qxxixyhymfxfdf?svg=true)](https://ci.appveyor.com/project/kovacsv/visualscriptengine)
+
+![Logo](Documentation/Logo/logo128.png?raw=true "Logo")
 
 VisualScriptEngine is a node based visual scripting engine designed for embedding.
 
