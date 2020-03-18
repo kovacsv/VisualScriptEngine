@@ -9,16 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="600"
+   width="3000"
    height="600"
-   viewBox="0 0 158.75 158.75"
+   viewBox="0 0 793.75001 158.75"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="logo.svg"
-   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Logo\logo55.png"
-   inkscape:export-xdpi="9.6630697"
-   inkscape:export-ydpi="9.6630697">
+   sodipodi:docname="logo_name.svg"
+   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Logo\logo_name_800.png"
+   inkscape:export-xdpi="26.76692"
+   inkscape:export-ydpi="26.76692">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -28,9 +28,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70000001"
-     inkscape:cx="368.65315"
-     inkscape:cy="264.36827"
+     inkscape:zoom="0.35000001"
+     inkscape:cx="1409.6567"
+     inkscape:cy="526.15212"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -94,5 +94,16 @@
        height="63.499996"
        x="48.802876"
        y="184.42984" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:115.10086823px;line-height:1.25;font-family:arial;-inkscape-font-specification:arial;letter-spacing:0px;word-spacing:0px;fill:#216778;fill-opacity:1;stroke:none;stroke-width:2.87752175"
+       x="178.67685"
+       y="240.99266"
+       id="text1384"><tspan
+         sodipodi:role="line"
+         id="tspan1382"
+         x="178.67685"
+         y="240.99266"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70.55555725px;font-family:arial;-inkscape-font-specification:arial;letter-spacing:0px;fill:#000000;fill-opacity:1;stroke-width:2.87752175">VisualScriptEngine</tspan></text>
   </g>
 </svg>
