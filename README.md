@@ -1,4 +1,4 @@
-<img align="left" width="32" height="32" src="Documentation/Logo/logo32.png?raw=true" alt="Logo">
+<img align="left" width="64" height="64" src="Documentation/Logo/logo64.png?raw=true" alt="Logo">
 
 # VisualScriptEngine
 
