@@ -302,6 +302,12 @@ HWND NodeEditorHwndControl::GetEditorHandle () const
 	return control.GetWindowHandle ();
 }
 
+bool NodeEditorHwndControl::IsEditorFocused () const
+{
+	HWND focusedHwnd = GetFocus ();
+	return focusedHwnd == GetEditorHandle ();
+}
+
 void NodeEditorHwndControl::Resize (int x, int y, int width, int height)
 {
 	HWND hwnd = control.GetWindowHandle ();
@@ -383,6 +389,12 @@ bool NodeEditorNodeTreeHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, HWND 
 HWND NodeEditorNodeTreeHwndControl::GetEditorHandle () const
 {
 	return nodeEditorControl.GetEditorHandle ();
+}
+
+bool NodeEditorNodeTreeHwndControl::IsEditorFocused () const
+{
+	HWND focusedHwnd = GetFocus ();
+	return focusedHwnd == GetEditorHandle ();
 }
 
 void NodeEditorNodeTreeHwndControl::Resize (int x, int y, int width, int height)

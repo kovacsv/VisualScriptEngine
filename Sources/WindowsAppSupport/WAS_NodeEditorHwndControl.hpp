@@ -18,6 +18,7 @@ public:
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) = 0;
 	virtual HWND					GetEditorHandle () const = 0;
+	virtual bool					IsEditorFocused () const = 0;
 
 	virtual void					Resize (int x, int y, int width, int height) = 0;
 	virtual void					Invalidate () = 0;
@@ -35,6 +36,7 @@ public:
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
 	virtual HWND					GetEditorHandle () const override;
+	virtual bool					IsEditorFocused () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;
 	virtual void					Invalidate () override;
@@ -57,6 +59,7 @@ public:
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
 	virtual HWND					GetEditorHandle () const override;
+	virtual bool					IsEditorFocused () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;
 	virtual void					Invalidate () override;
