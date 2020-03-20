@@ -49,7 +49,7 @@ NodeTree::NodeTree ()
 
 }
 
-void NodeTree::AddItem (const std::wstring& groupName, const std::wstring& itemName, const CreatorFunction& creator)
+void NodeTree::AddItem (const std::wstring& groupName, const Item& item)
 {
 	Group* group = nullptr;
 	auto foundGroup = std::find_if (groups.begin (), groups.end (), [&] (const Group& group) {
@@ -61,7 +61,12 @@ void NodeTree::AddItem (const std::wstring& groupName, const std::wstring& itemN
 		groups.push_back (Group (groupName));
 		group = &groups.back ();
 	}
-	group->AddItem (Item (itemName, creator));
+	group->AddItem (item);
+}
+
+void NodeTree::AddItem (const std::wstring& groupName, const std::wstring& itemName, const CreatorFunction& creator)
+{
+	AddItem (groupName, Item (itemName, creator));
 }
 
 const std::vector<NodeTree::Group>& NodeTree::GetGroups () const
