@@ -431,10 +431,10 @@ void NodeEditorNodeTreeHwndControl::FillNodeTree (const NodeTree& nodeTree)
 {
 	LPARAM nextNodeId = 0;
 	for (const NodeTree::Group& group : nodeTree.GetGroups ()) {
-		nodeTreeView.AddGroup (group.name);
-		for (const NodeTree::Item& item : group.items) {
-			nodeTreeView.AddItem (group.name, item.name, nextNodeId);
-			nodeIdToCreator.insert ({ nextNodeId, item.creator });
+		nodeTreeView.AddGroup (group.GetName ());
+		for (const NodeTree::Item& item : group.GetItems ()) {
+			nodeTreeView.AddItem (group.GetName (), item.GetName (), nextNodeId);
+			nodeIdToCreator.insert ({ nextNodeId, item.GetCreator () });
 			nextNodeId++;
 		}
 	}

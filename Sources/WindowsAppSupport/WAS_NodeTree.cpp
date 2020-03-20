@@ -13,10 +13,35 @@ NodeTree::Item::Item (const std::wstring& name, const CreatorFunction& creator) 
 
 }
 
+const std::wstring& NodeTree::Item::GetName () const
+{
+	return name;
+}
+
+const CreatorFunction& NodeTree::Item::GetCreator () const
+{
+	return creator;
+}
+
 NodeTree::Group::Group (const std::wstring& name) :
 	name (name)
 {
 
+}
+
+void NodeTree::Group::AddItem (const Item& item)
+{
+	items.push_back (item);
+}
+
+const std::wstring& NodeTree::Group::GetName () const
+{
+	return name;
+}
+
+const std::vector<NodeTree::Item>& NodeTree::Group::GetItems () const
+{
+	return items;
 }
 
 NodeTree::NodeTree ()
@@ -28,7 +53,7 @@ void NodeTree::AddItem (const std::wstring& groupName, const std::wstring& itemN
 {
 	Group* group = nullptr;
 	auto foundGroup = std::find_if (groups.begin (), groups.end (), [&] (const Group& group) {
-		return group.name == groupName;
+		return group.GetName () == groupName;
 	});
 	if (foundGroup != groups.end ()) {
 		group = &*foundGroup;
@@ -36,7 +61,7 @@ void NodeTree::AddItem (const std::wstring& groupName, const std::wstring& itemN
 		groups.push_back (Group (groupName));
 		group = &groups.back ();
 	}
-	group->items.push_back (Item (itemName, creator));
+	group->AddItem (Item (itemName, creator));
 }
 
 const std::vector<NodeTree::Group>& NodeTree::GetGroups () const
@@ -153,9 +178,9 @@ void AddNodeTreeAsCommands (const NodeTree& nodeTree, NUIE::NodeUIManager& uiMan
 	};
 
 	for (const NodeTree::Group& group : nodeTree.GetGroups ()) {
-		NUIE::GroupMenuCommandPtr groupCommand (new NUIE::GroupMenuCommand (group.name));
-		for (const NodeTree::Item& item : group.items) {
-			groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (uiManager, uiEnvironment, item.name, position, item.creator)));
+		NUIE::GroupMenuCommandPtr groupCommand (new NUIE::GroupMenuCommand (group.GetName ()));
+		for (const NodeTree::Item& item : group.GetItems ()) {
+			groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (uiManager, uiEnvironment, item.GetName (), position, item.GetCreator ())));
 		}
 		commands.AddCommand (groupCommand);
 	}
