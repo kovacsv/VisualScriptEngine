@@ -42,8 +42,9 @@ public:
 
 	NodeTree ();
 
-	void						AddItem (const std::wstring& groupName, const Item& item);
-	void						AddItem (const std::wstring& groupName, const std::wstring& itemName, const CreatorFunction& creator);
+	size_t						AddGroup (const std::wstring& groupName);
+	void						AddItem (size_t groupIndex, const std::wstring& itemName, const CreatorFunction& creator);
+	
 	const std::vector<Group>&	GetGroups () const;
 
 private:
