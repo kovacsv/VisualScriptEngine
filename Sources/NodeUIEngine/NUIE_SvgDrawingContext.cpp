@@ -276,6 +276,11 @@ Size SvgDrawingContext::MeasureText (const Font& font, const std::wstring& text)
 	return Size (text.length () * font.GetSize (), font.GetSize () * 1.5);
 }
 
+void SvgDrawingContext::DrawIcon (const Rect&, IconId)
+{
+
+}
+
 std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, const std::wstring& to)
 {
 	std::wstring result = string;

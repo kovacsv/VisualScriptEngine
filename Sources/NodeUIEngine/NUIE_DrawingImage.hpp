@@ -122,6 +122,19 @@ private:
 	Color				textColor;
 };
 
+class DrawingIcon : public DrawingItem
+{
+public:
+	DrawingIcon (const Rect& rect, DrawingContext::IconId iconId);
+	virtual ~DrawingIcon ();
+
+	virtual void Draw (DrawingContext& context) const override;
+
+private:
+	Rect					rect;
+	DrawingContext::IconId	iconId;
+};
+
 class MultiDrawingItem : public DrawingItem
 {
 public:

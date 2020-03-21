@@ -92,7 +92,7 @@ static const NUIE::BasicSkinParams MySkinParams (
 	/*slotTextColor*/ NUIE::Color (0, 0, 0),
 	/*slotTextBackgroundColor*/ NUIE::Color (225, 225, 225),
 	/*needToDrawSlotCircles*/ true,
-	/*slotCircleSize*/ NUIE::Size (18.0, 18.0),
+	/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
 	/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (240, 240, 240), 0.5),
 	/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
 	/*selectionRectPen*/ NUIE::Pen (NUIE::Color (0, 138, 184), 1.0),

@@ -43,6 +43,8 @@ public:
 	virtual void				DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor) override;
 	virtual NUIE::Size			MeasureText (const NUIE::Font& font, const std::wstring& text) override;
 
+	virtual void				DrawIcon (const NUIE::Rect& rect, IconId iconId) override;
+
 private:
 	void						CreateRenderTarget ();
 
@@ -53,6 +55,5 @@ private:
 };
 
 }
-
 
 #endif

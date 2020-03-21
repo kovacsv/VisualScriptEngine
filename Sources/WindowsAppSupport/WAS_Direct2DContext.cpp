@@ -303,6 +303,11 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 	return NUIE::Size (metrics.width * SafetyTextRatio, metrics.height * SafetyTextRatio);
 }
 
+void Direct2DContext::DrawIcon (const NUIE::Rect&, IconId)
+{
+	DBGBREAK ();
+}
+
 void Direct2DContext::CreateRenderTarget ()
 {
 	RECT clientRect;

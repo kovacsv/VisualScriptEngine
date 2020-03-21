@@ -142,6 +142,23 @@ void DrawingText::Draw (DrawingContext& context) const
 	context.DrawFormattedText (rect, font, text, hAnchor, vAnchor, textColor);
 }
 
+DrawingIcon::DrawingIcon (const Rect& rect, DrawingContext::IconId iconId) :
+	rect (rect),
+	iconId (iconId)
+{
+
+}
+
+DrawingIcon::~DrawingIcon ()
+{
+
+}
+
+void DrawingIcon::Draw (DrawingContext& context) const
+{
+	context.FillRect (rect, Color (0, 255, 0));
+}
+
 MultiDrawingItem::MultiDrawingItem ()
 {
 

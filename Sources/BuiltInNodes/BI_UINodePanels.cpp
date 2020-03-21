@@ -109,8 +109,9 @@ const NUIE::Color& NodeUIHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnv
 	return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
 }
 
-NodeUIIconHeaderPanel::NodeUIIconHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus, NUIE::NodeUIDrawingEnvironment& env) :
+NodeUIIconHeaderPanel::NodeUIIconHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus, NUIE::DrawingContext::IconId iconId, NUIE::NodeUIDrawingEnvironment& env) :
 	NodeUIHeaderPanel (headerText, nodeStatus),
+	iconId (iconId),
 	textSize (0.0, 0.0)
 {
 	textSize = env.GetDrawingContext ().MeasureText (GetTextFont (env), headerText);
@@ -136,8 +137,7 @@ void NodeUIIconHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUI
 	NUIE::Rect iconRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + nodePadding, rect.GetTop () + nodePadding), NUIE::Size (iconSize, iconSize));
 	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + iconSize + 2.0 * nodePadding, rect.GetTop ()), NUIE::Size (rect.GetWidth () - (iconSize + 2.0 * nodePadding), rect.GetHeight ()));
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, GetBackgroundColor (env))));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (textRect, GetBackgroundColor (env))));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (iconRect, NUIE::Color (255, 0, 0))));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingIcon (iconRect, iconId)));
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, GetTextFont (env), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env))), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 }
 

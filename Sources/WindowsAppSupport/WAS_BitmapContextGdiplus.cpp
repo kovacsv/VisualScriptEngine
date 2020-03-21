@@ -200,6 +200,11 @@ NUIE::Size BitmapContextGdiplus::MeasureText (const NUIE::Font& font, const std:
 	return NUIE::Size (textRect.Width, textRect.Height);
 }
 
+void BitmapContextGdiplus::DrawIcon (const NUIE::Rect&, IconId)
+{
+	DBGBREAK ();
+}
+
 Gdiplus::Point BitmapContextGdiplus::CreatePoint (const NUIE::Point& point) const
 {
 	Gdiplus::Point gdiPoint ((int) std::ceil (point.GetX ()), (int) std::ceil (point.GetY ()));
