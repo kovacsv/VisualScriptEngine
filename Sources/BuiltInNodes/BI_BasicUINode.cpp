@@ -15,7 +15,7 @@ BasicUINode::BasicUINode () :
 }
 
 BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position) :
-	BasicUINode (name, position, UINodeLayoutPtr (new StatusHeaderWithSlotsLayout ()))
+	BasicUINode (name, position, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
 {
 
 }

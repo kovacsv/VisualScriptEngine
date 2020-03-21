@@ -9,10 +9,10 @@
 namespace BI
 {
 
-class StatusHeaderWithSlotsLayout : public UINodeLayout
+class HeaderWithSlotsLayout : public UINodeLayout
 {
 public:
-	StatusHeaderWithSlotsLayout ();
+	HeaderWithSlotsLayout ();
 
 	virtual void						Draw (	const NUIE::UINode& uiNode,
 												NUIE::NodeUIDrawingEnvironment& env,

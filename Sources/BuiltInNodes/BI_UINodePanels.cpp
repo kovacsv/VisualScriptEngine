@@ -102,10 +102,11 @@ const NUIE::Color& NodeUITextPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvir
 	return env.GetSkinParams ().GetNodeContentBackgroundColor ();
 }
 
-NodeUIHeaderPanel::NodeUIHeaderPanel (const std::wstring& headerText) :
-	NodeUITextPanelBase (headerText)
+NodeUIHeaderPanel::NodeUIHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus) :
+	NodeUITextPanelBase (headerText),
+	nodeStatus (nodeStatus)
 {
-	
+
 }
 
 const NUIE::Font& NodeUIHeaderPanel::GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const
@@ -115,42 +116,20 @@ const NUIE::Font& NodeUIHeaderPanel::GetTextFont (NUIE::NodeUIDrawingEnvironment
 
 const NUIE::Color& NodeUIHeaderPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	return env.GetSkinParams ().GetNodeHeaderTextColor ();
-}
-
-const NUIE::Color& NodeUIHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
-{
-	return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
-}
-
-NodeUIStatusHeaderPanel::NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus) :
-	NodeUITextPanelBase (headerText),
-	nodeStatus (nodeStatus)
-{
-
-}
-
-const NUIE::Font& NodeUIStatusHeaderPanel::GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const
-{
-	return env.GetSkinParams ().GetNodeHeaderTextFont ();
-}
-
-const NUIE::Color& NodeUIStatusHeaderPanel::GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const
-{
-	if (nodeStatus == NodeUIStatusHeaderPanel::NodeStatus::HasValue) {
+	if (nodeStatus == NodeUIHeaderPanel::NodeStatus::HasValue) {
 		return env.GetSkinParams ().GetNodeHeaderTextColor ();
-	} else if (nodeStatus == NodeUIStatusHeaderPanel::NodeStatus::HasNoValue) {
+	} else if (nodeStatus == NodeUIHeaderPanel::NodeStatus::HasNoValue) {
 		return env.GetSkinParams ().GetNodeHeaderErrorTextColor ();
 	}
 	DBGBREAK ();
 	return env.GetSkinParams ().GetNodeHeaderTextColor ();
 }
 
-const NUIE::Color& NodeUIStatusHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
+const NUIE::Color& NodeUIHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const
 {
-	if (nodeStatus == NodeUIStatusHeaderPanel::NodeStatus::HasValue) {
+	if (nodeStatus == NodeUIHeaderPanel::NodeStatus::HasValue) {
 		return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
-	} else if (nodeStatus == NodeUIStatusHeaderPanel::NodeStatus::HasNoValue) {
+	} else if (nodeStatus == NodeUIHeaderPanel::NodeStatus::HasNoValue) {
 		return env.GetSkinParams ().GetNodeHeaderErrorBackgroundColor ();
 	}
 	DBGBREAK ();

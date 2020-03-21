@@ -60,24 +60,13 @@ private:
 class NodeUIHeaderPanel : public NodeUITextPanelBase
 {
 public:
-	NodeUIHeaderPanel (const std::wstring& headerText);
-
-private:
-	virtual const NUIE::Font&	GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const override;
-	virtual const NUIE::Color&	GetTextColor (NUIE::NodeUIDrawingEnvironment& env) const override;
-	virtual const NUIE::Color&	GetBackgroundColor (NUIE::NodeUIDrawingEnvironment& env) const override;
-};
-
-class NodeUIStatusHeaderPanel : public NodeUITextPanelBase
-{
-public:
 	enum class NodeStatus
 	{
 		HasValue,
 		HasNoValue
 	};
 
-	NodeUIStatusHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus);
+	NodeUIHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus);
 
 private:
 	virtual const NUIE::Font&	GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const override;
