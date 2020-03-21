@@ -229,10 +229,14 @@ bool NodeUIManagerDrawer::IsConnectionVisible (NodeUIDrawingEnvironment& env, co
 
 bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& env, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const
 {
-	Rect nodeRect = GetNodeRect (env, drawModifier, uiNode);
+	const SkinParams& skinParams = env.GetSkinParams ();
+	Rect boundingRect = GetNodeRect (env, drawModifier, uiNode);
+	if (skinParams.NeedToDrawSlotCircles ()) {
+		boundingRect = boundingRect.Expand (Size (skinParams.GetSlotCircleSize ().GetWidth (), 0.0));
+	}
 	double selectionThickness = scaleIndependentData.GetSelectionThickness ();
-	Rect selectionRect = nodeRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
-	return IsRectVisible (env, selectionRect);
+	boundingRect = boundingRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
+	return IsRectVisible (env, boundingRect);
 }
 
 bool NodeUIManagerDrawer::IsRectVisible (NodeUIDrawingEnvironment& env, const Rect& rect) const
