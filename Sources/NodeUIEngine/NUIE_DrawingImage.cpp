@@ -156,7 +156,7 @@ DrawingIcon::~DrawingIcon ()
 
 void DrawingIcon::Draw (DrawingContext& context) const
 {
-	context.FillRect (rect, Color (0, 255, 0));
+	context.DrawIcon (rect, iconId);
 }
 
 MultiDrawingItem::MultiDrawingItem ()

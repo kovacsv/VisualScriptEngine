@@ -14,6 +14,7 @@
 
 #ifdef USE_DIRECT2D_CONTEXT
 #include "WAS_Direct2DContext.hpp"
+#pragma comment (lib, "windowscodecs.lib")
 #pragma comment (lib, "d2d1.lib")
 #pragma comment (lib, "dwrite.lib")
 #endif

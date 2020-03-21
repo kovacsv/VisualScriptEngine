@@ -45,6 +45,11 @@ void ViewBoxContextDecorator::DrawFormattedText (const Rect& rect, const Font& f
 	decorated.DrawFormattedText (viewBox.ModelToView (rect), viewBox.ModelToView (font), text, hAnchor, vAnchor, textColor);
 }
 
+void ViewBoxContextDecorator::DrawIcon (const Rect& rect, IconId iconId)
+{
+	decorated.DrawIcon (viewBox.ModelToView (rect), iconId);
+}
+
 ColorChangerContextDecorator::ColorChangerContextDecorator (DrawingContext& decorated) :
 	DrawingContextDecorator (decorated)
 {

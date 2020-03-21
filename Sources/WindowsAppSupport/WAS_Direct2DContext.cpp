@@ -1,6 +1,8 @@
 #include "WAS_Direct2DContext.hpp"
 #include "NE_Debug.hpp"
 
+#include <wincodec.h>
+
 namespace WAS
 {
 
@@ -305,7 +307,47 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 
 void Direct2DContext::DrawIcon (const NUIE::Rect&, IconId)
 {
-	DBGBREAK ();
+	//IWICImagingFactory* pIWICFactory;
+	//CoCreateInstance (CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER,
+	//	IID_IWICImagingFactory, (LPVOID*) &pIWICFactory);
+	//
+	//IWICBitmapDecoder *pDecoder = NULL;
+	//IWICBitmapFrameDecode *pSource = NULL;
+	////IWICStream *pStream = NULL;
+	//IWICFormatConverter *pConverter = NULL;
+	////IWICBitmapScaler *pScaler = NULL;
+	//
+	//HRESULT hr = pIWICFactory->CreateDecoderFromFilename (
+	//	L"C:\\Users\\kovacsv\\GitRepos\\VisualScriptGDL\\Build\\ResourceObjects\\Surface@2.00x.png",
+	//	NULL,
+	//	GENERIC_READ,
+	//	WICDecodeMetadataCacheOnLoad,
+	//	&pDecoder
+	//);
+	//
+	//
+	//pDecoder->GetFrame (0, &pSource);
+	//hr = pIWICFactory->CreateFormatConverter (&pConverter);
+	//hr = pConverter->Initialize (
+	//	pSource,
+	//	GUID_WICPixelFormat32bppPBGRA,
+	//	WICBitmapDitherTypeNone,
+	//	NULL,
+	//	0.f,
+	//	WICBitmapPaletteTypeMedianCut
+	//);
+	//
+	//ID2D1Bitmap *ppBitmap = NULL;
+	//renderTarget->CreateBitmapFromWicBitmap (
+	//	pConverter,
+	//	NULL,
+	//	&ppBitmap
+	//);
+	//D2D1_RECT_F d2Rect = CreateRect (rect);
+	//renderTarget->DrawBitmap (
+	//	ppBitmap,
+	//	d2Rect
+	//);
 }
 
 void Direct2DContext::CreateRenderTarget ()
