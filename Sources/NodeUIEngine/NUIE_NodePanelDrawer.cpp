@@ -49,7 +49,12 @@ void NodePanelDrawer::Draw (NodeUIDrawingEnvironment& env, NodeDrawingImage& dra
 	}
 
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingRect (nodeRect, skinParams.GetNodeBorderPen ())));
-	drawingImage.SetNodeRect (nodeRect);
+
+	Rect boundingRect = nodeRect;
+	if (skinParams.NeedToDrawSlotCircles ()) {
+		boundingRect = boundingRect.Expand (Size (skinParams.GetSlotCircleSize ().GetWidth (), 0.0));
+	}
+	drawingImage.SetNodeRect (boundingRect);
 }
 
 }
