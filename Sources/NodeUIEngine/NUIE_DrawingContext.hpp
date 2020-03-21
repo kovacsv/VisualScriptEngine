@@ -1,6 +1,7 @@
 #ifndef NUIE_DRAWINGCONTEXT_HPP
 #define NUIE_DRAWINGCONTEXT_HPP
 
+#include "NUIE_IconId.hpp"
 #include "NUIE_Geometry.hpp"
 #include "NUIE_Drawing.hpp"
 #include <string>
@@ -17,8 +18,6 @@ public:
 		ShowInPreview,
 		HideInPreview
 	};
-
-	using IconId = int;
 
 	DrawingContext ();
 	virtual ~DrawingContext ();
@@ -45,7 +44,7 @@ public:
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) = 0;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) = 0;
 
-	virtual void	DrawIcon (const Rect& rect, IconId iconId) = 0;
+	virtual void	DrawIcon (const Rect& rect, const IconId& iconId) = 0;
 };
 
 class DrawingContextDecorator : public DrawingContext
@@ -76,7 +75,7 @@ public:
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) override;
 
-	virtual void	DrawIcon (const Rect& rect, IconId iconId) override;
+	virtual void	DrawIcon (const Rect& rect, const IconId& iconId) override;
 
 protected:
 	DrawingContext& decorated;
@@ -107,7 +106,7 @@ public:
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) override;
 
-	virtual void	DrawIcon (const Rect& rect, IconId iconId) override;
+	virtual void	DrawIcon (const Rect& rect, const IconId& iconId) override;
 };
 
 class NativeDrawingContext : public DrawingContext

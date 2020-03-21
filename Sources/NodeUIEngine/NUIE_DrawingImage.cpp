@@ -142,7 +142,7 @@ void DrawingText::Draw (DrawingContext& context) const
 	context.DrawFormattedText (rect, font, text, hAnchor, vAnchor, textColor);
 }
 
-DrawingIcon::DrawingIcon (const Rect& rect, DrawingContext::IconId iconId) :
+DrawingIcon::DrawingIcon (const Rect& rect, const IconId& iconId) :
 	rect (rect),
 	iconId (iconId)
 {

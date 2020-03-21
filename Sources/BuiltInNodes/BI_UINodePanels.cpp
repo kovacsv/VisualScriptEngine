@@ -109,7 +109,7 @@ const NUIE::Color& NodeUIHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnv
 	return env.GetSkinParams ().GetNodeHeaderBackgroundColor ();
 }
 
-NodeUIIconHeaderPanel::NodeUIIconHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus, NUIE::DrawingContext::IconId iconId, NUIE::NodeUIDrawingEnvironment& env) :
+NodeUIIconHeaderPanel::NodeUIIconHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus, const NUIE::IconId& iconId, NUIE::NodeUIDrawingEnvironment& env) :
 	NodeUIHeaderPanel (headerText, nodeStatus),
 	iconId (iconId),
 	textSize (0.0, 0.0)

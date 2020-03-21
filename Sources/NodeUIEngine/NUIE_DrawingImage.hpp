@@ -125,14 +125,14 @@ private:
 class DrawingIcon : public DrawingItem
 {
 public:
-	DrawingIcon (const Rect& rect, DrawingContext::IconId iconId);
+	DrawingIcon (const Rect& rect, const IconId& iconId);
 	virtual ~DrawingIcon ();
 
 	virtual void Draw (DrawingContext& context) const override;
 
 private:
-	Rect					rect;
-	DrawingContext::IconId	iconId;
+	Rect	rect;
+	IconId	iconId;
 };
 
 class MultiDrawingItem : public DrawingItem

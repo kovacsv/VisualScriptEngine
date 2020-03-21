@@ -276,7 +276,7 @@ Size SvgDrawingContext::MeasureText (const Font& font, const std::wstring& text)
 	return Size (text.length () * font.GetSize (), font.GetSize () * 1.5);
 }
 
-void SvgDrawingContext::DrawIcon (const Rect&, IconId)
+void SvgDrawingContext::DrawIcon (const Rect&, const IconId&)
 {
 
 }

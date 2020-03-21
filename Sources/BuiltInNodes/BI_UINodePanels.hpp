@@ -56,14 +56,14 @@ protected:
 class NodeUIIconHeaderPanel : public NodeUIHeaderPanel
 {
 public:
-	NodeUIIconHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus, NUIE::DrawingContext::IconId iconId, NUIE::NodeUIDrawingEnvironment& env);
+	NodeUIIconHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus, const NUIE::IconId& iconId, NUIE::NodeUIDrawingEnvironment& env);
 
 	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
 	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
 
 private:
-	NUIE::DrawingContext::IconId	iconId;
-	NUIE::Size						textSize;
+	NUIE::IconId	iconId;
+	NUIE::Size		textSize;
 };
 
 class NodeUIMultiLineTextPanel : public NUIE::NodePanel

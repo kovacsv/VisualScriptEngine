@@ -21,7 +21,7 @@ public:
 	virtual void	DrawEllipse (const Rect& rect, const Pen& pen) override;
 	virtual void	FillEllipse (const Rect& rect, const Color& color) override;
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
-	virtual void	DrawIcon (const Rect& rect, IconId iconId) override;
+	virtual void	DrawIcon (const Rect& rect, const IconId& iconId) override;
 
 protected:
 	const ViewBox& viewBox;
@@ -39,6 +39,7 @@ public:
 	virtual void	DrawEllipse (const Rect& rect, const Pen& pen) override;
 	virtual void	FillEllipse (const Rect& rect, const Color& color) override;
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
+	virtual void	DrawIcon (const Rect& rect, const IconId& iconId) override;
 
 private:
 	virtual Color	GetChangedColor (const Color& origColor) = 0;

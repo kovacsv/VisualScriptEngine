@@ -2,6 +2,7 @@
 #include "NE_Debug.hpp"
 
 #include <wincodec.h>
+#include <unordered_map>
 
 namespace WAS
 {
@@ -22,7 +23,8 @@ class Direct2DHandler
 public:
 	Direct2DHandler () :
 		direct2DFactory (nullptr),
-		directWriteFactory (nullptr)
+		directWriteFactory (nullptr),
+		imagingFactory (nullptr)
 	{
 		HRESULT direct2DFactoryResult = D2D1CreateFactory (D2D1_FACTORY_TYPE_SINGLE_THREADED, &direct2DFactory);
 		if (!SUCCEEDED (direct2DFactoryResult)) {
@@ -35,16 +37,25 @@ public:
 			DBGBREAK ();
 			return;
 		}
+
+		CoInitialize (0);
+		HRESULT imagingFactoryResult = CoCreateInstance (CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (LPVOID*) &imagingFactory);
+		if (!SUCCEEDED (imagingFactoryResult)) {
+			DBGBREAK ();
+			return;
+		}
 	}
 
 	~Direct2DHandler ()
 	{
 		SafeRelease (&direct2DFactory);
 		SafeRelease (&directWriteFactory);
+		SafeRelease (&imagingFactory);
 	}
 
-	ID2D1Factory*		direct2DFactory;
-	IDWriteFactory*		directWriteFactory;
+	ID2D1Factory*			direct2DFactory;
+	IDWriteFactory*			directWriteFactory;
+	IWICImagingFactory*		imagingFactory;
 };
 
 class Direct2DAntialiasGuard
@@ -67,7 +78,97 @@ private:
 	D2D1_ANTIALIAS_MODE		oldMode;
 };
 
-static Direct2DHandler direct2DHandler;
+class Direct2DBitmapCache
+{
+public:
+	Direct2DBitmapCache (Direct2DHandler& handler) :
+		handler (handler),
+		cache ()
+	{
+	}
+
+	~Direct2DBitmapCache ()
+	{
+		for (auto& it : cache) {
+			SafeRelease (&it.second);
+		}
+	}
+
+	ID2D1Bitmap* GetBitmap (const NUIE::IconId& iconId, ID2D1RenderTarget* /*renderTarget*/)
+	{
+		auto found = cache.find (iconId);
+		if (found != cache.end ()) {
+			return found->second;
+		}
+		return nullptr;
+		// IWICBitmapDecoder* decoder = NULL;
+		// HRESULT hr;
+		// 
+		// hr = handler.imagingFactory->CreateDecoderFromFilename (
+		// 	L"path",
+		// 	NULL,
+		// 	GENERIC_READ,
+		// 	WICDecodeMetadataCacheOnLoad,
+		// 	&decoder
+		// );
+		// if (DBGERROR (!SUCCEEDED (hr))) {
+		// 	return nullptr;
+		// }
+		// 
+		// IWICBitmapFrameDecode* source = NULL;
+		// decoder->GetFrame (0, &source);
+		// if (DBGERROR (!SUCCEEDED (hr))) {
+		// 	return nullptr;
+		// }
+		// 
+		// IWICFormatConverter* converter = NULL;
+		// hr = handler.imagingFactory->CreateFormatConverter (&converter);
+		// if (DBGERROR (!SUCCEEDED (hr))) {
+		// 	return nullptr;
+		// }
+		// 
+		// hr = converter->Initialize (
+		// 	source,
+		// 	GUID_WICPixelFormat32bppPBGRA,
+		// 	WICBitmapDitherTypeNone,
+		// 	NULL,
+		// 	0.f,
+		// 	WICBitmapPaletteTypeMedianCut
+		// );
+		// if (DBGERROR (!SUCCEEDED (hr))) {
+		// 	return nullptr;
+		// }
+		// 
+		// ID2D1Bitmap* bitmap = NULL;
+		// hr = renderTarget->CreateBitmapFromWicBitmap (
+		// 	converter,
+		// 	NULL,
+		// 	&bitmap
+		// );
+		// if (DBGERROR (!SUCCEEDED (hr))) {
+		// 	return nullptr;
+		// }
+		// 
+		// SafeRelease (&decoder);
+		// SafeRelease (&source);
+		// SafeRelease (&converter);
+		// 
+		// cache.insert ({ iconId, bitmap });
+		// return bitmap;
+	}
+
+	void Clear ()
+	{
+		cache.clear ();
+	}
+
+private:
+	Direct2DHandler&								handler;
+	std::unordered_map<NUIE::IconId, ID2D1Bitmap*>	cache;
+};
+
+static Direct2DHandler		direct2DHandler;
+static Direct2DBitmapCache	bitmapCache (direct2DHandler);
 
 static ID2D1SolidColorBrush* CreateBrush (ID2D1RenderTarget* renderTarget, const NUIE::Color& color)
 {
@@ -305,49 +406,13 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 	return NUIE::Size (metrics.width * SafetyTextRatio, metrics.height * SafetyTextRatio);
 }
 
-void Direct2DContext::DrawIcon (const NUIE::Rect&, IconId)
+void Direct2DContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId)
 {
-	//IWICImagingFactory* pIWICFactory;
-	//CoCreateInstance (CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER,
-	//	IID_IWICImagingFactory, (LPVOID*) &pIWICFactory);
-	//
-	//IWICBitmapDecoder *pDecoder = NULL;
-	//IWICBitmapFrameDecode *pSource = NULL;
-	////IWICStream *pStream = NULL;
-	//IWICFormatConverter *pConverter = NULL;
-	////IWICBitmapScaler *pScaler = NULL;
-	//
-	//HRESULT hr = pIWICFactory->CreateDecoderFromFilename (
-	//	L"C:\\Users\\kovacsv\\GitRepos\\VisualScriptGDL\\Build\\ResourceObjects\\Surface@2.00x.png",
-	//	NULL,
-	//	GENERIC_READ,
-	//	WICDecodeMetadataCacheOnLoad,
-	//	&pDecoder
-	//);
-	//
-	//
-	//pDecoder->GetFrame (0, &pSource);
-	//hr = pIWICFactory->CreateFormatConverter (&pConverter);
-	//hr = pConverter->Initialize (
-	//	pSource,
-	//	GUID_WICPixelFormat32bppPBGRA,
-	//	WICBitmapDitherTypeNone,
-	//	NULL,
-	//	0.f,
-	//	WICBitmapPaletteTypeMedianCut
-	//);
-	//
-	//ID2D1Bitmap *ppBitmap = NULL;
-	//renderTarget->CreateBitmapFromWicBitmap (
-	//	pConverter,
-	//	NULL,
-	//	&ppBitmap
-	//);
-	//D2D1_RECT_F d2Rect = CreateRect (rect);
-	//renderTarget->DrawBitmap (
-	//	ppBitmap,
-	//	d2Rect
-	//);
+	D2D1_RECT_F d2Rect = CreateRect (rect);
+	ID2D1Bitmap* bitmap = bitmapCache.GetBitmap (iconId, renderTarget);
+	if (bitmap != nullptr) {
+		renderTarget->DrawBitmap (bitmap, d2Rect);
+	}
 }
 
 void Direct2DContext::CreateRenderTarget ()
@@ -362,6 +427,8 @@ void Direct2DContext::CreateRenderTarget ()
 	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties = D2D1::HwndRenderTargetProperties (hwnd, size);
 
 	SafeRelease (&renderTarget);
+	bitmapCache.Clear ();
+
 	direct2DHandler.direct2DFactory->CreateHwndRenderTarget (renderTargetProperties, hwndRenderTargetProperties, &renderTarget);
 	renderTarget->SetDpi (96.0f, 96.0f);
 	DBGASSERT (renderTarget != nullptr);

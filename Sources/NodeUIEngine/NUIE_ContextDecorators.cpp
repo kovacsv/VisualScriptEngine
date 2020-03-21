@@ -45,7 +45,7 @@ void ViewBoxContextDecorator::DrawFormattedText (const Rect& rect, const Font& f
 	decorated.DrawFormattedText (viewBox.ModelToView (rect), viewBox.ModelToView (font), text, hAnchor, vAnchor, textColor);
 }
 
-void ViewBoxContextDecorator::DrawIcon (const Rect& rect, IconId iconId)
+void ViewBoxContextDecorator::DrawIcon (const Rect& rect, const IconId& iconId)
 {
 	decorated.DrawIcon (viewBox.ModelToView (rect), iconId);
 }
@@ -89,6 +89,12 @@ void ColorChangerContextDecorator::FillEllipse (const Rect& rect, const Color& c
 void ColorChangerContextDecorator::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor)
 {
 	return decorated.DrawFormattedText (rect, font, text, hAnchor, vAnchor, GetChangedColor (textColor));
+}
+
+void ColorChangerContextDecorator::DrawIcon (const Rect& rect, const IconId& iconId)
+{
+	// TODO: change icon color
+	return decorated.DrawIcon (rect, iconId);
 }
 
 Pen ColorChangerContextDecorator::GetChangedPen (const Pen& origPen)
