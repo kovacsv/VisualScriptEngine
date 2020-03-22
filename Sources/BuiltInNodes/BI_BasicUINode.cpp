@@ -57,6 +57,7 @@ NE::Stream::Status BasicUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NUIE::UINode::Read (inputStream);
+	iconId.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -64,6 +65,7 @@ NE::Stream::Status BasicUINode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NUIE::UINode::Write (outputStream);
+	iconId.Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

@@ -3,6 +3,8 @@
 namespace NUIE
 {
 
+NE::SerializationInfo IconId::serializationInfo (NE::ObjectVersion (1));
+
 IconId::IconId (const IconIdType& id) :
 	id (id)
 {
@@ -32,6 +34,20 @@ bool IconId::operator== (const IconId& rhs) const
 bool IconId::operator!= (const IconId& rhs) const
 {
 	return !operator== (rhs);
+}
+
+NE::Stream::Status IconId::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	inputStream.Read (id);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status IconId::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	outputStream.Write (id);
+	return outputStream.GetStatus ();
 }
 
 const IconId InvalidIconId (-1);

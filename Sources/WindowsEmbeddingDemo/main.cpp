@@ -114,9 +114,9 @@ static const NUIE::BasicSkinParams MySkinParams (
 
 class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 {
-	virtual HRSRC GetImageResHandle (const NUIE::IconId&) override
+	virtual HRSRC GetImageResHandle (const NUIE::IconId& iconId) override
 	{
-		HRSRC resHandle = FindResource (NULL, MAKEINTRESOURCE (101), L"IMAGE");
+		HRSRC resHandle = FindResource (NULL, MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE");
 		return resHandle;
 	}
 };
@@ -249,9 +249,9 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				uiEnvironment.Init (&nodeEditor, hwnd);
 
 				BI::BasicUINodePtr numberNode1 (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10));
-				numberNode1->SetIconId (NUIE::IconId (1));
+				numberNode1->SetIconId (NUIE::IconId (101));
 				BI::BasicUINodePtr numberNode2 (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10));
-				numberNode2->SetIconId (NUIE::IconId (2));
+				numberNode2->SetIconId (NUIE::IconId (102));
 				NUIE::UINodePtr viewerNode (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (300, 200), 5));
 				nodeEditor.AddNode (numberNode1);
 				nodeEditor.AddNode (numberNode2);
