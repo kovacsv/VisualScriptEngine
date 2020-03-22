@@ -11,10 +11,6 @@ namespace BI
 
 class BasicUINode;
 
-class UINodeLayout;
-using UINodeLayoutPtr = std::shared_ptr<UINodeLayout>;
-using UINodeLayoutConstPtr = std::shared_ptr<const UINodeLayout>;
-
 class UINodeLayout
 {
 public:
@@ -36,6 +32,9 @@ public:
 															const NUIE::Point& position,
 															NUIE::UINodeCommandInterface& commandInterface) const = 0;
 };
+
+using UINodeLayoutPtr = std::shared_ptr<UINodeLayout>;
+using UINodeLayoutConstPtr = std::shared_ptr<const UINodeLayout>;
 
 }
 
