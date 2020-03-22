@@ -304,6 +304,9 @@ ID2D1Bitmap* Direct2DImageLoaderFromIcon::CreateDirect2DImage (const NUIE::IconI
 	HRESULT hr;
 
 	HICON hIcon = GetIconHandle (iconId);
+	if (hIcon == NULL) {
+		return nullptr;
+	}
 
 	IWICBitmap* wicBitmap = NULL;
 	hr = imagingFactory->CreateBitmapFromHICON (
