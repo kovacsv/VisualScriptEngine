@@ -14,9 +14,9 @@ class HeaderWithSlotsLayout : public UINodeLayout
 public:
 	HeaderWithSlotsLayout ();
 
-	virtual void						Draw (	const NUIE::UINode& uiNode,
-												NUIE::NodeUIDrawingEnvironment& env,
-												NUIE::NodeDrawingImage& drawingImage) const override;
+	virtual void						AddPanels (	const NUIE::UINode& uiNode,
+													NUIE::NodeUIDrawingEnvironment& env,
+													NUIE::NodePanelDrawer& drawer) const override;
 
 	virtual NUIE::EventHandlerResult	HandleMouseClick (	NUIE::UINode& uiNode,
 															NUIE::NodeUIEnvironment& env,
@@ -44,9 +44,9 @@ public:
 										const std::string& rightButtonId,
 										const std::wstring& rightButtonText);
 
-	virtual void							Draw (	const NUIE::UINode& uiNode,
+	virtual void						AddPanels (	const NUIE::UINode& uiNode,
 													NUIE::NodeUIDrawingEnvironment& env,
-													NUIE::NodeDrawingImage& drawingImage) const override;
+													NUIE::NodePanelDrawer& drawer) const override;
 
 	virtual NUIE::EventHandlerResult		HandleMouseClick (	NUIE::UINode& uiNode,
 																NUIE::NodeUIEnvironment& env,
@@ -87,10 +87,9 @@ public:
 									const std::wstring& firstSwitchText,
 									const std::wstring& secondSwitchText);
 
-	virtual void							Draw (	const NUIE::UINode& uiNode,
-													NUIE::NodeUIDrawingEnvironment& env,
-													NUIE::NodeDrawingImage& drawingImage) const override;
-
+	virtual void							AddPanels (	const NUIE::UINode& uiNode,
+														NUIE::NodeUIDrawingEnvironment& env,
+														NUIE::NodePanelDrawer& drawer) const override;
 
 	virtual NUIE::EventHandlerResult		HandleMouseClick (	NUIE::UINode& uiNode,
 																NUIE::NodeUIEnvironment& env,

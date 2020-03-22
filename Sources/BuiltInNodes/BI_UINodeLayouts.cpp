@@ -9,19 +9,16 @@ HeaderWithSlotsLayout::HeaderWithSlotsLayout ()
 {
 }
 
-void HeaderWithSlotsLayout::Draw (const NUIE::UINode& uiNode,
+void HeaderWithSlotsLayout::AddPanels (	const NUIE::UINode& uiNode,
 										NUIE::NodeUIDrawingEnvironment& env,
-										NUIE::NodeDrawingImage& drawingImage) const
+										NUIE::NodePanelDrawer& drawer) const
 {
 	NodeUIHeaderPanel::NodeStatus nodeStatus = NodeUIHeaderPanel::NodeStatus::HasNoValue;
 	if (uiNode.HasCalculatedValue () && uiNode.GetCalculatedValue () != nullptr) {
 		nodeStatus = NodeUIHeaderPanel::NodeStatus::HasValue;
 	}
-
-	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName (), nodeStatus)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
-	drawer.Draw (env, drawingImage);
 }
 
 NUIE::EventHandlerResult HeaderWithSlotsLayout::HandleMouseClick (NUIE::UINode&,
@@ -55,21 +52,18 @@ HeaderWithSlotsAndButtonsLayout::HeaderWithSlotsAndButtonsLayout (	const std::st
 {
 }
 
-void HeaderWithSlotsAndButtonsLayout::Draw (const NUIE::UINode& uiNode,
-											NUIE::NodeUIDrawingEnvironment& env,
-											NUIE::NodeDrawingImage & drawingImage) const
+void HeaderWithSlotsAndButtonsLayout::AddPanels (	const NUIE::UINode& uiNode,
+													NUIE::NodeUIDrawingEnvironment& env,
+													NUIE::NodePanelDrawer& drawer) const
 {
+	std::wstring nodeText = GetMiddleText (uiNode, env.GetStringSettings ());
 	NodeUIHeaderPanel::NodeStatus nodeStatus = NodeUIHeaderPanel::NodeStatus::HasNoValue;
 	if (uiNode.HasCalculatedValue () && uiNode.GetCalculatedValue () != nullptr) {
 		nodeStatus = NodeUIHeaderPanel::NodeStatus::HasValue;
 	}
-
-	std::wstring nodeText = GetMiddleText (uiNode, env.GetStringSettings ());
-	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName (), nodeStatus)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, nodeText, env)));
-	drawer.Draw (env, drawingImage);
 }
 
 NUIE::EventHandlerResult HeaderWithSlotsAndButtonsLayout::HandleMouseClick (NUIE::UINode& uiNode,
@@ -120,22 +114,19 @@ HeaderWithSlotsAndSwitchLayout::HeaderWithSlotsAndSwitchLayout (const std::strin
 {
 }
 
-void HeaderWithSlotsAndSwitchLayout::Draw (	const NUIE::UINode& uiNode,
-											NUIE::NodeUIDrawingEnvironment& env,
-											NUIE::NodeDrawingImage & drawingImage) const
+void HeaderWithSlotsAndSwitchLayout::AddPanels (const NUIE::UINode& uiNode,
+												NUIE::NodeUIDrawingEnvironment& env,
+												NUIE::NodePanelDrawer& drawer) const
 {
 	NodeUIHeaderPanel::NodeStatus nodeStatus = NodeUIHeaderPanel::NodeStatus::HasNoValue;
 	if (uiNode.HasCalculatedValue () && uiNode.GetCalculatedValue () != nullptr) {
 		nodeStatus = NodeUIHeaderPanel::NodeStatus::HasValue;
 	}
-
-	NUIE::NodePanelDrawer drawer;
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (uiNode.GetNodeName (), nodeStatus)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
 	SelectedItem selectedItem = GetSelectedItem (uiNode);
 	std::wstring buttonText = (selectedItem == SelectedItem::First ? firstSwitchText : secondSwitchText);
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIButtonPanel (switchButtonId, buttonText, env)));
-	drawer.Draw (env, drawingImage);
 }
 
 NUIE::EventHandlerResult HeaderWithSlotsAndSwitchLayout::HandleMouseClick (	NUIE::UINode& uiNode,

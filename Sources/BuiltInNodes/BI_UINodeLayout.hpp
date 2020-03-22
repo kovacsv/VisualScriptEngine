@@ -3,6 +3,7 @@
 
 #include "NUIE_UINode.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
+#include "NUIE_NodePanelDrawer.hpp"
 #include "NUIE_NodeDrawingImage.hpp"
 
 namespace BI
@@ -20,7 +21,11 @@ public:
 
 	virtual void						Draw (	const NUIE::UINode& uiNode,
 												NUIE::NodeUIDrawingEnvironment& env,
-												NUIE::NodeDrawingImage& drawingImage) const = 0;
+												NUIE::NodeDrawingImage& drawingImage) const;
+
+	virtual void						AddPanels (	const NUIE::UINode& uiNode,
+													NUIE::NodeUIDrawingEnvironment& env,
+													NUIE::NodePanelDrawer& drawer) const = 0;
 
 	virtual NUIE::EventHandlerResult	HandleMouseClick (	NUIE::UINode& uiNode,
 															NUIE::NodeUIEnvironment& env,

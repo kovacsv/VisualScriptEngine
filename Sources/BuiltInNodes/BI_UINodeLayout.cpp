@@ -13,4 +13,13 @@ UINodeLayout::~UINodeLayout ()
 
 }
 
+void UINodeLayout::Draw (	const NUIE::UINode& uiNode,
+							NUIE::NodeUIDrawingEnvironment& env,
+							NUIE::NodeDrawingImage& drawingImage) const
+{
+	NUIE::NodePanelDrawer drawer;
+	AddPanels (uiNode, env, drawer);
+	drawer.Draw (env, drawingImage);
+}
+
 }
