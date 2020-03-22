@@ -15,13 +15,19 @@ BasicUINode::BasicUINode () :
 }
 
 BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position) :
-	BasicUINode (name, position, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
+	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
 {
 
 }
 
-BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position, const UINodeLayoutPtr& layout) :
+BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position, const NUIE::IconId& iconId) :
+	BasicUINode (name, position, iconId, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
+{
+
+}
+BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position, const NUIE::IconId& iconId, const UINodeLayoutPtr& layout) :
 	NUIE::UINode (name, position),
+	iconId (iconId),
 	layout (layout)
 {
 
@@ -30,6 +36,21 @@ BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position,
 BasicUINode::~BasicUINode ()
 {
 
+}
+
+bool BasicUINode::HasIconId () const
+{
+	return iconId != NUIE::InvalidIconId;
+}
+
+const NUIE::IconId& BasicUINode::GetIconId () const
+{
+	return iconId;
+}
+
+void BasicUINode::SetIconId (const NUIE::IconId& newIconId)
+{
+	iconId = newIconId;
 }
 
 NE::Stream::Status BasicUINode::Read (NE::InputStream& inputStream)

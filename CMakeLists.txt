@@ -146,7 +146,10 @@ if (MSVC)
 
 	set (WindowsEmbeddingDemoSourcesFolder Sources/WindowsEmbeddingDemo)
 	file (GLOB WindowsEmbeddingDemoHeaderFiles ${WindowsEmbeddingDemoSourcesFolder}/*.hpp)
-	file (GLOB WindowsEmbeddingDemoSourceFiles ${WindowsEmbeddingDemoSourcesFolder}/*.cpp)
+	file (GLOB WindowsEmbeddingDemoSourceFiles
+		${WindowsEmbeddingDemoSourcesFolder}/*.cpp
+		${WindowsEmbeddingDemoSourcesFolder}/*.rc
+	)
 	set (
 		WindowsEmbeddingDemoFiles
 		${WindowsEmbeddingDemoHeaderFiles}

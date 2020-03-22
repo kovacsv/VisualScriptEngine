@@ -53,14 +53,14 @@ BooleanNode::Layout::Layout (	const std::string& switchButtonId,
 
 }
 
-HeaderWithSlotsAndSwitchLayout::SelectedItem BooleanNode::Layout::GetSelectedItem (const NUIE::UINode& uiNode) const
+HeaderWithSlotsAndSwitchLayout::SelectedItem BooleanNode::Layout::GetSelectedItem (const BasicUINode& uiNode) const
 {
 	const BooleanNode* booleanNode = dynamic_cast<const BooleanNode*> (&uiNode);
 	bool nodeValue = booleanNode->GetValue ();
 	return nodeValue ? HeaderWithSlotsAndSwitchLayout::SelectedItem::First : HeaderWithSlotsAndSwitchLayout::SelectedItem::Second;
 }
 
-std::shared_ptr<HeaderWithSlotsAndSwitchLayout::ClickHandler> BooleanNode::Layout::GetClickHandler (NUIE::UINode& uiNode) const
+std::shared_ptr<HeaderWithSlotsAndSwitchLayout::ClickHandler> BooleanNode::Layout::GetClickHandler (BasicUINode& uiNode) const
 {
 	class ClickHandler : public HeaderWithSlotsAndSwitchLayout::ClickHandler
 	{
@@ -89,7 +89,7 @@ BooleanNode::BooleanNode () :
 }
 
 BooleanNode::BooleanNode (const std::wstring& name, const NUIE::Point& position, bool val) :
-	BasicUINode (name, position, UINodeLayoutPtr (new Layout ("switch", NE::Localize (L"true"), NE::Localize (L"false")))),
+	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ("switch", NE::Localize (L"true"), NE::Localize (L"false")))),
 	val (val)
 {
 
@@ -179,7 +179,7 @@ NumericUpDownNode::Layout::Layout (	const std::string& leftButtonId,
 
 }
 
-std::wstring NumericUpDownNode::Layout::GetMiddleText (const NUIE::UINode& uiNode, const NE::StringSettings& stringSettings) const
+std::wstring NumericUpDownNode::Layout::GetMiddleText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const
 {
 	std::wstring nodeText = NE::Localize (L"<empty>");
 	if (uiNode.HasCalculatedValue ()) {
@@ -191,7 +191,7 @@ std::wstring NumericUpDownNode::Layout::GetMiddleText (const NUIE::UINode& uiNod
 	return nodeText;
 }
 
-std::shared_ptr<HeaderWithSlotsAndButtonsLayout::ClickHandler> NumericUpDownNode::Layout::GetClickHandler (NUIE::UINode& uiNode) const
+std::shared_ptr<HeaderWithSlotsAndButtonsLayout::ClickHandler> NumericUpDownNode::Layout::GetClickHandler (BasicUINode& uiNode) const
 {
 	class ClickHandler : public HeaderWithSlotsAndButtonsLayout::ClickHandler
 	{
@@ -225,7 +225,7 @@ NumericUpDownNode::NumericUpDownNode () :
 }
 
 NumericUpDownNode::NumericUpDownNode (const std::wstring& name, const NUIE::Point& position) :
-	BasicUINode (name, position, UINodeLayoutPtr (new Layout ("minus", NE::Localize (L"<"), "plus", NE::Localize (L">"))))
+	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ("minus", NE::Localize (L"<"), "plus", NE::Localize (L">"))))
 {
 
 }

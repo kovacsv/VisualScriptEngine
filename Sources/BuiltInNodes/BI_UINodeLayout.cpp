@@ -13,7 +13,7 @@ UINodeLayout::~UINodeLayout ()
 
 }
 
-void UINodeLayout::Draw (	const NUIE::UINode& uiNode,
+void UINodeLayout::Draw (	const BasicUINode& uiNode,
 							NUIE::NodeUIDrawingEnvironment& env,
 							NUIE::NodeDrawingImage& drawingImage) const
 {

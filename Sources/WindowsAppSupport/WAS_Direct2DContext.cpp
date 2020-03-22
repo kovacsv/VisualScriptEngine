@@ -137,11 +137,59 @@ ID2D1Bitmap* Direct2DImageLoader::LoadDirect2DImage (const NUIE::IconId& iconId,
 	if (found != imageCache.end ()) {
 		return found->second;
 	}
-	ID2D1Bitmap* image = CreateImage (iconId, renderTarget);
-	if (image != nullptr) {
-		imageCache.insert ({ iconId, image });
-	}
+	ID2D1Bitmap* image = CreateDirect2DImage (iconId, renderTarget);
+	imageCache.insert ({ iconId, image });
 	return image;
+}
+
+ID2D1Bitmap* Direct2DImageLoader::CreateDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget)
+{
+	HRESULT hr;
+
+	IWICBitmapDecoder* decoder = CreateDecoder (iconId);
+	if (decoder == nullptr) {
+		return nullptr;
+	}
+
+	IWICBitmapFrameDecode* source = NULL;
+	hr = decoder->GetFrame (0, &source);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	IWICFormatConverter* converter = NULL;
+	hr = imagingFactory->CreateFormatConverter (&converter);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	hr = converter->Initialize (
+		source,
+		GUID_WICPixelFormat32bppPBGRA,
+		WICBitmapDitherTypeNone,
+		NULL,
+		0.f,
+		WICBitmapPaletteTypeMedianCut
+	);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	ID2D1Bitmap* bitmap = NULL;
+	hr = renderTarget->CreateBitmapFromWicBitmap (
+		converter,
+		NULL,
+		&bitmap
+	);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	SafeRelease (&decoder);
+	SafeRelease (&source);
+	SafeRelease (&converter);
+
+	return bitmap;
 }
 
 void Direct2DImageLoader::ClearCache ()
@@ -159,62 +207,21 @@ Direct2DImageLoaderFromFile::~Direct2DImageLoaderFromFile ()
 
 }
 
-ID2D1Bitmap* Direct2DImageLoaderFromFile::CreateImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget)
+IWICBitmapDecoder* Direct2DImageLoaderFromFile::CreateDecoder (const NUIE::IconId& iconId)
 {
-	HRESULT hr;
-
 	std::wstring filePath = GetFilePath (iconId);
 	IWICBitmapDecoder* decoder = NULL;
-	hr = imagingFactory->CreateDecoderFromFilename (
+	HRESULT hr = imagingFactory->CreateDecoderFromFilename (
 		filePath.c_str (),
 		NULL,
 		GENERIC_READ,
 		WICDecodeMetadataCacheOnLoad,
 		&decoder
 	);
-	if (DBGERROR (!SUCCEEDED (hr))) {
+	if (!SUCCEEDED (hr)) {
 		return nullptr;
 	}
-	
-	IWICBitmapFrameDecode* source = NULL;
-	decoder->GetFrame (0, &source);
-	if (DBGERROR (!SUCCEEDED (hr))) {
-		return nullptr;
-	}
-	
-	IWICFormatConverter* converter = NULL;
-	hr = imagingFactory->CreateFormatConverter (&converter);
-	if (DBGERROR (!SUCCEEDED (hr))) {
-		return nullptr;
-	}
-	
-	hr = converter->Initialize (
-		source,
-		GUID_WICPixelFormat32bppPBGRA,
-		WICBitmapDitherTypeNone,
-		NULL,
-		0.f,
-		WICBitmapPaletteTypeMedianCut
-	);
-	if (DBGERROR (!SUCCEEDED (hr))) {
-		return nullptr;
-	}
-	
-	ID2D1Bitmap* bitmap = NULL;
-	hr = renderTarget->CreateBitmapFromWicBitmap (
-		converter,
-		NULL,
-		&bitmap
-	);
-	if (DBGERROR (!SUCCEEDED (hr))) {
-		return nullptr;
-	}
-	
-	SafeRelease (&decoder);
-	SafeRelease (&source);
-	SafeRelease (&converter);
-	
-	return bitmap;
+	return decoder;
 }
 
 Direct2DImageLoaderFromResource::Direct2DImageLoaderFromResource ()
@@ -227,64 +234,50 @@ Direct2DImageLoaderFromResource::~Direct2DImageLoaderFromResource ()
 
 }
 
-ID2D1Bitmap* Direct2DImageLoaderFromResource::CreateImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget)
+IWICBitmapDecoder* Direct2DImageLoaderFromResource::CreateDecoder (const NUIE::IconId& iconId)
 {
 	HRESULT hr;
 
 	HRSRC imageResHandle = GetImageResHandle (iconId);
-	imageResHandle;
-	std::wstring filePath = GetFilePath (iconId);
+	if (imageResHandle == NULL) {
+		return nullptr;
+	}
+	
+	HGLOBAL imageResDataHandle = LoadResource (NULL, imageResHandle);
+	if (imageResDataHandle == NULL) {
+		return nullptr;
+	}
+
+	void* imageFile = LockResource (imageResDataHandle);
+	if (imageFile == NULL) {
+		return nullptr;
+	}
+
+	IWICStream* stream = NULL;
+	hr = imagingFactory->CreateStream (&stream);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	DWORD imageFileSize = SizeofResource (NULL, imageResHandle);
+	hr = stream->InitializeFromMemory (reinterpret_cast<BYTE*> (imageFile), imageFileSize);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
 	IWICBitmapDecoder* decoder = NULL;
-	hr = imagingFactory->CreateDecoderFromFilename (
-		filePath.c_str (),
+	hr = imagingFactory->CreateDecoderFromStream (
+		stream,
 		NULL,
-		GENERIC_READ,
 		WICDecodeMetadataCacheOnLoad,
 		&decoder
 	);
-	if (DBGERROR (!SUCCEEDED (hr))) {
+	if (!SUCCEEDED (hr)) {
 		return nullptr;
 	}
 
-	IWICBitmapFrameDecode* source = NULL;
-	decoder->GetFrame (0, &source);
-	if (DBGERROR (!SUCCEEDED (hr))) {
-		return nullptr;
-	}
-
-	IWICFormatConverter* converter = NULL;
-	hr = imagingFactory->CreateFormatConverter (&converter);
-	if (DBGERROR (!SUCCEEDED (hr))) {
-		return nullptr;
-	}
-
-	hr = converter->Initialize (
-		source,
-		GUID_WICPixelFormat32bppPBGRA,
-		WICBitmapDitherTypeNone,
-		NULL,
-		0.f,
-		WICBitmapPaletteTypeMedianCut
-	);
-	if (DBGERROR (!SUCCEEDED (hr))) {
-		return nullptr;
-	}
-
-	ID2D1Bitmap* bitmap = NULL;
-	hr = renderTarget->CreateBitmapFromWicBitmap (
-		converter,
-		NULL,
-		&bitmap
-	);
-	if (DBGERROR (!SUCCEEDED (hr))) {
-		return nullptr;
-	}
-
-	SafeRelease (&decoder);
-	SafeRelease (&source);
-	SafeRelease (&converter);
-
-	return bitmap;
+	SafeRelease (&stream);
+	return decoder;
 }
 
 Direct2DContext::Direct2DContext (Direct2DImageLoader* imageLoader) :

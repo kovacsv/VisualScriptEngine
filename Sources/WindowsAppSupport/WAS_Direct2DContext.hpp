@@ -18,10 +18,11 @@ public:
 	Direct2DImageLoader ();
 	virtual ~Direct2DImageLoader ();
 
-	ID2D1Bitmap*			LoadDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget);
-	void					ClearCache ();
+	ID2D1Bitmap*				LoadDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget);
+	ID2D1Bitmap*				CreateDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget);
+	void						ClearCache ();
 
-	virtual ID2D1Bitmap*	CreateImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget) = 0;
+	virtual IWICBitmapDecoder*	CreateDecoder (const NUIE::IconId& iconId) = 0;
 
 protected:
 	IWICImagingFactory*								imagingFactory;
@@ -34,9 +35,8 @@ public:
 	Direct2DImageLoaderFromFile ();
 	virtual ~Direct2DImageLoaderFromFile ();
 
-	virtual ID2D1Bitmap* CreateImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget) override;
-
-	virtual std::wstring GetFilePath (const NUIE::IconId& iconId) = 0;
+	virtual IWICBitmapDecoder*	CreateDecoder (const NUIE::IconId& iconId) override;
+	virtual std::wstring		GetFilePath (const NUIE::IconId& iconId) = 0;
 };
 
 class Direct2DImageLoaderFromResource : public Direct2DImageLoader
@@ -44,11 +44,9 @@ class Direct2DImageLoaderFromResource : public Direct2DImageLoader
 public:
 	Direct2DImageLoaderFromResource ();
 	virtual ~Direct2DImageLoaderFromResource ();
-
-	virtual ID2D1Bitmap*	CreateImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget) override;
-
-	virtual HRSRC			GetImageResHandle (const NUIE::IconId& iconId) = 0;
-	virtual std::wstring	GetFilePath (const NUIE::IconId& iconId) = 0;
+	
+	virtual IWICBitmapDecoder*	CreateDecoder (const NUIE::IconId& iconId) override;
+	virtual HRSRC				GetImageResHandle (const NUIE::IconId& iconId) = 0;
 };
 
 class Direct2DContext : public NUIE::NativeDrawingContext

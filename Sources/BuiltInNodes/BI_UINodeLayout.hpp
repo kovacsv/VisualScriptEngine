@@ -9,6 +9,8 @@
 namespace BI
 {
 
+class BasicUINode;
+
 class UINodeLayout;
 using UINodeLayoutPtr = std::shared_ptr<UINodeLayout>;
 using UINodeLayoutConstPtr = std::shared_ptr<const UINodeLayout>;
@@ -19,15 +21,15 @@ public:
 	UINodeLayout ();
 	virtual ~UINodeLayout ();
 
-	virtual void						Draw (	const NUIE::UINode& uiNode,
+	virtual void						Draw (	const BasicUINode& uiNode,
 												NUIE::NodeUIDrawingEnvironment& env,
 												NUIE::NodeDrawingImage& drawingImage) const;
 
-	virtual void						AddPanels (	const NUIE::UINode& uiNode,
+	virtual void						AddPanels (	const BasicUINode& uiNode,
 													NUIE::NodeUIDrawingEnvironment& env,
 													NUIE::NodePanelDrawer& drawer) const = 0;
 
-	virtual NUIE::EventHandlerResult	HandleMouseClick (	NUIE::UINode& uiNode,
+	virtual NUIE::EventHandlerResult	HandleMouseClick (	BasicUINode& uiNode,
 															NUIE::NodeUIEnvironment& env,
 															const NUIE::ModifierKeys& modifierKeys,
 															NUIE::MouseButton mouseButton,

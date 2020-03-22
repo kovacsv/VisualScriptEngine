@@ -20,8 +20,8 @@ public:
 				const std::wstring& firstSwitchText,
 				const std::wstring& secondSwitchText);
 
-		virtual HeaderWithSlotsAndSwitchLayout::SelectedItem					GetSelectedItem (const NUIE::UINode& uiNode) const override;
-		virtual std::shared_ptr<HeaderWithSlotsAndSwitchLayout::ClickHandler>	GetClickHandler (NUIE::UINode& uiNode) const override;
+		virtual HeaderWithSlotsAndSwitchLayout::SelectedItem					GetSelectedItem (const BasicUINode& uiNode) const override;
+		virtual std::shared_ptr<HeaderWithSlotsAndSwitchLayout::ClickHandler>	GetClickHandler (BasicUINode& uiNode) const override;
 	};
 
 	BooleanNode ();
@@ -57,8 +57,8 @@ public:
 				const std::string& rightButtonId,
 				const std::wstring& rightButtonText);
 
-		virtual std::wstring													GetMiddleText (const NUIE::UINode& uiNode, const NE::StringSettings& stringSettings) const override;
-		virtual std::shared_ptr<HeaderWithSlotsAndButtonsLayout::ClickHandler>	GetClickHandler (NUIE::UINode& uiNode) const override;
+		virtual std::wstring													GetMiddleText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const override;
+		virtual std::shared_ptr<HeaderWithSlotsAndButtonsLayout::ClickHandler>	GetClickHandler (BasicUINode& uiNode) const override;
 	};
 
 	NumericUpDownNode ();
