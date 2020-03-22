@@ -122,7 +122,7 @@ public:
 		eventHandlers (),
 		evaluationEnv (nullptr),
 #ifdef USE_DIRECT2D_CONTEXT
-		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext ()))
+		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (nullptr)))
 #else
 		nodeEditorControl ()
 #endif
@@ -251,7 +251,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				// 	NUIE::UINodePtr newViewerNode (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (i * 10 + 200, i * 10), 5));
 				// 	nodeEditor.AddNode (newNumberNode);
 				// 	nodeEditor.AddNode (newViewerNode);
-				// 	nodeEditor.ConnectOutputSlotToInputSlot (newNumberNode->GetUIOutputSlot (NE::SlotId ("out")), newViewerNode->GetUIInputSlot (NE::SlotId ("in")));y
+				// 	nodeEditor.ConnectOutputSlotToInputSlot (newNumberNode->GetUIOutputSlot (NE::SlotId ("out")), newViewerNode->GetUIInputSlot (NE::SlotId ("in")));
 				// }
 				nodeEditor.Update ();
 

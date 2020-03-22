@@ -3,6 +3,8 @@
 
 #include <d2d1.h>
 #include <dwrite.h>
+#include <wincodec.h>
+#include <unordered_map>
 
 #include "NUIE_DrawingContext.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"
@@ -10,10 +12,49 @@
 namespace WAS
 {
 
+class Direct2DImageLoader
+{
+public:
+	Direct2DImageLoader ();
+	virtual ~Direct2DImageLoader ();
+
+	ID2D1Bitmap*			LoadDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget);
+	void					ClearCache ();
+
+	virtual ID2D1Bitmap*	CreateImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget) = 0;
+
+protected:
+	IWICImagingFactory*								imagingFactory;
+	std::unordered_map<NUIE::IconId, ID2D1Bitmap*>	imageCache;
+};
+
+class Direct2DImageLoaderFromFile : public Direct2DImageLoader
+{
+public:
+	Direct2DImageLoaderFromFile ();
+	virtual ~Direct2DImageLoaderFromFile ();
+
+	virtual ID2D1Bitmap* CreateImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget) override;
+
+	virtual std::wstring GetFilePath (const NUIE::IconId& iconId) = 0;
+};
+
+class Direct2DImageLoaderFromResource : public Direct2DImageLoader
+{
+public:
+	Direct2DImageLoaderFromResource ();
+	virtual ~Direct2DImageLoaderFromResource ();
+
+	virtual ID2D1Bitmap*	CreateImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget) override;
+
+	virtual HRSRC			GetImageResHandle (const NUIE::IconId& iconId) = 0;
+	virtual std::wstring	GetFilePath (const NUIE::IconId& iconId) = 0;
+};
+
 class Direct2DContext : public NUIE::NativeDrawingContext
 {
 public:
-	Direct2DContext ();
+	Direct2DContext (Direct2DImageLoader* imageLoader);
 	Direct2DContext (const Direct2DContext& rhs) = delete;
 	virtual ~Direct2DContext ();
 
@@ -52,6 +93,7 @@ private:
 	int							width;
 	int							height;
 	ID2D1HwndRenderTarget*		renderTarget;
+	Direct2DImageLoader*		imageLoader;
 };
 
 }
