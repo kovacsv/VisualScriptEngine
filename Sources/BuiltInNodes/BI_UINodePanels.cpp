@@ -112,9 +112,11 @@ const NUIE::Color& NodeUIHeaderPanel::GetBackgroundColor (NUIE::NodeUIDrawingEnv
 NodeUIIconHeaderPanel::NodeUIIconHeaderPanel (const std::wstring& headerText, NodeStatus nodeStatus, const NUIE::IconId& iconId, NUIE::NodeUIDrawingEnvironment& env) :
 	NodeUIHeaderPanel (headerText, nodeStatus),
 	iconId (iconId),
-	textSize (0.0, 0.0)
+	textSize (0.0, 0.0),
+	iconSize (0.0)
 {
 	textSize = env.GetDrawingContext ().MeasureText (GetTextFont (env), headerText);
+	iconSize = textSize.GetHeight () * 1.25f;
 }
 
 NUIE::Size NodeUIIconHeaderPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
@@ -122,8 +124,7 @@ NUIE::Size NodeUIIconHeaderPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& en
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 
-	double iconSize = textSize.GetHeight ();
-	NUIE::Size minSize (textSize.GetWidth () + iconSize + nodePadding, textSize.GetHeight ());
+	NUIE::Size minSize (textSize.GetWidth () + iconSize + nodePadding, std::max (textSize.GetHeight (), iconSize));
 	minSize = minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 	return minSize;
 }
@@ -132,7 +133,6 @@ void NodeUIIconHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUI
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
-	double iconSize = textSize.GetHeight ();
 
 	NUIE::Rect iconRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + nodePadding, rect.GetTop () + nodePadding), NUIE::Size (iconSize, iconSize));
 	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + iconSize + 2.0 * nodePadding, rect.GetTop ()), NUIE::Size (rect.GetWidth () - (iconSize + 2.0 * nodePadding), rect.GetHeight ()));

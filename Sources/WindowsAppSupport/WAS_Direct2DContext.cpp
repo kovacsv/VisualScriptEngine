@@ -142,7 +142,21 @@ ID2D1Bitmap* Direct2DImageLoader::LoadDirect2DImage (const NUIE::IconId& iconId,
 	return image;
 }
 
-ID2D1Bitmap* Direct2DImageLoader::CreateDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget)
+void Direct2DImageLoader::ClearCache ()
+{
+	imageCache.clear ();
+}
+
+Direct2DDecoderImageLoader::Direct2DDecoderImageLoader () :
+	Direct2DImageLoader ()
+{
+}
+
+Direct2DDecoderImageLoader::~Direct2DDecoderImageLoader ()
+{
+}
+
+ID2D1Bitmap* Direct2DDecoderImageLoader::CreateDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget)
 {
 	HRESULT hr;
 
@@ -192,12 +206,8 @@ ID2D1Bitmap* Direct2DImageLoader::CreateDirect2DImage (const NUIE::IconId& iconI
 	return bitmap;
 }
 
-void Direct2DImageLoader::ClearCache ()
-{
-	imageCache.clear ();
-}
-
-Direct2DImageLoaderFromFile::Direct2DImageLoaderFromFile ()
+Direct2DImageLoaderFromFile::Direct2DImageLoaderFromFile () :
+	Direct2DDecoderImageLoader ()
 {
 
 }
@@ -224,7 +234,8 @@ IWICBitmapDecoder* Direct2DImageLoaderFromFile::CreateDecoder (const NUIE::IconI
 	return decoder;
 }
 
-Direct2DImageLoaderFromResource::Direct2DImageLoaderFromResource ()
+Direct2DImageLoaderFromResource::Direct2DImageLoaderFromResource () :
+	Direct2DDecoderImageLoader ()
 {
 
 }
@@ -278,6 +289,63 @@ IWICBitmapDecoder* Direct2DImageLoaderFromResource::CreateDecoder (const NUIE::I
 
 	SafeRelease (&stream);
 	return decoder;
+}
+
+Direct2DImageLoaderFromIcon::Direct2DImageLoaderFromIcon ()
+{
+}
+
+Direct2DImageLoaderFromIcon::~Direct2DImageLoaderFromIcon ()
+{
+}
+
+ID2D1Bitmap* Direct2DImageLoaderFromIcon::CreateDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget)
+{
+	HRESULT hr;
+
+	HICON hIcon = GetIconHandle (iconId);
+
+	IWICBitmap* wicBitmap = NULL;
+	hr = imagingFactory->CreateBitmapFromHICON (
+		hIcon,
+		&wicBitmap
+	);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	IWICFormatConverter* converter = NULL;
+	hr = imagingFactory->CreateFormatConverter (&converter);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	hr = converter->Initialize (
+		wicBitmap,
+		GUID_WICPixelFormat32bppPBGRA,
+		WICBitmapDitherTypeNone,
+		NULL,
+		0.f,
+		WICBitmapPaletteTypeMedianCut
+	);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	ID2D1Bitmap* bitmap = NULL;
+	hr = renderTarget->CreateBitmapFromWicBitmap (
+		converter,
+		NULL,
+		&bitmap
+	);
+	if (!SUCCEEDED (hr)) {
+		return nullptr;
+	}
+
+	SafeRelease (&converter);
+	SafeRelease (&wicBitmap);
+
+	return bitmap;
 }
 
 Direct2DContext::Direct2DContext (Direct2DImageLoader* imageLoader) :
