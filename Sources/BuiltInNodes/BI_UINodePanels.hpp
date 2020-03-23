@@ -65,6 +65,7 @@ private:
 	NUIE::IconId	iconId;
 	NUIE::Size		textSize;
 	double			iconSize;
+	double			minWidth;
 };
 
 class NodeUIMultiLineTextPanel : public NUIE::NodePanel
