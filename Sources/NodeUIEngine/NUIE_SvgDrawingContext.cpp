@@ -169,7 +169,6 @@ bool SvgDrawingContext::NeedToDraw (ItemPreviewMode)
 
 void SvgDrawingContext::DrawLine (const Point&, const Point&, const Pen&)
 {
-	// TODO: Not implemented
 	DBGBREAK ();
 }
 
