@@ -124,7 +124,7 @@ NUIE::Size NodeUIIconHeaderPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& en
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 
-	NUIE::Size minSize (textSize.GetWidth () + iconSize + nodePadding, std::max (textSize.GetHeight (), iconSize));
+	NUIE::Size minSize (iconSize + nodePadding + textSize.GetWidth (), std::max (textSize.GetHeight (), iconSize));
 	minSize = minSize.Grow (2.0 * nodePadding, 2.0 * nodePadding);
 	return minSize;
 }
@@ -134,8 +134,10 @@ void NodeUIIconHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUI
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 
-	NUIE::Rect iconRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + nodePadding, rect.GetTop () + nodePadding), NUIE::Size (iconSize, iconSize));
-	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + iconSize + 2.0 * nodePadding, rect.GetTop ()), NUIE::Size (rect.GetWidth () - (iconSize + 2.0 * nodePadding), rect.GetHeight ()));
+	double actualWidth = iconSize + nodePadding + textSize.GetWidth ();
+	double centerOffset = (rect.GetWidth () - actualWidth) / 2.0;
+	NUIE::Rect iconRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + centerOffset, rect.GetTop () + nodePadding), NUIE::Size (iconSize, iconSize));
+	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + centerOffset + iconSize + nodePadding, rect.GetTop ()), NUIE::Size (textSize.GetWidth (), rect.GetHeight ()));
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, GetBackgroundColor (env))));
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingIcon (iconRect, iconId)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, GetTextFont (env), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env))), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
