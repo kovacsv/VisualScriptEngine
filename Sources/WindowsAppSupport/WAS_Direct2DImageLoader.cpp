@@ -27,6 +27,7 @@ Direct2DImageLoader::Direct2DImageLoader () :
 
 Direct2DImageLoader::~Direct2DImageLoader ()
 {
+	ClearCache ();
 	SafeRelease (&imagingFactory);
 }
 
@@ -43,6 +44,9 @@ ID2D1Bitmap* Direct2DImageLoader::LoadDirect2DImage (const NUIE::IconId& iconId,
 
 void Direct2DImageLoader::ClearCache ()
 {
+	for (auto& it : imageCache) {
+		SafeRelease (&it.second);
+	}
 	imageCache.clear ();
 }
 
