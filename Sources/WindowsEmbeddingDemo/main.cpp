@@ -82,7 +82,7 @@ static const NUIE::BasicSkinParams MySkinParams (
 	/*connectionLinePen*/ NUIE::Pen (NUIE::Color (0, 0, 0), 1.0),
 	/*nodePadding*/ 5.0,
 	/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (0, 0, 0), 1.0),
-	/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 18.0),
+	/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
 	/*nodeHeaderTextColor*/ NUIE::Color (255, 255, 255),
 	/*nodeHeaderErrorTextColor*/ NUIE::Color (255, 255, 255),
 	/*nodeHeaderBackgroundColor*/ NUIE::Color (100, 100, 100),
