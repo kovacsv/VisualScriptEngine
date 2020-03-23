@@ -60,6 +60,12 @@ Stream::Status MemoryInputStream::Read (unsigned char& val)
 	return GetStatus ();
 }
 
+Stream::Status MemoryInputStream::Read (short& val)
+{
+	Read ((char*) &val, sizeof (val));
+	return GetStatus ();
+}
+
 Stream::Status MemoryInputStream::Read (size_t& val)
 {
 	Read ((char*) &val, sizeof (val));
@@ -138,6 +144,12 @@ Stream::Status MemoryOutputStream::Write (const char& val)
 }
 
 Stream::Status MemoryOutputStream::Write (const unsigned char& val)
+{
+	Write ((const char*) &val, sizeof (val));
+	return GetStatus ();
+}
+
+Stream::Status MemoryOutputStream::Write (const short& val)
 {
 	Write ((const char*) &val, sizeof (val));
 	return GetStatus ();

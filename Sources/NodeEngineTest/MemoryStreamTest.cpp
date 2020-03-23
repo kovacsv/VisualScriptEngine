@@ -25,6 +25,7 @@ TEST (TypeTest)
 	ASSERT (outputStream.Write ((int) 2) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((float) 3.0f) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((double) 3.0) == Stream::Status::NoError);
+	ASSERT (outputStream.Write ((short) 4) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::string ("apple")) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::wstring (L"banana")) == Stream::Status::NoError);
 	ASSERT (WriteEnum (outputStream, TestEnum::A) == Stream::Status::NoError);
@@ -35,6 +36,7 @@ TEST (TypeTest)
 	int intVal;
 	float floatVal;
 	double doubleVal;
+	short shortVal;
 	std::string stringVal;
 	std::wstring wStringVal;
 	TestEnum enumVal;
@@ -46,6 +48,7 @@ TEST (TypeTest)
 	ASSERT (inputStream.Read (intVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (floatVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (doubleVal) == Stream::Status::NoError);
+	ASSERT (inputStream.Read (shortVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (stringVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (wStringVal) == Stream::Status::NoError);
 	ASSERT (ReadEnum (inputStream, enumVal) == Stream::Status::NoError);
@@ -56,6 +59,7 @@ TEST (TypeTest)
 	ASSERT (intVal == 2);
 	ASSERT (floatVal == 3.0f);
 	ASSERT (doubleVal == 3.0);
+	ASSERT (shortVal == 4);
 	ASSERT (stringVal == "apple");
 	ASSERT (wStringVal == L"banana");
 	ASSERT (enumVal == TestEnum::A);
