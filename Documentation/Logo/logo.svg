@@ -16,9 +16,9 @@
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Logo\logo55.png"
-   inkscape:export-xdpi="9.6630697"
-   inkscape:export-ydpi="9.6630697">
+   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Logo\logo_32.png"
+   inkscape:export-xdpi="5.1199999"
+   inkscape:export-ydpi="5.1199999">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -29,17 +29,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.70000001"
-     inkscape:cx="368.65315"
-     inkscape:cy="264.36827"
+     inkscape:cx="363.27316"
+     inkscape:cy="128.14605"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      units="px"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1912"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid819" />
+  </sodipodi:namedview>
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -62,11 +66,11 @@
        id="rect4518"
        width="105.83334"
        height="105.83334"
-       x="27.528763"
-       y="163.37064" />
+       x="26.458334"
+       y="164.7083" />
     <rect
-       y="135.18002"
-       x="80.76693"
+       y="136.74916"
+       x="80.079193"
        height="105.83334"
        width="105.83334"
        id="rect4520"
@@ -78,11 +82,11 @@
        id="rect4522"
        width="105.83334"
        height="105.83334"
-       x="124.89478"
-       y="94.170914" />
+       x="124.6366"
+       y="95.864594" />
     <rect
-       y="173.8465"
-       x="38.219543"
+       y="175.29164"
+       x="37.041668"
        height="84.666664"
        width="84.666664"
        id="rect4526"
@@ -92,7 +96,7 @@
        id="rect4530"
        width="63.499996"
        height="63.499996"
-       x="48.802876"
-       y="184.42984" />
+       x="47.625004"
+       y="185.87497" />
   </g>
 </svg>
