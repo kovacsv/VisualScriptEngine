@@ -661,7 +661,6 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommand& command)
 		SaveUndoState ();
 	}
 	command.Do (*this);
-	RequestRecalculateAndRedraw ();
 	status.RequestSave ();
 }
 
