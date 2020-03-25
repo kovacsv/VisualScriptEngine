@@ -5,7 +5,7 @@
 
 VisualScriptEngine is a node based visual scripting engine designed for embedding.
 
-![Logo](Documentation/Logo/logo_128.png?raw=true "Logo")
+![Logo](Documentation/Logo/logo_256.png?raw=true "Logo")
 
 ## Links
 
