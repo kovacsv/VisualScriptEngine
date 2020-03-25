@@ -11,50 +11,6 @@ namespace NUIE
 
 static const std::string NodeEditorFileMarker = "NodeEditorFile";
 
-static bool GetBoundingRect (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, Rect& boundingRect)
-{
-	class StaticNodeRectGetter : public NodeRectGetter
-	{
-	public:
-		StaticNodeRectGetter (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) :
-			uiManager (uiManager),
-			env (env)
-		{
-		}
-
-		virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override
-		{
-			UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
-			return uiNode->GetNodeRect (env);
-		}
-
-	private:
-		const NodeUIManager& uiManager;
-		NodeUIDrawingEnvironment& env;
-	};
-
-	BoundingRectCalculator boundingRectCalculator;
-	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
-		Rect nodeRect = uiNode->GetNodeRect (env);
-		boundingRectCalculator.AddRect (nodeRect);
-		return true;
-	});
-
-	StaticNodeRectGetter nodeRectGetter (uiManager, env);
-	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
-		Rect groupRect = uiGroup->GetRect (env, nodeRectGetter, uiManager.GetUIGroupNodes (uiGroup));
-		boundingRectCalculator.AddRect (groupRect);
-		return true;
-	});
-
-	if (!boundingRectCalculator.IsValid ()) {
-		return false;
-	}
-
-	boundingRect = boundingRectCalculator.GetRect ();
-	return true;
-}
-
 ExternalHeaderIO::~ExternalHeaderIO ()
 {
 
@@ -187,31 +143,13 @@ Point NodeEditor::ViewToModel (const Point& viewPoint) const
 
 void NodeEditor::AlignToWindow ()
 {
-	Rect boundingRect;
-	if (!GetBoundingRect (uiManager, uiEnvironment, boundingRect)) {
-		return;
-	}
-
-	double viewPadding = uiEnvironment.GetSkinParams ().GetNodePadding ();
-	const DrawingContext& drawingContext = uiEnvironment.GetDrawingContext ();
-	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
-	ViewBox newViewBox (-boundingRect.GetTopLeft () + Point (viewPadding, viewPadding), 1.0);
-	uiManager.SetViewBox (newViewBox);
+	uiManager.AlignToWindow (uiEnvironment);
 	Update ();
 }
 
 void NodeEditor::FitToWindow ()
 {
-	Rect boundingRect;
-	if (!GetBoundingRect (uiManager, uiEnvironment, boundingRect)) {
-		return;
-	}
-
-	double viewPadding = uiEnvironment.GetSkinParams ().GetNodePadding ();
-	const DrawingContext& drawingContext = uiEnvironment.GetDrawingContext ();
-	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
-	ViewBox newViewBox = FitRectToSize (contextSize, viewPadding, boundingRect);
-	uiManager.SetViewBox (newViewBox);
+	uiManager.FitToWindow (uiEnvironment);
 	Update ();
 }
 

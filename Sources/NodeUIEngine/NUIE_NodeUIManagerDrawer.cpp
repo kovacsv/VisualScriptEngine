@@ -238,11 +238,11 @@ bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& env, const No
 		slotCirclesWidth = skinParams.GetSlotCircleSize ().GetWidth ();
 	}
 
-	Size expandSize (
+	Size expandedSize (
 		std::max (selectionThickness * 2.0, slotCirclesWidth),
 		selectionThickness * 2.0
 	);
-	boundingRect = boundingRect.Expand (expandSize);
+	boundingRect = boundingRect.Expand (expandedSize);
 
 	return IsRectVisible (env, boundingRect);
 }

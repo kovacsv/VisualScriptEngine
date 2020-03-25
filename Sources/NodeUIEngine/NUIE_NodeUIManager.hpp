@@ -100,6 +100,10 @@ public:
 	void						Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawingModifier);
 	void						ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
 
+	bool						GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundingRect) const;
+	void						AlignToWindow (NodeUIDrawingEnvironment& env);
+	void						FitToWindow (NodeUIDrawingEnvironment& env);
+
 	const ViewBox&				GetViewBox () const;
 	void						SetViewBox (const ViewBox& newViewBox);
 	bool						IsPreviewMode () const;

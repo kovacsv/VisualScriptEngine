@@ -4,6 +4,7 @@
 #include "NE_Debug.hpp"
 #include "NUIE_NodeDrawingModifier.hpp"
 #include "NUIE_NodeUIManagerDrawer.hpp"
+#include "NUIE_SkinParams.hpp"
 
 namespace NUIE
 {
@@ -397,6 +398,90 @@ void NodeUIManager::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifi
 void NodeUIManager::ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight)
 {
 	env.GetDrawingContext ().Resize (newWidth, newHeight);
+	status.RequestRedraw ();
+}
+
+bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundingRect) const
+{
+	class StaticNodeRectGetter : public NodeRectGetter
+	{
+	public:
+		StaticNodeRectGetter (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
+			uiManager (uiManager),
+			uiEnvironment (uiEnvironment)
+		{
+		}
+
+		virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override
+		{
+			UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
+			return GetNodeRect (uiNode, uiEnvironment);
+		}
+
+		static Rect GetNodeRect (const UINodeConstPtr& uiNode, NodeUIDrawingEnvironment& uiEnvironment)
+		{
+			Rect nodeRect = uiNode->GetNodeRect (uiEnvironment);
+			const SkinParams& skinParams = uiEnvironment.GetSkinParams ();
+			if (skinParams.NeedToDrawSlotCircles ()) {
+				nodeRect = nodeRect.Expand (Size (skinParams.GetSlotCircleSize ().GetWidth (), 0.0));
+			}
+			return nodeRect;
+		}
+
+	private:
+		const NodeUIManager& uiManager;
+		NodeUIDrawingEnvironment& uiEnvironment;
+	};
+
+	BoundingRectCalculator boundingRectCalculator;
+	EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+		Rect nodeRect = StaticNodeRectGetter::GetNodeRect (uiNode, env);
+		boundingRectCalculator.AddRect (nodeRect);
+		return true;
+	});
+
+	StaticNodeRectGetter nodeRectGetter (*this, env);
+	EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
+		Rect groupRect = uiGroup->GetRect (env, nodeRectGetter, GetUIGroupNodes (uiGroup));
+		boundingRectCalculator.AddRect (groupRect);
+		return true;
+	});
+
+	if (!boundingRectCalculator.IsValid ()) {
+		return false;
+	}
+
+	boundingRect = boundingRectCalculator.GetRect ();
+	return true;
+}
+
+void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env)
+{
+	Rect boundingRect;
+	if (!GetBoundingRect (env, boundingRect)) {
+		return;
+	}
+
+	double viewPadding = env.GetSkinParams ().GetNodePadding ();
+	const DrawingContext& drawingContext = env.GetDrawingContext ();
+	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
+	ViewBox newViewBox (-boundingRect.GetTopLeft () + Point (viewPadding, viewPadding), 1.0);
+	SetViewBox (newViewBox);
+	status.RequestRedraw ();
+}
+
+void NodeUIManager::FitToWindow (NodeUIDrawingEnvironment& env)
+{
+	Rect boundingRect;
+	if (!GetBoundingRect (env, boundingRect)) {
+		return;
+	}
+
+	double viewPadding = env.GetSkinParams ().GetNodePadding ();
+	const DrawingContext& drawingContext = env.GetDrawingContext ();
+	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
+	ViewBox newViewBox = FitRectToSize (contextSize, viewPadding, boundingRect);
+	SetViewBox (newViewBox);
 	status.RequestRedraw ();
 }
 

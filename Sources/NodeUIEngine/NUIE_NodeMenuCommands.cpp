@@ -71,6 +71,38 @@ void PasteNodesMenuCommand::Do ()
 	uiManager.ExecuteCommand (command);
 }
 
+AlignToWindowMenuCommand::AlignToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
+	SingleMenuCommand (NE::Localize (L"Align To Window"), false),
+	uiManager (uiManager),
+	uiEnvironment (uiEnvironment)
+{
+}
+
+AlignToWindowMenuCommand::~AlignToWindowMenuCommand ()
+{
+}
+
+void AlignToWindowMenuCommand::Do ()
+{
+	uiManager.AlignToWindow (uiEnvironment);
+}
+
+FitToWindowMenuCommand::FitToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
+	SingleMenuCommand (NE::Localize (L"Fit To Window"), false),
+	uiManager (uiManager),
+	uiEnvironment (uiEnvironment)
+{
+}
+
+FitToWindowMenuCommand::~FitToWindowMenuCommand ()
+{
+}
+
+void FitToWindowMenuCommand::Do ()
+{
+	uiManager.FitToWindow (uiEnvironment);
+}
+
 UndoMenuCommand::UndoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
 	SingleMenuCommand (NE::Localize (L"Undo"), false),
 	uiManager (uiManager),
@@ -863,9 +895,11 @@ NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UIN
 	return NE::NodeCollection ({ uiNode->GetId () });
 }
 
-MenuCommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment&, const Point& position)
+MenuCommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position)
 {
 	MenuCommandStructure commandStructure;
+	commandStructure.AddCommand (MenuCommandPtr (new AlignToWindowMenuCommand (uiManager, uiEnvironment)));
+	commandStructure.AddCommand (MenuCommandPtr (new FitToWindowMenuCommand (uiManager, uiEnvironment)));
 	if (uiManager.CanPaste ()) {
 		commandStructure.AddCommand (MenuCommandPtr (new PasteNodesMenuCommand (uiManager, position)));
 	}

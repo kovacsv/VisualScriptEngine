@@ -49,6 +49,32 @@ private:
 	Point				position;
 };
 
+class AlignToWindowMenuCommand : public SingleMenuCommand
+{
+public:
+	AlignToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
+	virtual ~AlignToWindowMenuCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&				uiManager;
+	NodeUIDrawingEnvironment&	uiEnvironment;
+};
+
+class FitToWindowMenuCommand : public SingleMenuCommand
+{
+public:
+	FitToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
+	virtual ~FitToWindowMenuCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&				uiManager;
+	NodeUIDrawingEnvironment&	uiEnvironment;
+};
+
 class UndoMenuCommand : public SingleMenuCommand
 {
 public:
