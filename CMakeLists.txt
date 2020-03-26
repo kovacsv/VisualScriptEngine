@@ -9,15 +9,17 @@ function (SetCompilerOptions module)
 	set (DebugOptions)
 	set (ReleaseOptions)
 	if (MSVC)
-		set (DebugOptions -DDEBUG -D_DEBUG /ZI /JMC /sdl /GR)
-		set (ReleaseOptions /Oi /Gy)
 		target_compile_options (${module} PRIVATE /W4 /WX)
+		set (DebugOptions -DDEBUG -D_DEBUG /Zi /Gy /GR /FC)
+		set (ReleaseOptions /Oi /Gy)
 	else ()
-		set (DebugOptions -DDEBUG -D_DEBUG -g -ggdb)
 		target_compile_options (${module} PRIVATE -std=c++11 -Wall -Wextra -Werror)
+		set (DebugOptions -DDEBUG -D_DEBUG -g -ggdb)
 	endif ()
-	target_compile_options (${module} PUBLIC "$<$<CONFIG:Debug>:${DebugOptions}>")
-	target_compile_options (${module} PUBLIC "$<$<CONFIG:Release>:${ReleaseOptions}>")
+	target_compile_options (${module} PUBLIC
+		"$<$<CONFIG:Debug>:${DebugOptions}>"
+		"$<$<CONFIG:Release>:${ReleaseOptions}>"
+	)
 endfunction ()
 
 set_property (GLOBAL PROPERTY USE_FOLDERS ON)
