@@ -100,7 +100,8 @@ private:
 };
 
 TestEventHandlers::TestEventHandlers () :
-	commandToSelect ()
+	commandToSelect (),
+	paramSettingsHandler (nullptr)
 {
 	
 }
@@ -140,16 +141,26 @@ MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironme
 	return SelectCommandByName (commands);
 }
 
-bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr)
+bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterface)
 {
-	DBGBREAK ();
-	return false;
+	if (DBGERROR (paramSettingsHandler == nullptr)) {
+		return nullptr;
+	}
+	bool result = paramSettingsHandler (paramInterface);
+	paramSettingsHandler = nullptr;
+	return result;
 }
 
 void TestEventHandlers::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	DBGASSERT (commandToSelect.empty ());
 	commandToSelect = nextCommandName;
+}
+
+void TestEventHandlers::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
+{
+	SetNextCommandName (L"Set Parameters");
+	paramSettingsHandler = handler;
 }
 
 MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandStructure& commands)
@@ -251,6 +262,11 @@ void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandN
 	eventHandlers.SetNextCommandName (nextCommandName);
 }
 
+void TestNodeUIEnvironment::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
+{
+	eventHandlers.SetNextCommandParameterSettings (handler);
+}
+
 const SvgDrawingContext& TestNodeUIEnvironment::GetSvgDrawingContext () const
 {
 	return drawingContext;
@@ -331,4 +347,9 @@ void NodeEditorTestEnv::DragDrop (const Point& from, const Point& to, const std:
 void NodeEditorTestEnv::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	uiEnvironment.SetNextCommandName (nextCommandName);
+}
+
+void NodeEditorTestEnv::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
+{
+	uiEnvironment.SetNextCommandParameterSettings (handler);
 }

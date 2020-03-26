@@ -120,6 +120,19 @@ TEST (RecalculationVisualTest)
 		ASSERT (env.CheckNodeValues (0, 0));
 		ASSERT (env.CheckRecalcCounters (1, 2));
 	}
+
+	{
+		Rect test1NodeRect = env.testNode1->GetNodeRect (env.uiEnvironment);
+		Point test1HeaderPoint = test1NodeRect.GetTopLeft () + Point (5.0, 5.0);
+		env.SetNextCommandParameterSettings ([&] (ParameterInterfacePtr paramInterface) {
+			paramInterface->SetParameterValue (0, ValueConstPtr (new StringValue (L"Test 1 New")));
+			return true;
+		});
+		env.RightClick (test1HeaderPoint);
+		ASSERT (env.CheckReference ("Recalculation_Node1Renamed.svg"));
+		ASSERT (env.CheckNodeValues (0, 0));
+		ASSERT (env.CheckRecalcCounters (1, 2));
+	}
 }
 
 }

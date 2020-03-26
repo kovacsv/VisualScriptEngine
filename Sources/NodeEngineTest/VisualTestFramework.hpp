@@ -10,25 +10,29 @@
 using namespace NE;
 using namespace NUIE;
 
+using ParameterSettingsHandler = std::function<bool (ParameterInterfacePtr)>;
+
 class TestEventHandlers : public EventHandlers
 {
 public:
 	TestEventHandlers ();
 
-	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr	OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
-	virtual bool			OnParameterSettings (ParameterInterfacePtr) override;
+	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
+	virtual bool				OnParameterSettings (ParameterInterfacePtr) override;
 
-	void					SetNextCommandName (const std::wstring& nextCommandName);
+	void						SetNextCommandName (const std::wstring& nextCommandName);
+	void						SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
 
 private:
-	MenuCommandPtr			SelectCommandByName (const MenuCommandStructure& commands);
-	MenuCommandPtr			SelectCommandByName (const MenuCommandPtr& command);
+	MenuCommandPtr				SelectCommandByName (const MenuCommandStructure& commands);
+	MenuCommandPtr				SelectCommandByName (const MenuCommandPtr& command);
 
-	std::wstring		commandToSelect;
+	std::wstring				commandToSelect;
+	ParameterSettingsHandler	paramSettingsHandler;
 };
 
 class TestNodeUIEnvironment : public NodeUIEnvironment
@@ -48,6 +52,7 @@ public:
 	virtual double					GetMouseMoveMinOffset () override;
 
 	void							SetNextCommandName (const std::wstring& nextCommandName);
+	void							SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
 	const SvgDrawingContext&		GetSvgDrawingContext () const;
 
 private:
@@ -72,6 +77,7 @@ public:
 	void	Wheel (MouseWheelRotation rotation, const Point& point);
 	void	DragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
 	void	SetNextCommandName (const std::wstring& nextCommandName);
+	void	SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
 
 	TestNodeUIEnvironment	uiEnvironment;
 	NodeEditor				nodeEditor;
