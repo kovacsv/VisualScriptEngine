@@ -415,17 +415,7 @@ bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundi
 		virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override
 		{
 			UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
-			return GetNodeRect (uiNode, uiEnvironment);
-		}
-
-		static Rect GetNodeRect (const UINodeConstPtr& uiNode, NodeUIDrawingEnvironment& uiEnvironment)
-		{
-			Rect nodeRect = uiNode->GetNodeRect (uiEnvironment);
-			const SkinParams& skinParams = uiEnvironment.GetSkinParams ();
-			if (skinParams.NeedToDrawSlotCircles ()) {
-				nodeRect = nodeRect.Expand (Size (skinParams.GetSlotCircleSize ().GetWidth (), 0.0));
-			}
-			return nodeRect;
+			return GetNodeExtendedRect (uiEnvironment, uiNode.get ());
 		}
 
 	private:
@@ -435,7 +425,7 @@ bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundi
 
 	BoundingRectCalculator boundingRectCalculator;
 	EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
-		Rect nodeRect = StaticNodeRectGetter::GetNodeRect (uiNode, env);
+		Rect nodeRect = GetNodeExtendedRect (env, uiNode.get ());
 		boundingRectCalculator.AddRect (nodeRect);
 		return true;
 	});

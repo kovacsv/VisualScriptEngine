@@ -230,19 +230,10 @@ bool NodeUIManagerDrawer::IsConnectionVisible (NodeUIDrawingEnvironment& env, co
 bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& env, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const
 {
 	Rect boundingRect = GetNodeRect (env, drawModifier, uiNode);
-	
-	const SkinParams& skinParams = env.GetSkinParams ();
-	double selectionThickness = scaleIndependentData.GetSelectionThickness ();
-	double slotCirclesWidth = 0.0;
-	if (skinParams.NeedToDrawSlotCircles ()) {
-		slotCirclesWidth = skinParams.GetSlotCircleSize ().GetWidth ();
-	}
+	boundingRect = ExtendNodeRect (env, boundingRect);
 
-	Size expandedSize (
-		std::max (selectionThickness * 2.0, slotCirclesWidth),
-		selectionThickness * 2.0
-	);
-	boundingRect = boundingRect.Expand (expandedSize);
+	double selectionThickness = scaleIndependentData.GetSelectionThickness ();
+	boundingRect = boundingRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
 
 	return IsRectVisible (env, boundingRect);
 }
@@ -281,6 +272,22 @@ double NodeUIManagerDrawer::GetNodeSelectionThickness (NodeUIDrawingEnvironment&
 		return selectionThickness / scale;
 	}
 	return selectionThickness;
+}
+
+Rect ExtendNodeRect (NodeUIDrawingEnvironment& env, const Rect& originalRect)
+{
+	const SkinParams& skinParams = env.GetSkinParams ();
+	if (!skinParams.NeedToDrawSlotCircles ()) {
+		return originalRect;
+	}
+	const Size& slotCircleSize = skinParams.GetSlotCircleSize ();
+	return originalRect.Expand (Size (slotCircleSize.GetWidth (), 0.0));
+}
+
+Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& env, const UINode* uiNode)
+{
+	Rect nodeRect = uiNode->GetNodeRect (env);
+	return ExtendNodeRect (env, nodeRect);
 }
 
 }

@@ -61,6 +61,9 @@ private:
 	mutable std::vector<const UINode*>		sortedNodeList;
 };
 
+Rect ExtendNodeRect (NodeUIDrawingEnvironment& env, const Rect& originalRect);
+Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& env, const UINode* uiNode);
+
 }
 
 #endif
