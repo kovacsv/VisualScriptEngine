@@ -30,15 +30,29 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in"), L"Input", ValuePtr (new NE::IntValue (0)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in"), L"Input", ValuePtr (new IntValue (0)), OutputSlotConnectionMode::Single)));
 		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), L"Output")));
 	}
 
-	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
+	virtual ValueConstPtr Calculate (EvaluationEnv& env) const override
 	{
-		NE::ValueConstPtr inputVal = EvaluateInputSlot (NE::SlotId ("in"), env);
+		ValueConstPtr inputVal = EvaluateInputSlot (SlotId ("in"), env);
 		recalcCounter++;
 		return inputVal;
+	}
+
+	virtual Stream::Status Read (InputStream& inputStream) override
+	{
+		ObjectHeader header (inputStream);
+		BasicUINode::Read (inputStream);
+		return inputStream.GetStatus ();
+	}
+
+	virtual Stream::Status Write (OutputStream& outputStream) const override
+	{
+		ObjectHeader header (outputStream, serializationInfo);
+		BasicUINode::Write (outputStream);
+		return outputStream.GetStatus ();
 	}
 
 	size_t GetRecalcCounter () const
@@ -66,18 +80,6 @@ public:
 		nodeEditor.ConnectOutputSlotToInputSlot (testNode1->GetUIOutputSlot (SlotId ("out")), testNode2->GetUIInputSlot (SlotId ("in")));
 
 		nodeEditor.Update ();
-		RecalcPositions ();
-	}
-
-	void RecalcPositions ()
-	{
-		//doubleInputRect = doubleUpDownNode->GetNodeRect (uiEnvironment);
-		//rangeInputRect = rangeInputNode->GetNodeRect (uiEnvironment);
-		//viewer1InputRect = viewerUINode1->GetNodeRect (uiEnvironment);
-		//viewer2InputRect = viewerUINode2->GetNodeRect (uiEnvironment);
-		//
-		//doubleInputHeaderPoint = doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
-		//rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);	
 	}
 
 	bool CheckNodeValues (int nodeVal1, int nodeVal2)
@@ -87,7 +89,7 @@ public:
 		}
 		ValueConstPtr val1 = testNode1->GetCalculatedValue ();
 		ValueConstPtr val2 = testNode1->GetCalculatedValue ();
-		if (NE::IntValue::Get (val1) != nodeVal1 || NE::IntValue::Get (val2) != nodeVal2) {
+		if (IntValue::Get (val1) != nodeVal1 || IntValue::Get (val2) != nodeVal2) {
 			return false;
 		}
 		return true;
