@@ -144,7 +144,7 @@ MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironme
 bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterface)
 {
 	if (DBGERROR (paramSettingsHandler == nullptr)) {
-		return nullptr;
+		return false;
 	}
 	bool result = paramSettingsHandler (paramInterface);
 	paramSettingsHandler = nullptr;
