@@ -80,6 +80,19 @@ public:
 		//rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);	
 	}
 
+	bool CheckNodeValues (int nodeVal1, int nodeVal2)
+	{
+		if (!testNode1->HasCalculatedValue () || !testNode2->HasCalculatedValue ()) {
+			return false;
+		}
+		ValueConstPtr val1 = testNode1->GetCalculatedValue ();
+		ValueConstPtr val2 = testNode1->GetCalculatedValue ();
+		if (NE::IntValue::Get (val1) != nodeVal1 || NE::IntValue::Get (val2) != nodeVal2) {
+			return false;
+		}
+		return true;
+	}
+
 	bool CheckRecalcCounters (size_t counter1, size_t counter2)
 	{
 		return testNode1->GetRecalcCounter () == counter1 && testNode2->GetRecalcCounter () == counter2;
@@ -93,7 +106,18 @@ TEST (RecalculationVisualTest)
 {
 	RecalcNodeEditorTestEnv env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference ("Recalculation_Initial.svg"));
+	ASSERT (env.CheckNodeValues (0, 0));
 	ASSERT (env.CheckRecalcCounters (1, 2));
+	
+	{
+		Rect test2NodeRect = env.testNode2->GetNodeRect (env.uiEnvironment);
+		Point dragStart = test2NodeRect.GetTopLeft () + Point (5.0, 5.0);
+		Point dragEnd (dragStart + Point (20.0, -20.0));
+		env.DragDrop (dragStart, dragEnd);
+		ASSERT (env.CheckReference ("Recalculation_Node2Moved.svg"));
+		ASSERT (env.CheckNodeValues (0, 0));
+		ASSERT (env.CheckRecalcCounters (1, 2));
+	}
 }
 
 }
