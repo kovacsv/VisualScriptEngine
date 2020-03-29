@@ -165,28 +165,28 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				if (isControlPressed) {
 					switch (wParam) {
 						case 'A':
-							pressedKey = NUIE::PressedKeyCode::SelectAll;
+							pressedKey.SetKeyCode (NUIE::PressedKeyCode::SelectAll);
 							break;
 						case 'C':
-							pressedKey = NUIE::PressedKeyCode::Copy;
+							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Copy);
 							break;
 						case 'V':
-							pressedKey = NUIE::PressedKeyCode::Paste;
+							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Paste);
 							break;
 						case 'Z':
-							pressedKey = NUIE::PressedKeyCode::Undo;
+							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Undo);
 							break;
 						case 'Y':
-							pressedKey = NUIE::PressedKeyCode::Redo;
+							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Redo);
 							break;
 					}
 				} else {
 					switch (wParam) {
 						case VK_ESCAPE:
-							pressedKey = NUIE::PressedKeyCode::Escape;
+							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Escape);
 							break;
 						case VK_DELETE:
-							pressedKey = NUIE::PressedKeyCode::Delete;
+							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Delete);
 							break;
 					}
 				}

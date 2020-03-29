@@ -84,7 +84,7 @@ double HwndNodeUIEnvironment::GetMouseMoveMinOffset ()
 	return 2.0;
 }
 
-WAS::NodeEditorHwndBasedControlPtr HwndNodeUIEnvironment::GetNodeEditorControl ()
+WAS::NodeEditorHwndBasedControlPtr HwndNodeUIEnvironment::GetNodeEditorControl () const
 {
 	return nodeEditorControl;
 }

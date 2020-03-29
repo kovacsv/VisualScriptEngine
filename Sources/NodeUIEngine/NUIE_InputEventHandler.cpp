@@ -43,8 +43,13 @@ bool Key::IsValid () const
 
 PressedKeyCode Key::GetKeyCode () const
 {
-	DBGASSERT (pressedKeyCode != PressedKeyCode::Undefined);
+	DBGASSERT (IsValid ());
 	return pressedKeyCode;
+}
+
+void Key::SetKeyCode (PressedKeyCode newPressedKeyCode)
+{
+	pressedKeyCode = newPressedKeyCode;
 }
 
 InputEventHandler::InputEventHandler ()

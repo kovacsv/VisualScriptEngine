@@ -34,7 +34,7 @@ public:
 	virtual NUIE::EventHandlers&		GetEventHandlers () override;
 	virtual double						GetMouseMoveMinOffset () override;
 
-	WAS::NodeEditorHwndBasedControlPtr	GetNodeEditorControl ();
+	WAS::NodeEditorHwndBasedControlPtr	GetNodeEditorControl () const;
 
 private:
 	WAS::NodeEditorHwndBasedControlPtr	nodeEditorControl;

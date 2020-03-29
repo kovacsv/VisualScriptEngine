@@ -85,10 +85,12 @@ class Key
 {
 public:
 	Key ();
-	Key (PressedKeyCode specialKeyCode);
+	Key (PressedKeyCode pressedKeyCode);
 
 	bool			IsValid () const;
+
 	PressedKeyCode	GetKeyCode () const;
+	void			SetKeyCode (PressedKeyCode newPressedKeyCode);
 
 private:
 	PressedKeyCode	pressedKeyCode;
