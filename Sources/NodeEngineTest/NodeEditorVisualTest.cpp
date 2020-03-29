@@ -362,7 +362,7 @@ TEST (UndoTest)
 	ASSERT (env.CheckReference ("UndoTest_Initial.svg"));
 
 	for (int i = 1; i <= 11; i++) {
-		env.nodeEditor.OnKeyPress (Key (PressedKeyCode::Undo));
+		env.nodeEditor.OnKeyPress (Key (KeyCode::Undo));
 		std::string indexString = std::to_string (i);
 		while (indexString.length () < 2) {
 			indexString = "0" + indexString;
@@ -370,7 +370,7 @@ TEST (UndoTest)
 		ASSERT (env.CheckReference ("UndoTest_Undo_" + indexString + ".svg"));
 	}
 	for (int i = 1; i <= 11; i++) {
-		env.nodeEditor.OnKeyPress (Key (PressedKeyCode::Redo));
+		env.nodeEditor.OnKeyPress (Key (KeyCode::Redo));
 		std::string indexString = std::to_string (i);
 		while (indexString.length () < 2) {
 			indexString = "0" + indexString;

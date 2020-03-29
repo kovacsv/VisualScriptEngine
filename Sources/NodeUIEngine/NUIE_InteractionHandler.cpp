@@ -599,7 +599,7 @@ EventHandlerResult InteractionHandler::HandleMouseWheel (NodeUIEnvironment&, con
 
 EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey)
 {
-	if (pressedKey.GetKeyCode () == PressedKeyCode::Escape) {
+	if (pressedKey.GetKeyCode () == KeyCode::Escape) {
 		if (multiMouseMoveHandler.HasHandler ()) {
 			multiMouseMoveHandler.AbortHandlers ();
 			return EventHandlerResult::EventHandled;
@@ -614,12 +614,12 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 	MenuCommandPtr command = nullptr;
 
 	switch (pressedKey.GetKeyCode ()) {
-		case PressedKeyCode::Delete:
+		case KeyCode::Delete:
 			{
 				command.reset (new DeleteNodesMenuCommand (uiManager, env, selectedNodes));
 			}
 			break;
-		case PressedKeyCode::SelectAll:
+		case KeyCode::SelectAll:
 			{
 				NE::NodeCollection allSelectedNodes;
 				uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
@@ -629,29 +629,29 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 				uiManager.SetSelectedNodes (allSelectedNodes);
 			}
 			break;
-		case PressedKeyCode::Copy:
+		case KeyCode::Copy:
 			{
 				command.reset (new CopyNodesMenuCommand (uiManager, selectedNodes));
 			}
 			break;
-		case PressedKeyCode::Paste:
+		case KeyCode::Paste:
 			{
 				Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
 				command.reset (new PasteNodesMenuCommand (uiManager, modelPastePosition));
 			}
 			break;
-		case PressedKeyCode::Undo:
+		case KeyCode::Undo:
 			{
 				command.reset (new UndoMenuCommand (uiManager, env));
 			}
 			break;
-		case PressedKeyCode::Redo:
+		case KeyCode::Redo:
 			{
 				command.reset (new RedoMenuCommand (uiManager, env));
 			}
 			break;
-		case PressedKeyCode::Escape:
-		case PressedKeyCode::Undefined:
+		case KeyCode::Escape:
+		case KeyCode::Undefined:
 			DBGBREAK ();
 			break;
 	}

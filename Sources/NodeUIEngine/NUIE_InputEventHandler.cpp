@@ -25,31 +25,31 @@ bool ModifierKeys::Contains (ModifierKeyCode keyCode) const
 }
 
 Key::Key () :
-	pressedKeyCode (PressedKeyCode::Undefined)
+	keyCode (KeyCode::Undefined)
 {
 
 }
 
-Key::Key (PressedKeyCode pressedKeyCode) :
-	pressedKeyCode (pressedKeyCode)
+Key::Key (KeyCode keyCode) :
+	keyCode (keyCode)
 {
 
 }
 
 bool Key::IsValid () const
 {
-	return pressedKeyCode != PressedKeyCode::Undefined;
+	return keyCode != KeyCode::Undefined;
 }
 
-PressedKeyCode Key::GetKeyCode () const
+KeyCode Key::GetKeyCode () const
 {
 	DBGASSERT (IsValid ());
-	return pressedKeyCode;
+	return keyCode;
 }
 
-void Key::SetKeyCode (PressedKeyCode newPressedKeyCode)
+void Key::SetKeyCode (KeyCode newKeyCode)
 {
-	pressedKeyCode = newPressedKeyCode;
+	keyCode = newKeyCode;
 }
 
 InputEventHandler::InputEventHandler ()

@@ -63,9 +63,9 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 		int key = evt.GetKeyCode ();
 		switch (key) {
 			case WXK_ESCAPE:
-				return NUIE::Key (NUIE::PressedKeyCode::Escape);
+				return NUIE::Key (NUIE::KeyCode::Escape);
 			case WXK_DELETE:
-				return NUIE::Key (NUIE::PressedKeyCode::Delete);
+				return NUIE::Key (NUIE::KeyCode::Delete);
 		}
 	}
 	
@@ -73,15 +73,15 @@ NUIE::Key GetKeyFromEvent (wxKeyEvent& evt)
 	if (modifierKeys.Contains (NUIE::ModifierKeyCode::Control)) {
 		switch (unicodeKey) {
 			case L'A':
-				return NUIE::Key (NUIE::PressedKeyCode::SelectAll);
+				return NUIE::Key (NUIE::KeyCode::SelectAll);
 			case L'C':
-				return NUIE::Key (NUIE::PressedKeyCode::Copy);
+				return NUIE::Key (NUIE::KeyCode::Copy);
 			case L'V':
-				return NUIE::Key (NUIE::PressedKeyCode::Paste);
+				return NUIE::Key (NUIE::KeyCode::Paste);
 			case L'Z':
-				return NUIE::Key (NUIE::PressedKeyCode::Undo);
+				return NUIE::Key (NUIE::KeyCode::Undo);
 			case L'Y':
-				return NUIE::Key (NUIE::PressedKeyCode::Redo);
+				return NUIE::Key (NUIE::KeyCode::Redo);
 		}
 	}
 

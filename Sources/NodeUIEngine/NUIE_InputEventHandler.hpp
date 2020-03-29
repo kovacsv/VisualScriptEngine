@@ -29,7 +29,7 @@ enum class ModifierKeyCode
 	Shift		= 2
 };
 
-enum class PressedKeyCode
+enum class KeyCode
 {
 	Undefined,
 	Escape,
@@ -85,15 +85,15 @@ class Key
 {
 public:
 	Key ();
-	Key (PressedKeyCode pressedKeyCode);
+	Key (KeyCode keyCode);
 
-	bool			IsValid () const;
+	bool		IsValid () const;
 
-	PressedKeyCode	GetKeyCode () const;
-	void			SetKeyCode (PressedKeyCode newPressedKeyCode);
+	KeyCode		GetKeyCode () const;
+	void		SetKeyCode (KeyCode newKeyCode);
 
 private:
-	PressedKeyCode	pressedKeyCode;
+	KeyCode		keyCode;
 };
 
 extern Key InvalidKey;

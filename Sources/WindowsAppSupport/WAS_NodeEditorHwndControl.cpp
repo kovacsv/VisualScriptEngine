@@ -113,7 +113,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_MOUSEMOVE:
 			{
-				SetFocus (hwnd); // before Windows 10 only the focused window catches the mouse wheel message
+				SetFocus (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor->OnMouseMove (GetModiferKeysFromEvent (wParam), x, y);
@@ -160,33 +160,33 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_KEYDOWN:
 			{
-				NUIE::Key pressedKey (NUIE::PressedKeyCode::Undefined);
+				NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
 				bool isControlPressed = (GetKeyState (VK_CONTROL) < 0);
 				if (isControlPressed) {
 					switch (wParam) {
 						case 'A':
-							pressedKey.SetKeyCode (NUIE::PressedKeyCode::SelectAll);
+							pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
 							break;
 						case 'C':
-							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Copy);
+							pressedKey.SetKeyCode (NUIE::KeyCode::Copy);
 							break;
 						case 'V':
-							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Paste);
+							pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
 							break;
 						case 'Z':
-							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Undo);
+							pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
 							break;
 						case 'Y':
-							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Redo);
+							pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
 							break;
 					}
 				} else {
 					switch (wParam) {
 						case VK_ESCAPE:
-							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Escape);
+							pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
 							break;
 						case VK_DELETE:
-							pressedKey.SetKeyCode (NUIE::PressedKeyCode::Delete);
+							pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
 							break;
 					}
 				}
