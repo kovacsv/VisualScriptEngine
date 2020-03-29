@@ -718,6 +718,33 @@ private:
 	UINodeGroupPtr		group;
 };
 
+class SelectGroupNodesCommand : public SingleMenuCommand
+{
+public:
+	SelectGroupNodesCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
+		SingleMenuCommand (NE::Localize (L"Select Nodes"), false),
+		uiManager (uiManager),
+		group (group)
+	{
+
+	}
+
+	virtual ~SelectGroupNodesCommand ()
+	{
+
+	}
+
+	virtual void Do () override
+	{
+		NE::NodeCollection groupNodes = uiManager.GetUIGroupNodes (group);
+		uiManager.SetSelectedNodes (groupNodes);
+	}
+
+private:
+	NodeUIManager&		uiManager;
+	UINodeGroupPtr		group;
+};
+
 class RemoveNodesFromGroupMenuCommand : public SingleMenuCommand
 {
 public:
@@ -986,6 +1013,7 @@ MenuCommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, 
 	MenuCommandStructure commandStructure;
 	commandStructure.AddCommand (MenuCommandPtr (new SetGroupParametersCommand (uiManager, uiEnvironment, group)));
 	commandStructure.AddCommand (MenuCommandPtr (new DeleteGroupMenuCommand (uiManager, group)));
+	commandStructure.AddCommand (MenuCommandPtr (new SelectGroupNodesCommand (uiManager, group)));
 	return commandStructure;
 }
 
