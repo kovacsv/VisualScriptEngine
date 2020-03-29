@@ -128,7 +128,7 @@ class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 public:
 	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
-		stringSettings (NE::GetDefaultStringSettings ()),
+		stringSettings (WAS::GetStringSettingsFromSystem ()),
 		skinParams (MySkinParams),
 		eventHandlers (),
 		evaluationEnv (nullptr),

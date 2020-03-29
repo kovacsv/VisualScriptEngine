@@ -31,6 +31,10 @@ public:
 	virtual wchar_t		GetListSeparator () const override;
 	virtual int			GetPrecision () const override;
 
+	void				SetDecimalSeparator (wchar_t newDecimalSeparator);
+	void				SetListSeparator (wchar_t newListSeparator);
+	void				SetPrecision (int newPrecision);
+
 private:
 	wchar_t		decimalSeparator;
 	wchar_t		listSeparator;

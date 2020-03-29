@@ -41,6 +41,21 @@ int BasicStringSettings::GetPrecision () const
 	return precision;
 }
 
+void BasicStringSettings::SetDecimalSeparator (wchar_t newDecimalSeparator)
+{
+	decimalSeparator = newDecimalSeparator;
+}
+
+void BasicStringSettings::SetListSeparator (wchar_t newListSeparator)
+{
+	listSeparator = newListSeparator;
+}
+
+void BasicStringSettings::SetPrecision (int newPrecision)
+{
+	precision = newPrecision;
+}
+
 const BasicStringSettings& GetDefaultStringSettings ()
 {
 	static const BasicStringSettings defaultStringSettings (L'.', L',', 2);

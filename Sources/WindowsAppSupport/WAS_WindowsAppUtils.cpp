@@ -5,6 +5,25 @@
 namespace WAS
 {
 
+NE::BasicStringSettings GetStringSettingsFromSystem ()
+{
+	NE::BasicStringSettings result = NE::GetDefaultStringSettings ();
+
+	wchar_t decSeparator[16];
+	int decSeparatorLength = GetLocaleInfo (LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, decSeparator, 16);
+	if (DBGVERIFY (decSeparatorLength == 2)) {
+		result.SetDecimalSeparator (decSeparator[0]);
+	}
+
+	wchar_t listSeparator[16];
+	int listSeparatorLength = GetLocaleInfo (LOCALE_USER_DEFAULT, LOCALE_SLIST, listSeparator, 16);
+	if (DBGVERIFY (listSeparatorLength == 2)) {
+		result.SetListSeparator (listSeparator[0]);
+	}
+
+	return result;
+}
+
 NUIE::ModifierKeys GetModiferKeysFromEvent (WPARAM wParam)
 {
 	std::unordered_set<NUIE::ModifierKeyCode> keys;
