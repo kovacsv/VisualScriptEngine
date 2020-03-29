@@ -220,6 +220,11 @@ void UINode::OnFeatureChange (const FeatureId&, NE::EvaluationEnv&) const
 
 }
 
+void UINode::OnAdd (NE::EvaluationEnv&) const
+{
+
+}
+
 void UINode::OnDelete (NE::EvaluationEnv&) const
 {
 

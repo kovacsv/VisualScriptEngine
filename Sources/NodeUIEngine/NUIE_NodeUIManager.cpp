@@ -125,7 +125,7 @@ NodeUIManager::~NodeUIManager ()
 
 }
 
-UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv&)
+UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 {
 	if (DBGERROR (uiNode == nullptr)) {
 		return nullptr;
@@ -134,6 +134,7 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv&)
 	if (resultNode == nullptr) {
 		return nullptr;
 	}
+	uiNode->OnAdd (env);
 	RequestRecalculateAndRedraw ();
 	return uiNode;
 }
