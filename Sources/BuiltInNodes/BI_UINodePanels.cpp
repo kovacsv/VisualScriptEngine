@@ -120,7 +120,7 @@ NodeUIIconHeaderPanel::NodeUIIconHeaderPanel (const std::wstring& headerText, No
 	double nodePadding = skinParams.GetNodePadding ();
 
 	textSize = env.GetDrawingContext ().MeasureText (GetTextFont (env), headerText);
-	iconSize = textSize.GetHeight () * 1.25f;
+	iconSize = textSize.GetHeight ();
 	minWidth = iconSize + nodePadding + textSize.GetWidth ();
 }
 
