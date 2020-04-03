@@ -446,7 +446,7 @@ bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundi
 	return true;
 }
 
-void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env)
+void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env, double scale)
 {
 	Rect boundingRect;
 	if (!GetBoundingRect (env, boundingRect)) {
@@ -456,7 +456,28 @@ void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env)
 	double viewPadding = env.GetSkinParams ().GetNodePadding ();
 	const DrawingContext& drawingContext = env.GetDrawingContext ();
 	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
-	ViewBox newViewBox (-boundingRect.GetTopLeft () + Point (viewPadding, viewPadding), 1.0);
+	ViewBox newViewBox (-boundingRect.GetTopLeft () * scale + Point (viewPadding, viewPadding), scale);
+	SetViewBox (newViewBox);
+	status.RequestRedraw ();
+}
+
+void NodeUIManager::CenterToWindow (NodeUIDrawingEnvironment& env, double scale)
+{
+	Rect boundingRect;
+	if (!GetBoundingRect (env, boundingRect)) {
+		return;
+	}
+
+	const DrawingContext& drawingContext = env.GetDrawingContext ();
+	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
+	Point boundingRectPosition = boundingRect.GetPosition () * scale;
+	Size boundingRectSize = boundingRect.GetSize () * scale;
+
+	Point centerTopLeft (
+		boundingRectPosition.GetX () - (contextSize.GetWidth () - boundingRectSize.GetWidth ()) / 2.0,
+		boundingRectPosition.GetY () - (contextSize.GetHeight () - boundingRectSize.GetHeight ()) / 2.0
+	);
+	ViewBox newViewBox (-centerTopLeft, scale);
 	SetViewBox (newViewBox);
 	status.RequestRedraw ();
 }

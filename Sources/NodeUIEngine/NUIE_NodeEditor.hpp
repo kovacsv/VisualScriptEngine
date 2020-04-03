@@ -61,6 +61,9 @@ public:
 
 	Point						ViewToModel (const Point& viewPoint) const;
 	void						AlignToWindow ();
+	void						AlignToWindow (double scale);
+	void						CenterToWindow ();
+	void						CenterToWindow (double scale);
 	void						FitToWindow ();
 
 	const ViewBox&				GetViewBox () const;

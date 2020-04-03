@@ -101,7 +101,8 @@ public:
 	void						ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
 
 	bool						GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundingRect) const;
-	void						AlignToWindow (NodeUIDrawingEnvironment& env);
+	void						AlignToWindow (NodeUIDrawingEnvironment& env, double scale);
+	void						CenterToWindow (NodeUIDrawingEnvironment& env, double scale);
 	void						FitToWindow (NodeUIDrawingEnvironment& env);
 
 	const ViewBox&				GetViewBox () const;

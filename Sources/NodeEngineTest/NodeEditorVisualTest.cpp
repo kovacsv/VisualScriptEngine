@@ -444,6 +444,30 @@ TEST (AlignToWindowTest)
 	ASSERT (env.CheckReference ("AlignToWindow_Align.svg"));
 }
 
+TEST (AlignToWindowTestWithScale)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference ("AlignToWindowWithScale_Basic.svg"));
+	env.nodeEditor.AlignToWindow (1.5);
+	ASSERT (env.CheckReference ("AlignToWindowWithScale_Align.svg"));
+}
+
+TEST (CenterToWindowTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference ("CenterToWindow_Basic.svg"));
+	env.nodeEditor.CenterToWindow ();
+	ASSERT (env.CheckReference ("CenterToWindow_Align.svg"));
+}
+
+TEST (CenterToWindowTestWithScale)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference ("CenterToWindowWithScale_Basic.svg"));
+	env.nodeEditor.CenterToWindow (1.5);
+	ASSERT (env.CheckReference ("CenterToWindowWithScale_Align.svg"));
+}
+
 TEST (SlotCirclesTest)
 {
 	BasicSkinParams mySkinParams (

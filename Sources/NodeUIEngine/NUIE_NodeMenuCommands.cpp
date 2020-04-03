@@ -84,7 +84,23 @@ AlignToWindowMenuCommand::~AlignToWindowMenuCommand ()
 
 void AlignToWindowMenuCommand::Do ()
 {
-	uiManager.AlignToWindow (uiEnvironment);
+	uiManager.AlignToWindow (uiEnvironment, 1.0);
+}
+
+CenterToWindowMenuCommand::CenterToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
+	SingleMenuCommand (NE::Localize (L"Center To Window"), false),
+	uiManager (uiManager),
+	uiEnvironment (uiEnvironment)
+{
+}
+
+CenterToWindowMenuCommand::~CenterToWindowMenuCommand ()
+{
+}
+
+void CenterToWindowMenuCommand::Do ()
+{
+	uiManager.CenterToWindow (uiEnvironment, 1.0);
 }
 
 FitToWindowMenuCommand::FitToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
@@ -926,6 +942,7 @@ MenuCommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, 
 {
 	MenuCommandStructure commandStructure;
 	commandStructure.AddCommand (MenuCommandPtr (new AlignToWindowMenuCommand (uiManager, uiEnvironment)));
+	commandStructure.AddCommand (MenuCommandPtr (new CenterToWindowMenuCommand (uiManager, uiEnvironment)));
 	commandStructure.AddCommand (MenuCommandPtr (new FitToWindowMenuCommand (uiManager, uiEnvironment)));
 	if (uiManager.CanPaste ()) {
 		commandStructure.AddCommand (MenuCommandPtr (new PasteNodesMenuCommand (uiManager, position)));

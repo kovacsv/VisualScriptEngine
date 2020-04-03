@@ -62,6 +62,19 @@ private:
 	NodeUIDrawingEnvironment&	uiEnvironment;
 };
 
+class CenterToWindowMenuCommand : public SingleMenuCommand
+{
+public:
+	CenterToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
+	virtual ~CenterToWindowMenuCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&				uiManager;
+	NodeUIDrawingEnvironment&	uiEnvironment;
+};
+
 class FitToWindowMenuCommand : public SingleMenuCommand
 {
 public:

@@ -143,7 +143,26 @@ Point NodeEditor::ViewToModel (const Point& viewPoint) const
 
 void NodeEditor::AlignToWindow ()
 {
-	uiManager.AlignToWindow (uiEnvironment);
+	uiManager.AlignToWindow (uiEnvironment, 1.0);
+	Update ();
+}
+
+void NodeEditor::AlignToWindow (double scale)
+{
+	uiManager.AlignToWindow (uiEnvironment, scale);
+	Update ();
+}
+
+
+void NodeEditor::CenterToWindow ()
+{
+	uiManager.CenterToWindow (uiEnvironment, 1.0);
+	Update ();
+}
+
+void NodeEditor::CenterToWindow (double scale)
+{
+	uiManager.CenterToWindow (uiEnvironment, scale);
 	Update ();
 }
 
