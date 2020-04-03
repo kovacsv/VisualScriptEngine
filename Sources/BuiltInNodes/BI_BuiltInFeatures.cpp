@@ -26,7 +26,6 @@ static void EnableDisableNode (EnableDisableFeature::State state, EnableDisableF
 		uiManager.InvalidateNodeValue (uiNode);
 	}
 	uiManager.InvalidateNodeDrawing (uiNode);
-	uiManager.RequestRecalculateAndRedraw ();
 }
 
 class EnableDisableNodeCommand : public NUIE::NodeCommand
@@ -65,7 +64,6 @@ static void SetNodeValueCombination (NE::ValueCombinationMode valueCombination, 
 	uiNode->OnFeatureChange (ValueCombinationFeatureId, env);
 	uiManager.InvalidateNodeValue (uiNode);
 	uiManager.InvalidateNodeDrawing (uiNode);
-	uiManager.RequestRecalculateAndRedraw ();
 }
 
 class SetValueCombinationModeCommand : public NUIE::NodeCommand
