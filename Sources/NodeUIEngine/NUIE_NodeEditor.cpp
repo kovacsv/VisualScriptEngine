@@ -22,7 +22,7 @@ ExternalFileIO::~ExternalFileIO ()
 }
 
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
-	uiManager (),
+	uiManager (uiEnvironment),
 	interactionHandler (uiManager),
 	mouseEventTranslator (interactionHandler),
 	uiEnvironment (uiEnvironment)
@@ -183,7 +183,7 @@ void NodeEditor::SetSelectedNodes (const NE::NodeCollection& newSelectedNodes)
 
 void NodeEditor::New ()
 {
-	uiManager.New ();
+	uiManager.New (uiEnvironment);
 	Update ();
 }
 
@@ -224,7 +224,7 @@ bool NodeEditor::Open (NE::InputStream& inputStream, const ExternalHeaderIO* ext
 		return false;
 	}
 
-	if (DBGERROR (!uiManager.Open (inputStream))) {
+	if (DBGERROR (!uiManager.Open (uiEnvironment, inputStream))) {
 		return false;
 	}
 

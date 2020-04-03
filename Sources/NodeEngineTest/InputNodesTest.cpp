@@ -1,6 +1,7 @@
 #include "SimpleTest.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "BI_InputUINodes.hpp"
+#include "TestUtils.hpp"
 
 using namespace NE;
 using namespace NUIE;
@@ -11,7 +12,8 @@ namespace InputNodesTest
 
 TEST (TestListBuilderNode)
 {
-	NodeUIManager uiManager;
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
 
 	UINodePtr intNode = uiManager.AddNode (UINodePtr (new IntegerUpDownNode (L"Value1", Point (0, 0), 1, 1)), EmptyEvaluationEnv);
 	UINodePtr intIncNode = uiManager.AddNode (UINodePtr (new IntegerIncrementedNode (L"Value2", Point (0, 0))), EmptyEvaluationEnv);

@@ -2,6 +2,7 @@
 #include "NUIE_NodeUIManager.hpp"
 #include "BI_ArithmeticUINodes.hpp"
 #include "BI_InputUINodes.hpp"
+#include "TestUtils.hpp"
 
 using namespace NE;
 using namespace NUIE;
@@ -12,7 +13,8 @@ namespace ArithmeticNodesTest
 
 TEST (TestAllArithmeticNodes)
 {
-	NodeUIManager uiManager;
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
 
 	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (L"Value1", Point (0, 0), 1.0, 1.0)), EmptyEvaluationEnv);
 	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (L"Value1", Point (0, 0), 2.0, 1.0)), EmptyEvaluationEnv);

@@ -5,6 +5,7 @@
 #include "NE_OutputSlot.hpp"
 #include "NE_SingleValues.hpp"
 #include "BI_BuiltInFeatures.hpp"
+#include "TestUtils.hpp"
 #include "TestNodes.hpp"
 
 #include "NUIE_NodeUIManager.hpp"
@@ -145,7 +146,8 @@ public:
 
 TEST (EnableDisableTest)
 {
-	NodeUIManager uiManager;
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
 	TestCalcEnvironment calcEnv;
 
 	std::shared_ptr<TestNode> node1 (new TestNode (L"TestNode", Point (0, 0)));

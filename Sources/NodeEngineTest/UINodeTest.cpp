@@ -4,6 +4,7 @@
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NE_SingleValues.hpp"
+#include "TestUtils.hpp"
 #include "TestNodes.hpp"
 
 #include "NUIE_NodeUIManager.hpp"
@@ -190,7 +191,8 @@ private:
 
 TEST (NodeParametersTest)
 {
-	NodeUIManager uiManager;
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
 
 	UINodePtr node (new TestNode (L"TestNode", Point (0, 0)));
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
@@ -221,7 +223,8 @@ TEST (NodeParametersTest)
 
 TEST (NodeParametersTest2)
 {
-	NodeUIManager uiManager;
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
 
 	UINodePtr node (new TestNode (L"TestNode", Point (0, 0)));
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
@@ -263,7 +266,8 @@ TEST (NodeParametersTest2)
 
 TEST (NodeParametersTest3)
 {
-	NodeUIManager uiManager;
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
 
 	UINodePtr node (new TestNode (L"TestNode", Point (0, 0)));
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
@@ -288,7 +292,8 @@ TEST (NodeParametersTest3)
 
 TEST (NodeParametersTest4)
 {
-	NodeUIManager uiManager;
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
 
 	std::shared_ptr<EnumerationParamTestNode> node (new EnumerationParamTestNode (L"TestNode", Point (0, 0)));
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);

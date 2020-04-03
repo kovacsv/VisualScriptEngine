@@ -4,6 +4,7 @@
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NE_SingleValues.hpp"
+#include "TestUtils.hpp"
 #include "TestNodes.hpp"
 
 #include "NUIE_NodeUIManager.hpp"
@@ -65,7 +66,8 @@ public:
 
 TEST (UIManagerBaseTest)
 {
-	NodeUIManager uiManager;
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
 
 	UINodePtr node1 (new TestNode (Point (0.0, 0.0)));
 	UINodePtr node2 (new TestNode (Point (0.0, 0.0)));

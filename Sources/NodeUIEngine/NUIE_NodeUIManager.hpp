@@ -41,7 +41,7 @@ public:
 		Manual
 	};
 
-	NodeUIManager ();
+	NodeUIManager (NodeUIDrawingEnvironment& env);
 	NodeUIManager (const NodeUIManager& src) = delete;
 	NodeUIManager (NodeUIManager&& src) = delete;
 	~NodeUIManager ();
@@ -112,8 +112,8 @@ public:
 	UpdateMode					GetUpdateMode () const;
 	void						SetUpdateMode (UpdateMode newUpdateMode);
 
-	void						New ();
-	bool						Open (NE::InputStream& inputStream);
+	void						New (NodeUIDrawingEnvironment& env);
+	bool						Open (NodeUIDrawingEnvironment& env, NE::InputStream& inputStream);
 	bool						Save (NE::OutputStream& outputStream) const;
 	bool						NeedToSave () const;
 
@@ -171,7 +171,7 @@ private:
 		Manual
 	};
 
-	void				Clear ();
+	void				Clear (NodeUIDrawingEnvironment& env);
 	void				InvalidateDrawingsForInvalidatedNodes ();
 	void				UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode);
 

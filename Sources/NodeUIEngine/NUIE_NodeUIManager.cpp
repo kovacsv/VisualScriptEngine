@@ -110,14 +110,14 @@ NodeUIManagerCommand::~NodeUIManagerCommand ()
 
 }
 
-NodeUIManager::NodeUIManager () :
+NodeUIManager::NodeUIManager (NodeUIDrawingEnvironment& env) :
 	nodeManager (),
 	selectedNodes (),
 	copyPasteHandler (),
-	viewBox (Point (0.0, 0.0), 1.0),
+	viewBox (Point (0.0, 0.0), env.GetWindowScale ()),
 	status ()
 {
-	New ();
+	New (env);
 }
 
 NodeUIManager::~NodeUIManager ()
@@ -542,15 +542,15 @@ void NodeUIManager::SetUpdateMode (UpdateMode newUpdateMode)
 	}
 }
 
-void NodeUIManager::New ()
+void NodeUIManager::New (NodeUIDrawingEnvironment& env)
 {
-	Clear ();
+	Clear (env);
 	RequestRecalculateAndRedraw ();
 }
 
-bool NodeUIManager::Open (NE::InputStream& inputStream)
+bool NodeUIManager::Open (NodeUIDrawingEnvironment& env, NE::InputStream& inputStream)
 {
-	Clear ();
+	Clear (env);
 	size_t version;
 	inputStream.Read (version);
 	nodeManager.Read (inputStream);
@@ -683,13 +683,13 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
 	ExecuteCommand (*command);
 }
 
-void NodeUIManager::Clear ()
+void NodeUIManager::Clear (NodeUIDrawingEnvironment& env)
 {
 	selectedNodes.Clear ();
 	copyPasteHandler.Clear ();
 	undoHandler.Clear ();
 	nodeManager.Clear ();
-	viewBox.Reset ();
+	viewBox = ViewBox (Point (0.0, 0.0), env.GetWindowScale ());
 	status.Reset ();
 }
 
