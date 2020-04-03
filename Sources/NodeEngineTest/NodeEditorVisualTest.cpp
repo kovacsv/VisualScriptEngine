@@ -447,8 +447,9 @@ TEST (AlignToWindowTest)
 TEST (AlignToWindowTestWithScale)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	env.uiEnvironment.SetWindowScale (1.5);
 	ASSERT (env.CheckReference ("AlignToWindowWithScale_Basic.svg"));
-	env.nodeEditor.AlignToWindow (1.5);
+	env.nodeEditor.AlignToWindow ();
 	ASSERT (env.CheckReference ("AlignToWindowWithScale_Align.svg"));
 }
 
@@ -463,8 +464,9 @@ TEST (CenterToWindowTest)
 TEST (CenterToWindowTestWithScale)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	env.uiEnvironment.SetWindowScale (1.5);
 	ASSERT (env.CheckReference ("CenterToWindowWithScale_Basic.svg"));
-	env.nodeEditor.CenterToWindow (1.5);
+	env.nodeEditor.CenterToWindow ();
 	ASSERT (env.CheckReference ("CenterToWindowWithScale_Align.svg"));
 }
 

@@ -202,7 +202,8 @@ TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor, const Basi
 	skinParams (skinParams),
 	drawingContext (800, 600),
 	eventHandlers (),
-	evaluationEnv (nullptr)
+	evaluationEnv (nullptr),
+	windowScale (1.0)
 {
 	
 }
@@ -220,6 +221,11 @@ const SkinParams& TestNodeUIEnvironment::GetSkinParams ()
 DrawingContext& TestNodeUIEnvironment::GetDrawingContext ()
 {
 	return drawingContext;
+}
+
+double TestNodeUIEnvironment::GetWindowScale ()
+{
+	return windowScale;
 }
 
 EvaluationEnv& TestNodeUIEnvironment::GetEvaluationEnv ()
@@ -270,6 +276,11 @@ void TestNodeUIEnvironment::SetNextCommandParameterSettings (const ParameterSett
 const SvgDrawingContext& TestNodeUIEnvironment::GetSvgDrawingContext () const
 {
 	return drawingContext;
+}
+
+void TestNodeUIEnvironment::SetWindowScale (double newWindowScale)
+{
+	windowScale = newWindowScale;
 }
 
 NodeEditorTestEnv::NodeEditorTestEnv (const BasicSkinParams& skinParams) :

@@ -70,6 +70,11 @@ DrawingContext& NodeUIDrawingEnvironmentDecorator::GetDrawingContext ()
 	return decorated.GetDrawingContext ();
 }
 
+double NodeUIDrawingEnvironmentDecorator::GetWindowScale ()
+{
+	return decorated.GetWindowScale ();
+}
+
 NodeUIDrawingEnvironmentContextDecorator::NodeUIDrawingEnvironmentContextDecorator (NodeUIDrawingEnvironment& decorated, DrawingContext& decoratedDrawingContext) :
 	NodeUIDrawingEnvironmentDecorator (decorated),
 	decoratedDrawingContext (decoratedDrawingContext)

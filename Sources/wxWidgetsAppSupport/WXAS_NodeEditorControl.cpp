@@ -97,6 +97,11 @@ NUIE::DrawingContext& NodeEditorUIEnvironment::GetDrawingContext ()
 	return *drawingContext;
 }
 
+double NodeEditorUIEnvironment::GetWindowScale ()
+{
+	return 1.0;
+}
+
 NE::EvaluationEnv& NodeEditorUIEnvironment::GetEvaluationEnv ()
 {
 	return evaluationEnv;

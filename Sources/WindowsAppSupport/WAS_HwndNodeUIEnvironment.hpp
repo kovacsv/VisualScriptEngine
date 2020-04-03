@@ -24,6 +24,7 @@ public:
 	virtual const NE::StringSettings&	GetStringSettings () override;
 	virtual const NUIE::SkinParams&		GetSkinParams () override;
 	virtual NUIE::DrawingContext&		GetDrawingContext () override;
+	virtual double						GetWindowScale () override;
 
 	virtual NE::EvaluationEnv&			GetEvaluationEnv () override;
 	virtual void						OnEvaluationBegin () override;

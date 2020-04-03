@@ -27,6 +27,7 @@ public:
 	virtual const NE::StringSettings&	GetStringSettings () = 0;
 	virtual const SkinParams&			GetSkinParams () = 0;
 	virtual DrawingContext&				GetDrawingContext () = 0;
+	virtual double						GetWindowScale () = 0;
 };
 
 class NodeUICalculationEnvironment
@@ -70,6 +71,7 @@ public:
 	virtual const NE::StringSettings&	GetStringSettings () override;
 	virtual const SkinParams&			GetSkinParams () override;
 	virtual DrawingContext&				GetDrawingContext () override;
+	virtual double						GetWindowScale () override;
 
 private:
 	NodeUIDrawingEnvironment& decorated;

@@ -48,7 +48,12 @@ NUIE::DrawingContext& HwndNodeUIEnvironment::GetDrawingContext ()
 {
 	return nodeEditorControl->GetDrawingContext ();
 }
-	
+
+double HwndNodeUIEnvironment::GetWindowScale ()
+{
+	return 1.0;
+}
+
 NE::EvaluationEnv& HwndNodeUIEnvironment::GetEvaluationEnv ()
 {
 	return evaluationEnv;

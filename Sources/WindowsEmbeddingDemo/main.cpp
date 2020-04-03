@@ -171,7 +171,12 @@ public:
 	{
 		return nodeEditorControl.GetDrawingContext ();
 	}
-	
+
+	virtual double GetWindowScale () override
+	{
+		return 1.0;
+	}
+
 	virtual NE::EvaluationEnv& GetEvaluationEnv () override
 	{
 		return evaluationEnv;

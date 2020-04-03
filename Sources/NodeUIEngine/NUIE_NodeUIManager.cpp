@@ -446,13 +446,14 @@ bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundi
 	return true;
 }
 
-void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env, double scale)
+void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env)
 {
 	Rect boundingRect;
 	if (!GetBoundingRect (env, boundingRect)) {
 		return;
 	}
 
+	double scale = env.GetWindowScale ();
 	double viewPadding = env.GetSkinParams ().GetNodePadding ();
 	const DrawingContext& drawingContext = env.GetDrawingContext ();
 	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
@@ -461,13 +462,14 @@ void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env, double scale)
 	status.RequestRedraw ();
 }
 
-void NodeUIManager::CenterToWindow (NodeUIDrawingEnvironment& env, double scale)
+void NodeUIManager::CenterToWindow (NodeUIDrawingEnvironment& env)
 {
 	Rect boundingRect;
 	if (!GetBoundingRect (env, boundingRect)) {
 		return;
 	}
 
+	double scale = env.GetWindowScale ();
 	const DrawingContext& drawingContext = env.GetDrawingContext ();
 	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
 	Point boundingRectPosition = boundingRect.GetPosition () * scale;

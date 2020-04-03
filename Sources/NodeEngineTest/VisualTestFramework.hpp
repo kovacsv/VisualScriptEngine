@@ -43,6 +43,7 @@ public:
 	virtual const StringSettings&	GetStringSettings () override;
 	virtual const SkinParams&		GetSkinParams () override;
 	virtual DrawingContext&			GetDrawingContext () override;
+	virtual double					GetWindowScale () override;
 	virtual EvaluationEnv&			GetEvaluationEnv () override;
 	virtual void					OnEvaluationBegin () override;
 	virtual void					OnEvaluationEnd () override;
@@ -54,6 +55,7 @@ public:
 	void							SetNextCommandName (const std::wstring& nextCommandName);
 	void							SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
 	const SvgDrawingContext&		GetSvgDrawingContext () const;
+	void							SetWindowScale (double newWindowScale);
 
 private:
 	NodeEditor&				nodeEditor;
@@ -63,6 +65,7 @@ private:
 	SvgDrawingContext		drawingContext;
 	TestEventHandlers		eventHandlers;
 	EvaluationEnv			evaluationEnv;
+	double					windowScale;
 };
 
 class NodeEditorTestEnv

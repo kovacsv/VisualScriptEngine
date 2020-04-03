@@ -84,7 +84,7 @@ AlignToWindowMenuCommand::~AlignToWindowMenuCommand ()
 
 void AlignToWindowMenuCommand::Do ()
 {
-	uiManager.AlignToWindow (uiEnvironment, 1.0);
+	uiManager.AlignToWindow (uiEnvironment);
 }
 
 CenterToWindowMenuCommand::CenterToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
@@ -100,7 +100,7 @@ CenterToWindowMenuCommand::~CenterToWindowMenuCommand ()
 
 void CenterToWindowMenuCommand::Do ()
 {
-	uiManager.CenterToWindow (uiEnvironment, 1.0);
+	uiManager.CenterToWindow (uiEnvironment);
 }
 
 FitToWindowMenuCommand::FitToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
