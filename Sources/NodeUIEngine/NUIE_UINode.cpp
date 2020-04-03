@@ -198,10 +198,10 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ()));
 		}
 
-		virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NodeInvalidator& invalidator, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			uiNode->SetNodeName (NE::StringValue::Get (value));
-			uiManager.InvalidateNodeDrawing (uiNode);
+			invalidator.InvalidateDrawing ();
 			return true;
 		}
 	};

@@ -157,11 +157,10 @@ public:
 				return NE::ValuePtr (new NE::IntValue ((int) GetTypedNode (uiNode)->GetMyEnumValue ()));
 			}
 
-			virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+			virtual bool SetValueInternal (NodeInvalidator& invalidator, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 			{
 				GetTypedNode (uiNode)->SetMyEnumValue ((MyEnumValue) NE::IntValue::Get (value));
-				uiManager.InvalidateNodeValue (uiNode);
-				uiManager.InvalidateNodeDrawing (uiNode);
+				invalidator.InvalidateValueAndDrawing ();
 				return true;
 			}
 		};
@@ -193,8 +192,10 @@ TEST (NodeParametersTest)
 {
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
-
 	UINodePtr node (new TestNode (L"TestNode", Point (0, 0)));
+
+	NodeUIManagerNodeInvalidator invalidator (uiManager, node);
+
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
 
 	NodeParameterList paramList;
@@ -208,14 +209,14 @@ TEST (NodeParametersTest)
 	NodeParameterPtr nameParam = paramList.GetParameter (0);
 	ASSERT (nameParam->GetName () == L"Name");
 	ValuePtr newNameValue (new StringValue (L"NewNodeName"));
-	nameParam->SetValue (uiManager, NE::EmptyEvaluationEnv, node, newNameValue);
+	nameParam->SetValue (invalidator, NE::EmptyEvaluationEnv, node, newNameValue);
 	ASSERT (node->GetNodeName () == L"NewNodeName");
 
 	NodeParameterPtr in1DefParam = paramList.GetParameter (1);
 	ASSERT (in1DefParam->GetName () == L"In1");
 	ASSERT (IntValue::Get (in1DefParam->GetValue (node)) == 1);
 	ValuePtr newIn1Value (new IntValue (5));
-	in1DefParam->SetValue (uiManager, NE::EmptyEvaluationEnv, node, newIn1Value);
+	in1DefParam->SetValue (invalidator, NE::EmptyEvaluationEnv, node, newIn1Value);
 	ASSERT (IntValue::Get (in1DefParam->GetValue (node)) == 5);
 	nodeValue = node->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (IntValue::Get (nodeValue) == 7);

@@ -169,7 +169,8 @@ bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluati
 	}
 
 	for (UINodePtr& uiNode : uiNodes) {
-		if (DBGERROR (!parameter->SetValue (uiManager, evaluationEnv, uiNode, value))) {
+		NodeUIManagerNodeInvalidator invalidator (uiManager, uiNode);
+		if (DBGERROR (!parameter->SetValue (invalidator, evaluationEnv, uiNode, value))) {
 			return false;
 		}
 	}

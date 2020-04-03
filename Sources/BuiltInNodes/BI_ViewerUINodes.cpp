@@ -58,10 +58,10 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 			return NE::ValuePtr (new NE::IntValue ((int) GetTypedNode (uiNode)->GetTextsPerPage ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeUIManager& uiManager, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetTextsPerPage (NE::IntValue::Get (value));
-			uiManager.InvalidateNodeDrawing (uiNode);
+			invalidator.InvalidateDrawing ();
 			return true;
 		}
 	};

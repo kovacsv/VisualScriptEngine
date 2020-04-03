@@ -40,12 +40,12 @@ public:
 		return true;
 	}
 
-	virtual bool SetValue (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+	virtual bool SetValue (NodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 	{
 		if (DBGERROR (!CanSetValue (uiNode, value))) {
 			return false;
 		}
-		return SetValueInternal (uiManager, evaluationEnv, uiNode, value);
+		return SetValueInternal (invalidator, evaluationEnv, uiNode, value);
 	}
 
 	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<const ValueType>&) const
@@ -54,7 +54,7 @@ public:
 	}
 
 	virtual NE::ValueConstPtr	GetValueInternal (const UINodeConstPtr& uiNode) const = 0;
-	virtual bool				SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
+	virtual bool				SetValueInternal (NodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 };
 
 template <typename NodeType, typename ValueType>
@@ -222,12 +222,11 @@ public:
 		return convertedValue;
 	}
 
-	virtual bool SetValueInternal (NodeUIManager& uiManager, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+	virtual bool SetValueInternal (NodeInvalidator& invalidator, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 	{
 		NE::ValueConstPtr convertedValue = ConvertValueForSet (value);
 		uiNode->SetInputSlotDefaultValue (slotId, convertedValue);
-		uiManager.InvalidateNodeValue (uiNode->GetId ());
-		uiManager.InvalidateNodeDrawing (uiNode->GetId ());
+		invalidator.InvalidateValueAndDrawing ();
 		return true;
 	}
 
