@@ -114,7 +114,7 @@ NodeUIManager::NodeUIManager () :
 	nodeManager (),
 	selectedNodes (),
 	copyPasteHandler (),
-	viewBox (Point (0, 0), 1.0),
+	viewBox (Point (0.0, 0.0), 1.0),
 	status ()
 {
 	New ();
