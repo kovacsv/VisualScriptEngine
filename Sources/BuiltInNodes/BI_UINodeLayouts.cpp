@@ -48,6 +48,30 @@ NUIE::EventHandlerResult HeaderWithSlotsLayout::HandleMouseClick (	BasicUINode&,
 	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
+HeaderWithSlotsAndTextLayout::HeaderWithSlotsAndTextLayout () :
+	HeaderBasedLayout ()
+{
+}
+
+void HeaderWithSlotsAndTextLayout::AddPanels (	const BasicUINode& uiNode,
+												NUIE::NodeUIDrawingEnvironment& env,
+												NUIE::NodePanelDrawer& drawer) const
+{
+	HeaderBasedLayout::AddPanels (uiNode, env, drawer);
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUITextPanel (GetText (uiNode, env.GetStringSettings ()))));
+}
+
+NUIE::EventHandlerResult HeaderWithSlotsAndTextLayout::HandleMouseClick (	BasicUINode&,
+																			NUIE::NodeUIEnvironment&,
+																			const NUIE::ModifierKeys&,
+																			NUIE::MouseButton,
+																			const NUIE::Point&,
+																			NUIE::UINodeCommandInterface&) const
+{
+	return NUIE::EventHandlerResult::EventNotHandled;
+}
+
 HeaderWithSlotsAndButtonsLayout::ClickHandler::ClickHandler ()
 {
 

@@ -147,6 +147,28 @@ void NodeUIIconHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUI
 	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, GetTextFont (env), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env))), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 }
 
+NodeUITextPanel::NodeUITextPanel (const std::wstring& text) :
+	NUIE::NodePanel (),
+	text (text)
+{
+
+}
+
+NUIE::Size NodeUITextPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const
+{
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
+	NUIE::Size minSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeContentTextFont (), text);
+	minSize = minSize.Grow (2.0 * skinParams.GetNodePadding (), 2.0 * skinParams.GetNodePadding ());
+	return minSize;
+}
+
+void NodeUITextPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
+{
+	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, skinParams.GetTextPanelBackgroundColor ())));
+	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rect, skinParams.GetNodeContentTextFont (), text, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, skinParams.GetNodeContentTextColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+}
+
 NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, size_t allTextCount, size_t textsPerPage, NUIE::NodeUIDrawingEnvironment& env) :
 	NodePanel (),
 	nodeTexts (nodeTexts),

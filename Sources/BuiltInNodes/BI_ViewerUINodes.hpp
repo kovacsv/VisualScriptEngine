@@ -3,9 +3,37 @@
 
 #include "NE_SingleValues.hpp"
 #include "NUIE_UINode.hpp"
+#include "BI_BasicUINode.hpp"
+#include "BI_UINodeLayouts.hpp"
 
 namespace BI
 {
+
+class ViewerNode : public BasicUINode
+{
+	DYNAMIC_SERIALIZABLE (ViewerNode);
+
+public:
+	class Layout : public HeaderWithSlotsAndTextLayout
+	{
+	public:
+		Layout ();
+
+		virtual std::wstring	GetText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const override;
+	};
+
+	ViewerNode ();
+	ViewerNode (const std::wstring& name, const NUIE::Point& position);
+	virtual ~ViewerNode ();
+
+	virtual void						Initialize () override;
+	virtual bool						IsForceCalculated () const override;
+
+	virtual NE::ValueConstPtr			Calculate (NE::EvaluationEnv& env) const override;
+
+	virtual NE::Stream::Status			Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status			Write (NE::OutputStream& outputStream) const override;
+};
 
 class MultiLineViewerNode : public NUIE::UINode
 {

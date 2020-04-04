@@ -53,6 +53,18 @@ protected:
 	NodeStatus		nodeStatus;
 };
 
+class NodeUITextPanel : public NUIE::NodePanel
+{
+public:
+	NodeUITextPanel (const std::wstring& text);
+
+	virtual NUIE::Size	GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const override;
+	virtual void		Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const override;
+
+protected:
+	std::wstring	text;
+};
+
 class NodeUIIconHeaderPanel : public NodeUIHeaderPanel
 {
 public:

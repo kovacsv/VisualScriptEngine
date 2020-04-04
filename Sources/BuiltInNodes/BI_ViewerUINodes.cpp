@@ -9,7 +9,76 @@
 namespace BI
 {
 
+NE::DynamicSerializationInfo ViewerNode::serializationInfo (NE::ObjectId ("{417392AA-F72D-4E84-8F58-766D0AAC07FC}"), NE::ObjectVersion (1), ViewerNode::CreateSerializableInstance);
 NE::DynamicSerializationInfo MultiLineViewerNode::serializationInfo (NE::ObjectId ("{2BACB82D-84A6-4472-82CB-786C98A50EF0}"), NE::ObjectVersion (1), MultiLineViewerNode::CreateSerializableInstance);
+
+ViewerNode::Layout::Layout () :
+	HeaderWithSlotsAndTextLayout ()
+{
+
+}
+
+std::wstring ViewerNode::Layout::GetText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const
+{
+	if (uiNode.HasCalculatedValue ()) {
+		NE::ValueConstPtr val = uiNode.GetCalculatedValue ();
+		if (val != nullptr) {
+			return val->ToString (stringSettings);
+		}
+	}
+	return NE::Localize (L"<empty>");
+}
+
+ViewerNode::ViewerNode () :
+	ViewerNode (std::wstring (), NUIE::Point ())
+{
+
+}
+
+ViewerNode::ViewerNode (const std::wstring& name, const NUIE::Point& position) :
+	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ()))
+{
+
+}
+
+ViewerNode::~ViewerNode ()
+{
+
+}
+
+void ViewerNode::Initialize ()
+{
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::Localize (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
+}
+
+bool ViewerNode::IsForceCalculated () const
+{
+	return true;
+}
+
+NE::ValueConstPtr ViewerNode::Calculate (NE::EvaluationEnv& env) const
+{
+	NE::ValueConstPtr val = EvaluateInputSlot (NE::SlotId ("in"), env);
+	if (val == nullptr) {
+		return nullptr;
+	}
+	return val->Clone ();
+}
+
+NE::Stream::Status ViewerNode::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	BasicUINode::Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status ViewerNode::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	BasicUINode::Write (outputStream);
+	return outputStream.GetStatus ();
+}
 
 MultiLineViewerNode::MultiLineViewerNode () :
 	MultiLineViewerNode (std::wstring (), NUIE::Point (), 0)

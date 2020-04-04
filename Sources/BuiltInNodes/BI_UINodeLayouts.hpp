@@ -37,6 +37,26 @@ public:
 															NUIE::UINodeCommandInterface& commandInterface) const override;
 };
 
+class HeaderWithSlotsAndTextLayout : public HeaderBasedLayout
+{
+public:
+	HeaderWithSlotsAndTextLayout ();
+
+	virtual void						AddPanels (	const BasicUINode& uiNode,
+													NUIE::NodeUIDrawingEnvironment& env,
+													NUIE::NodePanelDrawer& drawer) const override;
+
+
+	virtual NUIE::EventHandlerResult	HandleMouseClick (	BasicUINode& uiNode,
+															NUIE::NodeUIEnvironment& env,
+															const NUIE::ModifierKeys& modifierKeys,
+															NUIE::MouseButton mouseButton,
+															const NUIE::Point& position,
+															NUIE::UINodeCommandInterface& commandInterface) const override;
+
+	virtual std::wstring				GetText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const = 0;
+};
+
 class HeaderWithSlotsAndButtonsLayout : public HeaderBasedLayout
 {
 public:
@@ -59,12 +79,12 @@ public:
 													NUIE::NodeUIDrawingEnvironment& env,
 													NUIE::NodePanelDrawer& drawer) const override;
 
-	virtual NUIE::EventHandlerResult		HandleMouseClick (BasicUINode& uiNode,
-																NUIE::NodeUIEnvironment& env,
-																const NUIE::ModifierKeys& modifierKeys,
-																NUIE::MouseButton mouseButton,
-																const NUIE::Point& position,
-																NUIE::UINodeCommandInterface& commandInterface) const override;
+	virtual NUIE::EventHandlerResult	HandleMouseClick (	BasicUINode& uiNode,
+															NUIE::NodeUIEnvironment& env,
+															const NUIE::ModifierKeys& modifierKeys,
+															NUIE::MouseButton mouseButton,
+															const NUIE::Point& position,
+															NUIE::UINodeCommandInterface& commandInterface) const override;
 
 	virtual std::wstring					GetMiddleText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const = 0;
 	virtual std::shared_ptr<ClickHandler>	GetClickHandler (BasicUINode& uiNode) const = 0;

@@ -62,7 +62,10 @@ public:
 		});
 		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
 		nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
+			return NUIE::UINodePtr (new BI::ViewerNode (L"Viewer", position));
+		});
+		nodeTree.AddItem (otherNodes, L"Multiline Viewer", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Multiline Viewer", position, 5));
 		});
 	}
 
@@ -257,7 +260,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				numberNode1->SetIconId (NUIE::IconId (101));
 				BI::BasicUINodePtr numberNode2 (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10));
 				numberNode2->SetIconId (NUIE::IconId (102));
-				NUIE::UINodePtr viewerNode (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (300, 200), 5));
+				NUIE::UINodePtr viewerNode (new BI::MultiLineViewerNode (L"Multiline Viewer", NUIE::Point (300, 200), 5));
 				nodeEditor.AddNode (numberNode1);
 				nodeEditor.AddNode (numberNode2);
 				nodeEditor.AddNode (viewerNode);
