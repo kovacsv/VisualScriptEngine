@@ -26,6 +26,7 @@ static void EnableDisableNode (EnableDisableFeature::State state, EnableDisableF
 		invalidator.InvalidateValue ();
 	}
 	invalidator.InvalidateDrawing ();
+	invalidator.RequestRecalculate ();
 }
 
 class EnableDisableNodeCommand : public NUIE::NodeCommand

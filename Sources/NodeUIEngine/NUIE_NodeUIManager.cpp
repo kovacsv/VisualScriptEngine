@@ -132,6 +132,16 @@ void NodeUIManagerNodeInvalidator::InvalidateDrawing ()
 	uiManager.InvalidateNodeDrawing (uiNode);
 }
 
+void NodeUIManagerNodeInvalidator::RequestRecalculate ()
+{
+	uiManager.RequestRecalculate ();
+}
+
+void NodeUIManagerNodeInvalidator::RequestRedraw ()
+{
+	uiManager.RequestRedraw ();
+}
+
 NodeUIManager::NodeUIManager (NodeUIDrawingEnvironment& env) :
 	nodeManager (),
 	selectedNodes (),

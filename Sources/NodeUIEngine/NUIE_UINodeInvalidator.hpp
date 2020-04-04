@@ -13,9 +13,13 @@ public:
 	virtual ~UINodeInvalidator ();
 
 	void			InvalidateValueAndDrawing ();
+	void			RequestRecalculateAndRedraw ();
 
 	virtual void	InvalidateValue () = 0;
 	virtual void	InvalidateDrawing () = 0;
+
+	virtual void	RequestRecalculate () = 0;
+	virtual void	RequestRedraw () = 0;
 };
 
 }

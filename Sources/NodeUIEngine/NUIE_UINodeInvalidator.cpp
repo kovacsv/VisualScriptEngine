@@ -19,4 +19,10 @@ void UINodeInvalidator::InvalidateValueAndDrawing ()
 	InvalidateDrawing ();
 }
 
+void UINodeInvalidator::RequestRecalculateAndRedraw ()
+{
+	RequestRecalculate ();
+	RequestRedraw ();
+}
+
 }

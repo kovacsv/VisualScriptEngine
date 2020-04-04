@@ -42,6 +42,9 @@ public:
 	virtual void	InvalidateValue () override;
 	virtual void	InvalidateDrawing () override;
 
+	virtual void	RequestRecalculate () override;
+	virtual void	RequestRedraw () override;
+
 private:
 	NodeUIManager& uiManager;
 	UINodePtr& uiNode;
