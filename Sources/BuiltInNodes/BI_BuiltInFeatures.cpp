@@ -45,9 +45,8 @@ public:
 		return uiNode->HasFeature (EnableDisableFeatureId);
 	}
 
-	virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, NUIE::UINodePtr& uiNode) override
+	virtual void Do (NUIE::UINodeInvalidator& invalidator, NUIE::NodeUIEnvironment& uiEnvironment, NUIE::UINodePtr& uiNode) override
 	{
-		NUIE::NodeUIManagerNodeInvalidator invalidator (uiManager, uiNode);
 		EnableDisableNode (state, mode, invalidator, uiEnvironment.GetEvaluationEnv (), uiNode);
 	}
 
@@ -82,9 +81,8 @@ public:
 		return uiNode->HasFeature (ValueCombinationFeatureId);
 	}
 
-	virtual void Do (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& env, NUIE::UINodePtr& uiNode) override
+	virtual void Do (NUIE::UINodeInvalidator& invalidator, NUIE::NodeUIEnvironment& env, NUIE::UINodePtr& uiNode) override
 	{
-		NUIE::NodeUIManagerNodeInvalidator invalidator (uiManager, uiNode);
 		SetNodeValueCombination (valueCombination, invalidator, env.GetEvaluationEnv (), uiNode);
 	}
 

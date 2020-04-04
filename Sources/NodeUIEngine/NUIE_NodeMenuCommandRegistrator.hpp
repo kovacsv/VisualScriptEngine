@@ -2,6 +2,7 @@
 #define NUIE_NODEMENUCOMMANDREGISTRATOR_HPP
 
 #include "NUIE_UINode.hpp"
+#include "NUIE_UINodeInvalidator.hpp"
 #include "NUIE_MenuCommands.hpp"
 
 namespace NUIE
@@ -86,7 +87,7 @@ public:
 	virtual ~NodeCommand ();
 
 	virtual bool	IsApplicableTo (const UINodeConstPtr& uiNode) = 0;
-	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) = 0;
+	virtual void	Do (UINodeInvalidator& invalidator, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) = 0;
 };
 
 using NodeCommandPtr = std::shared_ptr<NodeCommand>;

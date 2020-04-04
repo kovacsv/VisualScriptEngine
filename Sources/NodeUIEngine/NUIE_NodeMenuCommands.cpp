@@ -528,7 +528,8 @@ public:
 		}
 		CustomUndoableCommand command ([&] () {
 			for (UINodePtr& uiNode : uiNodes) {
-				nodeCommand->Do (uiManager, uiEnvironment, uiNode);
+				NodeUIManagerNodeInvalidator invalidator (uiManager, uiNode);
+				nodeCommand->Do (invalidator, uiEnvironment, uiNode);
 			}
 		});
 		uiManager.ExecuteCommand (command);
