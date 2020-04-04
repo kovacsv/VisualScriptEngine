@@ -4,7 +4,7 @@
 #include "NE_Value.hpp"
 #include "NE_NodeCollection.hpp"
 #include "NUIE_UINode.hpp"
-#include "NUIE_NodeInvalidator.hpp"
+#include "NUIE_UINodeInvalidator.hpp"
 #include "NUIE_ParameterInterface.hpp"
 
 namespace NUIE
@@ -26,7 +26,7 @@ public:
 	virtual NE::ValueConstPtr			GetValue (const UINodeConstPtr& uiNode) const = 0;
 	virtual bool						IsApplicableTo (const UINodeConstPtr& uiNode) const = 0;
 	virtual bool						CanSetValue (const UINodeConstPtr& uiNode, const NE::ValueConstPtr& value) const = 0;
-	virtual bool						SetValue (NodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
+	virtual bool						SetValue (UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 
 private:
 	std::wstring	name;

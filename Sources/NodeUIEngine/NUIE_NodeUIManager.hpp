@@ -6,6 +6,7 @@
 #include "NUIE_UINode.hpp"
 #include "NUIE_UINodeGroup.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
+#include "NUIE_UINodeInvalidator.hpp"
 #include "NUIE_CopyPasteHandler.hpp"
 #include "NUIE_UndoHandler.hpp"
 #include "NUIE_ViewBox.hpp"
@@ -31,6 +32,20 @@ public:
 };
 
 using NodeUIManagerCommandPtr = std::shared_ptr<NodeUIManagerCommand>;
+
+class NodeUIManagerNodeInvalidator : public UINodeInvalidator
+{
+public:
+	NodeUIManagerNodeInvalidator (NodeUIManager& uiManager, UINodePtr& uiNode);
+	virtual ~NodeUIManagerNodeInvalidator ();
+
+	virtual void	InvalidateValue () override;
+	virtual void	InvalidateDrawing () override;
+
+private:
+	NodeUIManager& uiManager;
+	UINodePtr& uiNode;
+};
 
 class NodeUIManager
 {

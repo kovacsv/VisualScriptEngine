@@ -110,6 +110,28 @@ NodeUIManagerCommand::~NodeUIManagerCommand ()
 
 }
 
+NodeUIManagerNodeInvalidator::NodeUIManagerNodeInvalidator (NodeUIManager& uiManager, UINodePtr& uiNode) :
+	UINodeInvalidator (),
+	uiManager (uiManager),
+	uiNode (uiNode)
+{
+}
+
+NodeUIManagerNodeInvalidator::~NodeUIManagerNodeInvalidator ()
+{
+
+}
+
+void NodeUIManagerNodeInvalidator::InvalidateValue ()
+{
+	uiManager.InvalidateNodeValue (uiNode);
+}
+
+void NodeUIManagerNodeInvalidator::InvalidateDrawing ()
+{
+	uiManager.InvalidateNodeDrawing (uiNode);
+}
+
 NodeUIManager::NodeUIManager (NodeUIDrawingEnvironment& env) :
 	nodeManager (),
 	selectedNodes (),

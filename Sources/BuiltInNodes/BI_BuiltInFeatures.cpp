@@ -14,7 +14,7 @@ const NUIE::FeatureId ValueCombinationFeatureId ("{B8F03216-5CB8-49FC-B748-94479
 NE::DynamicSerializationInfo EnableDisableFeature::serializationInfo (NE::ObjectId ("{1C89FD8B-085E-45C8-B0B8-E75883F53C68}"), NE::ObjectVersion (1), EnableDisableFeature::CreateSerializableInstance);
 NE::DynamicSerializationInfo ValueCombinationFeature::serializationInfo (NE::ObjectId ("{7BC21A4E-4D2E-4B00-BD73-9897DB3616BA}"), NE::ObjectVersion (1), ValueCombinationFeature::CreateSerializableInstance);
 
-static void EnableDisableNode (EnableDisableFeature::State state, EnableDisableFeature::Mode mode, NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
+static void EnableDisableNode (EnableDisableFeature::State state, EnableDisableFeature::Mode mode, NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
 {
 	std::shared_ptr<EnableDisableFeature> enableDisableFeature = GetEnableDisableFeature (uiNode);
 	if (DBGERROR (enableDisableFeature == nullptr)) {
@@ -55,7 +55,7 @@ private:
 	EnableDisableFeature::Mode		mode;
 };
 
-static void SetNodeValueCombination (NE::ValueCombinationMode valueCombination, NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
+static void SetNodeValueCombination (NE::ValueCombinationMode valueCombination, NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
 {
 	std::shared_ptr<ValueCombinationFeature> valueCombinationFeature = GetValueCombinationFeature (uiNode);
 	if (DBGERROR (valueCombinationFeature == nullptr)) {
@@ -151,7 +151,7 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 			return NE::ValuePtr (new NE::IntValue (stateInt));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			int stateInt = NE::IntValue::Get (value);
 			EnableDisableFeature::State enableState = (stateInt == 0 ? EnableDisableFeature::State::Enabled : EnableDisableFeature::State::Disabled);
@@ -253,7 +253,7 @@ void ValueCombinationFeature::RegisterParameters (NUIE::NodeParameterList& param
 			return NE::ValuePtr (new NE::IntValue (valueCombinationInt));
 		}
 		
-		virtual bool SetValueInternal (NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			int valueCombinationInt = NE::IntValue::Get (value);
 			NE::ValueCombinationMode valueCombination = (NE::ValueCombinationMode) valueCombinationInt;

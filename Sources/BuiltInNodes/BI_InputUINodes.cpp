@@ -131,7 +131,7 @@ void BooleanNode::RegisterParameters (NUIE::NodeParameterList& parameterList) co
 			return NE::ValuePtr (new NE::BooleanValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 	
-		virtual bool SetValueInternal (NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetValue (NE::BooleanValue::Get (value));
 			invalidator.InvalidateValueAndDrawing ();
@@ -298,7 +298,7 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetValue (NE::IntValue::Get (value));
 			invalidator.InvalidateValueAndDrawing ();
@@ -320,7 +320,7 @@ void IntegerUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLi
 			return NE::ValuePtr (new NE::IntValue (GetTypedNode (uiNode)->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetStep (NE::IntValue::Get (value));
 			invalidator.InvalidateValueAndDrawing ();
@@ -421,7 +421,7 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetValue ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetValue (NE::DoubleValue::Get (value));
 			invalidator.InvalidateValueAndDrawing ();
@@ -443,7 +443,7 @@ void DoubleUpDownNode::RegisterParameters (NUIE::NodeParameterList& parameterLis
 			return NE::ValuePtr (new NE::DoubleValue (GetTypedNode (uiNode)->GetStep ()));
 		}
 
-		virtual bool SetValueInternal (NUIE::NodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+		virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv&, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
 			GetTypedNode (uiNode)->SetStep (NE::DoubleValue::Get (value));
 			invalidator.InvalidateValueAndDrawing ();
