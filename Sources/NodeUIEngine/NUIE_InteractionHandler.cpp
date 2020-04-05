@@ -435,13 +435,13 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			},
 			[&] (UIOutputSlotConstPtr& foundOutputSlot) {
-				UINodePtr uiNode = uiManager.GetUINode (foundOutputSlot->GetOwnerNodeId ());
+				UINodeConstPtr uiNode = uiManager.GetUINode (foundOutputSlot->GetOwnerNodeId ());
 				Point startNodePosition = uiNode->GetOutputSlotConnPosition (env, foundOutputSlot->GetId ());
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputConnectionHandler (uiManager, foundOutputSlot, startNodePosition));
 			},
 			[&] (UIInputSlotConstPtr& foundInputSlot) {
 				if (uiManager.CanConnectMoreOutputSlotToInputSlot (foundInputSlot)) {
-					UINodePtr uiNode = uiManager.GetUINode (foundInputSlot->GetOwnerNodeId ());
+					UINodeConstPtr uiNode = uiManager.GetUINode (foundInputSlot->GetOwnerNodeId ());
 					Point startNodePosition = uiNode->GetInputSlotConnPosition (env, foundInputSlot->GetId ());
 					multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputConnectionHandler (uiManager, foundInputSlot, startNodePosition));
 				}
