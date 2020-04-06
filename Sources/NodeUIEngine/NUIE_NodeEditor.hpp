@@ -76,6 +76,8 @@ public:
 	bool						Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader) const;
 	bool						Save (NE::OutputStream& outputStream, const ExternalHeaderIO* externalHeader) const;
 	bool						NeedToSave () const;
+
+	void						SetParameters ();
 	void						Undo ();
 	void						Redo ();
 

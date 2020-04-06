@@ -267,6 +267,20 @@ bool NodeEditor::NeedToSave () const
 	return uiManager.NeedToSave ();
 }
 
+void NodeEditor::SetParameters ()
+{
+	const NE::NodeCollection& selectedNodes = GetSelectedNodes ();
+	if (selectedNodes.IsEmpty ()) {
+		return;
+	}
+
+	size_t nodeCount = selectedNodes.Count ();
+	UINodePtr currentNode = uiManager.GetUINode (selectedNodes.Get (nodeCount - 1));
+	SetParametersCommand command (uiManager, uiEnvironment, currentNode, selectedNodes);
+	command.Do ();
+	Update ();
+}
+
 void NodeEditor::Undo ()
 {
 	UndoCommand command (uiEnvironment.GetEvaluationEnv ());
