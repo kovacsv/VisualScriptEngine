@@ -562,7 +562,7 @@ NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy i
 	if (idHandling == IdHandlingPolicy::KeepOriginalId) {
 		newNodeId = node->GetId ();
 	} else if (idHandling == IdHandlingPolicy::GenerateNewId) {
-		newNodeId = idGenerator.GenerateUniqueId ();
+		newNodeId.SetUniqueId (idGenerator.GenerateUniqueId ());
 	}
 
 	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::DoNotInitialize);

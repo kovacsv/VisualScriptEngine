@@ -14,7 +14,7 @@ class SlotId
 
 public:
 	SlotId ();
-	SlotId (const std::string& id);
+	explicit SlotId (const std::string& id);
 	~SlotId ();
 
 	size_t			GenerateHashValue () const;

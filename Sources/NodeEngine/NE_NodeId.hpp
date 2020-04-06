@@ -34,7 +34,7 @@ class NodeId
 
 public:
 	NodeId ();
-	NodeId (const NodeIdType& uniqueId);
+	explicit NodeId (const NodeIdType& uniqueId);
 	~NodeId ();
 
 	NodeIdType		GetUniqueId () const;
