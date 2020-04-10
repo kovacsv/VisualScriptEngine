@@ -38,7 +38,8 @@ public:
 		rangeInputRect = rangeInputNode->GetNodeRect (uiEnvironment);
 		viewer1InputRect = viewerUINode1->GetNodeRect (uiEnvironment);
 		viewer2InputRect = viewerUINode2->GetNodeRect (uiEnvironment);
-
+		viewer1InputSlotRect = viewerUINode1->GetInputSlotRect (uiEnvironment, SlotId ("in"));
+		viewer2InputSlotRect = viewerUINode2->GetInputSlotRect (uiEnvironment, SlotId ("in"));
 		doubleInputHeaderPoint = doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
 		rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);	
 	}
@@ -53,6 +54,8 @@ public:
 	Rect		rangeInputRect;
 	Rect		viewer1InputRect;
 	Rect		viewer2InputRect;
+	Rect		viewer1InputSlotRect;
+	Rect		viewer2InputSlotRect;
 
 	Point		doubleInputHeaderPoint;
 	Point		rangeInputHeaderPoint;
@@ -332,6 +335,21 @@ TEST (NodeGroupingTest)
 		});
 		ASSERT (env.CheckReference ("NodeGrouping_RangeInputMoved.svg"));
 	}
+}
+
+TEST (InputSlotReconnectionTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference ("InputSlotReconnection_Basic.svg"));
+
+	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.viewer1InputSlotRect.GetCenter (), env.viewer2InputSlotRect.GetCenter (), [&] () {
+		ASSERT (env.CheckReference ("InputSlotReconnection_DuringConnection.svg"));
+	});
+
+	ASSERT (env.CheckReference ("InputSlotReconnection_Reconnected.svg"));
+	
+	env.nodeEditor.Undo ();
+	ASSERT (env.CheckReference ("InputSlotReconnection_AfterUndo.svg"));
 }
 
 TEST (UndoTest)

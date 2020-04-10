@@ -27,6 +27,7 @@ public:
 
 	virtual void	EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const override;
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>&) const override;
+	virtual bool	NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const override;
 	virtual Point	GetNodeOffset (const NE::NodeId& nodeId) const override;
 
 protected:
@@ -57,6 +58,7 @@ public:
 
 	virtual void						EnumerateSelectionRectangles (const std::function<void (const Rect&)>& processor) const override;
 	virtual void						EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end)>& processor) const override;
+	virtual bool						NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const override;
 	virtual Point						GetNodeOffset (const NE::NodeId& nodeId) const override;
 
 private:

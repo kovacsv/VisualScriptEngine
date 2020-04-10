@@ -133,13 +133,16 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& env, const 
 	Pen selectionPen (skinParams.GetNodeSelectionRectPen ().GetColor (), scaleIndependentData.GetSelectionThickness ());
 
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
-	for (const UINode* uiNode : sortedNodeList) {
-		bool begSelected = selectedNodes.Contains (uiNode->GetId ());
-		uiNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
-			Point beg = GetOutputSlotConnPosition (env, drawModifier, uiNode, outputSlot->GetId ());
+	for (const UINode* begNode : sortedNodeList) {
+		bool begSelected = selectedNodes.Contains (begNode->GetId ());
+		begNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
+			Point beg = GetOutputSlotConnPosition (env, drawModifier, begNode, outputSlot->GetId ());
 			uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
 				const UINode* endNode = nodeIdToNodeMap.GetUINode (inputSlot->GetOwnerNodeId ());
 				if (DBGERROR (endNode == nullptr)) {
+					return;
+				}
+				if (!drawModifier->NeedToDrawConnection (begNode->GetId (), outputSlot->GetId (), endNode->GetId (), inputSlot->GetId ())) {
 					return;
 				}
 				bool endSelected = selectedNodes.Contains (endNode->GetId ());

@@ -75,6 +75,11 @@ void MouseMoveHandler::EnumerateTemporaryConnections (const std::function<void (
 
 }
 
+bool MouseMoveHandler::NeedToDrawConnection (const NE::NodeId&, const NE::SlotId&, const NE::NodeId&, const NE::SlotId&) const
+{
+	return true;
+}
+
 Point MouseMoveHandler::GetNodeOffset (const NE::NodeId&) const
 {
 	return Point (0.0, 0.0);
@@ -153,6 +158,16 @@ void MultiMouseMoveHandler::EnumerateTemporaryConnections (const std::function<v
 	for (const auto& it : handlers) {
 		it.second->EnumerateTemporaryConnections (processor);
 	}
+}
+
+bool MultiMouseMoveHandler::NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const
+{
+	for (const auto& it : handlers) {
+		if (!it.second->NeedToDrawConnection (outputNodeId, outputSlotId, inputNodeId, inputSlotId)) {
+			return false;
+		}
+	}
+	return true;
 }
 
 Point MultiMouseMoveHandler::GetNodeOffset (const NE::NodeId& nodeId) const

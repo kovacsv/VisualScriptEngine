@@ -72,6 +72,19 @@ private:
 	const UIInputSlotConstPtr&		inputSlot;
 };
 
+class ReconnectSlotsCommand : public UndoableCommand
+{
+public:
+	ReconnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& oldInputSlot, const UIInputSlotConstPtr& newInputSlot);
+
+	virtual void Do (NodeUIManager& uiManager) override;
+
+private:
+	const UIOutputSlotConstPtr&		outputSlot;
+	const UIInputSlotConstPtr&		oldInputSlot;
+	const UIInputSlotConstPtr&		newInputSlot;
+};
+
 class DisconnectSlotsCommand : public UndoableCommand
 {
 public:

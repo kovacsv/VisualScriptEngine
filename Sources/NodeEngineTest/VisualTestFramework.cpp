@@ -347,12 +347,17 @@ void NodeEditorTestEnv::Wheel (MouseWheelRotation rotation, const Point& point)
 
 void NodeEditorTestEnv::DragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp)
 {
-	nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Left, (int) from.GetX (), (int) from.GetY ());
-	nodeEditor.OnMouseMove (EmptyModifierKeys, (int) to.GetX (), (int) to.GetY ());
+	DragDrop (EmptyModifierKeys, from, to, beforeMouseUp);
+}
+
+void NodeEditorTestEnv::DragDrop (const ModifierKeys& keys, const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp)
+{
+	nodeEditor.OnMouseDown (keys, MouseButton::Left, (int) from.GetX (), (int) from.GetY ());
+	nodeEditor.OnMouseMove (keys, (int) to.GetX (), (int) to.GetY ());
 	if (beforeMouseUp != nullptr) {
 		beforeMouseUp ();
 	}
-	nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Left, (int) to.GetX (), (int) to.GetY ());
+	nodeEditor.OnMouseUp (keys, MouseButton::Left, (int) to.GetX (), (int) to.GetY ());
 }
 
 void NodeEditorTestEnv::SetNextCommandName (const std::wstring& nextCommandName)
