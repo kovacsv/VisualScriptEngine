@@ -19,7 +19,8 @@ class ColoredConsoleWriter
 {
 public:
 	ColoredConsoleWriter (ConsoleColor consoleColor) :
-		consoleColor (consoleColor)
+		consoleColor (consoleColor),
+		consoleHandle (NULL)
 	{
 		consoleHandle = GetStdHandle (STD_OUTPUT_HANDLE);
 		GetConsoleScreenBufferInfo (consoleHandle, &screenBufferInfo);
