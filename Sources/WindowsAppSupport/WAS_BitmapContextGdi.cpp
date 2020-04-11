@@ -22,7 +22,9 @@ HANDLE CreateHandle (const FontCacheKey& key)
 class SelectObjectGuard
 {
 public:
-	SelectObjectGuard (HDC hdcToSelect, HANDLE objectToSelect)
+	SelectObjectGuard (HDC hdcToSelect, HANDLE objectToSelect) :
+		hdc (NULL),
+		oldHandle (NULL)
 	{
 		hdc = hdcToSelect;
 		oldHandle = SelectObject (hdc, objectToSelect);
