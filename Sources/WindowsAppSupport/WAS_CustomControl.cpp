@@ -60,7 +60,9 @@ private:
 
 static StaticWindowRegistrator windowRegistrator;
 
-CustomControl::CustomControl ()
+CustomControl::CustomControl () :
+	windowClassName (),
+	windowHandle (NULL)
 {
 }
 

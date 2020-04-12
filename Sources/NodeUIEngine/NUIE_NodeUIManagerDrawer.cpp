@@ -266,17 +266,6 @@ Point NodeUIManagerDrawer::GetInputSlotConnPosition (NodeUIDrawingEnvironment& e
 	return position + drawModifier->GetNodeOffset (uiNode->GetId ());
 }
 
-double NodeUIManagerDrawer::GetNodeSelectionThickness (NodeUIDrawingEnvironment& env) const
-{
-	const SkinParams& skinParams = env.GetSkinParams ();
-	double selectionThickness = skinParams.GetNodeSelectionRectPen ().GetThickness ();
-	double scale = uiManager.GetViewBox ().GetScale ();
-	if (scale < 1.0) {
-		return selectionThickness / scale;
-	}
-	return selectionThickness;
-}
-
 Rect ExtendNodeRect (NodeUIDrawingEnvironment& env, const Rect& originalRect)
 {
 	const SkinParams& skinParams = env.GetSkinParams ();

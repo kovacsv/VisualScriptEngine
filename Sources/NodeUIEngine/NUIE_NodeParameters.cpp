@@ -64,7 +64,7 @@ const NodeParameterPtr& NodeParameterList::GetParameter (size_t index) const
 	return parameters[index];
 }
 
-static bool IsParameterApplicableTo (NodeParameterPtr& parameter, const std::vector<UINodeConstPtr>& uiNodes)
+static bool IsParameterApplicableTo (const NodeParameterPtr& parameter, const std::vector<UINodeConstPtr>& uiNodes)
 {
 	for (const UINodeConstPtr& uiNode : uiNodes) {
 		if (!parameter->IsApplicableTo (uiNode)) {

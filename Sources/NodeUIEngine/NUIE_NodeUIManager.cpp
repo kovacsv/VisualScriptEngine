@@ -487,8 +487,6 @@ void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env)
 
 	double scale = env.GetWindowScale ();
 	double viewPadding = env.GetSkinParams ().GetNodePadding ();
-	const DrawingContext& drawingContext = env.GetDrawingContext ();
-	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
 	ViewBox newViewBox (-boundingRect.GetTopLeft () * scale + Point (viewPadding, viewPadding), scale);
 	SetViewBox (newViewBox);
 	status.RequestRedraw ();

@@ -54,7 +54,6 @@ private:
 	Rect				GetNodeRect (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const;
 	Point				GetOutputSlotConnPosition (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode, const NE::SlotId& slotId) const;
 	Point				GetInputSlotConnPosition (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawModifier, const UINode* uiNode, const NE::SlotId& slotId) const;
-	double				GetNodeSelectionThickness (NodeUIDrawingEnvironment& env) const;
 
 	const NodeUIManager&					uiManager;
 	NodeIdToNodeMap							nodeIdToNodeMap;

@@ -103,7 +103,9 @@ ControlParameters::ControlParameters (DWORD controlType, DWORD style, WORD x, WO
 
 }
 
-InMemoryControl::InMemoryControl ()
+InMemoryControl::InMemoryControl () :
+	params (),
+	hwnd (NULL)
 {
 
 }

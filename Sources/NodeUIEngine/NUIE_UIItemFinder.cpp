@@ -30,7 +30,7 @@ static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIDrawingE
 }
 
 template <class SlotType>
-static SlotType FindSlotInNode (const UINodePtr& uiNode, NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
+static SlotType FindSlotInNode (const UINodePtr& uiNode, const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	SlotType foundSlot = nullptr;
 	const ViewBox& viewBox = uiManager.GetViewBox ();
