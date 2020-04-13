@@ -22,7 +22,7 @@ public:
 
 	void WriteString (LPCWSTR psz)
 	{
-		Write (psz, (lstrlen (psz) + 1) * sizeof (WCHAR));
+		Write (psz, ((DWORD) wcslen (psz) + 1) * sizeof (WCHAR));
 	}
 
 	void AlignToDword ()

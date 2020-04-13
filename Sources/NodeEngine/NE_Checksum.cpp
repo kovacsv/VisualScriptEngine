@@ -70,7 +70,7 @@ bool Checksum::operator!= (const Checksum& rhs) const
 void Checksum::AddInteger (int val)
 {
 	// BSD checksum algorithm
-	checksum = (checksum >> 1) + ((checksum & 1) << 31);
+	checksum = (checksum >> 1) + ((checksum & 1) << 15);
 	checksum = (checksum + val) & 0xffffffff;
 	counter++;
 }
