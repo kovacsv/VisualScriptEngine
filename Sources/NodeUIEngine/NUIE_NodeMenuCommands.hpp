@@ -114,11 +114,11 @@ private:
 	NodeUIEnvironment&	uiEnvironment;
 };
 
-class SetParametersCommand : public SingleMenuCommand
+class SetParametersMenuCommand : public SingleMenuCommand
 {
 public:
-	SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes);
-	virtual ~SetParametersCommand ();
+	SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes);
+	virtual ~SetParametersMenuCommand ();
 
 	virtual void Do () override;
 
@@ -130,11 +130,24 @@ private:
 	NodeParameterList	relevantParameters;
 };
 
-class SetGroupParametersCommand : public SingleMenuCommand
+class CreateGroupMenuCommand : public SingleMenuCommand
 {
 public:
-	SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
-	virtual ~SetGroupParametersCommand ();
+	CreateGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
+	virtual ~CreateGroupMenuCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NE::NodeCollection	relevantNodes;
+};
+
+class SetGroupParametersMenuCommand : public SingleMenuCommand
+{
+public:
+	SetGroupParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
+	virtual ~SetGroupParametersMenuCommand ();
 
 	virtual void Do () override;
 

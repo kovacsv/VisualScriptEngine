@@ -635,13 +635,13 @@ EventHandlerResult InteractionHandler::HandleMouseDoubleClick (NodeUIEnvironment
 			return handlerResult;
 		}
 
-		SetParametersCommand setParameters (uiManager, env, foundNode, NE::NodeCollection ({ foundNode->GetId () }));
+		SetParametersMenuCommand setParameters (uiManager, env, foundNode, NE::NodeCollection ({ foundNode->GetId () }));
 		setParameters.Do ();
 		handlerResult = EventHandlerResult::EventHandled;
 	} else {
 		UINodeGroupPtr foundGroup = FindNodeGroupUnderPosition (uiManager, env, position);
 		if (foundGroup != nullptr) {
-			SetGroupParametersCommand setParameters (uiManager, env, foundGroup);
+			SetGroupParametersMenuCommand setParameters (uiManager, env, foundGroup);
 			setParameters.Do ();
 			handlerResult = EventHandlerResult::EventHandled;
 		}

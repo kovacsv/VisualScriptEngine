@@ -157,7 +157,7 @@ void RedoMenuCommand::Do ()
 	uiManager.ExecuteCommand (command);
 }
 
-SetParametersCommand::SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
+SetParametersMenuCommand::SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
 	SingleMenuCommand (NE::Localize (L"Set Parameters"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
@@ -168,12 +168,12 @@ SetParametersCommand::SetParametersCommand (NodeUIManager& uiManager, NodeUIEnvi
 	DBGASSERT (relevantNodes.Contains (currentNode->GetId ()));
 }
 
-SetParametersCommand::~SetParametersCommand ()
+SetParametersMenuCommand::~SetParametersMenuCommand ()
 {
 
 }
 
-void SetParametersCommand::Do ()
+void SetParametersMenuCommand::Do ()
 {
 	class NodeSelectionParameterInterface : public ParameterInterface
 	{
@@ -277,7 +277,27 @@ void SetParametersCommand::Do ()
 	}
 }
 
-SetGroupParametersCommand::SetGroupParametersCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
+CreateGroupMenuCommand::CreateGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
+	SingleMenuCommand (NE::Localize (L"Create New Group"), false),
+	uiManager (uiManager),
+	relevantNodes (relevantNodes)
+{
+
+}
+
+CreateGroupMenuCommand::~CreateGroupMenuCommand ()
+{
+
+}
+
+void CreateGroupMenuCommand::Do ()
+{
+	UINodeGroupPtr group (new UINodeGroup (NE::Localize (L"Group")));
+	AddGroupCommand command (group, relevantNodes);
+	uiManager.ExecuteCommand (command);
+}
+
+SetGroupParametersMenuCommand::SetGroupParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
 	SingleMenuCommand (NE::Localize (L"Set Parameters"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
@@ -286,12 +306,12 @@ SetGroupParametersCommand::SetGroupParametersCommand (NodeUIManager& uiManager, 
 
 }
 
-SetGroupParametersCommand::~SetGroupParametersCommand ()
+SetGroupParametersMenuCommand::~SetGroupParametersMenuCommand ()
 {
 
 }
 
-void SetGroupParametersCommand::Do ()
+void SetGroupParametersMenuCommand::Do ()
 {
 	class GroupParameterInterface : public ParameterInterface
 	{
@@ -680,34 +700,6 @@ private:
 	MenuCommandStructure	commandStructure;
 };
 
-class CreateGroupMenuCommand : public SingleMenuCommand
-{
-public:
-	CreateGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		SingleMenuCommand (NE::Localize (L"Create New Group"), false),
-		uiManager (uiManager),
-		relevantNodes (relevantNodes)
-	{
-	
-	}
-
-	virtual ~CreateGroupMenuCommand ()
-	{
-	
-	}
-
-	virtual void Do () override
-	{
-		UINodeGroupPtr group (new UINodeGroup (NE::Localize (L"Group")));
-		AddGroupCommand command (group, relevantNodes);
-		uiManager.ExecuteCommand (command);
-	}
-
-private:
-	NodeUIManager&		uiManager;
-	NE::NodeCollection	relevantNodes;
-};
-
 class DeleteGroupMenuCommand : public SingleMenuCommand
 {
 public:
@@ -956,7 +948,7 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 	NE::NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);
 
-	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new SetParametersCommand (uiManager, uiEnvironment, uiNode, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new SetParametersMenuCommand (uiManager, uiEnvironment, uiNode, relevantNodes)));
 	uiNode->RegisterCommands (commandStructureBuilder);
 
 	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new CopyNodesMenuCommand (uiManager, relevantNodes)));
@@ -1029,7 +1021,7 @@ MenuCommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, 
 MenuCommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group)
 {
 	MenuCommandStructure commandStructure;
-	commandStructure.AddCommand (MenuCommandPtr (new SetGroupParametersCommand (uiManager, uiEnvironment, group)));
+	commandStructure.AddCommand (MenuCommandPtr (new SetGroupParametersMenuCommand (uiManager, uiEnvironment, group)));
 	commandStructure.AddCommand (MenuCommandPtr (new DeleteGroupMenuCommand (uiManager, group)));
 	commandStructure.AddCommand (MenuCommandPtr (new SelectGroupNodesCommand (uiManager, group)));
 	return commandStructure;

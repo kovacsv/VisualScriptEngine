@@ -77,7 +77,9 @@ public:
 	bool						Save (NE::OutputStream& outputStream, const ExternalHeaderIO* externalHeader) const;
 	bool						NeedToSave () const;
 
-	void						SetParameters ();
+	void						SetSelectedNodesParameters ();
+	void						GroupSelectedNodes ();
+
 	void						Undo ();
 	void						Redo ();
 

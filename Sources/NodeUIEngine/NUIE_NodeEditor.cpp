@@ -267,7 +267,7 @@ bool NodeEditor::NeedToSave () const
 	return uiManager.NeedToSave ();
 }
 
-void NodeEditor::SetParameters ()
+void NodeEditor::SetSelectedNodesParameters ()
 {
 	const NE::NodeCollection& selectedNodes = GetSelectedNodes ();
 	if (selectedNodes.IsEmpty ()) {
@@ -276,7 +276,19 @@ void NodeEditor::SetParameters ()
 
 	size_t nodeCount = selectedNodes.Count ();
 	UINodePtr currentNode = uiManager.GetUINode (selectedNodes.Get (nodeCount - 1));
-	SetParametersCommand command (uiManager, uiEnvironment, currentNode, selectedNodes);
+	SetParametersMenuCommand command (uiManager, uiEnvironment, currentNode, selectedNodes);
+	command.Do ();
+	Update ();
+}
+
+void NodeEditor::GroupSelectedNodes ()
+{
+	const NE::NodeCollection& selectedNodes = GetSelectedNodes ();
+	if (selectedNodes.IsEmpty ()) {
+		return;
+	}
+
+	CreateGroupMenuCommand command (uiManager, selectedNodes);
 	command.Do ();
 	Update ();
 }
