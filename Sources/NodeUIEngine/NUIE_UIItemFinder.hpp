@@ -12,10 +12,10 @@ UIInputSlotConstPtr		FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeU
 UIOutputSlotConstPtr	FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
 
 bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition,
-							const std::function<void (UINodePtr&)>& nodeFound,
-							const std::function<void (UIOutputSlotConstPtr&)>& outputSlotFound,
-							const std::function<void (UIInputSlotConstPtr&)>& inputSlotFound,
-							const std::function<void (UINodeGroupPtr&)>& nodeGroupFound);
+							const std::function<void (const UINodePtr&)>& nodeFound,
+							const std::function<void (const UIOutputSlotConstPtr&)>& outputSlotFound,
+							const std::function<void (const UIInputSlotConstPtr&)>& inputSlotFound,
+							const std::function<void (const UINodeGroupPtr&)>& nodeGroupFound);
 
 }
 

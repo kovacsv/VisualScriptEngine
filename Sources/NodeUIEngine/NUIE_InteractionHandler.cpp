@@ -479,16 +479,16 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 
 	if (mouseButton == MouseButton::Left) {
 		bool found = FindItemUnderPosition (uiManager, env, position,
-			[&] (UINodePtr& foundNode) {
+			[&] (const UINodePtr& foundNode) {
 				NE::NodeCollection nodesToMove = GetNodesForCommand (uiManager, foundNode);
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			},
-			[&] (UIOutputSlotConstPtr& foundOutputSlot) {
+			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
 				UINodeConstPtr uiNode = uiManager.GetUINode (foundOutputSlot->GetOwnerNodeId ());
 				Point startSlotPosition = uiNode->GetOutputSlotConnPosition (env, foundOutputSlot->GetId ());
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputConnectionHandler (uiManager, foundOutputSlot, startSlotPosition));
 			},
-			[&] (UIInputSlotConstPtr& foundInputSlot) {
+			[&] (const UIInputSlotConstPtr& foundInputSlot) {
 				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
 					if (uiManager.GetConnectedOutputSlotCount (foundInputSlot) == 1) {
 						UIOutputSlotConstPtr foundOutputSlot = nullptr;
@@ -510,7 +510,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 					}
 				}
 			},
-			[&] (UINodeGroupPtr& foundGroup) {
+			[&] (const UINodeGroupPtr& foundGroup) {
 				NE::NodeCollection nodesToMove = uiManager.GetUIGroupNodes (foundGroup);
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			}
@@ -589,19 +589,19 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& env,
 		EventHandlers& eventHandlers = env.GetEventHandlers ();
 		MenuCommandPtr selectedCommand;
 		bool found = FindItemUnderPosition (uiManager, env, position,
-			[&] (UINodePtr& foundNode) {
+			[&] (const UINodePtr& foundNode) {
 				MenuCommandStructure commands = CreateNodeCommandStructure (uiManager, env, foundNode);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundNode, commands);
 			},
-			[&] (UIOutputSlotConstPtr& foundOutputSlot) {
+			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
 				MenuCommandStructure commands = CreateOutputSlotCommandStructure (uiManager, env, foundOutputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundOutputSlot, commands);
 			},
-			[&] (UIInputSlotConstPtr& foundInputSlot) {
+			[&] (const UIInputSlotConstPtr& foundInputSlot) {
 				MenuCommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundInputSlot, commands);
 			},
-			[&] (UINodeGroupPtr& foundGroup) {
+			[&] (const UINodeGroupPtr& foundGroup) {
 				MenuCommandStructure commands = CreateNodeGroupCommandStructure (uiManager, env, foundGroup);
 				selectedCommand = eventHandlers.OnContextMenu (uiManager, env, position, foundGroup, commands);
 			}
