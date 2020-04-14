@@ -749,8 +749,7 @@ void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalU
 			nodeManager.ForceEvaluateAllNodes (env.GetEvaluationEnv ());
 		}
 		env.OnEvaluationEnd ();
-	}
-	if (status.NeedToRecalculate ()) {
+
 		env.OnValuesRecalculated ();
 		status.ResetRecalculate ();
 	}
