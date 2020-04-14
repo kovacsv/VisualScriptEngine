@@ -21,6 +21,7 @@ def Main (argv):
 		'--suppress=noExplicitConstructor',
 		'--suppress=cstyleCast',
 		'--suppress=missingInclude',
+		'--suppress=useStlAlgorithm',
 		'-iNodeEngineTest',
 		'-iwxWidgetsAppSupport',
 		'-iwxWidgetsTestApp'

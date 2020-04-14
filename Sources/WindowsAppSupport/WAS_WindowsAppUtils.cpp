@@ -36,6 +36,28 @@ NUIE::ModifierKeys GetModiferKeysFromEvent (WPARAM wParam)
 	return NUIE::ModifierKeys (keys);
 }
 
+static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordered_map<size_t, NUIE::MenuCommandPtr>& commandTable, HMENU& hCurrentMenu, size_t& currentCommandId)
+{
+	if (command->HasChildCommands ()) {
+		HMENU subMenu = CreatePopupMenu ();
+		AppendMenu (hCurrentMenu, MF_POPUP, (UINT_PTR) subMenu, command->GetName ().c_str ());
+		HMENU hOldMenu = hCurrentMenu;
+		hCurrentMenu = subMenu;
+		command->EnumerateChildCommands ([&] (const NUIE::MenuCommandPtr& command) {
+			AddCommandToMenu (command, commandTable, hCurrentMenu, currentCommandId);
+		});
+		hCurrentMenu = hOldMenu;
+	} else {
+		UINT flags = MF_STRING;
+		if (command->IsChecked ()) {
+			flags |= MF_CHECKED;
+		}
+		InsertMenu (hCurrentMenu, 0, flags, currentCommandId, command->GetName ().c_str ());
+		commandTable.insert ({ currentCommandId, command });
+		currentCommandId += 1;
+	}
+}
+
 NUIE::MenuCommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
 	if (commands.IsEmpty ()) {
@@ -47,30 +69,13 @@ NUIE::MenuCommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point&
 	mousePos.y = (int) position.GetY ();
 	ClientToScreen (hwnd, &mousePos);
 	HMENU hPopupMenu = CreatePopupMenu ();
-	HMENU hCurrentMenu = hPopupMenu;
 
 	std::unordered_map<size_t, NUIE::MenuCommandPtr> commandTable;
-
+	HMENU hCurrentMenu = hPopupMenu;
 	size_t currentCommandId = 1000;
-	std::function<void (const NUIE::MenuCommandPtr&)> addCommand = [&] (const NUIE::MenuCommandPtr& command) {
-		if (command->HasChildCommands ()) {
-			HMENU subMenu = CreatePopupMenu ();
-			AppendMenu (hCurrentMenu, MF_POPUP, (UINT_PTR) subMenu, command->GetName ().c_str ());
-			HMENU hOldMenu = hCurrentMenu;
-			hCurrentMenu = subMenu;
-			command->EnumerateChildCommands (addCommand);
-			hCurrentMenu = hOldMenu;
-		} else {
-			UINT flags = MF_STRING;
-			if (command->IsChecked ()) {
-				flags |= MF_CHECKED;
-			}
-			InsertMenu (hCurrentMenu, 0, flags, currentCommandId, command->GetName ().c_str ());
-			commandTable.insert ({ currentCommandId, command });
-			currentCommandId += 1;
-		}
-	};
-	commands.EnumerateCommands (addCommand);
+	commands.EnumerateCommands ([&] (const NUIE::MenuCommandPtr& command) {
+		AddCommandToMenu (command, commandTable, hCurrentMenu, currentCommandId);
+	});
 
 	int selectedItem = TrackPopupMenu (hPopupMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, mousePos.x, mousePos.y, 0, hwnd, NULL);
 	DestroyMenu (hPopupMenu);
