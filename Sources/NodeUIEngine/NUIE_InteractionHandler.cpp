@@ -277,7 +277,7 @@ public:
 	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr && endSlot != originalEndSlot) {
-			ReconnectSlotsCommand command (startSlot, originalEndSlot, endSlot);
+			ReconnectInputSlotCommand command (startSlot, originalEndSlot, endSlot);
 			uiManager.ExecuteCommand (command);
 		} else if (endSlot == nullptr) {
 			DisconnectSlotsCommand disconnectCommand (startSlot, originalEndSlot);
@@ -318,7 +318,7 @@ public:
 		currentPosition = position;
 		endSlot = FindOutputSlotUnderPosition (uiManager, env, currentPosition);
 		if (endSlot != nullptr) {
-			if (uiManager.CanConnectOutputSlotToInputSlot (endSlot, startSlot)) {
+			if (SnapToOutputSlot (endSlot, startSlot)) {
 				UINodePtr uiNode = uiManager.GetUINode (endSlot->GetOwnerNodeId ());
 				currentPosition = viewBox.ModelToView (uiNode->GetOutputSlotConnPosition (env, endSlot->GetId ()));
 			} else {
@@ -337,6 +337,54 @@ public:
 			uiManager.RequestRedraw ();
 		}
 	}
+
+	virtual bool SnapToOutputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const
+	{
+		return uiManager.CanConnectOutputSlotToInputSlot (outputSlot, inputSlot);
+	}
+};
+
+class NodeInputToOutputReconnectionHandler : public NodeInputToOutputConnectionHandler
+{
+public:
+	NodeInputToOutputReconnectionHandler (NodeUIManager& uiManager, const UIInputSlotConstPtr& startSlot, const UIOutputSlotConstPtr& originalEndSlot, const Point& startSlotPosition) :
+		NodeInputToOutputConnectionHandler (uiManager, startSlot, startSlotPosition),
+		originalEndSlot (originalEndSlot)
+	{
+
+	}
+
+	virtual bool NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const override
+	{
+		if (outputNodeId == originalEndSlot->GetOwnerNodeId () &&
+			inputNodeId == startSlot->GetOwnerNodeId () &&
+			outputSlotId == originalEndSlot->GetId () &&
+			inputSlotId == startSlot->GetId ()) {
+			return false;
+		}
+		return true;
+	}
+
+	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
+	{
+		if (endSlot != nullptr && endSlot != originalEndSlot) {
+			ReconnectOutputSlotCommand command (originalEndSlot, endSlot, startSlot);
+			uiManager.ExecuteCommand (command);
+		} else if (endSlot == nullptr) {
+			DisconnectSlotsCommand disconnectCommand (originalEndSlot, startSlot);
+			uiManager.ExecuteCommand (disconnectCommand);
+		} else {
+			uiManager.RequestRedraw ();
+		}
+	}
+
+	virtual bool SnapToOutputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const override
+	{
+		return uiManager.CanConnectOutputSlotToInputSlot (outputSlot, inputSlot) || outputSlot == originalEndSlot;
+	}
+
+private:
+	UIOutputSlotConstPtr originalEndSlot;
 };
 
 class UINodeInteractionCommandInterface : public UINodeCommandInterface
@@ -484,9 +532,24 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 			},
 			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
-				UINodeConstPtr uiNode = uiManager.GetUINode (foundOutputSlot->GetOwnerNodeId ());
-				Point startSlotPosition = uiNode->GetOutputSlotConnPosition (env, foundOutputSlot->GetId ());
-				multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputConnectionHandler (uiManager, foundOutputSlot, startSlotPosition));
+				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
+					if (uiManager.GetConnectedInputSlotCount (foundOutputSlot) == 1) {
+						UIInputSlotConstPtr foundInputSlot = nullptr;
+						uiManager.EnumerateConnectedInputSlots (foundOutputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
+							foundInputSlot = inputSlot;
+							return true;
+						});
+						if (DBGVERIFY (foundInputSlot != nullptr)) {
+							UINodeConstPtr inputNode = uiManager.GetUINode (foundInputSlot->GetOwnerNodeId ());
+							Point startSlotPosition = inputNode->GetInputSlotConnPosition (env, foundInputSlot->GetId ());
+							multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputReconnectionHandler (uiManager, foundInputSlot, foundOutputSlot, startSlotPosition));
+						}
+					}
+				} else {
+					UINodeConstPtr uiNode = uiManager.GetUINode (foundOutputSlot->GetOwnerNodeId ());
+					Point startSlotPosition = uiNode->GetOutputSlotConnPosition (env, foundOutputSlot->GetId ());
+					multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputConnectionHandler (uiManager, foundOutputSlot, startSlotPosition));
+				}
 			},
 			[&] (const UIInputSlotConstPtr& foundInputSlot) {
 				if (modifierKeys.Contains (ModifierKeyCode::Control)) {

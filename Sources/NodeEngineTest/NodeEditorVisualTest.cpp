@@ -40,6 +40,8 @@ public:
 		viewer2InputRect = viewerUINode2->GetNodeRect (uiEnvironment);
 		viewer1InputSlotRect = viewerUINode1->GetInputSlotRect (uiEnvironment, SlotId ("in"));
 		viewer2InputSlotRect = viewerUINode2->GetInputSlotRect (uiEnvironment, SlotId ("in"));
+		doubleUpDownOutputSlotRect = doubleUpDownNode->GetOutputSlotRect (uiEnvironment, SlotId ("out"));
+		rangeOutputSlotSRect = rangeInputNode->GetOutputSlotRect (uiEnvironment, SlotId ("out"));
 		doubleInputHeaderPoint = doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
 		rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);	
 	}
@@ -56,6 +58,8 @@ public:
 	Rect		viewer2InputRect;
 	Rect		viewer1InputSlotRect;
 	Rect		viewer2InputSlotRect;
+	Rect		doubleUpDownOutputSlotRect;
+	Rect		rangeOutputSlotSRect;
 
 	Point		doubleInputHeaderPoint;
 	Point		rangeInputHeaderPoint;
@@ -350,6 +354,27 @@ TEST (InputSlotReconnectionTest)
 	
 	env.nodeEditor.Undo ();
 	ASSERT (env.CheckReference ("InputSlotReconnection_AfterUndo.svg"));
+
+	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.viewer1InputSlotRect.GetCenter (), Point (0.0, 0.0));
+	ASSERT (env.CheckReference ("InputSlotReconnection_AfterDisconnect.svg"));
+}
+
+TEST (OutputSlotReconnectionTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference ("OutputSlotReconnection_Basic.svg"));
+
+	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeOutputSlotSRect.GetCenter (), env.doubleUpDownOutputSlotRect.GetCenter (), [&] () {
+		ASSERT (env.CheckReference ("OutputSlotReconnection_DuringConnection.svg"));
+	});
+
+	ASSERT (env.CheckReference ("OutputSlotReconnection_Reconnected.svg"));
+
+	env.nodeEditor.Undo ();
+	ASSERT (env.CheckReference ("OutputSlotReconnection_AfterUndo.svg"));
+
+	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeOutputSlotSRect.GetCenter (), Point (0.0, 0.0));
+	ASSERT (env.CheckReference ("OutputSlotReconnection_AfterDisconnect.svg"));
 }
 
 TEST (UndoTest)

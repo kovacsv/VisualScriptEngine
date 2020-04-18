@@ -93,7 +93,7 @@ void ConnectSlotsCommand::Do (NodeUIManager& uiManager)
 	uiManager.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
 }
 
-ReconnectSlotsCommand::ReconnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& oldInputSlot, const UIInputSlotConstPtr& newInputSlot) :
+ReconnectInputSlotCommand::ReconnectInputSlotCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& oldInputSlot, const UIInputSlotConstPtr& newInputSlot) :
 	UndoableCommand (),
 	outputSlot (outputSlot),
 	oldInputSlot (oldInputSlot),
@@ -101,10 +101,24 @@ ReconnectSlotsCommand::ReconnectSlotsCommand (const UIOutputSlotConstPtr& output
 {
 }
 
-void ReconnectSlotsCommand::Do (NodeUIManager& uiManager)
+void ReconnectInputSlotCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.DisconnectOutputSlotFromInputSlot (outputSlot, oldInputSlot);
 	uiManager.ConnectOutputSlotToInputSlot (outputSlot, newInputSlot);
+}
+
+ReconnectOutputSlotCommand::ReconnectOutputSlotCommand (const UIOutputSlotConstPtr& oldOutputSlot, const UIOutputSlotConstPtr& newOutputSlot, const UIInputSlotConstPtr& inputSlot) :
+	UndoableCommand (),
+	oldOutputSlot (oldOutputSlot),
+	newOutputSlot (newOutputSlot),
+	inputSlot (inputSlot)
+{
+}
+
+void ReconnectOutputSlotCommand::Do (NodeUIManager& uiManager)
+{
+	uiManager.DisconnectOutputSlotFromInputSlot (oldOutputSlot, inputSlot);
+	uiManager.ConnectOutputSlotToInputSlot (newOutputSlot, inputSlot);
 }
 
 DisconnectSlotsCommand::DisconnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
