@@ -207,7 +207,7 @@ TEST (NodeParametersTest)
 	
 	ASSERT (node->GetNodeName () == L"TestNode");
 	NodeParameterPtr nameParam = paramList.GetParameter (0);
-	ASSERT (nameParam->GetName () == L"Name");
+	ASSERT (nameParam->GetName () == L"Node Name");
 	ValuePtr newNameValue (new StringValue (L"NewNodeName"));
 	nameParam->SetValue (invalidator, NE::EmptyEvaluationEnv, node, newNameValue);
 	ASSERT (node->GetNodeName () == L"NewNodeName");
@@ -242,7 +242,7 @@ TEST (NodeParametersTest2)
 		NodeParameterList paramList;
 		RegisterCommonParameters (uiManager, NodeCollection ({ node->GetId () }), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
 		ASSERT (paramList.GetParameter (1)->GetName () == L"In1");
 	}
 
@@ -250,7 +250,7 @@ TEST (NodeParametersTest2)
 		NodeParameterList paramList;
 		RegisterCommonParameters (uiManager, NodeCollection ({ node2->GetId () }), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
 		ASSERT (paramList.GetParameter (1)->GetName () == L"In2");
 	}
 
@@ -261,7 +261,7 @@ TEST (NodeParametersTest2)
 		nodeCollection.Insert (node2->GetId ());
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 1);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
 	}
 }
 
@@ -282,7 +282,7 @@ TEST (NodeParametersTest3)
 		nodeCollection.Insert (node2->GetId ());
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
 		ASSERT (paramList.GetParameter (1)->GetName () == L"In1");
 		ValuePtr newName (new StringValue (L"NewName"));
 		ApplyCommonParameter (uiManager, EmptyEvaluationEnv, nodeCollection, paramList.GetParameter (0), newName);
@@ -304,7 +304,7 @@ TEST (NodeParametersTest4)
 		NodeCollection nodeCollection ({ node->GetId () });
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Name");
+		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
 		ASSERT (paramList.GetParameter (1)->GetName () == L"EnumParam");
 		std::vector<std::wstring> choices = paramList.GetParameter (1)->GetValueChoices ();
 		ASSERT (choices.size () == 3);

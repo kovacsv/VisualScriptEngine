@@ -326,8 +326,8 @@ void SetGroupParametersMenuCommand::Do ()
 			currentGroup (currentGroup),
 			groupBackgroundColors (groupBackgroundColors),
 			groupParameters ({
-				{ NE::Localize (L"Name"), ParameterType::String },
-				{ NE::Localize (L"Color"), ParameterType::Enumeration }
+				{ NE::Localize (L"Group Name"), ParameterType::String },
+				{ NE::Localize (L"Group Color"), ParameterType::Enumeration }
 			})
 		{
 
