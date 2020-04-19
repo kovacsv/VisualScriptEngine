@@ -362,6 +362,17 @@ NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl () :
 
 }
 
+NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext) :
+	NodeEditorHwndBasedControl (),
+	nodeTreeView (),
+	nodeEditorControl (nativeContext),
+	mainControl (),
+	selectedNode (-1),
+	draggedNode (-1)
+{
+
+}
+
 NodeEditorNodeTreeHwndControl::~NodeEditorNodeTreeHwndControl ()
 {
 

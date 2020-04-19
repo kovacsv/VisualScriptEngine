@@ -9,12 +9,70 @@
 #include <windows.h>
 #include <windowsx.h>
 
-static std::shared_ptr<WAS::NodeEditorNodeTreeHwndControl> nodeEditorControl (new WAS::NodeEditorNodeTreeHwndControl ());
+class MyEventHandlers : public WAS::HwndEventHandlers
+{
+public:
+	MyEventHandlers () :
+		WAS::HwndEventHandlers ()
+	{
+		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
+		nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
+		});
+		nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
+		});
+		nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
+		});
+		nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (L"Integer Increment", position));
+		});
+		nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DoubleIncrementedNode (L"Number Increment", position));
+		});
+		nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DoubleDistributedNode (L"Number Distribution", position));
+		});
+		nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::ListBuilderNode (L"List Builder", position));
+		});
+		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
+		nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
+		});
+		nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
+		});
+		nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
+		});
+		nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
+		});
+		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
+		nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
+		});
+	}
+
+	virtual NUIE::MenuCommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
+	{
+		NUIE::MenuCommandStructure finalCommands = commands;
+		AddNodeTreeAsCommands (nodeTree, uiManager, uiEnvironment, position, finalCommands);
+		return WAS::SelectCommandFromContextMenu (control->GetEditorHandle (), position, finalCommands);
+	}
+
+private:
+	WAS::NodeTree nodeTree;
+};
+
+static std::shared_ptr<WAS::NodeEditorHwndControl> nodeEditorControl (new WAS::NodeEditorHwndControl ());
 static WAS::HwndNodeUIEnvironment uiEnvironment (
 	nodeEditorControl,
 	NE::StringSettingsPtr (new NE::BasicStringSettings (NE::GetDefaultStringSettings ())),
 	NUIE::SkinParamsPtr (new NUIE::BasicSkinParams (NUIE::GetDefaultSkinParams ())),
-	WAS::HwndEventHandlersPtr (new WAS::HwndEventHandlers ()),
+	WAS::HwndEventHandlersPtr (new MyEventHandlers ()),
 	nullptr
 );
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
@@ -47,49 +105,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	switch (msg) {
 		case WM_CREATE:
 			{
-				WAS::NodeTree nodeTree;
-				size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-				nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
-				});
-				nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
-				});
-				nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
-				});
-				nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::IntegerIncrementedNode (L"Integer Increment", position));
-				});
-				nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::DoubleIncrementedNode (L"Number Increment", position));
-				});
-				nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::DoubleDistributedNode (L"Number Distribution", position));
-				});
-				nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::ListBuilderNode (L"List Builder", position));
-				});
-				size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
-				nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
-				});
-				nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
-				});
-				nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
-				});
-				nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
-				});
-				size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-				nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
-					return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", position, 5));
-				});
-
 				uiEnvironment.Init (&nodeEditor, hwnd);
-				nodeEditorControl->FillNodeTree (nodeTree);
 				CreateMenuBar (hwnd);
 			}
 			break;

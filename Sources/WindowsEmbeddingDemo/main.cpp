@@ -10,75 +10,11 @@
 #include <windows.h>
 #include <windowsx.h>
 
-#define USE_DIRECT2D_CONTEXT 1
-
-#ifdef USE_DIRECT2D_CONTEXT
 #include "WAS_Direct2DContext.hpp"
+
 #pragma comment (lib, "windowscodecs.lib")
 #pragma comment (lib, "d2d1.lib")
 #pragma comment (lib, "dwrite.lib")
-#endif
-
-class MyEventHandlers : public WAS::HwndEventHandlers
-{
-public:
-	MyEventHandlers () :
-		WAS::HwndEventHandlers ()
-	{
-		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-		nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::BooleanNode (L"Boolean", position, true));
-		});
-		nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
-		});
-		nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
-		});
-		nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (L"Integer Increment", position));
-		});
-		nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleIncrementedNode (L"Number Increment", position));
-		});
-		nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleDistributedNode (L"Number Distribution", position));
-		});
-		nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::ListBuilderNode (L"List Builder", position));
-		});
-		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
-		nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
-		});
-		nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
-		});
-		nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
-		});
-		nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
-		});
-		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-		nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::ViewerNode (L"Viewer", position));
-		});
-		nodeTree.AddItem (otherNodes, L"Multiline Viewer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Multiline Viewer", position, 5));
-		});
-	}
-
-	virtual NUIE::MenuCommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
-	{
-		NUIE::MenuCommandStructure finalCommands = commands;
-		AddNodeTreeAsCommands (nodeTree, uiManager, uiEnvironment, position, finalCommands);
-		return WAS::SelectCommandFromContextMenu (control->GetEditorHandle (), position, finalCommands);
-	}
-
-private:
-	WAS::NodeTree nodeTree;
-};
 
 static const NUIE::BasicSkinParams MySkinParams (
 	/*backgroundColor*/ NUIE::Color (240, 240, 240),
@@ -135,23 +71,47 @@ public:
 		skinParams (MySkinParams),
 		eventHandlers (),
 		evaluationEnv (nullptr),
-#ifdef USE_DIRECT2D_CONTEXT
 		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (&imageLoader)))
-#else
-		nodeEditorControl ()
-#endif
 	{
 	
 	}
 
 	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
 	{
+		WAS::NodeTree nodeTree;
+
+		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
+		nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
+		});
+		nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
+		});
+		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
+		nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
+		});
+		nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
+		});
+		nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
+		});
+		nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
+		});
+		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
+		nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::ViewerNode (L"Viewer", position));
+		});
+
 		RECT clientRect;
 		GetClientRect (parentHandle, &clientRect);
 		int width = clientRect.right - clientRect.left;
 		int height = clientRect.bottom - clientRect.top;
 
 		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
+		nodeEditorControl.FillNodeTree (nodeTree);
 		eventHandlers.Init (&nodeEditorControl);
 	}
 
@@ -216,11 +176,11 @@ public:
 	}
 
 private:
-	NE::BasicStringSettings		stringSettings;
-	NUIE::BasicSkinParams		skinParams;
-	MyEventHandlers				eventHandlers;
-	NE::EvaluationEnv			evaluationEnv;
-	WAS::NodeEditorHwndControl	nodeEditorControl;
+	NE::BasicStringSettings				stringSettings;
+	NUIE::BasicSkinParams				skinParams;
+	WAS::HwndEventHandlers				eventHandlers;
+	NE::EvaluationEnv					evaluationEnv;
+	WAS::NodeEditorNodeTreeHwndControl	nodeEditorControl;
 };
 
 static MyNodeUIEnvironment uiEnvironment;
