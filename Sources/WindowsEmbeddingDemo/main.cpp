@@ -62,6 +62,18 @@ class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 
 static MyResourceImageLoader imageLoader;
 
+static void AddNodeTreeItem (WAS::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, int iconIndex, const WAS::CreatorFunction& creator)
+{
+	nodeTree.AddItem (groupIndex, name, [=] (const NUIE::Point& position) {
+		NUIE::UINodePtr node = creator (position);
+		BI::BasicUINodePtr basicNode = std::dynamic_pointer_cast<BI::BasicUINode> (node);
+		if (basicNode != nullptr) {
+			basicNode->SetIconId (NUIE::IconId (iconIndex));
+		}
+		return node;
+	});
+}
+
 class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
@@ -81,27 +93,27 @@ public:
 		WAS::NodeTree nodeTree;
 
 		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-		nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", 101, [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
 		});
-		nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Number", 102, [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
 		});
 		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
-		nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", 103, [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
 		});
-		nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Subtraction", 104, [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
 		});
-		nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Multiplication", 105, [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
 		});
-		nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", 106, [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
 		});
 		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-		nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", 107, [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::ViewerNode (L"Viewer", position));
 		});
 
@@ -215,27 +227,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 		case WM_CREATE:
 			{
 				uiEnvironment.Init (&nodeEditor, hwnd);
-
-				BI::BasicUINodePtr numberNode1 (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 100), 20, 10));
-				numberNode1->SetIconId (NUIE::IconId (101));
-				BI::BasicUINodePtr numberNode2 (new BI::DoubleUpDownNode (L"Number", NUIE::Point (100, 300), 20, 10));
-				numberNode2->SetIconId (NUIE::IconId (102));
-				NUIE::UINodePtr viewerNode (new BI::MultiLineViewerNode (L"Multiline Viewer", NUIE::Point (300, 200), 5));
-				nodeEditor.AddNode (numberNode1);
-				nodeEditor.AddNode (numberNode2);
-				nodeEditor.AddNode (viewerNode);
-				nodeEditor.ConnectOutputSlotToInputSlot (numberNode1->GetUIOutputSlot (NE::SlotId ("out")), viewerNode->GetUIInputSlot (NE::SlotId ("in")));
-
-				// performance test code
-				// for (int i = 0; i < 200; i++) {
-				// 	NUIE::UINodePtr newNumberNode (new BI::DoubleUpDownNode (L"Number", NUIE::Point (i * 10, i * 10), 20, 10));
-				// 	NUIE::UINodePtr newViewerNode (new BI::MultiLineViewerNode (L"Viewer", NUIE::Point (i * 10 + 200, i * 10), 5));
-				// 	nodeEditor.AddNode (newNumberNode);
-				// 	nodeEditor.AddNode (newViewerNode);
-				// 	nodeEditor.ConnectOutputSlotToInputSlot (newNumberNode->GetUIOutputSlot (NE::SlotId ("out")), newViewerNode->GetUIInputSlot (NE::SlotId ("in")));
-				// }
-				nodeEditor.Update ();
-
 				CreateMenuBar (hwnd);
 			}
 			break;
