@@ -22,9 +22,7 @@ def Main (argv):
 		'--suppress=cstyleCast',
 		'--suppress=missingInclude',
 		'--suppress=useStlAlgorithm',
-		'-iNodeEngineTest',
-		'-iwxWidgetsAppSupport',
-		'-iwxWidgetsTestApp'
+		'-iNodeEngineTest'
 	]
 	proc = subprocess.Popen (command, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 	stdout, stderr = proc.communicate ()
