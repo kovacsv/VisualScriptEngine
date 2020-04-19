@@ -28,7 +28,6 @@ set (CMAKE_SUPPRESS_REGENERATION 1)
 set (CMAKE_CONFIGURATION_TYPES Debug;Release)
 set (CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/DevKit CACHE PATH "Install prefix.")
 set (CMAKE_DEBUG_POSTFIX "Debug")
-set (WXWIDGETS_DIR $ENV{WXWIDGETS_DIR} CACHE PATH "wxWidgets binary directory.")
 
 add_definitions (-DUNICODE -D_UNICODE)
 
@@ -194,69 +193,3 @@ if (MSVC)
 	SetCompilerOptions (WindowsEmbeddingDemo2)
 
 endif ()	
-
-if (MSVC AND NOT ${WXWIDGETS_DIR} STREQUAL "")
-	set (WXWIDGETS_LIBS_DIR)
-	set (WXWIDGETS_PLATFORM_INCLUDE_DIR)
-	if (MSVC)
-		set (WXWIDGETS_LIBS_DIR ${WXWIDGETS_DIR}/lib/vc_x64_lib)
-		set (WXWIDGETS_PLATFORM_INCLUDE_DIR ${WXWIDGETS_DIR}/include/msvc)
-	endif ()
-	link_directories (${WXWIDGETS_LIBS_DIR})
-
-	# wxWidgetsAppSupport
-	
-	set (wxWidgetsAppSupportSourcesFolder Sources/wxWidgetsAppSupport)
-	file (GLOB wxWidgetsAppSupportHeaderFiles ${wxWidgetsAppSupportSourcesFolder}/*.hpp)
-	file (GLOB wxWidgetsAppSupportSourceFiles ${wxWidgetsAppSupportSourcesFolder}/*.cpp)
-	set (
-		wxWidgetsAppSupportFiles
-		${wxWidgetsAppSupportHeaderFiles}
-		${wxWidgetsAppSupportSourceFiles}
-	)
-	source_group ("Sources" FILES ${wxWidgetsAppSupportFiles})
-	add_library (wxWidgetsAppSupport STATIC ${wxWidgetsAppSupportFiles})
-	target_include_directories (
-		wxWidgetsAppSupport PUBLIC
-		${wxWidgetsAppSupport}
-		${NodeUIEngineSourcesFolder}
-		${BuiltInNodesSourcesFolder}
-		${WindowsAppSupportSourcesFolder}
-		${WXWIDGETS_DIR}/include
-		${WXWIDGETS_PLATFORM_INCLUDE_DIR}
-	)
-	target_link_libraries (wxWidgetsAppSupport NodeEngine NodeUIEngine BuiltInNodes)
-	target_compile_definitions (wxWidgetsAppSupport PUBLIC _CRT_SECURE_NO_WARNINGS)
-	SetCompilerOptions (wxWidgetsAppSupport)
-	install (TARGETS wxWidgetsAppSupport DESTINATION lib)
-	install (FILES ${wxWidgetsAppSupportHeaderFiles} DESTINATION include)
-	install (FILES ${wxWidgetsAppSupportSourceFiles} DESTINATION source)
-	
-	# wxWidgetsTestApp
-
-	set (wxWidgetsTestAppSourcesFolder Sources/wxWidgetsTestApp)
-	file (GLOB wxWidgetsTestAppHeaderFiles ${wxWidgetsTestAppSourcesFolder}/*.hpp)
-	file (GLOB wxWidgetsTestAppSourceFiles ${wxWidgetsTestAppSourcesFolder}/*.cpp)
-	set (
-		wxWidgetsTestAppFiles
-		${wxWidgetsTestAppHeaderFiles}
-		${wxWidgetsTestAppSourceFiles}
-	)
-	source_group ("Sources" FILES ${wxWidgetsTestAppFiles})
-	add_executable (wxWidgetsTestApp WIN32 ${wxWidgetsTestAppFiles})
-	target_include_directories (
-		wxWidgetsTestApp PUBLIC
-		${NodeEngineSourcesFolder}
-		${NodeUIEngineSourcesFolder}
-		${BuiltInNodesSourcesFolder}
-		${TestFrameworkSourcesFolder}
-		${WindowsAppSupportSourcesFolder}
-		${wxWidgetsAppSupportSourcesFolder}
-		${WXWIDGETS_DIR}/include
-		${WXWIDGETS_PLATFORM_INCLUDE_DIR}		
-	)
-	target_link_libraries (wxWidgetsTestApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport wxWidgetsAppSupport)
-	target_compile_definitions (wxWidgetsTestApp PUBLIC _CRT_SECURE_NO_WARNINGS)
-	SetCompilerOptions (wxWidgetsTestApp)
-
-endif ()
