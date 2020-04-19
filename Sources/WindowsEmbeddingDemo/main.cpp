@@ -289,11 +289,11 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 		return false;
 	}
 
-	RECT requiredRect = { 0, 0, 800, 600 };
+	RECT requiredRect = { 0, 0, 900, 500 };
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
 	HWND windowHandle = CreateWindowEx (
-		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, L"Node Engine Embedding Demo", WS_OVERLAPPEDWINDOW,
+		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, L"VisualScriptEngine Embedding Demo", WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, nullptr
 	);
 
