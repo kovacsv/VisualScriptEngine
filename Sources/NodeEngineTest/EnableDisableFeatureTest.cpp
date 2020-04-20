@@ -143,7 +143,6 @@ public:
 	}
 };
 
-
 TEST (EnableDisableTest)
 {
 	TestDrawingEnvironment env;
