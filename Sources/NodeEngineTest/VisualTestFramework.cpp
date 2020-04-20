@@ -159,7 +159,7 @@ void TestEventHandlers::SetNextCommandName (const std::wstring& nextCommandName)
 
 void TestEventHandlers::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
 {
-	SetNextCommandName (L"Set Parameters");
+	SetNextCommandName (L"Node Settings");
 	paramSettingsHandler = handler;
 }
 

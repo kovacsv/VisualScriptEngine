@@ -158,7 +158,7 @@ void RedoMenuCommand::Do ()
 }
 
 SetParametersMenuCommand::SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
-	SingleMenuCommand (NE::Localize (L"Set Parameters"), false),
+	SingleMenuCommand (NE::Localize (L"Node Settings"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	currentNode (currentNode),
@@ -298,7 +298,7 @@ void CreateGroupMenuCommand::Do ()
 }
 
 SetGroupParametersMenuCommand::SetGroupParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
-	SingleMenuCommand (NE::Localize (L"Set Parameters"), false),
+	SingleMenuCommand (NE::Localize (L"Group Settings"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	group (group)
