@@ -27,6 +27,9 @@ UIDispatcherOutputSlot::~UIDispatcherOutputSlot ()
 NE::ValueConstPtr UIDispatcherOutputSlot::Evaluate (NE::EvaluationEnv& env) const
 {
 	NE::ValueConstPtr value = EvaluateOwnerNode (env);
+	if (value == nullptr) {
+		return nullptr;
+	}
 	if (DBGERROR (!NE::Value::IsType<NE::ListValue> (value))) {
 		return nullptr;
 	}
