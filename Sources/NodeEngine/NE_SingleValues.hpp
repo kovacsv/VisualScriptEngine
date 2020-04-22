@@ -17,7 +17,7 @@ public:
 	virtual ~BooleanValue ();
 
 	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
+	virtual std::wstring	ToString (const StringConverter& stringConverter) const override;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
@@ -55,7 +55,7 @@ public:
 	virtual ~IntValue ();
 
 	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
+	virtual std::wstring	ToString (const StringConverter& stringConverter) const override;
 
 	virtual int				ToInteger () const override;
 	virtual float			ToFloat () const override;
@@ -76,7 +76,7 @@ public:
 	virtual ~FloatValue ();
 
 	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
+	virtual std::wstring	ToString (const StringConverter& stringConverter) const override;
 
 	virtual int				ToInteger () const override;
 	virtual float			ToFloat () const override;
@@ -97,7 +97,7 @@ public:
 	virtual ~DoubleValue ();
 
 	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
+	virtual std::wstring	ToString (const StringConverter& stringConverter) const override;
 
 	virtual int				ToInteger () const override;
 	virtual float			ToFloat () const override;
@@ -117,7 +117,7 @@ public:
 	virtual ~StringValue ();
 
 	virtual ValuePtr		Clone () const override;
-	virtual std::wstring	ToString (const StringSettings& stringSettings) const override;
+	virtual std::wstring	ToString (const StringConverter& stringConverter) const override;
 
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;

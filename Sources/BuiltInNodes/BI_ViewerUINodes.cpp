@@ -18,12 +18,12 @@ ViewerNode::Layout::Layout () :
 
 }
 
-std::wstring ViewerNode::Layout::GetText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const
+std::wstring ViewerNode::Layout::GetText (const BasicUINode& uiNode, const NE::StringConverter& stringConverter) const
 {
 	if (uiNode.HasCalculatedValue ()) {
 		NE::ValueConstPtr val = uiNode.GetCalculatedValue ();
 		if (val != nullptr) {
-			return val->ToString (stringSettings);
+			return val->ToString (stringConverter);
 		}
 	}
 	return NE::Localize (L"<empty>");
@@ -183,7 +183,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 		if (nodeValue != nullptr) {
 			NE::FlatEnumerate (nodeValue, [&] (const NE::ValueConstPtr& value) {
 				if (value != nullptr) {
-					nodeTexts.push_back (value->ToString (env.GetStringSettings ()));
+					nodeTexts.push_back (value->ToString (env.GetStringConverter ()));
 				} else {
 					nodeTexts.push_back (NE::Localize (L"<empty>"));
 				}

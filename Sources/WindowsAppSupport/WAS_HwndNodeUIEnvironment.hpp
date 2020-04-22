@@ -13,7 +13,7 @@ class HwndNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
 	HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedControlPtr& nodeEditorControl,
-							const NE::StringSettingsPtr& stringSettings,
+							const NE::StringConverterPtr& stringConverter,
 							const NUIE::SkinParamsPtr& skinParams,
 							const WAS::HwndEventHandlersPtr eventHandlers,
 							const NE::EvaluationDataPtr& evalData);
@@ -21,7 +21,7 @@ public:
 	void								Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle);
 	void								OnResize (int x, int y, int width, int height);
 
-	virtual const NE::StringSettings&	GetStringSettings () override;
+	virtual const NE::StringConverter&	GetStringConverter () override;
 	virtual const NUIE::SkinParams&		GetSkinParams () override;
 	virtual NUIE::DrawingContext&		GetDrawingContext () override;
 	virtual double						GetWindowScale () override;
@@ -39,7 +39,7 @@ public:
 
 private:
 	WAS::NodeEditorHwndBasedControlPtr	nodeEditorControl;
-	NE::StringSettingsPtr				stringSettings;
+	NE::StringConverterPtr				stringConverter;
 	NUIE::SkinParamsPtr					skinParams;
 	WAS::HwndEventHandlersPtr			eventHandlers;
 	NE::EvaluationEnv					evaluationEnv;

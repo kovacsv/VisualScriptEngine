@@ -1,7 +1,7 @@
 #ifndef VISUALTESTFRAMEWORK_HPP
 #define VISUALTESTFRAMEWORK_HPP
 
-#include "NE_StringSettings.hpp"
+#include "NE_StringConverter.hpp"
 #include "NE_EvaluationEnv.hpp"
 #include "NUIE_EventHandlers.hpp"
 #include "NUIE_NodeEditor.hpp"
@@ -40,7 +40,7 @@ class TestNodeUIEnvironment : public NodeUIEnvironment
 public:
 	TestNodeUIEnvironment (NodeEditor& nodeEditor, const BasicSkinParams& skinParams);
 
-	virtual const StringSettings&	GetStringSettings () override;
+	virtual const StringConverter&	GetStringConverter () override;
 	virtual const SkinParams&		GetSkinParams () override;
 	virtual DrawingContext&			GetDrawingContext () override;
 	virtual double					GetWindowScale () override;
@@ -60,7 +60,7 @@ public:
 private:
 	NodeEditor&				nodeEditor;
 
-	BasicStringSettings		stringSettings;
+	BasicStringConverter	stringConverter;
 	BasicSkinParams			skinParams;
 	SvgDrawingContext		drawingContext;
 	TestEventHandlers		eventHandlers;

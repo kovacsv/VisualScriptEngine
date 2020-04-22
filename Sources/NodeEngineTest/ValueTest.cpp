@@ -51,7 +51,7 @@ public:
 		return ValuePtr (new AValue (val));
 	}
 
-	virtual std::wstring ToString (const StringSettings&) const override
+	virtual std::wstring ToString (const StringConverter&) const override
 	{
 		return std::to_wstring (GetValue ().x);
 	}
@@ -72,7 +72,7 @@ public:
 DynamicSerializationInfo AValue::serializationInfo (ObjectId ("{789CD6F8-A998-4A94-8B0A-96B5FD0925F4}"), ObjectVersion (1), AValue::CreateSerializableInstance);
 DynamicSerializationInfo AListValue::serializationInfo (ObjectId ("{7427D535-508F-44E5-A076-3FAF1A35A413}"), ObjectVersion (1), AListValue::CreateSerializableInstance);
 
-static const BasicStringSettings DefaultStringSettings = GetDefaultStringSettings ();
+static const BasicStringConverter DefaultStringConverter = GetDefaultStringConverter ();
 
 TEST (ValueTest)
 {
@@ -83,7 +83,7 @@ TEST (ValueTest)
 	ASSERT (Value::IsType<IntValue> (intValuePtr));
 	ASSERT (IntValue::Get (&intValue) == 5);
 	ASSERT (IntValue::Get (intValuePtr) == 6);
-	ASSERT (intValue.ToString (DefaultStringSettings) == L"5");
+	ASSERT (intValue.ToString (DefaultStringConverter) == L"5");
 	ASSERT (intValue.ToDouble () == 5.0);
 	ASSERT (GenericValue<int>::Get (&intValue) == 5);
 	ASSERT (GenericValue<int>::Get (intValuePtr) == 6);
@@ -96,7 +96,7 @@ TEST (BooleanValueTest)
 	BooleanValue val (true);
 	ASSERT (Value::IsType<BooleanValue> (&val));
 	ASSERT (BooleanValue::Get (&val) == true);
-	ASSERT (val.ToString (DefaultStringSettings) == L"true");
+	ASSERT (val.ToString (DefaultStringConverter) == L"true");
 	ASSERT (GenericValue<bool>::Get (&val) == true);
 }
 
@@ -105,7 +105,7 @@ TEST (StringValueTest)
 	StringValue val (L"Example");
 	ASSERT (Value::IsType<StringValue> (&val));
 	ASSERT (StringValue::Get (&val) == L"Example");
-	ASSERT (val.ToString (DefaultStringSettings) == L"Example");
+	ASSERT (val.ToString (DefaultStringConverter) == L"Example");
 	ASSERT (GenericValue<std::wstring>::Get (&val) == L"Example");
 }
 
@@ -116,10 +116,11 @@ TEST (StringSettingsTest)
 	listVal.Push (ValuePtr (new DoubleValue (2.0)));
 	listVal.Push (ValuePtr (new DoubleValue (3.0)));
 
-	ASSERT (listVal.ToString (DefaultStringSettings) == L"1.00, 2.00, 3.00");
+	ASSERT (listVal.ToString (DefaultStringConverter) == L"1.00, 2.00, 3.00");
 
 	BasicStringSettings hungarianSettings (L',', L';', 3);
-	ASSERT (listVal.ToString (hungarianSettings) == L"1,000; 2,000; 3,000");
+	BasicStringConverter hungarianConverter (hungarianSettings);
+	ASSERT (listVal.ToString (hungarianConverter) == L"1,000; 2,000; 3,000");
 }
 
 TEST (CustomValueTest)
@@ -128,10 +129,10 @@ TEST (CustomValueTest)
 	aListVal.Push (ValuePtr (new AValue (A (1))));
 	aListVal.Push (ValuePtr (new AValue (A (2))));
 	aListVal.Push (ValuePtr (new AValue (A (3))));
-	ASSERT (aListVal.ToString (DefaultStringSettings) == L"1, 2, 3");
-	ASSERT (aListVal.GetValue (0)->ToString (DefaultStringSettings) == L"1");
-	ASSERT (aListVal.GetValue (1)->ToString (DefaultStringSettings) == L"2");
-	ASSERT (aListVal.GetValue (2)->ToString (DefaultStringSettings) == L"3");
+	ASSERT (aListVal.ToString (DefaultStringConverter) == L"1, 2, 3");
+	ASSERT (aListVal.GetValue (0)->ToString (DefaultStringConverter) == L"1");
+	ASSERT (aListVal.GetValue (1)->ToString (DefaultStringConverter) == L"2");
+	ASSERT (aListVal.GetValue (2)->ToString (DefaultStringConverter) == L"3");
 }
 
 TEST (CloneTest)

@@ -55,9 +55,9 @@ NodeUIDrawingEnvironmentDecorator::~NodeUIDrawingEnvironmentDecorator ()
 
 }
 
-const NE::StringSettings& NodeUIDrawingEnvironmentDecorator::GetStringSettings ()
+const NE::StringConverter& NodeUIDrawingEnvironmentDecorator::GetStringConverter ()
 {
-	return decorated.GetStringSettings ();
+	return decorated.GetStringConverter ();
 }
 
 const SkinParams& NodeUIDrawingEnvironmentDecorator::GetSkinParams ()

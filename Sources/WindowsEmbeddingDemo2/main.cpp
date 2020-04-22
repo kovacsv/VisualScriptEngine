@@ -70,7 +70,7 @@ private:
 static std::shared_ptr<WAS::NodeEditorHwndControl> nodeEditorControl (new WAS::NodeEditorHwndControl ());
 static WAS::HwndNodeUIEnvironment uiEnvironment (
 	nodeEditorControl,
-	NE::StringSettingsPtr (new NE::BasicStringSettings (NE::GetDefaultStringSettings ())),
+	NE::StringConverterPtr (new NE::BasicStringConverter (NE::GetDefaultStringConverter ())),
 	NUIE::SkinParamsPtr (new NUIE::BasicSkinParams (NUIE::GetDefaultSkinParams ())),
 	WAS::HwndEventHandlersPtr (new MyEventHandlers ()),
 	nullptr

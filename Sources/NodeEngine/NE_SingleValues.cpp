@@ -1,5 +1,4 @@
 #include "NE_SingleValues.hpp"
-#include "NE_StringUtils.hpp"
 #include "NE_Localization.hpp"
 #include "NE_Debug.hpp"
 
@@ -34,7 +33,7 @@ ValuePtr BooleanValue::Clone () const
 	return ValuePtr (new BooleanValue (val));
 }
 
-std::wstring BooleanValue::ToString (const StringSettings&) const
+std::wstring BooleanValue::ToString (const StringConverter&) const
 {
 	return val ? Localize (L"true") : Localize (L"false");
 }
@@ -77,7 +76,7 @@ ValuePtr StringValue::Clone () const
 	return ValuePtr (new StringValue (val));
 }
 
-std::wstring StringValue::ToString (const StringSettings&) const
+std::wstring StringValue::ToString (const StringConverter&) const
 {
 	return val;
 }
@@ -176,7 +175,7 @@ ValuePtr IntValue::Clone () const
 	return ValuePtr (new IntValue (val));
 }
 
-std::wstring IntValue::ToString (const StringSettings&) const
+std::wstring IntValue::ToString (const StringConverter&) const
 {
 	return std::to_wstring (val);
 }
@@ -235,9 +234,9 @@ ValuePtr FloatValue::Clone () const
 	return ValuePtr (new FloatValue (val));
 }
 
-std::wstring FloatValue::ToString (const StringSettings& stringSettings) const
+std::wstring FloatValue::ToString (const StringConverter& stringConverter) const
 {
-	return DoubleToString (val, stringSettings);
+	return stringConverter.NumberToString (val);
 }
 
 int FloatValue::ToInteger () const
@@ -294,9 +293,9 @@ ValuePtr DoubleValue::Clone () const
 	return ValuePtr (new DoubleValue (val));
 }
 
-std::wstring DoubleValue::ToString (const StringSettings& stringSettings) const
+std::wstring DoubleValue::ToString (const StringConverter& stringConverter) const
 {
-	return DoubleToString (val, stringSettings);
+	return stringConverter.NumberToString (val);
 }
 
 int DoubleValue::ToInteger () const

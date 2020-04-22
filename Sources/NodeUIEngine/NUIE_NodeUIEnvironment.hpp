@@ -6,7 +6,7 @@
 namespace NE
 {
 
-class StringSettings;
+class StringConverter;
 class EvaluationEnv;
 
 }
@@ -24,7 +24,7 @@ public:
 	NodeUIDrawingEnvironment ();
 	virtual ~NodeUIDrawingEnvironment ();
 
-	virtual const NE::StringSettings&	GetStringSettings () = 0;
+	virtual const NE::StringConverter&	GetStringConverter () = 0;
 	virtual const SkinParams&			GetSkinParams () = 0;
 	virtual DrawingContext&				GetDrawingContext () = 0;
 	virtual double						GetWindowScale () = 0;
@@ -68,7 +68,7 @@ public:
 	NodeUIDrawingEnvironmentDecorator (NodeUIDrawingEnvironment& decorated);
 	virtual ~NodeUIDrawingEnvironmentDecorator ();
 
-	virtual const NE::StringSettings&	GetStringSettings () override;
+	virtual const NE::StringConverter&	GetStringConverter () override;
 	virtual const SkinParams&			GetSkinParams () override;
 	virtual DrawingContext&				GetDrawingContext () override;
 	virtual double						GetWindowScale () override;

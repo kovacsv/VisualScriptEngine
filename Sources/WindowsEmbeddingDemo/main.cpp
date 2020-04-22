@@ -79,7 +79,7 @@ class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 public:
 	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
-		stringSettings (WAS::GetStringSettingsFromSystem ()),
+		stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
 		skinParams (MySkinParams),
 		eventHandlers (),
 		evaluationEnv (nullptr),
@@ -132,9 +132,9 @@ public:
 		nodeEditorControl.Resize (x, y, width, height);
 	}
 
-	virtual const NE::StringSettings& GetStringSettings () override
+	virtual const NE::StringConverter& GetStringConverter () override
 	{
-		return stringSettings;
+		return stringConverter;
 	}
 
 	virtual const NUIE::SkinParams& GetSkinParams () override
@@ -188,7 +188,7 @@ public:
 	}
 
 private:
-	NE::BasicStringSettings				stringSettings;
+	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;
 	WAS::HwndEventHandlers				eventHandlers;
 	NE::EvaluationEnv					evaluationEnv;

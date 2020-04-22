@@ -1,11 +1,11 @@
 #include "TestUtils.hpp"
-#include "NE_StringSettings.hpp"
+#include "NE_StringConverter.hpp"
 #include "NUIE_SkinParams.hpp"
 #include "NUIE_DrawingContext.hpp"
 
-const NE::StringSettings& TestDrawingEnvironment::GetStringSettings ()
+const NE::StringConverter& TestDrawingEnvironment::GetStringConverter ()
 {
-	return GetDefaultStringSettings ();
+	return GetDefaultStringConverter ();
 }
 
 const SkinParams& TestDrawingEnvironment::GetSkinParams ()

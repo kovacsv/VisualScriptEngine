@@ -59,7 +59,7 @@ void HeaderWithSlotsAndTextLayout::AddPanels (	const BasicUINode& uiNode,
 {
 	HeaderBasedLayout::AddPanels (uiNode, env, drawer);
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
-	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUITextPanel (GetText (uiNode, env.GetStringSettings ()))));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUITextPanel (GetText (uiNode, env.GetStringConverter ()))));
 }
 
 NUIE::EventHandlerResult HeaderWithSlotsAndTextLayout::HandleMouseClick (	BasicUINode&,
@@ -98,7 +98,7 @@ void HeaderWithSlotsAndButtonsLayout::AddPanels (	const BasicUINode& uiNode,
 													NUIE::NodeUIDrawingEnvironment& env,
 													NUIE::NodePanelDrawer& drawer) const
 {
-	std::wstring nodeText = GetMiddleText (uiNode, env.GetStringSettings ());
+	std::wstring nodeText = GetMiddleText (uiNode, env.GetStringConverter ());
 	HeaderBasedLayout::AddPanels (uiNode, env, drawer);
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, nodeText, env)));

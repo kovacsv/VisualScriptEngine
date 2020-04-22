@@ -4,13 +4,13 @@ namespace WAS
 {
 
 HwndNodeUIEnvironment::HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedControlPtr& nodeEditorControl,
-												const NE::StringSettingsPtr& stringSettings,
+												const NE::StringConverterPtr& stringConverter,
 												const NUIE::SkinParamsPtr& skinParams,
 												const WAS::HwndEventHandlersPtr eventHandlers,
 												const NE::EvaluationDataPtr& evalData) :
 	NUIE::NodeUIEnvironment (),
 	nodeEditorControl (nodeEditorControl),
-	stringSettings (stringSettings),
+	stringConverter (stringConverter),
 	skinParams (skinParams),
 	eventHandlers (eventHandlers),
 	evaluationEnv (evalData)
@@ -34,9 +34,9 @@ void HwndNodeUIEnvironment::OnResize (int x, int y, int width, int height)
 	nodeEditorControl->Resize (x, y, width, height);
 }
 
-const NE::StringSettings& HwndNodeUIEnvironment::GetStringSettings ()
+const NE::StringConverter& HwndNodeUIEnvironment::GetStringConverter ()
 {
-	return *stringSettings;
+	return *stringConverter;
 }
 
 const NUIE::SkinParams& HwndNodeUIEnvironment::GetSkinParams ()

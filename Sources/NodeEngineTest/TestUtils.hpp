@@ -9,7 +9,7 @@ using namespace NUIE;
 class TestDrawingEnvironment : public NodeUIDrawingEnvironment
 {
 public:
-	virtual const NE::StringSettings&	GetStringSettings () override;
+	virtual const NE::StringConverter&	GetStringConverter () override;
 	virtual const SkinParams&			GetSkinParams () override;
 	virtual DrawingContext&				GetDrawingContext () override;
 	virtual double						GetWindowScale () override;

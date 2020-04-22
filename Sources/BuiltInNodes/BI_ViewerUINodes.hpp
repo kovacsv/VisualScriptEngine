@@ -19,7 +19,7 @@ public:
 	public:
 		Layout ();
 
-		virtual std::wstring	GetText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const override;
+		virtual std::wstring	GetText (const BasicUINode& uiNode, const NE::StringConverter& stringConverter) const override;
 	};
 
 	ViewerNode ();

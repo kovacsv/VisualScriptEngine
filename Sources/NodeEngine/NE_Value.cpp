@@ -89,17 +89,34 @@ ValuePtr ListValue::Clone () const
 	return result;
 }
 
-std::wstring ListValue::ToString (const StringSettings& stringSettings) const
+std::wstring ListValue::ToString (const StringConverter& stringConverter) const
 {
-	std::wstring result;
-	for (size_t i = 0; i < GetSize (); ++i) {
-		result += values[i]->ToString (stringSettings);
-		if (i < GetSize () - 1) {
-			result += stringSettings.GetListSeparator ();
-			result += ' ';
+	class ListEnumerator : public StringConverter::ListEnumerator
+	{
+	public:
+		ListEnumerator (const ListValue* val, const StringConverter& converter) :
+			val (val),
+			converter (converter)
+		{
 		}
-	}
-	return result;
+
+		virtual size_t GetSize () const override
+		{
+			return val->GetSize ();
+		}
+
+		virtual std::wstring GetItem (size_t index) const override
+		{
+			return val->GetValue (index)->ToString (converter);
+		}
+
+	private:
+		const ListValue*		val;
+		const StringConverter&	converter;
+	};
+
+	ListEnumerator enumerator (this, stringConverter);
+	return stringConverter.ListToString (enumerator);
 }
 
 Stream::Status ListValue::Read (InputStream& inputStream)

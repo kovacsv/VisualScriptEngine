@@ -3,7 +3,7 @@
 
 #include "WAS_IncludeWindowsHeaders.hpp"
 
-#include "NE_StringSettings.hpp"
+#include "NE_StringConverter.hpp"
 #include "NUIE_Geometry.hpp"
 #include "NUIE_MenuCommands.hpp"
 #include "NUIE_InputEventHandler.hpp"

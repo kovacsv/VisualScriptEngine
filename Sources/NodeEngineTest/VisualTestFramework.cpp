@@ -198,7 +198,7 @@ MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandPtr& com
 TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor, const BasicSkinParams& skinParams) :
 	NUIE::NodeUIEnvironment (),
 	nodeEditor (nodeEditor),
-	stringSettings (GetDefaultStringSettings ()),
+	stringConverter (GetDefaultStringConverter ()),
 	skinParams (skinParams),
 	drawingContext (800, 600),
 	eventHandlers (),
@@ -208,9 +208,9 @@ TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor, const Basi
 	
 }
 
-const StringSettings& TestNodeUIEnvironment::GetStringSettings ()
+const StringConverter& TestNodeUIEnvironment::GetStringConverter ()
 {
-	return stringSettings;
+	return stringConverter;
 }
 
 const SkinParams& TestNodeUIEnvironment::GetSkinParams ()

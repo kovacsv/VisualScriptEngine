@@ -57,7 +57,7 @@ public:
 				const std::string& rightButtonId,
 				const std::wstring& rightButtonText);
 
-		virtual std::wstring													GetMiddleText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const override;
+		virtual std::wstring													GetMiddleText (const BasicUINode& uiNode, const NE::StringConverter& stringConverter) const override;
 		virtual std::shared_ptr<HeaderWithSlotsAndButtonsLayout::ClickHandler>	GetClickHandler (BasicUINode& uiNode) const override;
 	};
 

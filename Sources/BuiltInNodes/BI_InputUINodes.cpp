@@ -178,13 +178,13 @@ NumericUpDownNode::Layout::Layout (	const std::string& leftButtonId,
 
 }
 
-std::wstring NumericUpDownNode::Layout::GetMiddleText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const
+std::wstring NumericUpDownNode::Layout::GetMiddleText (const BasicUINode& uiNode, const NE::StringConverter& stringConverter) const
 {
 	std::wstring nodeText = NE::Localize (L"<empty>");
 	if (uiNode.HasCalculatedValue ()) {
 		NE::ValueConstPtr nodeValue = uiNode.GetCalculatedValue ();
 		if (nodeValue != nullptr) {
-			nodeText = nodeValue->ToString (stringSettings);
+			nodeText = nodeValue->ToString (stringConverter);
 		}
 	}
 	return nodeText;

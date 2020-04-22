@@ -54,7 +54,7 @@ public:
 															const NUIE::Point& position,
 															NUIE::UINodeCommandInterface& commandInterface) const override;
 
-	virtual std::wstring				GetText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const = 0;
+	virtual std::wstring				GetText (const BasicUINode& uiNode, const NE::StringConverter& stringConverter) const = 0;
 };
 
 class HeaderWithSlotsAndButtonsLayout : public HeaderBasedLayout
@@ -86,7 +86,7 @@ public:
 															const NUIE::Point& position,
 															NUIE::UINodeCommandInterface& commandInterface) const override;
 
-	virtual std::wstring					GetMiddleText (const BasicUINode& uiNode, const NE::StringSettings& stringSettings) const = 0;
+	virtual std::wstring					GetMiddleText (const BasicUINode& uiNode, const NE::StringConverter& stringConverter) const = 0;
 	virtual std::shared_ptr<ClickHandler>	GetClickHandler (BasicUINode& uiNode) const = 0;
 
 private:
