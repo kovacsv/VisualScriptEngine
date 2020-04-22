@@ -13,7 +13,7 @@ Version::Version () :
 }
 
 Version::Version (int version1, int version2, int version3) :
-	versions { version1, version2, version3 }
+	versions { { version1, version2, version3 } }
 {
 }
 
