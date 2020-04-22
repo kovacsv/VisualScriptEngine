@@ -12,11 +12,9 @@ Version::Version () :
 
 }
 
-Version::Version (int version1, int version2, int version3)
+Version::Version (int version1, int version2, int version3) :
+	versions ({ version1, version2, version3 })
 {
-	versions[0] = version1;
-	versions[1] = version2;
-	versions[2] = version3;
 }
 
 bool Version::operator< (const Version& rhs) const
