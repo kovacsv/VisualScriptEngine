@@ -2,6 +2,7 @@
 #define NUIE_VERSION_HPP
 
 #include "NE_Stream.hpp"
+#include <array>
 
 namespace NUIE
 {
@@ -19,9 +20,7 @@ public:
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
 private:
-	int version1;
-	int version2;
-	int version3;
+	std::array<int, 3>	versions;
 };
 
 extern const Version EngineVersion;

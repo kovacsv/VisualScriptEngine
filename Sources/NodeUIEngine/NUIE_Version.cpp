@@ -1,66 +1,61 @@
 #include "NUIE_Version.hpp"
 #include "NUIE_VersionInfo.hpp"
 
+#include <array>
+
 namespace NUIE
 {
 
 Version::Version () :
-	version1 (0),
-	version2 (0),
-	version3 (0)
+	Version (0, 0, 0)
 {
 
 }
 
-Version::Version (int version1, int version2, int version3) :
-	version1 (version1),
-	version2 (version2),
-	version3 (version3)
+Version::Version (int version1, int version2, int version3)
 {
-
+	versions[0] = version1;
+	versions[1] = version2;
+	versions[2] = version3;
 }
 
 bool Version::operator< (const Version& rhs) const
 {
-	if (version1 < rhs.version1) {
-		return true;
-	}
-	if (version2 < rhs.version2) {
-		return true;
-	}
-	if (version3 < rhs.version3) {
-		return true;
+	for (size_t i = 0; i < versions.size (); i++) {
+		if (versions[i] < rhs.versions[i]) {
+			return true;
+		} else if (versions[i] > rhs.versions[i]) {
+			return false;
+		}
 	}
 	return false;
 }
 
 bool Version::operator> (const Version& rhs) const
 {
-	if (version1 > rhs.version1) {
-		return true;
-	}
-	if (version2 > rhs.version2) {
-		return true;
-	}
-	if (version3 > rhs.version3) {
-		return true;
+	for (size_t i = 0; i < versions.size (); i++) {
+		if (versions[i] > rhs.versions[i]) {
+			return true;
+		} else if (versions[i] < rhs.versions[i]) {
+			return false;
+		}
 	}
 	return false;
 }
 
 NE::Stream::Status Version::Read (NE::InputStream& inputStream)
 {
-	inputStream.Read (version1);
-	inputStream.Read (version2);
-	inputStream.Read (version3);
+	inputStream.Read (versions[0]);
+	inputStream.Read (versions[1]);
+	inputStream.Read (versions[2]);
 	return inputStream.GetStatus ();
 }
 
 NE::Stream::Status Version::Write (NE::OutputStream& outputStream) const
 {
-	outputStream.Write (version1);
-	outputStream.Write (version2);
-	outputStream.Write (version3);
+	outputStream.Write (versions[0]);
+	outputStream.Write (versions[1]);
+	outputStream.Write (versions[2]);
 	return outputStream.GetStatus ();
 }
 
