@@ -96,31 +96,37 @@ std::wstring BasicStringConverter::IntegerToString (int val) const
 	return std::to_wstring (val);
 }
 
-std::wstring BasicStringConverter::NumberToString (double val) const
+std::wstring BasicStringConverter::NumberToString (double val, Measure) const
+{
+	return ConvertNumberToString (val, settings.GetPrecision (), settings.GetDecimalSeparator ());
+}
+
+std::wstring BasicStringConverter::ListToString (const ListEnumerator& enumerator) const
+{
+	return ConvertListToString (enumerator, settings.GetListSeparator ());
+}
+
+std::wstring ConvertNumberToString (double val, int precision, wchar_t decimalSeparator)
 {
 	std::wostringstream stream;
-	int precision = settings.GetPrecision ();
 	stream << std::fixed << std::setprecision (precision) << val;
 	std::wstring string = stream.str ();
-
-	wchar_t decimalSeparator = settings.GetDecimalSeparator ();
 	if (decimalSeparator != L'.') {
 		size_t decimalPos = string.find (L'.');
 		if (decimalPos != std::wstring::npos) {
 			string[decimalPos] = decimalSeparator;
 		}
 	}
-
 	return string;
 }
 
-std::wstring BasicStringConverter::ListToString (const ListEnumerator& enumerator) const
+std::wstring ConvertListToString (const StringConverter::ListEnumerator& enumerator, wchar_t listSeparator)
 {
 	std::wstring result;
 	for (size_t i = 0; i < enumerator.GetSize (); ++i) {
 		result += enumerator.GetItem (i);
 		if (i < enumerator.GetSize () - 1) {
-			result += settings.GetListSeparator ();
+			result += listSeparator;
 			result += ' ';
 		}
 	}

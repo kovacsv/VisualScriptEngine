@@ -236,7 +236,7 @@ ValuePtr FloatValue::Clone () const
 
 std::wstring FloatValue::ToString (const StringConverter& stringConverter) const
 {
-	return stringConverter.NumberToString (val);
+	return stringConverter.NumberToString (val, StringConverter::Measure::Number);
 }
 
 int FloatValue::ToInteger () const
@@ -295,7 +295,7 @@ ValuePtr DoubleValue::Clone () const
 
 std::wstring DoubleValue::ToString (const StringConverter& stringConverter) const
 {
-	return stringConverter.NumberToString (val);
+	return stringConverter.NumberToString (val, StringConverter::Measure::Number);
 }
 
 int DoubleValue::ToInteger () const
