@@ -33,7 +33,6 @@ public:
 	
 	virtual void						OnRedrawRequested () override;
 	virtual NUIE::EventHandlers&		GetEventHandlers () override;
-	virtual double						GetMouseMoveMinOffset () override;
 
 	WAS::NodeEditorHwndBasedControlPtr	GetNodeEditorControl () const;
 

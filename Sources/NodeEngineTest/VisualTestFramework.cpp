@@ -258,11 +258,6 @@ EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
 	return eventHandlers;
 }
 
-double TestNodeUIEnvironment::GetMouseMoveMinOffset ()
-{
-	return 2.0;
-}
-
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	eventHandlers.SetNextCommandName (nextCommandName);

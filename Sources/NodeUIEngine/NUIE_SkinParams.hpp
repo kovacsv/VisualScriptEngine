@@ -29,8 +29,6 @@ private:
 class SkinParams
 {
 public:
-
-
 	SkinParams ();
 	virtual ~SkinParams ();
 
@@ -70,6 +68,8 @@ public:
 	virtual const Color&			GetGroupNameColor () const = 0;
 	virtual const NamedColorSet&	GetGroupBackgroundColors () const = 0;
 	virtual double					GetGroupPadding () const = 0;
+
+	virtual double					GetMouseMoveMinOffset () const = 0;
 };
 
 using SkinParamsPtr = std::shared_ptr<SkinParams>;
@@ -107,7 +107,8 @@ public:
 		const Font&				groupNameFont,
 		const Color&			groupNameColor,
 		const NamedColorSet&	groupBackgroundColors,
-		const double&			groupPadding
+		const double&			groupPadding,
+		const double&			mouseMoveMinOffset
 	);
 	virtual ~BasicSkinParams ();
 
@@ -146,6 +147,8 @@ public:
 	virtual const NamedColorSet&	GetGroupBackgroundColors () const override;
 	virtual double					GetGroupPadding () const override;
 
+	virtual double					GetMouseMoveMinOffset () const override;
+
 private:
 	Color			backgroundColor;
 	Pen				connectionLinePen;
@@ -183,6 +186,8 @@ private:
 	Color			groupNameColor;
 	NamedColorSet	groupBackgroundColors;
 	double			groupPadding;
+
+	double			mouseMoveMinOffset;
 };
 
 const BasicSkinParams& GetDefaultSkinParams ();

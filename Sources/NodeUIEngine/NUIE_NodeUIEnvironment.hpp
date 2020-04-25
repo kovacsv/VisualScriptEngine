@@ -50,7 +50,6 @@ public:
 	virtual ~NodeUIInteractionEnvironment ();
 
 	virtual EventHandlers&		GetEventHandlers () = 0;
-	virtual double				GetMouseMoveMinOffset () = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,

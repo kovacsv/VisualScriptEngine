@@ -547,7 +547,8 @@ TEST (SlotCirclesTest)
 			{ L"Green", Color (160, 239, 160) },
 			{ L"Red", Color (239, 189, 160) }
 			}),
-		/*groupPadding*/ 10.0
+		/*groupPadding*/ 10.0,
+		/*mouseMoveMinOffset*/ 2.0
 	);
 	SimpleNodeEditorTestEnvWithConnections env (mySkinParams);
 	ASSERT (env.CheckReference ("SlotCircles.svg"));
@@ -587,7 +588,8 @@ TEST (SlotCirclesFitToWindowTest)
 			{ L"Green", Color (160, 239, 160) },
 			{ L"Red", Color (239, 189, 160) }
 			}),
-		/*groupPadding*/ 10.0
+		/*groupPadding*/ 10.0,
+		/*mouseMoveMinOffset*/ 2.0
 	);
 	SimpleNodeEditorTestEnvWithConnections env (mySkinParams);
 	env.nodeEditor.FitToWindow ();

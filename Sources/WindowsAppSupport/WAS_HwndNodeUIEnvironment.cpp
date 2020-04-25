@@ -84,11 +84,6 @@ NUIE::EventHandlers& HwndNodeUIEnvironment::GetEventHandlers ()
 	return *eventHandlers;
 }
 
-double HwndNodeUIEnvironment::GetMouseMoveMinOffset ()
-{
-	return 2.0;
-}
-
 WAS::NodeEditorHwndBasedControlPtr HwndNodeUIEnvironment::GetNodeEditorControl () const
 {
 	return nodeEditorControl;
