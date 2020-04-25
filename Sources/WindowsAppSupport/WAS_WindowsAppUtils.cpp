@@ -43,8 +43,8 @@ static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordere
 		AppendMenu (hCurrentMenu, MF_POPUP, (UINT_PTR) subMenu, command->GetName ().c_str ());
 		HMENU hOldMenu = hCurrentMenu;
 		hCurrentMenu = subMenu;
-		command->EnumerateChildCommands ([&] (const NUIE::MenuCommandPtr& command) {
-			AddCommandToMenu (command, commandTable, hCurrentMenu, currentCommandId);
+		command->EnumerateChildCommands ([&] (const NUIE::MenuCommandPtr& childCommand) {
+			AddCommandToMenu (childCommand, commandTable, hCurrentMenu, currentCommandId);
 		});
 		hCurrentMenu = hOldMenu;
 	} else {
