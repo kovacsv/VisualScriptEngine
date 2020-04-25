@@ -3,6 +3,7 @@
 
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_NativeNodeEditorControl.hpp"
 #include "WAS_HwndEventHandlers.hpp"
 #include "WAS_NodeEditorHwndControl.hpp"
 
@@ -12,7 +13,7 @@ namespace WAS
 class HwndNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
-	HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedControlPtr& nodeEditorControl,
+	HwndNodeUIEnvironment (	const NUIE::NativeNodeEditorControlPtr& nodeEditorControl,
 							const NE::StringConverterPtr& stringConverter,
 							const NUIE::SkinParamsPtr& skinParams,
 							const WAS::HwndEventHandlersPtr eventHandlers,
@@ -34,10 +35,10 @@ public:
 	virtual void						OnRedrawRequested () override;
 	virtual NUIE::EventHandlers&		GetEventHandlers () override;
 
-	WAS::NodeEditorHwndBasedControlPtr	GetNodeEditorControl () const;
+	NUIE::NativeNodeEditorControlPtr	GetNodeEditorControl () const;
 
 private:
-	WAS::NodeEditorHwndBasedControlPtr	nodeEditorControl;
+	NUIE::NativeNodeEditorControlPtr	nodeEditorControl;
 	NE::StringConverterPtr				stringConverter;
 	NUIE::SkinParamsPtr					skinParams;
 	WAS::HwndEventHandlersPtr			eventHandlers;

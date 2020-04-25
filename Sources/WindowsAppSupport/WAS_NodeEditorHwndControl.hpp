@@ -2,6 +2,7 @@
 #define WAS_NODEEDITORHWNDCONTROL_HPP
 
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_NativeNodeEditorControl.hpp"
 #include "NUIE_DrawingContext.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"
 #include "WAS_CustomControl.hpp"
@@ -10,32 +11,15 @@
 namespace WAS
 {
 
-class NodeEditorHwndBasedControl
-{
-public:
-	NodeEditorHwndBasedControl ();
-	virtual ~NodeEditorHwndBasedControl ();
-
-	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) = 0;
-	virtual HWND					GetEditorHandle () const = 0;
-	virtual bool					IsEditorFocused () const = 0;
-
-	virtual void					Resize (int x, int y, int width, int height) = 0;
-	virtual void					Invalidate () = 0;
-	virtual NUIE::DrawingContext&	GetDrawingContext () = 0;
-};
-
-using NodeEditorHwndBasedControlPtr = std::shared_ptr<NodeEditorHwndBasedControl>;
-
-class NodeEditorHwndControl : public NodeEditorHwndBasedControl
+class NodeEditorHwndControl : public NUIE::NativeNodeEditorControl
 {
 public:
 	NodeEditorHwndControl ();
 	NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorHwndControl ();
 
-	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
-	virtual HWND					GetEditorHandle () const override;
+	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;
+	virtual void*					GetEditorNativeHandle () const override;
 	virtual bool					IsEditorFocused () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;
@@ -51,15 +35,15 @@ private:
 	CustomControl					control;
 };
 
-class NodeEditorNodeTreeHwndControl : public NodeEditorHwndBasedControl
+class NodeEditorNodeTreeHwndControl : public NUIE::NativeNodeEditorControl
 {
 public:
 	NodeEditorNodeTreeHwndControl ();
 	NodeEditorNodeTreeHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorNodeTreeHwndControl ();
 
-	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle, int x, int y, int width, int height) override;
-	virtual HWND					GetEditorHandle () const override;
+	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;
+	virtual void*					GetEditorNativeHandle () const override;
 	virtual bool					IsEditorFocused () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;

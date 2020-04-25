@@ -3,7 +3,7 @@
 namespace WAS
 {
 
-HwndNodeUIEnvironment::HwndNodeUIEnvironment (	const WAS::NodeEditorHwndBasedControlPtr& nodeEditorControl,
+HwndNodeUIEnvironment::HwndNodeUIEnvironment (	const NUIE::NativeNodeEditorControlPtr& nodeEditorControl,
 												const NE::StringConverterPtr& stringConverter,
 												const NUIE::SkinParamsPtr& skinParams,
 												const WAS::HwndEventHandlersPtr eventHandlers,
@@ -84,7 +84,7 @@ NUIE::EventHandlers& HwndNodeUIEnvironment::GetEventHandlers ()
 	return *eventHandlers;
 }
 
-WAS::NodeEditorHwndBasedControlPtr HwndNodeUIEnvironment::GetNodeEditorControl () const
+NUIE::NativeNodeEditorControlPtr HwndNodeUIEnvironment::GetNodeEditorControl () const
 {
 	return nodeEditorControl;
 }

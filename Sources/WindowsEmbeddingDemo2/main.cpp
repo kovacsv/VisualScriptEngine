@@ -60,7 +60,7 @@ public:
 	{
 		NUIE::MenuCommandStructure finalCommands = commands;
 		AddNodeTreeAsCommands (nodeTree, uiManager, uiEnvironment, position, finalCommands);
-		return WAS::SelectCommandFromContextMenu (control->GetEditorHandle (), position, finalCommands);
+		return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, finalCommands);
 	}
 
 private:
