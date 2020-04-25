@@ -685,33 +685,33 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& env,
 
 EventHandlerResult InteractionHandler::HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
-	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
 	if (multiMouseMoveHandler.HasHandler ()) {
-		return handlerResult;
+		return EventHandlerResult::EventNotHandled;
 	}
 
 	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, position);
 	if (foundNode != nullptr) {
 		NodeInputEventHandler nodeInputEventHandler (uiManager, foundNode);
-		handlerResult = nodeInputEventHandler.HandleMouseDoubleClick (env, modifierKeys, mouseButton, position);
+		EventHandlerResult handlerResult = nodeInputEventHandler.HandleMouseDoubleClick (env, modifierKeys, mouseButton, position);
 		if (handlerResult == EventHandlerResult::EventHandled) {
 			return handlerResult;
 		}
 
 		SetParametersMenuCommand setParameters (uiManager, env, foundNode, NE::NodeCollection ({ foundNode->GetId () }));
 		setParameters.Do ();
-		handlerResult = EventHandlerResult::EventHandled;
-	} else {
-		UINodeGroupPtr foundGroup = FindNodeGroupUnderPosition (uiManager, env, position);
-		if (foundGroup != nullptr) {
-			SetGroupParametersMenuCommand setParameters (uiManager, env, foundGroup);
-			setParameters.Do ();
-			handlerResult = EventHandlerResult::EventHandled;
-		}
-
+		return EventHandlerResult::EventHandled;
 	}
 
-	return handlerResult;
+	UINodeGroupPtr foundGroup = FindNodeGroupUnderPosition (uiManager, env, position);
+	if (foundGroup != nullptr) {
+		SetGroupParametersMenuCommand setParameters (uiManager, env, foundGroup);
+		setParameters.Do ();
+		return EventHandlerResult::EventHandled;
+	}
+
+	EventHandlers& eventHandlers = env.GetEventHandlers ();
+	eventHandlers.OnDoubleClick (uiManager, env, position);
+	return EventHandlerResult::EventHandled;
 }
 
 EventHandlerResult InteractionHandler::HandleMouseWheel (NodeUIEnvironment&, const ModifierKeys&, MouseWheelRotation rotation, const Point& position)

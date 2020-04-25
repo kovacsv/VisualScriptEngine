@@ -46,6 +46,11 @@ NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnv
 	return nullptr;
 }
 
+void NullEventHandlers::OnDoubleClick (NodeUIManager&, NodeUIEnvironment&, const Point&)
+{
+
+}
+
 bool NullEventHandlers::OnParameterSettings (ParameterInterfacePtr)
 {
 	return false;

@@ -47,6 +47,11 @@ NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUI
 	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
 }
 
+void HwndEventHandlers::OnDoubleClick (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point&)
+{
+
+}
+
 bool HwndEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor)
 {
 	WAS::ParameterDialog paramDialog (paramAccessor);

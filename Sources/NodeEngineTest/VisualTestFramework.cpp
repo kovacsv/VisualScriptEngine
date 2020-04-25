@@ -141,6 +141,11 @@ MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironme
 	return SelectCommandByName (commands);
 }
 
+void TestEventHandlers::OnDoubleClick (NodeUIManager&, NodeUIEnvironment&, const Point&)
+{
+
+}
+
 bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterface)
 {
 	if (DBGERROR (paramSettingsHandler == nullptr)) {

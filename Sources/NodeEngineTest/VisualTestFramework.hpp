@@ -22,6 +22,7 @@ public:
 	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&) override;
 	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&) override;
 	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
+	virtual void				OnDoubleClick (NodeUIManager&, NodeUIEnvironment&, const Point&) override;
 	virtual bool				OnParameterSettings (ParameterInterfacePtr) override;
 
 	void						SetNextCommandName (const std::wstring& nextCommandName);
