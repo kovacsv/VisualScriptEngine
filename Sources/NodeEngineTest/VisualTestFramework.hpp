@@ -15,14 +15,14 @@ using ParameterSettingsHandler = std::function<bool (ParameterInterfacePtr)>;
 class TestEventHandlers : public EventHandlers
 {
 public:
-	TestEventHandlers ();
+	TestEventHandlers (NodeEditor* nodeEditor);
 
-	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr		OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
-	virtual void				OnDoubleClick (NodeUIManager&, NodeUIEnvironment&, const Point&) override;
+	virtual MenuCommandPtr		OnContextMenu (const Point&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (const Point&, const UINodePtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
+	virtual void				OnDoubleClick (const Point&) override;
 	virtual bool				OnParameterSettings (ParameterInterfacePtr) override;
 
 	void						SetNextCommandName (const std::wstring& nextCommandName);
@@ -32,6 +32,7 @@ private:
 	MenuCommandPtr				SelectCommandByName (const MenuCommandStructure& commands);
 	MenuCommandPtr				SelectCommandByName (const MenuCommandPtr& command);
 
+	NodeEditor*					nodeEditor;
 	std::wstring				commandToSelect;
 	ParameterSettingsHandler	paramSettingsHandler;
 };

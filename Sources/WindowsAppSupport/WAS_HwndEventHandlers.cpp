@@ -22,32 +22,32 @@ void HwndEventHandlers::Init (const NUIE::NativeNodeEditorControl* nodeEditorCon
 	control = nodeEditorControl;
 }
 
-NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
 	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
 }
 
-NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::UINodePtr&, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (const NUIE::Point& position, const NUIE::UINodePtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
 }
 
-NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::UIOutputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (const NUIE::Point& position, const NUIE::UIOutputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
 }
 
-NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::UIInputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (const NUIE::Point& position, const NUIE::UIInputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
 }
 
-NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point& position, const NUIE::UINodeGroupPtr&, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr HwndEventHandlers::OnContextMenu (const NUIE::Point& position, const NUIE::UINodeGroupPtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
 }
 
-void HwndEventHandlers::OnDoubleClick (NUIE::NodeUIManager&, NUIE::NodeUIEnvironment&, const NUIE::Point&)
+void HwndEventHandlers::OnDoubleClick (const NUIE::Point&)
 {
 
 }

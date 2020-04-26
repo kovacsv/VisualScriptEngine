@@ -21,32 +21,32 @@ NullEventHandlers::~NullEventHandlers ()
 {
 }
 
-NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const MenuCommandStructure&)
+NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (const Point&, const MenuCommandStructure&)
 {
 	return nullptr;
 }
 
-NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const MenuCommandStructure&)
+NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (const Point&, const UINodePtr&, const MenuCommandStructure&)
 {
 	return nullptr;
 }
 
-NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&)
+NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&)
 {
 	return nullptr;
 }
 
-NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&)
+NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&)
 {
 	return NUIE::MenuCommandPtr ();
 }
 
-NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const MenuCommandStructure&)
+NUIE::MenuCommandPtr NullEventHandlers::OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure&)
 {
 	return nullptr;
 }
 
-void NullEventHandlers::OnDoubleClick (NodeUIManager&, NodeUIEnvironment&, const Point&)
+void NullEventHandlers::OnDoubleClick (const Point&)
 {
 
 }

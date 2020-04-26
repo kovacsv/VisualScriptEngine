@@ -13,7 +13,9 @@ class MyEventHandlers : public WAS::HwndEventHandlers
 {
 public:
 	MyEventHandlers () :
-		WAS::HwndEventHandlers ()
+		WAS::HwndEventHandlers (),
+		nodeEditor (nullptr),
+		nodeTree ()
 	{
 		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
 		nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
@@ -56,25 +58,144 @@ public:
 		});
 	}
 
-	virtual NUIE::MenuCommandPtr OnContextMenu (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
+	void SetNodeEditor (NUIE::NodeEditor* nodeEditorPtr)
 	{
+		nodeEditor = nodeEditorPtr;
+	}
+
+	virtual NUIE::MenuCommandPtr OnContextMenu (const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
+	{
+		class CreateNodeCommand : public NUIE::SingleMenuCommand
+		{
+		public:
+			CreateNodeCommand (NUIE::NodeEditor* nodeEditor, const std::wstring& name, const NUIE::Point& position, const WAS::CreatorFunction& creator) :
+				NUIE::SingleMenuCommand (name, false),
+				nodeEditor (nodeEditor),
+				position (position),
+				creator (creator)
+			{
+			}
+
+			virtual void Do () override
+			{
+				NUIE::UINodePtr uiNode = creator (nodeEditor->ViewToModel (position));
+				nodeEditor->AddNode (uiNode);
+			}
+
+		private:
+			NUIE::NodeEditor*		nodeEditor;
+			NUIE::Point				position;
+			WAS::CreatorFunction	creator;
+		};
+
 		NUIE::MenuCommandStructure finalCommands = commands;
-		AddNodeTreeAsCommands (nodeTree, uiManager, uiEnvironment, position, finalCommands);
+		for (const WAS::NodeTree::Group& group : nodeTree.GetGroups ()) {
+			NUIE::GroupMenuCommandPtr groupCommand (new NUIE::GroupMenuCommand (group.GetName ()));
+			for (const WAS::NodeTree::Item& item : group.GetItems ()) {
+				groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, item.GetName (), position, item.GetCreator ())));
+			}
+			finalCommands.AddCommand (groupCommand);
+		}
+
 		return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, finalCommands);
 	}
 
 private:
-	WAS::NodeTree nodeTree;
+	NUIE::NodeEditor*	nodeEditor;
+	WAS::NodeTree		nodeTree;
+};
+
+class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
+{
+public:
+	MyNodeUIEnvironment () :
+		NUIE::NodeUIEnvironment (),
+		stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
+		skinParams (NUIE::GetDefaultSkinParams ()),
+		eventHandlers (),
+		evaluationEnv (nullptr),
+		nodeEditorControl ()
+	{
+
+	}
+
+	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
+	{
+		RECT clientRect;
+		GetClientRect (parentHandle, &clientRect);
+		int width = clientRect.right - clientRect.left;
+		int height = clientRect.bottom - clientRect.top;
+
+		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
+		eventHandlers.Init (&nodeEditorControl);
+		eventHandlers.SetNodeEditor (nodeEditorPtr);
+	}
+
+	void OnResize (int x, int y, int width, int height)
+	{
+		nodeEditorControl.Resize (x, y, width, height);
+	}
+
+	virtual const NE::StringConverter& GetStringConverter () override
+	{
+		return stringConverter;
+	}
+
+	virtual const NUIE::SkinParams& GetSkinParams () override
+	{
+		return skinParams;
+	}
+
+	virtual NUIE::DrawingContext& GetDrawingContext () override
+	{
+		return nodeEditorControl.GetDrawingContext ();
+	}
+
+	virtual double GetWindowScale () override
+	{
+		return 1.0;
+	}
+
+	virtual NE::EvaluationEnv& GetEvaluationEnv () override
+	{
+		return evaluationEnv;
+	}
+
+	virtual void OnEvaluationBegin () override
+	{
+
+	}
+
+	virtual void OnEvaluationEnd () override
+	{
+
+	}
+
+	virtual void OnValuesRecalculated () override
+	{
+
+	}
+
+	virtual void OnRedrawRequested () override
+	{
+		nodeEditorControl.Invalidate ();
+	}
+
+	virtual NUIE::EventHandlers& GetEventHandlers () override
+	{
+		return eventHandlers;
+	}
+
+private:
+	NE::BasicStringConverter	stringConverter;
+	NUIE::BasicSkinParams		skinParams;
+	MyEventHandlers				eventHandlers;
+	NE::EvaluationEnv			evaluationEnv;
+	WAS::NodeEditorHwndControl	nodeEditorControl;
 };
 
 static std::shared_ptr<WAS::NodeEditorHwndControl> nodeEditorControl (new WAS::NodeEditorHwndControl ());
-static WAS::HwndNodeUIEnvironment uiEnvironment (
-	nodeEditorControl,
-	NE::StringConverterPtr (new NE::BasicStringConverter (NE::GetDefaultStringConverter ())),
-	NUIE::SkinParamsPtr (new NUIE::BasicSkinParams (NUIE::GetDefaultSkinParams ())),
-	WAS::HwndEventHandlersPtr (new MyEventHandlers ()),
-	nullptr
-);
+static MyNodeUIEnvironment uiEnvironment;
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)

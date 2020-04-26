@@ -1,6 +1,5 @@
 #include "VisualTestFramework.hpp"
 #include "NUIE_InputEventHandler.hpp"
-#include "BI_BuiltInCommands.hpp"
 #include "BI_BuiltInNodes.hpp"
 #include "SimpleTest.hpp"
 
@@ -59,7 +58,7 @@ public:
 
 NE::DynamicSerializationInfo IncreaseNode::serializationInfo (NE::ObjectId ("{8C06D4A9-B042-4E23-8556-410AA5ED2B35}"), NE::ObjectVersion (1), IncreaseNode::CreateSerializableInstance);
 
-class MyCreateNodeCommand : public BI::CreateNodeCommand
+class MyCreateNodeCommand : public NUIE::SingleMenuCommand
 {
 public:
 	enum class NodeType
@@ -71,14 +70,22 @@ public:
 		Viewer
 	};
 
-	MyCreateNodeCommand (NodeType nodeType, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position) :
-		BI::CreateNodeCommand (name, uiManager, uiEnvironment, position),
-		nodeType (nodeType)
+	MyCreateNodeCommand (NodeEditor* nodeEditor, NodeType nodeType, const std::wstring& name, const NUIE::Point& position) :
+		NUIE::SingleMenuCommand (name, false),
+		nodeEditor (nodeEditor),
+		nodeType (nodeType),
+		position (position)
 	{
 	
 	}
 
-	virtual NUIE::UINodePtr CreateNode (const NUIE::Point& modelPosition) override
+	virtual void Do () override
+	{
+		const NUIE::ViewBox& viewBox = nodeEditor->GetViewBox ();
+		nodeEditor->AddNode (CreateNode (viewBox.ViewToModel (position)));
+	}
+
+	NUIE::UINodePtr CreateNode (const NUIE::Point& modelPosition)
 	{
 		switch (nodeType) {
 			case NodeType::Number:
@@ -96,52 +103,55 @@ public:
 	}
 
 private:
-	NodeType nodeType;
+	NodeEditor*		nodeEditor;
+	NodeType		nodeType;
+	NUIE::Point		position;
 };
 
-TestEventHandlers::TestEventHandlers () :
+TestEventHandlers::TestEventHandlers (NodeEditor* nodeEditor) :
+	nodeEditor (nodeEditor),
 	commandToSelect (),
 	paramSettingsHandler (nullptr)
 {
 	
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (const Point& position, const MenuCommandStructure& commands)
 {
 	NUIE::MenuCommandStructure actualCommands = commands;
 	NUIE::GroupMenuCommandPtr createCommandGroup (new NUIE::GroupMenuCommand (L"Add Node"));
 
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Number, uiManager, uiEnvironment, L"Create Number Node", position)));
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Integer, uiManager, uiEnvironment, L"Create Integer Node", position)));
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Addition, uiManager, uiEnvironment, L"Create Addition Node", position)));
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Increase, uiManager, uiEnvironment, L"Create Increase Node", position)));
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (MyCreateNodeCommand::NodeType::Viewer, uiManager, uiEnvironment, L"Create Viewer Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Number, L"Create Number Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Integer, L"Create Integer Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Addition, L"Create Addition Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Increase, L"Create Increase Node", position)));
+	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Viewer, L"Create Viewer Node", position)));
 	actualCommands.AddCommand (createCommandGroup);
 
 	return SelectCommandByName (actualCommands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodePtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (const Point&, const UINodePtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (NodeUIManager&, NodeUIEnvironment&, const Point&, const UINodeGroupPtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandlers::OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-void TestEventHandlers::OnDoubleClick (NodeUIManager&, NodeUIEnvironment&, const Point&)
+void TestEventHandlers::OnDoubleClick (const Point&)
 {
 
 }
@@ -206,7 +216,7 @@ TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor, const Basi
 	stringConverter (GetDefaultStringConverter ()),
 	skinParams (skinParams),
 	drawingContext (800, 600),
-	eventHandlers (),
+	eventHandlers (&nodeEditor),
 	evaluationEnv (nullptr),
 	windowScale (1.0)
 {

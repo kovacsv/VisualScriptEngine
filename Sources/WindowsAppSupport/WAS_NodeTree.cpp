@@ -1,6 +1,5 @@
 #include "WAS_NodeEditorHwndControl.hpp"
 #include "WAS_WindowsAppUtils.hpp"
-#include "BI_BuiltInCommands.hpp"
 #include "NE_Debug.hpp"
 
 namespace WAS
@@ -151,35 +150,6 @@ void NodeTreeView::ExpandAll ()
 HWND NodeTreeView::GetListHandle ()
 {
 	return listHandle;
-}
-
-void AddNodeTreeAsCommands (const NodeTree& nodeTree, NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const NUIE::Point& position, NUIE::MenuCommandStructure& commands)
-{
-	class CreateNodeCommand : public BI::CreateNodeCommand
-	{
-	public:
-		CreateNodeCommand (NUIE::NodeUIManager& uiManager, NUIE::NodeUIEnvironment& uiEnvironment, const std::wstring& name, const NUIE::Point& position, const CreatorFunction& creator) :
-			BI::CreateNodeCommand (name, uiManager, uiEnvironment, position),
-			creator (creator)
-		{
-		}
-
-		virtual NUIE::UINodePtr CreateNode (const NUIE::Point& modelPosition) override
-		{
-			return creator (modelPosition);
-		}
-
-	private:
-		CreatorFunction creator;
-	};
-
-	for (const NodeTree::Group& group : nodeTree.GetGroups ()) {
-		NUIE::GroupMenuCommandPtr groupCommand (new NUIE::GroupMenuCommand (group.GetName ()));
-		for (const NodeTree::Item& item : group.GetItems ()) {
-			groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (uiManager, uiEnvironment, item.GetName (), position, item.GetCreator ())));
-		}
-		commands.AddCommand (groupCommand);
-	}
 }
 
 }
