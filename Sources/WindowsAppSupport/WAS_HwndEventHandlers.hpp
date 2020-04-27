@@ -22,7 +22,8 @@ public:
 	virtual NUIE::MenuCommandPtr			OnContextMenu (const NUIE::Point& position, const NUIE::UIInputSlotConstPtr& inputSlot, const NUIE::MenuCommandStructure& commands) override;
 	virtual NUIE::MenuCommandPtr			OnContextMenu (const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::MenuCommandStructure& commands) override;
 	virtual void							OnDoubleClick (const NUIE::Point& position) override;
-	virtual bool							OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor) override;
+	virtual bool							OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessorn, const NUIE::UINodePtr& uiNode) override;
+	virtual bool							OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessorn, const NUIE::UINodeGroupPtr& uiGroup) override;
 
 protected:
 	const NUIE::NativeNodeEditorControl*	control;

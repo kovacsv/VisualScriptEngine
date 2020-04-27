@@ -52,7 +52,13 @@ void HwndEventHandlers::OnDoubleClick (const NUIE::Point&)
 
 }
 
-bool HwndEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor)
+bool HwndEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodePtr&)
+{
+	WAS::ParameterDialog paramDialog (paramAccessor);
+	return paramDialog.Show ((HWND) control->GetEditorNativeHandle (), 50, 50);
+}
+
+bool HwndEventHandlers::OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodeGroupPtr&)
 {
 	WAS::ParameterDialog paramDialog (paramAccessor);
 	return paramDialog.Show ((HWND) control->GetEditorNativeHandle (), 50, 50);

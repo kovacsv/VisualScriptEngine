@@ -51,7 +51,12 @@ void NullEventHandlers::OnDoubleClick (const Point&)
 
 }
 
-bool NullEventHandlers::OnParameterSettings (ParameterInterfacePtr)
+bool NullEventHandlers::OnParameterSettings (ParameterInterfacePtr, const UINodePtr&)
+{
+	return false;
+}
+
+bool NullEventHandlers::OnParameterSettings (ParameterInterfacePtr, const UINodeGroupPtr&)
 {
 	return false;
 }

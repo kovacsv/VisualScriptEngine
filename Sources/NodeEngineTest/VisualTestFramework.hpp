@@ -23,7 +23,8 @@ public:
 	virtual MenuCommandPtr		OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&) override;
 	virtual MenuCommandPtr		OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
 	virtual void				OnDoubleClick (const Point&) override;
-	virtual bool				OnParameterSettings (ParameterInterfacePtr) override;
+	virtual bool				OnParameterSettings (ParameterInterfacePtr, const UINodePtr&) override;
+	virtual bool				OnParameterSettings (ParameterInterfacePtr, const UINodeGroupPtr&) override;
 
 	void						SetNextCommandName (const std::wstring& nextCommandName);
 	void						SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);

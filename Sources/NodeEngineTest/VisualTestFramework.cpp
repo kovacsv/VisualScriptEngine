@@ -156,7 +156,17 @@ void TestEventHandlers::OnDoubleClick (const Point&)
 
 }
 
-bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterface)
+bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterface, const UINodePtr&)
+{
+	if (DBGERROR (paramSettingsHandler == nullptr)) {
+		return false;
+	}
+	bool result = paramSettingsHandler (paramInterface);
+	paramSettingsHandler = nullptr;
+	return result;
+}
+
+bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterface, const UINodeGroupPtr&)
 {
 	if (DBGERROR (paramSettingsHandler == nullptr)) {
 		return false;
