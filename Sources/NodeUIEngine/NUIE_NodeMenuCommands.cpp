@@ -704,7 +704,7 @@ class DeleteGroupMenuCommand : public SingleMenuCommand
 {
 public:
 	DeleteGroupMenuCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
-		SingleMenuCommand (NE::Localize (L"Delete Group"), false),
+		SingleMenuCommand (NE::Localize (L"Ungroup Nodes"), false),
 		uiManager (uiManager),
 		group (group)
 	{
