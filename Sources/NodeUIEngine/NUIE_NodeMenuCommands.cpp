@@ -972,7 +972,7 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::Localize (L"Align Right"), AlignNodesMenuCommand::Mode::Right, uiManager, uiEnvironment, relevantNodes)));
 		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::Localize (L"Align Top"), AlignNodesMenuCommand::Mode::Top, uiManager, uiEnvironment, relevantNodes)));
 		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::Localize (L"Align Bottom"), AlignNodesMenuCommand::Mode::Bottom, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::Localize (L"Center Horizontically"), AlignNodesMenuCommand::Mode::HCenter, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::Localize (L"Center Horizontally"), AlignNodesMenuCommand::Mode::HCenter, uiManager, uiEnvironment, relevantNodes)));
 		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::Localize (L"Center Vertically"), AlignNodesMenuCommand::Mode::VCenter, uiManager, uiEnvironment, relevantNodes)));
 		commandStructureBuilder.RegisterCommand (alignCommandGroup);
 	}
