@@ -1,6 +1,7 @@
 #ifndef NUIE_UIINPUTSLOT_HPP
 #define NUIE_UIINPUTSLOT_HPP
 
+#include "NE_String.hpp"
 #include "NE_InputSlot.hpp"
 
 namespace NUIE
@@ -17,7 +18,7 @@ public:
 	UIInputSlot (const NE::SlotId& id, const std::wstring& name, const NE::ValuePtr& defaultValue, NE::OutputSlotConnectionMode slotConnectionMode);
 	~UIInputSlot ();
 
-	const std::wstring&			GetName () const;
+	std::wstring				GetName () const;
 	void						SetName (const std::wstring& newName);
 
 	virtual void				RegisterCommands (InputSlotCommandRegistrator& commandRegistrator) const;
@@ -26,7 +27,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
-	std::wstring				name;
+	NE::String					name;
 };
 
 using UIInputSlotPtr = std::shared_ptr<UIInputSlot>;

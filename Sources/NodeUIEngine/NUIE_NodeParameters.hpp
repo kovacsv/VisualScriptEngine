@@ -1,6 +1,7 @@
 #ifndef NUIE_NODEPARAMETERS_HPP
 #define NUIE_NODEPARAMETERS_HPP
 
+#include "NE_String.hpp"
 #include "NE_Value.hpp"
 #include "NE_NodeCollection.hpp"
 #include "NUIE_UINode.hpp"
@@ -19,7 +20,7 @@ public:
 	NodeParameter (const std::wstring& name, const ParameterType& type);
 	virtual ~NodeParameter ();
 
-	const std::wstring&					GetName () const;
+	std::wstring						GetName () const;
 	const ParameterType&				GetType () const;
 	virtual std::vector<std::wstring>	GetValueChoices () const;
 
@@ -29,7 +30,7 @@ public:
 	virtual bool						SetValue (UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 
 private:
-	std::wstring	name;
+	NE::String		name;
 	ParameterType	type;
 };
 

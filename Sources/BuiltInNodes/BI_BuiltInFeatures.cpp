@@ -126,9 +126,9 @@ void EnableDisableFeature::SetState (State newState)
 
 void EnableDisableFeature::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (NE::LocalizeString (L"Set Node Status")));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::LocalizeString (L"Enable"), state == State::Enabled, State::Enabled, mode)));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::LocalizeString (L"Disable"), state == State::Disabled, State::Disabled, mode)));
+	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (L"Set Node Status"));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", state == State::Enabled, State::Enabled, mode)));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Disable", state == State::Disabled, State::Disabled, mode)));
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
 }
 
@@ -138,7 +138,7 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 	{
 	public:
 		EnableDisableParameter () :
-			NUIE::EnumerationFeatureParameter<EnableDisableFeature> (NE::LocalizeString (L"Status"), { NE::LocalizeString (L"Enable"), NE::LocalizeString (L"Disable") }, EnableDisableFeatureId)
+			NUIE::EnumerationFeatureParameter<EnableDisableFeature> (L"Status", { NE::LocalizeString (L"Enable"), NE::LocalizeString (L"Disable") }, EnableDisableFeatureId)
 		{
 
 		}
@@ -227,10 +227,10 @@ bool ValueCombinationFeature::CombineValues (const std::vector<NE::ValueConstPtr
 
 void ValueCombinationFeature::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NUIE::NodeGroupCommandPtr setValueCombinationModeGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (NE::LocalizeString (L"Set Value Combination")));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::LocalizeString (L"Shortest"), valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::LocalizeString (L"Longest"), valueCombinationMode == NE::ValueCombinationMode::Longest, NE::ValueCombinationMode::Longest)));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::LocalizeString (L"Cross Product"), valueCombinationMode == NE::ValueCombinationMode::CrossProduct, NE::ValueCombinationMode::CrossProduct)));
+	NUIE::NodeGroupCommandPtr setValueCombinationModeGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (L"Set Value Combination"));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Shortest", valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Longest", valueCombinationMode == NE::ValueCombinationMode::Longest, NE::ValueCombinationMode::Longest)));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Cross Product", valueCombinationMode == NE::ValueCombinationMode::CrossProduct, NE::ValueCombinationMode::CrossProduct)));
 	commandRegistrator.RegisterNodeGroupCommand (setValueCombinationModeGroup);
 }
 
@@ -240,7 +240,7 @@ void ValueCombinationFeature::RegisterParameters (NUIE::NodeParameterList& param
 	{
 	public:
 		ValueCombinationParameter () :
-			NUIE::EnumerationFeatureParameter<ValueCombinationFeature> (NE::LocalizeString (L"Value Combination"), { NE::LocalizeString (L"Shortest"), NE::LocalizeString (L"Longest"), NE::LocalizeString (L"Cross Product") }, ValueCombinationFeatureId)
+			NUIE::EnumerationFeatureParameter<ValueCombinationFeature> (L"Value Combination", { NE::LocalizeString (L"Shortest"), NE::LocalizeString (L"Longest"), NE::LocalizeString (L"Cross Product") }, ValueCombinationFeatureId)
 		{
 		
 		}

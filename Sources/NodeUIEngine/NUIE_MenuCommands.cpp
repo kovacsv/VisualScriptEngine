@@ -15,9 +15,9 @@ MenuCommand::~MenuCommand ()
 
 }
 
-const std::wstring& MenuCommand::GetName () const
+std::wstring MenuCommand::GetName () const
 {
-	return name;
+	return name.GetLocalized ();
 }
 
 SingleMenuCommand::SingleMenuCommand (const std::wstring& name, bool isChecked) :

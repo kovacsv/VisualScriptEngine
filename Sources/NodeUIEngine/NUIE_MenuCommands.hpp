@@ -1,6 +1,8 @@
 #ifndef NUIE_MENUCOMMANDS_HPP
 #define NUIE_MENUCOMMANDS_HPP
 
+#include "NE_String.hpp"
+
 #include <string>
 #include <vector>
 #include <functional>
@@ -25,7 +27,7 @@ public:
 	MenuCommand (const std::wstring& name);
 	virtual ~MenuCommand ();
 
-	const std::wstring&		GetName () const;
+	virtual std::wstring	GetName () const;
 
 	virtual bool			IsChecked () const = 0;
 	virtual bool			HasChildCommands () const = 0;
@@ -34,7 +36,7 @@ public:
 	virtual void			Do () = 0;
 
 private:
-	std::wstring			name;
+	NE::String				name;
 };
 
 class SingleMenuCommand : public MenuCommand

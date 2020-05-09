@@ -31,9 +31,9 @@ BinaryOperationNode::~BinaryOperationNode ()
 
 void BinaryOperationNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), NE::LocalizeString (L"A"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), NE::LocalizeString (L"B"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), NE::LocalizeString (L"Result"))));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), L"A", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), L"B", NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), L"Result")));
 	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
@@ -66,8 +66,8 @@ NE::ValueConstPtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 void BinaryOperationNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, NE::LocalizeString (L"A"), NUIE::ParameterType::Double, NE::SlotId ("a"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, NE::LocalizeString (L"B"), NUIE::ParameterType::Double, NE::SlotId ("b"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"A", NUIE::ParameterType::Double, NE::SlotId ("a"));
+	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, L"B", NUIE::ParameterType::Double, NE::SlotId ("b"));
 }
 
 bool BinaryOperationNode::IsForceCalculated () const

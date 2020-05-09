@@ -1,6 +1,7 @@
 #ifndef NUIE_UINODEGROUP_HPP
 #define NUIE_UINODEGROUP_HPP
 
+#include "NE_String.hpp"
 #include "NE_NodeGroup.hpp"
 #include "NUIE_UINode.hpp"
 
@@ -40,7 +41,7 @@ public:
 	UINodeGroup (const std::wstring& name);
 	~UINodeGroup ();
 
-	const std::wstring&			GetName () const;
+	std::wstring				GetName () const;
 	void						SetName (const std::wstring& newName);
 
 	size_t						GetBackgroundColorIndex () const;
@@ -57,7 +58,7 @@ private:
 	const GroupDrawingImage&	GetDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
 	void						UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeRectGetter& rectGetter, const NE::NodeCollection& nodes) const;
 
-	std::wstring				name;
+	NE::String					name;
 	size_t						backgroundColorIndex;
 	mutable GroupDrawingImage	drawingImage;
 };

@@ -26,7 +26,7 @@ UINodeCommandInterface::~UINodeCommandInterface ()
 }
 
 UINode::UINode () :
-	Node ()
+	UINode (L"", Point ())
 {
 
 }
@@ -44,9 +44,9 @@ UINode::~UINode ()
 
 }
 
-const std::wstring& UINode::GetNodeName () const
+std::wstring UINode::GetNodeName () const
 {
-	return nodeName;
+	return nodeName.GetLocalized ();
 }
 
 void UINode::SetNodeName (const std::wstring& newNodeName)
@@ -188,7 +188,7 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 	{
 	public:
 		NodeNameParameter () :
-			NotEmptyStringNodeParameter<UINode> (NE::LocalizeString (L"Node Name"))
+			NotEmptyStringNodeParameter<UINode> (L"Node Name")
 		{
 		
 		}
@@ -234,7 +234,7 @@ NE::Stream::Status UINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	Node::Read (inputStream);
-	inputStream.Read (nodeName);
+	nodeName.Read (inputStream);
 	ReadPoint (inputStream, nodePosition);
 	nodeFeatureSet.Read (inputStream);
 	return inputStream.GetStatus ();
@@ -244,7 +244,7 @@ NE::Stream::Status UINode::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	Node::Write (outputStream);
-	outputStream.Write (nodeName);
+	nodeName.Write (outputStream);
 	WritePoint (outputStream, nodePosition);
 	nodeFeatureSet.Write (outputStream);
 	return outputStream.GetStatus ();

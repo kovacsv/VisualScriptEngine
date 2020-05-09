@@ -18,13 +18,13 @@ public:
 	NodeGroupCommand (const std::wstring& name);
 	virtual ~NodeGroupCommand ();
 
-	const std::wstring&		GetName () const;
+	std::wstring			GetName () const;
 	bool					HasChildCommand () const;
 	void					AddChildCommand (const CommandType& command);
 	void					EnumerateChildCommands (const std::function<void (const CommandType&)>& processor);
 
 private:
-	std::wstring				name;
+	NE::String					name;
 	std::vector<CommandType>	childCommands;
 };
 
@@ -41,9 +41,9 @@ NodeGroupCommand<CommandType>::~NodeGroupCommand ()
 }
 
 template <typename CommandType>
-const std::wstring& NodeGroupCommand<CommandType>::GetName () const
+std::wstring NodeGroupCommand<CommandType>::GetName () const
 {
-	return name;
+	return name.GetLocalized ();
 }
 
 template <typename CommandType>
@@ -72,11 +72,11 @@ public:
 	NodeCommandBase (const std::wstring& name, bool isChecked);
 	virtual ~NodeCommandBase ();
 
-	const std::wstring&		GetName () const;
+	virtual std::wstring	GetName () const;
 	bool					IsChecked () const;
 
 private:
-	std::wstring	name;
+	NE::String		name;
 	bool			isChecked;
 };
 

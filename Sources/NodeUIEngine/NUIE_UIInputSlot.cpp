@@ -6,8 +6,7 @@ namespace NUIE
 NE::DynamicSerializationInfo UIInputSlot::serializationInfo (NE::ObjectId ("{6573888B-EE86-49C8-9E18-02A18FF83274}"), NE::ObjectVersion (1), UIInputSlot::CreateSerializableInstance);
 
 UIInputSlot::UIInputSlot () :
-	NE::InputSlot (),
-	name ()
+	UIInputSlot (NE::SlotId (), L"", nullptr, NE::OutputSlotConnectionMode::Single)
 {
 
 }
@@ -24,9 +23,9 @@ UIInputSlot::~UIInputSlot ()
 
 }
 
-const std::wstring& UIInputSlot::GetName () const
+std::wstring UIInputSlot::GetName () const
 {
-	return name;
+	return name.GetLocalized ();
 }
 
 void UIInputSlot::SetName (const std::wstring& newName)
@@ -43,7 +42,7 @@ NE::Stream::Status UIInputSlot::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	InputSlot::Read (inputStream);
-	inputStream.Read (name);
+	name.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -51,7 +50,7 @@ NE::Stream::Status UIInputSlot::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	InputSlot::Write (outputStream);
-	outputStream.Write (name);
+	name.Write (outputStream);
 	return outputStream.GetStatus ();
 }
 

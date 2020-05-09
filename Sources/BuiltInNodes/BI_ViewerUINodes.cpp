@@ -48,8 +48,8 @@ ViewerNode::~ViewerNode ()
 
 void ViewerNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::LocalizeString (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::LocalizeString (L"Output"))));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
 bool ViewerNode::IsForceCalculated () const
@@ -102,8 +102,8 @@ MultiLineViewerNode::~MultiLineViewerNode ()
 
 void MultiLineViewerNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::LocalizeString (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::LocalizeString (L"Output"))));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
 }
 
 NE::ValueConstPtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
@@ -117,7 +117,7 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 	{
 	public:
 		TextPerPageParameter () :
-			PositiveIntegerNodeParameter<MultiLineViewerNode> (NE::LocalizeString (L"Texts per page"))
+			PositiveIntegerNodeParameter<MultiLineViewerNode> (L"Texts per page")
 		{
 
 		}

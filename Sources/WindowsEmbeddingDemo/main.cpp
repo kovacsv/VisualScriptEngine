@@ -6,6 +6,7 @@
 #include "WAS_ParameterDialog.hpp"
 
 #include "BI_BuiltInNodes.hpp"
+#include "NUIE_Localization.hpp"
 
 #include <windows.h>
 #include <windowsx.h>
@@ -223,6 +224,20 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
+	std::wstring poContent = LR"(
+		msgid "Integer"
+		msgstr "LocInteger"
+		msgid "Group"
+		msgstr "LocGroup"
+		msgid "Input"
+		msgstr "LocInput"
+		msgid "Output"
+		msgstr "LocOutput"
+	)";
+
+	NUIE::PoDictionarySource poDictionarySource (poContent);
+	FillDictionary (poDictionarySource);
+
 	WNDCLASSEX windowClass;
 	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
 	windowClass.cbSize = sizeof(WNDCLASSEX);

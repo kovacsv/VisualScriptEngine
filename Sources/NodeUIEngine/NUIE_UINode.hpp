@@ -1,6 +1,7 @@
 #ifndef NUIE_UINODE_HPP
 #define NUIE_UINODE_HPP
 
+#include "NE_String.hpp"
 #include "NE_Node.hpp"
 #include "NUIE_NodeDrawingImage.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
@@ -36,7 +37,7 @@ public:
 	UINode (const std::wstring& nodeName, const Point& nodePosition);
 	virtual ~UINode ();
 
-	const std::wstring&			GetNodeName () const;
+	std::wstring				GetNodeName () const;
 	void						SetNodeName (const std::wstring& newNodeName);
 
 	const Point&				GetNodePosition () const;
@@ -106,7 +107,7 @@ private:
 	virtual bool				RegisterInputSlot (const NE::InputSlotPtr& newInputSlot) override;
 	virtual bool				RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot) override;
 
-	std::wstring				nodeName;
+	NE::String					nodeName;
 	Point						nodePosition;
 	UINodeFeatureSet			nodeFeatureSet;
 	mutable NodeDrawingImage	nodeDrawingImage;

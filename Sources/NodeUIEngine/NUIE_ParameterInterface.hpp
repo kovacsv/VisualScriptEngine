@@ -34,7 +34,7 @@ public:
 	virtual ~ParameterInterface ();
 
 	virtual size_t						GetParameterCount () const = 0;
-	virtual const std::wstring&			GetParameterName (size_t index) const = 0;
+	virtual std::wstring				GetParameterName (size_t index) const = 0;
 	virtual NE::ValueConstPtr			GetParameterValue (size_t index) const = 0;
 	virtual std::vector<std::wstring>	GetParameterValueChoices (size_t index) const = 0;
 	virtual const ParameterType&		GetParameterType (size_t index) const = 0;

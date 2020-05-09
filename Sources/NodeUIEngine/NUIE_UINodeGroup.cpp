@@ -63,9 +63,9 @@ UINodeGroup::~UINodeGroup ()
 
 }
 
-const std::wstring& UINodeGroup::GetName () const
+std::wstring UINodeGroup::GetName () const
 {
-	return name;
+	return name.GetLocalized ();
 }
 
 void UINodeGroup::SetName (const std::wstring& newName)
@@ -105,7 +105,7 @@ NE::Stream::Status UINodeGroup::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NE::NodeGroup::Read (inputStream);
-	inputStream.Read (name);
+	name.Read (inputStream);
 	inputStream.Read (backgroundColorIndex);
 	return inputStream.GetStatus ();
 }
@@ -114,7 +114,7 @@ NE::Stream::Status UINodeGroup::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NE::NodeGroup::Write (outputStream);
-	outputStream.Write (name);
+	name.Write (outputStream);
 	outputStream.Write (backgroundColorIndex);
 	return outputStream.GetStatus ();
 }
@@ -141,7 +141,8 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 
 	double groupPadding = skinParams.GetGroupPadding ();
 
-	Size textSize = drawingContext.MeasureText (skinParams.GetGroupNameFont (), name);
+	std::wstring groupName = name.GetLocalized ();
+	Size textSize = drawingContext.MeasureText (skinParams.GetGroupNameFont (), groupName);
 	Rect boundingRect = boundingRectCalculator.GetRect ();
 	double maxWidth = std::max (textSize.GetWidth (), boundingRect.GetWidth ());
 	Rect fullRect = Rect::FromPositionAndSize (
@@ -158,7 +159,7 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 
 	const std::vector<NamedColorSet::NamedColor>& backgroundColors = skinParams.GetGroupBackgroundColors ().GetColors ();
 	drawingImage.AddItem (DrawingItemPtr (new DrawingFillRect (fullRect, backgroundColors[backgroundColorIndex].color)));
-	drawingImage.AddItem (DrawingItemPtr (new DrawingText (textRect, skinParams.GetGroupNameFont (), name, HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetGroupNameColor ())), DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (DrawingItemPtr (new DrawingText (textRect, skinParams.GetGroupNameFont (), groupName, HorizontalAnchor::Left, VerticalAnchor::Center, skinParams.GetGroupNameColor ())), DrawingContext::ItemPreviewMode::HideInPreview);
 }
 
 }
