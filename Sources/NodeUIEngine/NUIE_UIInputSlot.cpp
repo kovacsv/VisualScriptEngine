@@ -30,7 +30,7 @@ std::wstring UIInputSlot::GetName () const
 
 void UIInputSlot::SetName (const std::wstring& newName)
 {
-	name = newName;
+	name.SetCustom (newName);
 }
 
 void UIInputSlot::RegisterCommands (InputSlotCommandRegistrator&) const

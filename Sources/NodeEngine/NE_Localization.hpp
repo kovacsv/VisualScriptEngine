@@ -34,6 +34,22 @@ private:
 	std::unordered_map<std::wstring, std::wstring>	dictionary;
 };
 
+class NonLocalizedCollector
+{
+public:
+	NonLocalizedCollector ();
+	virtual ~NonLocalizedCollector ();
+
+	virtual void NonLocalizedStringFound (const std::wstring& str) = 0;
+};
+
+class NonLocalizedCollectorGuard
+{
+public:
+	NonLocalizedCollectorGuard (NonLocalizedCollector* collector);
+	~NonLocalizedCollectorGuard ();
+};
+
 template<typename... Args>
 std::wstring FormatString (const std::wstring& format, Args... args)
 {
@@ -41,6 +57,8 @@ std::wstring FormatString (const std::wstring& format, Args... args)
 	swprintf (resultString, 2048, format.c_str (), args...);
 	return std::wstring (resultString);
 }
+
+void			SetNonLocalizedCollector (NonLocalizedCollector* collector);
 
 bool			FillDictionary (Dictionary& dictionary, DictionarySource& source);
 std::wstring	LocalizeString (const Dictionary& dictionary, const std::wstring& str);

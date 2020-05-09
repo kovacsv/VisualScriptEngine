@@ -143,11 +143,17 @@ TEST (StringLocalizationTest)
 	ASSERT (appleString.GetLocalized (dictionary) == L"alma");
 	ASSERT (lemonString.GetLocalized (dictionary) == L"citrom");
 
+	appleString.SetCustom (L"apple");
+	ASSERT (appleString.GetLocalized (dictionary) == L"alma");
+
 	appleString.SetCustom (L"banana");
 	ASSERT (appleString.GetLocalized (dictionary) == L"banana");
 
 	appleString.SetCustom (L"lemon");
 	ASSERT (appleString.GetLocalized (dictionary) == L"lemon");
+
+	appleString.SetCustom (L"apple");
+	ASSERT (appleString.GetLocalized (dictionary) == L"apple");
 }
 
 }

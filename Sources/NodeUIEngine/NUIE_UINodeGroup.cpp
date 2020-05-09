@@ -70,7 +70,7 @@ std::wstring UINodeGroup::GetName () const
 
 void UINodeGroup::SetName (const std::wstring& newName)
 {
-	name = newName;
+	name.SetCustom (newName);
 	InvalidateGroupDrawing ();
 }
 

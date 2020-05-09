@@ -4,6 +4,8 @@
 namespace NE
 {
 
+static NonLocalizedCollector* nonLocalizedCollector = nullptr;
+
 DictionarySource::DictionarySource ()
 {
 
@@ -51,10 +53,35 @@ std::wstring Dictionary::GetLocalizedString (const std::wstring& id) const
 	return dictionary.at (id);
 }
 
+NonLocalizedCollector::NonLocalizedCollector ()
+{
+
+}
+
+NonLocalizedCollector::~NonLocalizedCollector ()
+{
+
+}
+
+NonLocalizedCollectorGuard::NonLocalizedCollectorGuard (NonLocalizedCollector* collector)
+{
+	SetNonLocalizedCollector (collector);
+}
+
+NonLocalizedCollectorGuard::~NonLocalizedCollectorGuard ()
+{
+	SetNonLocalizedCollector (nullptr);
+}
+
 static Dictionary& GetGlobalDictionary ()
 {
 	static Dictionary globalDictionary;
 	return globalDictionary;
+}
+
+void SetNonLocalizedCollector (NonLocalizedCollector* collector)
+{
+	nonLocalizedCollector = collector;
 }
 
 bool FillDictionary (Dictionary& dictionary, DictionarySource& source)
@@ -88,6 +115,11 @@ bool FillDictionary (DictionarySource& source)
 std::wstring LocalizeString (const std::wstring& str)
 {
 	const Dictionary& globalDictionary = GetGlobalDictionary ();
+	if (nonLocalizedCollector != nullptr) {
+		if (!globalDictionary.HasLocalizedString (str)) {
+			nonLocalizedCollector->NonLocalizedStringFound (str);
+		}
+	}
 	return LocalizeString (globalDictionary, str);
 }
 

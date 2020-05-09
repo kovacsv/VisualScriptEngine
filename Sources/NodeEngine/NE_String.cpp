@@ -13,6 +13,9 @@ String::String (const std::wstring& strValue) :
 
 void String::SetCustom (const std::wstring& customValue)
 {
+	if (!isCustom && customValue == GetLocalized ()) {
+		return;
+	}
 	strValue = customValue;
 	isCustom = true;
 }

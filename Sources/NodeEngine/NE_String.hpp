@@ -13,7 +13,7 @@ class String
 	SERIALIZABLE;
 
 public:
-	String (const std::wstring& strValue);
+	explicit String (const std::wstring& strValue);
 
 	void			SetCustom (const std::wstring& customValue);
 	std::wstring	GetLocalized () const;

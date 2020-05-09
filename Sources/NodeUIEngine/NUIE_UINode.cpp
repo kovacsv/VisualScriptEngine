@@ -51,7 +51,7 @@ std::wstring UINode::GetNodeName () const
 
 void UINode::SetNodeName (const std::wstring& newNodeName)
 {
-	nodeName = newNodeName;
+	nodeName.SetCustom (newNodeName);
 }
 
 const Point& UINode::GetNodePosition () const
