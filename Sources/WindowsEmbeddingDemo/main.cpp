@@ -224,7 +224,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
-	std::wstring poContent = LR"(
+	std::wstring poContent = LR"str(
 		msgid "Integer"
 		msgstr "LocInteger"
 		msgid "Group"
@@ -233,7 +233,11 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 		msgstr "LocInput"
 		msgid "Output"
 		msgstr "LocOutput"
-	)";
+		msgid "Add To Group \"%ls\""
+		msgstr "Loc Add To Group \"%ls\""
+		msgid "\%ls (\%ls)"
+		msgstr "Loc %ls (%ls)"
+	)str";
 
 	NUIE::PoDictionarySource poDictionarySource (poContent);
 	FillDictionary (poDictionarySource);
