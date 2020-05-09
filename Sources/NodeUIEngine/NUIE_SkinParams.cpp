@@ -268,9 +268,9 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*groupNameFont*/ Font (L"Arial", 18.0),
 		/*groupNameColor*/ Color (0, 0, 0),
 		/*groupBackgroundColors*/ NamedColorSet ({
-			{ NE::Localize (L"Blue"), Color (160, 200, 240) },
-			{ NE::Localize (L"Green"), Color (160, 239, 160) },
-			{ NE::Localize (L"Red"), Color (239, 189, 160) }
+			{ NE::LocalizeString (L"Blue"), Color (160, 200, 240) },
+			{ NE::LocalizeString (L"Green"), Color (160, 239, 160) },
+			{ NE::LocalizeString (L"Red"), Color (239, 189, 160) }
 		}),
 		/*groupPadding*/ 10.0,
 		/*mouseMoveMinOffset*/ 2.0

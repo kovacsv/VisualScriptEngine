@@ -26,7 +26,7 @@ std::wstring ViewerNode::Layout::GetText (const BasicUINode& uiNode, const NE::S
 			return val->ToString (stringConverter);
 		}
 	}
-	return NE::Localize (L"<empty>");
+	return NE::LocalizeString (L"<empty>");
 }
 
 ViewerNode::ViewerNode () :
@@ -48,8 +48,8 @@ ViewerNode::~ViewerNode ()
 
 void ViewerNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::Localize (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::LocalizeString (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::LocalizeString (L"Output"))));
 }
 
 bool ViewerNode::IsForceCalculated () const
@@ -102,8 +102,8 @@ MultiLineViewerNode::~MultiLineViewerNode ()
 
 void MultiLineViewerNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::Localize (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::Localize (L"Output"))));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::LocalizeString (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::LocalizeString (L"Output"))));
 }
 
 NE::ValueConstPtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const
@@ -117,7 +117,7 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 	{
 	public:
 		TextPerPageParameter () :
-			PositiveIntegerNodeParameter<MultiLineViewerNode> (NE::Localize (L"Texts per page"))
+			PositiveIntegerNodeParameter<MultiLineViewerNode> (NE::LocalizeString (L"Texts per page"))
 		{
 
 		}
@@ -185,7 +185,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 				if (value != nullptr) {
 					nodeTexts.push_back (value->ToString (env.GetStringConverter ()));
 				} else {
-					nodeTexts.push_back (NE::Localize (L"<empty>"));
+					nodeTexts.push_back (NE::LocalizeString (L"<empty>"));
 				}
 			});
 		}
@@ -204,7 +204,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 	}
 
 	if (nodeTextsToShow.empty ()) {
-		nodeTextsToShow.push_back (NE::Localize (L"<empty>"));
+		nodeTextsToShow.push_back (NE::LocalizeString (L"<empty>"));
 		textCount += 1;
 	}
 
@@ -213,7 +213,7 @@ void MultiLineViewerNode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (*this, env)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextPanel (nodeTextsToShow, textCount, textsPerPage, env)));
 	if (textCount > textsPerPage) {
-		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", NE::Localize (L"<"), "plus", NE::Localize (L">"), std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
+		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel ("minus", NE::LocalizeString (L"<"), "plus", NE::LocalizeString (L">"), std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
 	}
 	drawer.Draw (env, drawingImage);
 }

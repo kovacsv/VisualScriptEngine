@@ -107,7 +107,7 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 	WORD paramCountWord = (WORD) paramCount;
 	WORD dialogWidth = staticWidth + editWidth + 3 * padding;
 	WORD dialogHeight = paramCountWord * controlHeight + (paramCountWord + 2) * padding + buttonHeight;
-	InMemoryDialog dialog (NE::Localize (L"Parameters"), x, y, dialogWidth, dialogHeight);
+	InMemoryDialog dialog (NE::LocalizeString (L"Parameters"), x, y, dialogWidth, dialogHeight);
 
 	WORD currentY = padding;
 	for (size_t paramIndex = 0; paramIndex < paramCount; ++paramIndex) {
@@ -120,7 +120,7 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 		if (type == NUIE::ParameterType::Boolean) {
 			if (DBGVERIFY (NE::Value::IsType<NE::BooleanValue> (value))) {
 				int selectedChoice = NE::BooleanValue::Get (value) ? 0 : 1;
-				std::vector<std::wstring> choices = { NE::Localize (L"true"), NE::Localize (L"false") };
+				std::vector<std::wstring> choices = { NE::LocalizeString (L"true"), NE::LocalizeString (L"false") };
 				dialog.AddComboBox (selectedChoice, choices, staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Integer) {
@@ -156,7 +156,7 @@ bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
 		currentY += controlHeight + padding;
 	}
 
-	dialog.AddDefButton (NE::Localize (L"Save"), padding, currentY, staticWidth + editWidth + padding, buttonHeight, OkButtonId);
+	dialog.AddDefButton (NE::LocalizeString (L"Save"), padding, currentY, staticWidth + editWidth + padding, buttonHeight, OkButtonId);
 
 	inMemoryDialog = &dialog;
 	if (dialog.Show (parent, DlgProc, (LPARAM) this) == 1) {

@@ -35,7 +35,7 @@ ValuePtr BooleanValue::Clone () const
 
 std::wstring BooleanValue::ToString (const StringConverter&) const
 {
-	return val ? Localize (L"true") : Localize (L"false");
+	return val ? LocalizeString (L"true") : LocalizeString (L"false");
 }
 
 Stream::Status BooleanValue::Read (InputStream& inputStream)

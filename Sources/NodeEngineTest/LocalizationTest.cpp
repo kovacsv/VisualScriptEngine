@@ -1,4 +1,5 @@
 #include "SimpleTest.hpp"
+#include "NE_String.hpp"
 #include "NUIE_Localization.hpp"
 
 using namespace NE;
@@ -121,6 +122,32 @@ TEST (SimplePoFileWithInvalidFormatTest4)
 	PoDictionarySource poDictionarySource (poContent);
 	ASSERT (!FillDictionary (dictionary, poDictionarySource));
 	ASSERT (dictionary.IsEmpty ());
+}
+
+TEST (StringLocalizationTest)
+{
+	std::wstring poContent = LR"(
+		msgid "apple"
+		msgstr "alma"
+		msgid "lemon"
+		msgstr "citrom"
+	)";
+
+	Dictionary dictionary;
+	PoDictionarySource poDictionarySource (poContent);
+	ASSERT (FillDictionary (dictionary, poDictionarySource));
+
+	String appleString (L"apple");
+	String lemonString (L"lemon");
+
+	ASSERT (appleString.GetLocalized (dictionary) == L"alma");
+	ASSERT (lemonString.GetLocalized (dictionary) == L"citrom");
+
+	appleString.SetCustom (L"banana");
+	ASSERT (appleString.GetLocalized (dictionary) == L"banana");
+
+	appleString.SetCustom (L"lemon");
+	ASSERT (appleString.GetLocalized (dictionary) == L"lemon");
 }
 
 }

@@ -43,10 +43,10 @@ std::wstring FormatString (const std::wstring& format, Args... args)
 }
 
 bool			FillDictionary (Dictionary& dictionary, DictionarySource& source);
-std::wstring	Localize (const Dictionary& dictionary, const std::wstring& str);
+std::wstring	LocalizeString (const Dictionary& dictionary, const std::wstring& str);
 
 bool			FillDictionary (DictionarySource& source);
-std::wstring	Localize (const std::wstring& str);
+std::wstring	LocalizeString (const std::wstring& str);
 
 }
 

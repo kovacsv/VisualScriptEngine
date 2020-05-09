@@ -72,7 +72,7 @@ bool FillDictionary (Dictionary& dictionary, DictionarySource& source)
 	return success;
 }
 
-std::wstring Localize (const Dictionary& dictionary, const std::wstring& str)
+std::wstring LocalizeString (const Dictionary& dictionary, const std::wstring& str)
 {
 	if (!dictionary.HasLocalizedString (str)) {
 		return str;
@@ -85,10 +85,10 @@ bool FillDictionary (DictionarySource& source)
 	return FillDictionary (GetGlobalDictionary (), source);
 }
 
-std::wstring Localize (const std::wstring& str)
+std::wstring LocalizeString (const std::wstring& str)
 {
 	const Dictionary& globalDictionary = GetGlobalDictionary ();
-	return Localize (globalDictionary, str);
+	return LocalizeString (globalDictionary, str);
 }
 
 }
