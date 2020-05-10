@@ -36,7 +36,7 @@ public:
 	virtual void			Do () = 0;
 
 private:
-	NE::String				name;
+	std::wstring			name;
 };
 
 class SingleMenuCommand : public MenuCommand

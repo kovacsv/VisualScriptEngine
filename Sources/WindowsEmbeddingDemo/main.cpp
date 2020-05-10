@@ -235,7 +235,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 		msgstr "LocOutput"
 		msgid "Add To Group \"%ls\""
 		msgstr "Loc Add To Group \"%ls\""
-		msgid "\%ls (\%ls)"
+		msgid "%ls (%ls)"
 		msgstr "Loc %ls (%ls)"
 	)str";
 

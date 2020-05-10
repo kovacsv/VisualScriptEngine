@@ -20,7 +20,7 @@ NodeCommandBase::~NodeCommandBase ()
 
 std::wstring NodeCommandBase::GetName () const
 {
-	return name.GetLocalized ();
+	return NE::LocalizeString (name);
 }
 
 bool NodeCommandBase::IsChecked () const

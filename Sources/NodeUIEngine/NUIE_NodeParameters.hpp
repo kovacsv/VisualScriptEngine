@@ -30,7 +30,7 @@ public:
 	virtual bool						SetValue (UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 
 private:
-	NE::String		name;
+	std::wstring	name;
 	ParameterType	type;
 };
 

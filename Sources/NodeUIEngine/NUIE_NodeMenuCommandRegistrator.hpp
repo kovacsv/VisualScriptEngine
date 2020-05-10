@@ -24,7 +24,7 @@ public:
 	void					EnumerateChildCommands (const std::function<void (const CommandType&)>& processor);
 
 private:
-	NE::String					name;
+	std::wstring					name;
 	std::vector<CommandType>	childCommands;
 };
 
@@ -43,7 +43,7 @@ NodeGroupCommand<CommandType>::~NodeGroupCommand ()
 template <typename CommandType>
 std::wstring NodeGroupCommand<CommandType>::GetName () const
 {
-	return name.GetLocalized ();
+	return NE::LocalizeString (name);
 }
 
 template <typename CommandType>
@@ -76,7 +76,7 @@ public:
 	bool					IsChecked () const;
 
 private:
-	NE::String		name;
+	std::wstring	name;
 	bool			isChecked;
 };
 

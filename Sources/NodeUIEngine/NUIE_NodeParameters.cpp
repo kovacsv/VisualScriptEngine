@@ -20,7 +20,7 @@ NodeParameter::~NodeParameter ()
 
 std::wstring NodeParameter::GetName () const
 {
-	return name.GetLocalized ();
+	return NE::LocalizeString (name);
 }
 
 const ParameterType& NodeParameter::GetType () const
