@@ -9,23 +9,23 @@ namespace BI
 NE::SerializationInfo BasicUINode::serializationInfo (NE::ObjectVersion (1));
 
 BasicUINode::BasicUINode () :
-	BasicUINode (std::wstring (), NUIE::Point ())
+	BasicUINode (NE::String (), NUIE::Point ())
 {
 
 }
 
-BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position) :
+BasicUINode::BasicUINode (const NE::String& name, const NUIE::Point& position) :
 	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
 {
 
 }
 
-BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position, const NUIE::IconId& iconId) :
+BasicUINode::BasicUINode (const NE::String& name, const NUIE::Point& position, const NUIE::IconId& iconId) :
 	BasicUINode (name, position, iconId, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
 {
 
 }
-BasicUINode::BasicUINode (const std::wstring& name, const NUIE::Point& position, const NUIE::IconId& iconId, const UINodeLayoutPtr& layout) :
+BasicUINode::BasicUINode (const NE::String& name, const NUIE::Point& position, const NUIE::IconId& iconId, const UINodeLayoutPtr& layout) :
 	NUIE::UINode (name, position),
 	iconId (iconId),
 	layout (layout)

@@ -292,7 +292,7 @@ CreateGroupMenuCommand::~CreateGroupMenuCommand ()
 
 void CreateGroupMenuCommand::Do ()
 {
-	UINodeGroupPtr group (new UINodeGroup (L"Group"));
+	UINodeGroupPtr group (new UINodeGroup (NE::String (L"Group")));
 	AddGroupCommand command (group, relevantNodes);
 	uiManager.ExecuteCommand (command);
 }

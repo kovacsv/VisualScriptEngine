@@ -12,7 +12,7 @@ class UIDispatcherOutputSlot : public UIOutputSlot
 
 public:
 	UIDispatcherOutputSlot ();
-	UIDispatcherOutputSlot (const NE::SlotId& id, const std::wstring& name, size_t listIndex);
+	UIDispatcherOutputSlot (const NE::SlotId& id, const NE::String& name, size_t listIndex);
 	~UIDispatcherOutputSlot ();
 
 	virtual NE::ValueConstPtr	Evaluate (NE::EvaluationEnv& env) const override;

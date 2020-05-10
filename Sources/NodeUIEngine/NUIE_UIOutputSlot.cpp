@@ -6,12 +6,12 @@ namespace NUIE
 NE::DynamicSerializationInfo UIOutputSlot::serializationInfo (NE::ObjectId ("{F5EB36BD-8FB2-4887-8E4A-5230022B29C1}"), NE::ObjectVersion (1), UIOutputSlot::CreateSerializableInstance);
 
 UIOutputSlot::UIOutputSlot () :
-	UIOutputSlot (NE::SlotId (), L"")
+	UIOutputSlot (NE::SlotId (), NE::String ())
 {
 
 }
 
-UIOutputSlot::UIOutputSlot (const NE::SlotId& id, const std::wstring& name) :
+UIOutputSlot::UIOutputSlot (const NE::SlotId& id, const NE::String& name) :
 	NE::OutputSlot (id),
 	name (name)
 {

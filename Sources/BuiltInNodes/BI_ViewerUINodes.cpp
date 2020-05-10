@@ -30,12 +30,12 @@ std::wstring ViewerNode::Layout::GetText (const BasicUINode& uiNode, const NE::S
 }
 
 ViewerNode::ViewerNode () :
-	ViewerNode (std::wstring (), NUIE::Point ())
+	ViewerNode (NE::String (), NUIE::Point ())
 {
 
 }
 
-ViewerNode::ViewerNode (const std::wstring& name, const NUIE::Point& position) :
+ViewerNode::ViewerNode (const NE::String& name, const NUIE::Point& position) :
 	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ()))
 {
 
@@ -48,8 +48,8 @@ ViewerNode::~ViewerNode ()
 
 void ViewerNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::String (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::String (L"Output"))));
 }
 
 bool ViewerNode::IsForceCalculated () const
@@ -81,12 +81,12 @@ NE::Stream::Status ViewerNode::Write (NE::OutputStream& outputStream) const
 }
 
 MultiLineViewerNode::MultiLineViewerNode () :
-	MultiLineViewerNode (std::wstring (), NUIE::Point (), 0)
+	MultiLineViewerNode (NE::String (), NUIE::Point (), 0)
 {
 
 }
 
-MultiLineViewerNode::MultiLineViewerNode (const std::wstring& name, const NUIE::Point& position, size_t textsPerPage) :
+MultiLineViewerNode::MultiLineViewerNode (const NE::String& name, const NUIE::Point& position, size_t textsPerPage) :
 	NUIE::UINode (name, position),
 	textsPerPage (textsPerPage),
 	currentPage (1),
@@ -102,8 +102,8 @@ MultiLineViewerNode::~MultiLineViewerNode ()
 
 void MultiLineViewerNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"Input", nullptr, NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Output")));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), NE::String (L"Input"), nullptr, NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), NE::String (L"Output"))));
 }
 
 NE::ValueConstPtr MultiLineViewerNode::Calculate (NE::EvaluationEnv& env) const

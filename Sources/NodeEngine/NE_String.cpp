@@ -5,6 +5,11 @@ namespace NE
 
 SerializationInfo String::serializationInfo (ObjectVersion (1));
 
+String::String () :
+	String (std::wstring ())
+{
+}
+
 String::String (const std::wstring& strValue) :
 	strValue (strValue),
 	isCustom (false)

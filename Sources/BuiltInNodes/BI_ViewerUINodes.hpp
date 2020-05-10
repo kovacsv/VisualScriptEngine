@@ -23,7 +23,7 @@ public:
 	};
 
 	ViewerNode ();
-	ViewerNode (const std::wstring& name, const NUIE::Point& position);
+	ViewerNode (const NE::String& name, const NUIE::Point& position);
 	virtual ~ViewerNode ();
 
 	virtual void						Initialize () override;
@@ -41,7 +41,7 @@ class MultiLineViewerNode : public NUIE::UINode
 
 public:
 	MultiLineViewerNode ();
-	MultiLineViewerNode (const std::wstring& name, const NUIE::Point& position, size_t textsPerPage);
+	MultiLineViewerNode (const NE::String& name, const NUIE::Point& position, size_t textsPerPage);
 	virtual ~MultiLineViewerNode ();
 
 	virtual void						Initialize () override;

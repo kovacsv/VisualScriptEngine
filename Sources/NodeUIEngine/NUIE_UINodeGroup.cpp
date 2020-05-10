@@ -45,12 +45,12 @@ NodeRectGetter::~NodeRectGetter ()
 }
 
 UINodeGroup::UINodeGroup () :
-	UINodeGroup (std::wstring ())
+	UINodeGroup (NE::String ())
 {
 
 }
 
-UINodeGroup::UINodeGroup (const std::wstring& name) :
+UINodeGroup::UINodeGroup (const NE::String& name) :
 	NE::NodeGroup (),
 	name (name),
 	backgroundColorIndex (0)

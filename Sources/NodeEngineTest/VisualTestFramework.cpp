@@ -12,11 +12,11 @@ class IncreaseNode : public BI::BasicUINode
 
 public:
 	IncreaseNode () :
-		IncreaseNode (L"", Point ())
+		IncreaseNode (String (), Point ())
 	{
 	}
 
-	IncreaseNode (const std::wstring& name, const Point& position) :
+	IncreaseNode (const String& name, const Point& position) :
 		BI::BasicUINode (name, position)
 	{
 
@@ -28,8 +28,8 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), L"In", nullptr, NE::OutputSlotConnectionMode::Single)));
-		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), L"Out")));
+		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), String (L"In"), nullptr, NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), String (L"Out"))));
 	}
 
 	NE::ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
@@ -89,15 +89,15 @@ public:
 	{
 		switch (nodeType) {
 			case NodeType::Number:
-				return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", modelPosition, 0.0, 5.0));
+				return NUIE::UINodePtr (new BI::DoubleUpDownNode (String (L"Number"), modelPosition, 0.0, 5.0));
 			case NodeType::Integer:
-				return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", modelPosition, 0, 1));
+				return NUIE::UINodePtr (new BI::IntegerUpDownNode (String (L"Integer"), modelPosition, 0, 1));
 			case NodeType::Addition:
-				return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", modelPosition));
+				return NUIE::UINodePtr (new BI::AdditionNode (String (L"Addition"), modelPosition));
 			case NodeType::Increase:
-				return NUIE::UINodePtr (new IncreaseNode (L"Increase", modelPosition));
+				return NUIE::UINodePtr (new IncreaseNode (String (L"Increase"), modelPosition));
 			case NodeType::Viewer:
-				return NUIE::UINodePtr (new BI::MultiLineViewerNode (L"Viewer", modelPosition, 5));
+				return NUIE::UINodePtr (new BI::MultiLineViewerNode (String (L"Viewer"), modelPosition, 5));
 		}
 		return nullptr;
 	}

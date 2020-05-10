@@ -38,7 +38,7 @@ class UINodeGroup : public NE::NodeGroup
 
 public:
 	UINodeGroup ();
-	UINodeGroup (const std::wstring& name);
+	UINodeGroup (const NE::String& name);
 	~UINodeGroup ();
 
 	std::wstring				GetName () const;

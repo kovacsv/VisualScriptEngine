@@ -16,7 +16,7 @@ TEST (NodeEditorNeedToSaveTest)
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
 	ASSERT (!env.nodeEditor.NeedToSave ());
 
-	env.nodeEditor.AddNode (UINodePtr (new IntegerUpDownNode (L"Integer", Point (0.0, 0.0), 0, 1)));
+	env.nodeEditor.AddNode (UINodePtr (new IntegerUpDownNode (String (L"Integer"), Point (0.0, 0.0), 0, 1)));
 	ASSERT (env.nodeEditor.NeedToSave ());
 	
 	MemoryOutputStream outputStream;
@@ -25,13 +25,13 @@ TEST (NodeEditorNeedToSaveTest)
 	
 	env.nodeEditor.New ();
 	ASSERT (!env.nodeEditor.NeedToSave ());
-	env.nodeEditor.AddNode (UINodePtr (new IntegerUpDownNode (L"Integer", Point (0.0, 0.0), 0, 1)));
+	env.nodeEditor.AddNode (UINodePtr (new IntegerUpDownNode (String (L"Integer"), Point (0.0, 0.0), 0, 1)));
 	ASSERT (env.nodeEditor.NeedToSave ());
 
 	MemoryInputStream inputStream (outputStream.GetBuffer ());
 	ASSERT (env.nodeEditor.Open (inputStream, nullptr));
 	ASSERT (!env.nodeEditor.NeedToSave ());	
-	env.nodeEditor.AddNode (UINodePtr (new IntegerUpDownNode (L"Integer", Point (0.0, 0.0), 0, 1)));
+	env.nodeEditor.AddNode (UINodePtr (new IntegerUpDownNode (String (L"Integer"), Point (0.0, 0.0), 0, 1)));
 	ASSERT (env.nodeEditor.NeedToSave ());
 }
 

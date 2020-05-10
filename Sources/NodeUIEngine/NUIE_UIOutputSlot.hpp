@@ -15,7 +15,7 @@ class UIOutputSlot : public NE::OutputSlot
 
 public:
 	UIOutputSlot ();
-	UIOutputSlot (const NE::SlotId& id, const std::wstring& name);
+	UIOutputSlot (const NE::SlotId& id, const NE::String& name);
 	~UIOutputSlot ();
 
 	std::wstring				GetName () const;

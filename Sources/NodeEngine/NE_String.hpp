@@ -13,6 +13,7 @@ class String
 	SERIALIZABLE;
 
 public:
+	explicit String ();
 	explicit String (const std::wstring& strValue);
 
 	void			SetCustom (const std::wstring& customValue);

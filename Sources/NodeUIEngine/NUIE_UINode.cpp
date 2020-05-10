@@ -26,12 +26,12 @@ UINodeCommandInterface::~UINodeCommandInterface ()
 }
 
 UINode::UINode () :
-	UINode (L"", Point ())
+	UINode (NE::String (), Point ())
 {
 
 }
 
-UINode::UINode (const std::wstring& nodeName, const Point& nodePosition) :
+UINode::UINode (const NE::String& nodeName, const Point& nodePosition) :
 	Node (),
 	nodeName (nodeName),
 	nodePosition (nodePosition)

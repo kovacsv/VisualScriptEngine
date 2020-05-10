@@ -15,7 +15,7 @@ class UIInputSlot : public NE::InputSlot
 
 public:
 	UIInputSlot ();
-	UIInputSlot (const NE::SlotId& id, const std::wstring& name, const NE::ValuePtr& defaultValue, NE::OutputSlotConnectionMode slotConnectionMode);
+	UIInputSlot (const NE::SlotId& id, const NE::String& name, const NE::ValuePtr& defaultValue, NE::OutputSlotConnectionMode slotConnectionMode);
 	~UIInputSlot ();
 
 	std::wstring				GetName () const;

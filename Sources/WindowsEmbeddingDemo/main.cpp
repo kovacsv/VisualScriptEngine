@@ -100,27 +100,27 @@ public:
 
 		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
 		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", 101, [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerUpDownNode (L"Integer", position, 0, 5));
+			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::String (L"Integer"), position, 0, 5));
 		});
 		AddNodeTreeItem (nodeTree, inputNodes, L"Number", 102, [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (L"Number", position, 0.0, 5.0));
+			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::String (L"Number"), position, 0.0, 5.0));
 		});
 		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
 		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", 103, [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::AdditionNode (L"Addition", position));
+			return NUIE::UINodePtr (new BI::AdditionNode (NE::String (L"Addition"), position));
 		});
 		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Subtraction", 104, [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::SubtractionNode (L"Subtraction", position));
+			return NUIE::UINodePtr (new BI::SubtractionNode (NE::String (L"Subtraction"), position));
 		});
 		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Multiplication", 105, [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiplicationNode (L"Multiplication", position));
+			return NUIE::UINodePtr (new BI::MultiplicationNode (NE::String (L"Multiplication"), position));
 		});
 		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", 106, [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DivisionNode (L"Division", position));
+			return NUIE::UINodePtr (new BI::DivisionNode (NE::String (L"Division"), position));
 		});
 		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
 		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", 107, [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::ViewerNode (L"Viewer", position));
+			return NUIE::UINodePtr (new BI::ViewerNode (NE::String (L"Viewer"), position));
 		});
 
 		RECT clientRect;

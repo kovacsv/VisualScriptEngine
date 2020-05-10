@@ -25,7 +25,7 @@ public:
 	};
 
 	BooleanNode ();
-	BooleanNode (const std::wstring& name, const NUIE::Point& position, bool val);
+	BooleanNode (const NE::String& name, const NUIE::Point& position, bool val);
 	virtual ~BooleanNode ();
 
 	virtual void						Initialize () override;
@@ -62,7 +62,7 @@ public:
 	};
 
 	NumericUpDownNode ();
-	NumericUpDownNode (const std::wstring& name, const NUIE::Point& position);
+	NumericUpDownNode (const NE::String& name, const NUIE::Point& position);
 	virtual ~NumericUpDownNode ();
 
 	virtual void						Initialize () override;
@@ -82,7 +82,7 @@ class IntegerUpDownNode : public NumericUpDownNode
 
 public:
 	IntegerUpDownNode ();
-	IntegerUpDownNode (const std::wstring& name, const NUIE::Point& position, int val, int step);
+	IntegerUpDownNode (const NE::String& name, const NUIE::Point& position, int val, int step);
 	virtual ~IntegerUpDownNode ();
 
 	virtual NE::ValueConstPtr			Calculate (NE::EvaluationEnv& env) const override;
@@ -111,7 +111,7 @@ class DoubleUpDownNode : public NumericUpDownNode
 
 public:
 	DoubleUpDownNode ();
-	DoubleUpDownNode (const std::wstring& name, const NUIE::Point& position, double val, double step);
+	DoubleUpDownNode (const NE::String& name, const NUIE::Point& position, double val, double step);
 	virtual ~DoubleUpDownNode ();
 
 	virtual NE::ValueConstPtr			Calculate (NE::EvaluationEnv& env) const override;
@@ -140,7 +140,7 @@ class NumericRangeNode : public BasicUINode
 
 public:
 	NumericRangeNode ();
-	NumericRangeNode (const std::wstring& name, const NUIE::Point& position);
+	NumericRangeNode (const NE::String& name, const NUIE::Point& position);
 	virtual ~NumericRangeNode ();
 
 	virtual bool				IsForceCalculated () const override;
@@ -155,7 +155,7 @@ class IntegerIncrementedNode : public NumericRangeNode
 
 public:
 	IntegerIncrementedNode ();
-	IntegerIncrementedNode (const std::wstring& name, const NUIE::Point& position);
+	IntegerIncrementedNode (const NE::String& name, const NUIE::Point& position);
 	virtual ~IntegerIncrementedNode ();
 	
 	virtual void				Initialize () override;
@@ -172,7 +172,7 @@ class DoubleIncrementedNode : public NumericRangeNode
 
 public:
 	DoubleIncrementedNode ();
-	DoubleIncrementedNode (const std::wstring& name, const NUIE::Point& position);
+	DoubleIncrementedNode (const NE::String& name, const NUIE::Point& position);
 	virtual ~DoubleIncrementedNode ();
 	
 	virtual void				Initialize () override;
@@ -189,7 +189,7 @@ class DoubleDistributedNode : public NumericRangeNode
 
 public:
 	DoubleDistributedNode ();
-	DoubleDistributedNode (const std::wstring& name, const NUIE::Point& position);
+	DoubleDistributedNode (const NE::String& name, const NUIE::Point& position);
 	virtual ~DoubleDistributedNode ();
 
 	virtual void				Initialize () override;
@@ -206,7 +206,7 @@ class ListBuilderNode : public BasicUINode
 
 public:
 	ListBuilderNode ();
-	ListBuilderNode (const std::wstring& name, const NUIE::Point& position);
+	ListBuilderNode (const NE::String& name, const NUIE::Point& position);
 	virtual ~ListBuilderNode ();
 
 	virtual void						Initialize () override;

@@ -34,7 +34,7 @@ class UINode : public NE::Node
 
 public:
 	UINode ();
-	UINode (const std::wstring& nodeName, const Point& nodePosition);
+	UINode (const NE::String& nodeName, const Point& nodePosition);
 	virtual ~UINode ();
 
 	std::wstring				GetNodeName () const;

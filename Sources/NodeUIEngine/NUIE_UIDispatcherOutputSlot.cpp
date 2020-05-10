@@ -12,7 +12,7 @@ UIDispatcherOutputSlot::UIDispatcherOutputSlot () :
 
 }
 
-UIDispatcherOutputSlot::UIDispatcherOutputSlot (const NE::SlotId& id, const std::wstring& name, size_t listIndex) :
+UIDispatcherOutputSlot::UIDispatcherOutputSlot (const NE::SlotId& id, const NE::String& name, size_t listIndex) :
 	UIOutputSlot (id, name),
 	listIndex (listIndex)
 {
