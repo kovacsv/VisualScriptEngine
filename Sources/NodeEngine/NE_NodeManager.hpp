@@ -49,6 +49,8 @@ public:
 
 	NodePtr					GetNode (const NodeId& id);
 	NodePtr					AddNode (const NodePtr& node);
+	NodePtr					DuplicateNode (const NodeId& id);
+	NodePtr					DuplicateNode (const NodePtr& node);
 	bool					DeleteNode (const NodeId& id);
 	bool					DeleteNode (const NodePtr& node);
 

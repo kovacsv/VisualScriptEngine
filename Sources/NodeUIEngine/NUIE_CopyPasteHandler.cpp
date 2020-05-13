@@ -17,27 +17,8 @@ bool CopyPasteHandler::CanPaste () const
 
 bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NE::NodeCollection& nodeCollection)
 {
-	class CopyFilter : public NE::NodeFilter
-	{
-	public:
-		CopyFilter (const NE::NodeCollection& nodeCollection) :
-			nodeCollection (nodeCollection)
-		{
-			
-		}
-
-		virtual bool NeedToProcessNode (const NE::NodeId& nodeId) const override
-		{
-			return nodeCollection.Contains (nodeId);
-		}
-
-	private:
-		const NE::NodeCollection& nodeCollection;
-	};
-
 	tempNodeManager.Clear ();
-	CopyFilter copyFilter (nodeCollection);
-	return NE::NodeManagerMerge::AppendNodeManager (source, tempNodeManager, copyFilter);
+	return NE::NodeManagerMerge::AppendNodeManager (source, tempNodeManager, nodeCollection);
 }
 
 bool CopyPasteHandler::PasteTo (NE::NodeManager& target)

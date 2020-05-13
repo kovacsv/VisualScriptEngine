@@ -72,6 +72,18 @@ private:
 	const std::vector<Point>&	offsets;
 };
 
+class CopyMoveNodesCommand : public UndoableCommand
+{
+public:
+	CopyMoveNodesCommand (const NE::NodeCollection& nodes, const Point& offset);
+
+	virtual void Do (NodeUIManager& uiManager) override;
+
+private:
+	const NE::NodeCollection&	nodes;
+	Point						offset;
+};
+
 class ConnectSlotsCommand : public UndoableCommand
 {
 public:

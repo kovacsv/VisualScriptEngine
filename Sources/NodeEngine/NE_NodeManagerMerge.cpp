@@ -62,6 +62,30 @@ NodeFilter::~NodeFilter ()
 
 }
 
+bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NE::NodeCollection& nodeCollection)
+{
+	class NodeCollectionFilter : public NE::NodeFilter
+	{
+	public:
+		NodeCollectionFilter (const NE::NodeCollection& nodeCollection) :
+			nodeCollection (nodeCollection)
+		{
+
+		}
+
+		virtual bool NeedToProcessNode (const NE::NodeId& nodeId) const override
+		{
+			return nodeCollection.Contains (nodeId);
+		}
+
+	private:
+		const NE::NodeCollection& nodeCollection;
+	};
+
+	NodeCollectionFilter filter (nodeCollection);
+	return NE::NodeManagerMerge::AppendNodeManager (source, target, filter);
+}
+
 bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter)
 {
 	// collect nodes to create

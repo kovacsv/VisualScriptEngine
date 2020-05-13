@@ -171,6 +171,26 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& en
 	return uiNode;
 }
 
+UINodePtr NodeUIManager::DuplicateNode (const UINodePtr& uiNode)
+{
+	if (DBGERROR (uiNode == nullptr)) {
+		return false;
+	}
+	NE::NodePtr clonedNode = nodeManager.DuplicateNode (uiNode);
+	UINodePtr clonedUINode = NE::Node::Cast<UINode> (clonedNode);
+	RequestRecalculateAndRedraw ();
+	return clonedUINode;
+}
+
+UINodePtr NodeUIManager::DuplicateNode (const NE::NodeId& nodeId)
+{
+	if (DBGERROR (!nodeManager.ContainsNode (nodeId))) {
+		return nullptr;
+	}
+	UINodePtr node = GetUINode (nodeId);
+	return DuplicateNode (node);
+}
+
 bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 {
 	if (DBGERROR (uiNode == nullptr)) {

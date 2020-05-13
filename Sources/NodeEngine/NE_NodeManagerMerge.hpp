@@ -27,6 +27,7 @@ public:
 class NodeManagerMerge
 {
 public:
+	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NE::NodeCollection& nodeCollection);
 	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter);
 	static bool UpdateNodeManager (const NodeManager& source, NodeManager& target, MergeEventHandler& eventHandler);
 };

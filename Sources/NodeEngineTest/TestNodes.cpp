@@ -20,15 +20,15 @@ ValueConstPtr SerializableTestNode::Calculate (NE::EvaluationEnv&) const
 	return nullptr;
 }
 
-Stream::Status SerializableTestNode::Read (InputStream&)
+Stream::Status SerializableTestNode::Read (InputStream& inputStream)
 {
-	DBGBREAK ();
+	Node::Read (inputStream);
 	return Stream::Status::Error;
 }
 
-Stream::Status SerializableTestNode::Write (OutputStream&) const
+Stream::Status SerializableTestNode::Write (OutputStream& outputStream) const
 {
-	DBGBREAK ();
+	Node::Write (outputStream);
 	return Stream::Status::Error;
 }
 

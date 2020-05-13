@@ -176,6 +176,70 @@ private:
 	Point				startModelPosition;
 };
 
+class NodeCopyMovingHandler : public MouseMoveHandler
+{
+public:
+	NodeCopyMovingHandler (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
+		MouseMoveHandler (),
+		uiManager (uiManager),
+		relevantNodes (relevantNodes)
+	{
+
+	}
+
+	virtual bool AreOtherHandlersAllowed () const override
+	{
+		return false;
+	}
+
+	virtual void HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
+	{
+		const ViewBox& viewBox = uiManager.GetViewBox ();
+		startModelPosition = viewBox.ViewToModel (position);
+	}
+
+	virtual void HandleMouseMove (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
+	{
+		RequestRedraw ();
+	}
+
+	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	override
+	{
+		const ViewBox& viewBox = uiManager.GetViewBox ();
+		Point offset = viewBox.ViewToModel (position) - startModelPosition;
+
+		CopyMoveNodesCommand command (relevantNodes, offset);
+		uiManager.ExecuteCommand (command);
+
+		uiManager.RequestRedraw ();
+	}
+
+	virtual void HandleAbort () override
+	{
+		RequestRedraw ();
+	}
+
+	virtual void EnumerateDuplicatedNodes (const std::function<void (const NE::NodeId&, const Point&)>& processor) const override
+	{
+		const ViewBox& viewBox = uiManager.GetViewBox ();
+		Point diff = viewBox.ViewToModel (currentPosition) - startModelPosition;
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+			processor (nodeId, diff);
+			return true;
+		});
+	}
+
+private:
+	void RequestRedraw ()
+	{
+		uiManager.RequestRedraw ();
+	}
+
+	NodeUIManager&		uiManager;
+	NE::NodeCollection	relevantNodes;
+	Point				startModelPosition;
+};
+
 template <class StartSlotType, class EndSlotType>
 class NodeConnectionHandler : public MouseMoveHandler
 {
@@ -527,7 +591,11 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 		bool found = FindItemUnderPosition (uiManager, env, position,
 			[&] (const UINodePtr& foundNode) {
 				NE::NodeCollection nodesToMove = GetNodesForCommand (uiManager, foundNode);
-				multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
+				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
+					multiMouseMoveHandler.AddHandler (mouseButton, new NodeCopyMovingHandler (uiManager, nodesToMove));
+				} else {
+					multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
+				}
 			},
 			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
 				if (modifierKeys.Contains (ModifierKeyCode::Control)) {

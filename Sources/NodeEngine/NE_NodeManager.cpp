@@ -181,6 +181,24 @@ NodePtr NodeManager::AddNode (const NodePtr& node)
 	return AddUninitializedNode (node);
 }
 
+NodePtr NodeManager::DuplicateNode (const NodeId& id)
+{
+	if (DBGERROR (!ContainsNode (id))) {
+		return nullptr;
+	}
+	return DuplicateNode (GetNode (id));
+}
+
+NodePtr NodeManager::DuplicateNode (const NodePtr& node)
+{
+	if (DBGERROR (node == nullptr || !ContainsNode (node->GetId ()))) {
+		return nullptr;
+	}
+
+	NodePtr clonedNode = Node::Clone (node);
+	return AddInitializedNode (clonedNode, NodeManager::IdHandlingPolicy::GenerateNewId);
+}
+
 bool NodeManager::DeleteNode (const NodeId& id)
 {
 	if (DBGERROR (!ContainsNode (id))) {
@@ -191,7 +209,7 @@ bool NodeManager::DeleteNode (const NodeId& id)
 
 bool NodeManager::DeleteNode (const NodePtr& node)
 {
-	if (DBGERROR (node->GetId () == NullNodeId || !node->HasNodeEvaluator ())) {
+	if (DBGERROR (node == nullptr || node->GetId () == NullNodeId || !node->HasNodeEvaluator ())) {
 		return false;
 	}
 

@@ -28,11 +28,10 @@ Stream::Status NodeGroup::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-NodeGroupPtr NodeGroup::Clone (const NodeGroupConstPtr& node)
+NodeGroupPtr NodeGroup::Clone (const NodeGroupConstPtr& nodeGroup)
 {
 	MemoryOutputStream outputStream;
-	WriteDynamicObject (outputStream, node.get ());
-	if (DBGERROR (node->Write (outputStream) != Stream::Status::NoError)) {
+	if (DBGERROR (!WriteDynamicObject (outputStream, nodeGroup.get ()))) {
 		return nullptr;
 	}
 

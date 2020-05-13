@@ -75,6 +75,11 @@ void MouseMoveHandler::EnumerateTemporaryConnections (const std::function<void (
 
 }
 
+void MouseMoveHandler::EnumerateDuplicatedNodes (const std::function<void (const NE::NodeId&, const Point&)>&) const
+{
+
+}
+
 bool MouseMoveHandler::NeedToDrawConnection (const NE::NodeId&, const NE::SlotId&, const NE::NodeId&, const NE::SlotId&) const
 {
 	return true;
@@ -157,6 +162,13 @@ void MultiMouseMoveHandler::EnumerateTemporaryConnections (const std::function<v
 {
 	for (const auto& it : handlers) {
 		it.second->EnumerateTemporaryConnections (processor);
+	}
+}
+
+void MultiMouseMoveHandler::EnumerateDuplicatedNodes (const std::function<void (const NE::NodeId&, const Point&)>& processor) const
+{
+	for (const auto& it : handlers) {
+		it.second->EnumerateDuplicatedNodes (processor);
 	}
 }
 

@@ -98,6 +98,22 @@ void MoveNodesWithOffsetsCommand::Do (NodeUIManager& uiManager)
 	}
 }
 
+CopyMoveNodesCommand::CopyMoveNodesCommand (const NE::NodeCollection& nodes, const Point& offset) :
+	UndoableCommand (),
+	nodes (nodes),
+	offset (offset)
+{
+}
+
+void CopyMoveNodesCommand::Do (NodeUIManager& uiManager)
+{
+	for (size_t i = 0; i < nodes.Count (); i++) {
+		const NE::NodeId& nodeId = nodes.Get (i);
+		UINodePtr uiNode = uiManager.DuplicateNode (nodeId);
+		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
+	}
+}
+
 ConnectSlotsCommand::ConnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
 	UndoableCommand (),
 	outputSlot (outputSlot),

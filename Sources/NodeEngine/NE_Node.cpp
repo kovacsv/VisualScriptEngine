@@ -331,8 +331,7 @@ ValueConstPtr Node::EvaluateInputSlot (const InputSlotConstPtr& inputSlot, Evalu
 NodePtr Node::Clone (const NodeConstPtr& node)
 {
 	MemoryOutputStream outputStream;
-	WriteDynamicObject (outputStream, node.get ());
-	if (DBGERROR (node->Write (outputStream) != Stream::Status::NoError)) {
+	if (DBGERROR (!WriteDynamicObject (outputStream, node.get ()))) {
 		return nullptr;
 	}
 

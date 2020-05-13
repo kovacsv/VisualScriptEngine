@@ -181,25 +181,37 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& drawingEnv, const
 		if (!IsNodeVisible (drawingEnv, scaleIndependentData, drawModifier, uiNode)) {
 			continue;
 		}
+		
+		SelectionMode selectionMode = SelectionMode::NotSelected;
+		if (uiManager.GetSelectedNodes ().Contains (uiNode->GetId ())) {
+			selectionMode = SelectionMode::Selected;
+		}
+
 		Point nodeOffset = drawModifier->GetNodeOffset (uiNode->GetId ());
-		DrawNode (drawingEnv, scaleIndependentData, nodeOffset, uiNode);
+		DrawNode (drawingEnv, scaleIndependentData, nodeOffset, selectionMode, uiNode);
 	}
+
+	drawModifier->EnumerateDuplicatedNodes ([&] (const NE::NodeId& nodeId, const Point& offset) {
+		const UINode* uiNode = nodeIdToNodeMap.GetUINode (nodeId);
+		Point nodeOffset = drawModifier->GetNodeOffset (uiNode->GetId ());
+		DrawNode (drawingEnv, scaleIndependentData, nodeOffset + offset, SelectionMode::NotSelected, uiNode);
+	});
 }
 
-void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const Point& offset, const UINode* uiNode) const
+void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const Point& offset, SelectionMode selectionMode, const UINode* uiNode) const
 {
 	ViewBox offsetViewBox (offset, 1.0);
 	ViewBoxContextDecorator offsetContext (drawingEnv.GetDrawingContext (), offsetViewBox);
 	NodeUIDrawingEnvironmentContextDecorator offsetEnv (drawingEnv, offsetContext);
-	DrawNode (offsetEnv, scaleIndependentData, uiNode);
+	DrawNode (offsetEnv, scaleIndependentData, selectionMode, uiNode);
 }
 
-void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const UINode* uiNode) const
+void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, SelectionMode selectionMode, const UINode* uiNode) const
 {
 	Rect nodeRect = uiNode->GetNodeRect (drawingEnv);
 	double selectionThickness = scaleIndependentData.GetSelectionThickness ();
 	Rect selectionRect = nodeRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
-	if (uiManager.GetSelectedNodes ().Contains (uiNode->GetId ())) {
+	if (selectionMode == SelectionMode::Selected) {
 		drawingEnv.GetDrawingContext ().FillRect (selectionRect, drawingEnv.GetSkinParams ().GetNodeSelectionRectPen ().GetColor ());
 		ColorBlenderContextDecorator selectionContext (drawingEnv.GetDrawingContext (), drawingEnv.GetSkinParams ().GetSelectionBlendColor ());
 		NodeUIDrawingEnvironmentContextDecorator selectionEnv (drawingEnv, selectionContext);

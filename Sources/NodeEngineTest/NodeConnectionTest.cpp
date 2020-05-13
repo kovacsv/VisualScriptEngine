@@ -127,6 +127,8 @@ public:
 
 class AdditionNode : public SerializableTestNode
 {
+	DYNAMIC_SERIALIZABLE (AdditionNode);
+
 public:
 	AdditionNode () :
 		SerializableTestNode ()
@@ -147,7 +149,21 @@ public:
 		ValueConstPtr secondResult = EvaluateInputSlot (SlotId ("second"), env);
 		return ValuePtr (new IntValue (IntValue::Get (firstResult) + IntValue::Get (secondResult)));
 	}
+
+	virtual NE::Stream::Status Read (NE::InputStream& inputStream) override
+	{
+		SerializableTestNode::Read (inputStream);
+		return NE::Stream::Status::NoError;
+	}
+
+	virtual NE::Stream::Status Write (NE::OutputStream& outputStream) const override
+	{
+		SerializableTestNode::Write (outputStream);
+		return NE::Stream::Status::NoError;
+	}
 };
+
+DynamicSerializationInfo AdditionNode::serializationInfo (ObjectId ("{18539C48-AACD-46F4-8A2B-3A7DD028951F}"), ObjectVersion (1), AdditionNode::CreateSerializableInstance);
 
 class MultiAdditionNode : public SerializableTestNode
 {
@@ -527,6 +543,21 @@ TEST (SlotConnectionFailedTest2)
 
 	ASSERT (manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out1")), node2->GetInputSlot (SlotId ("in"))));
 	ASSERT (!manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out1")), node2->GetInputSlot (SlotId ("in"))));
+}
+
+TEST (DuplicateNodeTest)
+{
+	NodeManager manager;
+
+	NodePtr node1 = manager.AddNode (NodePtr (new AdditionNode ()));
+	NodePtr node2 = manager.AddNode (NodePtr (new AdditionNode ()));
+	ASSERT (manager.GetNodeCount () == 2);
+	
+	NodePtr node3 = manager.DuplicateNode (node1->GetId ());
+	ASSERT (node3 != nullptr);
+	ASSERT (node3->GetId () != NullNodeId);
+	ASSERT (manager.GetNodeCount () == 3);
+	ASSERT (manager.ContainsNode (node3->GetId ()));
 }
 
 TEST (DeleteNodeTest)

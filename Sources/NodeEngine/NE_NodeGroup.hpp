@@ -22,7 +22,7 @@ public:
 	virtual Stream::Status	Read (InputStream& inputStream) override;
 	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 
-	static NodeGroupPtr		Clone (const NodeGroupConstPtr& node);
+	static NodeGroupPtr		Clone (const NodeGroupConstPtr& nodeGroup);
 };
 
 }

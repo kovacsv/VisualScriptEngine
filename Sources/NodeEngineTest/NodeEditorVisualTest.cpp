@@ -43,7 +43,7 @@ public:
 		doubleUpDownOutputSlotRect = doubleUpDownNode->GetOutputSlotRect (uiEnvironment, SlotId ("out"));
 		rangeOutputSlotSRect = rangeInputNode->GetOutputSlotRect (uiEnvironment, SlotId ("out"));
 		doubleInputHeaderPoint = doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
-		rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);	
+		rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);
 	}
 
 	UINodePtr	doubleUpDownNode;
@@ -167,6 +167,15 @@ TEST (SelectionTest)
 		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, 70.0);
 		env.DragDrop (env.rangeInputHeaderPoint, targetPoint);
 		ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2Moved.svg"));
+		env.RecalcPositions ();
+	}
+
+	{ // move the three nodes together
+		Point targetPoint = env.rangeInputHeaderPoint + Point (20.0, -70.0);
+		env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeInputHeaderPoint, targetPoint, [&] () {
+			ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2DuringDuplicate.svg"));
+		});
+		ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2Duplicated.svg"));
 	}
 }
 
