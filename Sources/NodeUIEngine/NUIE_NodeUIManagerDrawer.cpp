@@ -191,11 +191,20 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& drawingEnv, const
 		DrawNode (drawingEnv, scaleIndependentData, nodeOffset, selectionMode, uiNode);
 	}
 
+	std::vector<std::pair<NE::NodeId, Point>> duplicatedNodes;
 	drawModifier->EnumerateDuplicatedNodes ([&] (const NE::NodeId& nodeId, const Point& offset) {
-		const UINode* uiNode = nodeIdToNodeMap.GetUINode (nodeId);
-		Point nodeOffset = drawModifier->GetNodeOffset (uiNode->GetId ());
-		DrawNode (drawingEnv, scaleIndependentData, nodeOffset + offset, SelectionMode::NotSelected, uiNode);
+		duplicatedNodes.push_back ({ nodeId, offset });
 	});
+	if (!duplicatedNodes.empty ()) {
+		std::sort (duplicatedNodes.begin (), duplicatedNodes.end (), [&] (const std::pair<NE::NodeId, Point>& a, const std::pair<NE::NodeId, Point>& b) {
+			return a.first < b.first;
+		});
+		for (const auto& duplicatedNode : duplicatedNodes) {
+			const UINode* uiNode = nodeIdToNodeMap.GetUINode (duplicatedNode.first);
+			Point nodeOffset = drawModifier->GetNodeOffset (uiNode->GetId ());
+			DrawNode (drawingEnv, scaleIndependentData, nodeOffset + duplicatedNode.second, SelectionMode::NotSelected, uiNode);
+		}
+	}
 }
 
 void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const Point& offset, SelectionMode selectionMode, const UINode* uiNode) const
