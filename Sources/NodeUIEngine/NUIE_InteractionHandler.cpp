@@ -140,10 +140,7 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point offset = viewBox.ViewToModel (position) - startModelPosition;
 
-		std::vector<Point> offsets;
-		offsets.assign (relevantNodes.Count (), offset);
-
-		MoveNodesCommand command (relevantNodes, offsets);
+		MoveNodesCommand command (relevantNodes, offset);
 		uiManager.ExecuteCommand (command);
 
 		uiManager.RequestRedraw ();

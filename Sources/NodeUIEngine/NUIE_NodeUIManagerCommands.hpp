@@ -51,7 +51,19 @@ private:
 class MoveNodesCommand : public UndoableCommand
 {
 public:
-	MoveNodesCommand (const NE::NodeCollection& nodes, const std::vector<Point>& offsets);
+	MoveNodesCommand (const NE::NodeCollection& nodes, const Point& offset);
+
+	virtual void Do (NodeUIManager& uiManager) override;
+
+private:
+	const NE::NodeCollection&	nodes;
+	Point						offset;
+};
+
+class MoveNodesWithOffsetsCommand : public UndoableCommand
+{
+public:
+	MoveNodesWithOffsetsCommand (const NE::NodeCollection& nodes, const std::vector<Point>& offsets);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 

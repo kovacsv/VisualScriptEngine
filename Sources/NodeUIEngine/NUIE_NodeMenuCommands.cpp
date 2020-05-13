@@ -930,7 +930,7 @@ public:
 			DBGBREAK ();
 			return;
 		}
-		MoveNodesCommand command (relevantNodes, offsets);
+		MoveNodesWithOffsetsCommand command (relevantNodes, offsets);
 		uiManager.ExecuteCommand (command);
 	}
 

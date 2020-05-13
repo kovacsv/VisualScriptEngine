@@ -60,14 +60,31 @@ void DeleteNodesCommand::Do (NodeUIManager& uiManager)
 	});
 }
 
-MoveNodesCommand::MoveNodesCommand (const NE::NodeCollection& nodes, const std::vector<Point>& offsets) :
+MoveNodesCommand::MoveNodesCommand (const NE::NodeCollection& nodes, const Point& offset) :
+	UndoableCommand (),
+	nodes (nodes),
+	offset (offset)
+{
+}
+
+void MoveNodesCommand::Do (NodeUIManager& uiManager)
+{
+	for (size_t i = 0; i < nodes.Count (); i++) {
+		const NE::NodeId& nodeId = nodes.Get (i);
+		UINodePtr uiNode = uiManager.GetUINode (nodeId);
+		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
+		uiManager.InvalidateNodeGroupDrawing (uiNode);
+	}
+}
+
+MoveNodesWithOffsetsCommand::MoveNodesWithOffsetsCommand (const NE::NodeCollection& nodes, const std::vector<Point>& offsets) :
 	UndoableCommand (),
 	nodes (nodes),
 	offsets (offsets)
 {
 }
 
-void MoveNodesCommand::Do (NodeUIManager& uiManager)
+void MoveNodesWithOffsetsCommand::Do (NodeUIManager& uiManager)
 {
 	if (DBGERROR (nodes.Count () != offsets.size ())) {
 		return;
