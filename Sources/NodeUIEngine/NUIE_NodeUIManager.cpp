@@ -174,7 +174,7 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& en
 UINodePtr NodeUIManager::DuplicateNode (const UINodePtr& uiNode)
 {
 	if (DBGERROR (uiNode == nullptr)) {
-		return false;
+		return nullptr;
 	}
 	NE::NodePtr clonedNode = nodeManager.DuplicateNode (uiNode);
 	UINodePtr clonedUINode = NE::Node::Cast<UINode> (clonedNode);
