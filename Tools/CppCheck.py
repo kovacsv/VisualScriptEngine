@@ -1,11 +1,6 @@
 import os
 import sys
-import re
-import shutil
 import subprocess
-import datetime
-import urllib
-import urllib2
 
 def Main (argv):
 	currentDir = os.path.dirname (os.path.abspath (__file__))
