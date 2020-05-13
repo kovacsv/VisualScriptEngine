@@ -107,8 +107,12 @@ CopyMoveNodesCommand::CopyMoveNodesCommand (const NE::NodeCollection& nodes, con
 
 void CopyMoveNodesCommand::Do (NodeUIManager& uiManager)
 {
+	std::vector<NE::NodeId> nodeIds;
 	for (size_t i = 0; i < nodes.Count (); i++) {
-		const NE::NodeId& nodeId = nodes.Get (i);
+		nodeIds.push_back (nodes.Get (i));
+	}
+	std::sort (nodeIds.begin (), nodeIds.end ());
+	for (const NE::NodeId& nodeId : nodeIds) {
 		UINodePtr uiNode = uiManager.DuplicateNode (nodeId);
 		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
 	}
