@@ -93,7 +93,6 @@ void ColorChangerContextDecorator::DrawFormattedText (const Rect& rect, const Fo
 
 void ColorChangerContextDecorator::DrawIcon (const Rect& rect, const IconId& iconId)
 {
-	// TODO: change icon color
 	return decorated.DrawIcon (rect, iconId);
 }
 

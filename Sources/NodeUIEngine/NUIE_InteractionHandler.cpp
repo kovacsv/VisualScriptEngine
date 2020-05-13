@@ -139,6 +139,7 @@ public:
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point offset = viewBox.ViewToModel (position) - startModelPosition;
+
 		std::vector<Point> offsets;
 		offsets.assign (relevantNodes.Count (), offset);
 
