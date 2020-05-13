@@ -74,6 +74,11 @@ void NodeCollection::Clear ()
 	nodeSet.clear ();
 }
 
+void NodeCollection::MakeSorted ()
+{
+	std::sort (nodes.begin (), nodes.end ());
+}
+
 bool NodeCollection::operator== (const NodeCollection& rhs) const
 {
 	return nodes == rhs.nodes && nodeSet == rhs.nodeSet;

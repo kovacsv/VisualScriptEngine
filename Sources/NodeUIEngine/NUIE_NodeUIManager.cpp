@@ -223,6 +223,7 @@ const NE::NodeCollection& NodeUIManager::GetSelectedNodes () const
 void NodeUIManager::SetSelectedNodes (const NE::NodeCollection& newSelectedNodes)
 {
 	selectedNodes = newSelectedNodes;
+	selectedNodes.MakeSorted ();
 	status.RequestRedraw ();
 }
 
