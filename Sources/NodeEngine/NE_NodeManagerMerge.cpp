@@ -103,8 +103,10 @@ static void EnumerateInputConnectionsOrdered (const NodeManager& nodeManager, co
 			SlotInfo inputSlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ());
 			std::vector<SlotInfo> outputSlots = GetConnectedOutputSlots (nodeManager, inputSlot);
 			for (const SlotInfo& outputSlotInfo : outputSlots) {
-				ConnectionInfo connection (outputSlotInfo, inputSlotInfo);
-				processor (connection);
+				if (nodes.Contains (outputSlotInfo.GetNodeId ())) {
+					ConnectionInfo connection (outputSlotInfo, inputSlotInfo);
+					processor (connection);
+				}
 			}
 			return true;
 		});
@@ -164,9 +166,6 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 	// maintain connections between added nodes
 	bool success = true;
 	EnumerateInputConnectionsOrdered (source, nodesToClone, [&] (const ConnectionInfo& connection) {
-		if (!nodeFilter.NeedToProcessNode (connection.GetOutputNodeId ())) {
-			return;
-		}
 		NodeConstPtr outputNode = target.GetNode (oldToNewNodeIdTable[connection.GetOutputNodeId ()]);
 		NodeConstPtr inputNode = target.GetNode (oldToNewNodeIdTable[connection.GetInputNodeId ()]);
 		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
