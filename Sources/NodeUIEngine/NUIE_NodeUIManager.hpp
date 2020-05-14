@@ -68,8 +68,6 @@ public:
 	NodeUIManager&				operator= (NodeUIManager&& rhs) = delete;
 
 	UINodePtr					AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& env);
-	UINodePtr					DuplicateNode (const UINodePtr& uiNode);
-	UINodePtr					DuplicateNode (const NE::NodeId& nodeId);
 	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env);
 	bool						DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env);
 
@@ -140,6 +138,7 @@ public:
 	bool						CanPaste () const;
 	bool						Copy (const NE::NodeCollection& nodeCollection);
 	bool						Paste ();
+	NE::NodeCollection			Duplicate (const NE::NodeCollection& nodeCollection);
 
 	void						SaveUndoState ();
 	bool						Undo (NE::EvaluationEnv& env);

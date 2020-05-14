@@ -336,14 +336,27 @@ TEST (DuplicateNodeTest)
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
 
-	NodePtr node1 = uiManager.AddNode (UINodePtr (new TestNode (String (L"TestNode"), Point (0, 0))), NE::EmptyEvaluationEnv);
-	NodePtr node2 = uiManager.AddNode (UINodePtr (new TestNode (String (L"TestNode2"), Point (0, 0))), NE::EmptyEvaluationEnv);
+	UINodePtr node1 = uiManager.AddNode (UINodePtr (new TestNode (String (L"TestNode"), Point (0, 0))), NE::EmptyEvaluationEnv);
+	UINodePtr node2 = uiManager.AddNode (UINodePtr (new TestNode (String (L"TestNode2"), Point (0, 0))), NE::EmptyEvaluationEnv);
 
-	UINodePtr node3 = uiManager.DuplicateNode (node2->GetId ());
+	NE::NodeCollection nodesToDuplicate ({ node1->GetId (), node2->GetId () });
+	nodesToDuplicate.MakeSorted ();
+
+	NE::NodeCollection duplicatedNodes = uiManager.Duplicate (nodesToDuplicate);
+
+	ASSERT (duplicatedNodes.Count () == 2);
+	UINodePtr node3 = uiManager.GetUINode (duplicatedNodes.Get (0));
+	UINodePtr node4 = uiManager.GetUINode (duplicatedNodes.Get (1));
+
 	ASSERT (node3 != nullptr);
 	ASSERT (node3->GetId () != NullNodeId);
-	ASSERT (node3->GetNodeName () == L"TestNode2");
+	ASSERT (node3->GetNodeName () == L"TestNode");
 	ASSERT (uiManager.ContainsUINode (node3->GetId ()));
+
+	ASSERT (node4 != nullptr);
+	ASSERT (node4->GetId () != NullNodeId);
+	ASSERT (node4->GetNodeName () == L"TestNode2");
+	ASSERT (uiManager.ContainsUINode (node4->GetId ()));
 }
 
 }

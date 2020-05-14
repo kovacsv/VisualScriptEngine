@@ -196,7 +196,7 @@ TEST (MoveCopyNodesTest)
 	}
 
 	{ // duplicate the three nodes together
-		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, 40.0);
+		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, -60.0);
 		env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeInputHeaderPoint, targetPoint, [&] () {
 			ASSERT (env.CheckReference ("MoveCopy_DoubleAndRangeDuringDuplicate.svg"));
 		});

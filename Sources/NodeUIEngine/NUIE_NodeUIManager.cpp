@@ -171,41 +171,6 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& en
 	return uiNode;
 }
 
-UINodePtr NodeUIManager::DuplicateNode (const UINodePtr& uiNode)
-{
-	if (DBGERROR (uiNode == nullptr || !ContainsUINode (uiNode->GetId ()))) {
-		return nullptr;
-	}
-
-	CopyPasteHandler tempCopyPasteHandler;
-
-	NE::NodeCollection nodesToDuplicate ({ uiNode->GetId () });
-	if (DBGERROR (!tempCopyPasteHandler.CopyFrom (nodeManager, nodesToDuplicate))) {
-		return nullptr;
-	}
-
-	NE::NodeCollection duplicatedNodes;
-	if (DBGERROR (!tempCopyPasteHandler.PasteTo (nodeManager, duplicatedNodes))) {
-		return nullptr;
-	}
-
-	if (DBGERROR (duplicatedNodes.IsEmpty ())) {
-		return nullptr;
-	}
-
-	RequestRecalculateAndRedraw ();
-	return GetUINode (duplicatedNodes.Get (0));
-}
-
-UINodePtr NodeUIManager::DuplicateNode (const NE::NodeId& nodeId)
-{
-	if (DBGERROR (!nodeManager.ContainsNode (nodeId))) {
-		return nullptr;
-	}
-	UINodePtr node = GetUINode (nodeId);
-	return DuplicateNode (node);
-}
-
 bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 {
 	if (DBGERROR (uiNode == nullptr)) {
@@ -655,6 +620,24 @@ bool NodeUIManager::Paste ()
 	bool success = copyPasteHandler.PasteTo (nodeManager, pastedNodes);
 	RequestRecalculateAndRedraw ();
 	return success;
+}
+
+NE::NodeCollection NodeUIManager::Duplicate (const NE::NodeCollection& nodeCollection)
+{
+	static const NE::NodeCollection EmptyNodeCollection;
+
+	CopyPasteHandler tempCopyPasteHandler;
+	if (DBGERROR (!tempCopyPasteHandler.CopyFrom (nodeManager, nodeCollection))) {
+		return EmptyNodeCollection;
+	}
+
+	NE::NodeCollection duplicatedNodes;
+	if (DBGERROR (!tempCopyPasteHandler.PasteTo (nodeManager, duplicatedNodes))) {
+		return EmptyNodeCollection;
+	}
+
+	RequestRecalculateAndRedraw ();
+	return duplicatedNodes;
 }
 
 void NodeUIManager::SaveUndoState ()

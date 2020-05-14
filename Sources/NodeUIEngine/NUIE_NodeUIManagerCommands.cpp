@@ -107,11 +107,12 @@ CopyMoveNodesCommand::CopyMoveNodesCommand (const NE::NodeCollection& nodes, con
 
 void CopyMoveNodesCommand::Do (NodeUIManager& uiManager)
 {
-	for (size_t i = 0; i < nodes.Count (); i++) {
-		const NE::NodeId& nodeId = nodes.Get (i);
-		UINodePtr uiNode = uiManager.DuplicateNode (nodeId);
+	NE::NodeCollection duplicatedNodes = uiManager.Duplicate (nodes);
+	duplicatedNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+		UINodePtr uiNode = uiManager.GetUINode (nodeId);
 		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
-	}
+		return true;
+	});
 }
 
 ConnectSlotsCommand::ConnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
