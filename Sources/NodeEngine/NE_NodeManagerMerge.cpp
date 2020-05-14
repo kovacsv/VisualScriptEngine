@@ -49,7 +49,7 @@ EmptyAppendEventHandler::~EmptyAppendEventHandler ()
 
 }
 
-void EmptyAppendEventHandler::NodeAdded (const NE::NodeId&)
+void EmptyAppendEventHandler::NodeAdded (const NodeId&)
 {
 
 }
@@ -74,7 +74,7 @@ EmptyUpdateEventHandler::~EmptyUpdateEventHandler ()
 
 }
 
-void EmptyUpdateEventHandler::BeforeNodeDelete (const NE::NodeId&)
+void EmptyUpdateEventHandler::BeforeNodeDelete (const NodeId&)
 {
 
 }
@@ -88,9 +88,17 @@ static std::vector<SlotInfo> GetConnectedOutputSlots (const NodeManager& nodeMan
 	return result;
 }
 
-static void EnumerateInputConnectionsOrdered (const NodeManager& nodeManager, const std::vector<NodeConstPtr>& nodes, const std::function<void (const ConnectionInfo&)>& processor)
+static void Sort (std::vector<NodeId>& nodes)
 {
-	for (const NodeConstPtr& node : nodes) {
+	std::sort (nodes.begin (), nodes.end (), [&] (const NodeId& a, const NodeId& b) {
+		return a < b;
+	});
+}
+
+static void EnumerateInputConnectionsOrdered (const NodeManager& nodeManager, const NodeCollection& nodes, const std::function<void (const ConnectionInfo&)>& processor)
+{
+	nodes.Enumerate ([&] (const NodeId& nodeId) {
+		NodeConstPtr node = nodeManager.GetNode (nodeId);
 		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
 			SlotInfo inputSlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ());
 			std::vector<SlotInfo> outputSlots = GetConnectedOutputSlots (nodeManager, inputSlot);
@@ -100,68 +108,58 @@ static void EnumerateInputConnectionsOrdered (const NodeManager& nodeManager, co
 			}
 			return true;
 		});
-	}
-}
-
-static void Sort (std::vector<NodeId>& nodes)
-{
-	std::sort (nodes.begin (), nodes.end (), [&] (const NodeId& a, const NodeId& b) {
-		return a < b;
+		return true;
 	});
 }
 
-static void Sort (std::vector<NodeConstPtr>& nodes)
+bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeCollection& nodeCollection, AppendEventHandler& eventHandler)
 {
-	std::sort (nodes.begin (), nodes.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) {
-		return a->GetId () < b->GetId ();
-	});
-}
-
-bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NE::NodeCollection& nodeCollection, AppendEventHandler& eventHandler)
-{
-	class NodeCollectionFilter : public NE::NodeFilter
+	class NodeCollectionFilter : public NodeFilter
 	{
 	public:
-		NodeCollectionFilter (const NE::NodeCollection& nodeCollection) :
+		NodeCollectionFilter (const NodeCollection& nodeCollection) :
 			nodeCollection (nodeCollection)
 		{
 
 		}
 
-		virtual bool NeedToProcessNode (const NE::NodeId& nodeId) const override
+		virtual bool NeedToProcessNode (const NodeId& nodeId) const override
 		{
 			return nodeCollection.Contains (nodeId);
 		}
 
 	private:
-		const NE::NodeCollection& nodeCollection;
+		const NodeCollection& nodeCollection;
 	};
 
 	NodeCollectionFilter filter (nodeCollection);
-	return NE::NodeManagerMerge::AppendNodeManager (source, target, filter, eventHandler);
+	return NodeManagerMerge::AppendNodeManager (source, target, filter, eventHandler);
 }
 
 bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter, AppendEventHandler& eventHandler)
 {
 	// collect nodes to create
-	std::vector<NodeConstPtr> nodesToClone;
+	NodeCollection nodesToClone;
 	source.EnumerateNodes ([&] (const NodeConstPtr& node) {
-		if (!nodeFilter.NeedToProcessNode (node->GetId ())) {
+		NodeId nodeId = node->GetId ();
+		if (!nodeFilter.NeedToProcessNode (nodeId)) {
 			return true;
 		}
-		nodesToClone.push_back (node);
+		nodesToClone.Insert (nodeId);
 		return true;
 	});
-	Sort (nodesToClone);
+	nodesToClone.MakeSorted ();
 
 	// add nodes
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
-	for (const NodeConstPtr& node : nodesToClone) {
+	nodesToClone.Enumerate ([&] (const NodeId& nodeId) {
+		NodeConstPtr node = source.GetNode (nodeId);
 		NodePtr cloned = Node::Clone (node);
 		target.AddInitializedNode (cloned, NodeManager::IdHandlingPolicy::GenerateNewId);
 		oldToNewNodeIdTable.insert ({ node->GetId (), cloned->GetId () });
 		eventHandler.NodeAdded (cloned->GetId ());
-	}
+		return true;
+	});
 
 	// maintain connections between added nodes
 	bool success = true;

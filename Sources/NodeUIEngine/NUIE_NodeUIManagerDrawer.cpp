@@ -137,7 +137,7 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv,
 		bool begSelected = selectedNodes.Contains (begNode->GetId ());
 		begNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
 			Point beg = GetOutputSlotConnPosition (drawingEnv, drawModifier, begNode, outputSlot->GetId ());
-			uiManager.EnumerateConnectedInputSlots (outputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
+			uiManager.EnumerateConnectedUIInputSlots (outputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
 				const UINode* endNode = nodeIdToNodeMap.GetUINode (inputSlot->GetOwnerNodeId ());
 				if (DBGERROR (endNode == nullptr)) {
 					return;

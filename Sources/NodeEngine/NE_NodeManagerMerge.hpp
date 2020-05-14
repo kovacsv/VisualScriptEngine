@@ -48,7 +48,7 @@ public:
 	UpdateEventHandler ();
 	virtual ~UpdateEventHandler ();
 
-	virtual void BeforeNodeDelete (const NE::NodeId& nodeId) = 0;
+	virtual void BeforeNodeDelete (const NodeId& nodeId) = 0;
 };
 
 class EmptyUpdateEventHandler : public UpdateEventHandler
@@ -57,13 +57,13 @@ public:
 	EmptyUpdateEventHandler ();
 	virtual ~EmptyUpdateEventHandler ();
 
-	virtual void BeforeNodeDelete (const NE::NodeId& nodeId) override;
+	virtual void BeforeNodeDelete (const NodeId& nodeId) override;
 };
 
 class NodeManagerMerge
 {
 public:
-	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NE::NodeCollection& nodeCollection, AppendEventHandler& eventHandler);
+	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeCollection& nodeCollection, AppendEventHandler& eventHandler);
 	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter, AppendEventHandler& eventHandler);
 	static bool UpdateNodeManager (const NodeManager& source, NodeManager& target, UpdateEventHandler& eventHandler);
 };

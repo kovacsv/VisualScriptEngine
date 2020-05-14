@@ -281,14 +281,14 @@ void NodeUIManager::EnumerateConnectedOutputSlots (const NE::InputSlotConstPtr& 
 	nodeManager.EnumerateConnectedOutputSlots (inputSlot, processor);
 }
 
-void NodeUIManager::EnumerateConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const
+void NodeUIManager::EnumerateConnectedUIInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const
 {
 	nodeManager.EnumerateConnectedInputSlots (outputSlot, [&] (const NE::InputSlotConstPtr& inputSlot) {
 		processor (std::dynamic_pointer_cast<const UIInputSlot> (inputSlot));
 	});
 }
 
-void NodeUIManager::EnumerateConnectedOutputSlots (const UIInputSlotConstPtr& inputSlot, const std::function<void (UIOutputSlotConstPtr)>& processor) const
+void NodeUIManager::EnumerateConnectedUIOutputSlots (const UIInputSlotConstPtr& inputSlot, const std::function<void (UIOutputSlotConstPtr)>& processor) const
 {
 	nodeManager.EnumerateConnectedOutputSlots (inputSlot, [&] (const NE::OutputSlotConstPtr& outputSlot) {
 		processor (std::dynamic_pointer_cast<const UIOutputSlot> (outputSlot));

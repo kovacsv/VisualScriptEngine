@@ -10,6 +10,27 @@
 namespace NUIE
 {
 
+static void EnumerateInputConnections (NodeUIDrawingEnvironment& env, const NodeUIManager& uiManager, const NE::NodeCollection& nodes, const std::function<void (const Point&, const Point&)>& processor)
+{
+	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+		UINodeConstPtr inputNode = uiManager.GetUINode (nodeId);
+		inputNode->EnumerateUIInputSlots ([&] (const UIInputSlotConstPtr& inputSlot) {
+			NE::SlotInfo inputSlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ());
+			uiManager.EnumerateConnectedUIOutputSlots (inputSlot, [&] (const UIOutputSlotConstPtr outputSlot) {
+				if (nodes.Contains (outputSlot->GetOwnerNodeId ())) {
+					UINodeConstPtr outputNode = uiManager.GetUINode (outputSlot->GetOwnerNodeId ());
+					processor (
+						outputNode->GetOutputSlotConnPosition (env, outputSlot->GetId ()),
+						inputNode->GetInputSlotConnPosition (env, inputSlot->GetId ())
+					);
+				}
+			});
+			return true;
+		});
+		return true;
+	});
+}
+
 class PanningHandler : public MouseMoveHandler
 {
 public:
@@ -179,12 +200,14 @@ private:
 class NodeCopyMovingHandler : public MouseMoveHandler
 {
 public:
-	NodeCopyMovingHandler (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
+	NodeCopyMovingHandler (NodeUIDrawingEnvironment& drawingEnv, NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
 		MouseMoveHandler (),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
-
+		EnumerateInputConnections (drawingEnv, uiManager, relevantNodes, [&] (const Point& beg, const Point& end) {
+			temporaryConnections.push_back ({ beg, end });
+		});
 	}
 
 	virtual bool AreOtherHandlersAllowed () const override
@@ -219,6 +242,15 @@ public:
 		RequestRedraw ();
 	}
 
+	virtual void EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>& processor) const override
+	{
+		const ViewBox& viewBox = uiManager.GetViewBox ();
+		Point diff = viewBox.ViewToModel (currentPosition) - startModelPosition;
+		for (const auto& connection : temporaryConnections) {
+			processor (connection.first + diff, connection.second + diff);
+		}
+	}
+
 	virtual void EnumerateDuplicatedNodes (const std::function<void (const NE::NodeId&, const Point&)>& processor) const override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
@@ -235,9 +267,10 @@ private:
 		uiManager.RequestRedraw ();
 	}
 
-	NodeUIManager&		uiManager;
-	NE::NodeCollection	relevantNodes;
-	Point				startModelPosition;
+	NodeUIManager&							uiManager;
+	NE::NodeCollection						relevantNodes;
+	Point									startModelPosition;
+	std::vector<std::pair<Point, Point>>	temporaryConnections;
 };
 
 template <class StartSlotType, class EndSlotType>
@@ -592,7 +625,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 			[&] (const UINodePtr& foundNode) {
 				NE::NodeCollection nodesToMove = GetNodesForCommand (uiManager, foundNode);
 				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
-					multiMouseMoveHandler.AddHandler (mouseButton, new NodeCopyMovingHandler (uiManager, nodesToMove));
+					multiMouseMoveHandler.AddHandler (mouseButton, new NodeCopyMovingHandler (env, uiManager, nodesToMove));
 				} else {
 					multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
 				}
@@ -601,7 +634,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
 					if (uiManager.GetConnectedInputSlotCount (foundOutputSlot) == 1) {
 						UIInputSlotConstPtr foundInputSlot = nullptr;
-						uiManager.EnumerateConnectedInputSlots (foundOutputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
+						uiManager.EnumerateConnectedUIInputSlots (foundOutputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
 							foundInputSlot = inputSlot;
 							return true;
 						});
@@ -621,7 +654,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
 					if (uiManager.GetConnectedOutputSlotCount (foundInputSlot) == 1) {
 						UIOutputSlotConstPtr foundOutputSlot = nullptr;
-						uiManager.EnumerateConnectedOutputSlots (foundInputSlot, [&] (const UIOutputSlotConstPtr& outputSlot) {
+						uiManager.EnumerateConnectedUIOutputSlots (foundInputSlot, [&] (const UIOutputSlotConstPtr& outputSlot) {
 							foundOutputSlot = outputSlot;
 							return true;
 						});
