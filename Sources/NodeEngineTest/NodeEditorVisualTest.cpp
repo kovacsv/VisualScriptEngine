@@ -154,7 +154,7 @@ TEST (SelectionTest)
 		ASSERT (env.CheckReference ("Selection_RangeAndViewer2Selected.svg"));
 	}
 
-	{ // select node with selection rect
+	{ // select nodes with selection rect
 		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd = env.doubleInputRect.GetBottomRight () + Point (10.0, 10.0);
 		env.nodeEditor.OnMouseDown (ModifierKeys ({ ModifierKeyCode::Control }), MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
@@ -162,20 +162,45 @@ TEST (SelectionTest)
 		env.nodeEditor.OnMouseUp (ModifierKeys ({ ModifierKeyCode::Control }), MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
 		ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2Selected.svg"));
 	}
+}
+
+TEST (MoveNodesTest)
+{
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
+	env.nodeEditor.ConnectOutputSlotToInputSlot (env.doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), env.rangeInputNode->GetUIInputSlot (SlotId ("start")));
+
+	{ // select nodes with selection rect
+		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
+		Point rectSelectEnd = env.rangeInputRect.GetBottomRight () + Point (10.0, 10.0);
+		env.DragDrop (rectSelectStart, rectSelectEnd);
+		ASSERT (env.CheckReference ("Move_DoubleAndRangeSelected.svg"));
+	}
 
 	{ // move the three nodes together
-		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, 70.0);
+		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, 40.0);
 		env.DragDrop (env.rangeInputHeaderPoint, targetPoint);
-		ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2Moved.svg"));
-		env.RecalcPositions ();
+		ASSERT (env.CheckReference ("Move_DoubleAndRangeMoved.svg"));
+	}
+}
+
+TEST (MoveCopyNodesTest)
+{
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
+	env.nodeEditor.ConnectOutputSlotToInputSlot (env.doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), env.rangeInputNode->GetUIInputSlot (SlotId ("start")));
+
+	{ // select nodes with selection rect
+		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
+		Point rectSelectEnd = env.rangeInputRect.GetBottomRight () + Point (10.0, 10.0);
+		env.DragDrop (rectSelectStart, rectSelectEnd);
+		ASSERT (env.CheckReference ("MoveCopy_DoubleAndRangeSelected.svg"));
 	}
 
 	{ // duplicate the three nodes together
-		Point targetPoint = env.rangeInputHeaderPoint + Point (20.0, -70.0);
+		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, 40.0);
 		env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeInputHeaderPoint, targetPoint, [&] () {
-			ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2DuringDuplicate.svg"));
+			ASSERT (env.CheckReference ("MoveCopy_DoubleAndRangeDuringDuplicate.svg"));
 		});
-		ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2Duplicated.svg"));
+		ASSERT (env.CheckReference ("MoveCopy_DoubleAndRangeDuplicated.svg"));
 	}
 }
 

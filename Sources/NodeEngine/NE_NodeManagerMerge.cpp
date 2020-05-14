@@ -88,7 +88,7 @@ static std::vector<SlotInfo> GetConnectedOutputSlots (const NodeManager& nodeMan
 	return result;
 }
 
-static void EnumerateConnectionsOrdered (const NodeManager& nodeManager, const std::vector<NodeConstPtr>& nodes, const std::function<void (const ConnectionInfo&)>& processor)
+static void EnumerateInputConnectionsOrdered (const NodeManager& nodeManager, const std::vector<NodeConstPtr>& nodes, const std::function<void (const ConnectionInfo&)>& processor)
 {
 	for (const NodeConstPtr& node : nodes) {
 		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
@@ -165,7 +165,7 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 
 	// maintain connections between added nodes
 	bool success = true;
-	EnumerateConnectionsOrdered (source, nodesToClone, [&] (const ConnectionInfo& connection) {
+	EnumerateInputConnectionsOrdered (source, nodesToClone, [&] (const ConnectionInfo& connection) {
 		if (!nodeFilter.NeedToProcessNode (connection.GetOutputNodeId ())) {
 			return;
 		}
