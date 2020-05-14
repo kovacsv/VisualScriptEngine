@@ -4,12 +4,77 @@
 namespace NE
 {
 
-MergeEventHandler::MergeEventHandler ()
+NodeFilter::NodeFilter ()
+{
+
+}
+
+NodeFilter::~NodeFilter ()
+{
+
+}
+
+AllNodesFilter::AllNodesFilter ()
+{
+
+}
+
+AllNodesFilter::~AllNodesFilter ()
+{
+
+}
+
+bool AllNodesFilter::NeedToProcessNode (const NodeId&) const
+{
+	return true;
+}
+
+AppendEventHandler::AppendEventHandler ()
+{
+
+}
+
+AppendEventHandler::~AppendEventHandler ()
+{
+
+}
+
+EmptyAppendEventHandler::EmptyAppendEventHandler ()
+{
+
+}
+
+EmptyAppendEventHandler::~EmptyAppendEventHandler ()
+{
+
+}
+
+void EmptyAppendEventHandler::NodeAdded (const NE::NodeId&)
+{
+
+}
+
+UpdateEventHandler::UpdateEventHandler ()
 {
 	
 }
 
-MergeEventHandler::~MergeEventHandler ()
+UpdateEventHandler::~UpdateEventHandler ()
+{
+
+}
+
+EmptyUpdateEventHandler::EmptyUpdateEventHandler ()
+{
+
+}
+
+EmptyUpdateEventHandler::~EmptyUpdateEventHandler ()
+{
+
+}
+
+void EmptyUpdateEventHandler::BeforeNodeDelete (const NE::NodeId&)
 {
 
 }
@@ -52,17 +117,7 @@ static void Sort (std::vector<NodeConstPtr>& nodes)
 	});
 }
 
-NodeFilter::NodeFilter ()
-{
-
-}
-
-NodeFilter::~NodeFilter ()
-{
-
-}
-
-bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NE::NodeCollection& nodeCollection)
+bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NE::NodeCollection& nodeCollection, AppendEventHandler& eventHandler)
 {
 	class NodeCollectionFilter : public NE::NodeFilter
 	{
@@ -83,10 +138,10 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 	};
 
 	NodeCollectionFilter filter (nodeCollection);
-	return NE::NodeManagerMerge::AppendNodeManager (source, target, filter);
+	return NE::NodeManagerMerge::AppendNodeManager (source, target, filter, eventHandler);
 }
 
-bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter)
+bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter, AppendEventHandler& eventHandler)
 {
 	// collect nodes to create
 	std::vector<NodeConstPtr> nodesToClone;
@@ -105,6 +160,7 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 		NodePtr cloned = Node::Clone (node);
 		target.AddInitializedNode (cloned, NodeManager::IdHandlingPolicy::GenerateNewId);
 		oldToNewNodeIdTable.insert ({ node->GetId (), cloned->GetId () });
+		eventHandler.NodeAdded (cloned->GetId ());
 	}
 
 	// maintain connections between added nodes
@@ -134,7 +190,7 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 	return success;
 }
 
-bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager& target, MergeEventHandler& eventHandler)
+bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager& target, UpdateEventHandler& eventHandler)
 {
 	// collect nodes to create or delete
 	std::vector<NodeId> nodesToCreate;

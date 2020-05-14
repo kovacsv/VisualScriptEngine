@@ -545,21 +545,6 @@ TEST (SlotConnectionFailedTest2)
 	ASSERT (!manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out1")), node2->GetInputSlot (SlotId ("in"))));
 }
 
-TEST (DuplicateNodeTest)
-{
-	NodeManager manager;
-
-	NodePtr node1 = manager.AddNode (NodePtr (new AdditionNode ()));
-	NodePtr node2 = manager.AddNode (NodePtr (new AdditionNode ()));
-	ASSERT (manager.GetNodeCount () == 2);
-	
-	NodePtr node3 = manager.DuplicateNode (node1->GetId ());
-	ASSERT (node3 != nullptr);
-	ASSERT (node3->GetId () != NullNodeId);
-	ASSERT (manager.GetNodeCount () == 3);
-	ASSERT (manager.ContainsNode (node3->GetId ()));
-}
-
 TEST (DeleteNodeTest)
 {
 	NodeManager manager;

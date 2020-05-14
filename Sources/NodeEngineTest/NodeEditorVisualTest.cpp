@@ -170,7 +170,7 @@ TEST (SelectionTest)
 		env.RecalcPositions ();
 	}
 
-	{ // move the three nodes together
+	{ // duplicate the three nodes together
 		Point targetPoint = env.rangeInputHeaderPoint + Point (20.0, -70.0);
 		env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeInputHeaderPoint, targetPoint, [&] () {
 			ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2DuringDuplicate.svg"));

@@ -10,17 +10,17 @@ namespace NUIE
 {
 static const size_t NodeUIManagerVersion = 1;
 
-class NodeUIManagerMergeEventHandler : public NE::MergeEventHandler
+class NodeUIManagerUpdateEventHandler : public NE::UpdateEventHandler
 {
 public:
-	NodeUIManagerMergeEventHandler (NodeUIManager& uiManager, NE::EvaluationEnv& env) :
+	NodeUIManagerUpdateEventHandler (NodeUIManager& uiManager, NE::EvaluationEnv& env) :
 		uiManager (uiManager),
 		env (env)
 	{
 	
 	}
 
-	virtual ~NodeUIManagerMergeEventHandler ()
+	virtual ~NodeUIManagerUpdateEventHandler ()
 	{
 	
 	}
@@ -173,13 +173,28 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& en
 
 UINodePtr NodeUIManager::DuplicateNode (const UINodePtr& uiNode)
 {
-	if (DBGERROR (uiNode == nullptr)) {
+	if (DBGERROR (uiNode == nullptr || !ContainsUINode (uiNode->GetId ()))) {
 		return nullptr;
 	}
-	NE::NodePtr clonedNode = nodeManager.DuplicateNode (uiNode);
-	UINodePtr clonedUINode = NE::Node::Cast<UINode> (clonedNode);
+
+	CopyPasteHandler tempCopyPasteHandler;
+
+	NE::NodeCollection nodesToDuplicate ({ uiNode->GetId () });
+	if (DBGERROR (!tempCopyPasteHandler.CopyFrom (nodeManager, nodesToDuplicate))) {
+		return nullptr;
+	}
+
+	NE::NodeCollection duplicatedNodes;
+	if (DBGERROR (!tempCopyPasteHandler.PasteTo (nodeManager, duplicatedNodes))) {
+		return nullptr;
+	}
+
+	if (DBGERROR (duplicatedNodes.IsEmpty ())) {
+		return nullptr;
+	}
+
 	RequestRecalculateAndRedraw ();
-	return clonedUINode;
+	return GetUINode (duplicatedNodes.Get (0));
 }
 
 UINodePtr NodeUIManager::DuplicateNode (const NE::NodeId& nodeId)
@@ -636,7 +651,8 @@ bool NodeUIManager::Copy (const NE::NodeCollection& nodeCollection)
 
 bool NodeUIManager::Paste ()
 {
-	bool success = copyPasteHandler.PasteTo (nodeManager);
+	NE::NodeCollection pastedNodes;
+	bool success = copyPasteHandler.PasteTo (nodeManager, pastedNodes);
 	RequestRecalculateAndRedraw ();
 	return success;
 }
@@ -648,7 +664,7 @@ void NodeUIManager::SaveUndoState ()
 
 bool NodeUIManager::Undo (NE::EvaluationEnv& env)
 {
-	NodeUIManagerMergeEventHandler eventHandler (*this, env);
+	NodeUIManagerUpdateEventHandler eventHandler (*this, env);
 	bool success = undoHandler.Undo (nodeManager, eventHandler);
 	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculateAndRedraw ();
@@ -657,7 +673,7 @@ bool NodeUIManager::Undo (NE::EvaluationEnv& env)
 
 bool NodeUIManager::Redo (NE::EvaluationEnv& env)
 {
-	NodeUIManagerMergeEventHandler eventHandler (*this, env);
+	NodeUIManagerUpdateEventHandler eventHandler (*this, env);
 	bool success = undoHandler.Redo (nodeManager, eventHandler);
 	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculateAndRedraw ();

@@ -22,7 +22,7 @@ void UndoHandler::SaveUndoState (const NE::NodeManager& nodeManager)
 	SaveAndAddState (nodeManager, undoStack);
 }
 
-bool UndoHandler::Undo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler)
+bool UndoHandler::Undo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler)
 {
 	if (undoStack.empty ()) {
 		return false;
@@ -36,7 +36,7 @@ bool UndoHandler::Undo (NE::NodeManager& targetNodeManager, NE::MergeEventHandle
 	return NE::NodeManagerMerge::UpdateNodeManager (*undoState.get (), targetNodeManager, eventHandler);
 }
 
-bool UndoHandler::Redo (NE::NodeManager& targetNodeManager, NE::MergeEventHandler& eventHandler)
+bool UndoHandler::Redo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler)
 {
 	if (redoStack.empty ()) {
 		return false;

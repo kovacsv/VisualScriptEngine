@@ -18,22 +18,33 @@ bool CopyPasteHandler::CanPaste () const
 bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NE::NodeCollection& nodeCollection)
 {
 	tempNodeManager.Clear ();
-	return NE::NodeManagerMerge::AppendNodeManager (source, tempNodeManager, nodeCollection);
+	NE::EmptyAppendEventHandler eventHandler;
+	return NE::NodeManagerMerge::AppendNodeManager (source, tempNodeManager, nodeCollection, eventHandler);
 }
 
-bool CopyPasteHandler::PasteTo (NE::NodeManager& target)
+bool CopyPasteHandler::PasteTo (NE::NodeManager& target, NE::NodeCollection& pastedNodes)
 {
-	class AllNodesFilter : public NE::NodeFilter
+	class PasteEventHandler : public NE::AppendEventHandler
 	{
 	public:
-		virtual bool NeedToProcessNode (const NE::NodeId&) const override
+		PasteEventHandler (NE::NodeCollection& pastedNodes) :
+			pastedNodes (pastedNodes)
 		{
-			return true;
+
 		}
+
+		virtual void NodeAdded (const NE::NodeId& nodeId) override
+		{
+			pastedNodes.Insert (nodeId);
+		}
+
+	private:
+		NE::NodeCollection& pastedNodes;
 	};
 
-	AllNodesFilter allNodesFilter;
-	return NE::NodeManagerMerge::AppendNodeManager (tempNodeManager, target, allNodesFilter);
+	NE::AllNodesFilter allNodesFilter;
+	PasteEventHandler eventHandler (pastedNodes);
+	return NE::NodeManagerMerge::AppendNodeManager (tempNodeManager, target, allNodesFilter, eventHandler);
 }
 
 void CopyPasteHandler::Clear ()

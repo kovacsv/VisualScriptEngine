@@ -19,7 +19,15 @@ namespace UINodeTest
 
 class TestNode : public SerializableTestUINode
 {
+	DYNAMIC_SERIALIZABLE (TestNode);
+
 public:
+	TestNode () :
+		TestNode (String (), Point ())
+	{
+
+	}
+
 	TestNode (const String& name, const Point& position) :
 		SerializableTestUINode (name, position)
 	{
@@ -62,6 +70,8 @@ public:
 	
 	}
 };
+
+NE::DynamicSerializationInfo TestNode::serializationInfo (NE::ObjectId ("{54A1DE47-8D06-4292-886A-7B8D676271D2}"), NE::ObjectVersion (1), TestNode::CreateSerializableInstance);
 
 class TestNode2 : public SerializableTestUINode
 {
@@ -318,6 +328,22 @@ TEST (NodeParametersTest4)
 		ApplyCommonParameter (uiManager, EmptyEvaluationEnv, nodeCollection, paramList.GetParameter (1), newValue);
 		ASSERT (node->GetMyEnumValue () == EnumerationParamTestNode::MyEnumValue::BEnum);
 	}
+}
+
+
+TEST (DuplicateNodeTest)
+{
+	TestDrawingEnvironment env;
+	NodeUIManager uiManager (env);
+
+	NodePtr node1 = uiManager.AddNode (UINodePtr (new TestNode (String (L"TestNode"), Point (0, 0))), NE::EmptyEvaluationEnv);
+	NodePtr node2 = uiManager.AddNode (UINodePtr (new TestNode (String (L"TestNode2"), Point (0, 0))), NE::EmptyEvaluationEnv);
+
+	UINodePtr node3 = uiManager.DuplicateNode (node2->GetId ());
+	ASSERT (node3 != nullptr);
+	ASSERT (node3->GetId () != NullNodeId);
+	ASSERT (node3->GetNodeName () == L"TestNode2");
+	ASSERT (uiManager.ContainsUINode (node3->GetId ()));
 }
 
 }

@@ -6,15 +6,6 @@
 namespace NE
 {
 
-class MergeEventHandler
-{
-public:
-	MergeEventHandler ();
-	virtual ~MergeEventHandler ();
-
-	virtual void BeforeNodeDelete (const NE::NodeId& nodeId) = 0;
-};
-
 class NodeFilter
 {
 public:
@@ -24,14 +15,58 @@ public:
 	virtual bool NeedToProcessNode (const NodeId& nodeId) const = 0;
 };
 
+class AllNodesFilter : public NodeFilter
+{
+public:
+	AllNodesFilter ();
+	virtual ~AllNodesFilter ();
+
+	virtual bool NeedToProcessNode (const NodeId&) const override;
+};
+
+class AppendEventHandler
+{
+public:
+	AppendEventHandler ();
+	virtual ~AppendEventHandler ();
+
+	virtual void NodeAdded (const NodeId& nodeId) = 0;
+};
+
+class EmptyAppendEventHandler : public AppendEventHandler
+{
+public:
+	EmptyAppendEventHandler ();
+	virtual ~EmptyAppendEventHandler ();
+
+	virtual void NodeAdded (const NodeId& nodeId) override;
+};
+
+class UpdateEventHandler
+{
+public:
+	UpdateEventHandler ();
+	virtual ~UpdateEventHandler ();
+
+	virtual void BeforeNodeDelete (const NE::NodeId& nodeId) = 0;
+};
+
+class EmptyUpdateEventHandler : public UpdateEventHandler
+{
+public:
+	EmptyUpdateEventHandler ();
+	virtual ~EmptyUpdateEventHandler ();
+
+	virtual void BeforeNodeDelete (const NE::NodeId& nodeId) override;
+};
+
 class NodeManagerMerge
 {
 public:
-	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NE::NodeCollection& nodeCollection);
-	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter);
-	static bool UpdateNodeManager (const NodeManager& source, NodeManager& target, MergeEventHandler& eventHandler);
+	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NE::NodeCollection& nodeCollection, AppendEventHandler& eventHandler);
+	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter, AppendEventHandler& eventHandler);
+	static bool UpdateNodeManager (const NodeManager& source, NodeManager& target, UpdateEventHandler& eventHandler);
 };
-
 
 }
 

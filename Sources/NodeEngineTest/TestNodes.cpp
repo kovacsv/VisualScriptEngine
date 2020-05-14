@@ -23,13 +23,13 @@ ValueConstPtr SerializableTestNode::Calculate (NE::EvaluationEnv&) const
 Stream::Status SerializableTestNode::Read (InputStream& inputStream)
 {
 	Node::Read (inputStream);
-	return Stream::Status::Error;
+	return Stream::Status::NoError;
 }
 
 Stream::Status SerializableTestNode::Write (OutputStream& outputStream) const
 {
 	Node::Write (outputStream);
-	return Stream::Status::Error;
+	return Stream::Status::NoError;
 }
 
 SerializableTestUINode::SerializableTestUINode () :
@@ -60,14 +60,14 @@ void SerializableTestUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, 
 	DBGBREAK ();
 }
 
-Stream::Status SerializableTestUINode::Read (InputStream&)
+Stream::Status SerializableTestUINode::Read (InputStream& inputStream)
 {
-	DBGBREAK ();
-	return Stream::Status::Error;
+	UINode::Read (inputStream);
+	return Stream::Status::NoError;
 }
 
-Stream::Status SerializableTestUINode::Write (OutputStream&) const
+Stream::Status SerializableTestUINode::Write (OutputStream& outputStream) const
 {
-	DBGBREAK ();
-	return Stream::Status::Error;
+	UINode::Write (outputStream);
+	return Stream::Status::NoError;
 }
