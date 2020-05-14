@@ -113,6 +113,7 @@ void CopyMoveNodesCommand::Do (NodeUIManager& uiManager)
 		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
 		return true;
 	});
+	uiManager.SetSelectedNodes (duplicatedNodes);
 }
 
 ConnectSlotsCommand::ConnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
