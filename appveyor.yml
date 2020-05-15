@@ -4,6 +4,7 @@ clone_folder: c:\projects\VisualScriptEngine
 
 image:
   - Visual Studio 2017
+  - Visual Studio 2019
 
 configuration:
   - Debug
@@ -12,10 +13,15 @@ configuration:
 platform:
   - x64
 
+init:
+- set cMakeParams=
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set cMakeParams=-G "Visual Studio 15 2017 Win64" )
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" ( set cMakeParams=-G "Visual Studio 16 2019" -A "x64")
+
 before_build:
   - mkdir Build
   - cd Build
-  - cmake -G "Visual Studio 15 2017 Win64" ..
+  - cmake %cMakeParams% ..
 
 build:
   project: c:\projects\VisualScriptEngine\Build\VisualScriptEngine.sln
