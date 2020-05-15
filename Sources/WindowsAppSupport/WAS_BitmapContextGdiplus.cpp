@@ -1,6 +1,8 @@
 #include "WAS_BitmapContextGdiplus.hpp"
 #include "NE_Debug.hpp"
 
+#include <cmath>
+
 namespace WAS
 {
 
