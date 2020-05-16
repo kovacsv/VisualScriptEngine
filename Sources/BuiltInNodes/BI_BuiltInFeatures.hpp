@@ -2,16 +2,16 @@
 #define BI_BUILTINFEATURES_HPP
 
 #include "NE_ValueCombination.hpp"
-#include "NUIE_NodeFeatureSet.hpp"
-#include "NUIE_NodeMenuCommandRegistrator.hpp"
+#include "BI_BasicUINode.hpp"
+#include "BI_NodeFeatureSet.hpp"
 
 namespace BI
 {
 
-extern const NUIE::FeatureId EnableDisableFeatureId;
-extern const NUIE::FeatureId ValueCombinationFeatureId;
+extern const FeatureId EnableDisableFeatureId;
+extern const FeatureId ValueCombinationFeatureId;
 
-class EnableDisableFeature : public NUIE::NodeFeature
+class EnableDisableFeature : public NodeFeature
 {
 	DYNAMIC_SERIALIZABLE (EnableDisableFeature);
 
@@ -48,7 +48,7 @@ private:
 	Mode		mode;
 };
 
-class ValueCombinationFeature : public NUIE::NodeFeature
+class ValueCombinationFeature : public NodeFeature
 {
 	DYNAMIC_SERIALIZABLE (ValueCombinationFeature);
 
@@ -71,12 +71,12 @@ private:
 	NE::ValueCombinationMode	valueCombinationMode;
 };
 
-std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINode* uiNode);
-std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const NUIE::UINodeConstPtr& uiNode);
-std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINode* uiNode);
-std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const NUIE::UINodeConstPtr& uiNode);
-bool CombineValues (const NUIE::UINode* uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor);
-bool CombineValues (const NUIE::UINodeConstPtr& uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor);
+std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const BasicUINode* uiNode);
+std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const BasicUINodeConstPtr& uiNode);
+std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const BasicUINode* uiNode);
+std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const BasicUINodeConstPtr& uiNode);
+bool CombineValues (const BasicUINode* uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor);
+bool CombineValues (const BasicUINodeConstPtr& uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor);
 
 }
 

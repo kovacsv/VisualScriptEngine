@@ -8,8 +8,6 @@ namespace BI
 {
 
 SERIALIZATION_INFO (BinaryOperationNode, 1);
-
-//SERIALIZATION_INFO (BinaryOperationNode, 1);
 DYNAMIC_SERIALIZATION_INFO (AdditionNode, 1, "{1A72C230-3D90-42AD-835A-43306E641EA2}");
 DYNAMIC_SERIALIZATION_INFO (SubtractionNode, 1, "{80CACB59-C3E6-441B-B60C-37A6F2611FC2}");
 DYNAMIC_SERIALIZATION_INFO (MultiplicationNode, 1, "{75F39B99-8296-4D79-8BB7-418D55F93C25}");
@@ -36,7 +34,7 @@ void BinaryOperationNode::Initialize ()
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), NE::String (L"A"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), NE::String (L"B"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
 	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), NE::String (L"Result"))));
-	RegisterFeature (NUIE::NodeFeaturePtr (new BI::ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
+	RegisterFeature (NodeFeaturePtr (new ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
 NE::ValueConstPtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const

@@ -1,18 +1,18 @@
-#ifndef NUIE_NODEFEATURESET_HPP
-#define NUIE_NODEFEATURESET_HPP
+#ifndef BI_NODEFEATURESET_HPP
+#define BI_NODEFEATURESET_HPP
 
 #include "NE_Stream.hpp"
 #include "NE_Serializable.hpp"
+#include "NUIE_NodeParameters.hpp"
+#include "NUIE_NodeCommonParameters.hpp"
+#include "NUIE_NodeMenuCommandRegistrator.hpp"
 
 #include <memory>
 #include <vector>
 #include <unordered_map>
 
-namespace NUIE
+namespace BI
 {
-
-class NodeCommandRegistrator;
-class NodeParameterList;
 
 class FeatureId
 {
@@ -85,16 +85,16 @@ std::shared_ptr<Type> NodeFeature::Cast (const NodeFeaturePtr& feature)
 namespace std
 {
 	template <>
-	struct hash<NUIE::FeatureId>
+	struct hash<BI::FeatureId>
 	{
-		size_t operator() (const NUIE::FeatureId& id) const noexcept
+		size_t operator() (const BI::FeatureId& id) const noexcept
 		{
 			return id.GenerateHashValue ();
 		}
 	};
 }
 
-namespace NUIE
+namespace BI
 {
 
 class UINodeFeatureSet

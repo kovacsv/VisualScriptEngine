@@ -260,57 +260,6 @@ void RegisterSlotDefaultValueNodeParameter (NodeParameterList& parameterList, co
 	parameterList.AddParameter (NodeParameterPtr (new Parameter (name, type, slotId)));
 }
 
-template <typename FeatureType, typename ValueType>
-class TypedFeatureParameter : public TypedParameter<ValueType>
-{
-public:
-	TypedFeatureParameter (const std::wstring& name, const ParameterType& type, const FeatureId& featureId) :
-		TypedParameter<ValueType> (name, type),
-		featureId (featureId)
-	{
-
-	}
-
-	virtual ~TypedFeatureParameter ()
-	{
-
-	}
-
-	virtual bool IsApplicableTo (const UINodeConstPtr& uiNode) const
-	{
-		return uiNode->HasFeature (featureId);
-	}
-
-private:
-	FeatureId featureId;
-};
-
-template <typename FeatureType>
-class EnumerationFeatureParameter : public TypedFeatureParameter<FeatureType, NE::IntValue>
-{
-public:
-	EnumerationFeatureParameter (const std::wstring& name, const std::vector<std::wstring>& valueChoices, const FeatureId& featureId) :
-		TypedFeatureParameter<FeatureType, NE::IntValue> (name, ParameterType::Enumeration, featureId),
-		valueChoices (valueChoices)
-	{
-
-	}
-
-	virtual bool IsValidValue (const UINodeConstPtr&, const std::shared_ptr<const NE::IntValue>& value) const override
-	{
-		int valueInt = value->GetValue ();
-		return valueInt >= 0 && valueInt < (int) valueChoices.size ();
-	}
-
-	virtual std::vector<std::wstring> GetValueChoices () const override
-	{
-		return valueChoices;
-	}
-
-private:
-	std::vector<std::wstring> valueChoices;
-};
-
 }
 
 #endif

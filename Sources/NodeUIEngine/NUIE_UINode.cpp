@@ -162,16 +162,6 @@ void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlo
 	});
 }
 
-bool UINode::HasFeature (const FeatureId& featureId) const
-{
-	return nodeFeatureSet.HasFeature (featureId);
-}
-
-const NodeFeaturePtr& UINode::GetFeature (const FeatureId& featureId) const
-{
-	return nodeFeatureSet.GetFeature (featureId);
-}
-
 std::wstring UINode::GetUIInputSlotName (const NE::SlotId& slotId) const
 {
 	UIInputSlotConstPtr inputSlot = GetUIInputSlot (slotId);
@@ -243,15 +233,9 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 	};
 
 	parameterList.AddParameter (NodeParameterPtr (new NodeNameParameter ()));
-	nodeFeatureSet.RegisterParameters (parameterList);
 }
 
-void UINode::RegisterCommands (NodeCommandRegistrator& commandRegistrator) const
-{
-	nodeFeatureSet.RegisterCommands (commandRegistrator);
-}
-
-void UINode::OnFeatureChange (const FeatureId&, NE::EvaluationEnv&) const
+void UINode::RegisterCommands (NodeCommandRegistrator&) const
 {
 
 }
@@ -272,7 +256,6 @@ NE::Stream::Status UINode::Read (NE::InputStream& inputStream)
 	Node::Read (inputStream);
 	nodeName.Read (inputStream);
 	ReadPoint (inputStream, nodePosition);
-	nodeFeatureSet.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -282,7 +265,6 @@ NE::Stream::Status UINode::Write (NE::OutputStream& outputStream) const
 	Node::Write (outputStream);
 	nodeName.Write (outputStream);
 	WritePoint (outputStream, nodePosition);
-	nodeFeatureSet.Write (outputStream);
 	return outputStream.GetStatus ();
 }
 
@@ -347,12 +329,6 @@ bool UINode::RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot)
 	if (!RegisterOutputSlot (newOutputSlot)) {
 		return false;
 	}
-	return true;
-}
-
-bool UINode::RegisterFeature (const NodeFeaturePtr& newFeature)
-{
-	nodeFeatureSet.AddFeature (newFeature->GetId (), newFeature);
 	return true;
 }
 

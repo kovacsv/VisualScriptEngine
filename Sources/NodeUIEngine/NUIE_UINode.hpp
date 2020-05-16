@@ -8,7 +8,6 @@
 #include "NUIE_InputEventHandler.hpp"
 #include "NUIE_UIInputSlot.hpp"
 #include "NUIE_UIOutputSlot.hpp"
-#include "NUIE_NodeFeatureSet.hpp"
 #include <string>
 
 namespace NUIE
@@ -17,7 +16,6 @@ namespace NUIE
 class NodeUIEnvironment;
 class NodeParameterList;
 class NodeCommandRegistrator;
-class NodeFeature;
 
 class UINodeCommandInterface
 {
@@ -66,9 +64,6 @@ public:
 	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const;
 	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
 
-	bool						HasFeature (const FeatureId& featureId) const;
-	const NodeFeaturePtr&		GetFeature (const FeatureId& featureId) const;
-
 	std::wstring				GetUIInputSlotName (const NE::SlotId& slotId) const;
 	void						SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
 
@@ -80,7 +75,6 @@ public:
 
 	virtual void				RegisterParameters (NodeParameterList& parameterList) const;
 	virtual void				RegisterCommands (NodeCommandRegistrator& commandRegistrator) const;
-	virtual void				OnFeatureChange (const FeatureId& featureId, NE::EvaluationEnv& env) const;
 
 	virtual void				OnAdd (NE::EvaluationEnv& env) const;
 	virtual void				OnDelete (NE::EvaluationEnv& env) const;
@@ -103,7 +97,6 @@ public:
 protected:
 	bool						RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot);
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
-	bool						RegisterFeature (const NodeFeaturePtr& newFeature);
 
 	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 
@@ -116,24 +109,11 @@ private:
 
 	NE::String					nodeName;
 	Point						nodePosition;
-	UINodeFeatureSet			nodeFeatureSet;
 	mutable NodeDrawingImage	nodeDrawingImage;
 };
 
 using UINodePtr = std::shared_ptr<UINode>;
 using UINodeConstPtr = std::shared_ptr<const UINode>;
-
-template <class FeatureType>
-std::shared_ptr<FeatureType> GetUINodeFeature (const UINode* uiNode, const FeatureId& featureId)
-{
-	return NodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
-}
-
-template <class FeatureType>
-std::shared_ptr<FeatureType> GetUINodeFeature (const UINodeConstPtr& uiNode, const FeatureId& featureId)
-{
-	return NodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
-}
 
 }
 

@@ -38,6 +38,18 @@ BasicUINode::~BasicUINode ()
 
 }
 
+void BasicUINode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	UINode::RegisterParameters (parameterList);
+	nodeFeatureSet.RegisterParameters (parameterList);
+}
+
+void BasicUINode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+{
+	UINode::RegisterCommands (commandRegistrator);
+	nodeFeatureSet.RegisterCommands (commandRegistrator);
+}
+
 bool BasicUINode::HasIconId () const
 {
 	return iconId != NUIE::InvalidIconId;
@@ -53,11 +65,22 @@ void BasicUINode::SetIconId (const NUIE::IconId& newIconId)
 	iconId = newIconId;
 }
 
+bool BasicUINode::HasFeature (const FeatureId& featureId) const
+{
+	return nodeFeatureSet.HasFeature (featureId);
+}
+
+const NodeFeaturePtr& BasicUINode::GetFeature (const FeatureId& featureId) const
+{
+	return nodeFeatureSet.GetFeature (featureId);
+}
+
 NE::Stream::Status BasicUINode::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	NUIE::UINode::Read (inputStream);
 	iconId.Read (inputStream);
+	nodeFeatureSet.Read (inputStream);
 	return inputStream.GetStatus ();
 }
 
@@ -66,7 +89,19 @@ NE::Stream::Status BasicUINode::Write (NE::OutputStream& outputStream) const
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	NUIE::UINode::Write (outputStream);
 	iconId.Write (outputStream);
+	nodeFeatureSet.Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+void BasicUINode::OnFeatureChange (const FeatureId&, NE::EvaluationEnv&) const
+{
+
+}
+
+bool BasicUINode::RegisterFeature (const NodeFeaturePtr& newFeature)
+{
+	nodeFeatureSet.AddFeature (newFeature->GetId (), newFeature);
+	return true;
 }
 
 NUIE::EventHandlerResult BasicUINode::HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface)

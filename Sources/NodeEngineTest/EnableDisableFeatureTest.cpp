@@ -4,6 +4,7 @@
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NE_SingleValues.hpp"
+#include "BI_BasicUINode.hpp"
 #include "BI_BuiltInFeatures.hpp"
 #include "TestUtils.hpp"
 #include "TestNodes.hpp"
@@ -64,11 +65,18 @@ public:
 	EvaluationEnv evalEnv;
 };
 
-class TestNode : public SerializableTestUINode
+class TestNode : public BasicUINode
 {
+	DYNAMIC_SERIALIZABLE (TestNode);
+
 public:
+	TestNode () :
+		TestNode (String (), Point ())
+	{
+	}
+
 	TestNode (const String& name, const Point& position) :
-		SerializableTestUINode (name, position)
+		BasicUINode (name, position)
 	{
 		
 	}
@@ -142,6 +150,8 @@ public:
 		collector->values.insert ({ GetId (), IntValue::Get (value) });
 	}
 };
+
+DYNAMIC_SERIALIZATION_INFO (TestNode, 1, "{747EB91C-99ED-401A-98DF-A5BBA8FA4CE6}");
 
 TEST (EnableDisableTest)
 {

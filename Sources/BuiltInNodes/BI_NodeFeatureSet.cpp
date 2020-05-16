@@ -1,6 +1,6 @@
-#include "NUIE_NodeFeatureSet.hpp"
+#include "BI_NodeFeatureSet.hpp"
 
-namespace NUIE
+namespace BI
 {
 
 SERIALIZATION_INFO (FeatureId, 1);
