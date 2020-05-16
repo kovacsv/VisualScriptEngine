@@ -116,7 +116,7 @@ public:
 	NE::Stream::Status			Write (NE::OutputStream& outputStream) const;
 
 private:
-	std::vector<NodeFeaturePtr>			features;
+	std::vector<NodeFeaturePtr>				features;
 	std::unordered_map<FeatureId, size_t>	idToIndex;
 };
 
