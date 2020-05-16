@@ -13,7 +13,7 @@ class TypedFeatureParameter : public NUIE::TypedParameter<ValueType>
 {
 public:
 	TypedFeatureParameter (const std::wstring& name, const NUIE::ParameterType& type, const FeatureId& featureId) :
-		TypedParameter<ValueType> (name, type),
+		NUIE::TypedParameter<ValueType> (name, type),
 		featureId (featureId)
 	{
 
