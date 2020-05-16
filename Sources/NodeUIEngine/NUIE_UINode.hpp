@@ -99,9 +99,10 @@ protected:
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
 	bool						RegisterFeature (const NodeFeaturePtr& newFeature);
 
+	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
+
 private:
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
-	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
 
 	NE::String					nodeName;

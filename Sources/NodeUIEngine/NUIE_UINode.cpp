@@ -320,17 +320,17 @@ bool UINode::RegisterFeature (const NodeFeaturePtr& newFeature)
 	return true;
 }
 
+void UINode::DrawInplace (NodeUIDrawingEnvironment& env) const
+{
+	GetNodeDrawingImage (env).Draw (env.GetDrawingContext ());
+}
+
 const NodeDrawingImage& UINode::GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const
 {
 	if (nodeDrawingImage.IsEmpty ()) {
 		UpdateNodeDrawingImage (env, nodeDrawingImage);
 	}
 	return nodeDrawingImage;
-}
-
-void UINode::DrawInplace (NodeUIDrawingEnvironment& env) const
-{
-	GetNodeDrawingImage (env).Draw (env.GetDrawingContext ());
 }
 
 }
