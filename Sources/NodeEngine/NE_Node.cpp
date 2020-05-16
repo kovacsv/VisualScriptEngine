@@ -7,7 +7,7 @@
 namespace NE
 {
 
-SerializationInfo Node::serializationInfo (ObjectVersion (1));
+SERIALIZATION_INFO (Node, 1);
 
 NodeEvaluator::NodeEvaluator ()
 {

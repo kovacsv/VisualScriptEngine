@@ -1,7 +1,7 @@
 #include "TestNodes.hpp"
 
-DynamicSerializationInfo SerializableTestNode::serializationInfo (ObjectId ("{73A78FBB-6563-4009-A1B2-7DF56900F522}"), ObjectVersion (1), SerializableTestNode::CreateSerializableInstance);
-DynamicSerializationInfo SerializableTestUINode::serializationInfo (ObjectId ("{93A78362-DFD9-46CB-B9F3-2F2DA9E1F964}"), ObjectVersion (1), SerializableTestUINode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (SerializableTestNode, 1, "{73A78FBB-6563-4009-A1B2-7DF56900F522}");
+DYNAMIC_SERIALIZATION_INFO (SerializableTestUINode, 1, "{93A78362-DFD9-46CB-B9F3-2F2DA9E1F964}");
 
 SerializableTestNode::SerializableTestNode () :
 	Node ()

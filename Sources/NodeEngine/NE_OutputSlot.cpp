@@ -6,7 +6,7 @@
 namespace NE
 {
 
-DynamicSerializationInfo OutputSlot::serializationInfo (ObjectId ("{1F40DBE0-C463-46ED-A2CC-17C779C16802}"), ObjectVersion (1), OutputSlot::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (OutputSlot, 1, "{1F40DBE0-C463-46ED-A2CC-17C779C16802}");
 
 OutputSlot::OutputSlot () :
 	Slot ()

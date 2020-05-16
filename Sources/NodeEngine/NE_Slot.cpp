@@ -5,7 +5,7 @@
 namespace NE
 {
 
-SerializationInfo Slot::serializationInfo (ObjectVersion (1));
+SERIALIZATION_INFO (Slot, 1);
 
 Slot::Slot () :
 	slotId (""),

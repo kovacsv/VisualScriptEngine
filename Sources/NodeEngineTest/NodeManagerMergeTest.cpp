@@ -75,7 +75,7 @@ private:
 	std::wstring name;
 };
 
-DynamicSerializationInfo TestNode::serializationInfo (ObjectId ("{16CF9B46-D77D-4F5E-96EB-494617522929}"), ObjectVersion (1), TestNode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (TestNode, 1, "{16CF9B46-D77D-4F5E-96EB-494617522929}");
 
 std::vector<NodeConstPtr> FindNodesByName (const NodeManager& manager, const std::wstring& name)
 {

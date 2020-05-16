@@ -4,9 +4,9 @@
 namespace NE
 {
 
-SerializationInfo			Value::serializationInfo					(ObjectVersion (1));
-SerializationInfo			SingleValue::serializationInfo				(ObjectVersion (1));
-DynamicSerializationInfo	ListValue::serializationInfo				(ObjectId ("{95418CFC-BAE7-4FB3-8ED5-E6EC3AB930AC}"), ObjectVersion (1), ListValue::CreateSerializableInstance);
+SERIALIZATION_INFO (Value, 1);
+SERIALIZATION_INFO (SingleValue, 1);
+DYNAMIC_SERIALIZATION_INFO (ListValue, 1, "{95418CFC-BAE7-4FB3-8ED5-E6EC3AB930AC}");
 
 Value::Value ()
 {

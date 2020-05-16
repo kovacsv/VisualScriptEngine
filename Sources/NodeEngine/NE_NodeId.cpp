@@ -3,8 +3,8 @@
 namespace NE
 {
 
-SerializationInfo NodeIdGenerator::serializationInfo (ObjectVersion (1));
-SerializationInfo NodeId::serializationInfo (ObjectVersion (1));
+SERIALIZATION_INFO (NodeIdGenerator, 1);
+SERIALIZATION_INFO (NodeId, 1);
 
 NodeIdGenerator::NodeIdGenerator () :
 	nextId (1)

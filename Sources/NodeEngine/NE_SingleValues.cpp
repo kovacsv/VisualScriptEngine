@@ -5,11 +5,11 @@
 namespace NE
 {
 
-DynamicSerializationInfo	BooleanValue::serializationInfo (ObjectId ("{70071F15-3F3D-45CF-B7D5-CD4AF3E759FA}"), ObjectVersion (1), BooleanValue::CreateSerializableInstance);
-DynamicSerializationInfo	IntValue::serializationInfo (ObjectId ("{FE348A6B-C5B8-42E2-9AD1-167BE291AEE8}"), ObjectVersion (1), IntValue::CreateSerializableInstance);
-DynamicSerializationInfo	FloatValue::serializationInfo (ObjectId ("{D7FB2FE0-90E3-4A85-9C0F-9D90AFC8CD8A}"), ObjectVersion (1), FloatValue::CreateSerializableInstance);
-DynamicSerializationInfo	DoubleValue::serializationInfo (ObjectId ("{4D6581DC-7A20-4F2A-A1A3-95BF6DDFFDB6}"), ObjectVersion (1), DoubleValue::CreateSerializableInstance);
-DynamicSerializationInfo	StringValue::serializationInfo (ObjectId ("{FABFAA20-48F4-4F15-A9FB-FD8F05581F31}"), ObjectVersion (1), StringValue::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (BooleanValue, 1, "{70071F15-3F3D-45CF-B7D5-CD4AF3E759FA}");
+DYNAMIC_SERIALIZATION_INFO (IntValue, 1, "{FE348A6B-C5B8-42E2-9AD1-167BE291AEE8}");
+DYNAMIC_SERIALIZATION_INFO (FloatValue, 1, "{D7FB2FE0-90E3-4A85-9C0F-9D90AFC8CD8A}");
+DYNAMIC_SERIALIZATION_INFO (DoubleValue, 1, "{4D6581DC-7A20-4F2A-A1A3-95BF6DDFFDB6}");
+DYNAMIC_SERIALIZATION_INFO (StringValue, 1, "{FABFAA20-48F4-4F15-A9FB-FD8F05581F31}");
 
 BooleanValue::BooleanValue () :
 	BooleanValue (false)

@@ -5,7 +5,7 @@
 namespace NE
 {
 
-SerializationInfo NodeCollection::serializationInfo (ObjectVersion (1));
+SERIALIZATION_INFO (NodeCollection, 1);
 
 NodeCollection::NodeCollection ()
 {

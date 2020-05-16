@@ -64,7 +64,7 @@ private:
 	mutable size_t recalcCounter;
 };
 
-DynamicSerializationInfo TestNode::serializationInfo (ObjectId ("{ED945CAC-27C5-460E-B3FF-1B783C43C3DB}"), ObjectVersion (1), TestNode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (TestNode, 1, "{ED945CAC-27C5-460E-B3FF-1B783C43C3DB}");
 
 class RecalcNodeEditorTestEnv : public NodeEditorTestEnv
 {

@@ -163,7 +163,7 @@ public:
 	}
 };
 
-DynamicSerializationInfo AdditionNode::serializationInfo (ObjectId ("{18539C48-AACD-46F4-8A2B-3A7DD028951F}"), ObjectVersion (1), AdditionNode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (AdditionNode, 1, "{18539C48-AACD-46F4-8A2B-3A7DD028951F}");
 
 class MultiAdditionNode : public SerializableTestNode
 {

@@ -110,8 +110,8 @@ private:
 	std::wstring name;
 };
 
-DynamicSerializationInfo TestNode::serializationInfo (ObjectId ("{9E0304A4-3B92-4EFA-9846-F0372A633038}"), ObjectVersion (1), TestNode::CreateSerializableInstance);
-DynamicSerializationInfo TestGroup::serializationInfo (ObjectId ("{66E68205-83BF-423F-B2B2-41C356B68125}"), ObjectVersion (1), TestGroup::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (TestNode, 1, "{9E0304A4-3B92-4EFA-9846-F0372A633038}");
+DYNAMIC_SERIALIZATION_INFO (TestGroup, 1, "{66E68205-83BF-423F-B2B2-41C356B68125}");
 
 TEST (EmptyNodeManagerSerializationTest)
 {

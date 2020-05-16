@@ -9,7 +9,7 @@
 namespace NE
 {
 
-SerializationInfo NodeManager::serializationInfo (ObjectVersion (1));
+SERIALIZATION_INFO (NodeManager, 1);
 
 class NodeManagerNodeEvaluator : public NodeEvaluator
 {

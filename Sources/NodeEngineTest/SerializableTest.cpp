@@ -42,7 +42,7 @@ public:
 	std::string		stringVal;
 };
 
-SerializationInfo MySerializable::serializationInfo (ObjectVersion (2));
+SERIALIZATION_INFO (MySerializable, 2);
 
 class MyInheritedSerializable : public MySerializable
 {
@@ -80,7 +80,7 @@ public:
 	size_t inheritedIntVal;
 };
 
-DynamicSerializationInfo MyInheritedSerializable::serializationInfo (ObjectId ("{7CB03170-3A8D-43EC-9806-F423A39F07DA}"), ObjectVersion (3), MyInheritedSerializable::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (MyInheritedSerializable, 3, "{7CB03170-3A8D-43EC-9806-F423A39F07DA}");
 
 class MyInheritedSerializable2 : public MyInheritedSerializable
 {
@@ -118,7 +118,7 @@ public:
 	size_t inheritedIntVal2;
 };
 
-DynamicSerializationInfo MyInheritedSerializable2::serializationInfo (ObjectId ("{C25B8A4C-9DAB-4FFF-9F13-28D9FF6A3190}"), ObjectVersion (4), MyInheritedSerializable2::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (MyInheritedSerializable2, 4, "{C25B8A4C-9DAB-4FFF-9F13-28D9FF6A3190}");
 
 namespace SerializableTest
 {

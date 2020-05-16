@@ -116,9 +116,9 @@ public:
 	}
 };
 
-DynamicSerializationInfo AValue::serializationInfo (ObjectId ("{F1B3A71F-EAD2-4732-8814-38344F7F40EB}"), ObjectVersion (1), AValue::CreateSerializableInstance);
-DynamicSerializationInfo BValue::serializationInfo (ObjectId ("{9A2698D6-A78B-4C59-BA0A-63171A9152D8}"), ObjectVersion (1), BValue::CreateSerializableInstance);
-DynamicSerializationInfo ABPairValue::serializationInfo (ObjectId ("{D88A8420-6F72-4A88-A1AA-DCA827ABD2E8}"), ObjectVersion (1), ABPairValue::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (AValue, 1, "{F1B3A71F-EAD2-4732-8814-38344F7F40EB}");
+DYNAMIC_SERIALIZATION_INFO (BValue, 1, "{9A2698D6-A78B-4C59-BA0A-63171A9152D8}");
+DYNAMIC_SERIALIZATION_INFO (ABPairValue, 1, "{D88A8420-6F72-4A88-A1AA-DCA827ABD2E8}");
 
 class NodeWithDifferentTypes : public SerializableTestNode
 {

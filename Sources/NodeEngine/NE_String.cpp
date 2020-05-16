@@ -3,7 +3,7 @@
 namespace NE
 {
 
-SerializationInfo String::serializationInfo (ObjectVersion (1));
+SERIALIZATION_INFO (String, 1);
 
 String::String () :
 	String (std::wstring ())

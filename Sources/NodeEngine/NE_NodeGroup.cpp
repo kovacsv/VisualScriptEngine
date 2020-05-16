@@ -4,7 +4,7 @@
 namespace NE
 {
 
-SerializationInfo NodeGroup::serializationInfo (ObjectVersion (1));
+SERIALIZATION_INFO (NodeGroup, 1);
 
 NodeGroup::NodeGroup ()
 {
