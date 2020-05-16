@@ -69,6 +69,12 @@ public:
 	bool						HasFeature (const FeatureId& featureId) const;
 	const NodeFeaturePtr&		GetFeature (const FeatureId& featureId) const;
 
+	std::wstring				GetUIInputSlotName (const NE::SlotId& slotId) const;
+	void						SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
+
+	std::wstring				GetUIOutputSlotName (const NE::SlotId& slotId) const;
+	void						SetUIOutputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
+
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, UINodeCommandInterface& commandInterface);
 	virtual EventHandlerResult	HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, UINodeCommandInterface& commandInterface);
 
@@ -102,6 +108,9 @@ protected:
 	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 
 private:
+	UIInputSlotPtr				GetModifiableUIInputSlot (const NE::SlotId& slotId);
+	UIOutputSlotPtr				GetModifiableUIOutputSlot (const NE::SlotId& slotId);
+
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
 

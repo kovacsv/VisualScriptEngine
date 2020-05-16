@@ -172,6 +172,42 @@ const NodeFeaturePtr& UINode::GetFeature (const FeatureId& featureId) const
 	return nodeFeatureSet.GetFeature (featureId);
 }
 
+std::wstring UINode::GetUIInputSlotName (const NE::SlotId& slotId) const
+{
+	UIInputSlotConstPtr inputSlot = GetUIInputSlot (slotId);
+	if (DBGERROR (inputSlot == nullptr)) {
+		return std::wstring ();
+	}
+	return inputSlot->GetName ();
+}
+
+void UINode::SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& newName)
+{
+	UIInputSlotPtr inputSlot = GetModifiableUIInputSlot (slotId);
+	if (DBGERROR (inputSlot == nullptr)) {
+		return;
+	}
+	inputSlot->SetName (newName);
+}
+
+std::wstring UINode::GetUIOutputSlotName (const NE::SlotId& slotId) const
+{
+	UIOutputSlotConstPtr outputSlot = GetUIOutputSlot (slotId);
+	if (DBGERROR (outputSlot == nullptr)) {
+		return std::wstring ();
+	}
+	return outputSlot->GetName ();
+}
+
+void UINode::SetUIOutputSlotName (const NE::SlotId& slotId, const std::wstring& newName)
+{
+	UIOutputSlotPtr outputSlot = GetModifiableUIOutputSlot (slotId);
+	if (DBGERROR (outputSlot == nullptr)) {
+		return;
+	}
+	outputSlot->SetName (newName);
+}
+
 NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, UINodeCommandInterface&)
 {
 	return EventHandlerResult::EventNotHandled;
@@ -323,6 +359,18 @@ bool UINode::RegisterFeature (const NodeFeaturePtr& newFeature)
 void UINode::DrawInplace (NodeUIDrawingEnvironment& env) const
 {
 	GetNodeDrawingImage (env).Draw (env.GetDrawingContext ());
+}
+
+UIInputSlotPtr UINode::GetModifiableUIInputSlot (const NE::SlotId& slotId)
+{
+	NE::InputSlotPtr inputSlot = GetModifiableInputSlot (slotId);
+	return std::dynamic_pointer_cast<UIInputSlot> (inputSlot);
+}
+
+UIOutputSlotPtr UINode::GetModifiableUIOutputSlot (const NE::SlotId& slotId)
+{
+	NE::OutputSlotPtr outputSlot = GetModifiableOutputSlot (slotId);
+	return std::dynamic_pointer_cast<UIOutputSlot> (outputSlot);
 }
 
 const NodeDrawingImage& UINode::GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const

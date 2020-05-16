@@ -267,6 +267,16 @@ ValueConstPtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env)
 	return EvaluateInputSlot (inputSlot, env);
 }
 
+InputSlotPtr Node::GetModifiableInputSlot (const SlotId& slotId)
+{
+	return inputSlots.Get (slotId);
+}
+
+OutputSlotPtr Node::GetModifiableOutputSlot (const SlotId& slotId)
+{
+	return outputSlots.Get (slotId);
+}
+
 void Node::SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter)
 {
 	nodeId = evaluatorSetter.GetNodeId ();

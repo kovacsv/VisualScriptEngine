@@ -122,6 +122,9 @@ protected:
 	bool					RegisterOutputSlot (const OutputSlotPtr& newOutputSlot);
 	ValueConstPtr			EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
 
+	InputSlotPtr			GetModifiableInputSlot (const SlotId& slotId);
+	OutputSlotPtr			GetModifiableOutputSlot (const SlotId& slotId);
+
 private:
 	void					SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter);
 	bool					HasNodeEvaluator () const;
