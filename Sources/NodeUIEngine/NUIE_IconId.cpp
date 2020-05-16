@@ -3,7 +3,7 @@
 namespace NUIE
 {
 
-NE::SerializationInfo IconId::serializationInfo (NE::ObjectVersion (1));
+SERIALIZATION_INFO (IconId, 1);
 
 IconId::IconId (const IconIdType& id) :
 	id (id)

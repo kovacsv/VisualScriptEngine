@@ -56,7 +56,7 @@ public:
 	}
 };
 
-NE::DynamicSerializationInfo IncreaseNode::serializationInfo (NE::ObjectId ("{8C06D4A9-B042-4E23-8556-410AA5ED2B35}"), NE::ObjectVersion (1), IncreaseNode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (IncreaseNode, 1, "{8C06D4A9-B042-4E23-8556-410AA5ED2B35}");
 
 class MyCreateNodeCommand : public NUIE::SingleMenuCommand
 {

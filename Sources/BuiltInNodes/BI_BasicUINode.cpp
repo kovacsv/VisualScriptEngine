@@ -6,7 +6,7 @@
 namespace BI
 {
 
-NE::SerializationInfo BasicUINode::serializationInfo (NE::ObjectVersion (1));
+SERIALIZATION_INFO (BasicUINode, 1);
 
 BasicUINode::BasicUINode () :
 	BasicUINode (NE::String (), NUIE::Point ())

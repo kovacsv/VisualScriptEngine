@@ -3,7 +3,7 @@
 namespace NUIE
 {
 
-NE::DynamicSerializationInfo UIInputSlot::serializationInfo (NE::ObjectId ("{6573888B-EE86-49C8-9E18-02A18FF83274}"), NE::ObjectVersion (1), UIInputSlot::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (UIInputSlot, 1, "{6573888B-EE86-49C8-9E18-02A18FF83274}");
 
 UIInputSlot::UIInputSlot () :
 	UIInputSlot (NE::SlotId (), NE::String (), nullptr, NE::OutputSlotConnectionMode::Single)

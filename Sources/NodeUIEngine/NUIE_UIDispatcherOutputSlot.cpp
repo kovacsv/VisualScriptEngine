@@ -3,7 +3,7 @@
 namespace NUIE
 {
 
-NE::DynamicSerializationInfo UIDispatcherOutputSlot::serializationInfo (NE::ObjectId ("{F6F046E1-7809-4C26-A1A7-1E68C3CCCFED}"), NE::ObjectVersion (1), UIDispatcherOutputSlot::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (UIDispatcherOutputSlot, 1, "{F6F046E1-7809-4C26-A1A7-1E68C3CCCFED}");
 
 UIDispatcherOutputSlot::UIDispatcherOutputSlot () :
 	UIOutputSlot (),

@@ -6,7 +6,7 @@
 namespace NUIE
 {
 
-NE::DynamicSerializationInfo UINodeGroup::serializationInfo (NE::ObjectId ("{FCC7498F-03C5-49C8-B4C0-C88D768F18CD}"), NE::ObjectVersion (1), UINodeGroup::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (UINodeGroup, 1, "{FCC7498F-03C5-49C8-B4C0-C88D768F18CD}");
 
 GroupDrawingImage::GroupDrawingImage ()
 {

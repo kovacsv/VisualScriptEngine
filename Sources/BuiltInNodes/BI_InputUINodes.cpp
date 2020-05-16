@@ -12,18 +12,18 @@
 namespace BI
 {
 
-NE::DynamicSerializationInfo	BooleanNode::serializationInfo (NE::ObjectId ("{72E14D86-E5DC-4AD6-A7E4-F60D47BFB114}"), NE::ObjectVersion (1), BooleanNode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (BooleanNode, 1, "{72E14D86-E5DC-4AD6-A7E4-F60D47BFB114}");
 
-NE::SerializationInfo			NumericUpDownNode::serializationInfo (NE::ObjectVersion (1));
-NE::DynamicSerializationInfo	IntegerUpDownNode::serializationInfo (NE::ObjectId ("{98ADBB4A-8E55-4FE5-B0F9-EC5DD776C000}"), NE::ObjectVersion (1), IntegerUpDownNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	DoubleUpDownNode::serializationInfo (NE::ObjectId ("{F888C04D-FF22-4225-AC9A-90464D01ACF9}"), NE::ObjectVersion (1), DoubleUpDownNode::CreateSerializableInstance);
+SERIALIZATION_INFO (NumericUpDownNode, 1);
+DYNAMIC_SERIALIZATION_INFO (IntegerUpDownNode, 1, "{98ADBB4A-8E55-4FE5-B0F9-EC5DD776C000}");
+DYNAMIC_SERIALIZATION_INFO (DoubleUpDownNode, 1, "{F888C04D-FF22-4225-AC9A-90464D01ACF9}");
 
-NE::SerializationInfo			NumericRangeNode::serializationInfo (NE::ObjectVersion (1));
-NE::DynamicSerializationInfo	IntegerIncrementedNode::serializationInfo (NE::ObjectId ("{74527771-58A4-42D4-850F-1C63FA9A4732}"), NE::ObjectVersion (1), IntegerIncrementedNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	DoubleIncrementedNode::serializationInfo (NE::ObjectId ("{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}"), NE::ObjectVersion (1), DoubleIncrementedNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo	DoubleDistributedNode::serializationInfo (NE::ObjectId ("{DDD3DF7C-AEA5-4E1E-B48A-2A10EA3FC7EF}"), NE::ObjectVersion (1), DoubleDistributedNode::CreateSerializableInstance);
+SERIALIZATION_INFO (NumericRangeNode, 1);
+DYNAMIC_SERIALIZATION_INFO (IntegerIncrementedNode, 1, "{74527771-58A4-42D4-850F-1C63FA9A4732}");
+DYNAMIC_SERIALIZATION_INFO (DoubleIncrementedNode, 1, "{B697B7DE-7AB9-479D-8DBE-8D3CCB6E4F50}");
+DYNAMIC_SERIALIZATION_INFO (DoubleDistributedNode, 1, "{DDD3DF7C-AEA5-4E1E-B48A-2A10EA3FC7EF}");
 
-NE::DynamicSerializationInfo	ListBuilderNode::serializationInfo (NE::ObjectId ("{FE9C19DE-4847-458D-8F2D-5D943E7CF8AF}"), NE::ObjectVersion (1), ListBuilderNode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (ListBuilderNode, 1, "{FE9C19DE-4847-458D-8F2D-5D943E7CF8AF}");
 
 template <typename NodeType>
 class MinValueIntegerParameter : public NUIE::SlotDefaultValueNodeParameter<NodeType, NE::IntValue>

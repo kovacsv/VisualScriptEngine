@@ -3,9 +3,9 @@
 namespace NUIE
 {
 
-NE::SerializationInfo FeatureId::serializationInfo (NE::ObjectVersion (1));
-NE::SerializationInfo NodeFeature::serializationInfo (NE::ObjectVersion (1));
-NE::SerializationInfo UINodeFeatureSet::serializationInfo (NE::ObjectVersion (1));
+SERIALIZATION_INFO (FeatureId, 1);
+SERIALIZATION_INFO (NodeFeature, 1);
+SERIALIZATION_INFO (UINodeFeatureSet, 1);
 
 FeatureId::FeatureId () :
 	id ()

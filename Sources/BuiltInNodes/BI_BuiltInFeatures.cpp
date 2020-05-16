@@ -11,8 +11,8 @@ namespace BI
 const NUIE::FeatureId EnableDisableFeatureId ("{A60BA8C8-ADFB-48D2-A112-ADD99F0B6CE7}");
 const NUIE::FeatureId ValueCombinationFeatureId ("{B8F03216-5CB8-49FC-B748-94479BD2C8CA}");
 
-NE::DynamicSerializationInfo EnableDisableFeature::serializationInfo (NE::ObjectId ("{1C89FD8B-085E-45C8-B0B8-E75883F53C68}"), NE::ObjectVersion (1), EnableDisableFeature::CreateSerializableInstance);
-NE::DynamicSerializationInfo ValueCombinationFeature::serializationInfo (NE::ObjectId ("{7BC21A4E-4D2E-4B00-BD73-9897DB3616BA}"), NE::ObjectVersion (1), ValueCombinationFeature::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (EnableDisableFeature, 1, "{1C89FD8B-085E-45C8-B0B8-E75883F53C68}");
+DYNAMIC_SERIALIZATION_INFO (ValueCombinationFeature, 1, "{7BC21A4E-4D2E-4B00-BD73-9897DB3616BA}");
 
 static void EnableDisableNode (EnableDisableFeature::State state, EnableDisableFeature::Mode mode, NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& env, NUIE::UINodePtr& uiNode)
 {

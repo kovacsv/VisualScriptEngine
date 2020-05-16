@@ -71,7 +71,7 @@ public:
 	}
 };
 
-NE::DynamicSerializationInfo TestNode::serializationInfo (NE::ObjectId ("{54A1DE47-8D06-4292-886A-7B8D676271D2}"), NE::ObjectVersion (1), TestNode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (TestNode, 1, "{54A1DE47-8D06-4292-886A-7B8D676271D2}");
 
 class TestNode2 : public SerializableTestUINode
 {

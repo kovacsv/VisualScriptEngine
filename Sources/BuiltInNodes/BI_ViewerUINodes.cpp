@@ -9,8 +9,8 @@
 namespace BI
 {
 
-NE::DynamicSerializationInfo ViewerNode::serializationInfo (NE::ObjectId ("{417392AA-F72D-4E84-8F58-766D0AAC07FC}"), NE::ObjectVersion (1), ViewerNode::CreateSerializableInstance);
-NE::DynamicSerializationInfo MultiLineViewerNode::serializationInfo (NE::ObjectId ("{2BACB82D-84A6-4472-82CB-786C98A50EF0}"), NE::ObjectVersion (1), MultiLineViewerNode::CreateSerializableInstance);
+DYNAMIC_SERIALIZATION_INFO (ViewerNode, 1, "{417392AA-F72D-4E84-8F58-766D0AAC07FC}");
+DYNAMIC_SERIALIZATION_INFO (MultiLineViewerNode, 1, "{2BACB82D-84A6-4472-82CB-786C98A50EF0}");
 
 ViewerNode::Layout::Layout () :
 	HeaderWithSlotsAndTextLayout ()

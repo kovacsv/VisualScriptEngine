@@ -13,7 +13,7 @@
 namespace NUIE
 {
 
-NE::SerializationInfo UINode::serializationInfo (NE::ObjectVersion (1));
+SERIALIZATION_INFO (UINode, 1);
 
 UINodeCommandInterface::UINodeCommandInterface ()
 {
