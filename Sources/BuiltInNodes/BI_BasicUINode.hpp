@@ -19,8 +19,8 @@ public:
 	BasicUINode (const NE::String& name, const NUIE::Point& position, const NUIE::IconId& iconId, const UINodeLayoutPtr& layout);
 	virtual ~BasicUINode ();
 
-	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const;
-	virtual void						RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const;
+	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
+	virtual void						RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
 
 	bool								HasIconId () const;
 	const NUIE::IconId&					GetIconId () const;
