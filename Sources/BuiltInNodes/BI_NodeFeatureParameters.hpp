@@ -70,7 +70,7 @@ public:
 	virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 	{
 		if (DBGERROR (!NE::Node::IsType<BasicUINode> (uiNode))) {
-			return nullptr;
+			return false;
 		}
 		BasicUINodePtr basicUINode = NE::Node::Cast<BasicUINode> (uiNode);
 		return SetValueInternal (invalidator, evaluationEnv, basicUINode, value);
