@@ -227,26 +227,6 @@ void Node::SetInputSlotDefaultValue (const SlotId& slotId, const ValueConstPtr& 
 	inputSlot->SetDefaultValue (newDefaultValue);
 }
 
-void Node::SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter)
-{
-	nodeId = evaluatorSetter.GetNodeId ();
-	nodeEvaluator = evaluatorSetter.GetNodeEvaluator ();
-	if (evaluatorSetter.GetInitializationMode () == InitializationMode::Initialize) {
-		Initialize ();
-	}
-}
-
-bool Node::HasNodeEvaluator () const
-{
-	return nodeEvaluator != nullptr;
-}
-
-void Node::ClearNodeEvaluator ()
-{
-	nodeId = NullNodeId;
-	nodeEvaluator = nullptr;
-}
-
 bool Node::RegisterInputSlot (const InputSlotPtr& newInputSlot)
 {
 	if (DBGERROR (newInputSlot->HasOwnerNode ())) {
@@ -285,6 +265,26 @@ ValueConstPtr Node::EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env)
 	}
 
 	return EvaluateInputSlot (inputSlot, env);
+}
+
+void Node::SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter)
+{
+	nodeId = evaluatorSetter.GetNodeId ();
+	nodeEvaluator = evaluatorSetter.GetNodeEvaluator ();
+	if (evaluatorSetter.GetInitializationMode () == InitializationMode::Initialize) {
+		Initialize ();
+	}
+}
+
+bool Node::HasNodeEvaluator () const
+{
+	return nodeEvaluator != nullptr;
+}
+
+void Node::ClearNodeEvaluator ()
+{
+	nodeId = NullNodeId;
+	nodeEvaluator = nullptr;
 }
 
 bool Node::IsForceCalculated () const

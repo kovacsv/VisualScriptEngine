@@ -298,11 +298,6 @@ void UINode::EnumerateUISlots (const std::function<bool (const UIOutputSlotConst
 	EnumerateUIOutputSlots (processor);
 }
 
-void UINode::DrawInplace (NodeUIDrawingEnvironment& env) const
-{
-	GetNodeDrawingImage (env).Draw (env.GetDrawingContext ());
-}
-
 bool UINode::RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot)
 {
 	if (!RegisterInputSlot (newInputSlot)) {
@@ -333,14 +328,9 @@ const NodeDrawingImage& UINode::GetNodeDrawingImage (NodeUIDrawingEnvironment& e
 	return nodeDrawingImage;
 }
 
-bool UINode::RegisterInputSlot (const NE::InputSlotPtr& newInputSlot)
+void UINode::DrawInplace (NodeUIDrawingEnvironment& env) const
 {
-	return Node::RegisterInputSlot (newInputSlot);
-}
-
-bool UINode::RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot)
-{
-	return Node::RegisterOutputSlot (newOutputSlot);
+	GetNodeDrawingImage (env).Draw (env.GetDrawingContext ());
 }
 
 }

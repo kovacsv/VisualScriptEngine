@@ -95,17 +95,14 @@ public:
 	void EnumerateUISlots (const std::function<bool (const SlotConstType&)>& processor) const;
 
 protected:
-	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 	bool						RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot);
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
 	bool						RegisterFeature (const NodeFeaturePtr& newFeature);
 
 private:
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
+	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
-
-	virtual bool				RegisterInputSlot (const NE::InputSlotPtr& newInputSlot) override;
-	virtual bool				RegisterOutputSlot (const NE::OutputSlotPtr& newOutputSlot) override;
 
 	NE::String					nodeName;
 	Point						nodePosition;

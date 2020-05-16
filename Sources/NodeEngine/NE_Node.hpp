@@ -52,6 +52,7 @@ public:
 class Node : public DynamicSerializable
 {
 	SERIALIZABLE;
+	friend class NodeManager;
 
 public:
 	enum class CalculationStatus
@@ -86,15 +87,11 @@ public:
 	CalculationStatus		GetCalculationStatus () const;
 	void					InvalidateValue () const;
 
-	virtual Stream::Status	Read (InputStream& inputStream) override;
-	virtual Stream::Status	Write (OutputStream& outputStream) const override;
-
 	ValueConstPtr			GetInputSlotDefaultValue (const SlotId& slotId) const;
 	void					SetInputSlotDefaultValue (const SlotId& slotId, const ValueConstPtr& newDefaultValue);
 
-	void					SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter);
-	bool					HasNodeEvaluator () const;
-	void					ClearNodeEvaluator ();
+	virtual Stream::Status	Read (InputStream& inputStream) override;
+	virtual Stream::Status	Write (OutputStream& outputStream) const override;
 
 	static NodePtr			Clone (const NodeConstPtr& node);
 	static bool				IsEqual (const NodeConstPtr& aNode, const NodeConstPtr& bNode);
@@ -121,11 +118,15 @@ public:
 	static std::shared_ptr<const Type> CastConst (const NodeConstPtr& node);
 
 protected:
-	virtual bool			RegisterInputSlot (const InputSlotPtr& newInputSlot);
-	virtual bool			RegisterOutputSlot (const OutputSlotPtr& newOutputSlot);
+	bool					RegisterInputSlot (const InputSlotPtr& newInputSlot);
+	bool					RegisterOutputSlot (const OutputSlotPtr& newOutputSlot);
 	ValueConstPtr			EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
 
 private:
+	void					SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter);
+	bool					HasNodeEvaluator () const;
+	void					ClearNodeEvaluator ();
+
 	virtual void			Initialize () = 0;
 	virtual ValueConstPtr	Calculate (EvaluationEnv& env) const = 0;
 
