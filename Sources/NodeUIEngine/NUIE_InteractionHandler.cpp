@@ -10,7 +10,7 @@
 namespace NUIE
 {
 
-static void EnumerateInputConnections (NodeUIDrawingEnvironment& env, const NodeUIManager& uiManager, const NE::NodeCollection& nodes, const std::function<void (const Point&, const Point&)>& processor)
+static void EnumerateInternalConnections (NodeUIDrawingEnvironment& env, const NodeUIManager& uiManager, const NE::NodeCollection& nodes, const std::function<void (const Point&, const Point&)>& processor)
 {
 	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 		UINodeConstPtr inputNode = uiManager.GetUINode (nodeId);
@@ -205,7 +205,7 @@ public:
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
-		EnumerateInputConnections (drawingEnv, uiManager, relevantNodes, [&] (const Point& beg, const Point& end) {
+		EnumerateInternalConnections (drawingEnv, uiManager, relevantNodes, [&] (const Point& beg, const Point& end) {
 			temporaryConnections.push_back ({ beg, end });
 		});
 	}

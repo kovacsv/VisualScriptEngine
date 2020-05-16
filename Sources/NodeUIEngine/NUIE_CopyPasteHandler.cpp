@@ -22,28 +22,28 @@ bool CopyPasteHandler::CopyFrom (const NE::NodeManager& source, const NE::NodeCo
 	return NE::NodeManagerMerge::AppendNodeManager (source, tempNodeManager, nodeCollection, eventHandler);
 }
 
-bool CopyPasteHandler::PasteTo (NE::NodeManager& target, NE::NodeCollection& pastedNodes)
+bool CopyPasteHandler::PasteTo (NE::NodeManager& target, NE::NodeCollection& nodeCollection)
 {
 	class PasteEventHandler : public NE::AppendEventHandler
 	{
 	public:
-		PasteEventHandler (NE::NodeCollection& pastedNodes) :
-			pastedNodes (pastedNodes)
+		PasteEventHandler (NE::NodeCollection& nodeCollection) :
+			nodeCollection (nodeCollection)
 		{
 
 		}
 
 		virtual void NodeAdded (const NE::NodeId& nodeId) override
 		{
-			pastedNodes.Insert (nodeId);
+			nodeCollection.Insert (nodeId);
 		}
 
 	private:
-		NE::NodeCollection& pastedNodes;
+		NE::NodeCollection& nodeCollection;
 	};
 
 	NE::AllNodesFilter allNodesFilter;
-	PasteEventHandler eventHandler (pastedNodes);
+	PasteEventHandler eventHandler (nodeCollection);
 	return NE::NodeManagerMerge::AppendNodeManager (tempNodeManager, target, allNodesFilter, eventHandler);
 }
 

@@ -88,26 +88,19 @@ static std::vector<SlotInfo> GetConnectedOutputSlots (const NodeManager& nodeMan
 	return result;
 }
 
-static void Sort (std::vector<NodeId>& nodes)
-{
-	std::sort (nodes.begin (), nodes.end (), [&] (const NodeId& a, const NodeId& b) {
-		return a < b;
-	});
-}
-
-static void EnumerateInputConnectionsOrdered (const NodeManager& nodeManager, const NodeCollection& nodes, const std::function<void (const ConnectionInfo&)>& processor)
+static void EnumerateInternalConnections (const NodeManager& nodeManager, const NodeCollection& nodes, const std::function<void (const ConnectionInfo&)>& processor)
 {
 	nodes.Enumerate ([&] (const NodeId& nodeId) {
 		NodeConstPtr node = nodeManager.GetNode (nodeId);
 		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
 			SlotInfo inputSlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ());
-			std::vector<SlotInfo> outputSlots = GetConnectedOutputSlots (nodeManager, inputSlot);
-			for (const SlotInfo& outputSlotInfo : outputSlots) {
-				if (nodes.Contains (outputSlotInfo.GetNodeId ())) {
+			nodeManager.EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
+				if (nodes.Contains (outputSlot->GetOwnerNodeId ())) {
+					SlotInfo outputSlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ());
 					ConnectionInfo connection (outputSlotInfo, inputSlotInfo);
 					processor (connection);
 				}
-			}
+			});
 			return true;
 		});
 		return true;
@@ -165,7 +158,7 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 
 	// maintain connections between added nodes
 	bool success = true;
-	EnumerateInputConnectionsOrdered (source, nodesToClone, [&] (const ConnectionInfo& connection) {
+	EnumerateInternalConnections (source, nodesToClone, [&] (const ConnectionInfo& connection) {
 		NodeConstPtr outputNode = target.GetNode (oldToNewNodeIdTable[connection.GetOutputNodeId ()]);
 		NodeConstPtr inputNode = target.GetNode (oldToNewNodeIdTable[connection.GetInputNodeId ()]);
 		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
@@ -210,8 +203,8 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 		}
 		return true;
 	});
-	Sort (nodesToCreate);
-	Sort (nodesToDelete);
+	std::sort (nodesToCreate.begin (), nodesToCreate.end ());
+	std::sort (nodesToDelete.begin (), nodesToDelete.end ());
 
 	// delete and create nodes
 	for (const NodeId& nodeId : nodesToDelete) {

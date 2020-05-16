@@ -624,16 +624,14 @@ bool NodeUIManager::Paste ()
 
 NE::NodeCollection NodeUIManager::Duplicate (const NE::NodeCollection& nodeCollection)
 {
-	static const NE::NodeCollection EmptyNodeCollection;
-
 	CopyPasteHandler tempCopyPasteHandler;
 	if (DBGERROR (!tempCopyPasteHandler.CopyFrom (nodeManager, nodeCollection))) {
-		return EmptyNodeCollection;
+		return NE::EmptyNodeCollection;
 	}
 
 	NE::NodeCollection duplicatedNodes;
 	if (DBGERROR (!tempCopyPasteHandler.PasteTo (nodeManager, duplicatedNodes))) {
-		return EmptyNodeCollection;
+		return NE::EmptyNodeCollection;
 	}
 
 	RequestRecalculateAndRedraw ();
