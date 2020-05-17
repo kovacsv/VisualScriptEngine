@@ -15,8 +15,8 @@ platform:
 
 init:
 - set cMakeParams=
-- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" ( set cMakeParams=-G "Visual Studio 15 2017 Win64" )
-- if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" ( set cMakeParams=-G "Visual Studio 16 2019" -A "x64")
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" ( set cMakeParams=-G "Visual Studio 15 2017 Win64" )
+- if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" ( set cMakeParams=-G "Visual Studio 16 2019" -A "x64")
 
 before_build:
   - mkdir Build
@@ -27,5 +27,15 @@ build:
   project: c:\projects\VisualScriptEngine\Build\VisualScriptEngine.sln
   verbosity: minimal
 
+after_build:
+  - set vsVersion=
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" ( set vsVersion=2017 )
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" ( set vsVersion=2019 )
+  - cd ..
+  - python CreatePackage.py %vsVersion% "MSBuild" %configuration%
+
 test_script:
   - ctest --verbose --build-config %configuration%
+
+artifacts:
+  - path: Build\Package\*
