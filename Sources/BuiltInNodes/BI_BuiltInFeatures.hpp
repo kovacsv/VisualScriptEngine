@@ -32,20 +32,20 @@ public:
 	EnableDisableFeature (State state, Mode mode);
 	virtual ~EnableDisableFeature ();
 
-	State				GetState () const;
-	Mode				GetMode () const;
-	void				SetState (State newState);
-	void				DrawInplace (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
+	State						GetState () const;
+	Mode						GetMode () const;
+	void						SetState (State newState);
+	void						DrawInplace (NUIE::NodeUIDrawingEnvironment& env, const std::function<void (NUIE::NodeUIDrawingEnvironment&)>& drawer) const;
 
-	virtual void		RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
-	virtual void		RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
+	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
+	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
-	State		state;
-	Mode		mode;
+	State						state;
+	Mode						mode;
 };
 
 class ValueCombinationFeature : public NodeFeature
