@@ -29,6 +29,11 @@ matrix:
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
+    - os: osx
+      osx_image: xcode11
+      compiler: clang
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
 
 before_install:
   - eval "${MATRIX_EVAL}"
