@@ -4,8 +4,8 @@
 #include "NE_Stream.hpp"
 #include "NE_Serializable.hpp"
 #include "NUIE_NodeParameters.hpp"
+#include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeCommonParameters.hpp"
-#include "NUIE_NodeMenuCommandRegistrator.hpp"
 
 #include <memory>
 

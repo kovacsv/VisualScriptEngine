@@ -1,5 +1,5 @@
 #include "NUIE_NodeEditor.hpp"
-#include "NUIE_NodeMenuCommands.hpp"
+#include "NUIE_NodeCommonMenuCommands.hpp"
 #include "NUIE_NodeUIManagerCommands.hpp"
 #include "NUIE_Version.hpp"
 #include "NE_MemoryStream.hpp"

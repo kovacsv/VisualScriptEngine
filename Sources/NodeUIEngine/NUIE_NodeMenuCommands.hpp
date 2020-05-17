@@ -2,168 +2,150 @@
 #define NUIE_NODEMENUCOMMANDS_HPP
 
 #include "NUIE_UINode.hpp"
+#include "NUIE_UINodeInvalidator.hpp"
 #include "NUIE_MenuCommands.hpp"
-#include "NUIE_NodeUIManager.hpp"
-#include "NUIE_NodeParameters.hpp"
 
 namespace NUIE
 {
 
-class DeleteNodesMenuCommand : public SingleMenuCommand
+class NodeUIManager;
+class NodeUIEnvironment;
+
+template <typename CommandType>
+class NodeGroupCommand
 {
 public:
-	DeleteNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
-	virtual ~DeleteNodesMenuCommand ();
+	NodeGroupCommand (const std::wstring& name);
+	virtual ~NodeGroupCommand ();
 
-	virtual void Do () override;
+	std::wstring			GetName () const;
+	bool					HasChildCommand () const;
+	void					AddChildCommand (const CommandType& command);
+	void					EnumerateChildCommands (const std::function<void (const CommandType&)>& processor);
 
 private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
-	NE::NodeCollection	relevantNodes;
+	std::wstring					name;
+	std::vector<CommandType>	childCommands;
 };
 
-class CopyNodesMenuCommand : public SingleMenuCommand
+template <typename CommandType>
+NodeGroupCommand<CommandType>::NodeGroupCommand (const std::wstring& name) :
+	name (name)
+{
+
+}
+
+template <typename CommandType>
+NodeGroupCommand<CommandType>::~NodeGroupCommand ()
+{
+}
+
+template <typename CommandType>
+std::wstring NodeGroupCommand<CommandType>::GetName () const
+{
+	return NE::LocalizeString (name);
+}
+
+template <typename CommandType>
+bool NodeGroupCommand<CommandType>::HasChildCommand () const
+{
+	return !childCommands.empty ();
+}
+
+template <typename CommandType>
+void NodeGroupCommand<CommandType>::AddChildCommand (const CommandType& command)
+{
+	childCommands.push_back (command);
+}
+
+template <typename CommandType>
+void NodeGroupCommand<CommandType>::EnumerateChildCommands (const std::function<void(const CommandType&)>& processor)
+{
+	for (const CommandType& command : childCommands) {
+		processor (command);
+	}
+}
+
+class NodeCommandBase
 {
 public:
-	CopyNodesMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
-	virtual ~CopyNodesMenuCommand ();
+	NodeCommandBase (const std::wstring& name, bool isChecked);
+	virtual ~NodeCommandBase ();
 
-	virtual void Do () override;
+	virtual std::wstring	GetName () const;
+	bool					IsChecked () const;
 
 private:
-	NodeUIManager&		uiManager;
-	NE::NodeCollection	relevantNodes;
+	std::wstring	name;
+	bool			isChecked;
 };
 
-class PasteNodesMenuCommand : public SingleMenuCommand
+class NodeCommand : public NodeCommandBase
 {
 public:
-	PasteNodesMenuCommand (NodeUIManager& uiManager, const Point& position);
-	virtual ~PasteNodesMenuCommand ();
+	NodeCommand (const std::wstring& name, bool isChecked);
+	virtual ~NodeCommand ();
 
-	virtual void Do () override;
-
-private:
-	NodeUIManager&		uiManager;
-	Point				position;
+	virtual bool	IsApplicableTo (const UINodeConstPtr& uiNode) = 0;
+	virtual void	Do (UINodeInvalidator& invalidator, NodeUIEnvironment& uiEnvironment, UINodePtr& uiNode) = 0;
 };
 
-class AlignToWindowMenuCommand : public SingleMenuCommand
+using NodeCommandPtr = std::shared_ptr<NodeCommand>;
+using NodeGroupCommandPtr = std::shared_ptr<NodeGroupCommand<NodeCommandPtr>>;
+
+class InputSlotCommand : public NodeCommandBase
 {
 public:
-	AlignToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
-	virtual ~AlignToWindowMenuCommand ();
+	InputSlotCommand (const std::wstring& name, bool isChecked);
+	virtual ~InputSlotCommand ();
 
-	virtual void Do () override;
-
-private:
-	NodeUIManager&				uiManager;
-	NodeUIDrawingEnvironment&	uiEnvironment;
+	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIInputSlotConstPtr& inputSlot) = 0;
 };
 
-class CenterToWindowMenuCommand : public SingleMenuCommand
+using InputSlotCommandPtr = std::shared_ptr<InputSlotCommand>;
+using InputSlotGroupCommandPtr = std::shared_ptr<NodeGroupCommand<InputSlotCommandPtr>>;
+
+class OutputSlotCommand : public NodeCommandBase
 {
 public:
-	CenterToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
-	virtual ~CenterToWindowMenuCommand ();
+	OutputSlotCommand (const std::wstring& name, bool isChecked);
+	virtual ~OutputSlotCommand ();
 
-	virtual void Do () override;
-
-private:
-	NodeUIManager&				uiManager;
-	NodeUIDrawingEnvironment&	uiEnvironment;
+	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIOutputSlotConstPtr& outputSlot) = 0;
 };
 
-class FitToWindowMenuCommand : public SingleMenuCommand
+using OutputSlotCommandPtr = std::shared_ptr<OutputSlotCommand>;
+using OutputSlotGroupCommandPtr = std::shared_ptr<NodeGroupCommand<OutputSlotCommandPtr>>;
+
+class NodeCommandRegistrator
 {
 public:
-	FitToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
-	virtual ~FitToWindowMenuCommand ();
+	NodeCommandRegistrator ();
+	virtual ~NodeCommandRegistrator ();
 
-	virtual void Do () override;
-
-private:
-	NodeUIManager&				uiManager;
-	NodeUIDrawingEnvironment&	uiEnvironment;
+	virtual void RegisterNodeCommand (NodeCommandPtr nodeCommand) = 0;
+	virtual void RegisterNodeGroupCommand (NodeGroupCommandPtr nodeGroupCommand) = 0;
 };
 
-class UndoMenuCommand : public SingleMenuCommand
+class InputSlotCommandRegistrator
 {
 public:
-	UndoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
-	virtual ~UndoMenuCommand ();
+	InputSlotCommandRegistrator ();
+	virtual ~InputSlotCommandRegistrator ();
 
-	virtual void Do () override;
-
-private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
+	virtual void RegisterSlotCommand (InputSlotCommandPtr slotCommand) = 0;
+	virtual void RegisterSlotGroupCommand (InputSlotGroupCommandPtr nodeGroupCommand) = 0;
 };
 
-class RedoMenuCommand : public SingleMenuCommand
+class OutputSlotCommandRegistrator
 {
 public:
-	RedoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
-	virtual ~RedoMenuCommand ();
+	OutputSlotCommandRegistrator ();
+	virtual ~OutputSlotCommandRegistrator ();
 
-	virtual void Do () override;
-
-private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
+	virtual void RegisterSlotCommand (OutputSlotCommandPtr slotCommand) = 0;
+	virtual void RegisterSlotGroupCommand (OutputSlotGroupCommandPtr nodeGroupCommand) = 0;
 };
-
-class SetParametersMenuCommand : public SingleMenuCommand
-{
-public:
-	SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes);
-	virtual ~SetParametersMenuCommand ();
-
-	virtual void Do () override;
-
-private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
-	UINodePtr			currentNode;
-	NE::NodeCollection	relevantNodes;
-	NodeParameterList	relevantParameters;
-};
-
-class CreateGroupMenuCommand : public SingleMenuCommand
-{
-public:
-	CreateGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
-	virtual ~CreateGroupMenuCommand ();
-
-	virtual void Do () override;
-
-private:
-	NodeUIManager&		uiManager;
-	NE::NodeCollection	relevantNodes;
-};
-
-class SetGroupParametersMenuCommand : public SingleMenuCommand
-{
-public:
-	SetGroupParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
-	virtual ~SetGroupParametersMenuCommand ();
-
-	virtual void Do () override;
-
-private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
-	UINodeGroupPtr		group;
-};
-
-NE::NodeCollection		GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
-
-MenuCommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
-MenuCommandStructure	CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode);
-MenuCommandStructure	CreateOutputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIOutputSlotConstPtr& outputSlot);
-MenuCommandStructure	CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotConstPtr& inputSlot);
-MenuCommandStructure	CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
 
 }
 

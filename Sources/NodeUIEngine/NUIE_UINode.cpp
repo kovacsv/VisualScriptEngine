@@ -6,7 +6,7 @@
 #include "NUIE_ContextDecorators.hpp"
 #include "NUIE_NodeParameters.hpp"
 #include "NUIE_NodeCommonParameters.hpp"
-#include "NUIE_NodeMenuCommandRegistrator.hpp"
+#include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 

@@ -2,7 +2,7 @@
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_UIItemFinder.hpp"
 #include "NUIE_NodeUIManagerCommands.hpp"
-#include "NUIE_NodeMenuCommands.hpp"
+#include "NUIE_NodeCommonMenuCommands.hpp"
 #include "NE_Debug.hpp"
 
 #include <algorithm>
