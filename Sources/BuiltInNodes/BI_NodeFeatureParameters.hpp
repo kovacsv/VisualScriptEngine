@@ -32,6 +32,27 @@ public:
 		return NE::Node::CastConst<BasicUINode> (uiNode)->HasFeature (featureId);
 	}
 
+	virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
+	{
+		if (DBGERROR (!NE::Node::IsTypeConst<BasicUINode> (uiNode))) {
+			return nullptr;
+		}
+		BasicUINodeConstPtr basicUINode = NE::Node::CastConst<BasicUINode> (uiNode);
+		return GetValueInternal (basicUINode);
+	}
+
+	virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
+	{
+		if (DBGERROR (!NE::Node::IsType<BasicUINode> (uiNode))) {
+			return false;
+		}
+		BasicUINodePtr basicUINode = NE::Node::Cast<BasicUINode> (uiNode);
+		return SetValueInternal (invalidator, evaluationEnv, basicUINode, value);
+	}
+
+	virtual NE::ValueConstPtr GetValueInternal (const BasicUINodeConstPtr& uiNode) const = 0;
+	virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, BasicUINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
+
 private:
 	FeatureId featureId;
 };
@@ -57,27 +78,6 @@ public:
 	{
 		return valueChoices;
 	}
-
-	virtual NE::ValueConstPtr GetValueInternal (const NUIE::UINodeConstPtr& uiNode) const override
-	{
-		if (DBGERROR (!NE::Node::IsTypeConst<BasicUINode> (uiNode))) {
-			return nullptr;
-		}
-		BasicUINodeConstPtr basicUINode = NE::Node::CastConst<BasicUINode> (uiNode);
-		return GetValueInternal (basicUINode);
-	}
-
-	virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, NUIE::UINodePtr& uiNode, const NE::ValueConstPtr& value) override
-	{
-		if (DBGERROR (!NE::Node::IsType<BasicUINode> (uiNode))) {
-			return false;
-		}
-		BasicUINodePtr basicUINode = NE::Node::Cast<BasicUINode> (uiNode);
-		return SetValueInternal (invalidator, evaluationEnv, basicUINode, value);
-	}
-
-	virtual NE::ValueConstPtr GetValueInternal (const BasicUINodeConstPtr& uiNode) const = 0;
-	virtual bool SetValueInternal (NUIE::UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, BasicUINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 
 private:
 	std::vector<std::wstring> valueChoices;

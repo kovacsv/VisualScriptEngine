@@ -3,141 +3,50 @@
 namespace BI
 {
 
-SERIALIZATION_INFO (FeatureId, 1);
-SERIALIZATION_INFO (NodeFeature, 1);
-SERIALIZATION_INFO (UINodeFeatureSet, 1);
+SERIALIZATION_INFO (NodeFeatureSet, 1);
 
-FeatureId::FeatureId () :
-	id ()
+NodeFeatureSet::NodeFeatureSet ()
 {
 
 }
 
-FeatureId::FeatureId (const std::string& id) :
-	id (id)
+NodeFeatureSet::~NodeFeatureSet ()
 {
 
 }
 
-FeatureId::~FeatureId ()
-{
-
-}
-
-size_t FeatureId::GenerateHashValue () const
-{
-	return std::hash<std::string> {} (id);
-}
-
-bool FeatureId::operator< (const FeatureId& rhs) const
-{
-	return id < rhs.id;
-}
-
-bool FeatureId::operator> (const FeatureId& rhs) const
-{
-	return id > rhs.id;
-}
-
-bool FeatureId::operator== (const FeatureId& rhs) const
-{
-	return id == rhs.id;
-}
-
-bool FeatureId::operator!= (const FeatureId& rhs) const
-{
-	return !operator== (rhs);
-}
-
-NE::Stream::Status FeatureId::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	inputStream.Read (id);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status FeatureId::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	outputStream.Write (id);
-	return outputStream.GetStatus ();
-}
-
-NodeFeature::NodeFeature () :
-	NodeFeature (FeatureId ())
-{
-
-}
-
-NodeFeature::NodeFeature (const FeatureId& featureId) :
-	featureId (featureId)
-{
-}
-
-NodeFeature::~NodeFeature ()
-{
-
-}
-
-const FeatureId& NodeFeature::GetId () const
-{
-	return featureId;
-}
-
-NE::Stream::Status NodeFeature::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status NodeFeature::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	return outputStream.GetStatus ();
-}
-
-UINodeFeatureSet::UINodeFeatureSet ()
-{
-
-}
-
-UINodeFeatureSet::~UINodeFeatureSet ()
-{
-
-}
-
-void UINodeFeatureSet::AddFeature (const FeatureId& featureId, const NodeFeaturePtr& feature)
+void NodeFeatureSet::AddFeature (const FeatureId& featureId, const NodeFeaturePtr& feature)
 {
 	size_t index = features.size ();
 	features.push_back (feature);
 	idToIndex.insert ({ featureId, index });
 }
 
-bool UINodeFeatureSet::HasFeature (const FeatureId& featureId) const
+bool NodeFeatureSet::HasFeature (const FeatureId& featureId) const
 {
 	return idToIndex.find (featureId) != idToIndex.end ();
 }
 
-const NodeFeaturePtr& UINodeFeatureSet::GetFeature (const FeatureId& featureId) const
+const NodeFeaturePtr& NodeFeatureSet::GetFeature (const FeatureId& featureId) const
 {
 	return features[idToIndex.at (featureId)];
 }
 
-void UINodeFeatureSet::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+void NodeFeatureSet::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
 	for (const NodeFeaturePtr& feature : features) {
 		feature->RegisterCommands (commandRegistrator);
 	}
 }
 
-void UINodeFeatureSet::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+void NodeFeatureSet::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	for (const NodeFeaturePtr& feature : features) {
 		feature->RegisterParameters (parameterList);
 	}
 }
 
-NE::Stream::Status UINodeFeatureSet::Read (NE::InputStream& inputStream)
+NE::Stream::Status NodeFeatureSet::Read (NE::InputStream& inputStream)
 {
 	NE::ObjectHeader header (inputStream);
 	size_t featureCount = 0;
@@ -149,7 +58,7 @@ NE::Stream::Status UINodeFeatureSet::Read (NE::InputStream& inputStream)
 	return inputStream.GetStatus ();
 }
 
-NE::Stream::Status UINodeFeatureSet::Write (NE::OutputStream& outputStream) const
+NE::Stream::Status NodeFeatureSet::Write (NE::OutputStream& outputStream) const
 {
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	outputStream.Write (features.size ());

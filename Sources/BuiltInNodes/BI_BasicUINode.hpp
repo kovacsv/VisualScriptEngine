@@ -19,9 +19,6 @@ public:
 	BasicUINode (const NE::String& name, const NUIE::Point& position, const NUIE::IconId& iconId, const UINodeLayoutPtr& layout);
 	virtual ~BasicUINode ();
 
-	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
-	virtual void						RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
-
 	bool								HasIconId () const;
 	const NUIE::IconId&					GetIconId () const;
 	void								SetIconId (const NUIE::IconId& newIconId);
@@ -35,6 +32,8 @@ public:
 	virtual void						OnFeatureChange (const FeatureId& featureId, NE::EvaluationEnv& env) const;
 
 protected:
+	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
+	virtual void						RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const override;
 	bool								RegisterFeature (const NodeFeaturePtr& newFeature);
 
 private:
@@ -44,7 +43,7 @@ private:
 
 	NUIE::IconId		iconId;
 	UINodeLayoutPtr		layout;
-	UINodeFeatureSet	nodeFeatureSet;
+	NodeFeatureSet	nodeFeatureSet;
 };
 
 using BasicUINodePtr = std::shared_ptr<BasicUINode>;
@@ -53,12 +52,18 @@ using BasicUINodeConstPtr = std::shared_ptr<const BasicUINode>;
 template <class FeatureType>
 std::shared_ptr<FeatureType> GetUINodeFeature (const BasicUINode* uiNode, const FeatureId& featureId)
 {
+	if (DBGERROR (!uiNode->HasFeature (featureId))) {
+		return nullptr;
+	}
 	return NodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
 }
 
 template <class FeatureType>
 std::shared_ptr<FeatureType> GetUINodeFeature (const BasicUINodeConstPtr& uiNode, const FeatureId& featureId)
 {
+	if (DBGERROR (!uiNode->HasFeature (featureId))) {
+		return nullptr;
+	}
 	return NodeFeature::Cast<FeatureType> (uiNode->GetFeature (featureId));
 }
 

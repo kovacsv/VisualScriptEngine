@@ -67,6 +67,8 @@ public:
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
+	static bool					CombineValues (const BasicUINode* uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor);
+
 private:
 	NE::ValueCombinationMode	valueCombinationMode;
 };
@@ -75,8 +77,6 @@ std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const BasicUINode
 std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const BasicUINodeConstPtr& uiNode);
 std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const BasicUINode* uiNode);
 std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const BasicUINodeConstPtr& uiNode);
-bool CombineValues (const BasicUINode* uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor);
-bool CombineValues (const BasicUINodeConstPtr& uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor);
 
 }
 

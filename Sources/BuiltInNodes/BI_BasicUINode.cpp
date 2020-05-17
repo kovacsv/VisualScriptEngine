@@ -38,18 +38,6 @@ BasicUINode::~BasicUINode ()
 
 }
 
-void BasicUINode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
-{
-	UINode::RegisterParameters (parameterList);
-	nodeFeatureSet.RegisterParameters (parameterList);
-}
-
-void BasicUINode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
-{
-	UINode::RegisterCommands (commandRegistrator);
-	nodeFeatureSet.RegisterCommands (commandRegistrator);
-}
-
 bool BasicUINode::HasIconId () const
 {
 	return iconId != NUIE::InvalidIconId;
@@ -96,6 +84,18 @@ NE::Stream::Status BasicUINode::Write (NE::OutputStream& outputStream) const
 void BasicUINode::OnFeatureChange (const FeatureId&, NE::EvaluationEnv&) const
 {
 
+}
+
+void BasicUINode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
+{
+	UINode::RegisterParameters (parameterList);
+	nodeFeatureSet.RegisterParameters (parameterList);
+}
+
+void BasicUINode::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
+{
+	UINode::RegisterCommands (commandRegistrator);
+	nodeFeatureSet.RegisterCommands (commandRegistrator);
 }
 
 bool BasicUINode::RegisterFeature (const NodeFeaturePtr& newFeature)

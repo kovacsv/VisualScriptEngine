@@ -293,6 +293,15 @@ NE::Stream::Status ValueCombinationFeature::Write (NE::OutputStream& outputStrea
 	return outputStream.GetStatus ();
 }
 
+bool ValueCombinationFeature::CombineValues (const BasicUINode* uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor)
+{
+	std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (uiNode);
+	if (DBGERROR (valueCombination == nullptr)) {
+		return false;
+	}
+	return valueCombination->CombineValues (values, processor);
+}
+
 std::shared_ptr<EnableDisableFeature> GetEnableDisableFeature (const BasicUINode* uiNode)
 {
 	return GetUINodeFeature<EnableDisableFeature> (uiNode, EnableDisableFeatureId);
@@ -311,24 +320,6 @@ std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const Basic
 std::shared_ptr<ValueCombinationFeature> GetValueCombinationFeature (const BasicUINodeConstPtr& uiNode)
 {
 	return GetUINodeFeature<ValueCombinationFeature> (uiNode, ValueCombinationFeatureId);
-}
-
-bool CombineValues (const BasicUINode* uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor)
-{
-	std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (uiNode);
-	if (DBGERROR (valueCombination == nullptr)) {
-		return false;
-	}
-	return valueCombination->CombineValues (values, processor);
-}
-
-bool CombineValues (const BasicUINodeConstPtr& uiNode, const std::vector<NE::ValueConstPtr>& values, const std::function<bool (const NE::ValueCombination&)>& processor)
-{
-	std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (uiNode);
-	if (DBGERROR (valueCombination == nullptr)) {
-		return false;
-	}
-	return valueCombination->CombineValues (values, processor);
 }
 
 }
