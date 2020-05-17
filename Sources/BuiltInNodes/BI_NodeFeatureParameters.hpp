@@ -24,7 +24,7 @@ public:
 
 	}
 
-	virtual bool IsApplicableTo (const NUIE::UINodeConstPtr& uiNode) const
+	virtual bool IsApplicableTo (const NUIE::UINodeConstPtr& uiNode) const override
 	{
 		if (!NE::Node::IsTypeConst<BasicUINode> (uiNode)) {
 			return false;
