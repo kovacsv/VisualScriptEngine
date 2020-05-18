@@ -124,7 +124,6 @@ void MultiLineViewerNode::Layout::GetTextInfo (const BasicUINode& uiNode,
 		if (currentPage > pageCount) {
 			currentPage = pageCount;
 		}
-		viewerNode->ValidateCurrentPage (currentPage);
 		for (size_t i = 0; i < textsPerPage; ++i) {
 			size_t textIndex = (currentPage - 1) * textsPerPage + i;
 			if (textIndex < nodeTexts.size ()) {
@@ -134,8 +133,11 @@ void MultiLineViewerNode::Layout::GetTextInfo (const BasicUINode& uiNode,
 	} else {
 		textCount = 1;
 		pageCount = 1;
+		currentPage = 1;
 		texts.push_back (NE::LocalizeString (L"<empty>"));
 	}
+
+	viewerNode->ValidateCurrentPage (currentPage);
 }
 
 std::shared_ptr<HeaderWithSlotsAndMultilineTextLayout::ClickHandler> MultiLineViewerNode::Layout::GetClickHandler (BasicUINode& uiNode) const
