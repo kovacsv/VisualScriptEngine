@@ -28,7 +28,7 @@
 <rect x="313" y="299" width="38" height="15" style="fill:rgb(225,225,225);"/>
 <text x="348" y="306" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:9px;">List</text>
 <rect x="263" y="279" width="89" height="72" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
-<rect x="407" y="134" width="105" height="18" style="fill:rgb(100,100,100);"/>
+<rect x="407" y="134" width="105" height="18" style="fill:rgb(225,0,0);"/>
 <text x="459" y="142" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:9px;">Viewer</text>
 <rect x="407" y="151" width="105" height="20" style="fill:rgb(200,200,200);"/>
 <rect x="407" y="154" width="46" height="15" style="fill:rgb(225,225,225);"/>

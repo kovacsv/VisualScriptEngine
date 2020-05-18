@@ -502,7 +502,7 @@ TEST (ManualUpdateTestUndo)
 	ASSERT (env.CheckReference ("ManualUpdateTestUndo_AfterUndo.svg"));
 
 	env.nodeEditor.ManualUpdate ();
-	ASSERT (env.CheckReference ("ManualUpdateTesUndot_ManualUpdateAfterUndo.svg"));
+	ASSERT (env.CheckReference ("ManualUpdateTestUndo_ManualUpdateAfterUndo.svg"));
 }
 
 TEST (FitToWindowTest)

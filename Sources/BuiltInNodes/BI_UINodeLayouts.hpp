@@ -90,10 +90,10 @@ public:
 	virtual std::shared_ptr<ClickHandler>	GetClickHandler (BasicUINode& uiNode) const = 0;
 
 private:
-	std::string leftButtonId;
-	std::wstring leftButtonText;
-	std::string rightButtonId;
-	std::wstring rightButtonText;
+	std::string		leftButtonId;
+	std::wstring	leftButtonText;
+	std::string		rightButtonId;
+	std::wstring	rightButtonText;
 };
 
 class HeaderWithSlotsAndSwitchLayout : public HeaderBasedLayout
@@ -122,7 +122,7 @@ public:
 														NUIE::NodeUIDrawingEnvironment& env,
 														NUIE::NodePanelDrawer& drawer) const override;
 
-	virtual NUIE::EventHandlerResult		HandleMouseClick (BasicUINode& uiNode,
+	virtual NUIE::EventHandlerResult		HandleMouseClick (	BasicUINode& uiNode,
 																NUIE::NodeUIEnvironment& env,
 																const NUIE::ModifierKeys& modifierKeys,
 																NUIE::MouseButton mouseButton,
@@ -136,6 +136,55 @@ private:
 	std::string switchButtonId;
 	std::wstring firstSwitchText;
 	std::wstring secondSwitchText;
+};
+
+class HeaderWithSlotsAndMultilineTextLayout : public HeaderBasedLayout
+{
+public:
+	class ClickHandler
+	{
+	public:
+		ClickHandler ();
+		virtual ~ClickHandler ();
+
+		virtual void SetCurrentPage (size_t currentPage) = 0;
+	};
+
+	HeaderWithSlotsAndMultilineTextLayout (	const std::string& leftButtonId,
+											const std::wstring& leftButtonText,
+											const std::string& rightButtonId,
+											const std::wstring& rightButtonText);
+
+	virtual void							AddPanels (	const BasicUINode& uiNode,
+														NUIE::NodeUIDrawingEnvironment& env,
+														NUIE::NodePanelDrawer& drawer) const override;
+
+
+	virtual NUIE::EventHandlerResult		HandleMouseClick (	BasicUINode& uiNode,
+																NUIE::NodeUIEnvironment& env,
+																const NUIE::ModifierKeys& modifierKeys,
+																NUIE::MouseButton mouseButton,
+																const NUIE::Point& position,
+																NUIE::UINodeCommandInterface& commandInterface) const override;
+
+	virtual void							GetTextInfo (	const BasicUINode& uiNode,
+															const NE::StringConverter& stringConverter,
+															std::vector<std::wstring>& texts,
+															size_t& textCount,
+															size_t& textsPerPage,
+															size_t& pageCount,
+															size_t& currentPage) const = 0;
+
+	virtual std::shared_ptr<ClickHandler>	GetClickHandler (BasicUINode& uiNode) const = 0;
+
+private:
+	std::string		leftButtonId;
+	std::wstring	leftButtonText;
+	std::string		rightButtonId;
+	std::wstring	rightButtonText;
+
+	mutable size_t	storedPageCount;
+	mutable size_t	storedCurrentPage;
 };
 
 }

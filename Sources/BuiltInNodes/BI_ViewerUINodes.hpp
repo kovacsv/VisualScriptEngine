@@ -35,11 +35,30 @@ public:
 	virtual NE::Stream::Status			Write (NE::OutputStream& outputStream) const override;
 };
 
-class MultiLineViewerNode : public NUIE::UINode
+class MultiLineViewerNode : public BasicUINode
 {
 	DYNAMIC_SERIALIZABLE (MultiLineViewerNode);
 
 public:
+	class Layout : public HeaderWithSlotsAndMultilineTextLayout
+	{
+	public:
+		Layout (const std::string& leftButtonId,
+				const std::wstring& leftButtonText,
+				const std::string& rightButtonId,
+				const std::wstring& rightButtonText);
+
+		virtual void	GetTextInfo (	const BasicUINode& uiNode,
+										const NE::StringConverter& stringConverter,
+										std::vector<std::wstring>& texts,
+										size_t& textCount,
+										size_t& textsPerPage,
+										size_t& pageCount,
+										size_t& currentPage) const override;
+
+		virtual std::shared_ptr<HeaderWithSlotsAndMultilineTextLayout::ClickHandler>	GetClickHandler (BasicUINode& uiNode) const override;
+	};
+
 	MultiLineViewerNode ();
 	MultiLineViewerNode (const NE::String& name, const NUIE::Point& position, size_t textsPerPage);
 	virtual ~MultiLineViewerNode ();
@@ -47,9 +66,6 @@ public:
 	virtual void						Initialize () override;
 	virtual NE::ValueConstPtr			Calculate (NE::EvaluationEnv& env) const override;
 	virtual void						RegisterParameters (NUIE::NodeParameterList& parameterList) const override;
-
-	virtual NUIE::EventHandlerResult	HandleMouseClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
-	virtual NUIE::EventHandlerResult	HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
 
 	virtual bool						IsForceCalculated () const override;
 
@@ -59,15 +75,13 @@ public:
 	size_t								GetTextsPerPage () const;
 	void								SetTextsPerPage (size_t newTextsPerPage);
 
+	size_t								GetCurrentPage () const;
+	void								SetCurrentPage (size_t newCurrentPage);
+	void								ValidateCurrentPage (size_t correctCurrentPage) const;
+
 private:
-	virtual void	UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
-
-	size_t			GetPageCount () const;
-	void			ValidateCurrentPage () const;
-
 	size_t			textsPerPage;
 	mutable size_t	currentPage;
-	mutable size_t	textCount;
 };
 
 }
