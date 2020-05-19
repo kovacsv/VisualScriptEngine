@@ -187,16 +187,6 @@ NUIE::EventHandlerResult HeaderWithSlotsAndSwitchLayout::HandleMouseClick (	Basi
 	return NUIE::EventHandlerResult::EventNotHandled;
 }
 
-HeaderWithSlotsAndMultilineTextLayout::ClickHandler::ClickHandler ()
-{
-
-}
-
-HeaderWithSlotsAndMultilineTextLayout::ClickHandler::~ClickHandler ()
-{
-
-}
-
 HeaderWithSlotsAndMultilineTextLayout::HeaderWithSlotsAndMultilineTextLayout (	const std::string& leftButtonId,
 																				const std::wstring& leftButtonText,
 																				const std::string& rightButtonId,
@@ -206,8 +196,8 @@ HeaderWithSlotsAndMultilineTextLayout::HeaderWithSlotsAndMultilineTextLayout (	c
 	leftButtonText (leftButtonText),
 	rightButtonId (rightButtonId),
 	rightButtonText (rightButtonText),
-	storedPageCount (0),
-	storedCurrentPage (0)
+	pageCount (0),
+	currentPage (1)
 {
 }
 
@@ -216,22 +206,40 @@ void HeaderWithSlotsAndMultilineTextLayout::AddPanels (	const BasicUINode& uiNod
 														NUIE::NodePanelDrawer& drawer) const
 {
 	std::vector<std::wstring> texts;
-	size_t allTextCount = 0;
 	size_t textsPerPage = 0;
-	size_t pageCount = 0;
-	size_t currentPage = 0;
+	GetTextInfo (uiNode, env.GetStringConverter (), texts, textsPerPage);
 
-	GetTextInfo (uiNode, env.GetStringConverter (), texts, allTextCount, textsPerPage, pageCount, currentPage);
+	size_t textCount = texts.size ();
+	pageCount = textCount / textsPerPage;
+	if (textCount % textsPerPage != 0) {
+		pageCount = pageCount + 1;
+	}
+	if (currentPage > pageCount) {
+		currentPage = pageCount;
+	}
+
+	std::vector<std::wstring> visibleTexts;
+	if (!texts.empty ()) {
+		textCount = texts.size ();
+		for (size_t i = 0; i < textsPerPage; ++i) {
+			size_t textIndex = (currentPage - 1) * textsPerPage + i;
+			if (textIndex < texts.size ()) {
+				visibleTexts.push_back (texts[textIndex]);
+			}
+		}
+	} else {
+		textCount = 1;
+		pageCount = 1;
+		currentPage = 1;
+		visibleTexts.push_back (NE::LocalizeString (L"<empty>"));
+	}
 
 	HeaderBasedLayout::AddPanels (uiNode, env, drawer);
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
-	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextPanel (texts, allTextCount, textsPerPage, env)));
-	if (allTextCount > textsPerPage) {
-		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (allTextCount) + L")", env)));
+	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextPanel (visibleTexts, textCount, textsPerPage, env)));
+	if (textCount > textsPerPage) {
+		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
 	}
-
-	storedCurrentPage = currentPage;
-	storedPageCount = pageCount;
 }
 
 NUIE::EventHandlerResult HeaderWithSlotsAndMultilineTextLayout::HandleMouseClick (	BasicUINode& uiNode,
@@ -239,7 +247,7 @@ NUIE::EventHandlerResult HeaderWithSlotsAndMultilineTextLayout::HandleMouseClick
 																					const NUIE::ModifierKeys&,
 																					NUIE::MouseButton mouseButton,
 																					const NUIE::Point& position,
-																					NUIE::UINodeCommandInterface& commandInterface) const
+																					NUIE::UINodeCommandInterface&) const
 {
 	if (mouseButton != NUIE::MouseButton::Left) {
 		return NUIE::EventHandlerResult::EventNotHandled;
@@ -249,27 +257,20 @@ NUIE::EventHandlerResult HeaderWithSlotsAndMultilineTextLayout::HandleMouseClick
 		return NUIE::EventHandlerResult::EventNotHandled;
 	}
 
-	std::shared_ptr<ClickHandler> clickHandler = GetClickHandler (uiNode);
 	NUIE::Rect minusButtonRect = uiNode.GetSpecialRect (env, leftButtonId);
 	NUIE::Rect plusButtonRect = uiNode.GetSpecialRect (env, rightButtonId);
 
 	if (minusButtonRect.Contains (position)) {
-		commandInterface.RunUndoableCommand ([&] () {
-			size_t newCurrentPage = storedCurrentPage - 1;
-			if (newCurrentPage == 0) {
-				newCurrentPage = storedPageCount;
-			}
-			clickHandler->SetCurrentPage (newCurrentPage);
-		});
+		currentPage = currentPage - 1;
+		if (currentPage == 0) {
+			currentPage = pageCount;
+		}
 		return NUIE::EventHandlerResult::EventHandled;
 	} else if (plusButtonRect.Contains (position)) {
-		commandInterface.RunUndoableCommand ([&] () {
-			size_t newCurrentPage = storedCurrentPage + 1;
-			if (newCurrentPage > storedPageCount) {
-				newCurrentPage = 1;
-			}
-			clickHandler->SetCurrentPage (newCurrentPage);
-		});
+		currentPage = currentPage + 1;
+		if (currentPage > pageCount) {
+			currentPage = 1;
+		}
 		return NUIE::EventHandlerResult::EventHandled;
 	}
 	return NUIE::EventHandlerResult::EventNotHandled;

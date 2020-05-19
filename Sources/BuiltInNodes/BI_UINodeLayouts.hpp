@@ -141,15 +141,6 @@ private:
 class HeaderWithSlotsAndMultilineTextLayout : public HeaderBasedLayout
 {
 public:
-	class ClickHandler
-	{
-	public:
-		ClickHandler ();
-		virtual ~ClickHandler ();
-
-		virtual void SetCurrentPage (size_t currentPage) = 0;
-	};
-
 	HeaderWithSlotsAndMultilineTextLayout (	const std::string& leftButtonId,
 											const std::wstring& leftButtonText,
 											const std::string& rightButtonId,
@@ -170,12 +161,7 @@ public:
 	virtual void							GetTextInfo (	const BasicUINode& uiNode,
 															const NE::StringConverter& stringConverter,
 															std::vector<std::wstring>& texts,
-															size_t& textCount,
-															size_t& textsPerPage,
-															size_t& pageCount,
-															size_t& currentPage) const = 0;
-
-	virtual std::shared_ptr<ClickHandler>	GetClickHandler (BasicUINode& uiNode) const = 0;
+															size_t& textsPerPage) const = 0;
 
 private:
 	std::string		leftButtonId;
@@ -183,8 +169,9 @@ private:
 	std::string		rightButtonId;
 	std::wstring	rightButtonText;
 
-	mutable size_t	storedPageCount;
-	mutable size_t	storedCurrentPage;
+protected:
+	mutable size_t	pageCount;
+	mutable size_t	currentPage;
 };
 
 }

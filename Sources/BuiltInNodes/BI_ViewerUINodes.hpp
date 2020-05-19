@@ -51,12 +51,7 @@ public:
 		virtual void	GetTextInfo (	const BasicUINode& uiNode,
 										const NE::StringConverter& stringConverter,
 										std::vector<std::wstring>& texts,
-										size_t& textCount,
-										size_t& textsPerPage,
-										size_t& pageCount,
-										size_t& currentPage) const override;
-
-		virtual std::shared_ptr<HeaderWithSlotsAndMultilineTextLayout::ClickHandler>	GetClickHandler (BasicUINode& uiNode) const override;
+										size_t& textsPerPage) const override;
 	};
 
 	MultiLineViewerNode ();
@@ -75,13 +70,8 @@ public:
 	size_t								GetTextsPerPage () const;
 	void								SetTextsPerPage (size_t newTextsPerPage);
 
-	size_t								GetCurrentPage () const;
-	void								SetCurrentPage (size_t newCurrentPage);
-	void								ValidateCurrentPage (size_t correctCurrentPage) const;
-
 private:
-	size_t			textsPerPage;
-	mutable size_t	currentPage;
+	size_t								textsPerPage;
 };
 
 }

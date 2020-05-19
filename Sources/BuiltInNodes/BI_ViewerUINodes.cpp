@@ -92,20 +92,16 @@ MultiLineViewerNode::Layout::Layout (	const std::string& leftButtonId,
 void MultiLineViewerNode::Layout::GetTextInfo (const BasicUINode& uiNode,
 												const NE::StringConverter& stringConverter,
 												std::vector<std::wstring>& texts,
-												size_t& textCount,
-												size_t& textsPerPage,
-												size_t& pageCount,
-												size_t& currentPage) const
+												size_t& textsPerPage) const
 {
-	std::vector<std::wstring> nodeTexts;
 	if (uiNode.HasCalculatedValue ()) {
 		NE::ValueConstPtr nodeValue = uiNode.GetCalculatedValue ();
 		if (nodeValue != nullptr) {
 			NE::FlatEnumerate (nodeValue, [&] (const NE::ValueConstPtr& value) {
 				if (value != nullptr) {
-					nodeTexts.push_back (value->ToString (stringConverter));
+					texts.push_back (value->ToString (stringConverter));
 				} else {
-					nodeTexts.push_back (NE::LocalizeString (L"<empty>"));
+					texts.push_back (NE::LocalizeString (L"<empty>"));
 				}
 			});
 		}
@@ -113,53 +109,6 @@ void MultiLineViewerNode::Layout::GetTextInfo (const BasicUINode& uiNode,
 
 	const MultiLineViewerNode* viewerNode = dynamic_cast<const MultiLineViewerNode*> (&uiNode);
 	textsPerPage = viewerNode->GetTextsPerPage ();
-	currentPage = viewerNode->GetCurrentPage ();
-	
-	if (!nodeTexts.empty ()) {
-		textCount = nodeTexts.size ();
-		pageCount = textCount / textsPerPage;
-		if (textCount % textsPerPage != 0) {
-			pageCount = pageCount + 1;
-		}
-		if (currentPage > pageCount) {
-			currentPage = pageCount;
-		}
-		for (size_t i = 0; i < textsPerPage; ++i) {
-			size_t textIndex = (currentPage - 1) * textsPerPage + i;
-			if (textIndex < nodeTexts.size ()) {
-				texts.push_back (nodeTexts[textIndex]);
-			}
-		}
-	} else {
-		textCount = 1;
-		pageCount = 1;
-		currentPage = 1;
-		texts.push_back (NE::LocalizeString (L"<empty>"));
-	}
-
-	viewerNode->ValidateCurrentPage (currentPage);
-}
-
-std::shared_ptr<HeaderWithSlotsAndMultilineTextLayout::ClickHandler> MultiLineViewerNode::Layout::GetClickHandler (BasicUINode& uiNode) const
-{
-	class ClickHandler : public HeaderWithSlotsAndMultilineTextLayout::ClickHandler
-	{
-	public:
-		ClickHandler (MultiLineViewerNode* node) :
-			node (node)
-		{
-		}
-
-		virtual void SetCurrentPage (size_t currentPage) override
-		{
-			node->SetCurrentPage (currentPage);
-		}
-
-	private:
-		MultiLineViewerNode* node;
-	};
-
-	return std::shared_ptr<HeaderWithSlotsAndMultilineTextLayout::ClickHandler> (new ClickHandler (dynamic_cast<MultiLineViewerNode*> (&uiNode)));
 }
 
 MultiLineViewerNode::MultiLineViewerNode () :
@@ -170,8 +119,7 @@ MultiLineViewerNode::MultiLineViewerNode () :
 
 MultiLineViewerNode::MultiLineViewerNode (const NE::String& name, const NUIE::Point& position, size_t textsPerPage) :
 	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ("minus", NE::LocalizeString (L"<"), "plus", NE::LocalizeString (L">")))),
-	textsPerPage (textsPerPage),
-	currentPage (1)
+	textsPerPage (textsPerPage)
 {
 
 }
@@ -249,21 +197,6 @@ size_t MultiLineViewerNode::GetTextsPerPage () const
 void MultiLineViewerNode::SetTextsPerPage (size_t newTextsPerPage)
 {
 	textsPerPage = newTextsPerPage;
-}
-
-size_t MultiLineViewerNode::GetCurrentPage () const
-{
-	return currentPage;
-}
-
-void MultiLineViewerNode::SetCurrentPage (size_t newCurrentPage)
-{
-	currentPage = newCurrentPage;
-}
-
-void MultiLineViewerNode::ValidateCurrentPage (size_t correctCurrentPage) const
-{
-	currentPage = correctCurrentPage;
 }
 
 }
