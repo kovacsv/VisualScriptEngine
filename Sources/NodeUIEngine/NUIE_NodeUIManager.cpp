@@ -616,8 +616,7 @@ bool NodeUIManager::Copy (const NE::NodeCollection& nodeCollection)
 
 bool NodeUIManager::Paste ()
 {
-	NE::NodeCollection pastedNodes;
-	bool success = copyPasteHandler.PasteTo (nodeManager, pastedNodes);
+	bool success = copyPasteHandler.PasteTo (nodeManager);
 	RequestRecalculateAndRedraw ();
 	return success;
 }

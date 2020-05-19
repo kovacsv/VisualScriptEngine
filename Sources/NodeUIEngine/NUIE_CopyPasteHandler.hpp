@@ -12,9 +12,12 @@ class CopyPasteHandler
 public:
 	CopyPasteHandler ();
 
+	bool	CopyFrom (const NE::NodeManager& source, const NE::NodeCollection& nodesToCopy);
+
 	bool	CanPaste () const;
-	bool	CopyFrom (const NE::NodeManager& source, const NE::NodeCollection& nodeCollection);
-	bool	PasteTo (NE::NodeManager& target, NE::NodeCollection& nodeCollection);
+	bool	PasteTo (NE::NodeManager& target);
+	bool	PasteTo (NE::NodeManager& target, NE::NodeCollection& pastedNodes);
+
 	void	Clear ();
 
 private:
