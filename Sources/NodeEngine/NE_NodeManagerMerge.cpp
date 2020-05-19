@@ -24,9 +24,25 @@ AllNodesFilter::~AllNodesFilter ()
 
 }
 
-bool AllNodesFilter::NeedToProcessNode (const NodeId&) const
+bool AllNodesFilter::NeedToProcessSourceNode (const NodeId&) const
 {
 	return true;
+}
+
+NodeCollectionFilter::NodeCollectionFilter (const NodeCollection& nodeCollection) :
+	nodeCollection (nodeCollection)
+{
+
+}
+
+NodeCollectionFilter::~NodeCollectionFilter ()
+{
+
+}
+
+bool NodeCollectionFilter::NeedToProcessSourceNode (const NodeId& nodeId) const
+{
+	return nodeCollection.Contains (nodeId);
 }
 
 AppendEventHandler::AppendEventHandler ()
@@ -49,7 +65,7 @@ EmptyAppendEventHandler::~EmptyAppendEventHandler ()
 
 }
 
-void EmptyAppendEventHandler::NodeAdded (const NodeId&)
+void EmptyAppendEventHandler::TargetNodeAdded (const NodeId&)
 {
 
 }
@@ -109,24 +125,6 @@ static void EnumerateInternalConnections (const NodeManager& nodeManager, const 
 
 bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeCollection& nodeCollection, AppendEventHandler& eventHandler)
 {
-	class NodeCollectionFilter : public NodeFilter
-	{
-	public:
-		NodeCollectionFilter (const NodeCollection& nodeCollection) :
-			nodeCollection (nodeCollection)
-		{
-
-		}
-
-		virtual bool NeedToProcessNode (const NodeId& nodeId) const override
-		{
-			return nodeCollection.Contains (nodeId);
-		}
-
-	private:
-		const NodeCollection& nodeCollection;
-	};
-
 	NodeCollectionFilter filter (nodeCollection);
 	return NodeManagerMerge::AppendNodeManager (source, target, filter, eventHandler);
 }
@@ -137,7 +135,7 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 	NodeCollection nodesToClone;
 	source.EnumerateNodes ([&] (const NodeConstPtr& node) {
 		NodeId nodeId = node->GetId ();
-		if (!nodeFilter.NeedToProcessNode (nodeId)) {
+		if (!nodeFilter.NeedToProcessSourceNode (nodeId)) {
 			return true;
 		}
 		nodesToClone.Insert (nodeId);
@@ -148,11 +146,11 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 	// add nodes
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
 	nodesToClone.Enumerate ([&] (const NodeId& nodeId) {
-		NodeConstPtr node = source.GetNode (nodeId);
-		NodePtr cloned = Node::Clone (node);
-		target.AddInitializedNode (cloned, NodeManager::IdHandlingPolicy::GenerateNewId);
-		oldToNewNodeIdTable.insert ({ node->GetId (), cloned->GetId () });
-		eventHandler.NodeAdded (cloned->GetId ());
+		NodeConstPtr sourceNode = source.GetNode (nodeId);
+		NodePtr targetNode = Node::Clone (sourceNode);
+		target.AddInitializedNode (targetNode, NodeManager::IdHandlingPolicy::GenerateNewId);
+		oldToNewNodeIdTable.insert ({ sourceNode->GetId (), targetNode->GetId () });
+		eventHandler.TargetNodeAdded (targetNode->GetId ());
 		return true;
 	});
 

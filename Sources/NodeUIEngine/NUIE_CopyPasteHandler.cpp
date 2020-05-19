@@ -40,7 +40,7 @@ bool CopyPasteHandler::PasteTo (NE::NodeManager& target, NE::NodeCollection& pas
 
 		}
 
-		virtual void NodeAdded (const NE::NodeId& nodeId) override
+		virtual void TargetNodeAdded (const NE::NodeId& nodeId) override
 		{
 			pastedNodes.Insert (nodeId);
 		}

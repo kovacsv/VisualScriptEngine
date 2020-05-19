@@ -131,7 +131,7 @@ static bool IsEqualNodeManagers (const NodeManager& source, const NodeManager& t
 class AllNodeFilter : public NodeFilter
 {
 public:
-	virtual bool NeedToProcessNode (const NodeId&) const override
+	virtual bool NeedToProcessSourceNode (const NodeId&) const override
 	{
 		return true;
 	}
@@ -146,7 +146,7 @@ public:
 	
 	}
 
-	virtual bool NeedToProcessNode (const NodeId& nodeId) const override
+	virtual bool NeedToProcessSourceNode (const NodeId& nodeId) const override
 	{
 		return nodeIds.find (nodeId) != nodeIds.end ();
 	}

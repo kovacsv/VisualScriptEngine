@@ -12,7 +12,7 @@ public:
 	NodeFilter ();
 	virtual ~NodeFilter ();
 
-	virtual bool NeedToProcessNode (const NodeId& nodeId) const = 0;
+	virtual bool NeedToProcessSourceNode (const NodeId& nodeId) const = 0;
 };
 
 class AllNodesFilter : public NodeFilter
@@ -21,8 +21,21 @@ public:
 	AllNodesFilter ();
 	virtual ~AllNodesFilter ();
 
-	virtual bool NeedToProcessNode (const NodeId&) const override;
+	virtual bool NeedToProcessSourceNode (const NodeId&) const override;
 };
+
+class NodeCollectionFilter : public NodeFilter
+{
+public:
+	NodeCollectionFilter (const NodeCollection& nodeCollection);
+	~NodeCollectionFilter ();
+
+	virtual bool NeedToProcessSourceNode (const NodeId& nodeId) const override;
+
+private:
+	const NodeCollection& nodeCollection;
+};
+
 
 class AppendEventHandler
 {
@@ -30,7 +43,7 @@ public:
 	AppendEventHandler ();
 	virtual ~AppendEventHandler ();
 
-	virtual void NodeAdded (const NodeId& nodeId) = 0;
+	virtual void TargetNodeAdded (const NodeId& nodeId) = 0;
 };
 
 class EmptyAppendEventHandler : public AppendEventHandler
@@ -39,7 +52,7 @@ public:
 	EmptyAppendEventHandler ();
 	virtual ~EmptyAppendEventHandler ();
 
-	virtual void NodeAdded (const NodeId& nodeId) override;
+	virtual void TargetNodeAdded (const NodeId& nodeId) override;
 };
 
 class UpdateEventHandler
