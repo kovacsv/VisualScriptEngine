@@ -29,7 +29,7 @@ def Main (argv):
 
 	visualStudioVersion = argv[1]
 	msBuildPath = argv[2]
-	msBuildConfig = argv[3]
+	msBuildConfiguration = argv[3]
 
 	cMakeListsPath = os.path.abspath ('CMakeLists.txt')
 	version = GetVersionFromCMakeLists (cMakeListsPath)
@@ -39,7 +39,7 @@ def Main (argv):
 		msBuildPath,
 		installProjectPath,
 		'-verbosity:m',
-		'/property:Configuration=' + msBuildConfig
+		'/property:Configuration=' + msBuildConfiguration
 	])
 	buildResult = 0
 	if buildResult != 0:
@@ -50,7 +50,7 @@ def Main (argv):
 	if not os.path.exists (packagePath):
 		os.makedirs (packagePath)
 	
-	zipPath = os.path.abspath (os.path.join (packagePath, 'VisualScriptEngine_V' + version + '_VS' + visualStudioVersion + '_' + msBuildConfig + '_x64.zip'))
+	zipPath = os.path.abspath (os.path.join (packagePath, 'VisualScriptEngine_V' + version + '_VS' + visualStudioVersion + '_' + msBuildConfiguration + '_x64.zip'))
 	requiredFolders = [
 		os.path.abspath (os.path.join ('Build', 'DevKit', 'include')),
 		os.path.abspath (os.path.join ('Build', 'DevKit', 'lib')),
