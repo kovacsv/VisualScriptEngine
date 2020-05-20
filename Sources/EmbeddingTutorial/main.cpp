@@ -1,7 +1,5 @@
 #include "NUIE_NodeEditor.hpp"
 
-#pragma warning (disable : 4100)
-
 class MyEventHandlers : public NUIE::EventHandlers
 {
 public:

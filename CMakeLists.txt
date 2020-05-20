@@ -122,7 +122,6 @@ add_custom_command (TARGET NodeEngineTest POST_BUILD
 SetCompilerOptions (NodeEngineTest)
 add_test (NodeEngineTest NodeEngineTest)
 
-	
 # EmbeddingTutorial
 
 set (EmbeddingTutorialSourcesFolder Sources/EmbeddingTutorial)
@@ -142,6 +141,11 @@ target_include_directories (
 )
 target_link_libraries (EmbeddingTutorial NodeEngine NodeUIEngine)
 SetCompilerOptions (EmbeddingTutorial)
+if (MSVC)
+	target_compile_options (EmbeddingTutorial PUBLIC /wd4100)
+else ()
+	target_compile_options (EmbeddingTutorial -Wno-unused-parameter)
+endif ()
 
 if (MSVC)
 
