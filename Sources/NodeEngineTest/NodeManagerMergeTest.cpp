@@ -128,33 +128,6 @@ static bool IsEqualNodeManagers (const NodeManager& source, const NodeManager& t
 	return isEqual;
 }
 
-class AllNodeFilter : public NodeFilter
-{
-public:
-	virtual bool NeedToProcessSourceNode (const NodeId&) const override
-	{
-		return true;
-	}
-};
-
-class SomeNodesFilter : public NodeFilter
-{
-public:
-	SomeNodesFilter (const std::unordered_set<NodeId>& nodeIds) :
-		nodeIds (nodeIds)
-	{
-	
-	}
-
-	virtual bool NeedToProcessSourceNode (const NodeId& nodeId) const override
-	{
-		return nodeIds.find (nodeId) != nodeIds.end ();
-	}
-
-private:
-	std::unordered_set<NodeId> nodeIds;
-};
-
 static EmptyAppendEventHandler appendHandler;
 static EmptyUpdateEventHandler updateHandler;
 
@@ -164,8 +137,8 @@ TEST (MergeAllNodesTest)
 	InitNodeManager (source);
 
 	NodeManager target;
-	AllNodeFilter allNodeFilter;
-	NodeManagerMerge::AppendNodeManager (source, target, allNodeFilter, appendHandler);
+	AllNodesFilter allNodesFilter;
+	NodeManagerMerge::AppendNodeManager (source, target, allNodesFilter, appendHandler);
 	ASSERT (target.GetNodeCount () == 4);
 	ASSERT (target.GetConnectionCount () == 3);
 
@@ -185,8 +158,8 @@ TEST (MergeAllNodesTest_Scope)
 	{
 		NodeManager source;
 		InitNodeManager (source);
-		AllNodeFilter allNodeFilter;
-		NodeManagerMerge::AppendNodeManager (source, target, allNodeFilter, appendHandler);
+		AllNodesFilter allNodesFilter;
+		NodeManagerMerge::AppendNodeManager (source, target, allNodesFilter, appendHandler);
 	}
 
 	ASSERT (target.GetNodeCount () == 4);
@@ -209,9 +182,9 @@ TEST (MergeAllNodesTwiceTest)
 	InitNodeManager (source);
 
 	NodeManager target;
-	AllNodeFilter allNodeFilter;
-	NodeManagerMerge::AppendNodeManager (source, target, allNodeFilter, appendHandler);
-	NodeManagerMerge::AppendNodeManager (source, target, allNodeFilter, appendHandler);
+	AllNodesFilter allNodesFilter;
+	NodeManagerMerge::AppendNodeManager (source, target, allNodesFilter, appendHandler);
+	NodeManagerMerge::AppendNodeManager (source, target, allNodesFilter, appendHandler);
 	ASSERT (target.GetNodeCount () == 8);
 	ASSERT (target.GetConnectionCount () == 6);
 
@@ -232,8 +205,8 @@ TEST (MergeAllNodesToSameManager)
 	NodeManager source;
 	InitNodeManager (source);
 
-	AllNodeFilter allNodeFilter;
-	NodeManagerMerge::AppendNodeManager (source, source, allNodeFilter, appendHandler);
+	AllNodesFilter allNodesFilter;
+	NodeManagerMerge::AppendNodeManager (source, source, allNodesFilter, appendHandler);
 	ASSERT (source.GetNodeCount () == 8);
 	ASSERT (source.GetConnectionCount () == 6);
 
@@ -256,7 +229,8 @@ TEST (MergeOnlyOneNode)
 	NodeId nodeIdToMerge = FindNodesByName (source, L"3")[0]->GetId ();
 
 	NodeManager target;
-	SomeNodesFilter someNodesFilter ({ nodeIdToMerge });
+	NodeCollection nodes ({ nodeIdToMerge });
+	NodeCollectionFilter someNodesFilter (nodes);
 	NodeManagerMerge::AppendNodeManager (source, target, someNodesFilter, appendHandler);
 	ASSERT (target.GetNodeCount () == 1);
 	ASSERT (target.GetConnectionCount () == 0);
@@ -271,7 +245,8 @@ TEST (MergeMultipleNodes)
 	NodeId nodeIdToMerge3 = FindNodesByName (source, L"3")[0]->GetId ();
 
 	NodeManager target;
-	SomeNodesFilter someNodesFilter ({ nodeIdToMerge1, nodeIdToMerge2, nodeIdToMerge3 });
+	NodeCollection nodes ({ nodeIdToMerge1, nodeIdToMerge2, nodeIdToMerge3 });
+	NodeCollectionFilter someNodesFilter (nodes);
 	NodeManagerMerge::AppendNodeManager (source, target, someNodesFilter, appendHandler);
 	ASSERT (target.GetNodeCount () == 3);
 	ASSERT (target.GetConnectionCount () == 2);
