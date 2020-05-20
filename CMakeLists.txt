@@ -138,8 +138,9 @@ target_include_directories (
 	EmbeddingTutorial PUBLIC
 	${NodeEngineSourcesFolder}
 	${NodeUIEngineSourcesFolder}
+	${BuiltInNodesSourcesFolder}
 )
-target_link_libraries (EmbeddingTutorial NodeEngine NodeUIEngine)
+target_link_libraries (EmbeddingTutorial NodeEngine NodeUIEngine BuiltInNodes)
 SetCompilerOptions (EmbeddingTutorial)
 if (MSVC)
 	target_compile_options (EmbeddingTutorial PUBLIC /wd4100)
