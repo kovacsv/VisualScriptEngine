@@ -16,7 +16,7 @@
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="VisualScriptEngineArchitecture.svg"
-   inkscape:export-filename="C:\Users\kovacsv\Desktop\bitmap.png"
+   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Technical\VisualScriptEngineArchitecture.png"
    inkscape:export-xdpi="266.67001"
    inkscape:export-ydpi="266.67001">
   <defs
@@ -105,11 +105,11 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8284271"
-     inkscape:cx="178.76812"
+     inkscape:cx="169.50278"
      inkscape:cy="94.990806"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
-     showgrid="true"
+     showgrid="false"
      units="px"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -128,7 +128,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -138,7 +138,7 @@
      id="layer1"
      transform="translate(0,-240.11456)">
     <rect
-       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5"
        width="42.07217"
        height="7.6763372"
@@ -156,7 +156,7 @@
          y="277.22339"
          style="font-size:3.52777767px;stroke-width:0.26458332">BuiltInNodes</tspan></text>
     <rect
-       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5-4"
        width="42.07217"
        height="7.6763372"
@@ -174,7 +174,7 @@
          y="277.22336"
          style="font-size:3.52777767px;stroke-width:0.26458332">WindowsAppSupport</tspan></text>
     <rect
-       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5-4-7"
        width="42.07217"
        height="7.6763372"
@@ -192,7 +192,7 @@
          y="262.67126"
          style="font-size:3.52777767px;stroke-width:0.26458332">NodeUIEngine</tspan></text>
     <rect
-       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5-4-7-0"
        width="42.07217"
        height="7.6763372"
@@ -210,7 +210,7 @@
          y="248.1192"
          style="font-size:3.52777767px;stroke-width:0.26458332">NodeEngine</tspan></text>
     <rect
-       style="opacity:1;fill:#aaeeff;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#aaffcc;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5-4-7-4"
        width="42.07217"
        height="7.6763372"
