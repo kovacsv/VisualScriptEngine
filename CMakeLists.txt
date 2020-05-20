@@ -144,7 +144,7 @@ SetCompilerOptions (EmbeddingTutorial)
 if (MSVC)
 	target_compile_options (EmbeddingTutorial PUBLIC /wd4100)
 else ()
-	target_compile_options (EmbeddingTutorial -Wno-unused-parameter)
+	target_compile_options (EmbeddingTutorial PUBLIC -Wno-unused-parameter)
 endif ()
 
 if (MSVC)
