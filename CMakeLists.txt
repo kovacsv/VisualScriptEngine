@@ -122,6 +122,27 @@ add_custom_command (TARGET NodeEngineTest POST_BUILD
 SetCompilerOptions (NodeEngineTest)
 add_test (NodeEngineTest NodeEngineTest)
 
+	
+# EmbeddingTutorial
+
+set (EmbeddingTutorialSourcesFolder Sources/EmbeddingTutorial)
+file (GLOB EmbeddingTutorialHeaderFiles ${EmbeddingTutorialSourcesFolder}/*.hpp)
+file (GLOB EmbeddingTutorialSourceFiles ${EmbeddingTutorialSourcesFolder}/*.cpp)
+set (
+	EmbeddingTutorialFiles
+	${EmbeddingTutorialHeaderFiles}
+	${EmbeddingTutorialSourceFiles}
+)
+source_group ("Sources" FILES ${EmbeddingTutorialFiles})
+add_executable (EmbeddingTutorial ${EmbeddingTutorialFiles})
+target_include_directories (
+	EmbeddingTutorial PUBLIC
+	${NodeEngineSourcesFolder}
+	${NodeUIEngineSourcesFolder}
+)
+target_link_libraries (EmbeddingTutorial NodeEngine NodeUIEngine)
+SetCompilerOptions (EmbeddingTutorial)
+
 if (MSVC)
 
 	# WindowsAppSupport
