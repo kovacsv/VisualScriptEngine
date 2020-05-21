@@ -237,6 +237,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
+#ifdef LOCALIZATION_TEST
 	std::wstring poContent = LR"str(
 		msgid "Integer"
 		msgstr "LocInteger"
@@ -256,6 +257,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 
 	NUIE::PoDictionarySource poDictionarySource (poContent);
 	FillDictionary (poDictionarySource);
+#endif
 
 	WNDCLASSEX windowClass;
 	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
