@@ -15,20 +15,20 @@ BasicUINode::BasicUINode () :
 }
 
 BasicUINode::BasicUINode (const NE::String& name, const NUIE::Point& position) :
-	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
+	BasicUINode (name, position, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
 {
 
 }
 
-BasicUINode::BasicUINode (const NE::String& name, const NUIE::Point& position, const NUIE::IconId& iconId) :
-	BasicUINode (name, position, iconId, UINodeLayoutPtr (new HeaderWithSlotsLayout ()))
+BasicUINode::BasicUINode (const NE::String& name, const NUIE::Point& position, const UINodeLayoutPtr& layout) :
+	BasicUINode (name, position, layout, NUIE::InvalidIconId)
 {
 
 }
-BasicUINode::BasicUINode (const NE::String& name, const NUIE::Point& position, const NUIE::IconId& iconId, const UINodeLayoutPtr& layout) :
+BasicUINode::BasicUINode (const NE::String& name, const NUIE::Point& position, const UINodeLayoutPtr& layout, const NUIE::IconId& iconId) :
 	NUIE::UINode (name, position),
-	iconId (iconId),
-	layout (layout)
+	layout (layout),
+	iconId (iconId)
 {
 
 }

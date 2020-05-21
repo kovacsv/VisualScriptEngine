@@ -89,7 +89,7 @@ BooleanNode::BooleanNode () :
 }
 
 BooleanNode::BooleanNode (const NE::String& name, const NUIE::Point& position, bool val) :
-	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ("switch", NE::LocalizeString (L"true"), NE::LocalizeString (L"false")))),
+	BasicUINode (name, position, UINodeLayoutPtr (new Layout ("switch", NE::LocalizeString (L"true"), NE::LocalizeString (L"false")))),
 	val (val)
 {
 
@@ -224,7 +224,7 @@ NumericUpDownNode::NumericUpDownNode () :
 }
 
 NumericUpDownNode::NumericUpDownNode (const NE::String& name, const NUIE::Point& position) :
-	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ("minus", NE::LocalizeString (L"<"), "plus", NE::LocalizeString (L">"))))
+	BasicUINode (name, position, UINodeLayoutPtr (new Layout ("minus", NE::LocalizeString (L"<"), "plus", NE::LocalizeString (L">"))))
 {
 
 }

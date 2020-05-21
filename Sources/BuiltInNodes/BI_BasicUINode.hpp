@@ -15,8 +15,8 @@ class BasicUINode : public NUIE::UINode
 public:
 	BasicUINode ();
 	BasicUINode (const NE::String& name, const NUIE::Point& position);
-	BasicUINode (const NE::String& name, const NUIE::Point& position, const NUIE::IconId& iconId);
-	BasicUINode (const NE::String& name, const NUIE::Point& position, const NUIE::IconId& iconId, const UINodeLayoutPtr& layout);
+	BasicUINode (const NE::String& name, const NUIE::Point& position, const UINodeLayoutPtr& layout);
+	BasicUINode (const NE::String& name, const NUIE::Point& position, const UINodeLayoutPtr& layout, const NUIE::IconId& iconId);
 	virtual ~BasicUINode ();
 
 	bool								HasIconId () const;
@@ -41,9 +41,9 @@ private:
 	virtual NUIE::EventHandlerResult	HandleMouseDoubleClick (NUIE::NodeUIEnvironment& env, const NUIE::ModifierKeys& modifierKeys, NUIE::MouseButton mouseButton, const NUIE::Point& position, NUIE::UINodeCommandInterface& commandInterface) override;
 	virtual void						UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const override;
 
-	NUIE::IconId		iconId;
 	UINodeLayoutPtr		layout;
-	NodeFeatureSet	nodeFeatureSet;
+	NUIE::IconId		iconId;
+	NodeFeatureSet		nodeFeatureSet;
 };
 
 using BasicUINodePtr = std::shared_ptr<BasicUINode>;

@@ -36,7 +36,7 @@ ViewerNode::ViewerNode () :
 }
 
 ViewerNode::ViewerNode (const NE::String& name, const NUIE::Point& position) :
-	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ()))
+	BasicUINode (name, position, UINodeLayoutPtr (new Layout ()))
 {
 
 }
@@ -118,7 +118,7 @@ MultiLineViewerNode::MultiLineViewerNode () :
 }
 
 MultiLineViewerNode::MultiLineViewerNode (const NE::String& name, const NUIE::Point& position, size_t textsPerPage) :
-	BasicUINode (name, position, NUIE::InvalidIconId, UINodeLayoutPtr (new Layout ("minus", NE::LocalizeString (L"<"), "plus", NE::LocalizeString (L">")))),
+	BasicUINode (name, position, UINodeLayoutPtr (new Layout ("minus", NE::LocalizeString (L"<"), "plus", NE::LocalizeString (L">")))),
 	textsPerPage (textsPerPage)
 {
 
