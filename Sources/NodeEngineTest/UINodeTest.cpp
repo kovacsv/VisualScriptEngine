@@ -55,7 +55,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (L"In1", ParameterType::Integer, SlotId ("in1"))
+				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (SlotId ("in1"), L"In1", ParameterType::Integer)
 			{
 			
 			}
@@ -103,7 +103,7 @@ public:
 		{
 		public:
 			In2DefaultValueParameter () :
-				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (L"In2", ParameterType::Integer, SlotId ("in1"))
+				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (SlotId ("in2"), L"In2", ParameterType::Integer)
 			{
 
 			}

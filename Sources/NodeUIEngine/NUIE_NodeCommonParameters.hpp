@@ -205,7 +205,7 @@ template <typename NodeType, typename ValueType>
 class SlotDefaultValueNodeParameter : public TypedNodeParameter<NodeType, ValueType>
 {
 public:
-	SlotDefaultValueNodeParameter (const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId) :
+	SlotDefaultValueNodeParameter (const NE::SlotId& slotId, const std::wstring& name, const ParameterType& type) :
 		TypedNodeParameter<NodeType, ValueType> (name, type),
 		slotId (slotId)
 	{
@@ -245,19 +245,19 @@ private:
 };
 
 template <class NodeType, class ValueType>
-void RegisterSlotDefaultValueNodeParameter (NodeParameterList& parameterList, const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId)
+void RegisterSlotDefaultValueNodeParameter (NodeParameterList& parameterList, const NE::SlotId& slotId, const std::wstring& name, const ParameterType& type)
 {
 	class Parameter : public SlotDefaultValueNodeParameter<NodeType, ValueType>
 	{
 	public:
-		Parameter (const std::wstring& name, const ParameterType& type, const NE::SlotId& slotId) :
-			SlotDefaultValueNodeParameter<NodeType, ValueType> (name, type, slotId)
+		Parameter (const NE::SlotId& slotId, const std::wstring& name, const ParameterType& type) :
+			SlotDefaultValueNodeParameter<NodeType, ValueType> (slotId, name, type)
 		{
 
 		}
 	};
 
-	parameterList.AddParameter (NodeParameterPtr (new Parameter (name, type, slotId)));
+	parameterList.AddParameter (NodeParameterPtr (new Parameter (slotId, name, type)));
 }
 
 }

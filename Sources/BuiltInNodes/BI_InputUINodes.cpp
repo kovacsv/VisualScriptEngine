@@ -29,8 +29,8 @@ template <typename NodeType>
 class MinValueIntegerParameter : public NUIE::SlotDefaultValueNodeParameter<NodeType, NE::IntValue>
 {
 public:
-	MinValueIntegerParameter (const std::wstring& name, const NUIE::ParameterType& type, const NE::SlotId& slotId, int minValue) :
-		NUIE::SlotDefaultValueNodeParameter<NodeType, NE::IntValue> (name, type, slotId),
+	MinValueIntegerParameter (const NE::SlotId& slotId, const std::wstring& name, const NUIE::ParameterType& type, int minValue) :
+		NUIE::SlotDefaultValueNodeParameter<NodeType, NE::IntValue> (slotId, name, type),
 		minValue (minValue)
 	{
 
@@ -592,9 +592,9 @@ NE::ValueConstPtr IntegerIncrementedNode::Calculate (NE::EvaluationEnv& env) con
 void IntegerIncrementedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, L"Start", NUIE::ParameterType::Integer, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, L"Step", NUIE::ParameterType::Integer, NE::SlotId ("step"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<IntegerIncrementedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
+	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, NE::SlotId ("start"), L"Start", NUIE::ParameterType::Integer);
+	NUIE::RegisterSlotDefaultValueNodeParameter<IntegerIncrementedNode, NE::IntValue> (parameterList, NE::SlotId ("step"), L"Step", NUIE::ParameterType::Integer);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<IntegerIncrementedNode> (NE::SlotId ("count"), L"Count", NUIE::ParameterType::Integer, 0)));
 }
 
 NE::Stream::Status IntegerIncrementedNode::Read (NE::InputStream& inputStream)
@@ -663,9 +663,9 @@ NE::ValueConstPtr DoubleIncrementedNode::Calculate (NE::EvaluationEnv& env) cons
 void DoubleIncrementedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, L"Step", NUIE::ParameterType::Double, NE::SlotId ("step"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleIncrementedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 0)));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, NE::SlotId ("start"), L"Start", NUIE::ParameterType::Double);
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleIncrementedNode, NE::DoubleValue> (parameterList, NE::SlotId ("step"), L"Step", NUIE::ParameterType::Double);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleIncrementedNode> (NE::SlotId ("count"), L"Count", NUIE::ParameterType::Integer, 0)));
 }
 
 NE::Stream::Status DoubleIncrementedNode::Read (NE::InputStream& inputStream)
@@ -735,9 +735,9 @@ NE::ValueConstPtr DoubleDistributedNode::Calculate (NE::EvaluationEnv& env) cons
 void DoubleDistributedNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, L"Start", NUIE::ParameterType::Double, NE::SlotId ("start"));
-	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, L"End", NUIE::ParameterType::Double, NE::SlotId ("end"));
-	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleDistributedNode> (L"Count", NUIE::ParameterType::Integer, NE::SlotId ("count"), 2)));
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, NE::SlotId ("start"), L"Start", NUIE::ParameterType::Double);
+	NUIE::RegisterSlotDefaultValueNodeParameter<DoubleDistributedNode, NE::DoubleValue> (parameterList, NE::SlotId ("end"), L"End", NUIE::ParameterType::Double);
+	parameterList.AddParameter (NUIE::NodeParameterPtr (new MinValueIntegerParameter<DoubleDistributedNode> (NE::SlotId ("count"), L"Count", NUIE::ParameterType::Integer, 2)));
 }
 
 NE::Stream::Status DoubleDistributedNode::Read (NE::InputStream& inputStream)
