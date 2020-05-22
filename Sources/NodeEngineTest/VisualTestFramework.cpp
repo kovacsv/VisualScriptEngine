@@ -380,6 +380,11 @@ void NodeEditorTestEnv::DragDrop (const ModifierKeys& keys, const Point& from, c
 	nodeEditor.OnMouseUp (keys, MouseButton::Left, (int) to.GetX (), (int) to.GetY ());
 }
 
+void NodeEditorTestEnv::KeyPress (const NUIE::Key& key)
+{
+	nodeEditor.OnKeyPress (key);
+}
+
 void NodeEditorTestEnv::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	uiEnvironment.SetNextCommandName (nextCommandName);

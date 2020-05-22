@@ -37,6 +37,7 @@ enum class KeyCode
 	SelectAll,
 	Copy,
 	Paste,
+	Group,
 	Undo,
 	Redo
 };

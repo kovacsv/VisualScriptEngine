@@ -865,6 +865,11 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 				command.reset (new PasteNodesMenuCommand (uiManager, modelPastePosition));
 			}
 			break;
+		case KeyCode::Group:
+			{
+				command.reset (new CreateGroupMenuCommand (uiManager, selectedNodes));
+			}
+			break;
 		case KeyCode::Undo:
 			{
 				command.reset (new UndoMenuCommand (uiManager, env));

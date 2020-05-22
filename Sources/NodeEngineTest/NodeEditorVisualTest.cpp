@@ -164,6 +164,23 @@ TEST (SelectionTest)
 	}
 }
 
+TEST (CreateGroupTest)
+{
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
+
+	{ // select two nodes with selection rect
+		Point rectSelectStart = env.rangeInputRect.GetTopLeft () - Point (10.0, 10.0);
+		Point rectSelectEnd (env.viewer2InputRect.GetRight () + 10.0, env.rangeInputRect.GetBottom () + 10.0);
+		env.DragDrop (rectSelectStart, rectSelectEnd);
+		ASSERT (env.CheckReference ("CreateGroup_NodesSelected.svg"));
+	}
+
+	{ // create group
+		env.KeyPress (Key (KeyCode::Group));
+		ASSERT (env.CheckReference ("CreateGroup_GroupCreated.svg"));
+	}
+}
+
 TEST (MoveNodesTest)
 {
 	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());

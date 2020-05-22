@@ -173,6 +173,9 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 						case 'V':
 							pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
 							break;
+						case 'G':
+							pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+							break;
 						case 'Z':
 							pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
 							break;
