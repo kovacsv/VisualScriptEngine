@@ -841,7 +841,9 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 	switch (pressedKey.GetKeyCode ()) {
 		case KeyCode::Delete:
 			{
-				command.reset (new DeleteNodesMenuCommand (uiManager, env, selectedNodes));
+				if (!selectedNodes.IsEmpty ()) {
+					command.reset (new DeleteNodesMenuCommand (uiManager, env, selectedNodes));
+				}
 			}
 			break;
 		case KeyCode::SelectAll:
@@ -856,18 +858,24 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& env, c
 			break;
 		case KeyCode::Copy:
 			{
-				command.reset (new CopyNodesMenuCommand (uiManager, selectedNodes));
+				if (!selectedNodes.IsEmpty ()) {
+					command.reset (new CopyNodesMenuCommand (uiManager, selectedNodes));
+				}
 			}
 			break;
 		case KeyCode::Paste:
 			{
-				Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
-				command.reset (new PasteNodesMenuCommand (uiManager, modelPastePosition));
+				if (uiManager.CanPaste ()) {
+					Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, env);
+					command.reset (new PasteNodesMenuCommand (uiManager, modelPastePosition));
+				}
 			}
 			break;
 		case KeyCode::Group:
 			{
-				command.reset (new CreateGroupMenuCommand (uiManager, selectedNodes));
+				if (!selectedNodes.IsEmpty ()) {
+					command.reset (new CreateGroupMenuCommand (uiManager, selectedNodes));
+				}
 			}
 			break;
 		case KeyCode::Undo:

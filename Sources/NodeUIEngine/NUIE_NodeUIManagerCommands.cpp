@@ -54,6 +54,9 @@ DeleteNodesCommand::DeleteNodesCommand (const NE::NodeCollection& nodes, NE::Eva
 
 void DeleteNodesCommand::Do (NodeUIManager& uiManager)
 {
+	if (DBGERROR (nodes.IsEmpty ())) {
+		return;
+	}
 	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 		uiManager.DeleteNode (nodeId, evaluationEnv);
 		return true;
@@ -198,6 +201,9 @@ CopyNodesCommand::CopyNodesCommand (const NE::NodeCollection& nodes) :
 
 void CopyNodesCommand::Do (NodeUIManager& uiManager)
 {
+	if (DBGERROR (nodes.IsEmpty ())) {
+		return;
+	}
 	uiManager.Copy (nodes);
 }
 
@@ -209,6 +215,10 @@ PasteNodesCommand::PasteNodesCommand (const Point& position) :
 
 void PasteNodesCommand::Do (NodeUIManager& uiManager)
 {
+	if (DBGERROR (!uiManager.CanPaste ())) {
+		return;
+	}
+
 	std::unordered_set<NE::NodeId> oldNodes;
 	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
 		oldNodes.insert (uiNode->GetId ());
@@ -253,6 +263,9 @@ AddGroupCommand::AddGroupCommand (const UINodeGroupPtr& uiGroup, const NE::NodeC
 
 void AddGroupCommand::Do (NodeUIManager& uiManager)
 {
+	if (DBGERROR (nodes.IsEmpty ())) {
+		return;
+	}
 	uiManager.AddUINodeGroup (uiGroup);
 	uiManager.AddNodesToUIGroup (uiGroup, nodes);
 }
