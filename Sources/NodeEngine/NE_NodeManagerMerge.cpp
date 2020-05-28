@@ -70,6 +70,27 @@ void EmptyAppendEventHandler::TargetNodeAdded (const NodeId&)
 
 }
 
+NodeCollectorAppendEventHandler::NodeCollectorAppendEventHandler () :
+	targetNodes ()
+{
+
+}
+
+NodeCollectorAppendEventHandler::~NodeCollectorAppendEventHandler ()
+{
+
+}
+
+void NodeCollectorAppendEventHandler::TargetNodeAdded (const NodeId& nodeId)
+{
+	targetNodes.Insert (nodeId);
+}
+
+const NE::NodeCollection& NodeCollectorAppendEventHandler::GetAddedTargetNodes () const
+{
+	return targetNodes;
+}
+
 UpdateEventHandler::UpdateEventHandler ()
 {
 	
@@ -121,12 +142,6 @@ static void EnumerateInternalConnections (const NodeManager& nodeManager, const 
 		});
 		return true;
 	});
-}
-
-bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeCollection& nodeCollection, AppendEventHandler& eventHandler)
-{
-	NodeCollectionFilter filter (nodeCollection);
-	return NodeManagerMerge::AppendNodeManager (source, target, filter, eventHandler);
 }
 
 bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter, AppendEventHandler& eventHandler)

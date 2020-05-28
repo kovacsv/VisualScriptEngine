@@ -36,7 +36,6 @@ private:
 	const NodeCollection& nodeCollection;
 };
 
-
 class AppendEventHandler
 {
 public:
@@ -53,6 +52,19 @@ public:
 	virtual ~EmptyAppendEventHandler ();
 
 	virtual void TargetNodeAdded (const NodeId& nodeId) override;
+};
+
+class NodeCollectorAppendEventHandler : public AppendEventHandler
+{
+public:
+	NodeCollectorAppendEventHandler ();
+	virtual ~NodeCollectorAppendEventHandler ();
+
+	virtual void				TargetNodeAdded (const NodeId& nodeId) override;
+	const NE::NodeCollection&	GetAddedTargetNodes () const;
+
+private:
+	NE::NodeCollection targetNodes;
 };
 
 class UpdateEventHandler
@@ -76,7 +88,6 @@ public:
 class NodeManagerMerge
 {
 public:
-	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeCollection& nodeCollection, AppendEventHandler& eventHandler);
 	static bool AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter, AppendEventHandler& eventHandler);
 	static bool UpdateNodeManager (const NodeManager& source, NodeManager& target, UpdateEventHandler& eventHandler);
 };

@@ -623,18 +623,21 @@ bool NodeUIManager::Paste ()
 
 NE::NodeCollection NodeUIManager::Duplicate (const NE::NodeCollection& nodeCollection)
 {
-	CopyPasteHandler tempCopyPasteHandler;
-	if (DBGERROR (!tempCopyPasteHandler.CopyFrom (nodeManager, nodeCollection))) {
+	NE::NodeManager tempNodeManager;
+	NE::NodeCollectionFilter nodeCollectionFilter (nodeCollection);
+	NE::EmptyAppendEventHandler sourceAppendHandler;
+	if (DBGERROR (!NE::NodeManagerMerge::AppendNodeManager (nodeManager, tempNodeManager, nodeCollectionFilter, sourceAppendHandler))) {
 		return NE::EmptyNodeCollection;
 	}
 
-	NE::NodeCollection duplicatedNodes;
-	if (DBGERROR (!tempCopyPasteHandler.PasteTo (nodeManager, duplicatedNodes))) {
+	NE::AllNodesFilter allNodesFilter;
+	NE::NodeCollectorAppendEventHandler targetAppendHandler;
+	if (DBGERROR (!NE::NodeManagerMerge::AppendNodeManager (tempNodeManager, nodeManager, allNodesFilter, targetAppendHandler))) {
 		return NE::EmptyNodeCollection;
 	}
 
 	RequestRecalculateAndRedraw ();
-	return duplicatedNodes;
+	return targetAppendHandler.GetAddedTargetNodes ();
 }
 
 void NodeUIManager::SaveUndoState ()
