@@ -2,7 +2,7 @@
 #define NUIE_NODEEDITOR_HPP
 
 #include "NUIE_DrawingContext.hpp"
-#include "NUIE_EventHandlers.hpp"
+#include "NUIE_EventHandler.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_InteractionHandler.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"

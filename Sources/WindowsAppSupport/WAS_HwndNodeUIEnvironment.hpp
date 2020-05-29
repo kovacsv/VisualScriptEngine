@@ -4,7 +4,7 @@
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_NativeNodeEditorControl.hpp"
-#include "WAS_HwndEventHandlers.hpp"
+#include "WAS_HwndEventHandler.hpp"
 #include "WAS_NodeEditorHwndControl.hpp"
 
 namespace WAS
@@ -16,7 +16,7 @@ public:
 	HwndNodeUIEnvironment (	const NUIE::NativeNodeEditorControlPtr& nodeEditorControl,
 							const NE::StringConverterPtr& stringConverter,
 							const NUIE::SkinParamsPtr& skinParams,
-							const WAS::HwndEventHandlersPtr eventHandlers,
+							const WAS::HwndEventHandlerPtr& eventHandler,
 							const NE::EvaluationDataPtr& evalData);
 
 	void								Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle);
@@ -33,7 +33,7 @@ public:
 	virtual void						OnValuesRecalculated () override;
 	
 	virtual void						OnRedrawRequested () override;
-	virtual NUIE::EventHandlers&		GetEventHandlers () override;
+	virtual NUIE::EventHandler&			GetEventHandler () override;
 
 	NUIE::NativeNodeEditorControlPtr	GetNodeEditorControl () const;
 
@@ -41,7 +41,7 @@ private:
 	NUIE::NativeNodeEditorControlPtr	nodeEditorControl;
 	NE::StringConverterPtr				stringConverter;
 	NUIE::SkinParamsPtr					skinParams;
-	WAS::HwndEventHandlersPtr			eventHandlers;
+	WAS::HwndEventHandlerPtr			eventHandler;
 	NE::EvaluationEnv					evaluationEnv;
 };
 

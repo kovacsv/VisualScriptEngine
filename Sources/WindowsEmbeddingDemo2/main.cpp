@@ -1,7 +1,7 @@
 #include "NUIE_NodeEditor.hpp"
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
-#include "WAS_HwndEventHandlers.hpp"
+#include "WAS_HwndEventHandler.hpp"
 #include "WAS_HwndNodeUIEnvironment.hpp"
 #include "WAS_ParameterDialog.hpp"
 #include "BI_BuiltInNodes.hpp"
@@ -9,11 +9,11 @@
 #include <windows.h>
 #include <windowsx.h>
 
-class MyEventHandlers : public WAS::HwndEventHandlers
+class MyEventHandler : public WAS::HwndEventHandler
 {
 public:
-	MyEventHandlers () :
-		WAS::HwndEventHandlers (),
+	MyEventHandler () :
+		WAS::HwndEventHandler (),
 		nodeEditor (nullptr),
 		nodeTree ()
 	{
@@ -112,7 +112,7 @@ public:
 		NUIE::NodeUIEnvironment (),
 		stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
 		skinParams (NUIE::GetDefaultSkinParams ()),
-		eventHandlers (),
+		eventHandler (),
 		evaluationEnv (nullptr),
 		nodeEditorControl ()
 	{
@@ -127,8 +127,8 @@ public:
 		int height = clientRect.bottom - clientRect.top;
 
 		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-		eventHandlers.Init (&nodeEditorControl);
-		eventHandlers.SetNodeEditor (nodeEditorPtr);
+		eventHandler.Init (&nodeEditorControl);
+		eventHandler.SetNodeEditor (nodeEditorPtr);
 	}
 
 	void OnResize (int x, int y, int width, int height)
@@ -181,15 +181,15 @@ public:
 		nodeEditorControl.Invalidate ();
 	}
 
-	virtual NUIE::EventHandlers& GetEventHandlers () override
+	virtual NUIE::EventHandler& GetEventHandler () override
 	{
-		return eventHandlers;
+		return eventHandler;
 	}
 
 private:
 	NE::BasicStringConverter	stringConverter;
 	NUIE::BasicSkinParams		skinParams;
-	MyEventHandlers				eventHandlers;
+	MyEventHandler				eventHandler;
 	NE::EvaluationEnv			evaluationEnv;
 	WAS::NodeEditorHwndControl	nodeEditorControl;
 };

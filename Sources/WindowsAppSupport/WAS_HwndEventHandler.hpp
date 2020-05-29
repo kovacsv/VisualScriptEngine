@@ -1,18 +1,18 @@
-#ifndef WAS_HWNDEVENTHANDLERS_HPP
-#define WAS_HWNDEVENTHANDLERS_HPP
+#ifndef WAS_HWNDEVENTHANDLER_HPP
+#define WAS_HWNDEVENTHANDLER_HPP
 
 #include "WAS_IncludeWindowsHeaders.hpp"
-#include "NUIE_EventHandlers.hpp"
+#include "NUIE_EventHandler.hpp"
 #include "WAS_NodeEditorHwndControl.hpp"
 
 namespace WAS
 {
 
-class HwndEventHandlers : public NUIE::EventHandlers
+class HwndEventHandler : public NUIE::EventHandler
 {
 public:
-	HwndEventHandlers ();
-	virtual ~HwndEventHandlers ();
+	HwndEventHandler ();
+	virtual ~HwndEventHandler ();
 
 	void									Init (const NUIE::NativeNodeEditorControl* nodeEditorControl);
 
@@ -29,8 +29,8 @@ protected:
 	const NUIE::NativeNodeEditorControl*	control;
 };
 
-using HwndEventHandlersPtr = std::shared_ptr<HwndEventHandlers>;
-using HwndEventHandlersConstPtr = std::shared_ptr<const HwndEventHandlers>;
+using HwndEventHandlerPtr = std::shared_ptr<HwndEventHandler>;
+using HwndEventHandlerConstPtr = std::shared_ptr<const HwndEventHandler>;
 
 }
 

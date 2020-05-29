@@ -748,30 +748,30 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& env,
 		uiManager.SetSelectedNodes (selectedNodes);
 		handlerResult = EventHandlerResult::EventHandled;
 	} else if (mouseButton == MouseButton::Right) {
-		EventHandlers& eventHandlers = env.GetEventHandlers ();
+		EventHandler& eventHandler = env.GetEventHandler ();
 		MenuCommandPtr selectedCommand;
 		bool found = FindItemUnderPosition (uiManager, env, position,
 			[&] (const UINodePtr& foundNode) {
 				MenuCommandStructure commands = CreateNodeCommandStructure (uiManager, env, foundNode);
-				selectedCommand = eventHandlers.OnContextMenu (position, foundNode, commands);
+				selectedCommand = eventHandler.OnContextMenu (position, foundNode, commands);
 			},
 			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
 				MenuCommandStructure commands = CreateOutputSlotCommandStructure (uiManager, env, foundOutputSlot);
-				selectedCommand = eventHandlers.OnContextMenu (position, foundOutputSlot, commands);
+				selectedCommand = eventHandler.OnContextMenu (position, foundOutputSlot, commands);
 			},
 			[&] (const UIInputSlotConstPtr& foundInputSlot) {
 				MenuCommandStructure commands = CreateInputSlotCommandStructure (uiManager, env, foundInputSlot);
-				selectedCommand = eventHandlers.OnContextMenu (position, foundInputSlot, commands);
+				selectedCommand = eventHandler.OnContextMenu (position, foundInputSlot, commands);
 			},
 			[&] (const UINodeGroupPtr& foundGroup) {
 				MenuCommandStructure commands = CreateNodeGroupCommandStructure (uiManager, env, foundGroup);
-				selectedCommand = eventHandlers.OnContextMenu (position, foundGroup, commands);
+				selectedCommand = eventHandler.OnContextMenu (position, foundGroup, commands);
 			}
 		);
 		if (!found) {
 			Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
 			MenuCommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, env, modelPosition);
-			selectedCommand = eventHandlers.OnContextMenu (position, commands);
+			selectedCommand = eventHandler.OnContextMenu (position, commands);
 		}
 		if (selectedCommand != nullptr) {
 			selectedCommand->Do ();
@@ -808,8 +808,8 @@ EventHandlerResult InteractionHandler::HandleMouseDoubleClick (NodeUIEnvironment
 		return EventHandlerResult::EventHandled;
 	}
 
-	EventHandlers& eventHandlers = env.GetEventHandlers ();
-	eventHandlers.OnDoubleClick (position);
+	EventHandler& eventHandler = env.GetEventHandler ();
+	eventHandler.OnDoubleClick (position);
 	return EventHandlerResult::EventHandled;
 }
 

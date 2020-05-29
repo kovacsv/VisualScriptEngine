@@ -108,7 +108,7 @@ private:
 	NUIE::Point		position;
 };
 
-TestEventHandlers::TestEventHandlers (NodeEditor* nodeEditor) :
+TestEventHandler::TestEventHandler (NodeEditor* nodeEditor) :
 	nodeEditor (nodeEditor),
 	commandToSelect (),
 	paramSettingsHandler (nullptr)
@@ -116,7 +116,7 @@ TestEventHandlers::TestEventHandlers (NodeEditor* nodeEditor) :
 	
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (const Point& position, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandler::OnContextMenu (const Point& position, const MenuCommandStructure& commands)
 {
 	NUIE::MenuCommandStructure actualCommands = commands;
 	NUIE::GroupMenuCommandPtr createCommandGroup (new NUIE::GroupMenuCommand (L"Add Node"));
@@ -131,32 +131,32 @@ MenuCommandPtr TestEventHandlers::OnContextMenu (const Point& position, const Me
 	return SelectCommandByName (actualCommands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (const Point&, const UINodePtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UINodePtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-MenuCommandPtr TestEventHandlers::OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure& commands)
 {
 	return SelectCommandByName (commands);
 }
 
-void TestEventHandlers::OnDoubleClick (const Point&)
+void TestEventHandler::OnDoubleClick (const Point&)
 {
 
 }
 
-bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterface, const UINodePtr&)
+bool TestEventHandler::OnParameterSettings (ParameterInterfacePtr paramInterface, const UINodePtr&)
 {
 	if (DBGERROR (paramSettingsHandler == nullptr)) {
 		return false;
@@ -166,7 +166,7 @@ bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterfac
 	return result;
 }
 
-bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterface, const UINodeGroupPtr&)
+bool TestEventHandler::OnParameterSettings (ParameterInterfacePtr paramInterface, const UINodeGroupPtr&)
 {
 	if (DBGERROR (paramSettingsHandler == nullptr)) {
 		return false;
@@ -176,19 +176,19 @@ bool TestEventHandlers::OnParameterSettings (ParameterInterfacePtr paramInterfac
 	return result;
 }
 
-void TestEventHandlers::SetNextCommandName (const std::wstring& nextCommandName)
+void TestEventHandler::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	DBGASSERT (commandToSelect.empty ());
 	commandToSelect = nextCommandName;
 }
 
-void TestEventHandlers::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
+void TestEventHandler::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
 {
 	SetNextCommandName (L"Node Settings");
 	paramSettingsHandler = handler;
 }
 
-MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandler::SelectCommandByName (const MenuCommandStructure& commands)
 {
 	DBGASSERT (!commandToSelect.empty ());
 	MenuCommandPtr selectedCommand = nullptr;
@@ -202,7 +202,7 @@ MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandStructur
 	return selectedCommand;
 }
 
-MenuCommandPtr TestEventHandlers::SelectCommandByName (const MenuCommandPtr& command)
+MenuCommandPtr TestEventHandler::SelectCommandByName (const MenuCommandPtr& command)
 {
 	if (command->HasChildCommands ()) {
 		MenuCommandPtr foundCommand = nullptr;
@@ -226,7 +226,7 @@ TestNodeUIEnvironment::TestNodeUIEnvironment (NodeEditor& nodeEditor, const Basi
 	stringConverter (GetDefaultStringConverter ()),
 	skinParams (skinParams),
 	drawingContext (800, 600),
-	eventHandlers (&nodeEditor),
+	eventHandler (&nodeEditor),
 	evaluationEnv (nullptr),
 	windowScale (1.0)
 {
@@ -278,19 +278,19 @@ void TestNodeUIEnvironment::OnRedrawRequested ()
 	nodeEditor.Draw ();
 }
 
-EventHandlers& TestNodeUIEnvironment::GetEventHandlers ()
+EventHandler& TestNodeUIEnvironment::GetEventHandler ()
 {
-	return eventHandlers;
+	return eventHandler;
 }
 
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
-	eventHandlers.SetNextCommandName (nextCommandName);
+	eventHandler.SetNextCommandName (nextCommandName);
 }
 
 void TestNodeUIEnvironment::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
 {
-	eventHandlers.SetNextCommandParameterSettings (handler);
+	eventHandler.SetNextCommandParameterSettings (handler);
 }
 
 const SvgDrawingContext& TestNodeUIEnvironment::GetSvgDrawingContext () const

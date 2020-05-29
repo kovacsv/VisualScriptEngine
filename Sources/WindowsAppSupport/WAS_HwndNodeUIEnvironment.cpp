@@ -6,13 +6,13 @@ namespace WAS
 HwndNodeUIEnvironment::HwndNodeUIEnvironment (	const NUIE::NativeNodeEditorControlPtr& nodeEditorControl,
 												const NE::StringConverterPtr& stringConverter,
 												const NUIE::SkinParamsPtr& skinParams,
-												const WAS::HwndEventHandlersPtr eventHandlers,
+												const WAS::HwndEventHandlerPtr& eventHandler,
 												const NE::EvaluationDataPtr& evalData) :
 	NUIE::NodeUIEnvironment (),
 	nodeEditorControl (nodeEditorControl),
 	stringConverter (stringConverter),
 	skinParams (skinParams),
-	eventHandlers (eventHandlers),
+	eventHandler (eventHandler),
 	evaluationEnv (evalData)
 {
 	
@@ -26,7 +26,7 @@ void HwndNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHa
 	int height = clientRect.bottom - clientRect.top;
 
 	nodeEditorControl->Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-	eventHandlers->Init (&*nodeEditorControl);
+	eventHandler->Init (&*nodeEditorControl);
 }
 
 void HwndNodeUIEnvironment::OnResize (int x, int y, int width, int height)
@@ -79,9 +79,9 @@ void HwndNodeUIEnvironment::OnRedrawRequested ()
 	nodeEditorControl->Invalidate ();
 }
 
-NUIE::EventHandlers& HwndNodeUIEnvironment::GetEventHandlers ()
+NUIE::EventHandler& HwndNodeUIEnvironment::GetEventHandler ()
 {
-	return *eventHandlers;
+	return *eventHandler;
 }
 
 NUIE::NativeNodeEditorControlPtr HwndNodeUIEnvironment::GetNodeEditorControl () const

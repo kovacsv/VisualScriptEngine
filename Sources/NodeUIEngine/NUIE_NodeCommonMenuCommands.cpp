@@ -1,7 +1,7 @@
 #include "NUIE_NodeCommonMenuCommands.hpp"
 #include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeUIManagerCommands.hpp"
-#include "NUIE_EventHandlers.hpp"
+#include "NUIE_EventHandler.hpp"
 #include "NUIE_SkinParams.hpp"
 #include "NE_SingleValues.hpp"
 #include "NE_Localization.hpp"
@@ -269,7 +269,7 @@ void SetParametersMenuCommand::Do ()
 
 	RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
 	std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
-	if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface, currentNode)) {
+	if (uiEnvironment.GetEventHandler ().OnParameterSettings (paramInterface, currentNode)) {
 		CustomUndoableCommand command ([&] () {
 			paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
 		});
@@ -434,7 +434,7 @@ void SetGroupParametersMenuCommand::Do ()
 
 	const NamedColorSet& groupBackgroundColors = uiEnvironment.GetSkinParams ().GetGroupBackgroundColors ();
 	std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group, groupBackgroundColors));
-	if (uiEnvironment.GetEventHandlers ().OnParameterSettings (paramInterface, group)) {
+	if (uiEnvironment.GetEventHandler ().OnParameterSettings (paramInterface, group)) {
 		CustomUndoableCommand command ([&] () {
 			paramInterface->ApplyChanges (uiManager);
 		});

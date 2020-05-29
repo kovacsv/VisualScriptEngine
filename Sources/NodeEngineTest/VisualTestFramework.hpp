@@ -3,7 +3,7 @@
 
 #include "NE_StringConverter.hpp"
 #include "NE_EvaluationEnv.hpp"
-#include "NUIE_EventHandlers.hpp"
+#include "NUIE_EventHandler.hpp"
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_SvgDrawingContext.hpp"
 
@@ -12,10 +12,10 @@ using namespace NUIE;
 
 using ParameterSettingsHandler = std::function<bool (ParameterInterfacePtr)>;
 
-class TestEventHandlers : public EventHandlers
+class TestEventHandler : public EventHandler
 {
 public:
-	TestEventHandlers (NodeEditor* nodeEditor);
+	TestEventHandler (NodeEditor* nodeEditor);
 
 	virtual MenuCommandPtr		OnContextMenu (const Point&, const MenuCommandStructure&) override;
 	virtual MenuCommandPtr		OnContextMenu (const Point&, const UINodePtr&, const MenuCommandStructure&) override;
@@ -52,7 +52,7 @@ public:
 	virtual void					OnEvaluationEnd () override;
 	virtual void					OnValuesRecalculated () override;
 	virtual void					OnRedrawRequested () override;
-	virtual EventHandlers&			GetEventHandlers () override;
+	virtual EventHandler&			GetEventHandler () override;
 
 	void							SetNextCommandName (const std::wstring& nextCommandName);
 	void							SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
@@ -65,7 +65,7 @@ private:
 	BasicStringConverter	stringConverter;
 	BasicSkinParams			skinParams;
 	SvgDrawingContext		drawingContext;
-	TestEventHandlers		eventHandlers;
+	TestEventHandler		eventHandler;
 	EvaluationEnv			evaluationEnv;
 	double					windowScale;
 };

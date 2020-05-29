@@ -1,7 +1,7 @@
 #include "NUIE_NodeEditor.hpp"
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
-#include "WAS_HwndEventHandlers.hpp"
+#include "WAS_HwndEventHandler.hpp"
 #include "WAS_NodeEditorHwndControl.hpp"
 #include "WAS_ParameterDialog.hpp"
 
@@ -87,7 +87,7 @@ public:
 		NUIE::NodeUIEnvironment (),
 		stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
 		skinParams (GetDefaultSkinParams ()),
-		eventHandlers (),
+		eventHandler (),
 		evaluationEnv (nullptr),
 		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (&imageLoader)))
 	{
@@ -139,7 +139,7 @@ public:
 
 		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
 		nodeEditorControl.FillNodeTree (nodeTree);
-		eventHandlers.Init (&nodeEditorControl);
+		eventHandler.Init (&nodeEditorControl);
 	}
 
 	void OnResize (int x, int y, int width, int height)
@@ -192,15 +192,15 @@ public:
 		nodeEditorControl.Invalidate ();
 	}
 
-	virtual NUIE::EventHandlers& GetEventHandlers () override
+	virtual NUIE::EventHandler& GetEventHandler () override
 	{
-		return eventHandlers;
+		return eventHandler;
 	}
 
 private:
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;
-	WAS::HwndEventHandlers				eventHandlers;
+	WAS::HwndEventHandler				eventHandler;
 	NE::EvaluationEnv					evaluationEnv;
 	WAS::NodeEditorNodeTreeHwndControl	nodeEditorControl;
 };

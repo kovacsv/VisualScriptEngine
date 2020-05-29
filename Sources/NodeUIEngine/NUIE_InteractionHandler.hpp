@@ -3,7 +3,7 @@
 
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
-#include "NUIE_EventHandlers.hpp"
+#include "NUIE_EventHandler.hpp"
 #include "NUIE_MenuCommands.hpp"
 #include "NUIE_UIEventHandlers.hpp"
 #include <memory>

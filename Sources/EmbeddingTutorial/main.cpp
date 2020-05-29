@@ -2,11 +2,11 @@
 #include "NUIE_NodeEditor.hpp"
 #include "BI_BasicUINode.hpp"
 
-class MyEventHandlers : public NUIE::EventHandlers
+class MyEventHandler : public NUIE::EventHandler
 {
 public:
-	MyEventHandlers () :
-		NUIE::EventHandlers ()
+	MyEventHandler () :
+		NUIE::EventHandler ()
 	{
 
 	}
@@ -79,7 +79,7 @@ public:
 		stringConverter (NE::GetDefaultStringConverter ()),
 		skinParams (NUIE::GetDefaultSkinParams ()),
 		drawingContext (),
-		eventHandlers (),
+		eventHandler (),
 		evaluationEnv (nullptr)
 	{
 
@@ -130,16 +130,16 @@ public:
 
 	}
 
-	virtual NUIE::EventHandlers& GetEventHandlers () override
+	virtual NUIE::EventHandler& GetEventHandler () override
 	{
-		return eventHandlers;
+		return eventHandler;
 	}
 
 private:
 	NE::BasicStringConverter	stringConverter;
 	NUIE::BasicSkinParams		skinParams;
 	NUIE::NullDrawingContext	drawingContext;
-	MyEventHandlers				eventHandlers;
+	MyEventHandler				eventHandler;
 	NE::EvaluationEnv			evaluationEnv;
 };
 

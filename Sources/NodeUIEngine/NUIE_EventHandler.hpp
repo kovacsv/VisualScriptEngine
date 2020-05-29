@@ -1,5 +1,5 @@
-#ifndef NUIE_EVENTHANDLERS_HPP
-#define NUIE_EVENTHANDLERS_HPP
+#ifndef NUIE_EVENTHANDLER_HPP
+#define NUIE_EVENTHANDLER_HPP
 
 #include "NUIE_UINode.hpp"
 #include "NUIE_UINodeGroup.hpp"
@@ -12,11 +12,11 @@ namespace NUIE
 
 class NodeUIManager;
 
-class EventHandlers
+class EventHandler
 {
 public:
-	EventHandlers ();
-	virtual ~EventHandlers ();
+	EventHandler ();
+	virtual ~EventHandler ();
 
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const MenuCommandStructure& commands) = 0;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UINodePtr& uiNode, const MenuCommandStructure& commands) = 0;
@@ -28,14 +28,14 @@ public:
 	virtual bool					OnParameterSettings (ParameterInterfacePtr paramAccessor, const UINodeGroupPtr& uiGroup) = 0;
 };
 
-using EventHandlersPtr = std::shared_ptr<EventHandlers>;
-using EventHandlersConstPtr = std::shared_ptr<const EventHandlers>;
+using EventHandlerPtr = std::shared_ptr<EventHandler>;
+using EventHandlerConstPtr = std::shared_ptr<const EventHandler>;
 
-class NullEventHandlers : public EventHandlers
+class NullEventHandler : public EventHandler
 {
 public:
-	NullEventHandlers ();
-	virtual ~NullEventHandlers ();
+	NullEventHandler ();
+	virtual ~NullEventHandler ();
 
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const MenuCommandStructure& commands) override;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UINodePtr& uiNode, const MenuCommandStructure& commands) override;

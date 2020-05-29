@@ -11,7 +11,7 @@ namespace NUIE
 
 class SkinParams;
 class DrawingContext;
-class EventHandlers;
+class EventHandler;
 
 class NodeUIDrawingEnvironment
 {
@@ -44,7 +44,7 @@ public:
 	NodeUIInteractionEnvironment ();
 	virtual ~NodeUIInteractionEnvironment ();
 
-	virtual EventHandlers&		GetEventHandlers () = 0;
+	virtual EventHandler&		GetEventHandler () = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,
