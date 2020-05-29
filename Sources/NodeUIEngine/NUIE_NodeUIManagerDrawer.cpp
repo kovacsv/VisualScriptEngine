@@ -1,6 +1,7 @@
 #include "NUIE_NodeUIManagerDrawer.hpp"
 #include "NUIE_NodeDrawingModifier.hpp"
 #include "NUIE_ContextDecorators.hpp"
+#include "NUIE_EnvironmentDecorators.hpp"
 #include "NUIE_SkinParams.hpp"
 
 #include <cmath>
@@ -71,7 +72,7 @@ void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& drawingEnv, const Node
 		NodeUIScaleIndependentData scaleIndependentData (uiManager, drawingEnv.GetSkinParams ());
 		PreviewContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
 		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
-		NodeUIDrawingEnvironmentContextDecorator drawEnv (drawingEnv, viewBoxContext);
+		DrawingEnvironmentContextDecorator drawEnv (drawingEnv, viewBoxContext);
 		
 		DrawGroups (drawEnv, drawModifier);
 		DrawConnections (drawEnv, scaleIndependentData, drawModifier);
@@ -211,7 +212,7 @@ void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const 
 {
 	ViewBox offsetViewBox (offset, 1.0);
 	ViewBoxContextDecorator offsetContext (drawingEnv.GetDrawingContext (), offsetViewBox);
-	NodeUIDrawingEnvironmentContextDecorator offsetEnv (drawingEnv, offsetContext);
+	DrawingEnvironmentContextDecorator offsetEnv (drawingEnv, offsetContext);
 	DrawNode (offsetEnv, scaleIndependentData, selectionMode, uiNode);
 }
 
@@ -223,7 +224,7 @@ void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const 
 	if (selectionMode == SelectionMode::Selected) {
 		drawingEnv.GetDrawingContext ().FillRect (selectionRect, drawingEnv.GetSkinParams ().GetNodeSelectionRectPen ().GetColor ());
 		ColorBlenderContextDecorator selectionContext (drawingEnv.GetDrawingContext (), drawingEnv.GetSkinParams ().GetSelectionBlendColor ());
-		NodeUIDrawingEnvironmentContextDecorator selectionEnv (drawingEnv, selectionContext);
+		DrawingEnvironmentContextDecorator selectionEnv (drawingEnv, selectionContext);
 		uiNode->Draw (selectionEnv);
 	} else {
 		uiNode->Draw (drawingEnv);

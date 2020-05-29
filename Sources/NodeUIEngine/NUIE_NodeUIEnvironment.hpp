@@ -1,15 +1,10 @@
 #ifndef NUIE_NODEUIENVIRONMENT_HPP
 #define NUIE_NODEUIENVIRONMENT_HPP
 
+#include "NE_StringConverter.hpp"
+#include "NE_EvaluationEnv.hpp"
+
 #include <memory>
-
-namespace NE
-{
-
-class StringConverter;
-class EvaluationEnv;
-
-}
 
 namespace NUIE
 {
@@ -59,33 +54,6 @@ class NodeUIEnvironment :	public NodeUIDrawingEnvironment,
 public:
 	NodeUIEnvironment ();
 	virtual ~NodeUIEnvironment ();
-};
-
-class NodeUIDrawingEnvironmentDecorator : public NodeUIDrawingEnvironment
-{
-public:
-	NodeUIDrawingEnvironmentDecorator (NodeUIDrawingEnvironment& decorated);
-	virtual ~NodeUIDrawingEnvironmentDecorator ();
-
-	virtual const NE::StringConverter&	GetStringConverter () override;
-	virtual const SkinParams&			GetSkinParams () override;
-	virtual DrawingContext&				GetDrawingContext () override;
-	virtual double						GetWindowScale () override;
-
-private:
-	NodeUIDrawingEnvironment& decorated;
-};
-
-class NodeUIDrawingEnvironmentContextDecorator : public NodeUIDrawingEnvironmentDecorator
-{
-public:
-	NodeUIDrawingEnvironmentContextDecorator (NodeUIDrawingEnvironment& decorated, DrawingContext& decoratedDrawingContext);
-	virtual ~NodeUIDrawingEnvironmentContextDecorator ();
-
-	virtual DrawingContext&		GetDrawingContext () override;
-
-private:
-	DrawingContext& decoratedDrawingContext;
 };
 
 }

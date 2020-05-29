@@ -4,6 +4,7 @@
 #include "NE_Localization.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_ContextDecorators.hpp"
+#include "NUIE_EnvironmentDecorators.hpp"
 #include "NUIE_SkinParams.hpp"
 #include "NUIE_NodeCommonParameters.hpp"
 
@@ -140,7 +141,7 @@ void EnableDisableFeature::DrawInplace (NUIE::NodeUIDrawingEnvironment& env, con
 		drawer (env);
 	} else {
 		NUIE::ColorBlenderContextDecorator disabledContext (env.GetDrawingContext (), env.GetSkinParams ().GetDisabledBlendColor ());
-		NUIE::NodeUIDrawingEnvironmentContextDecorator disabledEnv (env, disabledContext);
+		NUIE::DrawingEnvironmentContextDecorator disabledEnv (env, disabledContext);
 		drawer (disabledEnv);
 	}
 }

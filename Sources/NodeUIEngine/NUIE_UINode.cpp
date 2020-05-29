@@ -4,6 +4,7 @@
 #include "NE_Localization.hpp"
 #include "NE_Debug.hpp"
 #include "NUIE_ContextDecorators.hpp"
+#include "NUIE_EnvironmentDecorators.hpp"
 #include "NUIE_NodeParameters.hpp"
 #include "NUIE_NodeCommonParameters.hpp"
 #include "NUIE_NodeMenuCommands.hpp"
@@ -68,7 +69,7 @@ void UINode::Draw (NodeUIDrawingEnvironment& env) const
 {
 	ViewBox nodeViewBox (nodePosition, 1.0);
 	ViewBoxContextDecorator nodeContext (env.GetDrawingContext (), nodeViewBox);
-	NodeUIDrawingEnvironmentContextDecorator nodeEnv (env, nodeContext);
+	DrawingEnvironmentContextDecorator nodeEnv (env, nodeContext);
 	DrawInplace (nodeEnv);
 }
 
