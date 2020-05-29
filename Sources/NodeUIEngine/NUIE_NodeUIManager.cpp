@@ -449,7 +449,7 @@ bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundi
 		virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override
 		{
 			UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
-			return GetNodeExtendedRect (uiEnvironment, uiNode.get ());
+			return uiNode->GetNodeRect (uiEnvironment);
 		}
 
 	private:
