@@ -2,7 +2,6 @@
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
-#include "WAS_HwndNodeUIEnvironment.hpp"
 #include "WAS_ParameterDialog.hpp"
 #include "BI_BuiltInNodes.hpp"
 
