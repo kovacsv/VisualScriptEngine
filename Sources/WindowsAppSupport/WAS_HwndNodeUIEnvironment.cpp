@@ -13,6 +13,7 @@ HwndNodeUIEnvironment::HwndNodeUIEnvironment (	const NUIE::NativeNodeEditorContr
 	stringConverter (stringConverter),
 	skinParams (skinParams),
 	eventHandler (eventHandler),
+	clipboardHandler (new NUIE::InMemoryClipboardHandler ()),
 	evaluationEnv (evalData)
 {
 	
@@ -82,6 +83,11 @@ void HwndNodeUIEnvironment::OnRedrawRequested ()
 NUIE::EventHandler& HwndNodeUIEnvironment::GetEventHandler ()
 {
 	return *eventHandler;
+}
+
+NUIE::ClipboardHandler& HwndNodeUIEnvironment::GetClipboardHandler ()
+{
+	return *clipboardHandler;
 }
 
 NUIE::NativeNodeEditorControlPtr HwndNodeUIEnvironment::GetNodeEditorControl () const

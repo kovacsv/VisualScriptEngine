@@ -113,6 +113,7 @@ public:
 		stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
 		skinParams (NUIE::GetDefaultSkinParams ()),
 		eventHandler (),
+		clipboardHandler (),
 		evaluationEnv (nullptr),
 		nodeEditorControl ()
 	{
@@ -186,12 +187,18 @@ public:
 		return eventHandler;
 	}
 
+	virtual NUIE::ClipboardHandler& GetClipboardHandler () override
+	{
+		return clipboardHandler;
+	}
+
 private:
-	NE::BasicStringConverter	stringConverter;
-	NUIE::BasicSkinParams		skinParams;
-	MyEventHandler				eventHandler;
-	NE::EvaluationEnv			evaluationEnv;
-	WAS::NodeEditorHwndControl	nodeEditorControl;
+	NE::BasicStringConverter		stringConverter;
+	NUIE::BasicSkinParams			skinParams;
+	MyEventHandler					eventHandler;
+	NUIE::InMemoryClipboardHandler	clipboardHandler;
+	NE::EvaluationEnv				evaluationEnv;
+	WAS::NodeEditorHwndControl		nodeEditorControl;
 };
 
 static std::shared_ptr<WAS::NodeEditorHwndControl> nodeEditorControl (new WAS::NodeEditorHwndControl ());

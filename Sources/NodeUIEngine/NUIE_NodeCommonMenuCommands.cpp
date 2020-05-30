@@ -33,9 +33,10 @@ void DeleteNodesMenuCommand::Do ()
 	uiManager.ExecuteCommand (command);
 }
 
-CopyNodesMenuCommand::CopyNodesMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
+CopyNodesMenuCommand::CopyNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const NE::NodeCollection& relevantNodes) :
 	SingleMenuCommand (L"Copy Nodes", false),
 	uiManager (uiManager),
+	interactionEnv (interactionEnv),
 	relevantNodes (relevantNodes)
 {
 
@@ -48,13 +49,14 @@ CopyNodesMenuCommand::~CopyNodesMenuCommand ()
 
 void CopyNodesMenuCommand::Do ()
 {
-	CopyNodesCommand command (relevantNodes);
+	CopyNodesCommand command (relevantNodes, interactionEnv.GetClipboardHandler ());
 	uiManager.ExecuteCommand (command);
 }
 
-PasteNodesMenuCommand::PasteNodesMenuCommand (NodeUIManager& uiManager, const Point& position) :
+PasteNodesMenuCommand::PasteNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const Point& position) :
 	SingleMenuCommand (L"Paste Nodes", false),
 	uiManager (uiManager),
+	interactionEnv (interactionEnv),
 	position (position)
 {
 
@@ -67,7 +69,7 @@ PasteNodesMenuCommand::~PasteNodesMenuCommand ()
 
 void PasteNodesMenuCommand::Do ()
 {
-	PasteNodesCommand command (position);
+	PasteNodesCommand command (position, interactionEnv.GetClipboardHandler ());
 	uiManager.ExecuteCommand (command);
 }
 
@@ -956,8 +958,8 @@ MenuCommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, 
 	commandStructure.AddCommand (MenuCommandPtr (new AlignToWindowMenuCommand (uiManager, uiEnvironment)));
 	commandStructure.AddCommand (MenuCommandPtr (new CenterToWindowMenuCommand (uiManager, uiEnvironment)));
 	commandStructure.AddCommand (MenuCommandPtr (new FitToWindowMenuCommand (uiManager, uiEnvironment)));
-	if (uiManager.CanPaste ()) {
-		commandStructure.AddCommand (MenuCommandPtr (new PasteNodesMenuCommand (uiManager, position)));
+	if (uiEnvironment.GetClipboardHandler ().HasClipboardContent ()) {
+		commandStructure.AddCommand (MenuCommandPtr (new PasteNodesMenuCommand (uiManager, uiEnvironment, position)));
 	}
 	return commandStructure;
 }
@@ -970,7 +972,7 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new SetParametersMenuCommand (uiManager, uiEnvironment, uiNode, relevantNodes)));
 	uiNode->RegisterCommands (commandStructureBuilder);
 
-	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new CopyNodesMenuCommand (uiManager, relevantNodes)));
+	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new CopyNodesMenuCommand (uiManager, uiEnvironment, relevantNodes)));
 	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new DeleteNodesMenuCommand (uiManager, uiEnvironment, relevantNodes)));
 
 	GroupMenuCommandPtr groupingCommandGroup (new GroupMenuCommand (L"Grouping"));

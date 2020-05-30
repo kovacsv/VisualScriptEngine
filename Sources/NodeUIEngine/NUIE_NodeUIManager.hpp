@@ -7,7 +7,6 @@
 #include "NUIE_UINodeGroup.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_UINodeInvalidator.hpp"
-#include "NUIE_CopyPasteHandler.hpp"
 #include "NUIE_UndoHandler.hpp"
 #include "NUIE_ViewBox.hpp"
 
@@ -135,9 +134,8 @@ public:
 	bool						Save (NE::OutputStream& outputStream) const;
 	bool						NeedToSave () const;
 
-	bool						CanPaste () const;
-	bool						Copy (const NE::NodeCollection& nodeCollection);
-	bool						Paste ();
+	bool						CopyToNodeManager (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const;
+	NE::NodeCollection			PasteFromNodeManager (const NE::NodeManager& source);
 	NE::NodeCollection			Duplicate (const NE::NodeCollection& nodeCollection);
 
 	void						SaveUndoState ();
@@ -196,7 +194,6 @@ private:
 
 	NE::NodeManager		nodeManager;
 	NE::NodeCollection	selectedNodes;
-	CopyPasteHandler	copyPasteHandler;
 	UndoHandler			undoHandler;
 	ViewBox				viewBox;
 	mutable Status		status;

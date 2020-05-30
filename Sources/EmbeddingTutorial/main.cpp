@@ -80,6 +80,7 @@ public:
 		skinParams (NUIE::GetDefaultSkinParams ()),
 		drawingContext (),
 		eventHandler (),
+		clipboardHandler (),
 		evaluationEnv (nullptr)
 	{
 
@@ -135,12 +136,18 @@ public:
 		return eventHandler;
 	}
 
+	virtual NUIE::ClipboardHandler& GetClipboardHandler () override
+	{
+		return clipboardHandler;
+	}
+
 private:
-	NE::BasicStringConverter	stringConverter;
-	NUIE::BasicSkinParams		skinParams;
-	NUIE::NullDrawingContext	drawingContext;
-	MyEventHandler				eventHandler;
-	NE::EvaluationEnv			evaluationEnv;
+	NE::BasicStringConverter		stringConverter;
+	NUIE::BasicSkinParams			skinParams;
+	NUIE::NullDrawingContext		drawingContext;
+	MyEventHandler					eventHandler;
+	NUIE::InMemoryClipboardHandler	clipboardHandler;
+	NE::EvaluationEnv				evaluationEnv;
 };
 
 class MyNode : public BI::BasicUINode

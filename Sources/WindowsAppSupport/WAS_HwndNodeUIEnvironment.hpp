@@ -34,6 +34,7 @@ public:
 	
 	virtual void						OnRedrawRequested () override;
 	virtual NUIE::EventHandler&			GetEventHandler () override;
+	virtual NUIE::ClipboardHandler&		GetClipboardHandler () override;
 
 	NUIE::NativeNodeEditorControlPtr	GetNodeEditorControl () const;
 
@@ -42,6 +43,7 @@ private:
 	NE::StringConverterPtr				stringConverter;
 	NUIE::SkinParamsPtr					skinParams;
 	WAS::HwndEventHandlerPtr			eventHandler;
+	NUIE::ClipboardHandlerPtr			clipboardHandler;
 	NE::EvaluationEnv					evaluationEnv;
 };
 

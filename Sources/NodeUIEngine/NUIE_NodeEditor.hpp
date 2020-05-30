@@ -3,6 +3,7 @@
 
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_EventHandler.hpp"
+#include "NUIE_ClipboardHandler.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_InteractionHandler.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"

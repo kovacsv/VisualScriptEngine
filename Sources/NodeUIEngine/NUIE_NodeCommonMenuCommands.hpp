@@ -26,27 +26,29 @@ private:
 class CopyNodesMenuCommand : public SingleMenuCommand
 {
 public:
-	CopyNodesMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
+	CopyNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const NE::NodeCollection& relevantNodes);
 	virtual ~CopyNodesMenuCommand ();
 
 	virtual void Do () override;
 
 private:
-	NodeUIManager&		uiManager;
-	NE::NodeCollection	relevantNodes;
+	NodeUIManager&					uiManager;
+	NodeUIInteractionEnvironment&	interactionEnv;
+	NE::NodeCollection				relevantNodes;
 };
 
 class PasteNodesMenuCommand : public SingleMenuCommand
 {
 public:
-	PasteNodesMenuCommand (NodeUIManager& uiManager, const Point& position);
+	PasteNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const Point& position);
 	virtual ~PasteNodesMenuCommand ();
 
 	virtual void Do () override;
 
 private:
-	NodeUIManager&		uiManager;
-	Point				position;
+	NodeUIManager&					uiManager;
+	NodeUIInteractionEnvironment&	interactionEnv;
+	Point							position;
 };
 
 class AlignToWindowMenuCommand : public SingleMenuCommand

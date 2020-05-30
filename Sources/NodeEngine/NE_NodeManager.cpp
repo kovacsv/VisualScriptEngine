@@ -531,6 +531,25 @@ bool NodeManager::Clone (const NodeManager& source, NodeManager& target)
 	return true;
 }
 
+bool NodeManager::ReadFromBuffer (NodeManager& nodeManager, const std::vector<char>& buffer)
+{
+	MemoryInputStream inputStream (buffer);
+	if (DBGERROR (nodeManager.Read (inputStream) != Stream::Status::NoError)) {
+		return false;
+	}
+	return true;
+}
+
+bool NodeManager::WriteToBuffer (const NodeManager& nodeManager, std::vector<char>& buffer)
+{
+	MemoryOutputStream outputStream;
+	if (DBGERROR (nodeManager.Write (outputStream) != Stream::Status::NoError)) {
+		return false;
+	}
+	buffer = outputStream.GetBuffer ();
+	return true;
+}
+
 NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
 {
 	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {

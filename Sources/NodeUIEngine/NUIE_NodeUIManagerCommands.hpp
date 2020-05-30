@@ -2,6 +2,7 @@
 #define NUIE_NODEUIMANAGERCOMMANDS_HPP
 
 #include "NUIE_NodeUIManager.hpp"
+#include "NUIE_ClipboardHandler.hpp"
 
 namespace NUIE
 {
@@ -159,23 +160,25 @@ private:
 class CopyNodesCommand : public NotUndoableCommand
 {
 public:
-	CopyNodesCommand (const NE::NodeCollection& nodes);
+	CopyNodesCommand (const NE::NodeCollection& nodes, ClipboardHandler& clipboard);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
-	const NE::NodeCollection& nodes;
+	const NE::NodeCollection&	nodes;
+	ClipboardHandler&			clipboard;
 };
 
 class PasteNodesCommand : public UndoableCommand
 {
 public:
-	PasteNodesCommand (const Point& position);
+	PasteNodesCommand (const Point& position, ClipboardHandler& clipboard);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
-	const Point& position;
+	const Point&		position;
+	ClipboardHandler&	clipboard;
 };
 
 class AddGroupCommand : public UndoableCommand

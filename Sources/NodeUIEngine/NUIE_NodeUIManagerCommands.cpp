@@ -193,9 +193,10 @@ void DisconnectAllOutputSlotsCommand::Do (NodeUIManager& uiManager)
 	uiManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
 }
 
-CopyNodesCommand::CopyNodesCommand (const NE::NodeCollection& nodes) :
+CopyNodesCommand::CopyNodesCommand (const NE::NodeCollection& nodes, ClipboardHandler& clipboard) :
 	NotUndoableCommand (),
-	nodes (nodes)
+	nodes (nodes),
+	clipboard (clipboard)
 {
 }
 
@@ -204,34 +205,47 @@ void CopyNodesCommand::Do (NodeUIManager& uiManager)
 	if (DBGERROR (nodes.IsEmpty ())) {
 		return;
 	}
-	uiManager.Copy (nodes);
+
+	NE::NodeManager clipboardNodeManager;
+	std::vector<char> clipboardBuffer;
+
+	if (DBGERROR (!uiManager.CopyToNodeManager (nodes, clipboardNodeManager))) {
+		return;
+	}
+	if (DBGERROR (!NE::NodeManager::WriteToBuffer (clipboardNodeManager, clipboardBuffer))) {
+		return;
+	}
+
+	clipboard.SetClipboardContent (clipboardBuffer);
 }
 
-PasteNodesCommand::PasteNodesCommand (const Point& position) :
+PasteNodesCommand::PasteNodesCommand (const Point& position, ClipboardHandler& clipboard) :
 	UndoableCommand (),
-	position (position)
+	position (position),
+	clipboard (clipboard)
 {
 }
 
 void PasteNodesCommand::Do (NodeUIManager& uiManager)
 {
-	if (DBGERROR (!uiManager.CanPaste ())) {
+	if (DBGERROR (!clipboard.HasClipboardContent ())) {
 		return;
 	}
 
-	std::unordered_set<NE::NodeId> oldNodes;
-	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
-		oldNodes.insert (uiNode->GetId ());
-		return true;
-	});
+	NE::NodeManager clipboardNodeManager;
+	std::vector<char> clipboardBuffer;
 
-	uiManager.Paste ();
+	if (DBGERROR (!clipboard.GetClipboardContent (clipboardBuffer))) {
+		return;
+	}
+	if (DBGERROR (!NE::NodeManager::ReadFromBuffer (clipboardNodeManager, clipboardBuffer))) {
+		return;
+	}
 
+	NE::NodeCollection newNodeIds = uiManager.PasteFromNodeManager (clipboardNodeManager);
 	std::vector<UINodePtr> newNodes;
-	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) {
-		if (oldNodes.find (uiNode->GetId ()) == oldNodes.end ()) {
-			newNodes.push_back (uiNode);
-		}
+	newNodeIds.Enumerate ([&] (const NE::NodeId& nodeId) {
+		newNodes.push_back (uiManager.GetUINode (nodeId));
 		return true;
 	});
 

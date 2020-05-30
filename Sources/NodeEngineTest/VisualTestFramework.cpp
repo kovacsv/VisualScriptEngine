@@ -283,6 +283,11 @@ EventHandler& TestNodeUIEnvironment::GetEventHandler ()
 	return eventHandler;
 }
 
+ClipboardHandler& TestNodeUIEnvironment::GetClipboardHandler ()
+{
+	return clipboardHandler;
+}
+
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	eventHandler.SetNextCommandName (nextCommandName);

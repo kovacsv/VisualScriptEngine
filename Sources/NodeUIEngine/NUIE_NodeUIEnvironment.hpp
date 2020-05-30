@@ -12,6 +12,7 @@ namespace NUIE
 class SkinParams;
 class DrawingContext;
 class EventHandler;
+class ClipboardHandler;
 
 class NodeUIDrawingEnvironment
 {
@@ -45,6 +46,7 @@ public:
 	virtual ~NodeUIInteractionEnvironment ();
 
 	virtual EventHandler&		GetEventHandler () = 0;
+	virtual ClipboardHandler&	GetClipboardHandler () = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,

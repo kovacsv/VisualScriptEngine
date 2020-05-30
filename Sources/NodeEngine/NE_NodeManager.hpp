@@ -102,6 +102,8 @@ public:
 	Stream::Status			Write (OutputStream& outputStream) const;
 
 	static bool				Clone (const NodeManager& source, NodeManager& target);
+	static bool				ReadFromBuffer (NodeManager& nodeManager, const std::vector<char>& buffer);
+	static bool				WriteToBuffer (const NodeManager& nodeManager, std::vector<char>& buffer);
 
 private:
 	enum class IdHandlingPolicy

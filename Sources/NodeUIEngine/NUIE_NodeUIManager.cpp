@@ -145,7 +145,7 @@ void NodeUIManagerNodeInvalidator::RequestRedraw ()
 NodeUIManager::NodeUIManager (NodeUIDrawingEnvironment& env) :
 	nodeManager (),
 	selectedNodes (),
-	copyPasteHandler (),
+	undoHandler (),
 	viewBox (Point (0.0, 0.0), env.GetWindowScale ()),
 	status ()
 {
@@ -604,40 +604,29 @@ bool NodeUIManager::NeedToSave () const
 	return status.NeedToSave ();
 }
 
-bool NodeUIManager::CanPaste () const
+bool NodeUIManager::CopyToNodeManager (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const
 {
-	return copyPasteHandler.CanPaste ();
+	NE::NodeCollectionFilter nodeFilter (nodeCollection);
+	NE::EmptyAppendEventHandler eventHandler;
+	return NE::NodeManagerMerge::AppendNodeManager (nodeManager, result, nodeFilter, eventHandler);
 }
 
-bool NodeUIManager::Copy (const NE::NodeCollection& nodeCollection)
+NE::NodeCollection NodeUIManager::PasteFromNodeManager (const NE::NodeManager& source)
 {
-	return copyPasteHandler.CopyFrom (nodeManager, nodeCollection);
-}
-
-bool NodeUIManager::Paste ()
-{
-	bool success = copyPasteHandler.PasteTo (nodeManager);
+	NE::AllNodesFilter allNodesFilter;
+	NE::NodeCollectorAppendEventHandler eventHandler;
+	if (DBGERROR (!NE::NodeManagerMerge::AppendNodeManager (source, nodeManager, allNodesFilter, eventHandler))) {
+		return NE::EmptyNodeCollection;
+	}
 	RequestRecalculateAndRedraw ();
-	return success;
+	return eventHandler.GetAddedTargetNodes ();
 }
 
 NE::NodeCollection NodeUIManager::Duplicate (const NE::NodeCollection& nodeCollection)
 {
 	NE::NodeManager tempNodeManager;
-	NE::NodeCollectionFilter nodeCollectionFilter (nodeCollection);
-	NE::EmptyAppendEventHandler sourceAppendHandler;
-	if (DBGERROR (!NE::NodeManagerMerge::AppendNodeManager (nodeManager, tempNodeManager, nodeCollectionFilter, sourceAppendHandler))) {
-		return NE::EmptyNodeCollection;
-	}
-
-	NE::AllNodesFilter allNodesFilter;
-	NE::NodeCollectorAppendEventHandler targetAppendHandler;
-	if (DBGERROR (!NE::NodeManagerMerge::AppendNodeManager (tempNodeManager, nodeManager, allNodesFilter, targetAppendHandler))) {
-		return NE::EmptyNodeCollection;
-	}
-
-	RequestRecalculateAndRedraw ();
-	return targetAppendHandler.GetAddedTargetNodes ();
+	CopyToNodeManager (nodeCollection, tempNodeManager);
+	return PasteFromNodeManager (tempNodeManager);
 }
 
 void NodeUIManager::SaveUndoState ()
@@ -736,7 +725,6 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
 void NodeUIManager::Clear (NodeUIDrawingEnvironment& env)
 {
 	selectedNodes.Clear ();
-	copyPasteHandler.Clear ();
 	undoHandler.Clear ();
 	nodeManager.Clear ();
 	viewBox = ViewBox (Point (0.0, 0.0), env.GetWindowScale ());

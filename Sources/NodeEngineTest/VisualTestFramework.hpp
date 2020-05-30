@@ -53,6 +53,7 @@ public:
 	virtual void					OnValuesRecalculated () override;
 	virtual void					OnRedrawRequested () override;
 	virtual EventHandler&			GetEventHandler () override;
+	virtual ClipboardHandler&		GetClipboardHandler () override;
 
 	void							SetNextCommandName (const std::wstring& nextCommandName);
 	void							SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
@@ -60,14 +61,15 @@ public:
 	void							SetWindowScale (double newWindowScale);
 
 private:
-	NodeEditor&				nodeEditor;
+	NodeEditor&					nodeEditor;
 
-	BasicStringConverter	stringConverter;
-	BasicSkinParams			skinParams;
-	SvgDrawingContext		drawingContext;
-	TestEventHandler		eventHandler;
-	EvaluationEnv			evaluationEnv;
-	double					windowScale;
+	BasicStringConverter		stringConverter;
+	BasicSkinParams				skinParams;
+	SvgDrawingContext			drawingContext;
+	TestEventHandler			eventHandler;
+	InMemoryClipboardHandler	clipboardHandler;
+	EvaluationEnv				evaluationEnv;
+	double						windowScale;
 };
 
 class NodeEditorTestEnv
