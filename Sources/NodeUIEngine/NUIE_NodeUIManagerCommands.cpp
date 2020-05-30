@@ -207,11 +207,11 @@ void CopyNodesCommand::Do (NodeUIManager& uiManager)
 	}
 
 	NE::NodeManager clipboardNodeManager;
-	std::vector<char> clipboardBuffer;
-
 	if (DBGERROR (!uiManager.CopyToNodeManager (nodes, clipboardNodeManager))) {
 		return;
 	}
+
+	std::vector<char> clipboardBuffer;
 	if (DBGERROR (!NE::NodeManager::WriteToBuffer (clipboardNodeManager, clipboardBuffer))) {
 		return;
 	}
@@ -232,12 +232,12 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 		return;
 	}
 
-	NE::NodeManager clipboardNodeManager;
 	std::vector<char> clipboardBuffer;
-
 	if (DBGERROR (!clipboard.GetClipboardContent (clipboardBuffer))) {
 		return;
 	}
+
+	NE::NodeManager clipboardNodeManager;
 	if (DBGERROR (!NE::NodeManager::ReadFromBuffer (clipboardNodeManager, clipboardBuffer))) {
 		return;
 	}
