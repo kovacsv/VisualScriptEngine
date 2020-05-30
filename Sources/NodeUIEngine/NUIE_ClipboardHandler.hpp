@@ -32,11 +32,11 @@ public:
 	virtual void		SetClipboardContent (const std::vector<char>& content) override;
 };
 
-class InMemoryClipboardHandler : public ClipboardHandler
+class MemoryClipboardHandler : public ClipboardHandler
 {
 public:
-	InMemoryClipboardHandler ();
-	virtual ~InMemoryClipboardHandler ();
+	MemoryClipboardHandler ();
+	virtual ~MemoryClipboardHandler ();
 
 	virtual bool		HasClipboardContent () const override;
 	virtual bool		GetClipboardContent (std::vector<char>& content) const override;

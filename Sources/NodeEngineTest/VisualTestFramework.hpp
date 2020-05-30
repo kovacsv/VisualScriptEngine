@@ -61,15 +61,15 @@ public:
 	void							SetWindowScale (double newWindowScale);
 
 private:
-	NodeEditor&					nodeEditor;
+	NodeEditor&				nodeEditor;
 
-	BasicStringConverter		stringConverter;
-	BasicSkinParams				skinParams;
-	SvgDrawingContext			drawingContext;
-	TestEventHandler			eventHandler;
-	InMemoryClipboardHandler	clipboardHandler;
-	EvaluationEnv				evaluationEnv;
-	double						windowScale;
+	BasicStringConverter	stringConverter;
+	BasicSkinParams			skinParams;
+	SvgDrawingContext		drawingContext;
+	TestEventHandler		eventHandler;
+	MemoryClipboardHandler	clipboardHandler;
+	EvaluationEnv			evaluationEnv;
+	double					windowScale;
 };
 
 class NodeEditorTestEnv

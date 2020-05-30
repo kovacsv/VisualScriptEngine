@@ -39,24 +39,24 @@ void NullClipboardHandler::SetClipboardContent (const std::vector<char>&)
 	
 }
 
-InMemoryClipboardHandler::InMemoryClipboardHandler () :
+MemoryClipboardHandler::MemoryClipboardHandler () :
 	ClipboardHandler (),
 	clipboard ()
 {
 
 }
 
-InMemoryClipboardHandler::~InMemoryClipboardHandler ()
+MemoryClipboardHandler::~MemoryClipboardHandler ()
 {
 
 }
 
-bool InMemoryClipboardHandler::HasClipboardContent () const
+bool MemoryClipboardHandler::HasClipboardContent () const
 {
 	return !clipboard.empty ();
 }
 
-bool InMemoryClipboardHandler::GetClipboardContent (std::vector<char>& content) const
+bool MemoryClipboardHandler::GetClipboardContent (std::vector<char>& content) const
 {
 	if (clipboard.empty ()) {
 		return false;
@@ -65,7 +65,7 @@ bool InMemoryClipboardHandler::GetClipboardContent (std::vector<char>& content) 
 	return true;
 }
 
-void InMemoryClipboardHandler::SetClipboardContent (const std::vector<char>& content)
+void MemoryClipboardHandler::SetClipboardContent (const std::vector<char>& content)
 {
 	clipboard = content;
 }

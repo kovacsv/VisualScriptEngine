@@ -207,7 +207,7 @@ private:
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;
 	WAS::HwndEventHandler				eventHandler;
-	NUIE::InMemoryClipboardHandler		clipboardHandler;
+	NUIE::MemoryClipboardHandler		clipboardHandler;
 	NE::EvaluationEnv					evaluationEnv;
 	WAS::NodeEditorNodeTreeHwndControl	nodeEditorControl;
 };

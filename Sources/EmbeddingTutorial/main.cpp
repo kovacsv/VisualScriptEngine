@@ -146,7 +146,7 @@ private:
 	NUIE::BasicSkinParams			skinParams;
 	NUIE::NullDrawingContext		drawingContext;
 	MyEventHandler					eventHandler;
-	NUIE::InMemoryClipboardHandler	clipboardHandler;
+	NUIE::MemoryClipboardHandler	clipboardHandler;
 	NE::EvaluationEnv				evaluationEnv;
 };
 
