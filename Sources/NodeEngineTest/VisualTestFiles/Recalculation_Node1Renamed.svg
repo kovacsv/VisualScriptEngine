@@ -1,20 +1,20 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
-<rect x="0" y="0" width="800" height="600" style="fill:rgb(240,240,240);"/>
-<path d="M303,217 C360,217 360,397 417,397" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
-<rect x="97" y="163" width="206" height="34" style="fill:rgb(100,100,100);"/>
-<text x="200" y="180" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Test 1 New</text>
-<rect x="97" y="197" width="206" height="39" style="fill:rgb(200,200,200);"/>
-<rect x="97" y="202" width="90" height="29" style="fill:rgb(225,225,225);"/>
-<text x="102" y="217" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Input</text>
-<rect x="197" y="202" width="106" height="29" style="fill:rgb(225,225,225);"/>
-<text x="298" y="217" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Output</text>
-<rect x="97" y="163" width="206" height="73" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
-<rect x="417" y="343" width="206" height="34" style="fill:rgb(100,100,100);"/>
-<text x="520" y="360" dominant-baseline="central" text-anchor="middle" style="fill:rgb(255,255,255);font-family:Arial;font-size:16px;">Test 2</text>
-<rect x="417" y="377" width="206" height="39" style="fill:rgb(200,200,200);"/>
-<rect x="417" y="382" width="90" height="29" style="fill:rgb(225,225,225);"/>
-<text x="422" y="397" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Input</text>
-<rect x="517" y="382" width="106" height="29" style="fill:rgb(225,225,225);"/>
-<text x="618" y="397" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Output</text>
-<rect x="417" y="343" width="206" height="73" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
+<path d="M292,217 C360,217 360,397 428,397" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<rect x="108" y="165" width="184" height="34" style="fill:rgb(41,127,255);"/>
+<text x="200" y="182" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Test 1 New</text>
+<rect x="108" y="199" width="184" height="36" style="fill:rgb(236,236,236);"/>
+<rect x="108" y="204" width="80" height="26" style="fill:rgb(246,246,246);"/>
+<text x="113" y="217" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Input</text>
+<rect x="198" y="204" width="94" height="26" style="fill:rgb(246,246,246);"/>
+<text x="287" y="217" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Output</text>
+<rect x="108" y="165" width="184" height="70" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<rect x="428" y="345" width="184" height="34" style="fill:rgb(41,127,255);"/>
+<text x="520" y="362" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Test 2</text>
+<rect x="428" y="379" width="184" height="36" style="fill:rgb(236,236,236);"/>
+<rect x="428" y="384" width="80" height="26" style="fill:rgb(246,246,246);"/>
+<text x="433" y="397" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Input</text>
+<rect x="518" y="384" width="94" height="26" style="fill:rgb(246,246,246);"/>
+<text x="607" y="397" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Output</text>
+<rect x="428" y="345" width="184" height="70" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 </svg>
