@@ -214,13 +214,7 @@ bool NodeEditor::Open (NE::InputStream& inputStream, const ExternalHeaderIO* ext
 
 	Version readVersion;
 	readVersion.Read (inputStream);
-	if (readVersion > EngineVersion) {
-		return false;
-	}
-
-	int readFileVersion = 0;
-	inputStream.Read (readFileVersion);
-	if (readFileVersion != FileVersion) {
+	if (!IsCompatibleVersion (readVersion)) {
 		return false;
 	}
 
@@ -253,9 +247,9 @@ bool NodeEditor::Save (NE::OutputStream& outputStream, const ExternalHeaderIO* e
 		externalHeader->Write (outputStream);
 	}
 
+	const Version& currentVersion = GetCurrentVersion ();
 	outputStream.Write (NodeEditorFileMarker);
-	EngineVersion.Write (outputStream);
-	outputStream.Write (FileVersion);
+	currentVersion.Write (outputStream);
 	if (DBGERROR (!uiManager.Save (outputStream))) {
 		return false;
 	}

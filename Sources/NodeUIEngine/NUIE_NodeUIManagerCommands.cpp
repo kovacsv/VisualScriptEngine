@@ -1,4 +1,5 @@
 #include "NUIE_NodeUIManagerCommands.hpp"
+#include "NE_MemoryStream.hpp"
 
 namespace NUIE
 {
@@ -211,12 +212,15 @@ void CopyNodesCommand::Do (NodeUIManager& uiManager)
 		return;
 	}
 
-	std::vector<char> clipboardBuffer;
-	if (DBGERROR (!NE::NodeManager::WriteToBuffer (clipboardNodeManager, clipboardBuffer))) {
+	NE::MemoryOutputStream outputStream;
+	Version currentVersion = clipboard.GetCurrentVersion ();
+	currentVersion.Write (outputStream);
+	clipboardNodeManager.Write (outputStream);
+	if (DBGERROR (outputStream.GetStatus () != NE::Stream::Status::NoError)) {
 		return;
 	}
 
-	clipboard.SetClipboardContent (clipboardBuffer);
+	clipboard.SetClipboardContent (outputStream.GetBuffer ());
 }
 
 PasteNodesCommand::PasteNodesCommand (const Point& position, ClipboardHandler& clipboard) :
@@ -237,8 +241,16 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 		return;
 	}
 
+	NE::MemoryInputStream inputStream (clipboardBuffer);
+	Version readVersion;
+	readVersion.Read (inputStream);
+	if (!clipboard.IsCompatibleVersion (readVersion)) {
+		return;
+	}
 	NE::NodeManager clipboardNodeManager;
-	if (DBGERROR (!NE::NodeManager::ReadFromBuffer (clipboardNodeManager, clipboardBuffer))) {
+	clipboardNodeManager.Read (inputStream);
+
+	if (DBGERROR (inputStream.GetStatus () != NE::Stream::Status::NoError)) {
 		return;
 	}
 

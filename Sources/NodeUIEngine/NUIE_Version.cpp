@@ -17,6 +17,16 @@ Version::Version (int version1, int version2, int version3) :
 {
 }
 
+bool Version::operator== (const Version& rhs) const
+{
+	return versions == rhs.versions;
+}
+
+bool Version::operator!= (const Version& rhs) const
+{
+	return !operator== (rhs);
+}
+
 bool Version::operator< (const Version& rhs) const
 {
 	for (size_t i = 0; i < versions.size (); i++) {
@@ -41,6 +51,16 @@ bool Version::operator> (const Version& rhs) const
 	return false;
 }
 
+bool Version::operator<= (const Version& rhs) const
+{
+	return operator< (rhs) || operator== (rhs);
+}
+
+bool Version::operator>= (const Version& rhs) const
+{
+	return operator> (rhs) || operator== (rhs);
+}
+
 NE::Stream::Status Version::Read (NE::InputStream& inputStream)
 {
 	inputStream.Read (versions[0]);
@@ -57,7 +77,15 @@ NE::Stream::Status Version::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-const Version EngineVersion (VSE_VERSION_1, VSE_VERSION_2, VSE_VERSION_3);
-const int FileVersion = 2;
+const Version& GetCurrentVersion ()
+{
+	static const Version EngineVersion (VSE_VERSION_1, VSE_VERSION_2, VSE_VERSION_3);
+	return EngineVersion;
+}
+
+bool IsCompatibleVersion (const Version& version)
+{
+	return version <= GetCurrentVersion ();
+}
 
 }
