@@ -617,4 +617,50 @@ TEST (SlotCirclesFitToWindowTest)
 	ASSERT (env.CheckReference ("SlotCircles_FitToWindow.svg"));
 }
 
+TEST (SkinParamsTest)
+{
+	BasicSkinParams skinParams (
+		/*backgroundColor*/ NUIE::Color (250, 250, 250),
+		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (0, 0, 200), 5.0),
+		/*nodePadding*/ 10.0,
+		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (0, 200, 0), 5.0),
+		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
+		/*nodeHeaderTextColor*/ NUIE::Color (200, 0, 0),
+		/*nodeHeaderErrorTextColor*/ NUIE::Color (200, 0, 0),
+		/*nodeHeaderBackgroundColor*/ NUIE::Color (180, 180, 200),
+		/*nodeHeaderErrorBackgroundColor*/ NUIE::Color (250, 100, 100),
+		/*nodeContentTextFont*/ NUIE::Font (L"Arial", 14.0),
+		/*nodeContentTextColor*/ NUIE::Color (0, 100, 100),
+		/*nodeContentBackgroundColor*/ NUIE::Color (180, 200, 180),
+		/*slotTextColor*/ NUIE::Color (100, 100, 0),
+		/*slotTextBackgroundColor*/ NUIE::Color (180, 250, 250),
+		/*needToDrawSlotCircles*/ false,
+		/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
+		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 0, 255), 0.25),
+		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
+		/*selectionRectPen*/ NUIE::Pen (NUIE::Color (0, 0, 255), 5.0),
+		/*nodeSelectionRectPen*/ NUIE::Pen (NUIE::Color (0, 0, 255), 8.0),
+		/*buttonBorderPen*/ NUIE::Pen (NUIE::Color (255, 0, 0), 3.0),
+		/*buttonBackgroundColor*/ NUIE::Color (250, 250, 180),
+		/*textPanelTextColor*/ NUIE::Color (0, 100, 0),
+		/*textPanelBackgroundColor*/ NUIE::Color (250, 150, 150),
+		/*groupNameFont*/ NUIE::Font (L"Arial", 16.0),
+		/*groupNameColor*/ NUIE::Color (0, 0, 0),
+		/*groupBackgroundColors*/ NUIE::NamedColorSet ({
+			{ NE::LocalizeString (L"Blue"), NUIE::Color (160, 200, 240) },
+			{ NE::LocalizeString (L"Green"), NUIE::Color (160, 239, 160) },
+			{ NE::LocalizeString (L"Red"), NUIE::Color (239, 189, 160) }
+			}),
+		/*groupPadding*/ 10.0,
+		/*mouseMoveMinOffset*/ 2.0
+	);
+
+	SimpleNodeEditorTestEnvWithConnections env (skinParams);
+	{ // select one node by clicking on the header
+		env.Click (env.rangeInputHeaderPoint);
+	}
+
+	ASSERT (env.CheckReference ("SkinParams_Basic.svg"));
+}
+
 }
