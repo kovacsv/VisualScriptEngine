@@ -11,6 +11,46 @@ using namespace BI;
 namespace NodeEditorVisualTest
 {
 
+const BasicSkinParams& GetSkinParamsWithSlotCircles ()
+{
+	static const BasicSkinParams slotCirclesSkinParams (
+		/*backgroundColor*/ NUIE::Color (250, 250, 250),
+		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
+		/*nodePadding*/ 5.0,
+		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
+		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
+		/*nodeHeaderTextColor*/ NUIE::Color (250, 250, 250),
+		/*nodeHeaderErrorTextColor*/ NUIE::Color (250, 250, 250),
+		/*nodeHeaderBackgroundColor*/ NUIE::Color (41, 127, 255),
+		/*nodeHeaderErrorBackgroundColor*/ NUIE::Color (199, 80, 80),
+		/*nodeContentTextFont*/ NUIE::Font (L"Arial", 14.0),
+		/*nodeContentTextColor*/ NUIE::Color (0, 0, 0),
+		/*nodeContentBackgroundColor*/ NUIE::Color (236, 236, 236),
+		/*slotTextColor*/ NUIE::Color (0, 0, 0),
+		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
+		/*needToDrawSlotCircles*/ true,
+		/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
+		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
+		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
+		/*selectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 1.0),
+		/*nodeSelectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 3.0),
+		/*buttonBorderPen*/ NUIE::Pen (NUIE::Color (146, 152, 155), 1.0),
+		/*buttonBackgroundColor*/ NUIE::Color (217, 217, 217),
+		/*textPanelTextColor*/ NUIE::Color (0, 0, 0),
+		/*textPanelBackgroundColor*/ NUIE::Color (236, 236, 236),
+		/*groupNameFont*/ NUIE::Font (L"Arial", 16.0),
+		/*groupNameColor*/ NUIE::Color (0, 0, 0),
+		/*groupBackgroundColors*/ NUIE::NamedColorSet ({
+			{ NE::LocalizeString (L"Blue"), NUIE::Color (160, 200, 240) },
+			{ NE::LocalizeString (L"Green"), NUIE::Color (160, 239, 160) },
+			{ NE::LocalizeString (L"Red"), NUIE::Color (239, 189, 160) }
+		}),
+		/*groupPadding*/ 10.0,
+		/*mouseMoveMinOffset*/ 2.0
+	);
+	return slotCirclesSkinParams;
+}
+
 class SimpleNodeEditorTestEnv : public NodeEditorTestEnv
 {
 public:
@@ -566,83 +606,13 @@ TEST (CenterToWindowTestWithScale)
 
 TEST (SlotCirclesTest)
 {
-	BasicSkinParams mySkinParams (
-		/*backgroundColor*/ Color (240, 240, 240),
-		/*connectionLinePen*/ Pen (Color (0, 0, 0), 1.0),
-		/*nodePadding*/ 5.0,
-		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
-		/*nodeHeaderTextFont*/ Font (L"Arial", 16.0),
-		/*nodeHeaderTextColor*/ Color (255, 255, 255),
-		/*nodeHeaderErrorTextColor*/ Color (255, 255, 255),
-		/*nodeHeaderBackgroundColor*/ Color (100, 100, 100),
-		/*nodeHeaderErrorBackgroundColor*/ Color (255, 0, 0),
-		/*nodeContentTextFont*/ Font (L"Arial", 16.0),
-		/*nodeContentTextColor*/ Color (0, 0, 0),
-		/*nodeContentBackgroundColor*/ Color (200, 200, 200),
-		/*slotTextColor*/ Color (0, 0, 0),
-		/*slotTextBackgroundColor*/ Color (225, 225, 225),
-		/*needToDrawSlotCircles*/ true,
-		/*slotCircleSize*/ Size (12.0, 12.0),
-		/*selectionBlendColor*/ BlendColor (Color (240, 240, 240), 0.5),
-		/*disabledBlendColor*/ BlendColor (Color (0, 138, 184), 0.2),
-		/*selectionRectPen*/ Pen (Color (0, 138, 184), 1.0),
-		/*nodeSelectionRectPen*/ Pen (Color (0, 138, 184), 5.0),
-		/*buttonBorderPen*/ Pen (Color (50, 75, 100), 1.0),
-		/*buttonBackgroundColor*/ Color (150, 175, 200),
-		/*textPanelTextColor*/ Color (0, 0, 0),
-		/*textPanelBackgroundColor*/ Color (255, 255, 100),
-		/*groupNameFont*/ Font (L"Arial", 18.0),
-		/*groupNameColor*/ Color (0, 0, 0),
-		/*groupBackgroundColors*/ NamedColorSet ({
-			{ L"Blue", Color (160, 200, 240) },
-			{ L"Green", Color (160, 239, 160) },
-			{ L"Red", Color (239, 189, 160) }
-			}),
-		/*groupPadding*/ 10.0,
-		/*mouseMoveMinOffset*/ 2.0
-	);
-	SimpleNodeEditorTestEnvWithConnections env (mySkinParams);
+	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithSlotCircles ());
 	ASSERT (env.CheckReference ("SlotCircles.svg"));
 }
 
 TEST (SlotCirclesFitToWindowTest)
 {
-	BasicSkinParams mySkinParams (
-		/*backgroundColor*/ Color (240, 240, 240),
-		/*connectionLinePen*/ Pen (Color (0, 0, 0), 1.0),
-		/*nodePadding*/ 5.0,
-		/*nodeBorderPen*/ Pen (Color (0, 0, 0), 1.0),
-		/*nodeHeaderTextFont*/ Font (L"Arial", 16.0),
-		/*nodeHeaderTextColor*/ Color (255, 255, 255),
-		/*nodeHeaderErrorTextColor*/ Color (255, 255, 255),
-		/*nodeHeaderBackgroundColor*/ Color (100, 100, 100),
-		/*nodeHeaderErrorBackgroundColor*/ Color (255, 0, 0),
-		/*nodeContentTextFont*/ Font (L"Arial", 16.0),
-		/*nodeContentTextColor*/ Color (0, 0, 0),
-		/*nodeContentBackgroundColor*/ Color (200, 200, 200),
-		/*slotTextColor*/ Color (0, 0, 0),
-		/*slotTextBackgroundColor*/ Color (225, 225, 225),
-		/*needToDrawSlotCircles*/ true,
-		/*slotCircleSize*/ Size (12.0, 12.0),
-		/*selectionBlendColor*/ BlendColor (Color (240, 240, 240), 0.5),
-		/*disabledBlendColor*/ BlendColor (Color (0, 138, 184), 0.2),
-		/*selectionRectPen*/ Pen (Color (0, 138, 184), 1.0),
-		/*nodeSelectionRectPen*/ Pen (Color (0, 138, 184), 5.0),
-		/*buttonBorderPen*/ Pen (Color (50, 75, 100), 1.0),
-		/*buttonBackgroundColor*/ Color (150, 175, 200),
-		/*textPanelTextColor*/ Color (0, 0, 0),
-		/*textPanelBackgroundColor*/ Color (255, 255, 100),
-		/*groupNameFont*/ Font (L"Arial", 18.0),
-		/*groupNameColor*/ Color (0, 0, 0),
-		/*groupBackgroundColors*/ NamedColorSet ({
-			{ L"Blue", Color (160, 200, 240) },
-			{ L"Green", Color (160, 239, 160) },
-			{ L"Red", Color (239, 189, 160) }
-			}),
-		/*groupPadding*/ 10.0,
-		/*mouseMoveMinOffset*/ 2.0
-	);
-	SimpleNodeEditorTestEnvWithConnections env (mySkinParams);
+	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithSlotCircles ());
 	env.nodeEditor.FitToWindow ();
 	ASSERT (env.CheckReference ("SlotCircles_FitToWindow.svg"));
 }
