@@ -52,8 +52,7 @@ BasicSkinParams::BasicSkinParams (
 	const Font&				groupNameFont,
 	const Color&			groupNameColor,
 	const NamedColorSet&	groupBackgroundColors,
-	const double&			groupPadding,
-	const double&			mouseMoveMinOffset
+	const double&			groupPadding
 ) :
 	backgroundColor (backgroundColor),
 	connectionLinePen (connectionLinePen),
@@ -82,8 +81,7 @@ BasicSkinParams::BasicSkinParams (
 	groupNameFont (groupNameFont),
 	groupNameColor (groupNameColor),
 	groupBackgroundColors (groupBackgroundColors),
-	groupPadding (groupPadding),
-	mouseMoveMinOffset (mouseMoveMinOffset)
+	groupPadding (groupPadding)
 {
 
 }
@@ -233,11 +231,6 @@ double BasicSkinParams::GetGroupPadding () const
 	return groupPadding;
 }
 
-double BasicSkinParams::GetMouseMoveMinOffset () const
-{
-	return mouseMoveMinOffset;
-}
-
 const BasicSkinParams& GetDefaultSkinParams ()
 {
 	static const BasicSkinParams defaultSkinParams (
@@ -272,8 +265,7 @@ const BasicSkinParams& GetDefaultSkinParams ()
 			{ NE::LocalizeString (L"Green"), NUIE::Color (160, 239, 160) },
 			{ NE::LocalizeString (L"Red"), NUIE::Color (239, 189, 160) }
 		}),
-		/*groupPadding*/ 10.0,
-		/*mouseMoveMinOffset*/ 2.0
+		/*groupPadding*/ 10.0
 	);
 	return defaultSkinParams;
 }

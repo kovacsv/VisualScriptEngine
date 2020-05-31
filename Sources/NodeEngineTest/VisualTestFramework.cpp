@@ -288,6 +288,11 @@ ClipboardHandler& TestNodeUIEnvironment::GetClipboardHandler ()
 	return clipboardHandler;
 }
 
+double TestNodeUIEnvironment::GetMouseMoveMinOffset ()
+{
+	return 2.0;
+}
+
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	eventHandler.SetNextCommandName (nextCommandName);

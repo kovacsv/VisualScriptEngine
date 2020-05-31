@@ -47,6 +47,7 @@ public:
 
 	virtual EventHandler&		GetEventHandler () = 0;
 	virtual ClipboardHandler&	GetClipboardHandler () = 0;
+	virtual double				GetMouseMoveMinOffset () = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,

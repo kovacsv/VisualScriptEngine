@@ -54,6 +54,7 @@ public:
 	virtual void					OnRedrawRequested () override;
 	virtual EventHandler&			GetEventHandler () override;
 	virtual ClipboardHandler&		GetClipboardHandler () override;
+	virtual double					GetMouseMoveMinOffset () override;
 
 	void							SetNextCommandName (const std::wstring& nextCommandName);
 	void							SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);

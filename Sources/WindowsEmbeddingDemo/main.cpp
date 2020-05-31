@@ -51,8 +51,7 @@ static const NUIE::BasicSkinParams& GetDefaultSkinParams ()
 			{ NE::LocalizeString (L"Green"), NUIE::Color (160, 239, 160) },
 			{ NE::LocalizeString (L"Red"), NUIE::Color (239, 189, 160) }
 		}),
-		/*groupPadding*/ 10.0,
-		/*mouseMoveMinOffset*/ 2.0
+		/*groupPadding*/ 10.0
 	);
 	return defaultSkinParams;
 }
@@ -201,6 +200,11 @@ public:
 	virtual NUIE::ClipboardHandler& GetClipboardHandler () override
 	{
 		return clipboardHandler;
+	}
+
+	virtual double GetMouseMoveMinOffset () override
+	{
+		return 2.0;
 	}
 
 private:
