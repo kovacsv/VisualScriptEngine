@@ -2,6 +2,7 @@
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
+#include "WAS_ClipboardHandler.hpp"
 #include "WAS_NodeEditorHwndControl.hpp"
 #include "WAS_ParameterDialog.hpp"
 
@@ -211,7 +212,7 @@ private:
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;
 	WAS::HwndEventHandler				eventHandler;
-	NUIE::MemoryClipboardHandler		clipboardHandler;
+	WAS::ClipboardHandler				clipboardHandler;
 	NE::EvaluationEnv					evaluationEnv;
 	WAS::NodeEditorNodeTreeHwndControl	nodeEditorControl;
 };
