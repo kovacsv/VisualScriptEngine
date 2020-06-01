@@ -31,6 +31,7 @@ Stream::Status WriteString (MemoryOutputStream& stream, const StringType& val)
 }
 
 MemoryInputStream::MemoryInputStream (const std::vector<char>& buffer) :
+	InputStream (),
 	buffer (buffer),
 	position (0)
 {
@@ -113,7 +114,9 @@ void MemoryInputStream::Read (char* dest, size_t size)
 	position += size;
 }
 
-MemoryOutputStream::MemoryOutputStream ()
+MemoryOutputStream::MemoryOutputStream () :
+	OutputStream (),
+	buffer ()
 {
 	
 }

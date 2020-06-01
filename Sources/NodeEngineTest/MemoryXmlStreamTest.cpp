@@ -1,22 +1,16 @@
 #include "SimpleTest.hpp"
-#include "NE_MemoryStream.hpp"
+#include "NE_MemoryXmlStream.hpp"
 
 #include <memory>
 
 using namespace NE;
 
-namespace MemoryStreamTest
+namespace MemoryXmlStreamTest
 {
-
-enum class TestEnum
-{
-	A,
-	B
-};
 
 TEST (TypeTest)
 {
-	MemoryOutputStream outputStream;
+	MemoryXmlOutputStream outputStream;
 	ASSERT (outputStream.Write (true) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ('a') == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((size_t) 1) == Stream::Status::NoError);
@@ -26,7 +20,19 @@ TEST (TypeTest)
 	ASSERT (outputStream.Write ((short) 5) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::string ("apple")) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::wstring (L"banana")) == Stream::Status::NoError);
-	ASSERT (WriteEnum (outputStream, TestEnum::A) == Stream::Status::NoError);
+
+	std::wstring refString =
+LR"(<Bool>True</Bool>
+<Char>97</Char>
+<Size>1</Size>
+<Int>2</Int>
+<Float>3.000000</Float>
+<Double>4.000000</Double>
+<Short>5</Short>
+<String>apple</String>
+<WString>banana</WString>
+)";
+	ASSERT (refString == outputStream.GetXmlText ());
 
 	bool boolVal;
 	char charVal;
@@ -37,9 +43,8 @@ TEST (TypeTest)
 	short shortVal;
 	std::string stringVal;
 	std::wstring wStringVal;
-	TestEnum enumVal;
 
-	MemoryInputStream inputStream (outputStream.GetBuffer ());
+	MemoryXmlInputStream inputStream (outputStream.GetXmlText ());
 	ASSERT (inputStream.Read (boolVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (charVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (sizeVal) == Stream::Status::NoError);
@@ -49,8 +54,7 @@ TEST (TypeTest)
 	ASSERT (inputStream.Read (shortVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (stringVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (wStringVal) == Stream::Status::NoError);
-	ASSERT (ReadEnum (inputStream, enumVal) == Stream::Status::NoError);
-
+	
 	ASSERT (boolVal == true);
 	ASSERT (charVal == 'a');
 	ASSERT (sizeVal == 1);
@@ -60,7 +64,6 @@ TEST (TypeTest)
 	ASSERT (shortVal == 5);
 	ASSERT (stringVal == "apple");
 	ASSERT (wStringVal == L"banana");
-	ASSERT (enumVal == TestEnum::A);
 }
 
 }
