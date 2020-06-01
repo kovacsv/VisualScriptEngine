@@ -11,11 +11,6 @@ namespace NUIE
 
 static const std::string NodeEditorFileMarker = "NodeEditorFile";
 
-ExternalHeaderIO::~ExternalHeaderIO ()
-{
-
-}
-
 ExternalFileIO::~ExternalFileIO ()
 {
 
@@ -187,7 +182,7 @@ void NodeEditor::New ()
 	Update ();
 }
 
-bool NodeEditor::Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader)
+bool NodeEditor::Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO)
 {
 	std::vector<char> buffer;
 	if (DBGERROR (!externalFileIO->ReadBufferFromFile (fileName, buffer))) {
@@ -195,17 +190,11 @@ bool NodeEditor::Open (const std::wstring& fileName, const ExternalFileIO* exter
 	}
 
 	NE::MemoryInputStream inputStream (buffer);
-	return Open (inputStream, externalHeader);
+	return Open (inputStream);
 }
 
-bool NodeEditor::Open (NE::InputStream& inputStream, const ExternalHeaderIO* externalHeader)
+bool NodeEditor::Open (NE::InputStream& inputStream)
 {
-	if (externalHeader != nullptr) {
-		if (!externalHeader->Read (inputStream)) {
-			return false;
-		}
-	}
-
 	std::string fileMarker;
 	inputStream.Read (fileMarker);
 	if (fileMarker != NodeEditorFileMarker) {
@@ -226,10 +215,10 @@ bool NodeEditor::Open (NE::InputStream& inputStream, const ExternalHeaderIO* ext
 	return true;
 }
 
-bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader) const
+bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO) const
 {
 	NE::MemoryOutputStream outputStream;
-	if (DBGERROR (!Save (outputStream, externalHeader))) {
+	if (DBGERROR (!Save (outputStream))) {
 		return false;
 	}
 
@@ -241,12 +230,8 @@ bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* exter
 	return true;
 }
 
-bool NodeEditor::Save (NE::OutputStream& outputStream, const ExternalHeaderIO* externalHeader) const
+bool NodeEditor::Save (NE::OutputStream& outputStream) const
 {
-	if (externalHeader != nullptr) {
-		externalHeader->Write (outputStream);
-	}
-
 	const Version& currentVersion = GetCurrentVersion ();
 	outputStream.Write (NodeEditorFileMarker);
 	currentVersion.Write (outputStream);

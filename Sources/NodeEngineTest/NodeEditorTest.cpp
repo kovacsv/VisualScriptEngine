@@ -20,7 +20,7 @@ TEST (NodeEditorNeedToSaveTest)
 	ASSERT (env.nodeEditor.NeedToSave ());
 	
 	MemoryOutputStream outputStream;
-	ASSERT (env.nodeEditor.Save (outputStream, nullptr));
+	ASSERT (env.nodeEditor.Save (outputStream));
 	ASSERT (!env.nodeEditor.NeedToSave ());
 	
 	env.nodeEditor.New ();
@@ -29,7 +29,7 @@ TEST (NodeEditorNeedToSaveTest)
 	ASSERT (env.nodeEditor.NeedToSave ());
 
 	MemoryInputStream inputStream (outputStream.GetBuffer ());
-	ASSERT (env.nodeEditor.Open (inputStream, nullptr));
+	ASSERT (env.nodeEditor.Open (inputStream));
 	ASSERT (!env.nodeEditor.NeedToSave ());	
 	env.nodeEditor.AddNode (UINodePtr (new IntegerUpDownNode (String (L"Integer"), Point (0.0, 0.0), 0, 1)));
 	ASSERT (env.nodeEditor.NeedToSave ());

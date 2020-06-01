@@ -12,15 +12,6 @@
 namespace NUIE
 {
 
-class ExternalHeaderIO
-{
-public:
-	virtual ~ExternalHeaderIO ();
-
-	virtual bool	Read (NE::InputStream& inputStream) const = 0;
-	virtual void	Write (NE::OutputStream& outputStream) const = 0;
-};
-
 class ExternalFileIO
 {
 public:
@@ -72,10 +63,10 @@ public:
 	void						SetSelectedNodes (const NE::NodeCollection& newSelectedNodes);
 
 	void						New ();
-	bool						Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader);
-	bool						Open (NE::InputStream& inputStream, const ExternalHeaderIO* externalHeader);
-	bool						Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO, const ExternalHeaderIO* externalHeader) const;
-	bool						Save (NE::OutputStream& outputStream, const ExternalHeaderIO* externalHeader) const;
+	bool						Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO);
+	bool						Open (NE::InputStream& inputStream);
+	bool						Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO) const;
+	bool						Save (NE::OutputStream& outputStream) const;
 	bool						NeedToSave () const;
 
 	void						SetSelectedNodesParameters ();
