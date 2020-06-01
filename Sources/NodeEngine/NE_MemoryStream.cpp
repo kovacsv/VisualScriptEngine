@@ -105,15 +105,12 @@ void MemoryInputStream::Read (char* dest, size_t size)
 	if (status != Status::NoError) {
 		return;
 	}
-
-	for (size_t i = 0; i < size; i++) {
-		if (DBGERROR (position >= buffer.size ())) {
-			status = Status::Error;
-			return;
-		}
-		dest[i] = buffer[position];
-		position++;
+	if (DBGERROR (position + size > buffer.size ())) {
+		status = Status::Error;
+		return;
 	}
+	std::copy (buffer.begin () + position, buffer.begin () + position + size, dest);
+	position += size;
 }
 
 MemoryOutputStream::MemoryOutputStream ()
@@ -194,9 +191,7 @@ void MemoryOutputStream::Write (const char* source, size_t size)
 	if (status != Status::NoError) {
 		return;
 	}
-	for (size_t i = 0; i < size; i++) {
-		buffer.push_back (source[i]);
-	}
+	buffer.insert (buffer.end (), source, source + size);
 }
 
 }
