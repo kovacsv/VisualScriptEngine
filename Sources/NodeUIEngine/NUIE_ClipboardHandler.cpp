@@ -1,5 +1,5 @@
 #include "NUIE_ClipboardHandler.hpp"
-#include "NUIE_VersionInfo.hpp"
+#include "NUIE_VersionCompatibility.hpp"
 
 namespace NUIE
 {

@@ -1,6 +1,7 @@
 #include "WAS_ClipboardHandler.hpp"
-#include "NE_Debug.hpp"
 #include "NUIE_VersionInfo.hpp"
+#include "NUIE_VersionCompatibility.hpp"
+#include "NE_Debug.hpp"
 
 namespace WAS
 {
@@ -9,7 +10,7 @@ ClipboardHandler::ClipboardHandler () :
 	NUIE::ClipboardHandler (),
 	formatId (0)
 {
-	formatId = RegisterClipboardFormat (VSE_APP_NAME);
+	formatId = RegisterClipboardFormat (VSE_LIB_NAME);
 }
 
 ClipboardHandler::~ClipboardHandler ()

@@ -29,9 +29,6 @@ private:
 	std::array<int, 3>	versions;
 };
 
-const Version&	GetCurrentVersion ();
-bool			IsCompatibleVersion (const Version& version);
-
 }
 
 #endif

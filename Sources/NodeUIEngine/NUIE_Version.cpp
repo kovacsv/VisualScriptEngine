@@ -1,7 +1,4 @@
 #include "NUIE_Version.hpp"
-#include "NUIE_VersionInfo.hpp"
-
-#include <array>
 
 namespace NUIE
 {
@@ -75,17 +72,6 @@ NE::Stream::Status Version::Write (NE::OutputStream& outputStream) const
 	outputStream.Write (versions[1]);
 	outputStream.Write (versions[2]);
 	return outputStream.GetStatus ();
-}
-
-const Version& GetCurrentVersion ()
-{
-	static const Version EngineVersion (VSE_VERSION_1, VSE_VERSION_2, VSE_VERSION_3);
-	return EngineVersion;
-}
-
-bool IsCompatibleVersion (const Version& version)
-{
-	return version <= GetCurrentVersion ();
 }
 
 }
