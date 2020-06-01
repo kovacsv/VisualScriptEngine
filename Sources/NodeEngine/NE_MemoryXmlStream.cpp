@@ -111,7 +111,9 @@ Stream::Status MemoryXmlInputStream::Read (std::string& val)
 {
 	std::wstring valStr;
 	Read (StringTag, valStr);
-	val = std::string (valStr.begin (), valStr.end ());
+	for (wchar_t wch : valStr) {
+		val += (char) wch;
+	}
 	return Stream::Status::NoError;
 }
 
