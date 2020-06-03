@@ -29,6 +29,7 @@ Direct2DImageLoader::~Direct2DImageLoader ()
 {
 	ClearCache ();
 	SafeRelease (&imagingFactory);
+	CoUninitialize ();
 }
 
 ID2D1Bitmap* Direct2DImageLoader::LoadDirect2DImage (const NUIE::IconId& iconId, ID2D1RenderTarget* renderTarget)
