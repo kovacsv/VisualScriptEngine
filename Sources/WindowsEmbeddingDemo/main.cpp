@@ -66,8 +66,6 @@ class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 	}
 };
 
-static MyResourceImageLoader imageLoader;
-
 static void AddNodeTreeItem (WAS::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, int iconIndex, const WAS::CreatorFunction& creator)
 {
 	nodeTree.AddItem (groupIndex, name, [=] (const NUIE::Point& position) {
@@ -90,7 +88,7 @@ public:
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
-		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (&imageLoader)))
+		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (WAS::Direct2DImageLoaderPtr (new MyResourceImageLoader ()))))
 	{
 	
 	}

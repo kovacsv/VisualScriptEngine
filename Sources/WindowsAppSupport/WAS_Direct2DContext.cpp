@@ -105,14 +105,14 @@ static float GetPenThickness (const NUIE::Pen& pen)
 	return std::floor (penThickness);
 }
 
-Direct2DContext::Direct2DContext (Direct2DImageLoader* imageLoader) :
+Direct2DContext::Direct2DContext (const Direct2DImageLoaderPtr& imageLoader) :
 	NUIE::NativeDrawingContext (),
 	direct2DHandler (),
 	hwnd (NULL),
 	width (0),
 	height (0),
-	renderTarget (nullptr),
-	imageLoader (imageLoader)
+	imageLoader (imageLoader),
+	renderTarget (nullptr)
 {
 
 }

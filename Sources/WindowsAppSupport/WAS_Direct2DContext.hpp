@@ -26,7 +26,7 @@ public:
 class Direct2DContext : public NUIE::NativeDrawingContext
 {
 public:
-	Direct2DContext (Direct2DImageLoader* imageLoader);
+	Direct2DContext (const Direct2DImageLoaderPtr& imageLoader);
 	Direct2DContext (const Direct2DContext& rhs) = delete;
 	virtual ~Direct2DContext ();
 
@@ -65,8 +65,8 @@ private:
 	int							width;
 	int							height;
 	Direct2DHandler				direct2DHandler;
+	Direct2DImageLoaderPtr		imageLoader;
 	ID2D1HwndRenderTarget*		renderTarget;
-	Direct2DImageLoader*		imageLoader;
 };
 
 }

@@ -27,6 +27,9 @@ protected:
 	std::unordered_map<NUIE::IconId, ID2D1Bitmap*>	imageCache;
 };
 
+using Direct2DImageLoaderPtr = std::shared_ptr<Direct2DImageLoader>;
+using Direct2DImageLoaderConstPtr = std::shared_ptr<const Direct2DImageLoader>;
+
 class Direct2DDecoderImageLoader : public Direct2DImageLoader
 {
 public:
