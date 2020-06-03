@@ -13,6 +13,16 @@
 namespace WAS
 {
 
+class Direct2DHandler
+{
+public:
+	Direct2DHandler ();
+	~Direct2DHandler ();
+
+	ID2D1Factory*		direct2DFactory;
+	IDWriteFactory*		directWriteFactory;
+};
+
 class Direct2DContext : public NUIE::NativeDrawingContext
 {
 public:
@@ -54,6 +64,7 @@ private:
 	HWND						hwnd;
 	int							width;
 	int							height;
+	Direct2DHandler				direct2DHandler;
 	ID2D1HwndRenderTarget*		renderTarget;
 	Direct2DImageLoader*		imageLoader;
 };

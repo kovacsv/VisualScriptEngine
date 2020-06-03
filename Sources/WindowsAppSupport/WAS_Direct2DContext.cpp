@@ -15,35 +15,28 @@ static void SafeRelease (Interface** interfaceToRelease)
 	}
 }
 
-class Direct2DHandler
+Direct2DHandler::Direct2DHandler () :
+	direct2DFactory (nullptr),
+	directWriteFactory (nullptr)
 {
-public:
-	Direct2DHandler () :
-		direct2DFactory (nullptr),
-		directWriteFactory (nullptr)
-	{
-		HRESULT direct2DFactoryResult = D2D1CreateFactory (D2D1_FACTORY_TYPE_SINGLE_THREADED, &direct2DFactory);
-		if (!SUCCEEDED (direct2DFactoryResult)) {
-			DBGBREAK ();
-			return;
-		}
-
-		HRESULT directWriteFactoryResult = DWriteCreateFactory (DWRITE_FACTORY_TYPE_ISOLATED, __uuidof (directWriteFactory), reinterpret_cast<IUnknown**> (&directWriteFactory));
-		if (!SUCCEEDED (directWriteFactoryResult)) {
-			DBGBREAK ();
-			return;
-		}
+	HRESULT direct2DFactoryResult = D2D1CreateFactory (D2D1_FACTORY_TYPE_SINGLE_THREADED, &direct2DFactory);
+	if (!SUCCEEDED (direct2DFactoryResult)) {
+		DBGBREAK ();
+		return;
 	}
 
-	~Direct2DHandler ()
-	{
-		SafeRelease (&direct2DFactory);
-		SafeRelease (&directWriteFactory);
+	HRESULT directWriteFactoryResult = DWriteCreateFactory (DWRITE_FACTORY_TYPE_ISOLATED, __uuidof (directWriteFactory), reinterpret_cast<IUnknown**> (&directWriteFactory));
+	if (!SUCCEEDED (directWriteFactoryResult)) {
+		DBGBREAK ();
+		return;
 	}
+}
 
-	ID2D1Factory*		direct2DFactory;
-	IDWriteFactory*		directWriteFactory;
-};
+Direct2DHandler::~Direct2DHandler ()
+{
+	SafeRelease (&direct2DFactory);
+	SafeRelease (&directWriteFactory);
+}
 
 class Direct2DAntialiasGuard
 {
@@ -65,8 +58,6 @@ private:
 	D2D1_ANTIALIAS_MODE		oldMode;
 };
 
-static Direct2DHandler direct2DHandler;
-
 static ID2D1SolidColorBrush* CreateBrush (ID2D1RenderTarget* renderTarget, const NUIE::Color& color)
 {
 	ID2D1SolidColorBrush* d2Brush = nullptr;
@@ -74,7 +65,7 @@ static ID2D1SolidColorBrush* CreateBrush (ID2D1RenderTarget* renderTarget, const
 	return d2Brush;
 }
 
-static IDWriteTextFormat* CreateTextFormat (ID2D1RenderTarget*, const NUIE::Font& font)
+static IDWriteTextFormat* CreateTextFormat (Direct2DHandler& direct2DHandler, ID2D1RenderTarget*, const NUIE::Font& font)
 {
 	IDWriteTextFormat* textFormat = nullptr;
 	direct2DHandler.directWriteFactory->CreateTextFormat (
@@ -116,6 +107,7 @@ static float GetPenThickness (const NUIE::Pen& pen)
 
 Direct2DContext::Direct2DContext (Direct2DImageLoader* imageLoader) :
 	NUIE::NativeDrawingContext (),
+	direct2DHandler (),
 	hwnd (NULL),
 	width (0),
 	height (0),
@@ -255,7 +247,7 @@ void Direct2DContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& co
 
 void Direct2DContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
-	IDWriteTextFormat* textFormat = CreateTextFormat (renderTarget, font);
+	IDWriteTextFormat* textFormat = CreateTextFormat (direct2DHandler, renderTarget, font);
 
 	IDWriteTextLayout* textLayout = nullptr;
 	direct2DHandler.directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, (float) rect.GetWidth (), (float) rect.GetHeight (), &textLayout);
@@ -295,7 +287,7 @@ void Direct2DContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Fon
 NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
 	IDWriteTextLayout* textLayout = nullptr;
-	IDWriteTextFormat* textFormat = CreateTextFormat (renderTarget, font);
+	IDWriteTextFormat* textFormat = CreateTextFormat (direct2DHandler, renderTarget, font);
 	direct2DHandler.directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, 1000.0, 1000.0, &textLayout);
 	DWRITE_TEXT_METRICS metrics;
 	textLayout->GetMetrics (&metrics);
