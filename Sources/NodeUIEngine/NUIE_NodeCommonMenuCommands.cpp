@@ -448,10 +448,10 @@ void SetGroupParametersMenuCommand::Do ()
 	}
 }
 
-class DisconnectFromInputSlotMenuCommand : public InputSlotCommand
+class DisconnectFromInputSlotCommand : public InputSlotCommand
 {
 public:
-	DisconnectFromInputSlotMenuCommand (const std::wstring& name, const UIOutputSlotConstPtr& slotToDisconnect, const std::wstring& nodeName) :
+	DisconnectFromInputSlotCommand (const std::wstring& name, const UIOutputSlotConstPtr& slotToDisconnect, const std::wstring& nodeName) :
 		InputSlotCommand (name, false),
 		slotToDisconnect (slotToDisconnect),
 		nodeName (nodeName)
@@ -476,10 +476,10 @@ private:
 	std::wstring			nodeName;
 };
 
-class DisconnectAllFromInputSlotMenuCommand : public InputSlotCommand
+class DisconnectAllFromInputSlotCommand : public InputSlotCommand
 {
 public:
-	DisconnectAllFromInputSlotMenuCommand (const std::wstring& name) :
+	DisconnectAllFromInputSlotCommand (const std::wstring& name) :
 		InputSlotCommand (name, false)
 	{
 
@@ -492,10 +492,10 @@ public:
 	}
 };
 
-class DisconnectFromOutputSlotMenuCommand : public OutputSlotCommand
+class DisconnectFromOutputSlotCommand : public OutputSlotCommand
 {
 public:
-	DisconnectFromOutputSlotMenuCommand (const std::wstring& name, const UIInputSlotConstPtr& slotToDisconnect, const std::wstring& nodeName) :
+	DisconnectFromOutputSlotCommand (const std::wstring& name, const UIInputSlotConstPtr& slotToDisconnect, const std::wstring& nodeName) :
 		OutputSlotCommand (name, false),
 		slotToDisconnect (slotToDisconnect),
 		nodeName (nodeName)
@@ -520,10 +520,10 @@ private:
 	std::wstring			nodeName;
 };
 
-class DisconnectAllFromOutputSlotMenuCommand : public OutputSlotCommand
+class DisconnectAllFromOutputSlotCommand : public OutputSlotCommand
 {
 public:
-	DisconnectAllFromOutputSlotMenuCommand (const std::wstring& name) :
+	DisconnectAllFromOutputSlotCommand (const std::wstring& name) :
 		OutputSlotCommand (name, false)
 	{
 
@@ -642,10 +642,10 @@ private:
 };
 
 template <typename SlotType, typename CommandType>
-class SlotCommand : public SingleMenuCommand
+class SlotMenuCommand : public SingleMenuCommand
 {
 public:
-	SlotCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, SlotType& slot, CommandType& command) :
+	SlotMenuCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, SlotType& slot, CommandType& command) :
 		SingleMenuCommand (name, command->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
@@ -655,7 +655,7 @@ public:
 
 	}
 
-	virtual ~SlotCommand ()
+	virtual ~SlotMenuCommand ()
 	{
 
 	}
@@ -706,7 +706,7 @@ public:
 
 	MenuCommandPtr CreateSlotCommand (SlotCommandType slotNodeCommand)
 	{
-		MenuCommandPtr slotCommand (new SlotCommand<SourceSlotType, SlotCommandType> (slotNodeCommand->GetName (), uiManager, uiEnvironment, sourceSlot, slotNodeCommand));
+		MenuCommandPtr slotCommand (new SlotMenuCommand<SourceSlotType, SlotCommandType> (slotNodeCommand->GetName (), uiManager, uiEnvironment, sourceSlot, slotNodeCommand));
 		return slotCommand;
 	}
 
@@ -1016,9 +1016,9 @@ MenuCommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager,
 		uiManager.EnumerateConnectedUIInputSlots (outputSlot, [&] (UIInputSlotConstPtr inputSlot) {
 			UINodeConstPtr uiNode = uiManager.GetUINode (inputSlot->GetOwnerNodeId ());
 			std::wstring outputNodeName = uiNode->GetNodeName ().GetLocalized ();
-			disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectFromOutputSlotMenuCommand (L"%ls (%ls)", inputSlot, outputNodeName)));
+			disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectFromOutputSlotCommand (L"%ls (%ls)", inputSlot, outputNodeName)));
 		});
-		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectAllFromOutputSlotMenuCommand (L"All")));
+		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectAllFromOutputSlotCommand (L"All")));
 		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
 	}
 
@@ -1035,9 +1035,9 @@ MenuCommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, 
 		uiManager.EnumerateConnectedUIOutputSlots (inputSlot, [&] (UIOutputSlotConstPtr outputSlot) {
 			UINodeConstPtr uiNode = uiManager.GetUINode (outputSlot->GetOwnerNodeId ());
 			std::wstring inputNodeName = uiNode->GetNodeName ().GetLocalized ();
-			disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectFromInputSlotMenuCommand (L"%ls (%ls)", outputSlot, inputNodeName)));
+			disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectFromInputSlotCommand (L"%ls (%ls)", outputSlot, inputNodeName)));
 		});
-		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectAllFromInputSlotMenuCommand (L"All")));
+		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectAllFromInputSlotCommand (L"All")));
 		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
 	}
 
