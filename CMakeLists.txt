@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.6)
 
 set (VSE_VERSION_1 0)
 set (VSE_VERSION_2 3)
-set (VSE_VERSION_3 1)
+set (VSE_VERSION_3 2)
 set (VSE_LIB_NAME VisualScriptEngine)
 
 function (SetCompilerOptions module)
