@@ -18,7 +18,7 @@ public:
 	UIOutputSlot (const NE::SlotId& id, const NE::String& name);
 	~UIOutputSlot ();
 
-	std::wstring				GetName () const;
+	const NE::String&			GetName () const;
 	void						SetName (const std::wstring& newName);
 
 	virtual void				RegisterCommands (OutputSlotCommandRegistrator& commandRegistrator) const;

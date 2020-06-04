@@ -18,7 +18,7 @@ public:
 	UIInputSlot (const NE::SlotId& id, const NE::String& name, const NE::ValuePtr& defaultValue, NE::OutputSlotConnectionMode slotConnectionMode);
 	~UIInputSlot ();
 
-	std::wstring				GetName () const;
+	const NE::String&			GetName () const;
 	void						SetName (const std::wstring& newName);
 
 	virtual void				RegisterCommands (InputSlotCommandRegistrator& commandRegistrator) const;

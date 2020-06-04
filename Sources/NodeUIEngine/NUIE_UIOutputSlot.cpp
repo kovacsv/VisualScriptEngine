@@ -23,9 +23,9 @@ UIOutputSlot::~UIOutputSlot ()
 
 }
 
-std::wstring UIOutputSlot::GetName () const
+const NE::String& UIOutputSlot::GetName () const
 {
-	return name.GetLocalized ();
+	return name;
 }
 
 void UIOutputSlot::SetName (const std::wstring& newName)

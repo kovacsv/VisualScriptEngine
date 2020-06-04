@@ -23,9 +23,9 @@ UIInputSlot::~UIInputSlot ()
 
 }
 
-std::wstring UIInputSlot::GetName () const
+const NE::String& UIInputSlot::GetName () const
 {
-	return name.GetLocalized ();
+	return name;
 }
 
 void UIInputSlot::SetName (const std::wstring& newName)

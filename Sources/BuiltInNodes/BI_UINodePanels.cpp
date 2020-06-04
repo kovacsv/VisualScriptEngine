@@ -233,14 +233,14 @@ NodeUISlotPanel::NodeUISlotPanel (const NUIE::UINode& node, NUIE::NodeUIDrawingE
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 
 	node.EnumerateUIInputSlots ([&] (const NUIE::UIInputSlotConstPtr& slot) {
-		NUIE::Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeContentTextFont (), slot->GetName ());
+		NUIE::Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeContentTextFont (), slot->GetName ().GetLocalized ());
 		slotRectSize = slotRectSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
 		inputSlots.AddSlotSize (slot->GetId (), slotRectSize);
 		return true;
 	});
 
 	node.EnumerateUIOutputSlots ([&] (const NUIE::UIOutputSlotConstPtr& slot) {
-		NUIE::Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeContentTextFont (), slot->GetName ());
+		NUIE::Size slotRectSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeContentTextFont (), slot->GetName ().GetLocalized ());
 		slotRectSize = slotRectSize.Grow (2.0 * skinParams.GetNodePadding (), skinParams.GetNodePadding ());
 		outputSlots.AddSlotSize (slot->GetId (), slotRectSize);
 		return true;
@@ -279,7 +279,7 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (connCircleRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 		}
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeContentTextFont (), uiSlot->GetName (), NUIE::HorizontalAnchor::Left, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeContentTextFont (), uiSlot->GetName ().GetLocalized (), NUIE::HorizontalAnchor::Left, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 	});
 
 	NUIE::Point outputSlotsStartPoint = rect.GetTopRight () + NUIE::Point (0.0, nodePadding);
@@ -294,7 +294,7 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (connCircleRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 		}
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeContentTextFont (), uiSlot->GetName (), NUIE::HorizontalAnchor::Right, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeContentTextFont (), uiSlot->GetName ().GetLocalized (), NUIE::HorizontalAnchor::Right, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 	});
 }
 

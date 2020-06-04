@@ -64,10 +64,10 @@ public:
 	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const;
 	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
 
-	std::wstring				GetUIInputSlotName (const NE::SlotId& slotId) const;
+	NE::String					GetUIInputSlotName (const NE::SlotId& slotId) const;
 	void						SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
 
-	std::wstring				GetUIOutputSlotName (const NE::SlotId& slotId) const;
+	NE::String					GetUIOutputSlotName (const NE::SlotId& slotId) const;
 	void						SetUIOutputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
 
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, UINodeCommandInterface& commandInterface);

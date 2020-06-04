@@ -163,11 +163,11 @@ void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlo
 	});
 }
 
-std::wstring UINode::GetUIInputSlotName (const NE::SlotId& slotId) const
+NE::String UINode::GetUIInputSlotName (const NE::SlotId& slotId) const
 {
 	UIInputSlotConstPtr inputSlot = GetUIInputSlot (slotId);
 	if (DBGERROR (inputSlot == nullptr)) {
-		return std::wstring ();
+		return NE::String ();
 	}
 	return inputSlot->GetName ();
 }
@@ -181,11 +181,11 @@ void UINode::SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& n
 	inputSlot->SetName (newName);
 }
 
-std::wstring UINode::GetUIOutputSlotName (const NE::SlotId& slotId) const
+NE::String UINode::GetUIOutputSlotName (const NE::SlotId& slotId) const
 {
 	UIOutputSlotConstPtr outputSlot = GetUIOutputSlot (slotId);
 	if (DBGERROR (outputSlot == nullptr)) {
-		return std::wstring ();
+		return NE::String ();
 	}
 	return outputSlot->GetName ();
 }

@@ -461,7 +461,8 @@ public:
 
 	virtual std::wstring GetName () const override
 	{
-		return NE::FormatString (NodeCommandBase::GetName (), nodeName.c_str (), slotToDisconnect->GetName ().c_str ());
+		std::wstring slotName = slotToDisconnect->GetName ().GetLocalized ();
+		return NE::FormatString (NodeCommandBase::GetName (), nodeName.c_str (), slotName.c_str ());
 	}
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UIInputSlotConstPtr& inputSlot) override
@@ -504,7 +505,8 @@ public:
 
 	virtual std::wstring GetName () const override
 	{
-		return NE::FormatString (NodeCommandBase::GetName (), nodeName.c_str (), slotToDisconnect->GetName ().c_str ());
+		std::wstring slotName = slotToDisconnect->GetName ().GetLocalized ();
+		return NE::FormatString (NodeCommandBase::GetName (), nodeName.c_str (), slotName.c_str ());
 	}
 
 	virtual void Do (NodeUIManager& uiManager, NodeUIEnvironment&, UIOutputSlotConstPtr& outputSlot) override
