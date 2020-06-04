@@ -4,9 +4,15 @@
 namespace NE
 {
 
+#ifdef _WIN32
+#define SIZEOFWCHAR 2
+#else
+#define SIZEOFWCHAR 4
+#endif
+
 static_assert (sizeof (bool) == 1, "invalid size for bool");
 static_assert (sizeof (char) == 1, "invalid size for char");
-static_assert (sizeof (wchar_t) == 2, "invalid size for wchar_t");
+static_assert (sizeof (wchar_t) == SIZEOFWCHAR, "invalid size for wchar_t");
 static_assert (sizeof (unsigned char) == 1, "invalid size for unsigned char");
 static_assert (sizeof (short) == 2, "invalid size for short");
 static_assert (sizeof (size_t) == 8, "invalid size for size_t");
