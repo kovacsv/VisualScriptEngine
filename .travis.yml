@@ -14,7 +14,7 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
     - os: linux
-      dist: trusty
+      dist: xenial
       compiler: clang
       addons:
         apt:
