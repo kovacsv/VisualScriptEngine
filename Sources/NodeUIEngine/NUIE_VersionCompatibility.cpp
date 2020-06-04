@@ -6,7 +6,7 @@ namespace NUIE
 
 static const Version& GetFirstCompatibleVersion ()
 {
-	static const Version FirstCompatibleVersion (0, 3, 0);
+	static const Version FirstCompatibleVersion (0, 3, 1);
 	return FirstCompatibleVersion;
 }
 

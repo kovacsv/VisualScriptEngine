@@ -72,6 +72,7 @@ TEST (CompatibilityTest)
 {
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
 
+	bool readSuccess = false;
 	std::string fileName = GetTestFilesPath () + "CompatibilityTest.ne";
 	std::ifstream file;
 	file.open (fileName, std::ios::binary);
@@ -79,11 +80,12 @@ TEST (CompatibilityTest)
 		std::vector<char> buffer;
 		buffer.assign (std::istreambuf_iterator<char> (file), std::istreambuf_iterator<char> ());
 		MemoryInputStream inputStream (buffer);
-		ASSERT (env.nodeEditor.Open (inputStream));
+		readSuccess = env.nodeEditor.Open (inputStream);
 		file.close ();
-	} else {
+	}
+	ASSERT (readSuccess);
+	if (!readSuccess) {
 		WriteTestFile ();
-		ASSERT (false);
 	}
 
 	ASSERT (env.CheckReference ("Compatibility_AfterRead.svg"));
