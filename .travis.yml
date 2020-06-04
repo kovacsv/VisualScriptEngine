@@ -19,11 +19,11 @@ matrix:
       addons:
         apt:
           sources:
-            - llvm-toolchain-trusty-5.0
+            - llvm-toolchain-xenial-7
           packages:
-            - clang-5.0
+            - clang-7
       env:
-        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+        - MATRIX_EVAL="CC=clang-7 && CXX=clang++-7"
     - os: osx
       osx_image: xcode10
       compiler: clang
