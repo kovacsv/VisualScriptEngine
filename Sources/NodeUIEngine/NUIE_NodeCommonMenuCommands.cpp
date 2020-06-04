@@ -207,7 +207,7 @@ void SetParametersMenuCommand::Do ()
 			if (DBGERROR (parameter == nullptr)) {
 				return InvalidParameterName;
 			}
-			return parameter->GetName ();
+			return parameter->GetName ().GetLocalized ();
 		}
 
 		virtual NE::ValueConstPtr GetParameterValue (size_t index) const override
@@ -225,7 +225,11 @@ void SetParametersMenuCommand::Do ()
 			if (DBGERROR (parameter == nullptr)) {
 				return {};
 			}
-			return parameter->GetValueChoices ();
+			std::vector<std::wstring> locValueChoices;
+			for (const NE::LocString& choice : parameter->GetValueChoices ()) {
+				locValueChoices.push_back (choice.GetLocalized ());
+			}
+			return locValueChoices;
 		}
 
 		virtual const ParameterType& GetParameterType (size_t index) const override

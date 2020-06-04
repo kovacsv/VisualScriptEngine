@@ -110,7 +110,7 @@ void EnableDisableFeature::RegisterParameters (NUIE::NodeParameterList& paramete
 	{
 	public:
 		EnableDisableParameter () :
-			EnumerationFeatureParameter<EnableDisableFeature> (L"Status", { NE::LocalizeString (L"Enable"), NE::LocalizeString (L"Disable") }, EnableDisableFeatureId)
+			EnumerationFeatureParameter<EnableDisableFeature> (NE::LocString (L"Status"), { NE::LocString (L"Enable"), NE::LocString (L"Disable") }, EnableDisableFeatureId)
 		{
 
 		}
@@ -251,7 +251,7 @@ void ValueCombinationFeature::RegisterParameters (NUIE::NodeParameterList& param
 	{
 	public:
 		ValueCombinationParameter () :
-			EnumerationFeatureParameter<ValueCombinationFeature> (L"Value Combination", { NE::LocalizeString (L"Shortest"), NE::LocalizeString (L"Longest"), NE::LocalizeString (L"Cross Product") }, ValueCombinationFeatureId)
+			EnumerationFeatureParameter<ValueCombinationFeature> (NE::LocString (L"Value Combination"), { NE::LocString (L"Shortest"), NE::LocString (L"Longest"), NE::LocString (L"Cross Product") }, ValueCombinationFeatureId)
 		{
 		
 		}

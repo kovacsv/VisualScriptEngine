@@ -146,7 +146,7 @@ void MultiLineViewerNode::RegisterParameters (NUIE::NodeParameterList& parameter
 	{
 	public:
 		TextPerPageParameter () :
-			PositiveIntegerNodeParameter<MultiLineViewerNode> (L"Texts per page")
+			PositiveIntegerNodeParameter<MultiLineViewerNode> (NE::LocString (L"Texts per page"))
 		{
 
 		}

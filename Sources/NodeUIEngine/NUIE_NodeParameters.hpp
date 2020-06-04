@@ -17,12 +17,12 @@ class NodeUIEnvironment;
 class NodeParameter
 {
 public:
-	NodeParameter (const std::wstring& name, const ParameterType& type);
+	NodeParameter (const NE::LocString& name, const ParameterType& type);
 	virtual ~NodeParameter ();
 
-	std::wstring						GetName () const;
+	const NE::LocString&				GetName () const;
 	const ParameterType&				GetType () const;
-	virtual std::vector<std::wstring>	GetValueChoices () const;
+	virtual std::vector<NE::LocString>	GetValueChoices () const;
 
 	virtual NE::ValueConstPtr			GetValue (const UINodeConstPtr& uiNode) const = 0;
 	virtual bool						IsApplicableTo (const UINodeConstPtr& uiNode) const = 0;
@@ -30,7 +30,7 @@ public:
 	virtual bool						SetValue (UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 
 private:
-	std::wstring	name;
+	NE::LocString	name;
 	ParameterType	type;
 };
 

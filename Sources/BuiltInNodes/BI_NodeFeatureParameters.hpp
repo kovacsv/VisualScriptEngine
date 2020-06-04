@@ -12,7 +12,7 @@ template <typename FeatureType, typename ValueType>
 class TypedFeatureParameter : public NUIE::TypedParameter<ValueType>
 {
 public:
-	TypedFeatureParameter (const std::wstring& name, const NUIE::ParameterType& type, const FeatureId& featureId) :
+	TypedFeatureParameter (const NE::LocString& name, const NUIE::ParameterType& type, const FeatureId& featureId) :
 		NUIE::TypedParameter<ValueType> (name, type),
 		featureId (featureId)
 	{
@@ -61,7 +61,7 @@ template <typename FeatureType>
 class EnumerationFeatureParameter : public TypedFeatureParameter<FeatureType, NE::IntValue>
 {
 public:
-	EnumerationFeatureParameter (const std::wstring& name, const std::vector<std::wstring>& valueChoices, const FeatureId& featureId) :
+	EnumerationFeatureParameter (const NE::LocString& name, const std::vector<NE::LocString>& valueChoices, const FeatureId& featureId) :
 		TypedFeatureParameter<FeatureType, NE::IntValue> (name, NUIE::ParameterType::Enumeration, featureId),
 		valueChoices (valueChoices)
 	{
@@ -74,13 +74,13 @@ public:
 		return valueInt >= 0 && valueInt < (int) valueChoices.size ();
 	}
 
-	virtual std::vector<std::wstring> GetValueChoices () const override
+	virtual std::vector<NE::LocString> GetValueChoices () const override
 	{
 		return valueChoices;
 	}
 
 private:
-	std::vector<std::wstring> valueChoices;
+	std::vector<NE::LocString> valueChoices;
 };
 
 }

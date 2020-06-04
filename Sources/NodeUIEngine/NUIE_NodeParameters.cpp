@@ -6,7 +6,7 @@
 namespace NUIE
 {
 
-NodeParameter::NodeParameter (const std::wstring& name, const ParameterType& type) :
+NodeParameter::NodeParameter (const NE::LocString& name, const ParameterType& type) :
 	name (name),
 	type (type)
 {
@@ -18,9 +18,9 @@ NodeParameter::~NodeParameter ()
 
 }
 
-std::wstring NodeParameter::GetName () const
+const NE::LocString& NodeParameter::GetName () const
 {
-	return NE::LocalizeString (name);
+	return name;
 }
 
 const ParameterType& NodeParameter::GetType () const
@@ -28,7 +28,7 @@ const ParameterType& NodeParameter::GetType () const
 	return type;
 }
 
-std::vector<std::wstring> NodeParameter::GetValueChoices () const
+std::vector<NE::LocString> NodeParameter::GetValueChoices () const
 {
 	DBGBREAK ();
 	return {};
@@ -137,10 +137,11 @@ void RegisterCommonParameters (const NodeUIManager& uiManager, const NE::NodeCol
 		uiNode->RegisterParameters (parameters);
 		for (size_t paramIndex = 0; paramIndex < parameters.GetParameterCount (); ++paramIndex) {
 			NodeParameterPtr& parameter = parameters.GetParameter (paramIndex);
-			if (registeredParameterNames.find (parameter->GetName ()) != registeredParameterNames.end ()) {
+			std::wstring parameterName = parameter->GetName ().GetLocalized ();
+			if (registeredParameterNames.find (parameterName) != registeredParameterNames.end ()) {
 				return;
 			}
-			registeredParameterNames.insert (parameter->GetName ());
+			registeredParameterNames.insert (parameterName);
 			if (IsParameterApplicableTo (parameter, uiNodes)) {
 				parameterList.AddParameter (parameter);
 			}

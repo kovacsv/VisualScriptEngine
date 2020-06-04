@@ -55,7 +55,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (SlotId ("in1"), L"In1", ParameterType::Integer)
+				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (SlotId ("in1"), NE::LocString (L"In1"), ParameterType::Integer)
 			{
 			
 			}
@@ -103,7 +103,7 @@ public:
 		{
 		public:
 			In2DefaultValueParameter () :
-				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (SlotId ("in2"), L"In2", ParameterType::Integer)
+				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (SlotId ("in2"), NE::LocString (L"In2"), ParameterType::Integer)
 			{
 
 			}
@@ -157,7 +157,7 @@ public:
 		{
 		public:
 			MyEnumerationParameter () :
-				EnumerationNodeParameter<EnumerationParamTestNode> (L"EnumParam", { L"AString", L"BString", L"CString" })
+				EnumerationNodeParameter<EnumerationParamTestNode> (NE::LocString (L"EnumParam"), { NE::LocString (L"AString"), NE::LocString (L"BString"), NE::LocString (L"CString") })
 			{
 
 			}
@@ -217,13 +217,13 @@ TEST (NodeParametersTest)
 	
 	ASSERT (node->GetNodeName ().GetLocalized () == L"TestNode");
 	NodeParameterPtr nameParam = paramList.GetParameter (0);
-	ASSERT (nameParam->GetName () == L"Node Name");
+	ASSERT (nameParam->GetName ().GetLocalized () == L"Node Name");
 	ValuePtr newNameValue (new StringValue (L"NewNodeName"));
 	nameParam->SetValue (invalidator, NE::EmptyEvaluationEnv, node, newNameValue);
 	ASSERT (node->GetNodeName ().GetLocalized () == L"NewNodeName");
 
 	NodeParameterPtr in1DefParam = paramList.GetParameter (1);
-	ASSERT (in1DefParam->GetName () == L"In1");
+	ASSERT (in1DefParam->GetName ().GetLocalized () == L"In1");
 	ASSERT (IntValue::Get (in1DefParam->GetValue (node)) == 1);
 	ValuePtr newIn1Value (new IntValue (5));
 	in1DefParam->SetValue (invalidator, NE::EmptyEvaluationEnv, node, newIn1Value);
@@ -252,16 +252,16 @@ TEST (NodeParametersTest2)
 		NodeParameterList paramList;
 		RegisterCommonParameters (uiManager, NodeCollection ({ node->GetId () }), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
-		ASSERT (paramList.GetParameter (1)->GetName () == L"In1");
+		ASSERT (paramList.GetParameter (0)->GetName ().GetLocalized () == L"Node Name");
+		ASSERT (paramList.GetParameter (1)->GetName ().GetLocalized () == L"In1");
 	}
 
 	{
 		NodeParameterList paramList;
 		RegisterCommonParameters (uiManager, NodeCollection ({ node2->GetId () }), paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
-		ASSERT (paramList.GetParameter (1)->GetName () == L"In2");
+		ASSERT (paramList.GetParameter (0)->GetName ().GetLocalized () == L"Node Name");
+		ASSERT (paramList.GetParameter (1)->GetName ().GetLocalized () == L"In2");
 	}
 
 	{
@@ -271,7 +271,7 @@ TEST (NodeParametersTest2)
 		nodeCollection.Insert (node2->GetId ());
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 1);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
+		ASSERT (paramList.GetParameter (0)->GetName ().GetLocalized () == L"Node Name");
 	}
 }
 
@@ -292,8 +292,8 @@ TEST (NodeParametersTest3)
 		nodeCollection.Insert (node2->GetId ());
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
-		ASSERT (paramList.GetParameter (1)->GetName () == L"In1");
+		ASSERT (paramList.GetParameter (0)->GetName ().GetLocalized () == L"Node Name");
+		ASSERT (paramList.GetParameter (1)->GetName ().GetLocalized () == L"In1");
 		ValuePtr newName (new StringValue (L"NewName"));
 		ApplyCommonParameter (uiManager, EmptyEvaluationEnv, nodeCollection, paramList.GetParameter (0), newName);
 		ASSERT (node->GetNodeName ().GetLocalized () == L"NewName");
@@ -314,13 +314,13 @@ TEST (NodeParametersTest4)
 		NodeCollection nodeCollection ({ node->GetId () });
 		RegisterCommonParameters (uiManager, nodeCollection, paramList);
 		ASSERT (paramList.GetParameterCount () == 2);
-		ASSERT (paramList.GetParameter (0)->GetName () == L"Node Name");
-		ASSERT (paramList.GetParameter (1)->GetName () == L"EnumParam");
-		std::vector<std::wstring> choices = paramList.GetParameter (1)->GetValueChoices ();
+		ASSERT (paramList.GetParameter (0)->GetName ().GetLocalized () == L"Node Name");
+		ASSERT (paramList.GetParameter (1)->GetName ().GetLocalized () == L"EnumParam");
+		std::vector<NE::LocString> choices = paramList.GetParameter (1)->GetValueChoices ();
 		ASSERT (choices.size () == 3);
-		ASSERT (choices[0] == L"AString");
-		ASSERT (choices[1] == L"BString");
-		ASSERT (choices[2] == L"CString");
+		ASSERT (choices[0].GetLocalized () == L"AString");
+		ASSERT (choices[1].GetLocalized () == L"BString");
+		ASSERT (choices[2].GetLocalized () == L"CString");
 
 		ASSERT (node->GetMyEnumValue () == EnumerationParamTestNode::MyEnumValue::AEnum);
 
