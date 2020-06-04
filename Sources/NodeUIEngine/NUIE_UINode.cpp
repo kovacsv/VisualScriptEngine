@@ -215,7 +215,7 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 	{
 	public:
 		NodeNameParameter () :
-			NotEmptyStringNodeParameter<UINode> (NE::LocString (L"Node Name"))
+			NotEmptyStringNodeParameter<UINode> (NE::String (L"Node Name"))
 		{
 		
 		}

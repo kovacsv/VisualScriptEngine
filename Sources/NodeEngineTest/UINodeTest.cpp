@@ -55,7 +55,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (SlotId ("in1"), NE::LocString (L"In1"), ParameterType::Integer)
+				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (SlotId ("in1"), NE::String (L"In1"), ParameterType::Integer)
 			{
 			
 			}
@@ -103,7 +103,7 @@ public:
 		{
 		public:
 			In2DefaultValueParameter () :
-				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (SlotId ("in2"), NE::LocString (L"In2"), ParameterType::Integer)
+				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (SlotId ("in2"), NE::String (L"In2"), ParameterType::Integer)
 			{
 
 			}
@@ -157,7 +157,7 @@ public:
 		{
 		public:
 			MyEnumerationParameter () :
-				EnumerationNodeParameter<EnumerationParamTestNode> (NE::LocString (L"EnumParam"), { NE::LocString (L"AString"), NE::LocString (L"BString"), NE::LocString (L"CString") })
+				EnumerationNodeParameter<EnumerationParamTestNode> (NE::String (L"EnumParam"), { NE::String (L"AString"), NE::String (L"BString"), NE::String (L"CString") })
 			{
 
 			}
@@ -316,7 +316,7 @@ TEST (NodeParametersTest4)
 		ASSERT (paramList.GetParameterCount () == 2);
 		ASSERT (paramList.GetParameter (0)->GetName ().GetLocalized () == L"Node Name");
 		ASSERT (paramList.GetParameter (1)->GetName ().GetLocalized () == L"EnumParam");
-		std::vector<NE::LocString> choices = paramList.GetParameter (1)->GetValueChoices ();
+		std::vector<NE::String> choices = paramList.GetParameter (1)->GetValueChoices ();
 		ASSERT (choices.size () == 3);
 		ASSERT (choices[0].GetLocalized () == L"AString");
 		ASSERT (choices[1].GetLocalized () == L"BString");

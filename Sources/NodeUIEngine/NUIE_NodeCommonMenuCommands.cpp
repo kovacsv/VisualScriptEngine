@@ -226,7 +226,7 @@ void SetParametersMenuCommand::Do ()
 				return {};
 			}
 			std::vector<std::wstring> locValueChoices;
-			for (const NE::LocString& choice : parameter->GetValueChoices ()) {
+			for (const NE::String& choice : parameter->GetValueChoices ()) {
 				locValueChoices.push_back (choice.GetLocalized ());
 			}
 			return locValueChoices;
