@@ -1,7 +1,8 @@
 #include "NE_MemoryStream.hpp"
 #include "NE_Debug.hpp"
 
-#include <algorithm>
+#include <codecvt>
+#include <locale>
 
 namespace NE
 {
@@ -25,16 +26,15 @@ static_assert (sizeof (int) == 4, "invalid size for int");
 static_assert (sizeof (float) == 4, "invalid size for float");
 static_assert (sizeof (double) == 8, "invalid size for double");
 
-template <typename StringType, typename CharType>
-static Stream::Status ReadString (MemoryInputStream& stream, StringType& val)
+static Stream::Status ReadString (MemoryInputStream& stream, std::string& val)
 {
 	size_t count = 0;
 	if (stream.Read (count) != Stream::Status::NoError) {
 		return stream.GetStatus ();
 	}
 
-	CharType* str = new CharType[count + 1];
-	stream.Read ((char*) str, count * sizeof (CharType));
+	char* str = new char[count + 1];
+	stream.Read ((char*) str, count * sizeof (char));
 	str[count] = 0;
 
 	val = str;
@@ -43,41 +43,29 @@ static Stream::Status ReadString (MemoryInputStream& stream, StringType& val)
 	return stream.GetStatus ();
 }
 
-template <typename StringType, typename CharType>
-static Stream::Status WriteString (MemoryOutputStream& stream, const StringType& val)
+static Stream::Status WriteString (MemoryOutputStream& stream, const std::string& val)
 {
 	stream.Write (val.length ());
-	stream.Write ((const char*) val.c_str (), val.length () * sizeof (CharType));
+	stream.Write ((const char*) val.c_str (), val.length () * sizeof (char));
 	return stream.GetStatus ();
-}
-
-Stream::Status ReadString (MemoryInputStream& stream, std::string& val)
-{
-	return ReadString<std::string, char> (stream, val);
 }
 
 Stream::Status ReadString (MemoryInputStream& stream, std::wstring& val)
 {
-	std::u32string u32Val;
-	Stream::Status status = ReadString<std::u32string, char32_t> (stream, u32Val);
-	std::transform (u32Val.begin (), u32Val.end (), std::back_inserter (val),
-		[] (char32_t ch) -> wchar_t { return (wchar_t) ch; }
-	);
-	return status;
-}
+	std::string str;
+	Stream::Status status = ReadString (stream, str);
+	
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> convert;
+	val = convert.from_bytes (str);
 
-static Stream::Status WriteString (MemoryOutputStream& stream, const std::string& val)
-{
-	return WriteString<std::string, char> (stream, val);
+	return status;
 }
 
 static Stream::Status WriteString (MemoryOutputStream& stream, const std::wstring& val)
 {
-	std::u32string u32Val;
-	std::transform (val.begin (), val.end (), std::back_inserter (u32Val),
-		[] (wchar_t ch) -> char32_t { return (char32_t) ch; }
-	);
-	return WriteString<std::u32string, char32_t> (stream, u32Val);
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> convert;
+	std::string str = convert.to_bytes (val);
+	return WriteString (stream, str);
 }
 
 MemoryInputStream::MemoryInputStream (const std::vector<char>& buffer) :
