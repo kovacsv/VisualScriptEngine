@@ -75,7 +75,7 @@ TEST (UIManagerBaseTest)
 	ASSERT (uiManager.AddNode (node1, NE::EmptyEvaluationEnv) != nullptr);
 	ASSERT (uiManager.AddNode (node2, NE::EmptyEvaluationEnv) != nullptr);
 
-	ASSERT (node1->GetNodeName () == L"Test Node");
+	ASSERT (node1->GetNodeName ().GetLocalized () == L"Test Node");
 	ASSERT (node1->GetUIInputSlot (SlotId ("in1"))->GetName () == L"First Input");
 	ASSERT (node1->GetUIInputSlot (SlotId ("in2"))->GetName () == L"Second Input");
 	ASSERT (node1->GetUIOutputSlot (SlotId ("out"))->GetName () == L"Single Output");

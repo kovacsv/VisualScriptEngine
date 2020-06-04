@@ -45,9 +45,9 @@ UINode::~UINode ()
 
 }
 
-std::wstring UINode::GetNodeName () const
+const NE::String& UINode::GetNodeName () const
 {
-	return nodeName.GetLocalized ();
+	return nodeName;
 }
 
 void UINode::SetNodeName (const std::wstring& newNodeName)
@@ -222,7 +222,7 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 
 		virtual NE::ValueConstPtr GetValueInternal (const UINodeConstPtr& uiNode) const override
 		{
-			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ()));
+			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ().GetLocalized ()));
 		}
 
 		virtual bool SetValueInternal (UINodeInvalidator& invalidator, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
