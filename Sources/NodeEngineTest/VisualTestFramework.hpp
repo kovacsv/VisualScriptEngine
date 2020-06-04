@@ -93,4 +93,6 @@ public:
 	NodeEditor				nodeEditor;
 };
 
+std::string GetTestFilesPath ();
+
 #endif

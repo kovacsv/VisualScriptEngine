@@ -324,7 +324,7 @@ bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 {
 	const SvgDrawingContext& context = uiEnvironment.GetSvgDrawingContext ();
 
-	std::string testFilesPath = SimpleTest::GetAppFolderLocation () + "VisualTestFiles" + PATH_SEPARATOR;
+	std::string testFilesPath = GetTestFilesPath ();
 	std::string referenceFilePath = testFilesPath + referenceFileName;
 	std::wifstream referenceFile;
 	referenceFile.open (referenceFilePath);
@@ -403,4 +403,9 @@ void NodeEditorTestEnv::SetNextCommandName (const std::wstring& nextCommandName)
 void NodeEditorTestEnv::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
 {
 	uiEnvironment.SetNextCommandParameterSettings (handler);
+}
+
+std::string GetTestFilesPath ()
+{
+	return SimpleTest::GetAppFolderLocation () + "VisualTestFiles" + PATH_SEPARATOR;
 }
