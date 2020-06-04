@@ -58,7 +58,10 @@ Stream::Status ReadString (MemoryInputStream& stream, std::wstring& val)
 {
 	std::u32string u32Val;
 	Stream::Status status = ReadString<std::u32string, char32_t> (stream, u32Val);
-	val = std::wstring (u32Val.begin (), u32Val.end ());
+	val.clear ();
+	for (char32_t ch : u32Val) {
+		val += (wchar_t) ch;
+	}
 	return status;
 }
 
