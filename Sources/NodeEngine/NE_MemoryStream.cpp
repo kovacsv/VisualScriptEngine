@@ -1,6 +1,8 @@
 #include "NE_MemoryStream.hpp"
 #include "NE_Debug.hpp"
 
+#include <algorithm>
+
 namespace NE
 {
 
@@ -58,10 +60,9 @@ Stream::Status ReadString (MemoryInputStream& stream, std::wstring& val)
 {
 	std::u32string u32Val;
 	Stream::Status status = ReadString<std::u32string, char32_t> (stream, u32Val);
-	val.clear ();
-	for (char32_t ch : u32Val) {
-		val += (wchar_t) ch;
-	}
+	std::transform (u32Val.begin (), u32Val.end (), std::back_inserter (val),
+		[] (char32_t ch) -> wchar_t { return (wchar_t) ch; }
+	);
 	return status;
 }
 
@@ -72,7 +73,10 @@ static Stream::Status WriteString (MemoryOutputStream& stream, const std::string
 
 static Stream::Status WriteString (MemoryOutputStream& stream, const std::wstring& val)
 {
-	std::u32string u32Val (val.begin (), val.end ());
+	std::u32string u32Val;
+	std::transform (val.begin (), val.end (), std::back_inserter (u32Val),
+		[] (wchar_t ch) -> char32_t { return (char32_t) ch; }
+	);
 	return WriteString<std::u32string, char32_t> (stream, u32Val);
 }
 
