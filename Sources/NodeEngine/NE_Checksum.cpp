@@ -5,8 +5,8 @@
 namespace NE
 {
 
-static_assert (sizeof (int) == 4, "");
-static_assert (sizeof (double) == 8, "");
+static_assert (sizeof (int) == 4, "invalid size for int");
+static_assert (sizeof (double) == 8, "invalid size for double");
 
 Checksum::Checksum () :
 	checksum (0),
