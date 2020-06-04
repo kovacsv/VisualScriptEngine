@@ -13,6 +13,9 @@ namespace NE
 static_assert (sizeof (bool) == 1, "invalid size for bool");
 static_assert (sizeof (char) == 1, "invalid size for char");
 static_assert (sizeof (wchar_t) == SIZEOFWCHAR, "invalid size for wchar_t");
+static_assert (sizeof (char16_t) == 2, "invalid size for double");
+static_assert (sizeof (char32_t) == 4, "invalid size for double");
+static_assert (sizeof (double) == 8, "invalid size for double");
 static_assert (sizeof (unsigned char) == 1, "invalid size for unsigned char");
 static_assert (sizeof (short) == 2, "invalid size for short");
 static_assert (sizeof (size_t) == 8, "invalid size for size_t");
@@ -20,8 +23,8 @@ static_assert (sizeof (int) == 4, "invalid size for int");
 static_assert (sizeof (float) == 4, "invalid size for float");
 static_assert (sizeof (double) == 8, "invalid size for double");
 
-template <typename CharType, typename StringType>
-Stream::Status ReadString (MemoryInputStream& stream, StringType& val)
+template <typename StringType, typename CharType>
+static Stream::Status ReadString (MemoryInputStream& stream, StringType& val)
 {
 	size_t count = 0;
 	if (stream.Read (count) != Stream::Status::NoError) {
@@ -38,12 +41,36 @@ Stream::Status ReadString (MemoryInputStream& stream, StringType& val)
 	return stream.GetStatus ();
 }
 
-template <typename CharType, typename StringType>
-Stream::Status WriteString (MemoryOutputStream& stream, const StringType& val)
+template <typename StringType, typename CharType>
+static Stream::Status WriteString (MemoryOutputStream& stream, const StringType& val)
 {
 	stream.Write (val.length ());
 	stream.Write ((const char*) val.c_str (), val.length () * sizeof (CharType));
 	return stream.GetStatus ();
+}
+
+Stream::Status ReadString (MemoryInputStream& stream, std::string& val)
+{
+	return ReadString<std::string, char> (stream, val);
+}
+
+Stream::Status ReadString (MemoryInputStream& stream, std::wstring& val)
+{
+	std::u32string u32Val;
+	Stream::Status status = ReadString<std::u32string, char32_t> (stream, u32Val);
+	val = std::wstring (u32Val.begin (), u32Val.end ());
+	return status;
+}
+
+static Stream::Status WriteString (MemoryOutputStream& stream, const std::string& val)
+{
+	return WriteString<std::string, char> (stream, val);
+}
+
+static Stream::Status WriteString (MemoryOutputStream& stream, const std::wstring& val)
+{
+	std::u32string u32Val (val.begin (), val.end ());
+	return WriteString<std::u32string, char32_t> (stream, u32Val);
 }
 
 MemoryInputStream::MemoryInputStream (const std::vector<char>& buffer) :
@@ -109,12 +136,12 @@ Stream::Status MemoryInputStream::Read (double& val)
 
 Stream::Status MemoryInputStream::Read (std::string& val)
 {
-	return ReadString<char, std::string> (*this, val);
+	return ReadString (*this, val);
 }
 
 Stream::Status MemoryInputStream::Read (std::wstring& val)
 {
-	return ReadString<wchar_t, std::wstring> (*this, val);
+	return ReadString (*this, val);
 }
 
 void MemoryInputStream::Read (char* dest, size_t size)
@@ -197,12 +224,12 @@ Stream::Status MemoryOutputStream::Write (const double& val)
 
 Stream::Status MemoryOutputStream::Write (const std::string& val)
 {
-	return WriteString<char, std::string> (*this, val);
+	return WriteString (*this, val);
 }
 
 Stream::Status MemoryOutputStream::Write (const std::wstring& val)
 {
-	return WriteString<wchar_t, std::wstring> (*this, val);
+	return WriteString (*this, val);
 }
 
 void MemoryOutputStream::Write (const char* source, size_t size)

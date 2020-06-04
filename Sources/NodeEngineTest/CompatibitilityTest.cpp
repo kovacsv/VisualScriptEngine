@@ -14,7 +14,7 @@ using namespace BI;
 
 namespace CompatibilityTest
 {
-/*
+
 static void WriteTestFile ()
 {
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
@@ -88,5 +88,5 @@ TEST (CompatibilityTest)
 
 	ASSERT (env.CheckReference ("Compatibility_AfterRead.svg"));
 }
-*/
+
 }
