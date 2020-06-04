@@ -4,6 +4,15 @@
 namespace NE
 {
 
+static_assert (sizeof (bool) == 1, "");
+static_assert (sizeof (char) == 1, "");
+static_assert (sizeof (unsigned char) == 1, "");
+static_assert (sizeof (short) == 2, "");
+static_assert (sizeof (size_t) == 8, "");
+static_assert (sizeof (int) == 4, "");
+static_assert (sizeof (float) == 4, "");
+static_assert (sizeof (double) == 8, "");
+
 template <typename CharType, typename StringType>
 Stream::Status ReadString (MemoryInputStream& stream, StringType& val)
 {
