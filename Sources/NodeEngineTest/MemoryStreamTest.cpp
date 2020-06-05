@@ -25,7 +25,8 @@ TEST (TypeTest)
 	ASSERT (outputStream.Write ((double) 4.0) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((short) 5) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::string ("apple")) == Stream::Status::NoError);
-	ASSERT (outputStream.Write (std::wstring (L"banana")) == Stream::Status::NoError);
+	ASSERT (outputStream.Write (std::wstring (L"orange")) == Stream::Status::NoError);
+	ASSERT (outputStream.Write (std::wstring (L"unicode \u03c0")) == Stream::Status::NoError);
 	ASSERT (WriteEnum (outputStream, TestEnum::A) == Stream::Status::NoError);
 
 	bool boolVal;
@@ -37,6 +38,7 @@ TEST (TypeTest)
 	short shortVal;
 	std::string stringVal;
 	std::wstring wStringVal;
+	std::wstring wStringValUnicode;
 	TestEnum enumVal;
 
 	MemoryInputStream inputStream (outputStream.GetBuffer ());
@@ -49,6 +51,7 @@ TEST (TypeTest)
 	ASSERT (inputStream.Read (shortVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (stringVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (wStringVal) == Stream::Status::NoError);
+	ASSERT (inputStream.Read (wStringValUnicode) == Stream::Status::NoError);
 	ASSERT (ReadEnum (inputStream, enumVal) == Stream::Status::NoError);
 
 	ASSERT (boolVal == true);
@@ -59,7 +62,8 @@ TEST (TypeTest)
 	ASSERT (doubleVal == 4.0);
 	ASSERT (shortVal == 5);
 	ASSERT (stringVal == "apple");
-	ASSERT (wStringVal == L"banana");
+	ASSERT (wStringVal == L"orange");
+	ASSERT (wStringValUnicode == L"unicode \u03c0");
 	ASSERT (enumVal == TestEnum::A);
 }
 

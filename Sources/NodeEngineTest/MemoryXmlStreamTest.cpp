@@ -19,19 +19,20 @@ TEST (TypeTest)
 	ASSERT (outputStream.Write ((double) 4.0) == Stream::Status::NoError);
 	ASSERT (outputStream.Write ((short) 5) == Stream::Status::NoError);
 	ASSERT (outputStream.Write (std::string ("apple")) == Stream::Status::NoError);
-	ASSERT (outputStream.Write (std::wstring (L"banana")) == Stream::Status::NoError);
+	ASSERT (outputStream.Write (std::wstring (L"orange")) == Stream::Status::NoError);
+	ASSERT (outputStream.Write (std::wstring (L"unicode \u03c0")) == Stream::Status::NoError);
 
-	std::wstring refString =
-LR"(<Bool>True</Bool>
-<Char>97</Char>
-<Size>1</Size>
-<Int>2</Int>
-<Float>3.000000</Float>
-<Double>4.000000</Double>
-<Short>5</Short>
-<String>apple</String>
-<WString>banana</WString>
-)";
+	std::wstring refString;
+	refString += L"<Bool>True</Bool>\n";
+	refString += L"<Char>97</Char>\n";
+	refString += L"<Size>1</Size>\n";
+	refString += L"<Int>2</Int>\n";
+	refString += L"<Float>3.000000</Float>\n";
+	refString += L"<Double>4.000000</Double>\n";
+	refString += L"<Short>5</Short>\n";
+	refString += L"<String>apple</String>\n";
+	refString += L"<WString>orange</WString>\n";
+	refString += L"<WString>unicode \u03c0</WString>\n";
 	ASSERT (refString == outputStream.GetXmlText ());
 
 	bool boolVal;
@@ -43,6 +44,7 @@ LR"(<Bool>True</Bool>
 	short shortVal;
 	std::string stringVal;
 	std::wstring wStringVal;
+	std::wstring wStringValUnicode;
 
 	MemoryXmlInputStream inputStream (outputStream.GetXmlText ());
 	ASSERT (inputStream.Read (boolVal) == Stream::Status::NoError);
@@ -54,6 +56,7 @@ LR"(<Bool>True</Bool>
 	ASSERT (inputStream.Read (shortVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (stringVal) == Stream::Status::NoError);
 	ASSERT (inputStream.Read (wStringVal) == Stream::Status::NoError);
+	ASSERT (inputStream.Read (wStringValUnicode) == Stream::Status::NoError);
 	
 	ASSERT (boolVal == true);
 	ASSERT (charVal == 'a');
@@ -63,7 +66,8 @@ LR"(<Bool>True</Bool>
 	ASSERT (doubleVal == 4.0);
 	ASSERT (shortVal == 5);
 	ASSERT (stringVal == "apple");
-	ASSERT (wStringVal == L"banana");
+	ASSERT (wStringVal == L"orange");
+	ASSERT (wStringValUnicode == L"unicode \u03c0");
 }
 
 }
