@@ -22,6 +22,7 @@ public:
 
 	void Clear ();
 	void WriteToFile (const std::string& fileName) const;
+	bool ReadFromFile (const std::string& fileName);
 
 	std::wstring GetAsString () const;
 
@@ -45,6 +46,7 @@ public:
 	SvgDrawingContext (double width, double height);
 
 	void				WriteToFile (const std::string& fileName) const;
+	bool				ReadFromFile (const std::string& fileName);
 	std::wstring		GetAsString () const;
 
 	virtual void		Resize (int newWidth, int newHeight) override;

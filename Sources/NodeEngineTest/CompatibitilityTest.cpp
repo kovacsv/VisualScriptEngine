@@ -18,7 +18,7 @@ namespace CompatibilityTest
 static void WriteTestFile ()
 {
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
-	UINodePtr booleanNode (new BooleanNode (String (L"Boolean"), Point (100, 100), false));
+	UINodePtr booleanNode (new BooleanNode (String (L"Boolean \u03c0"), Point (100, 100), false));
 	UINodePtr integerNode (new IntegerUpDownNode (String (L"Integer"), Point (100, 220), 1, 1));
 	UINodePtr doubleNode (new DoubleUpDownNode (String (L"Double"), Point (100, 340), 1.0, 1.0));
 	UINodePtr integerIncremented (new IntegerIncrementedNode (String (L"Integer Inc"), Point (300, 100)));

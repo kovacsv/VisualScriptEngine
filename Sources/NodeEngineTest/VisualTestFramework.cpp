@@ -323,20 +323,15 @@ NodeEditorTestEnv::NodeEditorTestEnv (const BasicSkinParams& skinParams) :
 bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 {
 	const SvgDrawingContext& context = uiEnvironment.GetSvgDrawingContext ();
-
 	std::string testFilesPath = GetTestFilesPath ();
+
+	SvgDrawingContext refContext (context.GetWidth (), context.GetHeight ());
 	std::string referenceFilePath = testFilesPath + referenceFileName;
-	std::wifstream referenceFile;
-	referenceFile.open (referenceFilePath);
-	if (!referenceFile.is_open ()) {
+	if (!refContext.ReadFromFile (referenceFilePath)) {
 		context.WriteToFile (testFilesPath + "Current_" + referenceFileName);
-		return false;
 	}
 
-	std::wstringstream referenceFileBuffer;
-	referenceFileBuffer << referenceFile.rdbuf ();
-	std::wstring referenceContent = referenceFileBuffer.str ();
-	referenceFile.close ();
+	std::wstring referenceContent = refContext.GetAsString ();
 
 	std::wstring currentContent = context.GetAsString ();
 	referenceContent = ReplaceAll (referenceContent, L"\r\n", L"\n");

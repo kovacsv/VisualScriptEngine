@@ -63,6 +63,28 @@ void SvgBuilder::WriteToFile (const std::string& fileName) const
 	file.close ();
 }
 
+bool SvgBuilder::ReadFromFile (const std::string& fileName)
+{
+	Clear ();
+
+	std::wifstream file;
+
+	std::locale loc (std::locale (), new std::codecvt_utf8<wchar_t> ());
+	file.imbue (loc);
+
+	file.open (fileName);
+	if (!file.is_open ()) {
+		return false;
+	}
+
+	std::wstringstream fileBuffer;
+	fileBuffer << file.rdbuf ();
+	svgContent.str (fileBuffer.str ());
+	file.close ();
+
+	return true;
+}
+
 std::wstring SvgBuilder::GetAsString () const
 {
 	return svgContent.str ();
@@ -129,6 +151,11 @@ SvgDrawingContext::SvgDrawingContext (double width, double height) :
 void SvgDrawingContext::WriteToFile (const std::string& fileName) const
 {
 	svgBuilder.WriteToFile (fileName);
+}
+
+bool SvgDrawingContext::ReadFromFile (const std::string& fileName)
+{
+	return svgBuilder.ReadFromFile (fileName);
 }
 
 std::wstring SvgDrawingContext::GetAsString () const
