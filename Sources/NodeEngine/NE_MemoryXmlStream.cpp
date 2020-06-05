@@ -114,17 +114,21 @@ Stream::Status MemoryXmlInputStream::Read (std::string& val)
 	for (wchar_t wch : valStr) {
 		val += (char) wch;
 	}
-	return Stream::Status::NoError;
+	return GetStatus ();
 }
 
 Stream::Status MemoryXmlInputStream::Read (std::wstring& val)
 {
 	Read (WStringTag, val);
-	return Stream::Status::NoError;
+	return GetStatus ();
 }
 
 void MemoryXmlInputStream::Read (const std::wstring& tag, std::wstring& text)
 {
+	if (status != Status::NoError) {
+		return;
+	}
+
 	std::wstring beginTag = GetBeginTag (tag);
 	std::wstring endTag = GetEndTag (tag);
 	size_t beginTagPosition = xmlText.find (beginTag, position);
@@ -136,6 +140,7 @@ void MemoryXmlInputStream::Read (const std::wstring& tag, std::wstring& text)
 	size_t textStartPosition = beginTagPosition + beginTag.length ();
 	size_t textEndPosition = endTagPosition;
 	text = xmlText.substr (textStartPosition, textEndPosition - textStartPosition);
+	position = endTagPosition + endTag.length ();
 }
 
 MemoryXmlOutputStream::MemoryXmlOutputStream () :
@@ -207,13 +212,13 @@ Stream::Status MemoryXmlOutputStream::Write (const std::string& val)
 {
 	std::wstring wStringVal (val.begin (), val.end ());
 	Write (StringTag, wStringVal);
-	return Stream::Status::NoError;
+	return GetStatus ();
 }
 
 Stream::Status MemoryXmlOutputStream::Write (const std::wstring& val)
 {
 	Write (WStringTag, val);
-	return Stream::Status::NoError;
+	return GetStatus ();
 }
 
 void MemoryXmlOutputStream::Write (const std::wstring& tag, const std::wstring& text)
