@@ -120,14 +120,14 @@ TestEventHandler::TestEventHandler (NodeEditor* nodeEditor) :
 MenuCommandPtr TestEventHandler::OnContextMenu (const Point& position, const MenuCommandStructure& commands)
 {
 	NUIE::MenuCommandStructure actualCommands = commands;
-	NUIE::GroupMenuCommandPtr createCommandGroup (new NUIE::GroupMenuCommand (NE::String (L"Add Node")));
+	NUIE::MultiMenuCommandPtr createMultiCommand (new NUIE::MultiMenuCommand (NE::String (L"Add Node")));
 
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Number, NE::String (L"Create Number Node"), position)));
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Integer, NE::String (L"Create Integer Node"), position)));
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Addition, NE::String (L"Create Addition Node"), position)));
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Increase, NE::String (L"Create Increase Node"), position)));
-	createCommandGroup->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Viewer, NE::String (L"Create Viewer Node"), position)));
-	actualCommands.AddCommand (createCommandGroup);
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Number, NE::String (L"Create Number Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Integer, NE::String (L"Create Integer Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Addition, NE::String (L"Create Addition Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Increase, NE::String (L"Create Increase Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Viewer, NE::String (L"Create Viewer Node"), position)));
+	actualCommands.AddCommand (createMultiCommand);
 
 	return SelectCommandByName (actualCommands);
 }

@@ -604,12 +604,12 @@ public:
 	virtual void RegisterNodeGroupCommand (NodeGroupCommandPtr nodeGroupCommand) override
 	{
 		NE::String menuCommandName (nodeGroupCommand->GetName (), NE::String::Localization::NonLocalizable);
-		GroupMenuCommandPtr groupCommand (new GroupMenuCommand (menuCommandName));
+		MultiMenuCommandPtr multiCommand (new MultiMenuCommand (menuCommandName));
 		nodeGroupCommand->EnumerateChildCommands ([&] (const NodeCommandPtr& nodeCommand) {
 			std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
-			groupCommand->AddChildCommand (multiNodeCommand);
+			multiCommand->AddChildCommand (multiNodeCommand);
 		});
-		commandStructure.AddCommand (groupCommand);
+		commandStructure.AddCommand (multiCommand);
 	}
 
 	void RegisterCommand (MenuCommandPtr command)
@@ -699,12 +699,12 @@ public:
 	virtual void RegisterSlotGroupCommand (std::shared_ptr<NodeGroupCommand<SlotCommandType>> slotGroupCommand) override
 	{
 		NE::String menuCommandName (slotGroupCommand->GetName (), NE::String::Localization::NonLocalizable);
-		GroupMenuCommandPtr groupCommand (new GroupMenuCommand (menuCommandName));
+		MultiMenuCommandPtr multiCommand (new MultiMenuCommand (menuCommandName));
 		slotGroupCommand->EnumerateChildCommands ([&] (const SlotCommandType& slotNodeCommand) {
 			MenuCommandPtr slotCommand = CreateSlotCommand (slotNodeCommand);
-			groupCommand->AddChildCommand (slotCommand);
+			multiCommand->AddChildCommand (slotCommand);
 		});
-		commandStructure.AddCommand (groupCommand);
+		commandStructure.AddCommand (multiCommand);
 	}
 
 	MenuCommandPtr CreateSlotCommand (SlotCommandType slotNodeCommand)
@@ -985,27 +985,27 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new CopyNodesMenuCommand (uiManager, uiEnvironment, relevantNodes)));
 	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new DeleteNodesMenuCommand (uiManager, uiEnvironment, relevantNodes)));
 
-	GroupMenuCommandPtr groupingCommandGroup (new GroupMenuCommand (NE::String (L"Grouping")));
-	groupingCommandGroup->AddChildCommand (MenuCommandPtr (new CreateGroupMenuCommand (uiManager, relevantNodes)));
+	MultiMenuCommandPtr groupingMultiCommand (new MultiMenuCommand (NE::String (L"Grouping")));
+	groupingMultiCommand->AddChildCommand (MenuCommandPtr (new CreateGroupMenuCommand (uiManager, relevantNodes)));
 	UINodeGroupConstPtr nodeGroup = uiManager.GetUINodeGroup (uiNode->GetId ());
 	if (nodeGroup != nullptr) {
-		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new RemoveNodesFromGroupMenuCommand (uiManager, relevantNodes)));
+		groupingMultiCommand->AddChildCommand (MenuCommandPtr (new RemoveNodesFromGroupMenuCommand (uiManager, relevantNodes)));
 	}
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupPtr& group) {
-		groupingCommandGroup->AddChildCommand (MenuCommandPtr (new AddNodesToGroupMenuCommand (uiManager, group, relevantNodes)));
+		groupingMultiCommand->AddChildCommand (MenuCommandPtr (new AddNodesToGroupMenuCommand (uiManager, group, relevantNodes)));
 		return true;
 	});
-	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
+	commandStructureBuilder.RegisterCommand (groupingMultiCommand);
 
 	if (relevantNodes.Count () > 1) {
-		GroupMenuCommandPtr alignCommandGroup (new GroupMenuCommand (NE::String (L"Aligning")));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Left"), AlignNodesMenuCommand::Mode::Left, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Right"), AlignNodesMenuCommand::Mode::Right, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Top"), AlignNodesMenuCommand::Mode::Top, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Bottom"), AlignNodesMenuCommand::Mode::Bottom, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Horizontal Center"), AlignNodesMenuCommand::Mode::HCenter, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Vertical Center"), AlignNodesMenuCommand::Mode::VCenter, uiManager, uiEnvironment, relevantNodes)));
-		commandStructureBuilder.RegisterCommand (alignCommandGroup);
+		MultiMenuCommandPtr alignMultiCommand (new MultiMenuCommand (NE::String (L"Aligning")));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Left"), AlignNodesMenuCommand::Mode::Left, uiManager, uiEnvironment, relevantNodes)));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Right"), AlignNodesMenuCommand::Mode::Right, uiManager, uiEnvironment, relevantNodes)));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Top"), AlignNodesMenuCommand::Mode::Top, uiManager, uiEnvironment, relevantNodes)));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Bottom"), AlignNodesMenuCommand::Mode::Bottom, uiManager, uiEnvironment, relevantNodes)));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Horizontal Center"), AlignNodesMenuCommand::Mode::HCenter, uiManager, uiEnvironment, relevantNodes)));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Vertical Center"), AlignNodesMenuCommand::Mode::VCenter, uiManager, uiEnvironment, relevantNodes)));
+		commandStructureBuilder.RegisterCommand (alignMultiCommand);
 	}
 
 	return commandStructureBuilder.GetCommandStructure ();

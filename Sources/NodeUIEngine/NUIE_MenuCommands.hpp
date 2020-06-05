@@ -18,9 +18,8 @@ using MenuCommandPtr = std::shared_ptr<MenuCommand>;
 class SingleMenuCommand;
 using SingleMenuCommandPtr = std::shared_ptr<SingleMenuCommand>;
 
-// TODO: rename
-class GroupMenuCommand;
-using GroupMenuCommandPtr = std::shared_ptr<GroupMenuCommand>;
+class MultiMenuCommand;
+using MultiMenuCommandPtr = std::shared_ptr<MultiMenuCommand>;
 
 class MenuCommand
 {
@@ -54,11 +53,11 @@ private:
 	bool isChecked;
 };
 
-class GroupMenuCommand : public MenuCommand
+class MultiMenuCommand : public MenuCommand
 {
 public:
-	GroupMenuCommand (const NE::String& name);
-	virtual ~GroupMenuCommand ();
+	MultiMenuCommand (const NE::String& name);
+	virtual ~MultiMenuCommand ();
 
 	void			AddChildCommand (MenuCommandPtr command);
 

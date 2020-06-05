@@ -90,12 +90,12 @@ public:
 		NUIE::MenuCommandStructure finalCommands = commands;
 		for (const WAS::NodeTree::Group& group : nodeTree.GetGroups ()) {
 			NE::String groupMenuCommandName (group.GetName (), NE::String::Localization::NonLocalizable);
-			NUIE::GroupMenuCommandPtr groupCommand (new NUIE::GroupMenuCommand (groupMenuCommandName));
+			NUIE::MultiMenuCommandPtr multiCommand (new NUIE::MultiMenuCommand (groupMenuCommandName));
 			for (const WAS::NodeTree::Item& item : group.GetItems ()) {
 				NE::String menuCommandName (item.GetName (), NE::String::Localization::NonLocalizable);
-				groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, menuCommandName, position, item.GetCreator ())));
+				multiCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, menuCommandName, position, item.GetCreator ())));
 			}
-			finalCommands.AddCommand (groupCommand);
+			finalCommands.AddCommand (multiCommand);
 		}
 
 		return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, finalCommands);

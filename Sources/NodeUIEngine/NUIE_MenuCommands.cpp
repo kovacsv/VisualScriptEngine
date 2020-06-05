@@ -47,41 +47,41 @@ void SingleMenuCommand::EnumerateChildCommands (const std::function<void (const 
 
 }
 
-GroupMenuCommand::GroupMenuCommand (const NE::String& name) :
+MultiMenuCommand::MultiMenuCommand (const NE::String& name) :
 	MenuCommand (name)
 {
 	
 }
 
-GroupMenuCommand::~GroupMenuCommand ()
+MultiMenuCommand::~MultiMenuCommand ()
 {
 	
 }
 
-void GroupMenuCommand::AddChildCommand (MenuCommandPtr command)
+void MultiMenuCommand::AddChildCommand (MenuCommandPtr command)
 {
 	childCommands.push_back (command);
 }
 
-bool GroupMenuCommand::IsChecked () const
+bool MultiMenuCommand::IsChecked () const
 {
 	DBGBREAK ();
 	return false;
 }
 
-bool GroupMenuCommand::HasChildCommands () const
+bool MultiMenuCommand::HasChildCommands () const
 {
 	return !childCommands.empty ();
 }
 
-void GroupMenuCommand::EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const
+void MultiMenuCommand::EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const
 {
 	for (const MenuCommandPtr& command : childCommands) {
 		processor (command);
 	}
 }
 
-void GroupMenuCommand::Do ()
+void MultiMenuCommand::Do ()
 {
 	DBGBREAK ();
 }
