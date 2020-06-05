@@ -67,7 +67,7 @@ public:
 		class CreateNodeCommand : public NUIE::SingleMenuCommand
 		{
 		public:
-			CreateNodeCommand (NUIE::NodeEditor* nodeEditor, const std::wstring& name, const NUIE::Point& position, const WAS::CreatorFunction& creator) :
+			CreateNodeCommand (NUIE::NodeEditor* nodeEditor, const NE::String& name, const NUIE::Point& position, const WAS::CreatorFunction& creator) :
 				NUIE::SingleMenuCommand (name, false),
 				nodeEditor (nodeEditor),
 				position (position),
@@ -89,9 +89,11 @@ public:
 
 		NUIE::MenuCommandStructure finalCommands = commands;
 		for (const WAS::NodeTree::Group& group : nodeTree.GetGroups ()) {
-			NUIE::GroupMenuCommandPtr groupCommand (new NUIE::GroupMenuCommand (group.GetName ()));
+			NE::String groupMenuCommandName (group.GetName (), NE::String::Localization::NonLocalizable);
+			NUIE::GroupMenuCommandPtr groupCommand (new NUIE::GroupMenuCommand (groupMenuCommandName));
 			for (const WAS::NodeTree::Item& item : group.GetItems ()) {
-				groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, item.GetName (), position, item.GetCreator ())));
+				NE::String menuCommandName (item.GetName (), NE::String::Localization::NonLocalizable);
+				groupCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, menuCommandName, position, item.GetCreator ())));
 			}
 			finalCommands.AddCommand (groupCommand);
 		}

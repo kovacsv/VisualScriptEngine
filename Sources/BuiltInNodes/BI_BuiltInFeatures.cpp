@@ -35,7 +35,7 @@ static void EnableDisableNode (EnableDisableFeature::State state, EnableDisableF
 class EnableDisableNodeCommand : public NUIE::NodeCommand
 {
 public:
-	EnableDisableNodeCommand (const std::wstring& name, bool isChecked, EnableDisableFeature::State state, EnableDisableFeature::Mode mode) :
+	EnableDisableNodeCommand (const NE::String& name, bool isChecked, EnableDisableFeature::State state, EnableDisableFeature::Mode mode) :
 		NUIE::NodeCommand (name, isChecked),
 		state (state),
 		mode (mode)
@@ -98,9 +98,9 @@ void EnableDisableFeature::SetState (State newState)
 
 void EnableDisableFeature::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (L"Set Node Status"));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Enable", state == State::Enabled, State::Enabled, mode)));
-	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (L"Disable", state == State::Disabled, State::Disabled, mode)));
+	NUIE::NodeGroupCommandPtr setNodeStatusGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (NE::String (L"Set Node Status")));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::String (L"Enable"), state == State::Enabled, State::Enabled, mode)));
+	setNodeStatusGroup->AddChildCommand (NUIE::NodeCommandPtr (new EnableDisableNodeCommand (NE::String (L"Disable"), state == State::Disabled, State::Disabled, mode)));
 	commandRegistrator.RegisterNodeGroupCommand (setNodeStatusGroup);
 }
 
@@ -178,7 +178,7 @@ static void SetNodeValueCombination (NE::ValueCombinationMode valueCombination, 
 class SetValueCombinationModeCommand : public NUIE::NodeCommand
 {
 public:
-	SetValueCombinationModeCommand (const std::wstring& name, bool isChecked, NE::ValueCombinationMode valueCombination) :
+	SetValueCombinationModeCommand (const NE::String& name, bool isChecked, NE::ValueCombinationMode valueCombination) :
 		NUIE::NodeCommand (name, isChecked),
 		valueCombination (valueCombination)
 	{
@@ -238,10 +238,10 @@ bool ValueCombinationFeature::CombineValues (const std::vector<NE::ValueConstPtr
 
 void ValueCombinationFeature::RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const
 {
-	NUIE::NodeGroupCommandPtr setValueCombinationModeGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (L"Set Value Combination"));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Shortest", valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Longest", valueCombinationMode == NE::ValueCombinationMode::Longest, NE::ValueCombinationMode::Longest)));
-	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (L"Cross Product", valueCombinationMode == NE::ValueCombinationMode::CrossProduct, NE::ValueCombinationMode::CrossProduct)));
+	NUIE::NodeGroupCommandPtr setValueCombinationModeGroup (new NUIE::NodeGroupCommand<NUIE::NodeCommandPtr> (NE::String (L"Set Value Combination")));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::String (L"Shortest"), valueCombinationMode == NE::ValueCombinationMode::Shortest, NE::ValueCombinationMode::Shortest)));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::String (L"Longest"), valueCombinationMode == NE::ValueCombinationMode::Longest, NE::ValueCombinationMode::Longest)));
+	setValueCombinationModeGroup->AddChildCommand (NUIE::NodeCommandPtr (new SetValueCombinationModeCommand (NE::String (L"Cross Product"), valueCombinationMode == NE::ValueCombinationMode::CrossProduct, NE::ValueCombinationMode::CrossProduct)));
 	commandRegistrator.RegisterNodeGroupCommand (setValueCombinationModeGroup);
 }
 

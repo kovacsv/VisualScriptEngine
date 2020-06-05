@@ -18,13 +18,14 @@ using MenuCommandPtr = std::shared_ptr<MenuCommand>;
 class SingleMenuCommand;
 using SingleMenuCommandPtr = std::shared_ptr<SingleMenuCommand>;
 
+// TODO: rename
 class GroupMenuCommand;
 using GroupMenuCommandPtr = std::shared_ptr<GroupMenuCommand>;
 
 class MenuCommand
 {
 public:
-	MenuCommand (const std::wstring& name);
+	MenuCommand (const NE::String& name);
 	virtual ~MenuCommand ();
 
 	virtual std::wstring	GetName () const;
@@ -36,13 +37,13 @@ public:
 	virtual void			Do () = 0;
 
 private:
-	std::wstring			name;
+	NE::String				name;
 };
 
 class SingleMenuCommand : public MenuCommand
 {
 public:
-	SingleMenuCommand (const std::wstring& name, bool isChecked);
+	SingleMenuCommand (const NE::String& name, bool isChecked);
 	virtual ~SingleMenuCommand ();
 
 	virtual bool	IsChecked () const override;
@@ -56,7 +57,7 @@ private:
 class GroupMenuCommand : public MenuCommand
 {
 public:
-	GroupMenuCommand (const std::wstring& name);
+	GroupMenuCommand (const NE::String& name);
 	virtual ~GroupMenuCommand ();
 
 	void			AddChildCommand (MenuCommandPtr command);

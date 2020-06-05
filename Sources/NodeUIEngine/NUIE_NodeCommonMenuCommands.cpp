@@ -14,7 +14,7 @@ namespace NUIE
 {
 
 DeleteNodesMenuCommand::DeleteNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
-	SingleMenuCommand (L"Delete Nodes", false),
+	SingleMenuCommand (NE::String (L"Delete Nodes"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	relevantNodes (relevantNodes)
@@ -34,7 +34,7 @@ void DeleteNodesMenuCommand::Do ()
 }
 
 CopyNodesMenuCommand::CopyNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const NE::NodeCollection& relevantNodes) :
-	SingleMenuCommand (L"Copy Nodes", false),
+	SingleMenuCommand (NE::String (L"Copy Nodes"), false),
 	uiManager (uiManager),
 	interactionEnv (interactionEnv),
 	relevantNodes (relevantNodes)
@@ -54,7 +54,7 @@ void CopyNodesMenuCommand::Do ()
 }
 
 PasteNodesMenuCommand::PasteNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const Point& position) :
-	SingleMenuCommand (L"Paste Nodes", false),
+	SingleMenuCommand (NE::String (L"Paste Nodes"), false),
 	uiManager (uiManager),
 	interactionEnv (interactionEnv),
 	position (position)
@@ -74,7 +74,7 @@ void PasteNodesMenuCommand::Do ()
 }
 
 AlignToWindowMenuCommand::AlignToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
-	SingleMenuCommand (L"Align To Window", false),
+	SingleMenuCommand (NE::String (L"Align To Window"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -90,7 +90,7 @@ void AlignToWindowMenuCommand::Do ()
 }
 
 CenterToWindowMenuCommand::CenterToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
-	SingleMenuCommand (L"Center To Window", false),
+	SingleMenuCommand (NE::String (L"Center To Window"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -106,7 +106,7 @@ void CenterToWindowMenuCommand::Do ()
 }
 
 FitToWindowMenuCommand::FitToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment) :
-	SingleMenuCommand (L"Fit To Window", false),
+	SingleMenuCommand (NE::String (L"Fit To Window"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -122,7 +122,7 @@ void FitToWindowMenuCommand::Do ()
 }
 
 UndoMenuCommand::UndoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-	SingleMenuCommand (L"Undo", false),
+	SingleMenuCommand (NE::String (L"Undo"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -141,7 +141,7 @@ void UndoMenuCommand::Do ()
 }
 
 RedoMenuCommand::RedoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
-	SingleMenuCommand (L"Redo", false),
+	SingleMenuCommand (NE::String (L"Redo"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment)
 {
@@ -160,7 +160,7 @@ void RedoMenuCommand::Do ()
 }
 
 SetParametersMenuCommand::SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
-	SingleMenuCommand (L"Node Settings", false),
+	SingleMenuCommand (NE::String (L"Node Settings"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	currentNode (currentNode),
@@ -284,7 +284,7 @@ void SetParametersMenuCommand::Do ()
 }
 
 CreateGroupMenuCommand::CreateGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-	SingleMenuCommand (L"Create New Group", false),
+	SingleMenuCommand (NE::String (L"Create New Group"), false),
 	uiManager (uiManager),
 	relevantNodes (relevantNodes)
 {
@@ -304,7 +304,7 @@ void CreateGroupMenuCommand::Do ()
 }
 
 SetGroupParametersMenuCommand::SetGroupParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
-	SingleMenuCommand (L"Group Settings", false),
+	SingleMenuCommand (NE::String (L"Group Settings"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	group (group)
@@ -451,7 +451,7 @@ void SetGroupParametersMenuCommand::Do ()
 class DisconnectFromInputSlotCommand : public InputSlotCommand
 {
 public:
-	DisconnectFromInputSlotCommand (const std::wstring& name, const UIOutputSlotConstPtr& slotToDisconnect, const std::wstring& nodeName) :
+	DisconnectFromInputSlotCommand (const NE::String& name, const UIOutputSlotConstPtr& slotToDisconnect, const std::wstring& nodeName) :
 		InputSlotCommand (name, false),
 		slotToDisconnect (slotToDisconnect),
 		nodeName (nodeName)
@@ -479,7 +479,7 @@ private:
 class DisconnectAllFromInputSlotCommand : public InputSlotCommand
 {
 public:
-	DisconnectAllFromInputSlotCommand (const std::wstring& name) :
+	DisconnectAllFromInputSlotCommand (const NE::String& name) :
 		InputSlotCommand (name, false)
 	{
 
@@ -495,7 +495,7 @@ public:
 class DisconnectFromOutputSlotCommand : public OutputSlotCommand
 {
 public:
-	DisconnectFromOutputSlotCommand (const std::wstring& name, const UIInputSlotConstPtr& slotToDisconnect, const std::wstring& nodeName) :
+	DisconnectFromOutputSlotCommand (const NE::String& name, const UIInputSlotConstPtr& slotToDisconnect, const std::wstring& nodeName) :
 		OutputSlotCommand (name, false),
 		slotToDisconnect (slotToDisconnect),
 		nodeName (nodeName)
@@ -523,7 +523,7 @@ private:
 class DisconnectAllFromOutputSlotCommand : public OutputSlotCommand
 {
 public:
-	DisconnectAllFromOutputSlotCommand (const std::wstring& name) :
+	DisconnectAllFromOutputSlotCommand (const NE::String& name) :
 		OutputSlotCommand (name, false)
 	{
 
@@ -539,7 +539,7 @@ public:
 class MultiNodeMenuCommand : public SingleMenuCommand
 {
 public:
-	MultiNodeMenuCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, NodeCommandPtr& nodeCommand) :
+	MultiNodeMenuCommand (const NE::String& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, NodeCommandPtr& nodeCommand) :
 		SingleMenuCommand (name, nodeCommand->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
@@ -603,7 +603,8 @@ public:
 
 	virtual void RegisterNodeGroupCommand (NodeGroupCommandPtr nodeGroupCommand) override
 	{
-		GroupMenuCommandPtr groupCommand (new GroupMenuCommand (nodeGroupCommand->GetName ()));
+		NE::String menuCommandName (nodeGroupCommand->GetName (), NE::String::Localization::NonLocalizable);
+		GroupMenuCommandPtr groupCommand (new GroupMenuCommand (menuCommandName));
 		nodeGroupCommand->EnumerateChildCommands ([&] (const NodeCommandPtr& nodeCommand) {
 			std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
 			groupCommand->AddChildCommand (multiNodeCommand);
@@ -624,7 +625,8 @@ public:
 private:
 	std::shared_ptr<MultiNodeMenuCommand> CreateMultiNodeCommand (NodeCommandPtr nodeCommand)
 	{
-		std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand (new MultiNodeMenuCommand (nodeCommand->GetName (), uiManager, uiEnvironment, nodeCommand));
+		NE::String menuCommandName (nodeCommand->GetName (), NE::String::Localization::NonLocalizable);
+		std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand (new MultiNodeMenuCommand (menuCommandName, uiManager, uiEnvironment, nodeCommand));
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
 			if (nodeCommand->IsApplicableTo (uiNode)) {
@@ -645,7 +647,7 @@ template <typename SlotType, typename CommandType>
 class SlotMenuCommand : public SingleMenuCommand
 {
 public:
-	SlotMenuCommand (const std::wstring& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, SlotType& slot, CommandType& command) :
+	SlotMenuCommand (const NE::String& name, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, SlotType& slot, CommandType& command) :
 		SingleMenuCommand (name, command->IsChecked ()),
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
@@ -696,7 +698,8 @@ public:
 
 	virtual void RegisterSlotGroupCommand (std::shared_ptr<NodeGroupCommand<SlotCommandType>> slotGroupCommand) override
 	{
-		GroupMenuCommandPtr groupCommand (new GroupMenuCommand (slotGroupCommand->GetName ()));
+		NE::String menuCommandName (slotGroupCommand->GetName (), NE::String::Localization::NonLocalizable);
+		GroupMenuCommandPtr groupCommand (new GroupMenuCommand (menuCommandName));
 		slotGroupCommand->EnumerateChildCommands ([&] (const SlotCommandType& slotNodeCommand) {
 			MenuCommandPtr slotCommand = CreateSlotCommand (slotNodeCommand);
 			groupCommand->AddChildCommand (slotCommand);
@@ -706,7 +709,8 @@ public:
 
 	MenuCommandPtr CreateSlotCommand (SlotCommandType slotNodeCommand)
 	{
-		MenuCommandPtr slotCommand (new SlotMenuCommand<SourceSlotType, SlotCommandType> (slotNodeCommand->GetName (), uiManager, uiEnvironment, sourceSlot, slotNodeCommand));
+		NE::String menuCommandName (slotNodeCommand->GetName (), NE::String::Localization::NonLocalizable);
+		MenuCommandPtr slotCommand (new SlotMenuCommand<SourceSlotType, SlotCommandType> (menuCommandName, uiManager, uiEnvironment, sourceSlot, slotNodeCommand));
 		return slotCommand;
 	}
 
@@ -716,9 +720,9 @@ public:
 	}
 
 private:
-	NodeUIManager&		uiManager;
-	NodeUIEnvironment&	uiEnvironment;
-	SourceSlotType		sourceSlot;
+	NodeUIManager&			uiManager;
+	NodeUIEnvironment&		uiEnvironment;
+	SourceSlotType			sourceSlot;
 	MenuCommandStructure	commandStructure;
 };
 
@@ -726,7 +730,7 @@ class DeleteGroupMenuCommand : public SingleMenuCommand
 {
 public:
 	DeleteGroupMenuCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
-		SingleMenuCommand (L"Ungroup Nodes", false),
+		SingleMenuCommand (NE::String (L"Ungroup Nodes"), false),
 		uiManager (uiManager),
 		group (group)
 	{
@@ -753,7 +757,7 @@ class SelectGroupNodesCommand : public SingleMenuCommand
 {
 public:
 	SelectGroupNodesCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
-		SingleMenuCommand (L"Select Nodes", false),
+		SingleMenuCommand (NE::String (L"Select Nodes"), false),
 		uiManager (uiManager),
 		group (group)
 	{
@@ -780,7 +784,7 @@ class RemoveNodesFromGroupMenuCommand : public SingleMenuCommand
 {
 public:
 	RemoveNodesFromGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		SingleMenuCommand (L"Remove From Group", false),
+		SingleMenuCommand (NE::String (L"Remove From Group"), false),
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
@@ -807,7 +811,7 @@ class AddNodesToGroupMenuCommand : public SingleMenuCommand
 {
 public:
 	AddNodesToGroupMenuCommand (NodeUIManager& uiManager, const UINodeGroupPtr& uiNodeGroup, const NE::NodeCollection& relevantNodes) :
-		SingleMenuCommand (L"Add To Group \"%ls\"", false),
+		SingleMenuCommand (NE::String (L"Add To Group \"%ls\""), false),
 		uiManager (uiManager),
 		uiNodeGroup (uiNodeGroup),
 		relevantNodes (relevantNodes)
@@ -850,7 +854,7 @@ public:
 		VCenter
 	};
 
-	AlignNodesMenuCommand (const std::wstring& name, Mode mode, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
+	AlignNodesMenuCommand (const NE::String& name, Mode mode, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
 		SingleMenuCommand (name, false),
 		mode (mode),
 		uiManager (uiManager),
@@ -981,7 +985,7 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new CopyNodesMenuCommand (uiManager, uiEnvironment, relevantNodes)));
 	commandStructureBuilder.RegisterCommand (MenuCommandPtr (new DeleteNodesMenuCommand (uiManager, uiEnvironment, relevantNodes)));
 
-	GroupMenuCommandPtr groupingCommandGroup (new GroupMenuCommand (L"Grouping"));
+	GroupMenuCommandPtr groupingCommandGroup (new GroupMenuCommand (NE::String (L"Grouping")));
 	groupingCommandGroup->AddChildCommand (MenuCommandPtr (new CreateGroupMenuCommand (uiManager, relevantNodes)));
 	UINodeGroupConstPtr nodeGroup = uiManager.GetUINodeGroup (uiNode->GetId ());
 	if (nodeGroup != nullptr) {
@@ -994,13 +998,13 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 	commandStructureBuilder.RegisterCommand (groupingCommandGroup);
 
 	if (relevantNodes.Count () > 1) {
-		GroupMenuCommandPtr alignCommandGroup (new GroupMenuCommand (L"Aligning"));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Left", AlignNodesMenuCommand::Mode::Left, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Right", AlignNodesMenuCommand::Mode::Right, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Top", AlignNodesMenuCommand::Mode::Top, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Bottom", AlignNodesMenuCommand::Mode::Bottom, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Horizontal Center", AlignNodesMenuCommand::Mode::HCenter, uiManager, uiEnvironment, relevantNodes)));
-		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (L"Vertical Center", AlignNodesMenuCommand::Mode::VCenter, uiManager, uiEnvironment, relevantNodes)));
+		GroupMenuCommandPtr alignCommandGroup (new GroupMenuCommand (NE::String (L"Aligning")));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Left"), AlignNodesMenuCommand::Mode::Left, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Right"), AlignNodesMenuCommand::Mode::Right, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Top"), AlignNodesMenuCommand::Mode::Top, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Bottom"), AlignNodesMenuCommand::Mode::Bottom, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Horizontal Center"), AlignNodesMenuCommand::Mode::HCenter, uiManager, uiEnvironment, relevantNodes)));
+		alignCommandGroup->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::String (L"Vertical Center"), AlignNodesMenuCommand::Mode::VCenter, uiManager, uiEnvironment, relevantNodes)));
 		commandStructureBuilder.RegisterCommand (alignCommandGroup);
 	}
 
@@ -1012,13 +1016,13 @@ MenuCommandStructure CreateOutputSlotCommandStructure (NodeUIManager& uiManager,
 	SlotCommandStructureBuilder<OutputSlotCommandRegistrator, UIOutputSlotConstPtr, OutputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, outputSlot);
 
 	if (uiManager.HasConnectedInputSlots (outputSlot)) {
-		OutputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<OutputSlotCommandPtr> (L"Disconnect"));
+		OutputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<OutputSlotCommandPtr> (NE::String (L"Disconnect")));
 		uiManager.EnumerateConnectedUIInputSlots (outputSlot, [&] (UIInputSlotConstPtr inputSlot) {
 			UINodeConstPtr uiNode = uiManager.GetUINode (inputSlot->GetOwnerNodeId ());
 			std::wstring outputNodeName = uiNode->GetNodeName ().GetLocalized ();
-			disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectFromOutputSlotCommand (L"%ls (%ls)", inputSlot, outputNodeName)));
+			disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectFromOutputSlotCommand (NE::String (L"%ls (%ls)"), inputSlot, outputNodeName)));
 		});
-		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectAllFromOutputSlotCommand (L"All")));
+		disconnectGroup->AddChildCommand (OutputSlotCommandPtr (new DisconnectAllFromOutputSlotCommand (NE::String (L"All"))));
 		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
 	}
 
@@ -1031,13 +1035,13 @@ MenuCommandStructure CreateInputSlotCommandStructure (NodeUIManager& uiManager, 
 	SlotCommandStructureBuilder<InputSlotCommandRegistrator, UIInputSlotConstPtr, InputSlotCommandPtr> commandStructureBuilder (uiManager, uiEnvironment, inputSlot);
 
 	if (uiManager.HasConnectedOutputSlots (inputSlot)) {
-		InputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<InputSlotCommandPtr> (L"Disconnect"));
+		InputSlotGroupCommandPtr disconnectGroup (new NodeGroupCommand<InputSlotCommandPtr> (NE::String (L"Disconnect")));
 		uiManager.EnumerateConnectedUIOutputSlots (inputSlot, [&] (UIOutputSlotConstPtr outputSlot) {
 			UINodeConstPtr uiNode = uiManager.GetUINode (outputSlot->GetOwnerNodeId ());
 			std::wstring inputNodeName = uiNode->GetNodeName ().GetLocalized ();
-			disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectFromInputSlotCommand (L"%ls (%ls)", outputSlot, inputNodeName)));
+			disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectFromInputSlotCommand (NE::String (L"%ls (%ls)"), outputSlot, inputNodeName)));
 		});
-		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectAllFromInputSlotCommand (L"All")));
+		disconnectGroup->AddChildCommand (InputSlotCommandPtr (new DisconnectAllFromInputSlotCommand (NE::String (L"All"))));
 		commandStructureBuilder.RegisterSlotGroupCommand (disconnectGroup);
 	}
 

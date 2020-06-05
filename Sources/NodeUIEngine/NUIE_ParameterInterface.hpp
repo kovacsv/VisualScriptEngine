@@ -27,6 +27,7 @@ private:
 	std::string id;
 };
 
+// TODO:: NE::String
 class ParameterInterface
 {
 public:

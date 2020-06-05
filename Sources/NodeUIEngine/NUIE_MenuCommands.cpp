@@ -4,7 +4,7 @@
 namespace NUIE
 {
 
-MenuCommand::MenuCommand (const std::wstring& name) :
+MenuCommand::MenuCommand (const NE::String& name) :
 	name (name)
 {
 
@@ -17,10 +17,10 @@ MenuCommand::~MenuCommand ()
 
 std::wstring MenuCommand::GetName () const
 {
-	return NE::LocalizeString (name);
+	return name.GetLocalized ();
 }
 
-SingleMenuCommand::SingleMenuCommand (const std::wstring& name, bool isChecked) :
+SingleMenuCommand::SingleMenuCommand (const NE::String& name, bool isChecked) :
 	MenuCommand (name),
 	isChecked (isChecked)
 {
@@ -47,7 +47,7 @@ void SingleMenuCommand::EnumerateChildCommands (const std::function<void (const 
 
 }
 
-GroupMenuCommand::GroupMenuCommand (const std::wstring& name) :
+GroupMenuCommand::GroupMenuCommand (const NE::String& name) :
 	MenuCommand (name)
 {
 	
