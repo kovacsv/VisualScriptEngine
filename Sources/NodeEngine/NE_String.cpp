@@ -12,43 +12,52 @@ String::String () :
 }
 
 String::String (const std::wstring& strValue) :
+	String (strValue, Localization::Localizable)
+{
+}
+
+String::String (const std::wstring& strValue, Localization localization) :
 	strValue (strValue),
-	isCustom (false)
+	localization (localization)
 {
 }
 
 void String::SetCustom (const std::wstring& customValue)
 {
-	if (!isCustom && customValue == GetLocalized ()) {
+	if (localization == Localization::Localizable && customValue == GetLocalized ()) {
 		return;
 	}
 	strValue = customValue;
-	isCustom = true;
+	localization = Localization::NonLocalizable;
 }
 
 std::wstring String::GetLocalized () const
 {
-	if (isCustom) {
-		return strValue;
-	} else {
+	if (localization == Localization::Localizable) {
 		return LocalizeString (strValue);
+	} else if (localization == Localization::NonLocalizable){
+		return strValue;
 	}
+	DBGBREAK ();
+	return strValue;
 }
 
 std::wstring String::GetLocalized (const Dictionary& dictionary) const
 {
-	if (isCustom) {
-		return strValue;
-	} else {
+	if (localization == Localization::Localizable) {
 		return LocalizeString (dictionary, strValue);
+	} else if (localization == Localization::NonLocalizable) {
+		return strValue;
 	}
+	DBGBREAK ();
+	return strValue;
 }
 
 Stream::Status String::Read (InputStream& inputStream)
 {
 	ObjectHeader header (inputStream);
 	inputStream.Read (strValue);
-	inputStream.Read (isCustom);
+	ReadEnum<Localization> (inputStream, localization);
 	return inputStream.GetStatus ();
 }
 
@@ -56,7 +65,7 @@ Stream::Status String::Write (OutputStream& outputStream) const
 {
 	ObjectHeader header (outputStream, serializationInfo);
 	outputStream.Write (strValue);
-	outputStream.Write (isCustom);
+	WriteEnum<Localization> (outputStream, localization);
 	return outputStream.GetStatus ();
 }
 

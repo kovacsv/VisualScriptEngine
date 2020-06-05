@@ -13,8 +13,15 @@ class String
 	SERIALIZABLE;
 
 public:
+	enum class Localization
+	{
+		Localizable		= 1,
+		NonLocalizable	= 2
+	};
+
 	explicit String ();
 	explicit String (const std::wstring& strValue);
+	explicit String (const std::wstring& strValue, Localization localization);
 
 	void			SetCustom (const std::wstring& customValue);
 	std::wstring	GetLocalized () const;
@@ -25,7 +32,7 @@ public:
 
 private:
 	std::wstring	strValue;
-	bool			isCustom;
+	Localization	localization;
 };
 
 class LocString
