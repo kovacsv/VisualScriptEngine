@@ -74,7 +74,7 @@ class TestGroup : public NodeGroup
 
 public:
 	TestGroup () :
-		TestGroup (L"")
+		TestGroup (std::wstring ())
 	{
 	
 	}

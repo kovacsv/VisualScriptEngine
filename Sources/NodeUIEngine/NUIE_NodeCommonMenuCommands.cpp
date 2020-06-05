@@ -202,7 +202,7 @@ void SetParametersMenuCommand::Do ()
 
 		virtual std::wstring GetParameterName (size_t index) const override
 		{
-			static const std::wstring InvalidParameterName = L"";
+			static const std::wstring InvalidParameterName;
 			NodeParameterPtr parameter = paramList.GetParameter (index);
 			if (DBGERROR (parameter == nullptr)) {
 				return InvalidParameterName;

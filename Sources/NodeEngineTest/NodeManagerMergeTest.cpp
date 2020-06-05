@@ -18,7 +18,7 @@ class TestNode : public Node
 
 public:
 	TestNode () :
-		TestNode (L"")
+		TestNode (std::wstring ())
 	{
 
 	}

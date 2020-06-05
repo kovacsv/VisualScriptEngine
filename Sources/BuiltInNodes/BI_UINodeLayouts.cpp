@@ -239,7 +239,9 @@ void HeaderWithSlotsAndMultilineTextLayout::AddPanels (	const BasicUINode& uiNod
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUISlotPanel (uiNode, env)));
 	drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIMultiLineTextPanel (visibleTexts, textCount, textsPerPage, env)));
 	if (textCount > textsPerPage) {
-		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, std::to_wstring (currentPage) + L" / " + std::to_wstring (pageCount) + L" (" + std::to_wstring (textCount) + L")", env)));
+		std::wstring formatString = NE::LocalizeString (L"%d / %d (%d)");
+		std::wstring panelText = NE::FormatString (formatString, currentPage, pageCount, textCount);
+		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUILeftRightButtonsPanel (leftButtonId, leftButtonText, rightButtonId, rightButtonText, panelText, env)));
 	}
 }
 

@@ -12,7 +12,7 @@ SvgBuilder::SvgBuilder ()
 
 void SvgBuilder::AddTag (const std::wstring& tag, const std::vector<std::pair<std::wstring, std::wstring>>& attributes)
 {
-	AddTag (tag, L"", attributes);
+	AddTag (tag, std::wstring (), attributes);
 }
 
 void SvgBuilder::AddTag (const std::wstring& tag, const std::wstring& content, const std::vector<std::pair<std::wstring, std::wstring>>& attributes)
@@ -69,7 +69,7 @@ std::wstring SvgBuilder::EndToString (double val)
 
 std::wstring SvgBuilder::PenToStrokeStyle (const Pen& pen)
 {
-	std::wstring style = L"";
+	std::wstring style;
 	style += L"stroke-width:" + ToString (pen.GetThickness ()) + L"px;";
 	style += L"stroke:rgb(" + ToString (pen.GetColor ().GetR ()) + L"," + ToString (pen.GetColor ().GetG ()) + L"," + ToString (pen.GetColor ().GetB ()) + L");";
 	return style;
@@ -77,14 +77,14 @@ std::wstring SvgBuilder::PenToStrokeStyle (const Pen& pen)
 
 std::wstring SvgBuilder::ColorToFillStyle (const Color& color)
 {
-	std::wstring style = L"";
+	std::wstring style;
 	style += L"fill:rgb(" + ToString (color.GetR ()) + L"," + ToString (color.GetG ()) + L"," + ToString (color.GetB ()) + L");";
 	return style;
 }
 
 std::wstring SvgBuilder::FontToFontStyle (const Font& font)
 {
-	std::wstring style = L"";
+	std::wstring style;
 	style += L"font-family:" + font.GetFamily () + L";";
 	style += L"font-size:" + SvgBuilder::ToString (font.GetSize ()) + L"px;";
 	return style;
