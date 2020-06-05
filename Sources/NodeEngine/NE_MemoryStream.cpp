@@ -54,11 +54,13 @@ Stream::Status ReadString (MemoryInputStream& stream, std::wstring& val)
 {
 	std::string str;
 	Stream::Status status = ReadString (stream, str);
-	
+	if (status != Stream::Status::NoError) {
+		return status;
+	}
+
 	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> convert;
 	val = convert.from_bytes (str);
-
-	return status;
+	return Stream::Status::NoError;
 }
 
 static Stream::Status WriteString (MemoryOutputStream& stream, const std::wstring& val)
