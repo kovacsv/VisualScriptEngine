@@ -1,9 +1,5 @@
 #include "NUIE_SvgDrawingContext.hpp"
 
-#include <codecvt>
-#include <locale>
-
-#include <fstream>
 #include <cmath>
 
 namespace NUIE
@@ -49,40 +45,6 @@ void SvgBuilder::AddCloseTag (const std::wstring& tag)
 void SvgBuilder::Clear ()
 {
 	svgContent.str (std::wstring ());
-}
-
-void SvgBuilder::WriteToFile (const std::string& fileName) const
-{
-	std::wofstream file;
-
-	std::locale loc (std::locale (), new std::codecvt_utf8<wchar_t> ());
-	file.imbue (loc);
-
-	file.open (fileName);
-	file << svgContent.str ();
-	file.close ();
-}
-
-bool SvgBuilder::ReadFromFile (const std::string& fileName)
-{
-	Clear ();
-
-	std::wifstream file;
-
-	std::locale loc (std::locale (), new std::codecvt_utf8<wchar_t> ());
-	file.imbue (loc);
-
-	file.open (fileName);
-	if (!file.is_open ()) {
-		return false;
-	}
-
-	std::wstringstream fileBuffer;
-	fileBuffer << file.rdbuf ();
-	svgContent.str (fileBuffer.str ());
-	file.close ();
-
-	return true;
 }
 
 std::wstring SvgBuilder::GetAsString () const
@@ -146,16 +108,6 @@ SvgDrawingContext::SvgDrawingContext (double width, double height) :
 	height (height)
 {
 	
-}
-
-void SvgDrawingContext::WriteToFile (const std::string& fileName) const
-{
-	svgBuilder.WriteToFile (fileName);
-}
-
-bool SvgDrawingContext::ReadFromFile (const std::string& fileName)
-{
-	return svgBuilder.ReadFromFile (fileName);
 }
 
 std::wstring SvgDrawingContext::GetAsString () const

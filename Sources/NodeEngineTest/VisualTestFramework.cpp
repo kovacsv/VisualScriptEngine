@@ -1,4 +1,5 @@
 #include "VisualTestFramework.hpp"
+#include "NUIE_FileIO.hpp"
 #include "NUIE_InputEventHandler.hpp"
 #include "BI_BuiltInNodes.hpp"
 #include "SimpleTest.hpp"
@@ -325,13 +326,12 @@ bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 	const SvgDrawingContext& context = uiEnvironment.GetSvgDrawingContext ();
 	std::string testFilesPath = GetTestFilesPath ();
 
-	SvgDrawingContext refContext (context.GetWidth (), context.GetHeight ());
 	std::string referenceFilePath = testFilesPath + referenceFileName;
-	if (!refContext.ReadFromFile (referenceFilePath)) {
-		context.WriteToFile (testFilesPath + "Current_" + referenceFileName);
+	std::wstring referenceContent;
+	if (!ReadUtf8File (referenceFilePath, referenceContent)) {
+		WriteUtf8File (testFilesPath + "Current_" + referenceFileName, context.GetAsString ());
 	}
 
-	std::wstring referenceContent = refContext.GetAsString ();
 	std::wstring currentContent = context.GetAsString ();
 	referenceContent = ReplaceAll (referenceContent, L"\r\n", L"\n");
 	currentContent = ReplaceAll (currentContent, L"\r\n", L"\n");
@@ -340,7 +340,7 @@ bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 		std::wcout << currentContent << std::endl;
 		std::wcout << L"=== REFERENCE ===" << std::endl;
 		std::wcout << referenceContent << std::endl;
-		context.WriteToFile (testFilesPath + "Current_" + referenceFileName);
+		WriteUtf8File (testFilesPath + "Current_" + referenceFileName, context.GetAsString ());
 		return false;
 	}
 	return true;
