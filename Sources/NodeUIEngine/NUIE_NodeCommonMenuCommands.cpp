@@ -324,7 +324,7 @@ void SetGroupParametersMenuCommand::Do ()
 	public:
 		struct GroupParameter
 		{
-			std::wstring	name;
+			NE::String		name;
 			ParameterType	type;
 		};
 
@@ -332,8 +332,8 @@ void SetGroupParametersMenuCommand::Do ()
 			currentGroup (currentGroup),
 			groupBackgroundColors (groupBackgroundColors),
 			groupParameters ({
-				{ L"Group Name", ParameterType::String },
-				{ L"Group Color", ParameterType::Enumeration }
+				{ NE::String (L"Group Name"), ParameterType::String },
+				{ NE::String (L"Group Color"), ParameterType::Enumeration }
 			})
 		{
 
@@ -364,7 +364,8 @@ void SetGroupParametersMenuCommand::Do ()
 
 		virtual std::wstring GetParameterName (size_t index) const override
 		{
-			return groupParameters[index].name;
+			const NE::String& name = groupParameters[index].name;
+			return name.GetLocalized ();
 		}
 
 		virtual NE::ValueConstPtr GetParameterValue (size_t index) const override
