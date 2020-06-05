@@ -332,7 +332,6 @@ bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 	}
 
 	std::wstring referenceContent = refContext.GetAsString ();
-
 	std::wstring currentContent = context.GetAsString ();
 	referenceContent = ReplaceAll (referenceContent, L"\r\n", L"\n");
 	currentContent = ReplaceAll (currentContent, L"\r\n", L"\n");
