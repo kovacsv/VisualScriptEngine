@@ -35,24 +35,6 @@ private:
 	Localization	localization;
 };
 
-class LocString
-{
-	SERIALIZABLE;
-
-public:
-	explicit LocString ();
-	explicit LocString (const std::wstring& strValue);
-
-	std::wstring	GetLocalized () const;
-	std::wstring	GetLocalized (const Dictionary& dictionary) const;
-
-	Stream::Status	Read (InputStream& inputStream);
-	Stream::Status	Write (OutputStream& outputStream) const;
-
-private:
-	std::wstring	strValue;
-};
-
 }
 
 #endif

@@ -4,7 +4,6 @@ namespace NE
 {
 
 SERIALIZATION_INFO (String, 1);
-SERIALIZATION_INFO (LocString, 1);
 
 String::String () :
 	String (std::wstring ())
@@ -66,40 +65,6 @@ Stream::Status String::Write (OutputStream& outputStream) const
 	ObjectHeader header (outputStream, serializationInfo);
 	outputStream.Write (strValue);
 	WriteEnum<Localization> (outputStream, localization);
-	return outputStream.GetStatus ();
-}
-
-LocString::LocString () :
-	LocString (std::wstring ())
-{
-}
-
-LocString::LocString (const std::wstring& strValue) :
-	strValue (strValue)
-{
-}
-
-std::wstring LocString::GetLocalized () const
-{
-	return LocalizeString (strValue);
-}
-
-std::wstring LocString::GetLocalized (const Dictionary& dictionary) const
-{
-	return LocalizeString (dictionary, strValue);
-}
-
-Stream::Status LocString::Read (InputStream& inputStream)
-{
-	ObjectHeader header (inputStream);
-	inputStream.Read (strValue);
-	return inputStream.GetStatus ();
-}
-
-Stream::Status LocString::Write (OutputStream& outputStream) const
-{
-	ObjectHeader header (outputStream, serializationInfo);
-	outputStream.Write (strValue);
 	return outputStream.GetStatus ();
 }
 
