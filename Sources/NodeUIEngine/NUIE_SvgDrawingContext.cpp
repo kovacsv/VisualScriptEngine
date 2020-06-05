@@ -1,5 +1,8 @@
 #include "NUIE_SvgDrawingContext.hpp"
 
+#include <codecvt>
+#include <locale>
+
 #include <fstream>
 #include <cmath>
 
@@ -51,6 +54,10 @@ void SvgBuilder::Clear ()
 void SvgBuilder::WriteToFile (const std::string& fileName) const
 {
 	std::wofstream file;
+
+	std::locale loc (std::locale (), new std::codecvt_utf8<wchar_t> ());
+	file.imbue (loc);
+
 	file.open (fileName);
 	file << svgContent.str ();
 	file.close ();
