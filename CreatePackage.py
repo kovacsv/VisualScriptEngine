@@ -56,7 +56,7 @@ def Main (argv):
 		os.path.abspath (os.path.join ('Build', 'DevKit', 'lib')),
 		os.path.abspath (os.path.join ('Build', 'DevKit', 'source'))
 	]
-	zip = zipfile.ZipFile (zipPath, 'w')
+	zip = zipfile.ZipFile (zipPath, mode = 'w', compression = zipfile.ZIP_DEFLATED)
 	for folder in requiredFolders:
 		for file in os.listdir (folder):
 			zip.write (os.path.join (folder, file), os.path.join (os.path.basename (folder), file))	
