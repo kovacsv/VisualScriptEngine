@@ -6,26 +6,18 @@ set (VSE_VERSION_3 3)
 set (VSE_LIB_NAME VisualScriptEngine)
 
 function (SetCompilerOptions module)
-	set (DebugOptions)
-	set (ReleaseOptions)
+	target_compile_options (${module} PUBLIC "$<$<CONFIG:Debug>:-DDEBUG>")
 	if (MSVC)
 		target_compile_options (${module} PUBLIC /W4 /WX)
-		set (DebugOptions -DDEBUG -D_DEBUG /Zi /FC)
-		set (ReleaseOptions /O2)
 	else ()
 		target_compile_options (${module} PUBLIC -std=c++11 -Wall -Wextra -Werror)
-		set (DebugOptions -DDEBUG -D_DEBUG -g -ggdb)
 	endif ()
-	target_compile_options (${module} PUBLIC
-		"$<$<CONFIG:Debug>:${DebugOptions}>"
-		"$<$<CONFIG:Release>:${ReleaseOptions}>"
-	)
 endfunction ()
 
 set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
 set (CMAKE_SUPPRESS_REGENERATION 1)
-set (CMAKE_CONFIGURATION_TYPES Debug;Release)
+set (CMAKE_CONFIGURATION_TYPES Debug;Release;RelWithDebInfo)
 set (CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/DevKit CACHE PATH "Install prefix.")
 set (CMAKE_DEBUG_POSTFIX "Debug")
 
