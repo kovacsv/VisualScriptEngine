@@ -8,6 +8,7 @@
 
 namespace NUIE
 {
+
 static const size_t NodeUIManagerVersion = 1;
 
 class NodeUIManagerUpdateEventHandler : public NE::UpdateEventHandler
