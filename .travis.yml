@@ -63,3 +63,8 @@ script:
   - cmake ../.. -DCMAKE_BUILD_TYPE=Release
   - make
   - make test ARGS="-V"
+  - mkdir RelWithDebInfo
+  - cd RelWithDebInfo
+  - cmake ../.. -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  - make
+  - make test ARGS="-V"
