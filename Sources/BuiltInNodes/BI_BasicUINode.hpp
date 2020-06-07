@@ -14,9 +14,9 @@ class BasicUINode : public NUIE::UINode
 
 public:
 	BasicUINode ();
-	BasicUINode (const NE::String& name, const NUIE::Point& position);
-	BasicUINode (const NE::String& name, const NUIE::Point& position, const UINodeLayoutPtr& layout);
-	BasicUINode (const NE::String& name, const NUIE::Point& position, const UINodeLayoutPtr& layout, const NUIE::IconId& iconId);
+	BasicUINode (const NE::LocString& name, const NUIE::Point& position);
+	BasicUINode (const NE::LocString& name, const NUIE::Point& position, const UINodeLayoutPtr& layout);
+	BasicUINode (const NE::LocString& name, const NUIE::Point& position, const UINodeLayoutPtr& layout, const NUIE::IconId& iconId);
 	virtual ~BasicUINode ();
 
 	bool								HasIconId () const;

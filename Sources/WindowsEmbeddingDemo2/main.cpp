@@ -18,42 +18,42 @@ public:
 	{
 		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
 		nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::BooleanNode (NE::String (L"Boolean"), position, true));
+			return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
 		});
 		nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::String (L"Integer"), position, 0, 5));
+			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
 		});
 		nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::String (L"Number"), position, 0.0, 5.0));
+			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
 		});
 		nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::String (L"Integer Increment"), position));
+			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
 		});
 		nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::String (L"Number Increment"), position));
+			return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
 		});
 		nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::String (L"Number Distribution"), position));
+			return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
 		});
 		nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::ListBuilderNode (NE::String (L"List Builder"), position));
+			return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
 		});
 		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
 		nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::AdditionNode (NE::String (L"Addition"), position));
+			return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
 		});
 		nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::SubtractionNode (NE::String (L"Subtraction"), position));
+			return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
 		});
 		nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiplicationNode (NE::String (L"Multiplication"), position));
+			return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
 		});
 		nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DivisionNode (NE::String (L"Division"), position));
+			return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
 		});
 		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
 		nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::String (L"Viewer"), position, 5));
+			return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
 		});
 	}
 
@@ -67,7 +67,7 @@ public:
 		class CreateNodeCommand : public NUIE::SingleMenuCommand
 		{
 		public:
-			CreateNodeCommand (NUIE::NodeEditor* nodeEditor, const NE::String& name, const NUIE::Point& position, const WAS::CreatorFunction& creator) :
+			CreateNodeCommand (NUIE::NodeEditor* nodeEditor, const NE::LocString& name, const NUIE::Point& position, const WAS::CreatorFunction& creator) :
 				NUIE::SingleMenuCommand (name, false),
 				nodeEditor (nodeEditor),
 				position (position),
@@ -89,10 +89,10 @@ public:
 
 		NUIE::MenuCommandStructure finalCommands = commands;
 		for (const WAS::NodeTree::Group& group : nodeTree.GetGroups ()) {
-			NE::String groupMenuCommandName (group.GetName (), NE::String::Localization::NonLocalizable);
+			NE::LocString groupMenuCommandName (group.GetName (), NE::LocString::Localization::NonLocalizable);
 			NUIE::MultiMenuCommandPtr multiCommand (new NUIE::MultiMenuCommand (groupMenuCommandName));
 			for (const WAS::NodeTree::Item& item : group.GetItems ()) {
-				NE::String menuCommandName (item.GetName (), NE::String::Localization::NonLocalizable);
+				NE::LocString menuCommandName (item.GetName (), NE::LocString::Localization::NonLocalizable);
 				multiCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, menuCommandName, position, item.GetCreator ())));
 			}
 			finalCommands.AddCommand (multiCommand);

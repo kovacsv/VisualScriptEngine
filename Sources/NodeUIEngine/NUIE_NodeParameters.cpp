@@ -6,7 +6,7 @@
 namespace NUIE
 {
 
-NodeParameter::NodeParameter (const NE::String& name, const ParameterType& type) :
+NodeParameter::NodeParameter (const NE::LocString& name, const ParameterType& type) :
 	name (name),
 	type (type)
 {
@@ -18,7 +18,7 @@ NodeParameter::~NodeParameter ()
 
 }
 
-const NE::String& NodeParameter::GetName () const
+const NE::LocString& NodeParameter::GetName () const
 {
 	return name;
 }
@@ -28,7 +28,7 @@ const ParameterType& NodeParameter::GetType () const
 	return type;
 }
 
-std::vector<NE::String> NodeParameter::GetValueChoices () const
+std::vector<NE::LocString> NodeParameter::GetValueChoices () const
 {
 	DBGBREAK ();
 	return {};

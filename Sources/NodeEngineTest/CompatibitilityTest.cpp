@@ -18,19 +18,19 @@ namespace CompatibilityTest
 static void WriteTestFile ()
 {
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
-	UINodePtr booleanNode (new BooleanNode (String (L"Boolean \u03c0"), Point (100, 100), false));
-	UINodePtr integerNode (new IntegerUpDownNode (String (L"Integer"), Point (100, 220), 1, 1));
-	UINodePtr doubleNode (new DoubleUpDownNode (String (L"Double"), Point (100, 340), 1.0, 1.0));
-	UINodePtr integerIncremented (new IntegerIncrementedNode (String (L"Integer Inc"), Point (300, 100)));
-	UINodePtr doubleIncremented (new DoubleIncrementedNode (String (L"Double Inc"), Point (300, 240)));
-	UINodePtr doubleDistributed (new DoubleDistributedNode (String (L"Double Dist"), Point (300, 380)));
-	UINodePtr listBuilder (new ListBuilderNode (String (L"List Builder"), Point (300, 520)));
-	UINodePtr addition (new AdditionNode (String (L"Add"), Point (500, 100)));
-	UINodePtr subtraction (new SubtractionNode (String (L"Sub"), Point (500, 220)));
-	UINodePtr multiplication (new MultiplicationNode (String (L"Mul"), Point (500, 340)));
-	UINodePtr division (new DivisionNode (String (L"Div"), Point (500, 460)));
-	UINodePtr viewer (new ViewerNode (String (L"Viewer"), Point (700, 100)));
-	UINodePtr multilineViewer (new MultiLineViewerNode (String (L"Viewer"), Point (690, 300), 5));
+	UINodePtr booleanNode (new BooleanNode (LocString (L"Boolean \u03c0"), Point (100, 100), false));
+	UINodePtr integerNode (new IntegerUpDownNode (LocString (L"Integer"), Point (100, 220), 1, 1));
+	UINodePtr doubleNode (new DoubleUpDownNode (LocString (L"Double"), Point (100, 340), 1.0, 1.0));
+	UINodePtr integerIncremented (new IntegerIncrementedNode (LocString (L"Integer Inc"), Point (300, 100)));
+	UINodePtr doubleIncremented (new DoubleIncrementedNode (LocString (L"Double Inc"), Point (300, 240)));
+	UINodePtr doubleDistributed (new DoubleDistributedNode (LocString (L"Double Dist"), Point (300, 380)));
+	UINodePtr listBuilder (new ListBuilderNode (LocString (L"List Builder"), Point (300, 520)));
+	UINodePtr addition (new AdditionNode (LocString (L"Add"), Point (500, 100)));
+	UINodePtr subtraction (new SubtractionNode (LocString (L"Sub"), Point (500, 220)));
+	UINodePtr multiplication (new MultiplicationNode (LocString (L"Mul"), Point (500, 340)));
+	UINodePtr division (new DivisionNode (LocString (L"Div"), Point (500, 460)));
+	UINodePtr viewer (new ViewerNode (LocString (L"Viewer"), Point (700, 100)));
+	UINodePtr multilineViewer (new MultiLineViewerNode (LocString (L"Viewer"), Point (690, 300), 5));
 	env.nodeEditor.AddNode (booleanNode);
 	env.nodeEditor.AddNode (integerNode);
 	env.nodeEditor.AddNode (doubleNode);

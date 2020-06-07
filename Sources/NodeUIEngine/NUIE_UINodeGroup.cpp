@@ -45,12 +45,12 @@ NodeRectGetter::~NodeRectGetter ()
 }
 
 UINodeGroup::UINodeGroup () :
-	UINodeGroup (NE::String ())
+	UINodeGroup (NE::LocString ())
 {
 
 }
 
-UINodeGroup::UINodeGroup (const NE::String& name) :
+UINodeGroup::UINodeGroup (const NE::LocString& name) :
 	NE::NodeGroup (),
 	name (name),
 	backgroundColorIndex (0)

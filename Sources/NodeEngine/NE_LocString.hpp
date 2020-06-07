@@ -1,5 +1,5 @@
-#ifndef NE_STRING_HPP
-#define NE_STRING_HPP
+#ifndef NE_LOCSTRING_HPP
+#define NE_LOCSTRING_HPP
 
 #include "NE_Serializable.hpp"
 #include "NE_Localization.hpp"
@@ -8,7 +8,7 @@
 namespace NE
 {
 
-class String
+class LocString
 {
 	SERIALIZABLE;
 
@@ -19,9 +19,9 @@ public:
 		NonLocalizable	= 2
 	};
 
-	explicit String ();
-	explicit String (const std::wstring& strValue);
-	explicit String (const std::wstring& strValue, Localization localization);
+	explicit LocString ();
+	explicit LocString (const std::wstring& strValue);
+	explicit LocString (const std::wstring& strValue, Localization localization);
 
 	void			SetCustom (const std::wstring& customValue);
 	std::wstring	GetLocalized () const;

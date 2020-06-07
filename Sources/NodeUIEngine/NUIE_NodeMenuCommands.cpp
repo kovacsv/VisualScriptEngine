@@ -6,7 +6,7 @@
 namespace NUIE
 {
 
-NodeCommandBase::NodeCommandBase (const NE::String& name, bool isChecked) :
+NodeCommandBase::NodeCommandBase (const NE::LocString& name, bool isChecked) :
 	name (name),
 	isChecked (isChecked)
 {
@@ -28,7 +28,7 @@ bool NodeCommandBase::IsChecked () const
 	return isChecked;
 }
 
-NodeCommand::NodeCommand (const NE::String& name, bool isChecked) :
+NodeCommand::NodeCommand (const NE::LocString& name, bool isChecked) :
 	NodeCommandBase (name, isChecked)
 {
 
@@ -39,7 +39,7 @@ NodeCommand::~NodeCommand ()
 
 }
 
-InputSlotCommand::InputSlotCommand (const NE::String& name, bool isChecked) :
+InputSlotCommand::InputSlotCommand (const NE::LocString& name, bool isChecked) :
 	NodeCommandBase (name, isChecked)
 {
 
@@ -50,7 +50,7 @@ InputSlotCommand::~InputSlotCommand ()
 
 }
 
-OutputSlotCommand::OutputSlotCommand (const NE::String& name, bool isChecked) :
+OutputSlotCommand::OutputSlotCommand (const NE::LocString& name, bool isChecked) :
 	NodeCommandBase (name, isChecked)
 {
 

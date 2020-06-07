@@ -15,7 +15,7 @@ namespace DispatcherOutputSlotTest
 class DispatcherNode : public SerializableTestUINode
 {
 public:
-	DispatcherNode (const String& name, const Point& position) :
+	DispatcherNode (const LocString& name, const Point& position) :
 		SerializableTestUINode (name, position)
 	{
 		
@@ -23,8 +23,8 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIOutputSlot (UIOutputSlotPtr (new UIDispatcherOutputSlot (SlotId ("out1"), NE::String (L"Out 1"), 0)));
-		RegisterUIOutputSlot (UIOutputSlotPtr (new UIDispatcherOutputSlot (SlotId ("out2"), NE::String (L"Out 2"), 1)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIDispatcherOutputSlot (SlotId ("out1"), NE::LocString (L"Out 1"), 0)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIDispatcherOutputSlot (SlotId ("out2"), NE::LocString (L"Out 2"), 1)));
 	}
 
 	virtual ValueConstPtr Calculate (EvaluationEnv&) const override
@@ -41,7 +41,7 @@ public:
 class ValueNode : public SerializableTestUINode
 {
 public:
-	ValueNode (const String& name, const Point& position) :
+	ValueNode (const LocString& name, const Point& position) :
 		SerializableTestUINode (name, position)
 	{
 
@@ -49,8 +49,8 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in"), String (L"In"), nullptr, OutputSlotConnectionMode::Single)));
-		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), String (L"Out"))));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in"), LocString (L"In"), nullptr, OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), LocString (L"Out"))));
 	}
 
 	virtual ValueConstPtr Calculate (EvaluationEnv& env) const override
@@ -99,9 +99,9 @@ TEST (DispatcherOutputSlotEvaluationTest)
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr dispatcherNode (new DispatcherNode (String (L"Node"), Point (0.0, 0.0)));
-	UINodePtr valueNode1 (new ValueNode (String (L"Node"), Point (0.0, 0.0)));
-	UINodePtr valueNode2 (new ValueNode (String (L"Node"), Point (0.0, 0.0)));
+	UINodePtr dispatcherNode (new DispatcherNode (LocString (L"Node"), Point (0.0, 0.0)));
+	UINodePtr valueNode1 (new ValueNode (LocString (L"Node"), Point (0.0, 0.0)));
+	UINodePtr valueNode2 (new ValueNode (LocString (L"Node"), Point (0.0, 0.0)));
 
 	ASSERT (uiManager.AddNode (dispatcherNode, NE::EmptyEvaluationEnv) != nullptr);
 	ASSERT (uiManager.AddNode (valueNode1, NE::EmptyEvaluationEnv) != nullptr);

@@ -26,7 +26,7 @@ class SerializableTestUINode : public UINode
 
 public:
 	SerializableTestUINode ();
-	SerializableTestUINode (const String& nodeName, const Point& nodePosition);
+	SerializableTestUINode (const LocString& nodeName, const Point& nodePosition);
 
 	virtual void				Initialize () override;
 	virtual ValueConstPtr		Calculate (NE::EvaluationEnv&) const override;

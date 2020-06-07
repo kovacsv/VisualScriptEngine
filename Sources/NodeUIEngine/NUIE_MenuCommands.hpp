@@ -1,7 +1,7 @@
 #ifndef NUIE_MENUCOMMANDS_HPP
 #define NUIE_MENUCOMMANDS_HPP
 
-#include "NE_String.hpp"
+#include "NE_LocString.hpp"
 
 #include <string>
 #include <vector>
@@ -24,7 +24,7 @@ using MultiMenuCommandPtr = std::shared_ptr<MultiMenuCommand>;
 class MenuCommand
 {
 public:
-	MenuCommand (const NE::String& name);
+	MenuCommand (const NE::LocString& name);
 	virtual ~MenuCommand ();
 
 	virtual std::wstring	GetName () const;
@@ -36,13 +36,13 @@ public:
 	virtual void			Do () = 0;
 
 private:
-	NE::String				name;
+	NE::LocString			name;
 };
 
 class SingleMenuCommand : public MenuCommand
 {
 public:
-	SingleMenuCommand (const NE::String& name, bool isChecked);
+	SingleMenuCommand (const NE::LocString& name, bool isChecked);
 	virtual ~SingleMenuCommand ();
 
 	virtual bool	IsChecked () const override;
@@ -56,7 +56,7 @@ private:
 class MultiMenuCommand : public MenuCommand
 {
 public:
-	MultiMenuCommand (const NE::String& name);
+	MultiMenuCommand (const NE::LocString& name);
 	virtual ~MultiMenuCommand ();
 
 	void			AddChildCommand (MenuCommandPtr command);

@@ -56,10 +56,10 @@ public:
 	SimpleNodeEditorTestEnv (const BasicSkinParams& skinParams) :
 		NodeEditorTestEnv (skinParams)
 	{
-		doubleUpDownNode.reset (new DoubleUpDownNode (String (L"Number"), NUIE::Point (100, 200), 20, 10));
-		rangeInputNode.reset (new DoubleIncrementedNode (String (L"Range"), NUIE::Point (300, 400)));
-		viewerUINode1.reset (new MultiLineViewerNode (String (L"Viewer"), NUIE::Point (600, 100), 5));
-		viewerUINode2.reset (new MultiLineViewerNode (String (L"Viewer 2"), NUIE::Point (600, 400), 5));
+		doubleUpDownNode.reset (new DoubleUpDownNode (LocString (L"Number"), NUIE::Point (100, 200), 20, 10));
+		rangeInputNode.reset (new DoubleIncrementedNode (LocString (L"Range"), NUIE::Point (300, 400)));
+		viewerUINode1.reset (new MultiLineViewerNode (LocString (L"Viewer"), NUIE::Point (600, 100), 5));
+		viewerUINode2.reset (new MultiLineViewerNode (LocString (L"Viewer 2"), NUIE::Point (600, 400), 5));
 		
 		nodeEditor.AddNode (doubleUpDownNode);
 		nodeEditor.AddNode (rangeInputNode);

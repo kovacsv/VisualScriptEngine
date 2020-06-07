@@ -164,7 +164,7 @@ public:
 	{
 	}
 
-	MyNode (const NE::String& name, const NUIE::Point& position) :
+	MyNode (const NE::LocString& name, const NUIE::Point& position) :
 		BI::BasicUINode (name, position)
 	{
 	}
@@ -176,15 +176,15 @@ public:
 	virtual void Initialize () override
 	{
 		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (
-			NE::SlotId ("a"), NE::String (L"A"), NE::ValuePtr (new NE::DoubleValue (0.0)),
+			NE::SlotId ("a"), NE::LocString (L"A"), NE::ValuePtr (new NE::DoubleValue (0.0)),
 			NE::OutputSlotConnectionMode::Single
 		)));
 		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (
-			NE::SlotId ("b"), NE::String (L"B"), NE::ValuePtr (new NE::DoubleValue (0.0)),
+			NE::SlotId ("b"), NE::LocString (L"B"), NE::ValuePtr (new NE::DoubleValue (0.0)),
 			NE::OutputSlotConnectionMode::Single
 		)));
 		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (
-			NE::SlotId ("result"), NE::String (L"Result")
+			NE::SlotId ("result"), NE::LocString (L"Result")
 		)));
 	}
 
@@ -225,7 +225,7 @@ int main (int argc, char* argv[])
 	MyNodeUIEnvironment uiEnvironment;
 	NUIE::NodeEditor nodeEditor (uiEnvironment);
 
-	nodeEditor.AddNode (NUIE::UINodePtr (new MyNode (NE::String (L"My Node"), NUIE::Point (0.0, 0.0))));
+	nodeEditor.AddNode (NUIE::UINodePtr (new MyNode (NE::LocString (L"My Node"), NUIE::Point (0.0, 0.0))));
 
 	nodeEditor.Update ();
 	nodeEditor.Draw ();

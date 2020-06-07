@@ -1,5 +1,5 @@
 #include "SimpleTest.hpp"
-#include "NE_String.hpp"
+#include "NE_LocString.hpp"
 #include "NUIE_Localization.hpp"
 
 using namespace NE;
@@ -137,9 +137,9 @@ TEST (StringLocalizationTest)
 	PoDictionarySource poDictionarySource (poContent);
 	ASSERT (FillDictionary (dictionary, poDictionarySource));
 
-	String appleString (L"apple");
-	String appleNonLocString (L"apple", String::Localization::NonLocalizable);
-	String lemonString (L"lemon");
+	LocString appleString (L"apple");
+	LocString appleNonLocString (L"apple", LocString::Localization::NonLocalizable);
+	LocString lemonString (L"lemon");
 
 	ASSERT (appleString.GetLocalized (dictionary) == L"alma");
 	ASSERT (appleNonLocString.GetLocalized (dictionary) == L"apple");

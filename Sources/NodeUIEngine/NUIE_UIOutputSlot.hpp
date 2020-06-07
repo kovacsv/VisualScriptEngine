@@ -1,7 +1,7 @@
 #ifndef NUIE_UIOUTPUTSLOT_HPP
 #define NUIE_UIOUTPUTSLOT_HPP
 
-#include "NE_String.hpp"
+#include "NE_LocString.hpp"
 #include "NE_OutputSlot.hpp"
 
 namespace NUIE
@@ -15,10 +15,10 @@ class UIOutputSlot : public NE::OutputSlot
 
 public:
 	UIOutputSlot ();
-	UIOutputSlot (const NE::SlotId& id, const NE::String& name);
+	UIOutputSlot (const NE::SlotId& id, const NE::LocString& name);
 	~UIOutputSlot ();
 
-	const NE::String&			GetName () const;
+	const NE::LocString&		GetName () const;
 	void						SetName (const std::wstring& newName);
 
 	virtual void				RegisterCommands (OutputSlotCommandRegistrator& commandRegistrator) const;
@@ -27,7 +27,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
-	NE::String					name;
+	NE::LocString				name;
 };
 
 using UIOutputSlotPtr = std::shared_ptr<UIOutputSlot>;

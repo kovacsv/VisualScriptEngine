@@ -27,12 +27,12 @@ UINodeCommandInterface::~UINodeCommandInterface ()
 }
 
 UINode::UINode () :
-	UINode (NE::String (), Point ())
+	UINode (NE::LocString (), Point ())
 {
 
 }
 
-UINode::UINode (const NE::String& nodeName, const Point& nodePosition) :
+UINode::UINode (const NE::LocString& nodeName, const Point& nodePosition) :
 	Node (),
 	nodeName (nodeName),
 	nodePosition (nodePosition)
@@ -45,7 +45,7 @@ UINode::~UINode ()
 
 }
 
-const NE::String& UINode::GetNodeName () const
+const NE::LocString& UINode::GetNodeName () const
 {
 	return nodeName;
 }
@@ -163,11 +163,11 @@ void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlo
 	});
 }
 
-NE::String UINode::GetUIInputSlotName (const NE::SlotId& slotId) const
+NE::LocString UINode::GetUIInputSlotName (const NE::SlotId& slotId) const
 {
 	UIInputSlotConstPtr inputSlot = GetUIInputSlot (slotId);
 	if (DBGERROR (inputSlot == nullptr)) {
-		return NE::String ();
+		return NE::LocString ();
 	}
 	return inputSlot->GetName ();
 }
@@ -181,11 +181,11 @@ void UINode::SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& n
 	inputSlot->SetName (newName);
 }
 
-NE::String UINode::GetUIOutputSlotName (const NE::SlotId& slotId) const
+NE::LocString UINode::GetUIOutputSlotName (const NE::SlotId& slotId) const
 {
 	UIOutputSlotConstPtr outputSlot = GetUIOutputSlot (slotId);
 	if (DBGERROR (outputSlot == nullptr)) {
-		return NE::String ();
+		return NE::LocString ();
 	}
 	return outputSlot->GetName ();
 }
@@ -215,7 +215,7 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 	{
 	public:
 		NodeNameParameter () :
-			NotEmptyStringNodeParameter<UINode> (NE::String (L"Node Name"))
+			NotEmptyStringNodeParameter<UINode> (NE::LocString (L"Node Name"))
 		{
 		
 		}

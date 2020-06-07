@@ -1,7 +1,7 @@
 #ifndef NUIE_NODEPARAMETERS_HPP
 #define NUIE_NODEPARAMETERS_HPP
 
-#include "NE_String.hpp"
+#include "NE_LocString.hpp"
 #include "NE_Value.hpp"
 #include "NE_NodeCollection.hpp"
 #include "NUIE_UINode.hpp"
@@ -17,12 +17,12 @@ class NodeUIEnvironment;
 class NodeParameter
 {
 public:
-	NodeParameter (const NE::String& name, const ParameterType& type);
+	NodeParameter (const NE::LocString& name, const ParameterType& type);
 	virtual ~NodeParameter ();
 
-	const NE::String&					GetName () const;
+	const NE::LocString&				GetName () const;
 	const ParameterType&				GetType () const;
-	virtual std::vector<NE::String>		GetValueChoices () const;
+	virtual std::vector<NE::LocString>	GetValueChoices () const;
 
 	virtual NE::ValueConstPtr			GetValue (const UINodeConstPtr& uiNode) const = 0;
 	virtual bool						IsApplicableTo (const UINodeConstPtr& uiNode) const = 0;
@@ -30,7 +30,7 @@ public:
 	virtual bool						SetValue (UINodeInvalidator& invalidator, NE::EvaluationEnv& evaluationEnv, UINodePtr& uiNode, const NE::ValueConstPtr& value) = 0;
 
 private:
-	NE::String		name;
+	NE::LocString	name;
 	ParameterType	type;
 };
 

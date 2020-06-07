@@ -33,12 +33,12 @@ Stream::Status SerializableTestNode::Write (OutputStream& outputStream) const
 }
 
 SerializableTestUINode::SerializableTestUINode () :
-	SerializableTestUINode (String (), Point ())
+	SerializableTestUINode (LocString (), Point ())
 {
 
 }
 
-SerializableTestUINode::SerializableTestUINode (const String& nodeName, const Point& nodePosition) :
+SerializableTestUINode::SerializableTestUINode (const LocString& nodeName, const Point& nodePosition) :
 	UINode (nodeName, nodePosition)
 {
 

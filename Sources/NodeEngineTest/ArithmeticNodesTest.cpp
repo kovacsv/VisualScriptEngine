@@ -16,13 +16,13 @@ TEST (TestAllArithmeticNodes)
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (String (L"Value1"), Point (0, 0), 1.0, 1.0)), EmptyEvaluationEnv);
-	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (String (L"Value1"), Point (0, 0), 2.0, 1.0)), EmptyEvaluationEnv);
-	UINodePtr val3 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (String (L"Value3"), Point (0, 0), 3.0, 1.0)), EmptyEvaluationEnv);
-	UINodePtr add = uiManager.AddNode (UINodePtr (new AdditionNode (String (L"Addition"), Point (0, 0))), EmptyEvaluationEnv);
-	UINodePtr sub = uiManager.AddNode (UINodePtr (new SubtractionNode (String (L"Subtracion"), Point (0, 0))), EmptyEvaluationEnv);
-	UINodePtr mul = uiManager.AddNode (UINodePtr (new MultiplicationNode (String (L"Multiplication"), Point (0, 0))), EmptyEvaluationEnv);
-	UINodePtr div = uiManager.AddNode (UINodePtr (new DivisionNode (String (L"Division"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (0, 0), 1.0, 1.0)), EmptyEvaluationEnv);
+	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (0, 0), 2.0, 1.0)), EmptyEvaluationEnv);
+	UINodePtr val3 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value3"), Point (0, 0), 3.0, 1.0)), EmptyEvaluationEnv);
+	UINodePtr add = uiManager.AddNode (UINodePtr (new AdditionNode (LocString (L"Addition"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr sub = uiManager.AddNode (UINodePtr (new SubtractionNode (LocString (L"Subtracion"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr mul = uiManager.AddNode (UINodePtr (new MultiplicationNode (LocString (L"Multiplication"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr div = uiManager.AddNode (UINodePtr (new DivisionNode (LocString (L"Division"), Point (0, 0))), EmptyEvaluationEnv);
 
 	uiManager.ConnectOutputSlotToInputSlot (val1->GetUIOutputSlot (SlotId ("out")), add->GetUIInputSlot (SlotId ("a")));
 	uiManager.ConnectOutputSlotToInputSlot (val2->GetUIOutputSlot (SlotId ("out")), add->GetUIInputSlot (SlotId ("b")));

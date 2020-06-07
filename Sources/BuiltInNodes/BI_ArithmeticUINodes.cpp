@@ -14,12 +14,12 @@ DYNAMIC_SERIALIZATION_INFO (MultiplicationNode, 1, "{75F39B99-8296-4D79-8BB7-418
 DYNAMIC_SERIALIZATION_INFO (DivisionNode, 1, "{652DDDFC-A441-40B1-87AC-0BED247F35E7}");
 
 BinaryOperationNode::BinaryOperationNode () :
-	BinaryOperationNode (NE::String (), NUIE::Point ())
+	BinaryOperationNode (NE::LocString (), NUIE::Point ())
 {
 
 }
 
-BinaryOperationNode::BinaryOperationNode (const NE::String& name, const NUIE::Point& position) :
+BinaryOperationNode::BinaryOperationNode (const NE::LocString& name, const NUIE::Point& position) :
 	BasicUINode (name, position)
 {
 }
@@ -31,9 +31,9 @@ BinaryOperationNode::~BinaryOperationNode ()
 
 void BinaryOperationNode::Initialize ()
 {
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), NE::String (L"A"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), NE::String (L"B"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
-	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), NE::String (L"Result"))));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("a"), NE::LocString (L"A"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("b"), NE::LocString (L"B"), NE::ValuePtr (new NE::DoubleValue (0.0)), NE::OutputSlotConnectionMode::Single)));
+	RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("result"), NE::LocString (L"Result"))));
 	RegisterFeature (NodeFeaturePtr (new ValueCombinationFeature (NE::ValueCombinationMode::Longest)));
 }
 
@@ -67,8 +67,8 @@ NE::ValueConstPtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 void BinaryOperationNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
 {
 	BasicUINode::RegisterParameters (parameterList);
-	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, NE::SlotId ("a"), NE::String (L"A"), NUIE::ParameterType::Double);
-	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, NE::SlotId ("b"), NE::String (L"B"), NUIE::ParameterType::Double);
+	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, NE::SlotId ("a"), NE::LocString (L"A"), NUIE::ParameterType::Double);
+	NUIE::RegisterSlotDefaultValueNodeParameter<BinaryOperationNode, NE::DoubleValue> (parameterList, NE::SlotId ("b"), NE::LocString (L"B"), NUIE::ParameterType::Double);
 }
 
 bool BinaryOperationNode::IsForceCalculated () const
@@ -96,7 +96,7 @@ AdditionNode::AdditionNode () :
 
 }
 
-AdditionNode::AdditionNode (const NE::String& name, const NUIE::Point& position) :
+AdditionNode::AdditionNode (const NE::LocString& name, const NUIE::Point& position) :
 	BinaryOperationNode (name, position)
 {
 
@@ -118,7 +118,7 @@ SubtractionNode::SubtractionNode () :
 
 }
 
-SubtractionNode::SubtractionNode (const NE::String& name, const NUIE::Point& position) :
+SubtractionNode::SubtractionNode (const NE::LocString& name, const NUIE::Point& position) :
 	BinaryOperationNode (name, position)
 {
 
@@ -140,7 +140,7 @@ MultiplicationNode::MultiplicationNode () :
 
 }
 
-MultiplicationNode::MultiplicationNode (const NE::String& name, const NUIE::Point& position) :
+MultiplicationNode::MultiplicationNode (const NE::LocString& name, const NUIE::Point& position) :
 	BinaryOperationNode (name, position)
 {
 
@@ -162,7 +162,7 @@ DivisionNode::DivisionNode () :
 
 }
 
-DivisionNode::DivisionNode (const NE::String& name, const NUIE::Point& position) :
+DivisionNode::DivisionNode (const NE::LocString& name, const NUIE::Point& position) :
 	BinaryOperationNode (name, position)
 {
 

@@ -71,11 +71,11 @@ class TestNode : public BasicUINode
 
 public:
 	TestNode () :
-		TestNode (String (), Point ())
+		TestNode (LocString (), Point ())
 	{
 	}
 
-	TestNode (const String& name, const Point& position) :
+	TestNode (const LocString& name, const Point& position) :
 		BasicUINode (name, position)
 	{
 		
@@ -83,9 +83,9 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), String (L"First Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), String (L"Second Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
-		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), String (L"Single Output"))));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), LocString (L"First Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), LocString (L"Second Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), LocString (L"Single Output"))));
 		RegisterFeature (NodeFeaturePtr (new EnableDisableFeature ()));
 	}
 
@@ -159,10 +159,10 @@ TEST (EnableDisableTest)
 	NodeUIManager uiManager (env);
 	TestCalcEnvironment calcEnv;
 
-	std::shared_ptr<TestNode> node1 (new TestNode (String (L"TestNode"), Point (0, 0)));
-	std::shared_ptr<TestNode> node2 (new TestNode (String (L"TestNode"), Point (0, 0)));
-	std::shared_ptr<TestNode> node3 (new TestNode (String (L"TestNode"), Point (0, 0)));
-	std::shared_ptr<TestNode> node4 (new TestNode (String (L"TestNode"), Point (0, 0)));
+	std::shared_ptr<TestNode> node1 (new TestNode (LocString (L"TestNode"), Point (0, 0)));
+	std::shared_ptr<TestNode> node2 (new TestNode (LocString (L"TestNode"), Point (0, 0)));
+	std::shared_ptr<TestNode> node3 (new TestNode (LocString (L"TestNode"), Point (0, 0)));
+	std::shared_ptr<TestNode> node4 (new TestNode (LocString (L"TestNode"), Point (0, 0)));
 
 	uiManager.AddNode (node1, calcEnv.evalEnv);
 	uiManager.AddNode (node2, calcEnv.evalEnv);

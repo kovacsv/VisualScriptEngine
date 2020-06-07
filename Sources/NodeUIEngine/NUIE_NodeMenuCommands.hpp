@@ -15,7 +15,7 @@ template <typename CommandType>
 class NodeGroupCommand
 {
 public:
-	NodeGroupCommand (const NE::String& name);
+	NodeGroupCommand (const NE::LocString& name);
 	virtual ~NodeGroupCommand ();
 
 	std::wstring			GetName () const;
@@ -24,12 +24,12 @@ public:
 	void					EnumerateChildCommands (const std::function<void (const CommandType&)>& processor);
 
 private:
-	NE::String					name;
+	NE::LocString				name;
 	std::vector<CommandType>	childCommands;
 };
 
 template <typename CommandType>
-NodeGroupCommand<CommandType>::NodeGroupCommand (const NE::String& name) :
+NodeGroupCommand<CommandType>::NodeGroupCommand (const NE::LocString& name) :
 	name (name)
 {
 
@@ -69,21 +69,21 @@ void NodeGroupCommand<CommandType>::EnumerateChildCommands (const std::function<
 class NodeCommandBase
 {
 public:
-	NodeCommandBase (const NE::String& name, bool isChecked);
+	NodeCommandBase (const NE::LocString& name, bool isChecked);
 	virtual ~NodeCommandBase ();
 
 	virtual std::wstring	GetName () const;
 	bool					IsChecked () const;
 
 private:
-	NE::String		name;
+	NE::LocString	name;
 	bool			isChecked;
 };
 
 class NodeCommand : public NodeCommandBase
 {
 public:
-	NodeCommand (const NE::String& name, bool isChecked);
+	NodeCommand (const NE::LocString& name, bool isChecked);
 	virtual ~NodeCommand ();
 
 	virtual bool	IsApplicableTo (const UINodeConstPtr& uiNode) = 0;
@@ -96,7 +96,7 @@ using NodeGroupCommandPtr = std::shared_ptr<NodeGroupCommand<NodeCommandPtr>>;
 class InputSlotCommand : public NodeCommandBase
 {
 public:
-	InputSlotCommand (const NE::String& name, bool isChecked);
+	InputSlotCommand (const NE::LocString& name, bool isChecked);
 	virtual ~InputSlotCommand ();
 
 	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIInputSlotConstPtr& inputSlot) = 0;
@@ -108,7 +108,7 @@ using InputSlotGroupCommandPtr = std::shared_ptr<NodeGroupCommand<InputSlotComma
 class OutputSlotCommand : public NodeCommandBase
 {
 public:
-	OutputSlotCommand (const NE::String& name, bool isChecked);
+	OutputSlotCommand (const NE::LocString& name, bool isChecked);
 	virtual ~OutputSlotCommand ();
 
 	virtual void	Do (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UIOutputSlotConstPtr& outputSlot) = 0;

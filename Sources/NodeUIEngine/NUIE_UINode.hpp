@@ -1,7 +1,7 @@
 #ifndef NUIE_UINODE_HPP
 #define NUIE_UINODE_HPP
 
-#include "NE_String.hpp"
+#include "NE_LocString.hpp"
 #include "NE_Node.hpp"
 #include "NUIE_NodeDrawingImage.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
@@ -32,10 +32,10 @@ class UINode : public NE::Node
 
 public:
 	UINode ();
-	UINode (const NE::String& nodeName, const Point& nodePosition);
+	UINode (const NE::LocString& nodeName, const Point& nodePosition);
 	virtual ~UINode ();
 
-	const NE::String&			GetNodeName () const;
+	const NE::LocString&		GetNodeName () const;
 	void						SetNodeName (const std::wstring& newNodeName);
 
 	const Point&				GetNodePosition () const;
@@ -64,10 +64,10 @@ public:
 	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const;
 	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
 
-	NE::String					GetUIInputSlotName (const NE::SlotId& slotId) const;
+	NE::LocString				GetUIInputSlotName (const NE::SlotId& slotId) const;
 	void						SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
 
-	NE::String					GetUIOutputSlotName (const NE::SlotId& slotId) const;
+	NE::LocString				GetUIOutputSlotName (const NE::SlotId& slotId) const;
 	void						SetUIOutputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
 
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, UINodeCommandInterface& commandInterface);
@@ -107,7 +107,7 @@ private:
 	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
 	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
 
-	NE::String					nodeName;
+	NE::LocString				nodeName;
 	Point						nodePosition;
 	mutable NodeDrawingImage	nodeDrawingImage;
 };

@@ -13,11 +13,11 @@ class IncreaseNode : public BI::BasicUINode
 
 public:
 	IncreaseNode () :
-		IncreaseNode (String (), Point ())
+		IncreaseNode (LocString (), Point ())
 	{
 	}
 
-	IncreaseNode (const String& name, const Point& position) :
+	IncreaseNode (const LocString& name, const Point& position) :
 		BI::BasicUINode (name, position)
 	{
 
@@ -29,8 +29,8 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), String (L"In"), nullptr, NE::OutputSlotConnectionMode::Single)));
-		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), String (L"Out"))));
+		RegisterUIInputSlot (NUIE::UIInputSlotPtr (new NUIE::UIInputSlot (NE::SlotId ("in"), LocString (L"In"), nullptr, NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (NUIE::UIOutputSlotPtr (new NUIE::UIOutputSlot (NE::SlotId ("out"), LocString (L"Out"))));
 	}
 
 	NE::ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
@@ -71,7 +71,7 @@ public:
 		Viewer
 	};
 
-	MyCreateNodeCommand (NodeEditor* nodeEditor, NodeType nodeType, const NE::String& name, const NUIE::Point& position) :
+	MyCreateNodeCommand (NodeEditor* nodeEditor, NodeType nodeType, const NE::LocString& name, const NUIE::Point& position) :
 		NUIE::SingleMenuCommand (name, false),
 		nodeEditor (nodeEditor),
 		nodeType (nodeType),
@@ -90,15 +90,15 @@ public:
 	{
 		switch (nodeType) {
 			case NodeType::Number:
-				return NUIE::UINodePtr (new BI::DoubleUpDownNode (String (L"Number"), modelPosition, 0.0, 5.0));
+				return NUIE::UINodePtr (new BI::DoubleUpDownNode (LocString (L"Number"), modelPosition, 0.0, 5.0));
 			case NodeType::Integer:
-				return NUIE::UINodePtr (new BI::IntegerUpDownNode (String (L"Integer"), modelPosition, 0, 1));
+				return NUIE::UINodePtr (new BI::IntegerUpDownNode (LocString (L"Integer"), modelPosition, 0, 1));
 			case NodeType::Addition:
-				return NUIE::UINodePtr (new BI::AdditionNode (String (L"Addition"), modelPosition));
+				return NUIE::UINodePtr (new BI::AdditionNode (LocString (L"Addition"), modelPosition));
 			case NodeType::Increase:
-				return NUIE::UINodePtr (new IncreaseNode (String (L"Increase"), modelPosition));
+				return NUIE::UINodePtr (new IncreaseNode (LocString (L"Increase"), modelPosition));
 			case NodeType::Viewer:
-				return NUIE::UINodePtr (new BI::MultiLineViewerNode (String (L"Viewer"), modelPosition, 5));
+				return NUIE::UINodePtr (new BI::MultiLineViewerNode (LocString (L"Viewer"), modelPosition, 5));
 		}
 		return nullptr;
 	}
@@ -120,13 +120,13 @@ TestEventHandler::TestEventHandler (NodeEditor* nodeEditor) :
 MenuCommandPtr TestEventHandler::OnContextMenu (const Point& position, const MenuCommandStructure& commands)
 {
 	NUIE::MenuCommandStructure actualCommands = commands;
-	NUIE::MultiMenuCommandPtr createMultiCommand (new NUIE::MultiMenuCommand (NE::String (L"Add Node")));
+	NUIE::MultiMenuCommandPtr createMultiCommand (new NUIE::MultiMenuCommand (NE::LocString (L"Add Node")));
 
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Number, NE::String (L"Create Number Node"), position)));
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Integer, NE::String (L"Create Integer Node"), position)));
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Addition, NE::String (L"Create Addition Node"), position)));
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Increase, NE::String (L"Create Increase Node"), position)));
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Viewer, NE::String (L"Create Viewer Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Number, NE::LocString (L"Create Number Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Integer, NE::LocString (L"Create Integer Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Addition, NE::LocString (L"Create Addition Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Increase, NE::LocString (L"Create Increase Node"), position)));
+	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Viewer, NE::LocString (L"Create Viewer Node"), position)));
 	actualCommands.AddCommand (createMultiCommand);
 
 	return SelectCommandByName (actualCommands);

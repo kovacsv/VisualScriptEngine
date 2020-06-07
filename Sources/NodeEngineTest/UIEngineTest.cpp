@@ -19,7 +19,7 @@ namespace NodeUIEngineTest
 class TestInputSlot : public UIInputSlot
 {
 public:
-	TestInputSlot (const SlotId& id, const String& name) :
+	TestInputSlot (const SlotId& id, const LocString& name) :
 		UIInputSlot (id, name, ValuePtr (new IntValue (0)), NE::OutputSlotConnectionMode::Single)
 	{
 
@@ -29,7 +29,7 @@ public:
 class TestOutputSlot : public UIOutputSlot
 {
 public:
-	TestOutputSlot (const SlotId& id, const String& name) :
+	TestOutputSlot (const SlotId& id, const LocString& name) :
 		UIOutputSlot (id, name)
 	{
 
@@ -41,16 +41,16 @@ class TestNode : public SerializableTestUINode
 {
 public:
 	TestNode (const Point& position) :
-		SerializableTestUINode (String (L"Test Node"), position)
+		SerializableTestUINode (LocString (L"Test Node"), position)
 	{
 		
 	}
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (UIInputSlotPtr (new TestInputSlot (SlotId ("in1"), String (L"First Input"))));
-		RegisterUIInputSlot (UIInputSlotPtr (new TestInputSlot (SlotId ("in2"), String (L"Second Input"))));
-		RegisterUIOutputSlot (UIOutputSlotPtr (new TestOutputSlot (SlotId ("out"), String (L"Single Output"))));
+		RegisterUIInputSlot (UIInputSlotPtr (new TestInputSlot (SlotId ("in1"), LocString (L"First Input"))));
+		RegisterUIInputSlot (UIInputSlotPtr (new TestInputSlot (SlotId ("in2"), LocString (L"Second Input"))));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new TestOutputSlot (SlotId ("out"), LocString (L"Single Output"))));
 	}
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv&) const override

@@ -1,27 +1,27 @@
-#include "NE_String.hpp"
+#include "NE_LocString.hpp"
 
 namespace NE
 {
 
-SERIALIZATION_INFO (String, 1);
+SERIALIZATION_INFO (LocString, 1);
 
-String::String () :
-	String (std::wstring ())
+LocString::LocString () :
+	LocString (std::wstring ())
 {
 }
 
-String::String (const std::wstring& strValue) :
-	String (strValue, Localization::Localizable)
+LocString::LocString (const std::wstring& strValue) :
+	LocString (strValue, Localization::Localizable)
 {
 }
 
-String::String (const std::wstring& strValue, Localization localization) :
+LocString::LocString (const std::wstring& strValue, Localization localization) :
 	strValue (strValue),
 	localization (localization)
 {
 }
 
-void String::SetCustom (const std::wstring& customValue)
+void LocString::SetCustom (const std::wstring& customValue)
 {
 	if (localization == Localization::Localizable && customValue == GetLocalized ()) {
 		return;
@@ -30,7 +30,7 @@ void String::SetCustom (const std::wstring& customValue)
 	localization = Localization::NonLocalizable;
 }
 
-std::wstring String::GetLocalized () const
+std::wstring LocString::GetLocalized () const
 {
 	if (localization == Localization::Localizable) {
 		return LocalizeString (strValue);
@@ -41,7 +41,7 @@ std::wstring String::GetLocalized () const
 	return strValue;
 }
 
-std::wstring String::GetLocalized (const Dictionary& dictionary) const
+std::wstring LocString::GetLocalized (const Dictionary& dictionary) const
 {
 	if (localization == Localization::Localizable) {
 		return LocalizeString (dictionary, strValue);
@@ -52,7 +52,7 @@ std::wstring String::GetLocalized (const Dictionary& dictionary) const
 	return strValue;
 }
 
-Stream::Status String::Read (InputStream& inputStream)
+Stream::Status LocString::Read (InputStream& inputStream)
 {
 	ObjectHeader header (inputStream);
 	inputStream.Read (strValue);
@@ -60,7 +60,7 @@ Stream::Status String::Read (InputStream& inputStream)
 	return inputStream.GetStatus ();
 }
 
-Stream::Status String::Write (OutputStream& outputStream) const
+Stream::Status LocString::Write (OutputStream& outputStream) const
 {
 	ObjectHeader header (outputStream, serializationInfo);
 	outputStream.Write (strValue);

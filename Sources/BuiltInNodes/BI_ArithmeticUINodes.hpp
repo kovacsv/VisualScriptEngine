@@ -14,7 +14,7 @@ class BinaryOperationNode : public BasicUINode
 
 public:
 	BinaryOperationNode ();
-	BinaryOperationNode (const NE::String& name, const NUIE::Point& position);
+	BinaryOperationNode (const NE::LocString& name, const NUIE::Point& position);
 	virtual ~BinaryOperationNode ();
 
 	virtual void				Initialize () override;
@@ -36,7 +36,7 @@ class AdditionNode : public BinaryOperationNode
 
 public:
 	AdditionNode ();
-	AdditionNode (const NE::String& name, const NUIE::Point& position);
+	AdditionNode (const NE::LocString& name, const NUIE::Point& position);
 	virtual ~AdditionNode ();
 
 private:
@@ -49,7 +49,7 @@ class SubtractionNode : public BinaryOperationNode
 
 public:
 	SubtractionNode ();
-	SubtractionNode (const NE::String& name, const NUIE::Point& position);
+	SubtractionNode (const NE::LocString& name, const NUIE::Point& position);
 	virtual ~SubtractionNode ();
 
 private:
@@ -62,7 +62,7 @@ class MultiplicationNode : public BinaryOperationNode
 
 public:
 	MultiplicationNode ();
-	MultiplicationNode (const NE::String& name, const NUIE::Point& position);
+	MultiplicationNode (const NE::LocString& name, const NUIE::Point& position);
 	virtual ~MultiplicationNode ();
 
 private:
@@ -75,7 +75,7 @@ class DivisionNode : public BinaryOperationNode
 
 public:
 	DivisionNode ();
-	DivisionNode (const NE::String& name, const NUIE::Point& position);
+	DivisionNode (const NE::LocString& name, const NUIE::Point& position);
 	virtual ~DivisionNode ();
 
 private:

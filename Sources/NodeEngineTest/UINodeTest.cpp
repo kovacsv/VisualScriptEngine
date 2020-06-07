@@ -23,12 +23,12 @@ class TestNode : public SerializableTestUINode
 
 public:
 	TestNode () :
-		TestNode (String (), Point ())
+		TestNode (LocString (), Point ())
 	{
 
 	}
 
-	TestNode (const String& name, const Point& position) :
+	TestNode (const LocString& name, const Point& position) :
 		SerializableTestUINode (name, position)
 	{
 		
@@ -36,9 +36,9 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), String (L"First Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), String (L"Second Input"), NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
-		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), String (L"Single Output"))));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), LocString (L"First Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), LocString (L"Second Input"), NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), LocString (L"Single Output"))));
 	}
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
@@ -55,7 +55,7 @@ public:
 		{
 		public:
 			In1DefaultValueParameter () :
-				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (SlotId ("in1"), NE::String (L"In1"), ParameterType::Integer)
+				SlotDefaultValueNodeParameter<TestNode, NE::IntValue> (SlotId ("in1"), NE::LocString (L"In1"), ParameterType::Integer)
 			{
 			
 			}
@@ -76,7 +76,7 @@ DYNAMIC_SERIALIZATION_INFO (TestNode, 1, "{54A1DE47-8D06-4292-886A-7B8D676271D2}
 class TestNode2 : public SerializableTestUINode
 {
 public:
-	TestNode2 (const String& name, const Point& position) :
+	TestNode2 (const LocString& name, const Point& position) :
 		SerializableTestUINode (name, position)
 	{
 
@@ -84,9 +84,9 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), String (L"First Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), String (L"Second Input"), NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
-		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), String (L"Single Output"))));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), LocString (L"First Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), LocString (L"Second Input"), NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), LocString (L"Single Output"))));
 	}
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
@@ -103,7 +103,7 @@ public:
 		{
 		public:
 			In2DefaultValueParameter () :
-				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (SlotId ("in2"), NE::String (L"In2"), ParameterType::Integer)
+				SlotDefaultValueNodeParameter<TestNode2, NE::IntValue> (SlotId ("in2"), NE::LocString (L"In2"), ParameterType::Integer)
 			{
 
 			}
@@ -129,7 +129,7 @@ public:
 		CEnum
 	};
 
-	EnumerationParamTestNode (const String& name, const Point& position) :
+	EnumerationParamTestNode (const LocString& name, const Point& position) :
 		SerializableTestUINode (name, position),
 		myEnumValue (MyEnumValue::AEnum)
 	{
@@ -138,9 +138,9 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), String (L"First Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), String (L"Second Input"), NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
-		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), String (L"Single Output"))));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in1"), LocString (L"First Input"), NE::ValuePtr (new NE::IntValue (1)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in2"), LocString (L"Second Input"), NE::ValuePtr (new NE::IntValue (2)), NE::OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), LocString (L"Single Output"))));
 	}
 
 	virtual ValueConstPtr Calculate (NE::EvaluationEnv& env) const override
@@ -157,7 +157,7 @@ public:
 		{
 		public:
 			MyEnumerationParameter () :
-				EnumerationNodeParameter<EnumerationParamTestNode> (NE::String (L"EnumParam"), { NE::String (L"AString"), NE::String (L"BString"), NE::String (L"CString") })
+				EnumerationNodeParameter<EnumerationParamTestNode> (NE::LocString (L"EnumParam"), { NE::LocString (L"AString"), NE::LocString (L"BString"), NE::LocString (L"CString") })
 			{
 
 			}
@@ -202,7 +202,7 @@ TEST (NodeParametersTest)
 {
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
-	UINodePtr node (new TestNode (String (L"TestNode"), Point (0, 0)));
+	UINodePtr node (new TestNode (LocString (L"TestNode"), Point (0, 0)));
 
 	NodeUIManagerNodeInvalidator invalidator (uiManager, node);
 
@@ -237,9 +237,9 @@ TEST (NodeParametersTest2)
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr node (new TestNode (String (L"TestNode"), Point (0, 0)));
+	UINodePtr node (new TestNode (LocString (L"TestNode"), Point (0, 0)));
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
-	UINodePtr node2 (new TestNode2 (String (L"TestNode2"), Point (0, 0)));
+	UINodePtr node2 (new TestNode2 (LocString (L"TestNode2"), Point (0, 0)));
 	ASSERT (uiManager.AddNode (node2, NE::EmptyEvaluationEnv) != nullptr);
 
 	{
@@ -280,9 +280,9 @@ TEST (NodeParametersTest3)
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr node (new TestNode (String (L"TestNode"), Point (0, 0)));
+	UINodePtr node (new TestNode (LocString (L"TestNode"), Point (0, 0)));
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
-	UINodePtr node2 (new TestNode (String (L"TestNode"), Point (0, 0)));
+	UINodePtr node2 (new TestNode (LocString (L"TestNode"), Point (0, 0)));
 	ASSERT (uiManager.AddNode (node2, NE::EmptyEvaluationEnv) != nullptr);
 
 	{
@@ -306,7 +306,7 @@ TEST (NodeParametersTest4)
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
 
-	std::shared_ptr<EnumerationParamTestNode> node (new EnumerationParamTestNode (String (L"TestNode"), Point (0, 0)));
+	std::shared_ptr<EnumerationParamTestNode> node (new EnumerationParamTestNode (LocString (L"TestNode"), Point (0, 0)));
 	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
 
 	{
@@ -316,7 +316,7 @@ TEST (NodeParametersTest4)
 		ASSERT (paramList.GetParameterCount () == 2);
 		ASSERT (paramList.GetParameter (0)->GetName ().GetLocalized () == L"Node Name");
 		ASSERT (paramList.GetParameter (1)->GetName ().GetLocalized () == L"EnumParam");
-		std::vector<NE::String> choices = paramList.GetParameter (1)->GetValueChoices ();
+		std::vector<NE::LocString> choices = paramList.GetParameter (1)->GetValueChoices ();
 		ASSERT (choices.size () == 3);
 		ASSERT (choices[0].GetLocalized () == L"AString");
 		ASSERT (choices[1].GetLocalized () == L"BString");
@@ -336,8 +336,8 @@ TEST (DuplicateNodeTest)
 	TestDrawingEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr node1 = uiManager.AddNode (UINodePtr (new TestNode (String (L"TestNode"), Point (0, 0))), NE::EmptyEvaluationEnv);
-	UINodePtr node2 = uiManager.AddNode (UINodePtr (new TestNode (String (L"TestNode2"), Point (0, 0))), NE::EmptyEvaluationEnv);
+	UINodePtr node1 = uiManager.AddNode (UINodePtr (new TestNode (LocString (L"TestNode"), Point (0, 0))), NE::EmptyEvaluationEnv);
+	UINodePtr node2 = uiManager.AddNode (UINodePtr (new TestNode (LocString (L"TestNode2"), Point (0, 0))), NE::EmptyEvaluationEnv);
 
 	NE::NodeCollection nodesToDuplicate ({ node1->GetId (), node2->GetId () });
 	nodesToDuplicate.MakeSorted ();

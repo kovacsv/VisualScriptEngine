@@ -17,11 +17,11 @@ class TestNode : public BasicUINode
 
 public:
 	TestNode () :
-		TestNode (String (), Point (0.0, 0.0))
+		TestNode (LocString (), Point (0.0, 0.0))
 	{
 	}
 
-	TestNode (const String& name, const Point& position) :
+	TestNode (const LocString& name, const Point& position) :
 		BasicUINode (name, position),
 		recalcCounter (0)
 	{
@@ -30,8 +30,8 @@ public:
 
 	virtual void Initialize () override
 	{
-		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in"), String (L"Input"), ValuePtr (new IntValue (0)), OutputSlotConnectionMode::Single)));
-		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), String (L"Output"))));
+		RegisterUIInputSlot (UIInputSlotPtr (new UIInputSlot (SlotId ("in"), LocString (L"Input"), ValuePtr (new IntValue (0)), OutputSlotConnectionMode::Single)));
+		RegisterUIOutputSlot (UIOutputSlotPtr (new UIOutputSlot (SlotId ("out"), LocString (L"Output"))));
 	}
 
 	virtual ValueConstPtr Calculate (EvaluationEnv& env) const override
@@ -72,8 +72,8 @@ public:
 	RecalcNodeEditorTestEnv (const BasicSkinParams& skinParams) :
 		NodeEditorTestEnv (skinParams)
 	{
-		testNode1.reset (new TestNode (String (L"Test 1"), NUIE::Point (200, 200)));
-		testNode2.reset (new TestNode (String (L"Test 2"), NUIE::Point (500, 400)));
+		testNode1.reset (new TestNode (LocString (L"Test 1"), NUIE::Point (200, 200)));
+		testNode2.reset (new TestNode (LocString (L"Test 2"), NUIE::Point (500, 400)));
 
 		nodeEditor.AddNode (testNode1);
 		nodeEditor.AddNode (testNode2);

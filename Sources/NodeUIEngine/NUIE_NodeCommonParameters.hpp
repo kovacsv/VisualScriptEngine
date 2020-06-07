@@ -12,7 +12,7 @@ template <typename ValueType>
 class TypedParameter : public NodeParameter
 {
 public:
-	TypedParameter (const NE::String& name, const ParameterType& type) :
+	TypedParameter (const NE::LocString& name, const ParameterType& type) :
 		NodeParameter (name, type)
 	{
 
@@ -61,7 +61,7 @@ template <typename NodeType, typename ValueType>
 class TypedNodeParameter : public TypedParameter<ValueType>
 {
 public:
-	TypedNodeParameter (const NE::String& name, const ParameterType& type) :
+	TypedNodeParameter (const NE::LocString& name, const ParameterType& type) :
 		TypedParameter<ValueType> (name, type)
 	{
 
@@ -92,7 +92,7 @@ template <typename NodeType>
 class StringNodeParameter : public TypedNodeParameter<NodeType, NE::StringValue>
 {
 public:
-	StringNodeParameter (const NE::String& name) :
+	StringNodeParameter (const NE::LocString& name) :
 		TypedNodeParameter<NodeType, NE::StringValue> (name, ParameterType::String)
 	{
 
@@ -103,7 +103,7 @@ template <typename NodeType>
 class NotEmptyStringNodeParameter : public TypedNodeParameter<NodeType, NE::StringValue>
 {
 public:
-	NotEmptyStringNodeParameter (const NE::String& name) :
+	NotEmptyStringNodeParameter (const NE::LocString& name) :
 		TypedNodeParameter<NodeType, NE::StringValue> (name, ParameterType::String)
 	{
 
@@ -119,7 +119,7 @@ template <typename NodeType>
 class BooleanNodeParameter : public TypedNodeParameter<NodeType, NE::BooleanValue>
 {
 public:
-	BooleanNodeParameter (const NE::String& name) :
+	BooleanNodeParameter (const NE::LocString& name) :
 		TypedNodeParameter<NodeType, NE::BooleanValue> (name, ParameterType::Boolean)
 	{
 
@@ -130,7 +130,7 @@ template <typename NodeType>
 class IntegerNodeParameter : public TypedNodeParameter<NodeType, NE::IntValue>
 {
 public:
-	IntegerNodeParameter (const NE::String& name) :
+	IntegerNodeParameter (const NE::LocString& name) :
 		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Integer)
 	{
 
@@ -141,7 +141,7 @@ template <typename NodeType>
 class PositiveIntegerNodeParameter : public TypedNodeParameter<NodeType, NE::IntValue>
 {
 public:
-	PositiveIntegerNodeParameter (const NE::String& name) :
+	PositiveIntegerNodeParameter (const NE::LocString& name) :
 		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Integer)
 	{
 
@@ -157,7 +157,7 @@ template <typename NodeType>
 class FloatNodeParameter : public TypedNodeParameter<NodeType, NE::FloatValue>
 {
 public:
-	FloatNodeParameter (const NE::String& name) :
+	FloatNodeParameter (const NE::LocString& name) :
 		TypedNodeParameter<NodeType, NE::FloatValue> (name, ParameterType::Float)
 	{
 
@@ -168,7 +168,7 @@ template <typename NodeType>
 class DoubleNodeParameter : public TypedNodeParameter<NodeType, NE::DoubleValue>
 {
 public:
-	DoubleNodeParameter (const NE::String& name) :
+	DoubleNodeParameter (const NE::LocString& name) :
 		TypedNodeParameter<NodeType, NE::DoubleValue> (name, ParameterType::Double)
 	{
 
@@ -179,7 +179,7 @@ template <typename NodeType>
 class EnumerationNodeParameter : public TypedNodeParameter<NodeType, NE::IntValue>
 {
 public:
-	EnumerationNodeParameter (const NE::String& name, const std::vector<NE::String>& valueChoices) :
+	EnumerationNodeParameter (const NE::LocString& name, const std::vector<NE::LocString>& valueChoices) :
 		TypedNodeParameter<NodeType, NE::IntValue> (name, ParameterType::Enumeration),
 		valueChoices (valueChoices)
 	{
@@ -192,20 +192,20 @@ public:
 		return valueInt >= 0 && valueInt < (int) valueChoices.size ();
 	}
 
-	virtual std::vector<NE::String> GetValueChoices () const override
+	virtual std::vector<NE::LocString> GetValueChoices () const override
 	{
 		return valueChoices;
 	}
 
 private:
-	std::vector<NE::String> valueChoices;
+	std::vector<NE::LocString> valueChoices;
 };
 
 template <typename NodeType, typename ValueType>
 class SlotDefaultValueNodeParameter : public TypedNodeParameter<NodeType, ValueType>
 {
 public:
-	SlotDefaultValueNodeParameter (const NE::SlotId& slotId, const NE::String& name, const ParameterType& type) :
+	SlotDefaultValueNodeParameter (const NE::SlotId& slotId, const NE::LocString& name, const ParameterType& type) :
 		TypedNodeParameter<NodeType, ValueType> (name, type),
 		slotId (slotId)
 	{
@@ -245,12 +245,12 @@ private:
 };
 
 template <class NodeType, class ValueType>
-void RegisterSlotDefaultValueNodeParameter (NodeParameterList& parameterList, const NE::SlotId& slotId, const NE::String& name, const ParameterType& type)
+void RegisterSlotDefaultValueNodeParameter (NodeParameterList& parameterList, const NE::SlotId& slotId, const NE::LocString& name, const ParameterType& type)
 {
 	class Parameter : public SlotDefaultValueNodeParameter<NodeType, ValueType>
 	{
 	public:
-		Parameter (const NE::SlotId& slotId, const NE::String& name, const ParameterType& type) :
+		Parameter (const NE::SlotId& slotId, const NE::LocString& name, const ParameterType& type) :
 			SlotDefaultValueNodeParameter<NodeType, ValueType> (slotId, name, type)
 		{
 
