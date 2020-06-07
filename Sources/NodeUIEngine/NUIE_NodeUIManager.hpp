@@ -158,9 +158,6 @@ public:
 	void						ExecuteCommand (NodeUIManagerCommand& command);
 	void						ExecuteCommand (NodeUIManagerCommandPtr& command);
 
-	NE::Stream::Status			Read (NE::InputStream& inputStream);
-	NE::Stream::Status			Write (NE::OutputStream& outputStream) const;
-
 private:
 	class Status
 	{
@@ -196,6 +193,9 @@ private:
 	void				Clear (NodeUIDrawingEnvironment& env);
 	void				InvalidateDrawingsForInvalidatedNodes ();
 	void				UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode);
+
+	NE::Stream::Status	Read (NE::InputStream& inputStream);
+	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
 	NE::NodeManager		nodeManager;
 	NE::NodeCollection	selectedNodes;

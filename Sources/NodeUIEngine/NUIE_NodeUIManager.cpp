@@ -718,20 +718,6 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
 	ExecuteCommand (*command);
 }
 
-NE::Stream::Status NodeUIManager::Read (NE::InputStream& inputStream)
-{
-	NE::ObjectHeader header (inputStream);
-	nodeManager.Read (inputStream);
-	return inputStream.GetStatus ();
-}
-
-NE::Stream::Status NodeUIManager::Write (NE::OutputStream& outputStream) const
-{
-	NE::ObjectHeader header (outputStream, serializationInfo);
-	nodeManager.Write (outputStream);
-	return outputStream.GetStatus ();
-}
-
 void NodeUIManager::Clear (NodeUIDrawingEnvironment& env)
 {
 	selectedNodes.Clear ();
@@ -775,6 +761,20 @@ void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalU
 		env.OnRedrawRequested ();
 		status.ResetRedraw ();
 	}
+}
+
+NE::Stream::Status NodeUIManager::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	nodeManager.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status NodeUIManager::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	nodeManager.Write (outputStream);
+	return outputStream.GetStatus ();
 }
 
 }
