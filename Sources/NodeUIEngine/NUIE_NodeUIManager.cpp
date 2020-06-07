@@ -9,7 +9,7 @@
 namespace NUIE
 {
 
-static const size_t NodeUIManagerVersion = 1;
+SERIALIZATION_INFO (NodeUIManager, 1);
 
 class NodeUIManagerUpdateEventHandler : public NE::UpdateEventHandler
 {
@@ -583,21 +583,16 @@ void NodeUIManager::New (NodeUIDrawingEnvironment& env)
 bool NodeUIManager::Open (NodeUIDrawingEnvironment& env, NE::InputStream& inputStream)
 {
 	Clear (env);
-	size_t version;
-	inputStream.Read (version);
-	nodeManager.Read (inputStream);
+	Read (inputStream);
 	RequestRecalculateAndRedraw ();
-	bool success = (inputStream.GetStatus () == NE::Stream::Status::NoError);
-	return success;
+	return inputStream.GetStatus() == NE::Stream::Status::NoError;
 }
 
-bool NodeUIManager::Save (NE::OutputStream& outputStream) const
+bool NodeUIManager::Save (NE::OutputStream& outputStream)
 {
-	outputStream.Write (NodeUIManagerVersion);
-	nodeManager.Write (outputStream);
-	bool success = (outputStream.GetStatus () == NE::Stream::Status::NoError);
+	Write (outputStream);
 	status.ResetSave ();
-	return success;
+	return outputStream.GetStatus () == NE::Stream::Status::NoError;
 }
 
 bool NodeUIManager::NeedToSave () const
@@ -721,6 +716,20 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommand& command)
 void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
 {
 	ExecuteCommand (*command);
+}
+
+NE::Stream::Status NodeUIManager::Read (NE::InputStream& inputStream)
+{
+	NE::ObjectHeader header (inputStream);
+	nodeManager.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+NE::Stream::Status NodeUIManager::Write (NE::OutputStream& outputStream) const
+{
+	NE::ObjectHeader header (outputStream, serializationInfo);
+	nodeManager.Write (outputStream);
+	return outputStream.GetStatus ();
 }
 
 void NodeUIManager::Clear (NodeUIDrawingEnvironment& env)

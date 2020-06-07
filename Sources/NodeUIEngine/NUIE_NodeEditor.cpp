@@ -215,7 +215,7 @@ bool NodeEditor::Open (NE::InputStream& inputStream)
 	return true;
 }
 
-bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO) const
+bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO)
 {
 	NE::MemoryOutputStream outputStream;
 	if (DBGERROR (!Save (outputStream))) {
@@ -230,7 +230,7 @@ bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* exter
 	return true;
 }
 
-bool NodeEditor::Save (NE::OutputStream& outputStream) const
+bool NodeEditor::Save (NE::OutputStream& outputStream)
 {
 	const Version& currentVersion = GetCurrentVersion ();
 	outputStream.Write (NodeEditorFileMarker);

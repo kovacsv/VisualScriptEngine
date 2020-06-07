@@ -51,6 +51,8 @@ private:
 
 class NodeUIManager
 {
+	SERIALIZABLE;
+
 public:
 	enum class UpdateMode
 	{
@@ -131,7 +133,7 @@ public:
 
 	void						New (NodeUIDrawingEnvironment& env);
 	bool						Open (NodeUIDrawingEnvironment& env, NE::InputStream& inputStream);
-	bool						Save (NE::OutputStream& outputStream) const;
+	bool						Save (NE::OutputStream& outputStream);
 	bool						NeedToSave () const;
 
 	bool						CopyToNodeManager (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const;
@@ -155,6 +157,9 @@ public:
 
 	void						ExecuteCommand (NodeUIManagerCommand& command);
 	void						ExecuteCommand (NodeUIManagerCommandPtr& command);
+
+	NE::Stream::Status			Read (NE::InputStream& inputStream);
+	NE::Stream::Status			Write (NE::OutputStream& outputStream) const;
 
 private:
 	class Status
@@ -196,7 +201,7 @@ private:
 	NE::NodeCollection	selectedNodes;
 	UndoHandler			undoHandler;
 	ViewBox				viewBox;
-	mutable Status		status;
+	Status				status;
 };
 
 }

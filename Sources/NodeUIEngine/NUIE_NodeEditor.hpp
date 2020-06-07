@@ -65,8 +65,8 @@ public:
 	void						New ();
 	bool						Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO);
 	bool						Open (NE::InputStream& inputStream);
-	bool						Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO) const;
-	bool						Save (NE::OutputStream& outputStream) const;
+	bool						Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO);
+	bool						Save (NE::OutputStream& outputStream);
 	bool						NeedToSave () const;
 
 	void						SetSelectedNodesParameters ();
