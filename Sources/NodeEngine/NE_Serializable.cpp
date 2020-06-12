@@ -121,6 +121,26 @@ Stream::Status ObjectVersion::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 	
+bool ObjectVersion::operator< (const ObjectVersion& rhs) const
+{
+	return versionNumber < rhs.versionNumber;
+}
+
+bool ObjectVersion::operator> (const ObjectVersion& rhs) const
+{
+	return versionNumber > rhs.versionNumber;
+}
+
+bool ObjectVersion::operator<= (const ObjectVersion& rhs) const
+{
+	return versionNumber <= rhs.versionNumber;
+}
+
+bool ObjectVersion::operator>= (const ObjectVersion& rhs) const
+{
+	return versionNumber >= rhs.versionNumber;
+}
+
 bool ObjectVersion::operator== (const ObjectVersion& rhs) const
 {
 	return versionNumber == rhs.versionNumber;
@@ -128,7 +148,7 @@ bool ObjectVersion::operator== (const ObjectVersion& rhs) const
 
 bool ObjectVersion::operator!= (const ObjectVersion& rhs) const
 {
-	return !operator== (rhs);
+	return versionNumber != rhs.versionNumber;
 }
 
 SerializationInfo::SerializationInfo (const ObjectVersion& objectVersion) :

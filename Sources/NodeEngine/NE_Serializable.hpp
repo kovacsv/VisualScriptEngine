@@ -38,11 +38,17 @@ public:
 	Stream::Status		Read (InputStream& inputStream);
 	Stream::Status		Write (OutputStream& outputStream) const;
 
+	bool				operator< (const ObjectVersion& rhs) const;
+	bool				operator> (const ObjectVersion& rhs) const;
+
+	bool				operator<= (const ObjectVersion& rhs) const;
+	bool				operator>= (const ObjectVersion& rhs) const;
+
 	bool				operator== (const ObjectVersion& rhs) const;
 	bool				operator!= (const ObjectVersion& rhs) const;
 
 private:
-	size_t	versionNumber;
+	size_t				versionNumber;
 };
 
 class SerializationInfo
