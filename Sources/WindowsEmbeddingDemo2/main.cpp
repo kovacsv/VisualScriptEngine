@@ -89,10 +89,10 @@ public:
 
 		NUIE::MenuCommandStructure finalCommands = commands;
 		for (const WAS::NodeTree::Group& group : nodeTree.GetGroups ()) {
-			NE::LocString groupMenuCommandName (group.GetName (), NE::LocString::Localization::NonLocalizable);
+			NE::LocString groupMenuCommandName (group.GetName (), NE::LocString::Localization::DoNotLocalize);
 			NUIE::MultiMenuCommandPtr multiCommand (new NUIE::MultiMenuCommand (groupMenuCommandName));
 			for (const WAS::NodeTree::Item& item : group.GetItems ()) {
-				NE::LocString menuCommandName (item.GetName (), NE::LocString::Localization::NonLocalizable);
+				NE::LocString menuCommandName (item.GetName (), NE::LocString::Localization::DoNotLocalize);
 				multiCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, menuCommandName, position, item.GetCreator ())));
 			}
 			finalCommands.AddCommand (multiCommand);

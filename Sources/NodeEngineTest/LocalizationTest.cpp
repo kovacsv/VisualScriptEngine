@@ -138,7 +138,7 @@ TEST (StringLocalizationTest)
 	ASSERT (FillDictionary (dictionary, poDictionarySource));
 
 	LocString appleString (L"apple");
-	LocString appleNonLocString (L"apple", LocString::Localization::NonLocalizable);
+	LocString appleNonLocString (L"apple", LocString::Localization::DoNotLocalize);
 	LocString lemonString (L"lemon");
 
 	ASSERT (appleString.GetLocalized (dictionary) == L"alma");

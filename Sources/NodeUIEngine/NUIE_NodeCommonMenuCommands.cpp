@@ -604,7 +604,7 @@ public:
 
 	virtual void RegisterNodeGroupCommand (NodeGroupCommandPtr nodeGroupCommand) override
 	{
-		NE::LocString menuCommandName (nodeGroupCommand->GetName (), NE::LocString::Localization::NonLocalizable);
+		NE::LocString menuCommandName (nodeGroupCommand->GetName (), NE::LocString::Localization::DoNotLocalize);
 		MultiMenuCommandPtr multiCommand (new MultiMenuCommand (menuCommandName));
 		nodeGroupCommand->EnumerateChildCommands ([&] (const NodeCommandPtr& nodeCommand) {
 			std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand = CreateMultiNodeCommand (nodeCommand);
@@ -626,7 +626,7 @@ public:
 private:
 	std::shared_ptr<MultiNodeMenuCommand> CreateMultiNodeCommand (NodeCommandPtr nodeCommand)
 	{
-		NE::LocString menuCommandName (nodeCommand->GetName (), NE::LocString::Localization::NonLocalizable);
+		NE::LocString menuCommandName (nodeCommand->GetName (), NE::LocString::Localization::DoNotLocalize);
 		std::shared_ptr<MultiNodeMenuCommand> multiNodeCommand (new MultiNodeMenuCommand (menuCommandName, uiManager, uiEnvironment, nodeCommand));
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);
@@ -641,7 +641,7 @@ private:
 	NodeUIManager&				uiManager;
 	NodeUIEnvironment&			uiEnvironment;
 	const NE::NodeCollection&	relevantNodes;
-	MenuCommandStructure			commandStructure;
+	MenuCommandStructure		commandStructure;
 };
 
 template <typename SlotType, typename CommandType>
@@ -699,7 +699,7 @@ public:
 
 	virtual void RegisterSlotGroupCommand (std::shared_ptr<NodeGroupCommand<SlotCommandType>> slotGroupCommand) override
 	{
-		NE::LocString menuCommandName (slotGroupCommand->GetName (), NE::LocString::Localization::NonLocalizable);
+		NE::LocString menuCommandName (slotGroupCommand->GetName (), NE::LocString::Localization::DoNotLocalize);
 		MultiMenuCommandPtr multiCommand (new MultiMenuCommand (menuCommandName));
 		slotGroupCommand->EnumerateChildCommands ([&] (const SlotCommandType& slotNodeCommand) {
 			MenuCommandPtr slotCommand = CreateSlotCommand (slotNodeCommand);
@@ -710,7 +710,7 @@ public:
 
 	MenuCommandPtr CreateSlotCommand (SlotCommandType slotNodeCommand)
 	{
-		NE::LocString menuCommandName (slotNodeCommand->GetName (), NE::LocString::Localization::NonLocalizable);
+		NE::LocString menuCommandName (slotNodeCommand->GetName (), NE::LocString::Localization::DoNotLocalize);
 		MenuCommandPtr slotCommand (new SlotMenuCommand<SourceSlotType, SlotCommandType> (menuCommandName, uiManager, uiEnvironment, sourceSlot, slotNodeCommand));
 		return slotCommand;
 	}

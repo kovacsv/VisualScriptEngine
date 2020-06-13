@@ -11,7 +11,7 @@ LocString::LocString () :
 }
 
 LocString::LocString (const std::wstring& strValue) :
-	LocString (strValue, Localization::Localizable)
+	LocString (strValue, Localization::Localize)
 {
 }
 
@@ -23,18 +23,18 @@ LocString::LocString (const std::wstring& strValue, Localization localization) :
 
 void LocString::SetCustom (const std::wstring& customValue)
 {
-	if (localization == Localization::Localizable && customValue == GetLocalized ()) {
+	if (localization == Localization::Localize && customValue == GetLocalized ()) {
 		return;
 	}
 	strValue = customValue;
-	localization = Localization::NonLocalizable;
+	localization = Localization::DoNotLocalize;
 }
 
 std::wstring LocString::GetLocalized () const
 {
-	if (localization == Localization::Localizable) {
+	if (localization == Localization::Localize) {
 		return LocalizeString (strValue);
-	} else if (localization == Localization::NonLocalizable){
+	} else if (localization == Localization::DoNotLocalize){
 		return strValue;
 	}
 	DBGBREAK ();
@@ -43,9 +43,9 @@ std::wstring LocString::GetLocalized () const
 
 std::wstring LocString::GetLocalized (const Dictionary& dictionary) const
 {
-	if (localization == Localization::Localizable) {
+	if (localization == Localization::Localize) {
 		return LocalizeString (dictionary, strValue);
-	} else if (localization == Localization::NonLocalizable) {
+	} else if (localization == Localization::DoNotLocalize) {
 		return strValue;
 	}
 	DBGBREAK ();

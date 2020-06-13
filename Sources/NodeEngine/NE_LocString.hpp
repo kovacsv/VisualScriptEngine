@@ -15,8 +15,8 @@ class LocString
 public:
 	enum class Localization
 	{
-		Localizable		= 1,
-		NonLocalizable	= 2
+		Localize		= 1,
+		DoNotLocalize	= 2
 	};
 
 	explicit LocString ();
