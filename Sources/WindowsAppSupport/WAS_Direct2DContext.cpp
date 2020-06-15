@@ -296,6 +296,11 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 	return NUIE::Size (metrics.width * SafetyTextRatio, metrics.height * SafetyTextRatio);
 }
 
+bool Direct2DContext::CanDrawIcon ()
+{
+	return true;
+}
+
 void Direct2DContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId)
 {
 	if (imageLoader == nullptr) {

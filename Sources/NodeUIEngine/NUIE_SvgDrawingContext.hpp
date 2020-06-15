@@ -59,6 +59,7 @@ public:
 	virtual void		FillEllipse (const Rect& rect, const Color& color) override;
 	virtual void		DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const NUIE::Color& textColor) override;
 	virtual Size		MeasureText (const Font& font, const std::wstring& text) override;
+	virtual bool		CanDrawIcon () override;
 	virtual void		DrawIcon (const Rect& rect, const IconId& iconId) override;
 
 private:

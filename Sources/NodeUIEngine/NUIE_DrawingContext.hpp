@@ -44,6 +44,7 @@ public:
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) = 0;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) = 0;
 
+	virtual bool	CanDrawIcon () = 0;
 	virtual void	DrawIcon (const Rect& rect, const IconId& iconId) = 0;
 };
 
@@ -75,6 +76,7 @@ public:
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) override;
 
+	virtual bool	CanDrawIcon () override;
 	virtual void	DrawIcon (const Rect& rect, const IconId& iconId) override;
 
 protected:
@@ -106,6 +108,7 @@ public:
 	virtual void	DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor) override;
 	virtual Size	MeasureText (const Font& font, const std::wstring& text) override;
 
+	virtual bool	CanDrawIcon () override;
 	virtual void	DrawIcon (const Rect& rect, const IconId& iconId) override;
 };
 

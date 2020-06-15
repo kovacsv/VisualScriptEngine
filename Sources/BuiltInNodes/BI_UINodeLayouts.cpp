@@ -19,7 +19,7 @@ void HeaderBasedLayout::AddPanels (	const BasicUINode& uiNode,
 		nodeStatus = NodeUIHeaderPanel::NodeStatus::HasValue;
 	}
 	std::wstring nodeName = uiNode.GetNodeName ().GetLocalized ();
-	if (uiNode.HasIconId ()) {
+	if (uiNode.HasIconId () && env.GetDrawingContext ().CanDrawIcon ()) {
 		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIIconHeaderPanel (nodeName, nodeStatus, uiNode.GetIconId (), env)));
 	} else {
 		drawer.AddPanel (NUIE::NodeUIPanelPtr (new NodeUIHeaderPanel (nodeName, nodeStatus)));

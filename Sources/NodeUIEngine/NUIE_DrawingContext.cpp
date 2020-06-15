@@ -94,6 +94,11 @@ Size DrawingContextDecorator::MeasureText (const Font& font, const std::wstring&
 	return decorated.MeasureText (font, text);
 }
 
+bool DrawingContextDecorator::CanDrawIcon ()
+{
+	return decorated.CanDrawIcon ();
+}
+
 void DrawingContextDecorator::DrawIcon (const Rect& rect, const IconId& iconId)
 {
 	decorated.DrawIcon (rect, iconId);
@@ -167,6 +172,11 @@ void NullDrawingContext::DrawFormattedText (const Rect&, const Font&, const std:
 Size NullDrawingContext::MeasureText (const Font&, const std::wstring&)
 {
 	return Size ();
+}
+
+bool NullDrawingContext::CanDrawIcon ()
+{
+	return false;
 }
 
 void NullDrawingContext::DrawIcon (const Rect&, const IconId&)

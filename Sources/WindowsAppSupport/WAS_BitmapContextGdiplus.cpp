@@ -202,6 +202,11 @@ NUIE::Size BitmapContextGdiplus::MeasureText (const NUIE::Font& font, const std:
 	return NUIE::Size (textRect.Width, textRect.Height);
 }
 
+bool BitmapContextGdiplus::CanDrawIcon ()
+{
+	return false;
+}
+
 void BitmapContextGdiplus::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 {
 	DBGBREAK ();
