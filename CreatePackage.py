@@ -50,18 +50,24 @@ def Main (argv):
 	if not os.path.exists (packagePath):
 		os.makedirs (packagePath)
 	
+	stringCollectorPath = os.path.join ('Tools', 'CollectLocalizedStrings.bat')
+	subprocess.call ([
+		stringCollectorPath
+	])
+
 	zipPath = os.path.abspath (os.path.join (packagePath, 'VisualScriptEngine_V' + version + '_VS' + visualStudioVersion + '_' + msBuildConfiguration + '_x64.zip'))
 	requiredFolders = [
 		os.path.abspath (os.path.join ('Build', 'DevKit', 'include')),
 		os.path.abspath (os.path.join ('Build', 'DevKit', 'lib')),
-		os.path.abspath (os.path.join ('Build', 'DevKit', 'source'))
+		os.path.abspath (os.path.join ('Build', 'DevKit', 'source')),
+		os.path.abspath (os.path.join ('Build', 'DevKit', 'localization'))
 	]
 	zip = zipfile.ZipFile (zipPath, mode = 'w', compression = zipfile.ZIP_DEFLATED)
 	for folder in requiredFolders:
 		for file in os.listdir (folder):
 			zip.write (os.path.join (folder, file), os.path.join (os.path.basename (folder), file))	
 	zip.close ()
-
+	
 	return 0
 	
 sys.exit (Main (sys.argv))
