@@ -207,7 +207,6 @@ private:
 	WAS::NodeEditorHwndControl		nodeEditorControl;
 };
 
-static std::shared_ptr<WAS::NodeEditorHwndControl> nodeEditorControl (new WAS::NodeEditorHwndControl ());
 static MyNodeUIEnvironment uiEnvironment;
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
