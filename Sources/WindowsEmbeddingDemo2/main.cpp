@@ -226,11 +226,21 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				uiEnvironment.Init (&nodeEditor, hwnd);
 			}
 			break;
-		case WM_CLOSE:
-			DestroyWindow (hwnd);
+		case WM_SIZE:
+			{
+				int newWidth = LOWORD (lParam);
+				int newHeight = HIWORD (lParam);
+				uiEnvironment.OnResize (0, 0, newWidth, newHeight);
+			}
 			break;
 		case WM_PAINT:
 			uiEnvironment.OnPaint ();
+			break;
+		case WM_CLOSE:
+			DestroyWindow (hwnd);
+			break;
+		case WM_DESTROY:
+			PostQuitMessage (0);
 			break;
 		case WM_ERASEBKGND:
 			return 0;
@@ -322,13 +332,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				nodeEditor.OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
 			}
 			break;
-		case WM_SIZE:
-			{
-				int newWidth = LOWORD (lParam);
-				int newHeight = HIWORD (lParam);
-				nodeEditor.OnResize (newWidth, newHeight);
-			}
-			break;
 		case WM_KEYDOWN:
 			{
 				NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
@@ -368,9 +371,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 					nodeEditor.OnKeyPress (pressedKey);
 				}
 			}
-			break;
-		case WM_DESTROY:
-			PostQuitMessage (0);
 			break;
 	}
 
