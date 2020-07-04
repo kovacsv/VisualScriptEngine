@@ -26,7 +26,7 @@ NodeEditorHwndSurface::~NodeEditorHwndSurface ()
 
 }
 
-bool NodeEditorHwndSurface::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeWindowHandle, int x, int y, int width, int height)
+bool NodeEditorHwndSurface::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeWindowHandle, int, int, int, int)
 {
 	nodeEditor = nodeEditorPtr;
 	DBGASSERT (nodeEditor != nullptr);
@@ -37,8 +37,6 @@ bool NodeEditorHwndSurface::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeW
 	}
 
 	nativeContext->Init (windowHandle);
-	MoveWindow (windowHandle, x, y, width, height, TRUE);
-
 	return true;
 }
 
@@ -54,12 +52,11 @@ bool NodeEditorHwndSurface::IsEditorFocused () const
 	return focusedHwnd == editorHwnd;
 }
 
-void NodeEditorHwndSurface::Resize (int x, int y, int width, int height)
+void NodeEditorHwndSurface::Resize (int, int, int width, int height)
 {
 	if (windowHandle == NULL) {
 		return;
 	}
-	MoveWindow (windowHandle, x, y, width, height, TRUE);
 	if (nodeEditor != nullptr) {
 		nodeEditor->OnResize (width, height);
 	}

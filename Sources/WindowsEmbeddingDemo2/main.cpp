@@ -2,8 +2,10 @@
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
+#include "WAS_NodeEditorHwndSurface.hpp"
 #include "WAS_ParameterDialog.hpp"
 #include "WAS_NodeTree.hpp"
+#include "WAS_SetCaptureHandler.hpp"
 #include "BI_BuiltInNodes.hpp"
 
 #include <windows.h>
@@ -117,26 +119,31 @@ public:
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
-		nodeEditorControl ()
+		nodeEditorSurface ()
 	{
 
 	}
 
-	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
+	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND controlHandle)
 	{
 		RECT clientRect;
-		GetClientRect (parentHandle, &clientRect);
+		GetClientRect (controlHandle, &clientRect);
 		int width = clientRect.right - clientRect.left;
 		int height = clientRect.bottom - clientRect.top;
 
-		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-		eventHandler.Init (&nodeEditorControl);
+		nodeEditorSurface.Init (nodeEditorPtr, controlHandle, 0, 0, width, height);
+		eventHandler.Init (&nodeEditorSurface);
 		eventHandler.SetNodeEditor (nodeEditorPtr);
 	}
 
 	void OnResize (int x, int y, int width, int height)
 	{
-		nodeEditorControl.Resize (x, y, width, height);
+		nodeEditorSurface.Resize (x, y, width, height);
+	}
+
+	void OnPaint ()
+	{
+		nodeEditorSurface.Draw ();
 	}
 
 	virtual const NE::StringConverter& GetStringConverter () override
@@ -151,7 +158,7 @@ public:
 
 	virtual NUIE::DrawingContext& GetDrawingContext () override
 	{
-		return nodeEditorControl.GetDrawingContext ();
+		return nodeEditorSurface.GetDrawingContext ();
 	}
 
 	virtual double GetWindowScale () override
@@ -181,7 +188,7 @@ public:
 
 	virtual void OnRedrawRequested () override
 	{
-		nodeEditorControl.Invalidate ();
+		nodeEditorSurface.Invalidate ();
 	}
 
 	virtual NUIE::EventHandler& GetEventHandler () override
@@ -205,11 +212,12 @@ private:
 	MyEventHandler					eventHandler;
 	NUIE::MemoryClipboardHandler	clipboardHandler;
 	NE::EvaluationEnv				evaluationEnv;
-	WAS::NodeEditorHwndControl		nodeEditorControl;
+	WAS::NodeEditorHwndSurface		nodeEditorSurface;
 };
 
 static MyNodeUIEnvironment uiEnvironment;
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
+static WAS::SetCaptureHandler setCaptureHandler;
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -222,11 +230,144 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 		case WM_CLOSE:
 			DestroyWindow (hwnd);
 			break;
+		case WM_PAINT:
+			uiEnvironment.OnPaint ();
+			break;
+		case WM_ERASEBKGND:
+			return 0;
+		case WM_LBUTTONDOWN:
+			{
+				setCaptureHandler.HandleMouseDown (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONDOWN:
+			{
+				setCaptureHandler.HandleMouseDown (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONDOWN:
+			{
+				setCaptureHandler.HandleMouseDown (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+			}
+			break;
+		case WM_LBUTTONUP:
+			{
+				setCaptureHandler.HandleMouseUp ();
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONUP:
+			{
+				setCaptureHandler.HandleMouseUp ();
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONUP:
+			{
+				setCaptureHandler.HandleMouseUp ();
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+			}
+			break;
+		case WM_MOUSEMOVE:
+			{
+				SetFocus (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseMove (WAS::GetModiferKeysFromEvent (wParam), x, y);
+			}
+			break;
+		case WM_MOUSEWHEEL:
+			{
+				POINT mousePos;
+				mousePos.x = GET_X_LPARAM (lParam);
+				mousePos.y = GET_Y_LPARAM (lParam);
+				ScreenToClient (hwnd, &mousePos);
+				int delta = GET_WHEEL_DELTA_WPARAM (wParam);
+				NUIE::MouseWheelRotation rotation = delta > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
+				nodeEditor.OnMouseWheel (WAS::GetModiferKeysFromEvent (wParam), rotation, mousePos.x, mousePos.y);
+			}
+			break;
+		case WM_LBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+			}
+			break;
 		case WM_SIZE:
 			{
 				int newWidth = LOWORD (lParam);
 				int newHeight = HIWORD (lParam);
-				uiEnvironment.OnResize (0, 0, newWidth, newHeight);
+				nodeEditor.OnResize (newWidth, newHeight);
+			}
+			break;
+		case WM_KEYDOWN:
+			{
+				NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
+				bool isControlPressed = (GetKeyState (VK_CONTROL) < 0);
+				if (isControlPressed) {
+					switch (wParam) {
+						case 'A':
+							pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
+							break;
+						case 'C':
+							pressedKey.SetKeyCode (NUIE::KeyCode::Copy);
+							break;
+						case 'V':
+							pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
+							break;
+						case 'G':
+							pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+							break;
+						case 'Z':
+							pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
+							break;
+						case 'Y':
+							pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+							break;
+					}
+				} else {
+					switch (wParam) {
+						case VK_ESCAPE:
+							pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
+							break;
+						case VK_DELETE:
+							pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
+							break;
+					}
+				}
+				if (pressedKey.IsValid ()) {
+					nodeEditor.OnKeyPress (pressedKey);
+				}
 			}
 			break;
 		case WM_DESTROY:
