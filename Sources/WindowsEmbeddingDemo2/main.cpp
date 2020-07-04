@@ -3,6 +3,7 @@
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
 #include "WAS_ParameterDialog.hpp"
+#include "WAS_NodeTree.hpp"
 #include "BI_BuiltInNodes.hpp"
 
 #include <windows.h>

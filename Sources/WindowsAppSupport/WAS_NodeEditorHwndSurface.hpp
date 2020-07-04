@@ -1,23 +1,22 @@
-#ifndef WAS_NODEEDITORHWNDCONTROL_HPP
-#define WAS_NODEEDITORHWNDCONTROL_HPP
+#ifndef WAS_NODEEDITORHWNDSURFACE_HPP
+#define WAS_NODEEDITORHWNDSURFACE_HPP
 
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_NativeNodeEditorControl.hpp"
 #include "NUIE_DrawingContext.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"
-#include "WAS_CustomControl.hpp"
 
 namespace WAS
 {
 
-class NodeEditorHwndControl : public NUIE::NativeNodeEditorControl
+class NodeEditorHwndSurface : public NUIE::NativeNodeEditorControl
 {
 public:
-	NodeEditorHwndControl ();
-	NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
-	virtual ~NodeEditorHwndControl ();
+	NodeEditorHwndSurface ();
+	NodeEditorHwndSurface (const NUIE::NativeDrawingContextPtr& nativeContext);
+	virtual ~NodeEditorHwndSurface ();
 
-	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;
+	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeWindowHandle, int x, int y, int width, int height) override;
 	virtual void*					GetEditorNativeHandle () const override;
 	virtual bool					IsEditorFocused () const override;
 
@@ -31,7 +30,7 @@ public:
 private:
 	NUIE::NodeEditor*				nodeEditor;
 	NUIE::NativeDrawingContextPtr	nativeContext;
-	CustomControl					control;
+	HWND							windowHandle;
 };
 
 }

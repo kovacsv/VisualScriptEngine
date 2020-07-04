@@ -1,40 +1,11 @@
 #include "WAS_NodeEditorHwndControl.hpp"
 #include "WAS_BitmapContextGdi.hpp"
+#include "WAS_SetCaptureHandler.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "NE_Debug.hpp"
 
 namespace WAS
 {
-
-class SetCaptureHandler
-{
-public:
-	SetCaptureHandler () :
-		counter (0)
-	{
-	
-	}
-
-	void HandleMouseDown (HWND hwnd)
-	{
-		if (counter == 0) {
-			SetCapture (hwnd);
-		}
-		counter += 1;
-	}
-
-	void HandleMouseUp ()
-	{
-		counter -= 1;
-		if (counter <= 0) { // sometimes down and up are not in pair
-			ReleaseCapture ();
-			counter = 0;
-		}
-	}
-
-private:
-	int counter;
-};
 
 static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {

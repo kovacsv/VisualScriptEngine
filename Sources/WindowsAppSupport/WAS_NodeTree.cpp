@@ -1,4 +1,4 @@
-#include "WAS_NodeEditorHwndControl.hpp"
+#include "WAS_NodeTree.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "NE_Debug.hpp"
 
