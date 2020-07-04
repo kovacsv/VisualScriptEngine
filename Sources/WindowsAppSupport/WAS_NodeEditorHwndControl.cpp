@@ -247,16 +247,6 @@ void NodeEditorHwndControl::Invalidate ()
 	InvalidateRect (hwnd, NULL, FALSE);
 }
 
-NUIE::DrawingContext& NodeEditorHwndControl::GetDrawingContext ()
-{
-	return *nativeContext;
-}
-
-NUIE::NodeEditor* NodeEditorHwndControl::GetNodeEditor ()
-{
-	return nodeEditor;
-}
-
 void NodeEditorHwndControl::Draw ()
 {
 	HWND hwnd = control.GetWindowHandle ();
@@ -267,6 +257,16 @@ void NodeEditorHwndControl::Draw ()
 		nodeEditor->Draw ();
 	}
 	nativeContext->BlitToWindow (hwnd);
+}
+
+NUIE::DrawingContext& NodeEditorHwndControl::GetDrawingContext ()
+{
+	return *nativeContext;
+}
+
+NUIE::NodeEditor* NodeEditorHwndControl::GetNodeEditor ()
+{
+	return nodeEditor;
 }
 
 }

@@ -125,6 +125,11 @@ void NodeEditorNodeTreeHwndControl::Invalidate ()
 	nodeEditorControl.Invalidate ();
 }
 
+void NodeEditorNodeTreeHwndControl::Draw ()
+{
+	nodeEditorControl.Draw ();
+}
+
 NUIE::DrawingContext& NodeEditorNodeTreeHwndControl::GetDrawingContext ()
 {
 	return nodeEditorControl.GetDrawingContext ();

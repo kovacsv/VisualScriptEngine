@@ -123,7 +123,7 @@ public:
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
-		nodeEditorSurface ()
+		editorControl (new WAS::NodeEditorHwndSurface ())
 	{
 
 	}
@@ -135,19 +135,19 @@ public:
 		int width = clientRect.right - clientRect.left;
 		int height = clientRect.bottom - clientRect.top;
 
-		nodeEditorSurface.Init (nodeEditorPtr, controlHandle, 0, 0, width, height);
-		eventHandler.Init (&nodeEditorSurface);
+		editorControl->Init (nodeEditorPtr, controlHandle, 0, 0, width, height);
+		eventHandler.Init (&*editorControl);
 		eventHandler.SetNodeEditor (nodeEditorPtr);
 	}
 
 	void OnResize (int x, int y, int width, int height)
 	{
-		nodeEditorSurface.Resize (x, y, width, height);
+		editorControl->Resize (x, y, width, height);
 	}
 
 	void OnPaint ()
 	{
-		nodeEditorSurface.Draw ();
+		editorControl->Draw ();
 	}
 
 	virtual const NE::StringConverter& GetStringConverter () override
@@ -162,7 +162,7 @@ public:
 
 	virtual NUIE::DrawingContext& GetDrawingContext () override
 	{
-		return nodeEditorSurface.GetDrawingContext ();
+		return editorControl->GetDrawingContext ();
 	}
 
 	virtual double GetWindowScale () override
@@ -192,7 +192,7 @@ public:
 
 	virtual void OnRedrawRequested () override
 	{
-		nodeEditorSurface.Invalidate ();
+		editorControl->Invalidate ();
 	}
 
 	virtual NUIE::EventHandler& GetEventHandler () override
@@ -211,12 +211,12 @@ public:
 	}
 
 private:
-	NE::BasicStringConverter		stringConverter;
-	NUIE::BasicSkinParams			skinParams;
-	MyEventHandler					eventHandler;
-	NUIE::MemoryClipboardHandler	clipboardHandler;
-	NE::EvaluationEnv				evaluationEnv;
-	WAS::NodeEditorHwndSurface		nodeEditorSurface;
+	NE::BasicStringConverter			stringConverter;
+	NUIE::BasicSkinParams				skinParams;
+	MyEventHandler						eventHandler;
+	NUIE::MemoryClipboardHandler		clipboardHandler;
+	NE::EvaluationEnv					evaluationEnv;
+	NUIE::NativeNodeEditorControlPtr	editorControl;
 };
 
 static MyNodeUIEnvironment uiEnvironment;

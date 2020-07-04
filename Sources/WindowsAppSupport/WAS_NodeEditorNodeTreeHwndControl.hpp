@@ -21,6 +21,8 @@ public:
 
 	virtual void					Resize (int x, int y, int width, int height) override;
 	virtual void					Invalidate () override;
+	virtual void					Draw () override;
+	
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 
 	void							FillNodeTree (const NodeTree& nodeTree);

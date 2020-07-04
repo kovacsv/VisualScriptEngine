@@ -18,6 +18,8 @@ public:
 
 	virtual void					Resize (int x, int y, int width, int height) = 0;
 	virtual void					Invalidate () = 0;
+	virtual void					Draw () = 0;
+
 	virtual NUIE::DrawingContext&	GetDrawingContext () = 0;
 };
 

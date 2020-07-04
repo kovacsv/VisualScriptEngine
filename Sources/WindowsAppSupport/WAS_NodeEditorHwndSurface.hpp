@@ -22,10 +22,10 @@ public:
 
 	virtual void					Resize (int x, int y, int width, int height) override;
 	virtual void					Invalidate () override;
-	virtual NUIE::DrawingContext&	GetDrawingContext () override;
+	virtual void					Draw () override;
 
+	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 	NUIE::NodeEditor*				GetNodeEditor ();
-	void							Draw ();
 
 private:
 	NUIE::NodeEditor*				nodeEditor;

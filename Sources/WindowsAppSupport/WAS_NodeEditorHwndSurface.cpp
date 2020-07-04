@@ -70,16 +70,6 @@ void NodeEditorHwndSurface::Invalidate ()
 	InvalidateRect (windowHandle, NULL, FALSE);
 }
 
-NUIE::DrawingContext& NodeEditorHwndSurface::GetDrawingContext ()
-{
-	return *nativeContext;
-}
-
-NUIE::NodeEditor* NodeEditorHwndSurface::GetNodeEditor ()
-{
-	return nodeEditor;
-}
-
 void NodeEditorHwndSurface::Draw ()
 {
 	if (windowHandle == NULL) {
@@ -89,6 +79,16 @@ void NodeEditorHwndSurface::Draw ()
 		nodeEditor->Draw ();
 	}
 	nativeContext->BlitToWindow (windowHandle);
+}
+
+NUIE::DrawingContext& NodeEditorHwndSurface::GetDrawingContext ()
+{
+	return *nativeContext;
+}
+
+NUIE::NodeEditor* NodeEditorHwndSurface::GetNodeEditor ()
+{
+	return nodeEditor;
 }
 
 }
