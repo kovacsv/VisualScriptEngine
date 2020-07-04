@@ -10,6 +10,49 @@
 #include <windows.h>
 #include <windowsx.h>
 
+static void InitNodeTree (WAS::NodeTree& nodeTree)
+{
+	size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
+	nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
+	});
+	nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
+	});
+	nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
+	});
+	nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
+	});
+	size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
+	nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
+	});
+	size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
+	nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
+	});
+}
+
 class MyEventHandler : public WAS::HwndEventHandler
 {
 public:
@@ -18,45 +61,7 @@ public:
 		nodeEditor (nullptr),
 		nodeTree ()
 	{
-		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-		nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
-		});
-		nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
-		});
-		nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
-		});
-		nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
-		});
-		nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
-		});
-		nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
-		});
-		nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
-		});
-		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
-		nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
-		});
-		nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
-		});
-		nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
-		});
-		nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
-		});
-		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-		nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
-		});
+		InitNodeTree (nodeTree);
 	}
 
 	void SetNodeEditor (NUIE::NodeEditor* nodeEditorPtr)
