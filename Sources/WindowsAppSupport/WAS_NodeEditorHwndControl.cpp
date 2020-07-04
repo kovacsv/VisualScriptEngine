@@ -1,6 +1,5 @@
 #include "WAS_NodeEditorHwndControl.hpp"
 #include "WAS_BitmapContextGdi.hpp"
-#include "WAS_SetCaptureHandler.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "NE_Debug.hpp"
 

@@ -5,7 +5,6 @@
 #include "WAS_NodeEditorHwndSurface.hpp"
 #include "WAS_ParameterDialog.hpp"
 #include "WAS_NodeTree.hpp"
-#include "WAS_SetCaptureHandler.hpp"
 #include "BI_BuiltInNodes.hpp"
 
 #include <windows.h>

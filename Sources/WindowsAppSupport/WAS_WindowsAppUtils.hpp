@@ -11,6 +11,18 @@
 namespace WAS
 {
 
+class SetCaptureHandler
+{
+public:
+	SetCaptureHandler ();
+
+	void HandleMouseDown (HWND hwnd);
+	void HandleMouseUp ();
+
+private:
+	int counter;
+};
+
 NE::BasicStringSettings		GetStringSettingsFromSystem ();
 NUIE::ModifierKeys			GetModiferKeysFromEvent (WPARAM wParam);
 NUIE::MenuCommandPtr		SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
