@@ -3,7 +3,7 @@
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
 #include "WAS_ClipboardHandler.hpp"
-#include "WAS_NodeEditorHwndControl.hpp"
+#include "WAS_NodeEditorNodeTreeHwndControl.hpp"
 #include "WAS_ParameterDialog.hpp"
 
 #include "BI_BuiltInNodes.hpp"
