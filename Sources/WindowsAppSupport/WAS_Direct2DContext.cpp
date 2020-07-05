@@ -128,14 +128,25 @@ void Direct2DContext::Init (void* nativeHandle)
 	CreateRenderTarget ();
 }
 
-void Direct2DContext::BlitToWindow (void*)
+void Direct2DContext::BlitToWindow (void* nativeHandle)
 {
-
+	HWND targetHwnd = (HWND) nativeHandle;
+	if (hwnd == targetHwnd) {
+		return;
+	}
+	PAINTSTRUCT ps;
+	HDC targetHdc = BeginPaint (targetHwnd, &ps);
+	BlitToContext (targetHdc);
+	EndPaint (targetHwnd, &ps);
 }
 
-void Direct2DContext::BlitToContext (void*)
+void Direct2DContext::BlitToContext (void* nativeContext)
 {
-
+	HDC targetHdc = (HDC) nativeContext;
+	if (hwnd == WindowFromDC (targetHdc)) {
+		return;
+	}
+	BitBlt (targetHdc, 0, 0, width, height, GetDC (renderTarget->GetHwnd ()), 0, 0, SRCCOPY);
 }
 
 void Direct2DContext::Resize (int newWidth, int newHeight)
