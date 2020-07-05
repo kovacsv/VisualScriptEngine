@@ -61,13 +61,17 @@ public:
 
 private:
 	void						CreateRenderTarget ();
+	void						CreateOffscreenContext ();
 
-	HWND						hwnd;
 	int							width;
 	int							height;
+
 	Direct2DHandler				direct2DHandler;
 	Direct2DImageLoaderPtr		imageLoader;
-	ID2D1HwndRenderTarget*		renderTarget;
+	ID2D1DCRenderTarget*		renderTarget;
+
+	HDC							memoryDC;
+	HBITMAP						memoryBitmap;
 };
 
 }

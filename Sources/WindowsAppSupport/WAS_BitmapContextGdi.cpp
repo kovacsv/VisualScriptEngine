@@ -65,9 +65,7 @@ void BitmapContextGdi::Init (void* nativeHandle)
 	width = clientRect.right - clientRect.left;
 	height = clientRect.bottom - clientRect.top;
 
-	HDC hdc = GetDC (NULL);
-	memoryDC = CreateCompatibleDC (hdc);
-	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
+	CreateOffscreenContext ();
 }
 
 void BitmapContextGdi::BlitToWindow (void* nativeHandle)
@@ -91,13 +89,7 @@ void BitmapContextGdi::Resize (int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
-
-	DeleteObject (memoryBitmap);
-	DeleteDC (memoryDC);
-
-	HDC hdc = GetDC (NULL);
-	memoryDC = CreateCompatibleDC (hdc);
-	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
+	CreateOffscreenContext ();
 }
 
 double BitmapContextGdi::GetWidth () const
@@ -138,13 +130,13 @@ void BitmapContextGdi::DrawLine (const NUIE::Point& beg, const NUIE::Point& end,
 
 void BitmapContextGdi::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
+	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	POINT points[4] = {
 		CreatePoint (p1),
 		CreatePoint (p2),
 		CreatePoint (p3),
 		CreatePoint (p4)
 	};
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	SelectObject (memoryDC, GetStockObject (NULL_BRUSH));
 	SelectObject (memoryDC, penCache.Get (pen));
 	::PolyBezier (memoryDC, points, 4);
@@ -237,6 +229,16 @@ bool BitmapContextGdi::CanDrawIcon ()
 void BitmapContextGdi::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 {
 	DBGBREAK ();
+}
+
+void BitmapContextGdi::CreateOffscreenContext ()
+{
+	DeleteObject (memoryBitmap);
+	DeleteDC (memoryDC);
+
+	HDC hdc = GetDC (NULL);
+	memoryDC = CreateCompatibleDC (hdc);
+	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
 }
 
 POINT BitmapContextGdi::CreatePoint (const NUIE::Point& point) const

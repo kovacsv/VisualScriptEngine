@@ -108,55 +108,61 @@ static float GetPenThickness (const NUIE::Pen& pen)
 Direct2DContext::Direct2DContext (const Direct2DImageLoaderPtr& imageLoader) :
 	NUIE::NativeDrawingContext (),
 	direct2DHandler (),
-	hwnd (NULL),
 	width (0),
 	height (0),
 	imageLoader (imageLoader),
-	renderTarget (nullptr)
+	renderTarget (nullptr),
+	memoryDC (NULL),
+	memoryBitmap (NULL)
 {
 
 }
 
 Direct2DContext::~Direct2DContext ()
 {
+	DeleteObject (memoryBitmap);
+	DeleteDC (memoryDC);
 	SafeRelease (&renderTarget);
 }
 
 void Direct2DContext::Init (void* nativeHandle)
 {
-	hwnd = (HWND) nativeHandle;
+	HWND hwnd = (HWND) nativeHandle;
+
+	RECT clientRect;
+	GetClientRect (hwnd, &clientRect);
+	width = clientRect.right - clientRect.left;
+	height = clientRect.bottom - clientRect.top;
+	
 	CreateRenderTarget ();
+	CreateOffscreenContext ();
 }
 
 void Direct2DContext::BlitToWindow (void* nativeHandle)
 {
-	HWND targetHwnd = (HWND) nativeHandle;
-	if (hwnd == targetHwnd) {
-		return;
-	}
+	HWND hwnd = (HWND) nativeHandle;
+
 	PAINTSTRUCT ps;
-	HDC targetHdc = BeginPaint (targetHwnd, &ps);
-	BlitToContext (targetHdc);
-	EndPaint (targetHwnd, &ps);
+	HDC hdc = BeginPaint (hwnd, &ps);
+	BlitToContext (hdc);
+	EndPaint (hwnd, &ps);
 }
 
 void Direct2DContext::BlitToContext (void* nativeContext)
 {
-	HDC targetHdc = (HDC) nativeContext;
-	if (hwnd == WindowFromDC (targetHdc)) {
-		return;
-	}
-	BitBlt (targetHdc, 0, 0, width, height, GetDC (renderTarget->GetHwnd ()), 0, 0, SRCCOPY);
+	HDC hdc = (HDC) nativeContext;
+	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
 }
 
 void Direct2DContext::Resize (int newWidth, int newHeight)
 {
+	if (newWidth == 0 || newHeight == 0 || renderTarget == nullptr) {
+		return;
+	}
+
 	width = newWidth;
 	height = newHeight;
-	if (width > 0 && height > 0) {
-		D2D1_SIZE_U size = D2D1::SizeU (width, height);
-		renderTarget->Resize (size);
-	}
+	CreateOffscreenContext ();
 }
 
 double Direct2DContext::GetWidth () const
@@ -326,23 +332,34 @@ void Direct2DContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& icon
 
 void Direct2DContext::CreateRenderTarget ()
 {
-	RECT clientRect;
-	GetClientRect (hwnd, &clientRect);
-	width = clientRect.right - clientRect.left;
-	height = clientRect.bottom - clientRect.top;
-
-	D2D1_SIZE_U size = D2D1::SizeU (width, height);
-	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties = D2D1::RenderTargetProperties ();
-	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties = D2D1::HwndRenderTargetProperties (hwnd, size);
-
 	SafeRelease (&renderTarget);
 	if (imageLoader != nullptr) {
 		imageLoader->ClearCache ();
 	}
 
-	direct2DHandler.direct2DFactory->CreateHwndRenderTarget (renderTargetProperties, hwndRenderTargetProperties, &renderTarget);
-	renderTarget->SetDpi (96.0f, 96.0f);
+	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties = D2D1::RenderTargetProperties (
+		D2D1_RENDER_TARGET_TYPE_DEFAULT,
+		D2D1::PixelFormat (DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE),
+		96.0f, 96.0f,
+		D2D1_RENDER_TARGET_USAGE_NONE,
+		D2D1_FEATURE_LEVEL_DEFAULT
+	);
+	direct2DHandler.direct2DFactory->CreateDCRenderTarget (&renderTargetProperties, &renderTarget);
 	DBGASSERT (renderTarget != nullptr);
+}
+
+void Direct2DContext::CreateOffscreenContext ()
+{
+	DeleteObject (memoryBitmap);
+	DeleteDC (memoryDC);
+
+	HDC hdc = GetDC (NULL);
+	memoryDC = CreateCompatibleDC (hdc);
+	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
+	SelectObject (memoryDC, memoryBitmap);
+
+	RECT clientRect = { 0, 0, width, height };
+	renderTarget->BindDC (memoryDC, &clientRect);
 }
 
 }

@@ -83,6 +83,7 @@ public:
 	virtual void				DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId) override;
 
 private:
+	void						CreateOffscreenContext ();
 	POINT						CreatePoint (const NUIE::Point& point) const;
 	RECT						CreateRect (const NUIE::Rect& rect) const;
 	RECT						CreateRect (const NUIE::Rect& rect, const NUIE::Pen& pen) const;
