@@ -188,6 +188,7 @@ void Direct2DContext::EndDraw ()
 	HRESULT result = renderTarget->EndDraw ();
 	if (result == D2DERR_RECREATE_TARGET) {
 		CreateRenderTarget ();
+		CreateOffscreenContext ();
 	}
 }
 
