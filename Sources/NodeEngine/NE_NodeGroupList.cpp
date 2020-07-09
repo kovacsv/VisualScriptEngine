@@ -123,7 +123,7 @@ Stream::Status NodeGroupList::Write (OutputStream& outputStream) const
 {
 	ObjectHeader header (outputStream, serializationInfo);
 	outputStream.Write (groups.size ());
-	for (const NodeGroupConstPtr& group : groups) {
+	for (const NodeGroupPtr& group : groups) {
 		WriteDynamicObject (outputStream, group.get ());
 		const NodeCollection& nodes = groupToNodes.at (group);
 		nodes.Write (outputStream);
