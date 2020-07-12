@@ -2,15 +2,14 @@
 #define NE_SLOTLIST_HPP
 
 #include "NE_Debug.hpp"
-#include "NE_Stream.hpp"
-#include "NE_Serializable.hpp"
-#include "NE_InputSlot.hpp"
-#include "NE_OutputSlot.hpp"
+#include "NE_SlotId.hpp"
 
 #include <vector>
 #include <unordered_map>
-#include <functional>
+
 #include <memory>
+#include <functional>
+#include <algorithm>
 
 namespace NE
 {

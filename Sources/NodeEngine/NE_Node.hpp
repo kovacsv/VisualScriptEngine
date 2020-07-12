@@ -5,6 +5,8 @@
 #include "NE_NodeId.hpp"
 #include "NE_SlotId.hpp"
 #include "NE_SlotList.hpp"
+#include "NE_InputSlot.hpp"
+#include "NE_OutputSlot.hpp"
 #include "NE_Value.hpp"
 #include "NE_EvaluationEnv.hpp"
 #include "NE_NodeValueCache.hpp"
