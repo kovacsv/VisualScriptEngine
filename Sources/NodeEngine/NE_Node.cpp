@@ -229,27 +229,35 @@ void Node::SetInputSlotDefaultValue (const SlotId& slotId, const ValueConstPtr& 
 
 bool Node::RegisterInputSlot (const InputSlotPtr& newInputSlot)
 {
+	if (DBGERROR (inputSlots.Contains (newInputSlot->GetId ()))) {
+		return false;
+	}
 	if (DBGERROR (newInputSlot->HasOwnerNode ())) {
 		return false;
 	}
-	if (DBGERROR (HasInputSlot (newInputSlot->GetId ()))) {
+	if (DBGERROR (!inputSlots.Push (newInputSlot))) {
 		return false;
 	}
-	newInputSlot->SetOwnerNode (this);
-	inputSlots.Push (newInputSlot);
+	if (DBGERROR (!newInputSlot->SetOwnerNode (this))) {
+		return false;
+	}
 	return true;
 }
 
 bool Node::RegisterOutputSlot (const OutputSlotPtr& newOutputSlot)
 {
+	if (DBGERROR (outputSlots.Contains (newOutputSlot->GetId ()))) {
+		return false;
+	}
 	if (DBGERROR (newOutputSlot->HasOwnerNode ())) {
 		return false;
 	}
-	if (DBGERROR (HasOutputSlot (newOutputSlot->GetId ()))) {
+	if (DBGERROR (!outputSlots.Push (newOutputSlot))) {
 		return false;
 	}
-	newOutputSlot->SetOwnerNode (this);
-	outputSlots.Push (newOutputSlot);
+	if (DBGERROR (!newOutputSlot->SetOwnerNode (this))) {
+		return false;
+	}
 	return true;
 }
 
