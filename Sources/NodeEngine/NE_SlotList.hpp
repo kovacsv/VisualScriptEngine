@@ -21,7 +21,8 @@ class SlotList
 public:
 	SlotList ();
 
-	void								Push (const std::shared_ptr<SlotType>& slot);
+	bool								Push (const std::shared_ptr<SlotType>& slot);
+	bool								Insert (const std::shared_ptr<SlotType>& slot, const SlotId& prevSlotId);
 	
 	std::shared_ptr<SlotType>			Get (const SlotId& slotId);
 	std::shared_ptr<const SlotType>		Get (const SlotId& slotId) const;
@@ -44,10 +45,33 @@ SlotList<SlotType>::SlotList ()
 }
 
 template <class SlotType>
-void SlotList<SlotType>::Push (const std::shared_ptr<SlotType>& slot)
+bool SlotList<SlotType>::Push (const std::shared_ptr<SlotType>& slot)
 {
+	auto foundSlot = slotIdMap.find (slot->GetId ());
+	if (DBGERROR (foundSlot != slotIdMap.end ())) {
+		return false;
+	}
 	slotIdList.push_back (slot->GetId ());
 	slotIdMap.insert ({ slot->GetId (), slot });
+	return true;
+}
+
+template <class SlotType>
+bool SlotList<SlotType>::Insert (const std::shared_ptr<SlotType>& slot, const SlotId& prevSlotId)
+{
+	auto foundPrevSlot = slotIdMap.find (prevSlotId);
+	if (DBGERROR (foundPrevSlot == slotIdMap.end ())) {
+		return false;
+	}
+
+	auto foundPrevSlotId = std::find (slotIdList.begin (), slotIdList.end (), prevSlotId);
+	if (DBGERROR (foundPrevSlotId == slotIdList.end ())) {
+		return false;
+	}
+
+	slotIdList.insert (foundPrevSlotId + 1, slot->GetId ());
+	slotIdMap.insert ({ slot->GetId (), slot });
+	return true;
 }
 
 template <class SlotType>
