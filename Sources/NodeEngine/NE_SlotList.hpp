@@ -21,9 +21,10 @@ class SlotList
 public:
 	SlotList ();
 
-	bool								Push (const std::shared_ptr<SlotType>& slot);
-	bool								Insert (const std::shared_ptr<SlotType>& slot, const SlotId& prevSlotId);
-	
+	bool								Insert (const std::shared_ptr<SlotType>& slot);
+	bool								InsertBefore (const std::shared_ptr<SlotType>& slot, const SlotId& nextSlotId);
+	bool								InsertAfter (const std::shared_ptr<SlotType>& slot, const SlotId& prevSlotId);
+
 	std::shared_ptr<SlotType>			Get (const SlotId& slotId);
 	std::shared_ptr<const SlotType>		Get (const SlotId& slotId) const;
 	bool								Contains (const SlotId& slotId) const;
@@ -45,7 +46,7 @@ SlotList<SlotType>::SlotList ()
 }
 
 template <class SlotType>
-bool SlotList<SlotType>::Push (const std::shared_ptr<SlotType>& slot)
+bool SlotList<SlotType>::Insert (const std::shared_ptr<SlotType>& slot)
 {
 	auto foundSlot = slotIdMap.find (slot->GetId ());
 	if (DBGERROR (foundSlot != slotIdMap.end ())) {
@@ -57,7 +58,25 @@ bool SlotList<SlotType>::Push (const std::shared_ptr<SlotType>& slot)
 }
 
 template <class SlotType>
-bool SlotList<SlotType>::Insert (const std::shared_ptr<SlotType>& slot, const SlotId& prevSlotId)
+bool SlotList<SlotType>::InsertBefore (const std::shared_ptr<SlotType>& slot, const SlotId& nextSlotId)
+{
+	auto foundPrevSlot = slotIdMap.find (nextSlotId);
+	if (DBGERROR (foundPrevSlot == slotIdMap.end ())) {
+		return false;
+	}
+
+	auto foundNextSlotId = std::find (slotIdList.begin (), slotIdList.end (), nextSlotId);
+	if (DBGERROR (foundNextSlotId == slotIdList.end ())) {
+		return false;
+	}
+
+	slotIdList.insert (foundNextSlotId, slot->GetId ());
+	slotIdMap.insert ({ slot->GetId (), slot });
+	return true;
+}
+
+template <class SlotType>
+bool SlotList<SlotType>::InsertAfter (const std::shared_ptr<SlotType>& slot, const SlotId& prevSlotId)
 {
 	auto foundPrevSlot = slotIdMap.find (prevSlotId);
 	if (DBGERROR (foundPrevSlot == slotIdMap.end ())) {

@@ -235,7 +235,7 @@ bool Node::RegisterInputSlot (const InputSlotPtr& newInputSlot)
 	if (DBGERROR (newInputSlot->HasOwnerNode ())) {
 		return false;
 	}
-	if (DBGERROR (!inputSlots.Push (newInputSlot))) {
+	if (DBGERROR (!inputSlots.Insert (newInputSlot))) {
 		return false;
 	}
 	if (DBGERROR (!newInputSlot->SetOwnerNode (this))) {
@@ -252,7 +252,7 @@ bool Node::RegisterOutputSlot (const OutputSlotPtr& newOutputSlot)
 	if (DBGERROR (newOutputSlot->HasOwnerNode ())) {
 		return false;
 	}
-	if (DBGERROR (!outputSlots.Push (newOutputSlot))) {
+	if (DBGERROR (!outputSlots.Insert (newOutputSlot))) {
 		return false;
 	}
 	if (DBGERROR (!newOutputSlot->SetOwnerNode (this))) {

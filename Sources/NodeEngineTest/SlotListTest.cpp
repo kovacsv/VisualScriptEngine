@@ -34,52 +34,63 @@ static std::vector<NE::SlotId> GetSlotIds (const SlotList<TestSlot>& slotList)
 	return slotIds;
 }
 
-TEST (SlotListPushTest)
+TEST (SlotListInsertTest)
 {
 	SlotList<TestSlot> slotList;
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
 
 	std::vector<NE::SlotId> slotIds = GetSlotIds (slotList);
 	ASSERT (slotIds == std::vector<NE::SlotId> ({ NE::SlotId ("a"), NE::SlotId ("b"), NE::SlotId ("c") }));
 }
 
-TEST (SlotListInsertTestMiddle)
+TEST (SlotListInsertBeforeTestMiddle)
 {
 	SlotList<TestSlot> slotList;
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
-	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("d"))), NE::SlotId ("a"));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
+	slotList.InsertBefore (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("d"))), NE::SlotId ("b"));
 
 	std::vector<NE::SlotId> slotIds = GetSlotIds (slotList);
 	ASSERT (slotIds == std::vector<NE::SlotId> ({ NE::SlotId ("a"), NE::SlotId ("d"), NE::SlotId ("b"), NE::SlotId ("c") }));
 }
 
-TEST (SlotListInsertTestEnd)
+TEST (SlotListInsertBeforeTestBeginning)
 {
 	SlotList<TestSlot> slotList;
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
-	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("d"))), NE::SlotId ("c"));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
+	slotList.InsertBefore (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("d"))), NE::SlotId ("a"));
+
+	std::vector<NE::SlotId> slotIds = GetSlotIds (slotList);
+	ASSERT (slotIds == std::vector<NE::SlotId> ({ NE::SlotId ("d"), NE::SlotId ("a"), NE::SlotId ("b"), NE::SlotId ("c") }));
+}
+
+TEST (SlotListInsertAfterTestMiddle)
+{
+	SlotList<TestSlot> slotList;
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
+	slotList.InsertAfter (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("d"))), NE::SlotId ("a"));
+
+	std::vector<NE::SlotId> slotIds = GetSlotIds (slotList);
+	ASSERT (slotIds == std::vector<NE::SlotId> ({ NE::SlotId ("a"), NE::SlotId ("d"), NE::SlotId ("b"), NE::SlotId ("c") }));
+}
+
+TEST (SlotListInsertAfterTestEnd)
+{
+	SlotList<TestSlot> slotList;
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
+	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
+	slotList.InsertAfter (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("d"))), NE::SlotId ("c"));
 
 	std::vector<NE::SlotId> slotIds = GetSlotIds (slotList);
 	ASSERT (slotIds == std::vector<NE::SlotId> ({ NE::SlotId ("a"), NE::SlotId ("b"), NE::SlotId ("c"), NE::SlotId ("d") }));
-}
-
-TEST (SlotListInsertTestEnd2)
-{
-	SlotList<TestSlot> slotList;
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("a"))));
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("b"))));
-	slotList.Push (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("c"))));
-	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("d"))), NE::SlotId ("c"));
-	slotList.Insert (std::shared_ptr<TestSlot> (new TestSlot (NE::SlotId ("e"))), NE::SlotId ("d"));
-
-	std::vector<NE::SlotId> slotIds = GetSlotIds (slotList);
-	ASSERT (slotIds == std::vector<NE::SlotId> ({ NE::SlotId ("a"), NE::SlotId ("b"), NE::SlotId ("c"), NE::SlotId ("d"), NE::SlotId ("e") }));
 }
 
 }
