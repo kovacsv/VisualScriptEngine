@@ -7,7 +7,7 @@ namespace WAS
 
 HwndEventHandler::HwndEventHandler () :
 	NUIE::EventHandler (),
-	control (nullptr)
+	hwnd (nullptr)
 {
 
 }
@@ -17,34 +17,34 @@ HwndEventHandler::~HwndEventHandler ()
 
 }
 
-void HwndEventHandler::Init (const NUIE::NativeNodeEditorControl* nodeEditorControl)
+void HwndEventHandler::Init (HWND windowHandle)
 {
-	control = nodeEditorControl;
+	hwnd = windowHandle;
 }
 
 NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
-	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
+	return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
 NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::UINodePtr&, const NUIE::MenuCommandStructure& commands)
 {
-	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
+	return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
 NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::UIOutputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
 {
-	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
+	return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
 NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::UIInputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
 {
-	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
+	return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
 NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::UINodeGroupPtr&, const NUIE::MenuCommandStructure& commands)
 {
-	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
+	return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
 void HwndEventHandler::OnDoubleClick (NUIE::MouseButton, const NUIE::Point&)
@@ -55,13 +55,13 @@ void HwndEventHandler::OnDoubleClick (NUIE::MouseButton, const NUIE::Point&)
 bool HwndEventHandler::OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodePtr&)
 {
 	WAS::ParameterDialog paramDialog (paramAccessor);
-	return paramDialog.Show ((HWND) control->GetEditorNativeHandle (), 50, 50);
+	return paramDialog.Show (hwnd, 50, 50);
 }
 
 bool HwndEventHandler::OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodeGroupPtr&)
 {
 	WAS::ParameterDialog paramDialog (paramAccessor);
-	return paramDialog.Show ((HWND) control->GetEditorNativeHandle (), 50, 50);
+	return paramDialog.Show (hwnd, 50, 50);
 }
 
 }

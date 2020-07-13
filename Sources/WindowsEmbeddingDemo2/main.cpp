@@ -2,7 +2,6 @@
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
-#include "WAS_NodeEditorHwndSurface.hpp"
 #include "WAS_ParameterDialog.hpp"
 #include "WAS_NodeTree.hpp"
 #include "BI_BuiltInNodes.hpp"
@@ -105,7 +104,7 @@ public:
 			finalCommands.AddCommand (multiCommand);
 		}
 
-		return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, finalCommands);
+		return WAS::SelectCommandFromContextMenu (hwnd, position, finalCommands);
 	}
 
 private:
@@ -123,31 +122,32 @@ public:
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
-		editorControl (new WAS::NodeEditorHwndSurface ())
+		drawingContext (new WAS::BitmapContextGdi ()),
+		nodeEditor (nullptr),
+		editorHandle (nullptr)
 	{
 
 	}
 
-	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND controlHandle)
+	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND editorWindowHandle)
 	{
-		RECT clientRect;
-		GetClientRect (controlHandle, &clientRect);
-		int width = clientRect.right - clientRect.left;
-		int height = clientRect.bottom - clientRect.top;
+		nodeEditor = nodeEditorPtr;
+		editorHandle = editorWindowHandle;
 
-		editorControl->Init (nodeEditorPtr, controlHandle, 0, 0, width, height);
-		eventHandler.Init (&*editorControl);
-		eventHandler.SetNodeEditor (nodeEditorPtr);
+		drawingContext->Init (editorHandle);
+		eventHandler.Init (editorHandle);
+		eventHandler.SetNodeEditor (nodeEditor);
 	}
 
-	void OnResize (int x, int y, int width, int height)
+	void OnResize (int width, int height)
 	{
-		editorControl->Resize (x, y, width, height);
+		drawingContext->Resize (width, height);
 	}
 
 	void OnPaint ()
 	{
-		editorControl->Draw ();
+		nodeEditor->Draw ();
+		drawingContext->BlitToWindow (editorHandle);
 	}
 
 	virtual const NE::StringConverter& GetStringConverter () override
@@ -162,7 +162,7 @@ public:
 
 	virtual NUIE::DrawingContext& GetDrawingContext () override
 	{
-		return editorControl->GetDrawingContext ();
+		return *drawingContext;
 	}
 
 	virtual double GetWindowScale () override
@@ -192,7 +192,7 @@ public:
 
 	virtual void OnRedrawRequested () override
 	{
-		editorControl->Invalidate ();
+		InvalidateRect (editorHandle, NULL, FALSE);
 	}
 
 	virtual NUIE::EventHandler& GetEventHandler () override
@@ -216,7 +216,10 @@ private:
 	MyEventHandler						eventHandler;
 	NUIE::MemoryClipboardHandler		clipboardHandler;
 	NE::EvaluationEnv					evaluationEnv;
-	NUIE::NativeNodeEditorControlPtr	editorControl;
+	NUIE::NativeDrawingContextPtr		drawingContext;
+
+	NUIE::NodeEditor*					nodeEditor;
+	HWND								editorHandle;
 };
 
 static MyNodeUIEnvironment uiEnvironment;
@@ -235,7 +238,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			{
 				int newWidth = LOWORD (lParam);
 				int newHeight = HIWORD (lParam);
-				uiEnvironment.OnResize (0, 0, newWidth, newHeight);
+				uiEnvironment.OnResize (newWidth, newHeight);
 			}
 			break;
 		case WM_PAINT:

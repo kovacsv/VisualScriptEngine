@@ -99,7 +99,7 @@ public:
 
 		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
 		nodeEditorControl.FillNodeTree (nodeTree);
-		eventHandler.Init (&nodeEditorControl);
+		eventHandler.Init ((HWND) nodeEditorControl.GetEditorNativeHandle ());
 	}
 
 	void OnResize (int x, int y, int width, int height)
