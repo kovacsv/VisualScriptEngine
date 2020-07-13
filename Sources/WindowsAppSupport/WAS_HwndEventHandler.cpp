@@ -47,7 +47,7 @@ NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (const NUIE::Point& positio
 	return WAS::SelectCommandFromContextMenu ((HWND) control->GetEditorNativeHandle (), position, commands);
 }
 
-void HwndEventHandler::OnDoubleClick (const NUIE::Point&)
+void HwndEventHandler::OnDoubleClick (NUIE::MouseButton, const NUIE::Point&)
 {
 
 }

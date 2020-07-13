@@ -51,6 +51,7 @@ public:
 	}
 
 	virtual void OnDoubleClick (
+		NUIE::MouseButton mouseButton,
 		const NUIE::Point& position) override
 	{
 

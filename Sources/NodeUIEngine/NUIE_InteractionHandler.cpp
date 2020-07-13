@@ -809,7 +809,7 @@ EventHandlerResult InteractionHandler::HandleMouseDoubleClick (NodeUIEnvironment
 	}
 
 	EventHandler& eventHandler = uiEnvironment.GetEventHandler ();
-	eventHandler.OnDoubleClick (position);
+	eventHandler.OnDoubleClick (mouseButton, position);
 	return EventHandlerResult::EventHandled;
 }
 
