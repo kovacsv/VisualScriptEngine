@@ -71,10 +71,12 @@ namespace NUIE
 class ModifierKeys
 {
 public:
+	ModifierKeys ();
 	ModifierKeys (const std::unordered_set<ModifierKeyCode>& keys);
 	~ModifierKeys ();
 
-	bool Contains (ModifierKeyCode keyCode) const;
+	void	Insert (ModifierKeyCode keyCode);
+	bool	Contains (ModifierKeyCode keyCode) const;
 
 private:
 	std::unordered_set<ModifierKeyCode> keys;

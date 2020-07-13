@@ -49,14 +49,14 @@ NE::BasicStringSettings GetStringSettingsFromSystem ()
 
 NUIE::ModifierKeys GetModiferKeysFromEvent (WPARAM wParam)
 {
-	std::unordered_set<NUIE::ModifierKeyCode> keys;
+	NUIE::ModifierKeys keys;
 	if (wParam & MK_CONTROL) {
-		keys.insert (NUIE::ModifierKeyCode::Control);
+		keys.Insert (NUIE::ModifierKeyCode::Control);
 	}
 	if (wParam & MK_SHIFT) {
-		keys.insert (NUIE::ModifierKeyCode::Shift);
+		keys.Insert (NUIE::ModifierKeyCode::Shift);
 	}
-	return NUIE::ModifierKeys (keys);
+	return keys;
 }
 
 static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordered_map<size_t, NUIE::MenuCommandPtr>& commandTable, HMENU& hCurrentMenu, size_t& currentCommandId)

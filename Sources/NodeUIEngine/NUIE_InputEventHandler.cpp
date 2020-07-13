@@ -8,6 +8,12 @@ static const std::unordered_set<ModifierKeyCode> noKeys;
 ModifierKeys EmptyModifierKeys (noKeys);
 Key InvalidKey;
 
+ModifierKeys::ModifierKeys () :
+	keys ()
+{
+
+}
+
 ModifierKeys::ModifierKeys (const std::unordered_set<ModifierKeyCode>& keys) :
 	keys (keys)
 {
@@ -19,6 +25,10 @@ ModifierKeys::~ModifierKeys ()
 
 }
 
+void ModifierKeys::Insert (ModifierKeyCode keyCode)
+{
+	keys.insert (keyCode);
+}
 
 bool ModifierKeys::Contains (ModifierKeyCode keyCode) const
 {
