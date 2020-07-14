@@ -23,11 +23,12 @@ def Main (argv):
 	currentDir = os.path.dirname (os.path.abspath (__file__))
 	os.chdir (currentDir)
 	
-	if len (argv) != 2:
-		print 'usage: CreatePackage.py <buildIdentifier>'
+	if len (argv) != 3:
+		print 'usage: CreatePackage.py <devKitDir> <buildIdentifier>'
 		return 1
 
-	buildIdentifier = argv[1]
+	devKitDir = argv[1]
+	buildIdentifier = argv[2]
 
 	cMakeListsPath = os.path.abspath ('CMakeLists.txt')
 	version = GetVersionFromCMakeLists (cMakeListsPath)
@@ -38,10 +39,10 @@ def Main (argv):
 
 	zipPath = os.path.abspath (os.path.join (packagePath, 'VisualScriptEngine_V' + version + '_' + buildIdentifier + '_x64.zip'))
 	requiredFolders = [
-		os.path.abspath (os.path.join ('Build', 'DevKit', 'include')),
-		os.path.abspath (os.path.join ('Build', 'DevKit', 'lib')),
-		os.path.abspath (os.path.join ('Build', 'DevKit', 'source')),
-		os.path.abspath (os.path.join ('Build', 'DevKit', 'localization'))
+		os.path.abspath (os.path.join (devKitDir, 'include')),
+		os.path.abspath (os.path.join (devKitDir, 'lib')),
+		os.path.abspath (os.path.join (devKitDir, 'source')),
+		os.path.abspath (os.path.join (devKitDir, 'localization'))
 	]
 	zip = zipfile.ZipFile (zipPath, mode = 'w', compression = zipfile.ZIP_DEFLATED)
 	for folder in requiredFolders:
