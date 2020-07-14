@@ -100,5 +100,6 @@ deploy:
   file_glob: true
   file: Build/Package/*
   skip_cleanup: true
+  draft: true
   on:
     tags: true
