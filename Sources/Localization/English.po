@@ -1,0 +1,183 @@
+﻿msgid "true"
+msgstr "true"
+
+msgid "false"
+msgstr "false"
+
+msgid "Delete Nodes"
+msgstr "Delete Nodes"
+
+msgid "Copy Nodes"
+msgstr "Copy Nodes"
+
+msgid "Paste Nodes"
+msgstr "Paste Nodes"
+
+msgid "Align To Window"
+msgstr "Align To Window"
+
+msgid "Center To Window"
+msgstr "Center To Window"
+
+msgid "Fit To Window"
+msgstr "Fit To Window"
+
+msgid "Undo"
+msgstr "Undo"
+
+msgid "Redo"
+msgstr "Redo"
+
+msgid "Node Settings"
+msgstr "Node Settings"
+
+msgid "Create New Group"
+msgstr "Create New Group"
+
+msgid "Group"
+msgstr "Group"
+
+msgid "Group Settings"
+msgstr "Group Settings"
+
+msgid "Group Name"
+msgstr "Group Name"
+
+msgid "Group Color"
+msgstr "Group Color"
+
+msgid "Ungroup Nodes"
+msgstr "Ungroup Nodes"
+
+msgid "Select Nodes"
+msgstr "Select Nodes"
+
+msgid "Remove From Group"
+msgstr "Remove From Group"
+
+msgid "Grouping"
+msgstr "Grouping"
+
+msgid "Aligning"
+msgstr "Aligning"
+
+msgid "Left"
+msgstr "Left"
+
+msgid "Right"
+msgstr "Right"
+
+msgid "Top"
+msgstr "Top"
+
+msgid "Bottom"
+msgstr "Bottom"
+
+msgid "Horizontal Center"
+msgstr "Horizontal Center"
+
+msgid "Vertical Center"
+msgstr "Vertical Center"
+
+msgid "Disconnect"
+msgstr "Disconnect"
+
+msgid "%ls (%ls)"
+msgstr "%ls (%ls)"
+
+msgid "All"
+msgstr "All"
+
+msgid "Blue"
+msgstr "Blue"
+
+msgid "Green"
+msgstr "Green"
+
+msgid "Red"
+msgstr "Red"
+
+msgid "Node Name"
+msgstr "Node Name"
+
+msgid "A"
+msgstr "A"
+
+msgid "B"
+msgstr "B"
+
+msgid "Result"
+msgstr "Result"
+
+msgid "Set Node Status"
+msgstr "Set Node Status"
+
+msgid "Enable"
+msgstr "Enable"
+
+msgid "Disable"
+msgstr "Disable"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Set Value Combination"
+msgstr "Set Value Combination"
+
+msgid "Shortest"
+msgstr "Shortest"
+
+msgid "Longest"
+msgstr "Longest"
+
+msgid "Cross Product"
+msgstr "Cross Product"
+
+msgid "Value Combination"
+msgstr "Value Combination"
+
+msgid "Output"
+msgstr "Output"
+
+msgid "Value"
+msgstr "Value"
+
+msgid "Step"
+msgstr "Step"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "Count"
+msgstr "Count"
+
+msgid "List"
+msgstr "List"
+
+msgid "End"
+msgstr "End"
+
+msgid "Input"
+msgstr "Input"
+
+msgid "<empty>"
+msgstr "<empty>"
+
+msgid "<"
+msgstr "<"
+
+msgid ">"
+msgstr ">"
+
+msgid "%d / %d (%d)"
+msgstr "%d / %d (%d)"
+
+msgid "Texts per page"
+msgstr "Texts per page"
+
+msgid "Parameters"
+msgstr "Parameters"
+
+msgid "Save"
+msgstr "Save"
+

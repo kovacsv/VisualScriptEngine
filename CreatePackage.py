@@ -49,11 +49,6 @@ def Main (argv):
 	packagePath = os.path.abspath (os.path.join ('Build', 'Package'))
 	if not os.path.exists (packagePath):
 		os.makedirs (packagePath)
-	
-	stringCollectorPath = os.path.join ('Tools', 'CollectLocalizedStrings.bat')
-	subprocess.call ([
-		stringCollectorPath
-	])
 
 	zipPath = os.path.abspath (os.path.join (packagePath, 'VisualScriptEngine_V' + version + '_VS' + visualStudioVersion + '_' + msBuildConfiguration + '_x64.zip'))
 	requiredFolders = [

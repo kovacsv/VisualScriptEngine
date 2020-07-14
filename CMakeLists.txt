@@ -85,6 +85,12 @@ install (TARGETS BuiltInNodes DESTINATION lib)
 install (FILES ${BuiltInNodesHeaderFiles} DESTINATION include)
 install (FILES ${BuiltInNodesSourceFiles} DESTINATION source)
 
+# Localization
+
+set (LocalizationSourcesFolder Sources/Localization)
+file (GLOB LocalizationFiles ${LocalizationSourcesFolder}/*.po)
+install (FILES ${LocalizationFiles} DESTINATION localization)
+
 # NodeEngineTest
 
 set (TestFrameworkSourcesFolder Sources/TestFramework)
