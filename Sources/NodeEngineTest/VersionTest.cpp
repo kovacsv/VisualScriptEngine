@@ -6,7 +6,7 @@ using namespace NUIE;
 namespace VersionTest
 {
 
-TEST (VersionCompatisonTest)
+TEST (VersionComparisonTest)
 {
 	Version v1 (0, 1, 8);
 	Version v2 (0, 2, 5);
