@@ -95,7 +95,8 @@ script:
 
 deploy:
   provider: releases
-  api_key: "oN14X2NG9+1O6cVQ7m2pIUkMxJ4mbZC1oht03WtJPS4E03MfPH8wZYAw9vmkSL9H"
+  api_key:
+    secure: oN14X2NG9+1O6cVQ7m2pIUkMxJ4mbZC1oht03WtJPS4E03MfPH8wZYAw9vmkSL9H
   file_glob: true
   file: Build/Package/*
   skip_cleanup: true
