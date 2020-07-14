@@ -24,7 +24,6 @@ def Main (argv):
 	os.chdir (currentDir)
 	
 	if len (argv) != 2:
-		print argv
 		print 'usage: CreatePackage.py <buildIdentifier>'
 		return 1
 

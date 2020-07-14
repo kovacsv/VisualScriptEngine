@@ -31,8 +31,8 @@ build:
 
 after_build:
   - set vsVersion=
-  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" ( set vsVersion=2017 )
-  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" ( set vsVersion=2019 )
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" (set vsVersion=2017)
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" (set vsVersion=2019)
   - python CreateDevKit.py "MSBuild" %configuration%
   - python CreatePackage.py VS%vsVersion%_%configuration%
 
