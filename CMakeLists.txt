@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.6)
 
 set (VSE_VERSION_1 0)
 set (VSE_VERSION_2 3)
-set (VSE_VERSION_3 7)
+set (VSE_VERSION_3 8)
 set (VSE_LIB_NAME VisualScriptEngine)
 
 function (SetCompilerOptions module)
@@ -87,6 +87,12 @@ SetCompilerOptions (BuiltInNodes)
 install (TARGETS BuiltInNodes DESTINATION lib)
 install (FILES ${BuiltInNodesHeaderFiles} DESTINATION include)
 install (FILES ${BuiltInNodesSourceFiles} DESTINATION source)
+
+# Localization
+
+set (LocalizationSourcesFolder Sources/Localization)
+file (GLOB LocalizationFiles ${LocalizationSourcesFolder}/*.po)
+install (FILES ${LocalizationFiles} DESTINATION localization)
 
 # NodeEngineTest
 

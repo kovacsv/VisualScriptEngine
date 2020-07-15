@@ -11,6 +11,10 @@ VisualScriptEngine is a node based visual scripting engine designed for embeddin
 
 [Releases](https://github.com/kovacsv/VisualScriptEngine/releases) - [Issues](https://github.com/kovacsv/VisualScriptEngine/issues) - [Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki)
 
+## References
+
+[PARAM-O](https://graphisoft.com/param-o), the visual scripting solution in [ARCHICAD](https://graphisoft.com/solutions/products/archicad) is powered by VisualScriptEngine.
+
 ## Example
 
 Here you can see a screenshot of the embedding demo application.

@@ -13,6 +13,7 @@ matrix:
             - g++-7
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - PACKAGE_NAME=Linux_gcc7
     - os: linux
       dist: xenial
       compiler: clang
@@ -24,6 +25,7 @@ matrix:
             - clang-7
       env:
         - MATRIX_EVAL="CC=clang-7 && CXX=clang++-7"
+        - PACKAGE_NAME=Linux_clang7
     - os: linux
       dist: xenial
       compiler: clang
@@ -35,21 +37,25 @@ matrix:
             - clang-8
       env:
         - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
+        - PACKAGE_NAME=Linux_clang8
     - os: osx
       osx_image: xcode10
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - PACKAGE_NAME=OSX_XCode10
     - os: osx
       osx_image: xcode11
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - PACKAGE_NAME=OSX_XCode11
     - os: osx
       osx_image: xcode12
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - PACKAGE_NAME=OSX_XCode12
 
 before_install:
   - eval "${MATRIX_EVAL}"
@@ -62,16 +68,27 @@ script:
   - cmake ../.. -DCMAKE_BUILD_TYPE=Debug
   - make
   - make test ARGS="-V"
+  - make install
   - cd ..
+  - cd ..
+  - python CreatePackage.py Build/Debug/DevKit ${PACKAGE_NAME}_Debug
+  - cd Build
   - mkdir Release
   - cd Release
   - cmake ../.. -DCMAKE_BUILD_TYPE=Release
   - make
   - make test ARGS="-V"
+  - make install
   - cd ..
+  - cd ..
+  - python CreatePackage.py Build/Release/DevKit ${PACKAGE_NAME}_Release
+  - cd Build
   - mkdir RelWithDebInfo
   - cd RelWithDebInfo
   - cmake ../.. -DCMAKE_BUILD_TYPE=RelWithDebInfo
   - make
   - make test ARGS="-V"
+  - make install
   - cd ..
+  - cd ..
+  - python CreatePackage.py Build/RelWithDebInfo/DevKit ${PACKAGE_NAME}_RelWithDebInfo
