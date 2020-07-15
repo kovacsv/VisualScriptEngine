@@ -7,7 +7,7 @@ set (VSE_LIB_NAME VisualScriptEngine)
 
 function (SetCompilerOptions module)
 	target_compile_options (${module} PUBLIC "$<$<CONFIG:Debug>:-DDEBUG>")
-	if (MSVC)
+	if (WIN32)
 		target_compile_options (${module} PUBLIC /W4 /WX)
 	else ()
 		target_compile_options (${module} PUBLIC -std=c++11 -Wall -Wextra -Werror)
@@ -39,6 +39,7 @@ set (
 )
 source_group ("Sources" FILES ${NodeEngineFiles})
 add_library (NodeEngine STATIC ${NodeEngineFiles})
+set_target_properties (NodeEngine PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 target_include_directories (NodeEngine PUBLIC ${NodeEngineSourcesFolder})
 SetCompilerOptions (NodeEngine)
 install (TARGETS NodeEngine DESTINATION lib)
@@ -59,6 +60,7 @@ set (
 )
 source_group ("Sources" FILES ${NodeUIEngineFiles})
 add_library (NodeUIEngine STATIC ${NodeUIEngineFiles})
+set_target_properties (NodeUIEngine PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 target_include_directories (NodeUIEngine PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder})
 target_link_libraries (NodeUIEngine NodeEngine)
 SetCompilerOptions (NodeUIEngine)
@@ -78,6 +80,7 @@ set (
 )
 source_group ("Sources" FILES ${BuiltInNodesFiles})
 add_library (BuiltInNodes STATIC ${BuiltInNodesFiles})
+set_target_properties (BuiltInNodes PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 target_include_directories (BuiltInNodes PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${BuiltInNodesSourcesFolder})
 target_link_libraries (BuiltInNodes NodeEngine NodeUIEngine)
 SetCompilerOptions (BuiltInNodes)
@@ -105,6 +108,7 @@ set (
 source_group ("Framework" FILES ${TestFrameworkFiles})
 source_group ("Sources" FILES ${NodeEngineTestTestFiles})
 add_executable (NodeEngineTest ${NodeEngineTestFiles})
+set_target_properties (NodeEngineTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 target_include_directories (NodeEngineTest PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${BuiltInNodesSourcesFolder} ${TestFrameworkSourcesFolder})
 target_link_libraries (NodeEngineTest NodeEngine NodeUIEngine BuiltInNodes)
 get_filename_component (NodeEngineTestSourcesFolderAbsolute "${CMAKE_CURRENT_LIST_DIR}/${NodeEngineTestSourcesFolder}" ABSOLUTE)
@@ -126,6 +130,7 @@ set (
 )
 source_group ("Sources" FILES ${EmbeddingTutorialFiles})
 add_executable (EmbeddingTutorial ${EmbeddingTutorialFiles})
+set_target_properties (EmbeddingTutorial PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 target_include_directories (
 	EmbeddingTutorial PUBLIC
 	${NodeEngineSourcesFolder}
@@ -134,13 +139,13 @@ target_include_directories (
 )
 target_link_libraries (EmbeddingTutorial NodeEngine NodeUIEngine BuiltInNodes)
 SetCompilerOptions (EmbeddingTutorial)
-if (MSVC)
+if (WIN32)
 	target_compile_options (EmbeddingTutorial PUBLIC /wd4100)
 else ()
 	target_compile_options (EmbeddingTutorial PUBLIC -Wno-unused-parameter)
 endif ()
 
-if (MSVC)
+if (WIN32)
 
 	# WindowsAppSupport
 
@@ -154,6 +159,7 @@ if (MSVC)
 	)
 	source_group ("Sources" FILES ${WindowsAppSupportFiles})
 	add_library (WindowsAppSupport STATIC ${WindowsAppSupportFiles})
+	set_target_properties (WindowsAppSupport PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 	target_include_directories (WindowsAppSupport PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${WindowsAppSupportSourcesFolder})
 	target_link_libraries (WindowsAppSupport NodeEngine NodeUIEngine)
 	SetCompilerOptions (WindowsAppSupport)
@@ -176,6 +182,7 @@ if (MSVC)
 	)
 	source_group ("Sources" FILES ${WindowsEmbeddingDemoFiles})
 	add_executable (WindowsEmbeddingDemo WIN32 ${WindowsEmbeddingDemoFiles})
+	set_target_properties (WindowsEmbeddingDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 	target_include_directories (
 		WindowsEmbeddingDemo PUBLIC
 		${NodeEngineSourcesFolder}
@@ -199,6 +206,7 @@ if (MSVC)
 	)
 	source_group ("Sources" FILES ${WindowsEmbeddingDemo2Files})
 	add_executable (WindowsEmbeddingDemo2 WIN32 ${WindowsEmbeddingDemo2Files})
+	set_target_properties (WindowsEmbeddingDemo2 PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 	target_include_directories (
 		WindowsEmbeddingDemo2 PUBLIC
 		${NodeEngineSourcesFolder}
