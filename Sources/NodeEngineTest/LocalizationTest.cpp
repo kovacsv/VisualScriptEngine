@@ -8,6 +8,21 @@ using namespace NUIE;
 namespace LocalizationTest
 {
 
+TEST (EmptyStringTest)
+{
+	std::wstring poContent = LR"(
+		msgid ""
+		msgstr ""
+		msgid "Apple"
+		msgstr "Alma"
+	)";
+	Dictionary dictionary;
+	PoDictionarySource poDictionarySource (poContent);
+	ASSERT (FillDictionary (dictionary, poDictionarySource));
+	ASSERT (dictionary.GetLocalizedString (L"") == L"");
+	ASSERT (dictionary.GetLocalizedString (L"Apple") == L"Alma");
+}
+
 TEST (SimplePoFileTest)
 {
 	std::wstring poContent = LR"(
@@ -43,7 +58,6 @@ TEST (SimplePoFileWithEscapeTest)
 	ASSERT (FillDictionary (dictionary, poDictionarySource));
 	ASSERT (dictionary.GetLocalizedString (L"App\"le") == L"Al\"ma");
 }
-
 
 TEST (SimplePoFileNonLocalizedTest)
 {
