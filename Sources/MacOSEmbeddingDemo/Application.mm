@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "MAS_MacOSAppUtils.hpp"
 
 // TODO: temporary
 #include "BI_InputUINodes.hpp"
@@ -48,7 +49,8 @@
 
 @end
 
-AppEventHandler::AppEventHandler ()
+AppEventHandler::AppEventHandler () :
+	nsView (nil)
 {
 	
 }
@@ -58,12 +60,19 @@ AppEventHandler::~AppEventHandler ()
 	
 }
 
+void AppEventHandler::Init (void* nsViewPtr)
+{
+	nsView = nsViewPtr;
+}
+
 NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
-	// NSMenu *theMenu = [[[NSMenu alloc] initWithTitle:@"Contextual Menu"] autorelease];
-	// [theMenu insertItemWithTitle:@"Beep" action:@selector(beep:) keyEquivalent:@"" atIndex:0];
-	// [theMenu insertItemWithTitle:@"Honk" action:@selector(honk:) keyEquivalent:@"" atIndex:1];
-	// [theMenu popUpMenuPositioningItem:nil atLocation:NSMakePoint (100,100) inView:nil];
+	NSMenu *theMenu = [[[NSMenu alloc] initWithTitle:@"Contextual Menu"] autorelease];
+	[theMenu insertItemWithTitle:@"Beep" action:@selector(beep:) keyEquivalent:@"" atIndex:0];
+	[theMenu insertItemWithTitle:@"Honk" action:@selector(honk:) keyEquivalent:@"" atIndex:1];
+	NSPoint screenPosition = MAS::CreateScreenPoint ((NSView*) nsView, position);
+	[theMenu popUpMenuPositioningItem:nil atLocation:screenPosition inView:(NSView*) nsView];
+	
 	#pragma unused (position)
 	#pragma unused (commands)
 	return nullptr;
@@ -141,6 +150,7 @@ AppNodeUIEnvironment::~AppNodeUIEnvironment ()
 void AppNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height)
 {
 	nodeEditorControl.Init (nodeEditorPtr, nativeParentHandle, x, y, width, height);
+	eventHandler.Init (nativeParentHandle);
 }
 
 void AppNodeUIEnvironment::Resize (int x, int y, int width, int height)

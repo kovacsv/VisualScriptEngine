@@ -40,61 +40,61 @@
 
 - (void) mouseDown : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
 }
 
 - (void) mouseUp : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
 }
 
 - (void) rightMouseDown : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
 }
 
 - (void) rightMouseUp : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
 }
 
 - (void) otherMouseDown : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
 }
 
 - (void) otherMouseUp : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
 }
 
 - (void) mouseDragged : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
 }
 
 - (void) rightMouseDragged : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
 }
 
 - (void) otherMouseDragged : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
 }
 
 - (void) scrollWheel : (NSEvent *) event
 {
-	NUIE::Point position = MAS::GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
 	if ([event deltaX] + [event deltaY] < 0) {
 		rotation = NUIE::MouseWheelRotation::Backward;

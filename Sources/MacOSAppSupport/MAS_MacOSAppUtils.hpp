@@ -9,9 +9,10 @@ namespace MAS
 {
 
 NUIE::ModifierKeys	GetModifierKeysFromEvent (const NSEvent* event);
-NUIE::Point			GetPositionFromEvent (NSView* view, const NSEvent* event);
+NUIE::Point			GetViewPositionFromEvent (NSView* view, const NSEvent* event);
 
 NSPoint				CreatePoint (const NSView* view, const NUIE::Point& point);
+NSPoint				CreateScreenPoint (const NSView* view, const NUIE::Point& point);
 NSRect				CreateRect (const NSView* view, const NUIE::Rect& rect);
 	
 }
