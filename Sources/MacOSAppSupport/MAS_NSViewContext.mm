@@ -1,13 +1,26 @@
 #include "MAS_NSViewContext.hpp"
 #include "NE_Debug.hpp"
 
+#import <Cocoa/Cocoa.h>
+
 namespace MAS
 {
 
+static NSRect CreateRect (const NSView* view, const NUIE::Rect& rect)
+{
+	return NSMakeRect (rect.GetX (), view.frame.size.height - rect.GetHeight () - rect.GetY (), rect.GetWidth (), rect.GetHeight ());
+}
+
+static NSColor* CreateColor (const NUIE::Color& color)
+{
+	return [NSColor colorWithRed:color.GetR () / 255.0f green:color.GetG () / 255.0f blue:color.GetB () / 255.0f alpha:1.0f];
+}
+	
 NSViewContext::NSViewContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
-	height (0)
+	height (0),
+	nsView (nullptr)
 {
 
 }
@@ -21,6 +34,7 @@ void NSViewContext::Init (void* nativeHandle)
 {
 	// TODO
 	#pragma unused (nativeHandle)
+	nsView = nativeHandle;
 }
 
 void NSViewContext::BlitToWindow (void* nativeHandle)
@@ -87,13 +101,16 @@ void NSViewContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, co
 
 void NSViewContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	// TODO
+	[CreateColor (pen.GetColor ()) set];
+	NSFrameRect (CreateRect ((NSView*) nsView, rect));
 	#pragma unused (rect)
 	#pragma unused (pen)
 }
 
 void NSViewContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
+	[CreateColor (color) set];
+	NSRectFill (CreateRect ((NSView*) nsView, rect));
 	// TODO
 	#pragma unused (rect)
 	#pragma unused (color)
@@ -129,7 +146,7 @@ NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstrin
 	// TODO
 	#pragma unused (font)
 	#pragma unused (text)
-	return NUIE::Size ();
+	return NUIE::Size (text.length() * 10, 20);
 }
 
 bool NSViewContext::CanDrawIcon ()

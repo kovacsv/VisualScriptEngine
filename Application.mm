@@ -170,7 +170,7 @@ void Application::Run ()
 	[myWindow setDelegate:myWindowController];
 
 	// TODO: temporary
-	nodeEditor.AddNode(NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), NUIE::Point (100, 100), 5, 1)));
+	nodeEditor.AddNode(NUIE::UINodePtr (new BI::IntegerUpDownNode (NUIE::LocName (L"Integer"), NUIE::Point (10, 10), 5, 1)));
 	
 	uiEnvironment.Init (&nodeEditor, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow makeKeyAndOrderFront:nil];

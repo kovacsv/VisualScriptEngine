@@ -46,6 +46,7 @@ public:
 private:
 	int							width;
 	int							height;
+	void*						nsView;
 };
 
 }

@@ -19,7 +19,7 @@ static NUIE::ModifierKeys GetKeysFromEvent (const NSEvent* event)
 static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 {
 	NSPoint position = [view convertPoint:[event locationInWindow] fromView:nil];
-	return NUIE::Point (position.x, position.y);
+	return NUIE::Point (position.x, view.frame.size.height - position.y);
 }
 
 @interface CocoaNSViewControl : NSView
@@ -51,8 +51,9 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 
 - (void) drawRect : (NSRect) dirtyRect
 {
+	#pragma unused (dirtyRect)
 	nodeEditor->Draw ();
-	
+	/*
 	[[NSColor whiteColor] set];
 	NSRectFill (dirtyRect);
 	
@@ -75,6 +76,7 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 	[bp curveToPoint:p1 controlPoint1:c1 controlPoint2:c2];
 	[bp closePath];
 	[bp stroke];
+	 */
 }
 
 - (void) mouseDown : (NSEvent *) event
@@ -87,9 +89,6 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 {
 	NUIE::Point position = GetPositionFromEvent (self, event);
 	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
-	
-	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-	[alert runModal];
 }
 
 - (void) rightMouseDown : (NSEvent *) event
@@ -102,9 +101,6 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 {
 	NUIE::Point position = GetPositionFromEvent (self, event);
 	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
-	
-	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-	[alert runModal];
 }
 
 - (void) otherMouseDown : (NSEvent *) event
@@ -117,12 +113,21 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 {
 	NUIE::Point position = GetPositionFromEvent (self, event);
 	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
-	
-	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-	[alert runModal];
 }
 
 - (void) mouseDragged : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (self, event);
+	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
+}
+
+- (void) rightMouseDragged : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (self, event);
+	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
+}
+
+- (void) otherMouseDragged : (NSEvent *) event
 {
 	NUIE::Point position = GetPositionFromEvent (self, event);
 	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
