@@ -41,8 +41,8 @@
 -(void) windowDidResize:(NSNotification *) notification
 {
 	#pragma unused (notification)
-	NSRect windowRect = [[self window] frame];
-	uiEnvironment->Resize (0, 0, windowRect.size.width, windowRect.size.height);
+	NSRect clientRect = [[[self window] contentView] frame];
+	uiEnvironment->Resize (0, 0, clientRect.size.width, clientRect.size.height);
 }
 
 @end

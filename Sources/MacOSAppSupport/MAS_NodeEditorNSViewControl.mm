@@ -133,6 +133,16 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
 }
 
+- (void) scrollWheel : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (self, event);
+	NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
+	if ([event deltaX] + [event deltaY] < 0) {
+		rotation = NUIE::MouseWheelRotation::Backward;
+	}
+	nodeEditor->OnMouseWheel(GetKeysFromEvent(event), rotation, position.GetX (), position.GetY ());
+}
+
 - (void) keyDown : (NSEvent *) event
 {
 	#pragma unused (event)

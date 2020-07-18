@@ -6,6 +6,11 @@
 namespace MAS
 {
 
+static NSPoint CreatePoint (const NSView* view, const NUIE::Point& point)
+{
+	return NSMakePoint (point.GetX (), view.frame.size.height - point.GetY ());
+}
+	
 static NSRect CreateRect (const NSView* view, const NUIE::Rect& rect)
 {
 	return NSMakeRect (rect.GetX (), view.frame.size.height - rect.GetHeight () - rect.GetY (), rect.GetWidth (), rect.GetHeight ());
@@ -83,51 +88,49 @@ bool NSViewContext::NeedToDraw (ItemPreviewMode)
 
 void NSViewContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
-	// TODO
-	#pragma unused (beg)
-	#pragma unused (end)
-	#pragma unused (pen)
+	[CreateColor (pen.GetColor ()) set];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
+	[bezierPath setLineWidth:pen.GetThickness ()];
+	[bezierPath moveToPoint:CreatePoint((NSView*) nsView, beg)];
+	[bezierPath lineToPoint:CreatePoint((NSView*) nsView, end)];
+	[bezierPath stroke];
 }
 
 void NSViewContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
-	// TODO
-	#pragma unused (p1)
-	#pragma unused (p2)
-	#pragma unused (p4)
-	#pragma unused (p3)
-	#pragma unused (pen)
+	[CreateColor (pen.GetColor ()) set];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
+	[bezierPath setLineWidth:pen.GetThickness ()];
+	[bezierPath moveToPoint:CreatePoint((NSView*) nsView, p1)];
+	[bezierPath curveToPoint:CreatePoint((NSView*) nsView, p4) controlPoint1:CreatePoint((NSView*) nsView, p2) controlPoint2:CreatePoint((NSView*) nsView, p3)];
+	[bezierPath stroke];
 }
 
 void NSViewContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	[CreateColor (pen.GetColor ()) set];
-	NSFrameRect (CreateRect ((NSView*) nsView, rect));
-	#pragma unused (rect)
-	#pragma unused (pen)
+	NSFrameRectWithWidth (CreateRect ((NSView*) nsView, rect), pen.GetThickness ());
 }
 
 void NSViewContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	[CreateColor (color) set];
 	NSRectFill (CreateRect ((NSView*) nsView, rect));
-	// TODO
-	#pragma unused (rect)
-	#pragma unused (color)
 }
 
 void NSViewContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	// TODO
-	#pragma unused (rect)
-	#pragma unused (pen)
+	[CreateColor (pen.GetColor ()) set];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect((NSView*) nsView, rect)];
+	[bezierPath setLineWidth:pen.GetThickness ()];
+	[bezierPath stroke];
 }
 
 void NSViewContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	// TODO
-	#pragma unused (rect)
-	#pragma unused (color)
+	[CreateColor (color) set];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect((NSView*) nsView, rect)];
+	[bezierPath fill];
 }
 
 void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
