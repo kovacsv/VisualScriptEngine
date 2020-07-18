@@ -1,4 +1,5 @@
 #include "MAS_NodeEditorNSViewControl.hpp"
+#include "MAS_NSViewContext.hpp"
 #include "NE_Debug.hpp"
 
 #import <Cocoa/Cocoa.h>
@@ -126,7 +127,7 @@ namespace MAS
 {
 
 NodeEditorNSViewControl::NodeEditorNSViewControl () :
-	NodeEditorNSViewControl (NUIE::NativeDrawingContextPtr (nullptr)) // TODO
+	NodeEditorNSViewControl (NUIE::NativeDrawingContextPtr (new NSViewContext ()))
 {
 
 }
