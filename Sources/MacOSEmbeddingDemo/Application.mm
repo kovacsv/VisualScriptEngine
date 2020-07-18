@@ -2,6 +2,7 @@
 
 // TODO: temporary
 #include "BI_InputUINodes.hpp"
+#include "BI_ViewerUINodes.hpp"
 
 #import <Cocoa/Cocoa.h>
 
@@ -59,6 +60,10 @@ AppEventHandler::~AppEventHandler ()
 
 NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
+	// NSMenu *theMenu = [[[NSMenu alloc] initWithTitle:@"Contextual Menu"] autorelease];
+	// [theMenu insertItemWithTitle:@"Beep" action:@selector(beep:) keyEquivalent:@"" atIndex:0];
+	// [theMenu insertItemWithTitle:@"Honk" action:@selector(honk:) keyEquivalent:@"" atIndex:1];
+	// [theMenu popUpMenuPositioningItem:nil atLocation:NSMakePoint (100,100) inView:nil];
 	#pragma unused (position)
 	#pragma unused (commands)
 	return nullptr;
@@ -241,7 +246,8 @@ void Application::Run ()
 
 	// TODO: temporary
 	nodeEditor.AddNode(NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), NUIE::Point (100, 100), 5, 1)));
-	
+	nodeEditor.AddNode(NUIE::UINodePtr (new BI::ViewerNode (NE::LocString (L"Viewer"), NUIE::Point (300, 200))));
+
 	uiEnvironment.Init (&nodeEditor, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow makeKeyAndOrderFront:nil];
 
