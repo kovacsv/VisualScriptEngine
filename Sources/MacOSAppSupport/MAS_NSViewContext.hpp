@@ -4,6 +4,8 @@
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_Drawing.hpp"
 
+#import <Cocoa/Cocoa.h>
+
 namespace MAS
 {
 
@@ -46,7 +48,7 @@ public:
 private:
 	int							width;
 	int							height;
-	void*						nsView;
+	NSView*						nsView;
 };
 
 }
