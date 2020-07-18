@@ -146,7 +146,35 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 - (void) keyDown : (NSEvent *) event
 {
 	#pragma unused (event)
-	// TODO
+	NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
+	NSString* characters = [event charactersIgnoringModifiers];
+	if ([characters length] == 1) {
+		unichar character = [characters characterAtIndex:0];
+		bool isControlPressed = [event modifierFlags] & NSEventModifierFlagControl;
+		if (isControlPressed) {
+			if (character == 'a') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
+			} else if (character == 'c') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Copy);
+			} else if (character == 'v') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
+			} else if (character == 'g') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+			} else if (character == 'z') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
+			} else if (character == 'y') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+			}
+		} else {
+			// TODO: escape key
+			if (character == NSDeleteFunctionKey) {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
+			}
+		}
+	}
+	if (pressedKey.IsValid ()) {
+		nodeEditor->OnKeyPress (pressedKey);
+	}
 }
 
 @end
