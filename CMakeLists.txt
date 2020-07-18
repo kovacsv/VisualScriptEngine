@@ -226,3 +226,36 @@ if (WIN32)
 	SetCompilerOptions (WindowsEmbeddingDemo2)
 
 endif ()	
+
+if (APPLE)
+
+	# MacOSEmbeddingDemo
+
+	set (MacOSEmbeddingDemoSourcesFolder Sources/MacOSEmbeddingDemo)
+	file (GLOB MacOSEmbeddingDemoHeaderFiles ${MacOSEmbeddingDemoSourcesFolder}/*.hpp)
+	file (GLOB MacOSEmbeddingDemoSourceFiles
+		${MacOSEmbeddingDemoSourcesFolder}/*.cpp
+		${MacOSEmbeddingDemoSourcesFolder}/*.mm
+	)
+	set (
+		MacOSEmbeddingDemoFiles
+		${MacOSEmbeddingDemoHeaderFiles}
+		${MacOSEmbeddingDemoSourceFiles}
+	)
+	source_group ("Sources" FILES ${MacOSEmbeddingDemoFiles})
+	add_executable (MacOSEmbeddingDemo ${MacOSEmbeddingDemoFiles})
+	set_target_properties (MacOSEmbeddingDemo PROPERTIES MACOSX_BUNDLE TRUE)
+	set_target_properties (MacOSEmbeddingDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
+	find_library (CocoaFramework Cocoa)
+	target_link_libraries (MacOSEmbeddingDemo ${CocoaFramework})
+	target_include_directories (
+		MacOSEmbeddingDemo PUBLIC
+		${NodeEngineSourcesFolder}
+		${NodeUIEngineSourcesFolder}
+		${BuiltInNodesSourcesFolder}
+		${TestFrameworkSourcesFolder}
+	)
+	target_link_libraries (MacOSEmbeddingDemo NodeEngine NodeUIEngine BuiltInNodes)
+	SetCompilerOptions (MacOSEmbeddingDemo)
+
+endif ()	
