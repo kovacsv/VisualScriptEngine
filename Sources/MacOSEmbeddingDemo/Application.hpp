@@ -45,6 +45,7 @@ public:
 
 private:
 	AppNodeUIEnvironment	uiEnvironment;
+	NUIE::NodeEditor		nodeEditor;
 };
 
 #endif

@@ -86,14 +86,15 @@ NodeEditorNSViewControl::~NodeEditorNSViewControl ()
 bool NodeEditorNSViewControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height)
 {
 	nodeEditor = nodeEditorPtr;
-	// TODO
-	//DBGASSERT (nodeEditor != nullptr);
+	DBGASSERT (nodeEditor != nullptr);
 
 	NSRect viewRect = NSMakeRect (x, y, width, height);
 	subView = [[[CocoaNSViewControl alloc] initWithFrame:viewRect] autorelease];
 	[((CocoaNSViewControl*) subView) setNodeEditor:nullptr];
 	[((NSView*) nativeParentHandle) addSubview:((NSView*) subView)];
 	
+	// TODO
+	// nativeContext->Init (subView);
 	return true;
 }
 
@@ -112,6 +113,9 @@ void NodeEditorNSViewControl::Resize (int x, int y, int width, int height)
 {
 	NSRect viewRect = NSMakeRect (x, y, width, height);
 	[((NSView*) subView) setFrame:viewRect];
+	if (nodeEditor != nullptr) {
+		nodeEditor->OnResize (width, height);
+	}
 }
 
 void NodeEditorNSViewControl::Invalidate ()

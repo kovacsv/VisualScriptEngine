@@ -131,7 +131,8 @@ double AppNodeUIEnvironment::GetMouseMoveMinOffset ()
 }
 
 Application::Application () :
-	uiEnvironment ()
+	uiEnvironment (),
+	nodeEditor (uiEnvironment)
 {
     
 }
@@ -165,7 +166,7 @@ void Application::Run ()
 	[myWindow setContentView:contentView];
 	[myWindow setDelegate:myWindowController];
 
-	uiEnvironment.Init (nullptr, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
+	uiEnvironment.Init (&nodeEditor, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow makeKeyAndOrderFront:nil];
 
 	[NSApp run];
