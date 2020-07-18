@@ -114,6 +114,12 @@ static NUIE::Point GetPositionFromEvent (const NSEvent* event)
 	[alert runModal];
 }
 
+- (void) mouseMoved : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (event);
+	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
+}
+
 @end
 
 namespace MAS
