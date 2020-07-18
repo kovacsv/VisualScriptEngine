@@ -47,6 +47,76 @@
 
 @end
 
+AppEventHandler::AppEventHandler ()
+{
+	
+}
+
+AppEventHandler::~AppEventHandler ()
+{
+	
+}
+
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
+{
+	#pragma unused (position)
+	#pragma unused (commands)
+	return nullptr;
+}
+
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::MenuCommandStructure& commands)
+{
+	#pragma unused (position)
+	#pragma unused (uiNode)
+	#pragma unused (commands)
+	return nullptr;
+}
+
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UIOutputSlotConstPtr& outputSlot, const NUIE::MenuCommandStructure& commands)
+{
+	#pragma unused (position)
+	#pragma unused (outputSlot)
+	#pragma unused (commands)
+	return nullptr;
+}
+
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UIInputSlotConstPtr& inputSlot, const NUIE::MenuCommandStructure& commands)
+{
+	#pragma unused (position)
+	#pragma unused (inputSlot)
+	#pragma unused (commands)
+	return nullptr;
+}
+
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::MenuCommandStructure& commands)
+{
+	#pragma unused (position)
+	#pragma unused (group)
+	#pragma unused (commands)
+	return nullptr;
+}
+
+void AppEventHandler::OnDoubleClick(NUIE::MouseButton mouseButton, const NUIE::Point& position)
+{
+	#pragma unused (mouseButton)
+	#pragma unused (position)
+}
+
+bool AppEventHandler::OnParameterSettings(NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodePtr& uiNode)
+{
+	#pragma unused (paramAccessor)
+	#pragma unused (uiNode)
+	return false;
+}
+
+bool AppEventHandler::OnParameterSettings(NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodeGroupPtr& uiGroup)
+{
+	#pragma unused (paramAccessor)
+	#pragma unused (uiGroup)
+	return false;
+}
+
+
 AppNodeUIEnvironment::AppNodeUIEnvironment () :
 	stringConverter (NE::GetDefaultStringConverter ()),
 	skinParams (NUIE::GetDefaultSkinParams ()),
@@ -73,17 +143,17 @@ void AppNodeUIEnvironment::Resize (int x, int y, int width, int height)
 	nodeEditorControl.Resize (x, y, width, height);
 }
 
-const NE::StringConverter &AppNodeUIEnvironment::GetStringConverter ()
+const NE::StringConverter& AppNodeUIEnvironment::GetStringConverter ()
 {
 	return stringConverter;
 }
 
-const NUIE::SkinParams &AppNodeUIEnvironment::GetSkinParams ()
+const NUIE::SkinParams& AppNodeUIEnvironment::GetSkinParams ()
 {
 	return skinParams;
 }
 
-NUIE::DrawingContext &AppNodeUIEnvironment::GetDrawingContext( )
+NUIE::DrawingContext& AppNodeUIEnvironment::GetDrawingContext( )
 {
 	return nodeEditorControl.GetDrawingContext ();
 }
@@ -93,7 +163,7 @@ double AppNodeUIEnvironment::GetWindowScale ()
 	return 1.0;
 }
 
-NE::EvaluationEnv &AppNodeUIEnvironment::GetEvaluationEnv ()
+NE::EvaluationEnv& AppNodeUIEnvironment::GetEvaluationEnv ()
 {
 	return evaluationEnv;
 }
@@ -118,12 +188,12 @@ void AppNodeUIEnvironment::OnRedrawRequested ()
 	nodeEditorControl.Invalidate ();
 }
 
-NUIE::EventHandler &AppNodeUIEnvironment::GetEventHandler ()
+NUIE::EventHandler& AppNodeUIEnvironment::GetEventHandler ()
 {
 	return eventHandler;
 }
 
-NUIE::ClipboardHandler &AppNodeUIEnvironment::GetClipboardHandler ()
+NUIE::ClipboardHandler& AppNodeUIEnvironment::GetClipboardHandler ()
 {
 	return clipboardHandler;
 }
