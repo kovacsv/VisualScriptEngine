@@ -146,10 +146,12 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 
 NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	// TODO
-	#pragma unused (font)
-	#pragma unused (text)
-	return NUIE::Size (text.length() * 10, 20);
+	const std::wstring& fontFamily = font.GetFamily ();
+	NSString* nsText = [[NSString alloc] initWithBytes:text.data () length:text.length() * sizeof (wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
+	NSString* nsFontName = [[NSString alloc] initWithBytes:fontFamily.data () length:fontFamily.length() * sizeof (wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
+	NSDictionary* attributes = @{NSFontAttributeName: [NSFont fontWithName:nsFontName size:font.GetSize ()]};
+	NSSize size = [nsText sizeWithAttributes:attributes];
+	return NUIE::Size (size.width, size.height);
 }
 
 bool NSViewContext::CanDrawIcon ()
