@@ -84,6 +84,36 @@ static NUIE::Point GetPositionFromEvent (const NSEvent* event)
 	[alert runModal];
 }
 
+- (void) rightMouseDown : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (event);
+	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
+}
+
+- (void) rightMouseUp : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (event);
+	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
+	
+	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+	[alert runModal];
+}
+
+- (void) otherMouseDown : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (event);
+	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
+}
+
+- (void) otherMouseUp : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (event);
+	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
+	
+	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+	[alert runModal];
+}
+
 @end
 
 namespace MAS
