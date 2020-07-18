@@ -135,13 +135,35 @@ void NSViewContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& colo
 
 void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
-	// TODO
-	#pragma unused (rect)
-	#pragma unused (font)
-	#pragma unused (text)
-	#pragma unused (hAnchor)
-	#pragma unused (vAnchor)
-	#pragma unused (textColor)
+	[CreateColor (textColor) set];
+	const std::wstring& fontFamily = font.GetFamily ();
+	NSString* nsText = [[NSString alloc] initWithBytes:text.data () length:text.length() * sizeof (wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
+	NSString* nsFontName = [[NSString alloc] initWithBytes:fontFamily.data () length:fontFamily.length() * sizeof (wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
+	
+	
+	NSMutableParagraphStyle* style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	if (hAnchor == NUIE::HorizontalAnchor::Left) {
+		style.alignment = NSTextAlignmentLeft;
+	} else if (hAnchor == NUIE::HorizontalAnchor::Center) {
+		style.alignment = NSTextAlignmentCenter;
+	} else if (hAnchor == NUIE::HorizontalAnchor::Right) {
+		style.alignment = NSTextAlignmentRight;
+	}
+	NSDictionary* attributes = @{
+		NSFontAttributeName: [NSFont fontWithName:nsFontName size:font.GetSize ()],
+		NSForegroundColorAttributeName : CreateColor (textColor),
+		NSParagraphStyleAttributeName : style
+	};
+	NSRect textRect = CreateRect((NSView*) nsView, rect);
+	NSSize textSize = [nsText sizeWithAttributes:attributes];
+	if (vAnchor == NUIE::VerticalAnchor::Top) {
+		// nothing to do
+	} else if (vAnchor == NUIE::VerticalAnchor::Center) {
+		textRect.origin.y -= (textRect.size.height - textSize.height) / 2.0;
+	} else if (vAnchor == NUIE::VerticalAnchor::Bottom) {
+		textRect.origin.y -= (textRect.size.height - textSize.height);
+	}
+	[nsText drawInRect:textRect withAttributes:attributes];
 }
 
 NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
