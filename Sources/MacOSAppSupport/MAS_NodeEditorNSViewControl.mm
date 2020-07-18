@@ -3,6 +3,24 @@
 
 #import <Cocoa/Cocoa.h>
 
+static NUIE::ModifierKeys GetKeysFromEvent (const NSEvent* event)
+{
+	NUIE::ModifierKeys keys;
+	NSEventModifierFlags flags = [event modifierFlags];
+	if (flags & NSEventModifierFlagControl) {
+		keys.Insert (NUIE::ModifierKeyCode::Control);
+	} else if (flags & NSEventModifierFlagShift) {
+		keys.Insert (NUIE::ModifierKeyCode::Shift);
+	}
+	return keys;
+}
+
+static NUIE::Point GetPositionFromEvent (const NSEvent* event)
+{
+	NSPoint position = [event locationInWindow];
+	return NUIE::Point (position.x, position.y);
+}
+
 @interface CocoaNSViewControl : NSView
 {
 @public NUIE::NodeEditor* nodeEditor;
@@ -51,9 +69,17 @@
 	[bp stroke];
 }
 
-- (void) mouseDown:(NSEvent *) event
+- (void) mouseDown : (NSEvent *) event
 {
-	#pragma unused (event)
+	NUIE::Point position = GetPositionFromEvent (event);
+	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
+}
+
+- (void) mouseUp : (NSEvent *) event
+{
+	NUIE::Point position = GetPositionFromEvent (event);
+	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
+	
 	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
 	[alert runModal];
 }
@@ -90,7 +116,7 @@ bool NodeEditorNSViewControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativ
 
 	NSRect viewRect = NSMakeRect (x, y, width, height);
 	subView = [[[CocoaNSViewControl alloc] initWithFrame:viewRect] autorelease];
-	[((CocoaNSViewControl*) subView) setNodeEditor:nullptr];
+	[((CocoaNSViewControl*) subView) setNodeEditor:nodeEditor];
 	[((NSView*) nativeParentHandle) addSubview:((NSView*) subView)];
 	
 	// TODO
