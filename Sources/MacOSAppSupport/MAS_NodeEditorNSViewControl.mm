@@ -25,7 +25,6 @@ static NUIE::Point GetPositionFromEvent (const NSEvent* event)
 @interface CocoaNSViewControl : NSView
 {
 @private NUIE::NodeEditor* nodeEditor;
-@private NSTrackingArea* trackingArea;
 }
 @end
 
@@ -36,27 +35,8 @@ static NUIE::Point GetPositionFromEvent (const NSEvent* event)
 	self = [super initWithFrame:frame];
 	if (self) {
 		nodeEditor = nil;
-		trackingArea = [[NSTrackingArea alloc]
-			initWithRect : frame
-			options : (NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp)
-			owner : self
-			userInfo : nil
-		];
-		[self addTrackingArea:trackingArea];
 	}
 	return self;
-}
-
-- (void)updateTrackingAreas
-{
-	[self removeTrackingArea:trackingArea];
-	trackingArea = [[NSTrackingArea alloc]
-		initWithRect : [self frame]
-		options : (NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveInActiveApp)
-		owner : self
-		userInfo : nil
-	];
-	[self addTrackingArea:trackingArea];
 }
 
 -(void) setNodeEditor : (NUIE::NodeEditor*) newNodeEditor
@@ -137,7 +117,7 @@ static NUIE::Point GetPositionFromEvent (const NSEvent* event)
 	[alert runModal];
 }
 
-- (void) mouseMoved : (NSEvent *) event
+- (void) mouseDragged : (NSEvent *) event
 {
 	NUIE::Point position = GetPositionFromEvent (event);
 	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
