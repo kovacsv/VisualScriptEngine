@@ -30,6 +30,11 @@ static NUIE::Point GetPositionFromEvent (const NSEvent* event)
 
 @implementation CocoaNSViewControl
 
+- (BOOL) acceptsFirstResponder
+{
+	return YES;
+}
+
 - (id) initWithFrame : (NSRect) frame
 {
 	self = [super initWithFrame:frame];
@@ -123,6 +128,11 @@ static NUIE::Point GetPositionFromEvent (const NSEvent* event)
 	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
 }
 
+- (void) keyDown : (NSEvent *) event
+{
+	#pragma unused (event)
+}
+
 @end
 
 namespace MAS
@@ -158,8 +168,8 @@ bool NodeEditorNSViewControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativ
 	[((CocoaNSViewControl*) subView) setNodeEditor:nodeEditor];
 	[((NSView*) nativeParentHandle) addSubview:((NSView*) subView)];
 	
-	// TODO
-	// nativeContext->Init (subView);
+	nativeContext->Init (subView);
+	nativeContext->Resize (width, height);
 	return true;
 }
 
