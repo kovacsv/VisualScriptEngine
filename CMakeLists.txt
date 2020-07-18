@@ -195,7 +195,6 @@ if (WIN32)
 		${NodeEngineSourcesFolder}
 		${NodeUIEngineSourcesFolder}
 		${BuiltInNodesSourcesFolder}
-		${TestFrameworkSourcesFolder}
 		${WindowsAppSupportSourcesFolder}
 	)
 	target_link_libraries (WindowsEmbeddingDemo NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
@@ -219,7 +218,6 @@ if (WIN32)
 		${NodeEngineSourcesFolder}
 		${NodeUIEngineSourcesFolder}
 		${BuiltInNodesSourcesFolder}
-		${TestFrameworkSourcesFolder}
 		${WindowsAppSupportSourcesFolder}
 	)
 	target_link_libraries (WindowsEmbeddingDemo2 NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
@@ -228,6 +226,29 @@ if (WIN32)
 endif ()	
 
 if (APPLE)
+
+	find_library (CocoaFramework Cocoa)
+
+	# MacOSAppSupport
+
+	set (MacOSAppSupportSourcesFolder Sources/MacOSAppSupport)
+	file (GLOB MacOSAppSupportHeaderFiles ${MacOSAppSupportSourcesFolder}/*.hpp)
+	file (GLOB MacOSAppSupportSourceFiles ${MacOSAppSupportSourcesFolder}/*.cpp ${MacOSAppSupportSourcesFolder}/*.mm)
+	set (
+		MacOSAppSupportFiles
+		${MacOSAppSupportHeaderFiles}
+		${MacOSAppSupportSourceFiles}
+	)
+	source_group ("Sources" FILES ${MacOSAppSupportFiles})
+	add_library (MacOSAppSupport STATIC ${MacOSAppSupportFiles})
+	set_target_properties (MacOSAppSupport PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
+	target_include_directories (MacOSAppSupport PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${MacOSAppSupportSourcesFolder})
+	target_link_libraries (MacOSAppSupport ${CocoaFramework})
+	target_link_libraries (MacOSAppSupport NodeEngine NodeUIEngine)
+	SetCompilerOptions (MacOSAppSupport)
+	install (TARGETS MacOSAppSupport DESTINATION lib)
+	install (FILES ${MacOSAppSupportHeaderFiles} DESTINATION include)
+	install (FILES ${MacOSAppSupportSourceFiles} DESTINATION source)
 
 	# MacOSEmbeddingDemo
 
@@ -246,16 +267,15 @@ if (APPLE)
 	add_executable (MacOSEmbeddingDemo ${MacOSEmbeddingDemoFiles})
 	set_target_properties (MacOSEmbeddingDemo PROPERTIES MACOSX_BUNDLE TRUE)
 	set_target_properties (MacOSEmbeddingDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
-	find_library (CocoaFramework Cocoa)
-	target_link_libraries (MacOSEmbeddingDemo ${CocoaFramework})
 	target_include_directories (
 		MacOSEmbeddingDemo PUBLIC
 		${NodeEngineSourcesFolder}
 		${NodeUIEngineSourcesFolder}
 		${BuiltInNodesSourcesFolder}
-		${TestFrameworkSourcesFolder}
+		${MacOSAppSupportSourcesFolder}
 	)
-	target_link_libraries (MacOSEmbeddingDemo NodeEngine NodeUIEngine BuiltInNodes)
+	target_link_libraries (MacOSEmbeddingDemo ${CocoaFramework})
+	target_link_libraries (MacOSEmbeddingDemo NodeEngine NodeUIEngine BuiltInNodes MacOSAppSupport)
 	SetCompilerOptions (MacOSEmbeddingDemo)
 
 endif ()	
