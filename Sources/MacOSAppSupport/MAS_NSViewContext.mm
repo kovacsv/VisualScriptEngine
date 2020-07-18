@@ -37,8 +37,6 @@ NSViewContext::~NSViewContext ()
 
 void NSViewContext::Init (void* nativeHandle)
 {
-	// TODO
-	#pragma unused (nativeHandle)
 	nsView = nativeHandle;
 }
 
@@ -56,9 +54,9 @@ void NSViewContext::BlitToContext (void* nativeContext)
 
 void NSViewContext::Resize (int newWidth, int newHeight)
 {
+	// TODO
 	width = newWidth;
 	height = newHeight;
-	// TODO
 }
 
 double NSViewContext::GetWidth () const

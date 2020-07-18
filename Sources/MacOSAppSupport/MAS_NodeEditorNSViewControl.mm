@@ -53,30 +53,6 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 {
 	#pragma unused (dirtyRect)
 	nodeEditor->Draw ();
-	/*
-	[[NSColor whiteColor] set];
-	NSRectFill (dirtyRect);
-	
-	[[NSColor redColor] set];
-	
-	// The three vertices of a triangle
-	NSPoint p1 = NSMakePoint(100, 100);
-	NSPoint p2 = NSMakePoint(200, 300);
-	NSPoint p3 = NSMakePoint(300, 100);
-	
-	// Control points
-	NSPoint c1 = NSMakePoint(200, 200);
-	NSPoint c2 = NSMakePoint(200, 0);
-	
-	// Constructing the path for the triangle
-	NSBezierPath *bp = [NSBezierPath bezierPath];
-	[bp moveToPoint:p1];
-	[bp lineToPoint:p2];
-	[bp lineToPoint:p3];
-	[bp curveToPoint:p1 controlPoint1:c1 controlPoint2:c2];
-	[bp closePath];
-	[bp stroke];
-	 */
 }
 
 - (void) mouseDown : (NSEvent *) event
@@ -145,7 +121,6 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 
 - (void) keyDown : (NSEvent *) event
 {
-	#pragma unused (event)
 	NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
 	NSString* characters = [event charactersIgnoringModifiers];
 	if ([characters length] == 1) {
