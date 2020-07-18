@@ -4,7 +4,7 @@
 
 @interface WindowController : NSWindowController<NSWindowDelegate>
 {
-
+@private MAS::NodeEditorNSViewControl* editorControl;
 }
 @end
 
@@ -14,8 +14,14 @@
 {
 	self = [super init];
 	if (self) {
+		editorControl = nil;
 	}
 	return self;
+}
+
+-(void) setNodeEditorControl : (MAS::NodeEditorNSViewControl*) newEditorControl
+{
+	editorControl = newEditorControl;
 }
 
 -(void) windowDidLoad
@@ -36,7 +42,8 @@
 
 @end
 
-Application::Application ()
+Application::Application () :
+	editorControl ()
 {
     
 }
@@ -62,12 +69,15 @@ void Application::Run ()
 	[myWindow setTitle:@"VisualScriptEngine Embedding Demo"];
 
 	WindowController* myWindowController = [[WindowController alloc] autorelease];
+	NSView* contentView = [[[NSView alloc] initWithFrame:windowRect] autorelease];
+
 	[myWindowController setWindow:myWindow];
+	[myWindowController setNodeEditorControl:&editorControl];
+
+	[myWindow setContentView:contentView];
 	[myWindow setDelegate:myWindowController];
 
-	NSView* contentView = [[[NSView alloc] initWithFrame:windowRect] autorelease];
-	[myWindow setContentView:contentView];
-
+	editorControl.Init (nullptr, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow makeKeyAndOrderFront:nil];
 
 	[NSApp run];
