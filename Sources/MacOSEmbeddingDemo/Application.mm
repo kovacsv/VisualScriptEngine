@@ -4,7 +4,7 @@
 
 @interface WindowController : NSWindowController<NSWindowDelegate>
 {
-@private MAS::NodeEditorNSViewControl* editorControl;
+@private AppNodeUIEnvironment* uiEnvironment;
 }
 @end
 
@@ -14,14 +14,14 @@
 {
 	self = [super init];
 	if (self) {
-		editorControl = nil;
+		uiEnvironment = nil;
 	}
 	return self;
 }
 
--(void) setNodeEditorControl : (MAS::NodeEditorNSViewControl*) newEditorControl
+-(void) setUIEnvironment : (AppNodeUIEnvironment*) newUIEnvironment
 {
-	editorControl = newEditorControl;
+	uiEnvironment = newUIEnvironment;
 }
 
 -(void) windowDidLoad
@@ -38,12 +38,100 @@
 -(void) windowDidResize:(NSNotification *) notification
 {
 	#pragma unused (notification)
+	NSRect windowRect = [[self window] frame];
+	uiEnvironment->Resize (0, 0, windowRect.size.width, windowRect.size.height);
 }
 
 @end
 
+AppNodeUIEnvironment::AppNodeUIEnvironment () :
+	stringConverter (NE::GetDefaultStringConverter ()),
+	skinParams (NUIE::GetDefaultSkinParams ()),
+	evaluationEnv (NE::EmptyEvaluationEnv),
+	eventHandler (),
+	clipboardHandler (),
+	nodeEditorControl ()
+{
+	
+}
+
+AppNodeUIEnvironment::~AppNodeUIEnvironment ()
+{
+
+}
+
+void AppNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height)
+{
+	nodeEditorControl.Init (nodeEditorPtr, nativeParentHandle, x, y, width, height);
+}
+
+void AppNodeUIEnvironment::Resize (int x, int y, int width, int height)
+{
+	nodeEditorControl.Resize (x, y, width, height);
+}
+
+const NE::StringConverter &AppNodeUIEnvironment::GetStringConverter ()
+{
+	return stringConverter;
+}
+
+const NUIE::SkinParams &AppNodeUIEnvironment::GetSkinParams ()
+{
+	return skinParams;
+}
+
+NUIE::DrawingContext &AppNodeUIEnvironment::GetDrawingContext( )
+{
+	return nodeEditorControl.GetDrawingContext ();
+}
+
+double AppNodeUIEnvironment::GetWindowScale ()
+{
+	return 1.0;
+}
+
+NE::EvaluationEnv &AppNodeUIEnvironment::GetEvaluationEnv ()
+{
+	return evaluationEnv;
+}
+
+void AppNodeUIEnvironment::OnEvaluationBegin ()
+{
+
+}
+
+void AppNodeUIEnvironment::OnEvaluationEnd ()
+{
+
+}
+
+void AppNodeUIEnvironment::OnValuesRecalculated ()
+{
+
+}
+
+void AppNodeUIEnvironment::OnRedrawRequested ()
+{
+	nodeEditorControl.Invalidate ();
+}
+
+NUIE::EventHandler &AppNodeUIEnvironment::GetEventHandler ()
+{
+	return eventHandler;
+}
+
+NUIE::ClipboardHandler &AppNodeUIEnvironment::GetClipboardHandler ()
+{
+	return clipboardHandler;
+}
+
+double AppNodeUIEnvironment::GetMouseMoveMinOffset ()
+{
+	return 2.0;
+}
+
 Application::Application () :
-	editorControl ()
+	uiEnvironment ()
 {
     
 }
@@ -72,12 +160,12 @@ void Application::Run ()
 	NSView* contentView = [[[NSView alloc] initWithFrame:windowRect] autorelease];
 
 	[myWindowController setWindow:myWindow];
-	[myWindowController setNodeEditorControl:&editorControl];
+	[myWindowController setUIEnvironment:&uiEnvironment];
 
 	[myWindow setContentView:contentView];
 	[myWindow setDelegate:myWindowController];
 
-	editorControl.Init (nullptr, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
+	uiEnvironment.Init (nullptr, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow makeKeyAndOrderFront:nil];
 
 	[NSApp run];

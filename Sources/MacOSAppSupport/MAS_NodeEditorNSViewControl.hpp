@@ -29,7 +29,7 @@ public:
 private:
 	NUIE::NodeEditor*				nodeEditor;
 	NUIE::NativeDrawingContextPtr	nativeContext;
-	void*							control;
+	void*							subView;
 };
 
 }
