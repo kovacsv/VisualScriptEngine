@@ -49,8 +49,6 @@
 
 @end
 
-
-
 AppEventHandler::AppEventHandler () :
 	nsView (nil)
 {
