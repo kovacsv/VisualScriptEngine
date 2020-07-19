@@ -116,10 +116,11 @@
 {
 	NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
 	NSString* characters = [event charactersIgnoringModifiers];
+	
 	if ([characters length] == 1) {
 		unichar character = [characters characterAtIndex:0];
-		bool isControlPressed = [event modifierFlags] & NSEventModifierFlagControl;
-		if (isControlPressed) {
+		bool isCommandPressed = [event modifierFlags] & NSEventModifierFlagCommand;
+		if (isCommandPressed) {
 			if (character == 'a') {
 				pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
 			} else if (character == 'c') {
@@ -134,9 +135,11 @@
 				pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
 			}
 		} else {
-			// TODO: escape key
+			static const unichar EscapeKeyCode = u'\x1b';
 			if (character == NSDeleteFunctionKey) {
 				pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
+			} else if (character == EscapeKeyCode) {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
 			}
 		}
 	}

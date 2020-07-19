@@ -1,6 +1,7 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#include "NUIE_NodeTree.hpp"
 #include "MAS_NodeEditorNSViewControl.hpp"
 
 class AppEventHandler : public NUIE::EventHandler
@@ -9,7 +10,7 @@ public:
 	AppEventHandler ();
 	virtual ~AppEventHandler ();
 	
-	void							Init (void* nsViewPtr);
+	void							Init (NUIE::NodeEditor* nodeEditorPtr, void* nsViewPtr);
 	
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::MenuCommandStructure& commands) override;
@@ -21,6 +22,8 @@ public:
 	virtual bool					OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodeGroupPtr& uiGroup) override;
 
 private:
+	NUIE::NodeTree					nodeTree;
+	NUIE::NodeEditor*				nodeEditor;
 	void*							nsView;
 };
 

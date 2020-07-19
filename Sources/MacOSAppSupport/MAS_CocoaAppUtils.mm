@@ -49,7 +49,7 @@ namespace MAS
 
 NSString* StdStringToNSString (const std::wstring& str)
 {
-	return [[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding];
+	return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
 }
 	
 NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
@@ -90,7 +90,8 @@ static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordere
 {
 	if (command->HasChildCommands ()) {
 		ContextMenu* oldMenu = currentMenu;
-		currentMenu = [currentMenu addGroupMenuItem:MAS::StdStringToNSString (command->GetName ())];
+		ContextMenu* newMenu = [currentMenu addGroupMenuItem:MAS::StdStringToNSString (command->GetName ())];
+		currentMenu = newMenu;
 		command->EnumerateChildCommands ([&] (const NUIE::MenuCommandPtr& childCommand) {
 			AddCommandToMenu (childCommand, commandTable, originalMenu, currentMenu, currentCommandId);
 		});

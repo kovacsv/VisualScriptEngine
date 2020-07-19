@@ -82,8 +82,8 @@ void NSViewContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, co
 	[CreateColor (pen.GetColor ()) set];
 	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath moveToPoint:CreatePoint((NSView*) (NSView*) nsView, beg)];
-	[bezierPath lineToPoint:CreatePoint((NSView*) (NSView*) nsView, end)];
+	[bezierPath moveToPoint:CreatePoint ((NSView*) nsView, beg)];
+	[bezierPath lineToPoint:CreatePoint ((NSView*) nsView, end)];
 	[bezierPath stroke];
 }
 
@@ -92,27 +92,27 @@ void NSViewContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, co
 	[CreateColor (pen.GetColor ()) set];
 	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath moveToPoint:CreatePoint((NSView*) (NSView*) nsView, p1)];
-	[bezierPath curveToPoint:CreatePoint((NSView*) (NSView*) nsView, p4) controlPoint1:CreatePoint((NSView*) (NSView*) nsView, p2) controlPoint2:CreatePoint((NSView*) (NSView*) nsView, p3)];
+	[bezierPath moveToPoint:CreatePoint ((NSView*) nsView, p1)];
+	[bezierPath curveToPoint:CreatePoint ((NSView*) nsView, p4) controlPoint1:CreatePoint ((NSView*) nsView, p2) controlPoint2:CreatePoint ((NSView*) nsView, p3)];
 	[bezierPath stroke];
 }
 
 void NSViewContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	[CreateColor (pen.GetColor ()) set];
-	NSFrameRectWithWidth (CreateRect ((NSView*) (NSView*) nsView, rect), pen.GetThickness ());
+	NSFrameRectWithWidth (CreateRect ((NSView*) nsView, rect), pen.GetThickness ());
 }
 
 void NSViewContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	[CreateColor (color) set];
-	NSRectFill (CreateRect ((NSView*) (NSView*) nsView, rect));
+	NSRectFill (CreateRect ((NSView*) nsView, rect));
 }
 
 void NSViewContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	[CreateColor (pen.GetColor ()) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect((NSView*) (NSView*) nsView, rect)];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect ((NSView*) nsView, rect)];
 	[bezierPath setLineWidth:pen.GetThickness ()];
 	[bezierPath stroke];
 }
@@ -120,7 +120,7 @@ void NSViewContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 void NSViewContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	[CreateColor (color) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect((NSView*) (NSView*) nsView, rect)];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect ((NSView*) nsView, rect)];
 	[bezierPath fill];
 }
 
@@ -130,7 +130,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 	NSString* nsText = StdStringToNSString (text);
 	NSString* nsFontName = StdStringToNSString (font.GetFamily ());
 	
-	NSMutableParagraphStyle* style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	NSMutableParagraphStyle* style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 	if (hAnchor == NUIE::HorizontalAnchor::Left) {
 		style.alignment = NSTextAlignmentLeft;
 	} else if (hAnchor == NUIE::HorizontalAnchor::Center) {
@@ -143,7 +143,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 		NSForegroundColorAttributeName : CreateColor (textColor),
 		NSParagraphStyleAttributeName : style
 	};
-	NSRect textRect = CreateRect((NSView*) (NSView*) nsView, rect);
+	NSRect textRect = CreateRect ((NSView*) nsView, rect);
 	NSSize textSize = [nsText sizeWithAttributes:attributes];
 	if (vAnchor == NUIE::VerticalAnchor::Top) {
 		// nothing to do
