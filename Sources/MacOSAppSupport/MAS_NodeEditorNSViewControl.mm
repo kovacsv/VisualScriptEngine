@@ -116,6 +116,7 @@
 {
 	NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
 	NSString* characters = [event charactersIgnoringModifiers];
+	
 	if ([characters length] == 1) {
 		unichar character = [characters characterAtIndex:0];
 		bool isCommandPressed = [event modifierFlags] & NSEventModifierFlagCommand;
@@ -134,9 +135,11 @@
 				pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
 			}
 		} else {
-			// TODO: escape key
+			static const unichar EscapeKeyCode = u'\x1b';
 			if (character == NSDeleteFunctionKey) {
 				pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
+			} else if (character == EscapeKeyCode) {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
 			}
 		}
 	}
