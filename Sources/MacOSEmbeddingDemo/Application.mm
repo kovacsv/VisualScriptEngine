@@ -1,9 +1,7 @@
 #include "Application.hpp"
+#include "NUIE_NodeTree.hpp"
+#include "BI_BuiltInNodes.hpp"
 #include "MAS_CocoaAppUtils.hpp"
-
-// TODO: temporary
-#include "BI_InputUINodes.hpp"
-#include "BI_ViewerUINodes.hpp"
 
 #import <Cocoa/Cocoa.h>
 
@@ -49,10 +47,55 @@
 
 @end
 
-AppEventHandler::AppEventHandler () :
-	nsView (nil)
+static void InitNodeTree (NUIE::NodeTree& nodeTree)
 {
-	
+	size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
+	nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
+	});
+	nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
+	});
+	nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
+	});
+	nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
+	});
+	size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
+	nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
+	});
+	size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
+	nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
+	});
+}
+
+AppEventHandler::AppEventHandler () :
+	nodeTree (),
+	nodeEditor (nullptr),
+	nsView (nullptr)
+{
+	InitNodeTree (nodeTree);
 }
 
 AppEventHandler::~AppEventHandler ()
@@ -60,14 +103,17 @@ AppEventHandler::~AppEventHandler ()
 	
 }
 
-void AppEventHandler::Init (void* nsViewPtr)
+void AppEventHandler::Init (NUIE::NodeEditor* nodeEditorPtr, void* nsViewPtr)
 {
+	nodeEditor = nodeEditorPtr;
 	nsView = nsViewPtr;
 }
 
 NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
-	return MAS::SelectCommandFromContextMenu ((NSView*) nsView, position, commands);
+	NUIE::MenuCommandStructure finalCommands = commands;
+	NUIE::AddNodeTreeToMenuStructure (nodeTree, position, nodeEditor, finalCommands);
+	return MAS::SelectCommandFromContextMenu ((NSView*) nsView, position, finalCommands);
 }
 
 NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UINodePtr&, const NUIE::MenuCommandStructure& commands)
@@ -132,7 +178,7 @@ AppNodeUIEnvironment::~AppNodeUIEnvironment ()
 void AppNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height)
 {
 	nodeEditorControl.Init (nodeEditorPtr, nativeParentHandle, x, y, width, height);
-	eventHandler.Init (nativeParentHandle);
+	eventHandler.Init (nodeEditorPtr, nativeParentHandle);
 }
 
 void AppNodeUIEnvironment::Resize (int x, int y, int width, int height)
@@ -204,7 +250,7 @@ Application::Application () :
 	uiEnvironment (),
 	nodeEditor (uiEnvironment)
 {
-    
+
 }
 
 void Application::Run ()
