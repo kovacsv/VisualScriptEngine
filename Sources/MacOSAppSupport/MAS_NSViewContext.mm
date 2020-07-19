@@ -130,7 +130,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 	NSString* nsText = StdStringToNSString (text);
 	NSString* nsFontName = StdStringToNSString (font.GetFamily ());
 	
-	NSMutableParagraphStyle* style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	NSMutableParagraphStyle* style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 	if (hAnchor == NUIE::HorizontalAnchor::Left) {
 		style.alignment = NSTextAlignmentLeft;
 	} else if (hAnchor == NUIE::HorizontalAnchor::Center) {
