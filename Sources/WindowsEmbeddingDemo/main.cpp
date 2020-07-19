@@ -18,14 +18,44 @@
 #pragma comment (lib, "d2d1.lib")
 #pragma comment (lib, "dwrite.lib")
 
-class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
+static const NUIE::BasicSkinParams& GetAppSkinParams ()
 {
-	virtual HRSRC GetImageResHandle (const NUIE::IconId& iconId) override
-	{
-		HRSRC resHandle = FindResource (NULL, MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE");
-		return resHandle;
-	}
-};
+	static const NUIE::BasicSkinParams skinParams (
+		/*backgroundColor*/ NUIE::Color (250, 250, 250),
+		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
+		/*nodePadding*/ 5.0,
+		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
+		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
+		/*nodeHeaderTextColor*/ NUIE::Color (250, 250, 250),
+		/*nodeHeaderErrorTextColor*/ NUIE::Color (250, 250, 250),
+		/*nodeHeaderBackgroundColor*/ NUIE::Color (41, 127, 255),
+		/*nodeHeaderErrorBackgroundColor*/ NUIE::Color (199, 80, 80),
+		/*nodeContentTextFont*/ NUIE::Font (L"Arial", 14.0),
+		/*nodeContentTextColor*/ NUIE::Color (0, 0, 0),
+		/*nodeContentBackgroundColor*/ NUIE::Color (236, 236, 236),
+		/*slotTextColor*/ NUIE::Color (0, 0, 0),
+		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
+		/*needToDrawSlotCircles*/ true,
+		/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
+		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
+		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
+		/*selectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 1.0),
+		/*nodeSelectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 3.0),
+		/*buttonBorderPen*/ NUIE::Pen (NUIE::Color (146, 152, 155), 1.0),
+		/*buttonBackgroundColor*/ NUIE::Color (217, 217, 217),
+		/*textPanelTextColor*/ NUIE::Color (0, 0, 0),
+		/*textPanelBackgroundColor*/ NUIE::Color (236, 236, 236),
+		/*groupNameFont*/ NUIE::Font (L"Arial", 16.0),
+		/*groupNameColor*/ NUIE::Color (0, 0, 0),
+		/*groupBackgroundColors*/ NUIE::NamedColorSet ({
+			{ NE::LocalizeString (L"Blue"), NUIE::Color (160, 200, 240) },
+			{ NE::LocalizeString (L"Green"), NUIE::Color (160, 239, 160) },
+			{ NE::LocalizeString (L"Red"), NUIE::Color (239, 189, 160) }
+			}),
+		/*groupPadding*/ 10.0
+	);
+	return skinParams;
+}
 
 static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, int iconIndex, const NUIE::CreatorFunction& creator)
 {
@@ -39,13 +69,22 @@ static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const 
 	});
 }
 
+class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
+{
+	virtual HRSRC GetImageResHandle (const NUIE::IconId& iconId) override
+	{
+		HRSRC resHandle = FindResource (NULL, MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE");
+		return resHandle;
+	}
+};
+
 class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
 	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
 		stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
-		skinParams (NUIE::GetDefaultSkinParams ()),
+		skinParams (GetAppSkinParams ()),
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
