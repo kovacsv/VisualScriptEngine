@@ -118,8 +118,8 @@
 	NSString* characters = [event charactersIgnoringModifiers];
 	if ([characters length] == 1) {
 		unichar character = [characters characterAtIndex:0];
-		bool isControlPressed = [event modifierFlags] & NSEventModifierFlagControl;
-		if (isControlPressed) {
+		bool isCommandPressed = [event modifierFlags] & NSEventModifierFlagCommand;
+		if (isCommandPressed) {
 			if (character == 'a') {
 				pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
 			} else if (character == 'c') {
