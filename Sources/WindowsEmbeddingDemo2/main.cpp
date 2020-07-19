@@ -1,4 +1,5 @@
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_NodeTree.hpp"
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
@@ -9,7 +10,7 @@
 #include <windows.h>
 #include <windowsx.h>
 
-static void InitNodeTree (WAS::NodeTree& nodeTree)
+static void InitNodeTree (NUIE::NodeTree& nodeTree)
 {
 	size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
 	nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
@@ -70,46 +71,14 @@ public:
 
 	virtual NUIE::MenuCommandPtr OnContextMenu (const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
 	{
-		class CreateNodeCommand : public NUIE::SingleMenuCommand
-		{
-		public:
-			CreateNodeCommand (NUIE::NodeEditor* nodeEditor, const NE::LocString& name, const NUIE::Point& position, const WAS::CreatorFunction& creator) :
-				NUIE::SingleMenuCommand (name, false),
-				nodeEditor (nodeEditor),
-				position (position),
-				creator (creator)
-			{
-			}
-
-			virtual void Do () override
-			{
-				NUIE::UINodePtr uiNode = creator (nodeEditor->ViewToModel (position));
-				nodeEditor->AddNode (uiNode);
-			}
-
-		private:
-			NUIE::NodeEditor*		nodeEditor;
-			NUIE::Point				position;
-			WAS::CreatorFunction	creator;
-		};
-
 		NUIE::MenuCommandStructure finalCommands = commands;
-		for (const WAS::NodeTree::Group& group : nodeTree.GetGroups ()) {
-			NE::LocString groupMenuCommandName (group.GetName (), NE::LocString::Localization::DoNotLocalize);
-			NUIE::MultiMenuCommandPtr multiCommand (new NUIE::MultiMenuCommand (groupMenuCommandName));
-			for (const WAS::NodeTree::Item& item : group.GetItems ()) {
-				NE::LocString menuCommandName (item.GetName (), NE::LocString::Localization::DoNotLocalize);
-				multiCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, menuCommandName, position, item.GetCreator ())));
-			}
-			finalCommands.AddCommand (multiCommand);
-		}
-
+		NUIE::AddNodeTreeToMenuStructure (nodeTree, position, nodeEditor, finalCommands);
 		return WAS::SelectCommandFromContextMenu (hwnd, position, finalCommands);
 	}
 
 private:
 	NUIE::NodeEditor*	nodeEditor;
-	WAS::NodeTree		nodeTree;
+	NUIE::NodeTree		nodeTree;
 };
 
 class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment

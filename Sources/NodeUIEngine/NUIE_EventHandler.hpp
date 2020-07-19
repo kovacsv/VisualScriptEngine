@@ -20,7 +20,7 @@ public:
 
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const MenuCommandStructure& commands) = 0;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UINodePtr& uiNode, const MenuCommandStructure& commands) = 0;
-	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UIOutputSlotConstPtr& inputSlot, const MenuCommandStructure& commands) = 0;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UIOutputSlotConstPtr& outputSlot, const MenuCommandStructure& commands) = 0;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UIInputSlotConstPtr& inputSlot, const MenuCommandStructure& commands) = 0;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UINodeGroupPtr& group, const MenuCommandStructure& commands) = 0;
 	virtual void					OnDoubleClick (MouseButton mouseButton, const Point& position) = 0;
@@ -39,7 +39,7 @@ public:
 
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const MenuCommandStructure& commands) override;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UINodePtr& uiNode, const MenuCommandStructure& commands) override;
-	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UIOutputSlotConstPtr& inputSlot, const MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UIOutputSlotConstPtr& outputSlot, const MenuCommandStructure& commands) override;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UIInputSlotConstPtr& inputSlot, const MenuCommandStructure& commands) override;
 	virtual NUIE::MenuCommandPtr	OnContextMenu (const Point& position, const UINodeGroupPtr& group, const MenuCommandStructure& commands) override;
 	virtual void					OnDoubleClick (MouseButton mouseButton, const Point& position) override;

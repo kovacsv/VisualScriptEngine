@@ -111,8 +111,8 @@ UIInputSlotConstPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUI
 UIOutputSlotConstPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	UIOutputSlotConstPtr foundSlot = nullptr;
-	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, [&] (const UIOutputSlotConstPtr& inputSlot) {
-		foundSlot = inputSlot;
+	FindItemUnderPosition (uiManager, env, viewPosition, nullptr, [&] (const UIOutputSlotConstPtr& outputSlot) {
+		foundSlot = outputSlot;
 	}, nullptr, nullptr);
 	return foundSlot;
 }

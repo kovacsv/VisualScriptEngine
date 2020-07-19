@@ -2,6 +2,7 @@
 #define WAS_NODEEDITORNODETREEHWNDCONTROL_HPP
 
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_NodeTree.hpp"
 #include "WAS_NodeEditorHwndControl.hpp"
 #include "WAS_NodeTree.hpp"
 
@@ -25,7 +26,7 @@ public:
 	
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 
-	void							FillNodeTree (const NodeTree& nodeTree);
+	void							FillNodeTree (const NUIE::NodeTree& nodeTree);
 	void							TreeViewDoubleClick (LPNMHDR lpnmhdr);
 	void							TreeViewSelectionChanged (LPNMTREEVIEW lpnmtv);
 	void							TreeViewBeginDrag (LPNMTREEVIEW lpnmtv);
@@ -34,13 +35,13 @@ public:
 private:
 	void							CreateNode (LPARAM nodeId, int screenX, int screenY);
 
-	NodeTreeView									nodeTreeView;
-	NodeEditorHwndControl							nodeEditorControl;
-	CustomControl									mainControl;
+	NodeTreeView										nodeTreeView;
+	NodeEditorHwndControl								nodeEditorControl;
+	CustomControl										mainControl;
 
-	LPARAM											selectedNode;
-	LPARAM											draggedNode;
-	std::unordered_map<LPARAM, CreatorFunction>		nodeIdToCreator;
+	LPARAM												selectedNode;
+	LPARAM												draggedNode;
+	std::unordered_map<LPARAM, NUIE::CreatorFunction>	nodeIdToCreator;
 };
 
 }

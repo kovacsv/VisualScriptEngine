@@ -27,7 +27,7 @@ class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 	}
 };
 
-static void AddNodeTreeItem (WAS::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, int iconIndex, const WAS::CreatorFunction& creator)
+static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, int iconIndex, const NUIE::CreatorFunction& creator)
 {
 	nodeTree.AddItem (groupIndex, name, [=] (const NUIE::Point& position) {
 		NUIE::UINodePtr node = creator (position);
@@ -56,7 +56,7 @@ public:
 
 	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
 	{
-		WAS::NodeTree nodeTree;
+		NUIE::NodeTree nodeTree;
 
 		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
 		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", 101, [&] (const NUIE::Point& position) {
