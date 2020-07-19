@@ -1,5 +1,5 @@
-#ifndef MAS_MACOSAPPUTILS_HPP
-#define MAS_MACOSAPPUTILS_HPP
+#ifndef MAS_COCOAAPPUTILS_HPP
+#define MAS_COCOAAPPUTILS_HPP
 
 #include "NUIE_InputEventHandler.hpp"
 

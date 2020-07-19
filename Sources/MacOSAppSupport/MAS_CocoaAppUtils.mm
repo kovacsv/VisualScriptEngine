@@ -1,4 +1,4 @@
-#include "MAS_MacOSAppUtils.hpp"
+#include "MAS_CocoaAppUtils.hpp"
 
 namespace MAS
 {

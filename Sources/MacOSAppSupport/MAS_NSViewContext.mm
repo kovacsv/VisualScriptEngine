@@ -1,6 +1,8 @@
 #include "MAS_NSViewContext.hpp"
-#include "MAS_MacOSAppUtils.hpp"
+#include "MAS_CocoaAppUtils.hpp"
 #include "NE_Debug.hpp"
+
+#import <Cocoa/Cocoa.h>
 
 namespace MAS
 {
@@ -16,7 +18,7 @@ NSViewContext::NSViewContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
-	nsView (nullptr)
+	nsView (nil)
 {
 
 }
@@ -80,8 +82,8 @@ void NSViewContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, co
 	[CreateColor (pen.GetColor ()) set];
 	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath moveToPoint:CreatePoint(nsView, beg)];
-	[bezierPath lineToPoint:CreatePoint(nsView, end)];
+	[bezierPath moveToPoint:CreatePoint((NSView*) (NSView*) nsView, beg)];
+	[bezierPath lineToPoint:CreatePoint((NSView*) (NSView*) nsView, end)];
 	[bezierPath stroke];
 }
 
@@ -90,27 +92,27 @@ void NSViewContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, co
 	[CreateColor (pen.GetColor ()) set];
 	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath moveToPoint:CreatePoint(nsView, p1)];
-	[bezierPath curveToPoint:CreatePoint(nsView, p4) controlPoint1:CreatePoint(nsView, p2) controlPoint2:CreatePoint(nsView, p3)];
+	[bezierPath moveToPoint:CreatePoint((NSView*) (NSView*) nsView, p1)];
+	[bezierPath curveToPoint:CreatePoint((NSView*) (NSView*) nsView, p4) controlPoint1:CreatePoint((NSView*) (NSView*) nsView, p2) controlPoint2:CreatePoint((NSView*) (NSView*) nsView, p3)];
 	[bezierPath stroke];
 }
 
 void NSViewContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	[CreateColor (pen.GetColor ()) set];
-	NSFrameRectWithWidth (CreateRect (nsView, rect), pen.GetThickness ());
+	NSFrameRectWithWidth (CreateRect ((NSView*) (NSView*) nsView, rect), pen.GetThickness ());
 }
 
 void NSViewContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	[CreateColor (color) set];
-	NSRectFill (CreateRect (nsView, rect));
+	NSRectFill (CreateRect ((NSView*) (NSView*) nsView, rect));
 }
 
 void NSViewContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	[CreateColor (pen.GetColor ()) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect(nsView, rect)];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect((NSView*) (NSView*) nsView, rect)];
 	[bezierPath setLineWidth:pen.GetThickness ()];
 	[bezierPath stroke];
 }
@@ -118,7 +120,7 @@ void NSViewContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 void NSViewContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	[CreateColor (color) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect(nsView, rect)];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect((NSView*) (NSView*) nsView, rect)];
 	[bezierPath fill];
 }
 
@@ -142,7 +144,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 		NSForegroundColorAttributeName : CreateColor (textColor),
 		NSParagraphStyleAttributeName : style
 	};
-	NSRect textRect = CreateRect(nsView, rect);
+	NSRect textRect = CreateRect((NSView*) (NSView*) nsView, rect);
 	NSSize textSize = [nsText sizeWithAttributes:attributes];
 	if (vAnchor == NUIE::VerticalAnchor::Top) {
 		// nothing to do

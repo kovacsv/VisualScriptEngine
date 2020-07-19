@@ -1,5 +1,5 @@
 #include "MAS_NodeEditorNSViewControl.hpp"
-#include "MAS_MacOSAppUtils.hpp"
+#include "MAS_CocoaAppUtils.hpp"
 #include "MAS_NSViewContext.hpp"
 #include "NE_Debug.hpp"
 

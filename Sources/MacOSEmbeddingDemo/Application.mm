@@ -1,5 +1,5 @@
 #include "Application.hpp"
-#include "MAS_MacOSAppUtils.hpp"
+#include "MAS_CocoaAppUtils.hpp"
 
 // TODO: temporary
 #include "BI_InputUINodes.hpp"
