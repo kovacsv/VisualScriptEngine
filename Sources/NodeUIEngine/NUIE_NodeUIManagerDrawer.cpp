@@ -242,7 +242,6 @@ void NodeUIManagerDrawer::DrawSelectionRect (NodeUIDrawingEnvironment& drawingEn
 
 void NodeUIManagerDrawer::InitSortedNodeList () const
 {
-	std::unordered_set<const UINode*> visibleConnectedNodeSet;
 	nodeIdToNodeMap.Enumerate ([&] (const UINode* uiNode) {
 		sortedNodeList.push_back (uiNode);
 	});
