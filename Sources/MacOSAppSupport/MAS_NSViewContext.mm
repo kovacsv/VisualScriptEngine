@@ -126,6 +126,11 @@ void NSViewContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& colo
 
 void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
+	// TODO: speed (cache text size and font for name)
+	// 429	429.0ms		-[NSString(NSStringDrawing) drawInRect:withAttributes:]
+	// 112	112.0ms		-[NSString(NSStringDrawing) sizeWithAttributes:]
+	// 83	83.0ms		+[NSFont fontWithName:size:]
+	
 	[CreateColor (textColor) set];
 	NSString* nsText = StdStringToNSString (text);
 	NSString* nsFontName = StdStringToNSString (font.GetFamily ());
