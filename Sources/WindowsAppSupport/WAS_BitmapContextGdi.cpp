@@ -4,17 +4,17 @@
 namespace WAS
 {
 
-HANDLE CreateHandle (const PenCacheKey& key)
+HANDLE CreateHandle (const NUIE::PenCacheKey& key)
 {
 	return ::CreatePen (PS_SOLID, key.thickness, RGB (key.r, key.g, key.b));
 }
 
-HANDLE CreateHandle (const BrushCacheKey& key)
+HANDLE CreateHandle (const NUIE::BrushCacheKey& key)
 {
 	return ::CreateSolidBrush (RGB (key.r, key.g, key.b));
 }
 
-HANDLE CreateHandle (const FontCacheKey& key)
+HANDLE CreateHandle (const NUIE::FontCacheKey& key)
 {
 	return ::CreateFont (key.size, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, key.family.c_str ());
 }

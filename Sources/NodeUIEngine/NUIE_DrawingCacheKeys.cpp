@@ -1,6 +1,6 @@
-#include "WAS_DrawingCacheKeys.hpp"
+#include "NUIE_DrawingCacheKeys.hpp"
 
-namespace WAS
+namespace NUIE
 {
 
 PenCacheKey::PenCacheKey () :

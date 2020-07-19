@@ -5,8 +5,8 @@
 
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_Drawing.hpp"
+#include "NUIE_DrawingCacheKeys.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"
-#include "WAS_DrawingCacheKeys.hpp"
 
 namespace WAS
 {
@@ -88,14 +88,14 @@ private:
 	RECT						CreateRect (const NUIE::Rect& rect) const;
 	RECT						CreateRect (const NUIE::Rect& rect, const NUIE::Pen& pen) const;
 
-	int							width;
-	int							height;
-	HDC							memoryDC;
-	HBITMAP						memoryBitmap;
+	int									width;
+	int									height;
+	HDC									memoryDC;
+	HBITMAP								memoryBitmap;
 
-	HandleCache<PenCacheKey>	penCache;
-	HandleCache<BrushCacheKey>	brushCache;
-	HandleCache<FontCacheKey>	fontCache;
+	HandleCache<NUIE::PenCacheKey>		penCache;
+	HandleCache<NUIE::BrushCacheKey>	brushCache;
+	HandleCache<NUIE::FontCacheKey>		fontCache;
 };
 
 }

@@ -1,9 +1,9 @@
-#ifndef WAS_DRAWINGCACHEKEYS_HPP
-#define WAS_DRAWINGCACHEKEYS_HPP
+#ifndef NUIE_DRAWINGCACHEKEYS_HPP
+#define NUIE_DRAWINGCACHEKEYS_HPP
 
 #include "NUIE_Drawing.hpp"
 
-namespace WAS
+namespace NUIE
 {
 
 class PenCacheKey
@@ -53,27 +53,27 @@ public:
 namespace std
 {
 	template <>
-	struct hash<WAS::PenCacheKey>
+	struct hash<NUIE::PenCacheKey>
 	{
-		size_t operator() (const WAS::PenCacheKey& key) const noexcept
+		size_t operator() (const NUIE::PenCacheKey& key) const noexcept
 		{
 			return key.thickness + 12289 * key.r + 24593 * key.g + 49157 * key.b;
 		}
 	};
 
 	template <>
-	struct hash<WAS::BrushCacheKey>
+	struct hash<NUIE::BrushCacheKey>
 	{
-		size_t operator() (const WAS::BrushCacheKey& key) const noexcept
+		size_t operator() (const NUIE::BrushCacheKey& key) const noexcept
 		{
 			return key.r + 24593 * key.g + 49157 * key.b;
 		}
 	};
 
 	template <>
-	struct hash<WAS::FontCacheKey>
+	struct hash<NUIE::FontCacheKey>
 	{
-		size_t operator() (const WAS::FontCacheKey& key) const noexcept
+		size_t operator() (const NUIE::FontCacheKey& key) const noexcept
 		{
 			return std::hash<std::wstring> {} (key.family) + 49157 * std::hash<int> {} (key.size);
 		}
