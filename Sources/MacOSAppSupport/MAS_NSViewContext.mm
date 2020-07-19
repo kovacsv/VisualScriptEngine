@@ -127,9 +127,8 @@ void NSViewContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& colo
 void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
 	[CreateColor (textColor) set];
-	const std::wstring& fontFamily = font.GetFamily ();
-	NSString* nsText = [[NSString alloc] initWithBytes:text.data () length:text.length() * sizeof (wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
-	NSString* nsFontName = [[NSString alloc] initWithBytes:fontFamily.data () length:fontFamily.length() * sizeof (wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
+	NSString* nsText = StdStringToNSString (text);
+	NSString* nsFontName = StdStringToNSString (font.GetFamily ());
 	
 	NSMutableParagraphStyle* style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	if (hAnchor == NUIE::HorizontalAnchor::Left) {
@@ -158,9 +157,8 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 
 NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	const std::wstring& fontFamily = font.GetFamily ();
-	NSString* nsText = [[NSString alloc] initWithBytes:text.data () length:text.length() * sizeof (wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
-	NSString* nsFontName = [[NSString alloc] initWithBytes:fontFamily.data () length:fontFamily.length() * sizeof (wchar_t) encoding:NSUTF32LittleEndianStringEncoding];
+	NSString* nsText = StdStringToNSString (text);
+	NSString* nsFontName = StdStringToNSString (font.GetFamily ());
 	NSDictionary* attributes = @{NSFontAttributeName: [NSFont fontWithName:nsFontName size:font.GetSize ()]};
 	NSSize size = [nsText sizeWithAttributes:attributes];
 	return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
