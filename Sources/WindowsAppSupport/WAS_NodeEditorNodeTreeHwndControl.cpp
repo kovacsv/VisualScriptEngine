@@ -144,12 +144,12 @@ void NodeEditorNodeTreeHwndControl::TreeViewSelectionChanged (LPNMTREEVIEW lpnmt
 	selectedNode = lpnmtv->itemNew.lParam;
 }
 
-void NodeEditorNodeTreeHwndControl::FillNodeTree (const NodeTree& nodeTree)
+void NodeEditorNodeTreeHwndControl::FillNodeTree (const NUIE::NodeTree& nodeTree)
 {
 	LPARAM nextNodeId = 0;
-	for (const NodeTree::Group& group : nodeTree.GetGroups ()) {
+	for (const NUIE::NodeTree::Group& group : nodeTree.GetGroups ()) {
 		nodeTreeView.AddGroup (group.GetName ());
-		for (const NodeTree::Item& item : group.GetItems ()) {
+		for (const NUIE::NodeTree::Item& item : group.GetItems ()) {
 			nodeTreeView.AddItem (group.GetName (), item.GetName (), nextNodeId);
 			nodeIdToCreator.insert ({ nextNodeId, item.GetCreator () });
 			nextNodeId++;
