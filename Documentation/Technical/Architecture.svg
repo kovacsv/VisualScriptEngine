@@ -9,18 +9,64 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="360"
+   width="540"
    height="215"
-   viewBox="0 0 95.249998 56.885415"
+   viewBox="0 0 142.87499 56.885415"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="Architecture.svg"
-   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Technical\VisualScriptEngineArchitecture.png"
-   inkscape:export-xdpi="160"
-   inkscape:export-ydpi="160">
+   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Technical\Architecture.png"
+   inkscape:export-xdpi="106.66666"
+   inkscape:export-ydpi="106.66666">
   <defs
      id="defs2">
+    <marker
+       inkscape:stockid="TriangleOutL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4527"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4525"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3875"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path3873"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker2941"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutL"
+       inkscape:collect="always">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.8)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path2939" />
+    </marker>
     <marker
        inkscape:stockid="TriangleOutL"
        orient="auto"
@@ -96,6 +142,22 @@
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
          transform="scale(0.8)" />
     </marker>
+    <marker
+       inkscape:stockid="TriangleOutL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL-6"
+       style="overflow:visible"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path1147-9"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -104,9 +166,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="188.62413"
-     inkscape:cy="104.66559"
+     inkscape:zoom="12.139473"
+     inkscape:cx="431.63004"
+     inkscape:cy="94.232065"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -138,129 +200,154 @@
      id="layer1"
      transform="translate(0,-240.11456)">
     <rect
-       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5"
        width="42.07217"
        height="7.6763372"
-       x="2.6458311"
+       x="2.3812499"
        y="272.12573" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="23.719925"
-       y="277.22339"
+       x="23.458763"
+       y="277.2269"
        id="text821-3-1"><tspan
          sodipodi:role="line"
          id="tspan819-7-6"
-         x="23.719925"
-         y="277.22339"
-         style="font-size:3.52777767px;stroke-width:0.26458332">BuiltInNodes</tspan></text>
+         x="23.458763"
+         y="277.2269"
+         style="font-size:3.52777767px;stroke-width:0.26458332">WindowsAppSupport</tspan></text>
     <rect
-       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5-4"
        width="42.07217"
        height="7.6763372"
-       x="50.531994"
+       x="50.270855"
        y="272.12573" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="71.606087"
-       y="277.22336"
+       x="71.344948"
+       y="277.22687"
        id="text821-3-1-5"><tspan
          sodipodi:role="line"
          id="tspan819-7-6-3"
-         x="71.606087"
-         y="277.22336"
-         style="font-size:3.52777767px;stroke-width:0.26458332">WindowsAppSupport</tspan></text>
+         x="71.344948"
+         y="277.22687"
+         style="font-size:3.52777767px;stroke-width:0.26458332">BuiltInNodes</tspan></text>
     <rect
-       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5-4-7"
        width="42.07217"
        height="7.6763372"
-       x="26.458334"
+       x="50.270855"
        y="257.57364" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="47.532425"
+       x="71.344948"
        y="262.67126"
        id="text821-3-1-5-6"><tspan
          sodipodi:role="line"
          id="tspan819-7-6-3-2"
-         x="47.532425"
+         x="71.344948"
          y="262.67126"
          style="font-size:3.52777767px;stroke-width:0.26458332">NodeUIEngine</tspan></text>
     <rect
-       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.5291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5-4-7-0"
        width="42.07217"
        height="7.6763372"
-       x="26.458334"
+       x="50.270855"
        y="243.02156" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="47.532425"
+       x="71.344948"
        y="248.1192"
        id="text821-3-1-5-6-2"><tspan
          sodipodi:role="line"
          id="tspan819-7-6-3-2-5"
-         x="47.532425"
+         x="71.344948"
          y="248.1192"
          style="font-size:3.52777767px;stroke-width:0.26458332">NodeEngine</tspan></text>
     <rect
-       style="opacity:1;fill:#d7f4e3;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       style="opacity:1;fill:#d7f4e3;fill-opacity:1;stroke:#000000;stroke-width:0.52956742;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        id="rect817-3-5-4-7-4"
-       width="42.07217"
-       height="7.6763372"
-       x="26.458334"
-       y="286.6778" />
+       width="88.112717"
+       height="7.6763368"
+       x="27.250607"
+       y="286.68115" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="47.532425"
-       y="291.77545"
+       x="71.344948"
+       y="291.65021"
        id="text821-3-1-5-6-5"><tspan
          sodipodi:role="line"
          id="tspan819-7-6-3-2-0"
-         x="47.532425"
-         y="291.77545"
+         x="71.344948"
+         y="291.65021"
          style="font-size:3.52777767px;stroke-width:0.26458332">Application</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL);paint-order:normal"
-       d="m 47.624997,257.57706 v -5.29167"
+       d="m 71.30289,257.57706 v -5.29167"
        id="path1003"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL-8);paint-order:normal"
-       d="m 22.48958,272.12914 v -2.91041 h 25.135417 v -2.38125"
+       style="fill:none;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="m 23.415833,271.99998 v -2.69544 l 48.021667,2.3e-4"
        id="path1003-6"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 47.624997,269.21873 h 25.135417 v 2.91041"
-       id="path3793"
-       inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
+    <rect
+       style="opacity:1;fill:#d7eef4;fill-opacity:1;stroke:#000000;stroke-width:0.52899998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       id="rect817-3-5-4-1"
+       width="42.07217"
+       height="7.6763372"
+       x="98.160332"
+       y="272.12573" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="119.23104"
+       y="277.22687"
+       id="text821-3-1-5-8"><tspan
+         sodipodi:role="line"
+         id="tspan819-7-6-3-4"
+         x="119.23104"
+         y="277.22687"
+         style="font-size:3.52777767px;stroke-width:0.26458332">MacOSAppSupport</tspan></text>
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 47.624996,269.21873 v 17.4625 0"
-       id="path3945"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.79374995,0.79374995;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#TriangleOutL-3);paint-order:normal"
-       d="m 38.36458,286.68123 v -5.29167"
-       id="path1003-7"
+       style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutL-6);paint-order:normal"
+       d="m 71.30289,272.09049 v -5.29167"
+       id="path1003-78"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.79374995,0.79374995;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#TriangleOutL-3-5);paint-order:normal"
-       d="m 56.885414,286.68123 v -5.29167"
-       id="path1003-7-3"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path2937"
+       d="m 71.30289,286.64581 v -5.29167"
+       style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2941);paint-order:normal" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.79374995, 0.26458332;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker3875);paint-order:normal"
+       d="m 107.25897,286.67798 v -5.29167"
+       id="path3213"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.79374995, 0.26458332;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker4527);paint-order:normal"
+       d="m 34.763048,286.67798 v -5.29167"
+       id="path4523"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path5447"
+       d="m 119.45917,271.99998 v -2.69544 l -48.02167,2.3e-4"
+       style="fill:none;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
   </g>
 </svg>
