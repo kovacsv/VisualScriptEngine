@@ -1,30 +1,13 @@
 #include "MAS_NodeEditorNSViewControl.hpp"
+#include "MAS_CocoaAppUtils.hpp"
 #include "MAS_NSViewContext.hpp"
 #include "NE_Debug.hpp"
 
 #import <Cocoa/Cocoa.h>
 
-static NUIE::ModifierKeys GetKeysFromEvent (const NSEvent* event)
-{
-	NUIE::ModifierKeys keys;
-	NSEventModifierFlags flags = [event modifierFlags];
-	if (flags & NSEventModifierFlagControl) {
-		keys.Insert (NUIE::ModifierKeyCode::Control);
-	} else if (flags & NSEventModifierFlagShift) {
-		keys.Insert (NUIE::ModifierKeyCode::Shift);
-	}
-	return keys;
-}
-
-static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
-{
-	NSPoint position = [view convertPoint:[event locationInWindow] fromView:nil];
-	return NUIE::Point (position.x, view.frame.size.height - position.y);
-}
-
 @interface CocoaNSViewControl : NSView
 {
-@private NUIE::NodeEditor* nodeEditor;
+@private MAS::NodeEditorNSViewControl* nodeEditorControl;
 }
 @end
 
@@ -39,113 +22,128 @@ static NUIE::Point GetPositionFromEvent (NSView* view, const NSEvent* event)
 {
 	self = [super initWithFrame:frame];
 	if (self) {
-		nodeEditor = nil;
+		nodeEditorControl = nil;
 	}
 	return self;
 }
 
--(void) setNodeEditor : (NUIE::NodeEditor*) newNodeEditor
+-(void) setNodeEditorControl : (MAS::NodeEditorNSViewControl*) newNodeEditorControl
 {
-	nodeEditor = newNodeEditor;
+	nodeEditorControl = newNodeEditorControl;
 }
 
 - (void) drawRect : (NSRect) dirtyRect
 {
 	#pragma unused (dirtyRect)
-	nodeEditor->Draw ();
-	/*
-	[[NSColor whiteColor] set];
-	NSRectFill (dirtyRect);
-	
-	[[NSColor redColor] set];
-	
-	// The three vertices of a triangle
-	NSPoint p1 = NSMakePoint(100, 100);
-	NSPoint p2 = NSMakePoint(200, 300);
-	NSPoint p3 = NSMakePoint(300, 100);
-	
-	// Control points
-	NSPoint c1 = NSMakePoint(200, 200);
-	NSPoint c2 = NSMakePoint(200, 0);
-	
-	// Constructing the path for the triangle
-	NSBezierPath *bp = [NSBezierPath bezierPath];
-	[bp moveToPoint:p1];
-	[bp lineToPoint:p2];
-	[bp lineToPoint:p3];
-	[bp curveToPoint:p1 controlPoint1:c1 controlPoint2:c2];
-	[bp closePath];
-	[bp stroke];
-	 */
+	nodeEditorControl->Draw ();
 }
 
-- (void) mouseDown : (NSEvent *) event
+- (void) mouseDown : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseDown (GetKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
 }
 
-- (void) mouseUp : (NSEvent *) event
+- (void) mouseUp : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
 }
 
-- (void) rightMouseDown : (NSEvent *) event
+- (void) rightMouseDown : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseDown (GetKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
 }
 
-- (void) rightMouseUp : (NSEvent *) event
+- (void) rightMouseUp : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
 }
 
-- (void) otherMouseDown : (NSEvent *) event
+- (void) otherMouseDown : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseDown (GetKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
 }
 
-- (void) otherMouseUp : (NSEvent *) event
+- (void) otherMouseUp : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseUp (GetKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
 }
 
-- (void) mouseDragged : (NSEvent *) event
+- (void) mouseDragged : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
 }
 
-- (void) rightMouseDragged : (NSEvent *) event
+- (void) rightMouseDragged : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
 }
 
-- (void) otherMouseDragged : (NSEvent *) event
+- (void) otherMouseDragged : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
-	nodeEditor->OnMouseMove (GetKeysFromEvent (event), position.GetX (), position.GetY ());
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
 }
 
-- (void) scrollWheel : (NSEvent *) event
+- (void) scrollWheel : (NSEvent*) event
 {
-	NUIE::Point position = GetPositionFromEvent (self, event);
+	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
 	if ([event deltaX] + [event deltaY] < 0) {
 		rotation = NUIE::MouseWheelRotation::Backward;
 	}
-	nodeEditor->OnMouseWheel(GetKeysFromEvent(event), rotation, position.GetX (), position.GetY ());
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OnMouseWheel(MAS::GetModifierKeysFromEvent(event), rotation, position.GetX (), position.GetY ());
 }
 
-- (void) keyDown : (NSEvent *) event
+- (void) keyDown : (NSEvent*) event
 {
-	#pragma unused (event)
+	NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
+	NSString* characters = [event charactersIgnoringModifiers];
+	if ([characters length] == 1) {
+		unichar character = [characters characterAtIndex:0];
+		bool isControlPressed = [event modifierFlags] & NSEventModifierFlagControl;
+		if (isControlPressed) {
+			if (character == 'a') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
+			} else if (character == 'c') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Copy);
+			} else if (character == 'v') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
+			} else if (character == 'g') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+			} else if (character == 'z') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
+			} else if (character == 'y') {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+			}
+		} else {
+			// TODO: escape key
+			if (character == NSDeleteFunctionKey) {
+				pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
+			}
+		}
+	}
+	if (pressedKey.IsValid ()) {
+		NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+		nodeEditor->OnKeyPress (pressedKey);
+	}
 }
 
 @end
@@ -163,7 +161,7 @@ NodeEditorNSViewControl::NodeEditorNSViewControl (const NUIE::NativeDrawingConte
 	NativeNodeEditorControl (),
 	nodeEditor (nullptr),
 	nativeContext (nativeContext),
-	subView (nullptr)
+	nsView (nil)
 {
 
 }
@@ -179,18 +177,18 @@ bool NodeEditorNSViewControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativ
 	DBGASSERT (nodeEditor != nullptr);
 
 	NSRect viewRect = NSMakeRect (x, y, width, height);
-	subView = [[[CocoaNSViewControl alloc] initWithFrame:viewRect] autorelease];
-	[((CocoaNSViewControl*) subView) setNodeEditor:nodeEditor];
-	[((NSView*) nativeParentHandle) addSubview:((NSView*) subView)];
+	nsView = [[[CocoaNSViewControl alloc] initWithFrame:viewRect] autorelease];
+	[((CocoaNSViewControl*) nsView) setNodeEditorControl:this];
+	[((NSView*) nativeParentHandle) addSubview:((NSView*) nsView)];
 	
-	nativeContext->Init (subView);
+	nativeContext->Init (nsView);
 	nativeContext->Resize (width, height);
 	return true;
 }
 
 void* NodeEditorNSViewControl::GetEditorNativeHandle () const
 {
-	return subView;
+	return nsView;
 }
 
 bool NodeEditorNSViewControl::IsEditorFocused () const
@@ -202,7 +200,7 @@ bool NodeEditorNSViewControl::IsEditorFocused () const
 void NodeEditorNSViewControl::Resize (int x, int y, int width, int height)
 {
 	NSRect viewRect = NSMakeRect (x, y, width, height);
-	[((NSView*) subView) setFrame:viewRect];
+	[((NSView*) nsView) setFrame:viewRect];
 	if (nodeEditor != nullptr) {
 		nodeEditor->OnResize (width, height);
 	}
@@ -210,12 +208,12 @@ void NodeEditorNSViewControl::Resize (int x, int y, int width, int height)
 
 void NodeEditorNSViewControl::Invalidate ()
 {
-	[((NSView*) subView) setNeedsDisplay:YES];
+	[((NSView*) nsView) setNeedsDisplay:YES];
 }
 
 void NodeEditorNSViewControl::Draw ()
 {
-	// TODO
+	nodeEditor->Draw ();
 }
 
 NUIE::DrawingContext& NodeEditorNSViewControl::GetDrawingContext ()

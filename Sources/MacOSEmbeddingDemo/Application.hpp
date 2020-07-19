@@ -3,6 +3,27 @@
 
 #include "MAS_NodeEditorNSViewControl.hpp"
 
+class AppEventHandler : public NUIE::EventHandler
+{
+public:
+	AppEventHandler ();
+	virtual ~AppEventHandler ();
+	
+	void							Init (void* nsViewPtr);
+	
+	virtual NUIE::MenuCommandPtr	OnContextMenu (const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (const NUIE::Point& position, const NUIE::UINodePtr& uiNode, const NUIE::MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (const NUIE::Point& position, const NUIE::UIOutputSlotConstPtr& outputSlot, const NUIE::MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (const NUIE::Point& position, const NUIE::UIInputSlotConstPtr& inputSlot, const NUIE::MenuCommandStructure& commands) override;
+	virtual NUIE::MenuCommandPtr	OnContextMenu (const NUIE::Point& position, const NUIE::UINodeGroupPtr& group, const NUIE::MenuCommandStructure& commands) override;
+	virtual void					OnDoubleClick (NUIE::MouseButton mouseButton, const NUIE::Point& position) override;
+	virtual bool					OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodePtr& uiNode) override;
+	virtual bool					OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodeGroupPtr& uiGroup) override;
+
+private:
+	void*							nsView;
+};
+
 class AppNodeUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
@@ -31,7 +52,7 @@ private:
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;
 	NE::EvaluationEnv					evaluationEnv;
-	NUIE::NullEventHandler				eventHandler;
+	AppEventHandler						eventHandler;
 	NUIE::MemoryClipboardHandler		clipboardHandler;
 	MAS::NodeEditorNSViewControl		nodeEditorControl;
 };
