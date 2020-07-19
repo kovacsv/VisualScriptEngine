@@ -258,7 +258,7 @@ void Application::Run ()
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	NSApp = [NSApplication sharedApplication];
 
-	NSRect windowRect = NSMakeRect (0.0f, 0.0f, 600.0f, 400.0f);
+	NSRect windowRect = NSMakeRect (0.0f, 0.0f, 900.0f, 500.0f);
 	NSWindow* myWindow = [
 	[NSWindow alloc]
 		initWithContentRect:windowRect
