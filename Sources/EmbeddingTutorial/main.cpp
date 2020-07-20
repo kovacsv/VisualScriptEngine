@@ -156,7 +156,6 @@ private:
 	NE::EvaluationEnv				evaluationEnv;
 };
 
-
 class MyNode : public BI::BasicUINode
 {
 	DYNAMIC_SERIALIZABLE (MyNode);
