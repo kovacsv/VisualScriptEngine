@@ -47,7 +47,8 @@ TEST (EnumerationOrderTest)
 
 	static const size_t initialNodeCount = 100;
 	for (size_t i = 0; i < initialNodeCount; i++) {
-		nodeAddOrder.push_back (nodeManager.AddNode (NodePtr (new TestNode ()))->GetId ());
+		NodePtr addedNode = nodeManager.AddNode (NodePtr (new TestNode ()));
+		nodeAddOrder.push_back (addedNode->GetId ());
 	}
 
 	int nodeCount = 0;
