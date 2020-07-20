@@ -9,6 +9,7 @@
 #include "NE_Value.hpp"
 #include "NE_ConnectionInfo.hpp"
 #include "NE_ConnectionManager.hpp"
+#include "NE_NodeList.hpp"
 #include "NE_NodeGroupList.hpp"
 #include "NE_NodeValueCache.hpp"
 #include <functional>
@@ -120,7 +121,7 @@ private:
 	Stream::Status		WriteNodes (OutputStream& outputStream) const;
 
 	NodeIdGenerator							idGenerator;
-	std::unordered_map<NodeId, NodePtr>		nodeIdToNodeTable;
+	NodeList								nodeList;
 	ConnectionManager						connectionManager;
 	NodeGroupList							nodeGroupList;
 	UpdateMode								updateMode;

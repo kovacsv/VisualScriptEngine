@@ -95,7 +95,7 @@ private:
 
 NodeManager::NodeManager () :
 	idGenerator (),
-	nodeIdToNodeTable (),
+	nodeList (),
 	connectionManager (),
 	nodeGroupList (),
 	updateMode (UpdateMode::Automatic),
@@ -113,7 +113,7 @@ NodeManager::~NodeManager ()
 
 void NodeManager::Clear ()
 {
-	nodeIdToNodeTable.clear ();
+	nodeList.Clear ();
 	connectionManager.Clear ();
 	nodeGroupList.Clear ();
 	nodeValueCache.Clear ();
@@ -122,12 +122,12 @@ void NodeManager::Clear ()
 
 bool NodeManager::IsEmpty () const
 {
-	return nodeIdToNodeTable.empty () && connectionManager.IsEmpty ();
+	return nodeList.IsEmpty () && connectionManager.IsEmpty ();
 }
 
 size_t NodeManager::GetNodeCount () const
 {
-	return nodeIdToNodeTable.size ();
+	return nodeList.Count ();
 }
 
 size_t NodeManager::GetConnectionCount () const
@@ -137,43 +137,27 @@ size_t NodeManager::GetConnectionCount () const
 
 void NodeManager::EnumerateNodes (const std::function<bool (const NodePtr&)>& processor)
 {
-	for (auto& node : nodeIdToNodeTable) {
-		if (!processor (node.second)) {
-			break;
-		}
-	}
+	nodeList.EnumerateNodes (processor);
 }
 
 void NodeManager::EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const
 {
-	for (const auto& node : nodeIdToNodeTable) {
-		if (!processor (node.second)) {
-			break;
-		}
-	}
+	nodeList.EnumerateNodes (processor);
 }
 
 bool NodeManager::ContainsNode (const NodeId& id) const
 {
-	return nodeIdToNodeTable.find (id) != nodeIdToNodeTable.end ();
+	return nodeList.ContainsNode (id);
 }
 
 NodeConstPtr NodeManager::GetNode (const NodeId& id) const
 {
-	auto foundNode = nodeIdToNodeTable.find (id);
-	if (DBGERROR (foundNode == nodeIdToNodeTable.end ())) {
-		return nullptr;
-	}
-	return foundNode->second;
+	return nodeList.GetNode (id);
 }
 
 NodePtr NodeManager::GetNode (const NodeId& id)
 {
-	auto foundNode = nodeIdToNodeTable.find (id);
-	if (DBGERROR (foundNode == nodeIdToNodeTable.end ())) {
-		return nullptr;
-	}
-	return foundNode->second;
+	return nodeList.GetNode (id);
 }
 
 NodePtr NodeManager::AddNode (const NodePtr& node)
@@ -212,7 +196,7 @@ bool NodeManager::DeleteNode (const NodePtr& node)
 		return true;
 	});
 
-	nodeIdToNodeTable.erase (node->GetId ());
+	nodeList.DeleteNode (node->GetId ());
 	node->ClearNodeEvaluator ();
 
 	return true;
@@ -556,7 +540,7 @@ NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& se
 		return nullptr;
 	}
 	node->SetNodeEvaluator (setter);
-	nodeIdToNodeTable.insert ({ node->GetId (), node });
+	nodeList.AddNode (node->GetId (), node);
 	return node;
 }
 
