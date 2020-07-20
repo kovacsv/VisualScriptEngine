@@ -13,6 +13,7 @@
 #include <windowsx.h>
 
 #include "WAS_Direct2DContext.hpp"
+#include "WAS_Direct2DOffscreenContext.hpp"
 
 #pragma comment (lib, "windowscodecs.lib")
 #pragma comment (lib, "d2d1.lib")

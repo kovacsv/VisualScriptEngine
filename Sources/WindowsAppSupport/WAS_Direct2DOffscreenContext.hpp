@@ -1,5 +1,5 @@
-#ifndef WAS_DIRECT2DCONTEXT_HPP
-#define WAS_DIRECT2DCONTEXT_HPP
+#ifndef WAS_DIRECT2DOFFSCREENCONTEXT_HPP
+#define WAS_DIRECT2DOFFSCREENCONTEXT_HPP
 
 #include <d2d1.h>
 #include <dwrite.h>
@@ -14,12 +14,12 @@
 namespace WAS
 {
 
-class Direct2DContext : public NUIE::NativeDrawingContext
+class Direct2DOffscreenContext : public NUIE::NativeDrawingContext
 {
 public:
-	Direct2DContext (const Direct2DImageLoaderPtr& imageLoader);
-	Direct2DContext (const Direct2DContext& rhs) = delete;
-	virtual ~Direct2DContext ();
+	Direct2DOffscreenContext (const Direct2DImageLoaderPtr& imageLoader);
+	Direct2DOffscreenContext (const Direct2DOffscreenContext& rhs) = delete;
+	virtual ~Direct2DOffscreenContext ();
 
 	virtual void				Init (void* nativeHandle) override;
 	virtual void				BlitToWindow (void* nativeHandle) override;
@@ -52,13 +52,17 @@ public:
 
 private:
 	void						CreateRenderTarget ();
+	void						CreateOffscreenContext ();
 
-	HWND						hwnd;
 	int							width;
 	int							height;
+
 	Direct2DHandler				direct2DHandler;
 	Direct2DImageLoaderPtr		imageLoader;
-	ID2D1HwndRenderTarget*		renderTarget;
+	ID2D1DCRenderTarget*		renderTarget;
+
+	HDC							memoryDC;
+	HBITMAP						memoryBitmap;
 };
 
 }
