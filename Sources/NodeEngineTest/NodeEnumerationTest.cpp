@@ -44,7 +44,6 @@ TEST (EnumerationOrderTest)
 	NodeManager nodeManager;
 	
 	std::vector<NodeId> nodeAddOrder;
-
 	static const size_t initialNodeCount = 100;
 	for (size_t i = 0; i < initialNodeCount; i++) {
 		NodePtr addedNode = nodeManager.AddNode (NodePtr (new TestNode ()));
