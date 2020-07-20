@@ -18,14 +18,17 @@ NSViewContext::NSViewContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
-	nsView (nil)
+	nsView (nil),
+	fontCache ()
 {
 
 }
 
 NSViewContext::~NSViewContext ()
 {
-
+	for (auto& it : fontCache) {
+		[(NSFont*) it.second release];
+	}
 }
 
 void NSViewContext::Init (void* nativeHandle)
@@ -35,19 +38,16 @@ void NSViewContext::Init (void* nativeHandle)
 
 void NSViewContext::BlitToWindow (void* nativeHandle)
 {
-	// TODO
 	#pragma unused (nativeHandle)
 }
 
 void NSViewContext::BlitToContext (void* nativeContext)
 {
-	// TODO
 	#pragma unused (nativeContext)
 }
 
 void NSViewContext::Resize (int newWidth, int newHeight)
 {
-	// TODO
 	width = newWidth;
 	height = newHeight;
 }
@@ -133,7 +133,6 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 	
 	[CreateColor (textColor) set];
 	NSString* nsText = StdStringToNSString (text);
-	NSString* nsFontName = StdStringToNSString (font.GetFamily ());
 	
 	NSMutableParagraphStyle* style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 	if (hAnchor == NUIE::HorizontalAnchor::Left) {
@@ -144,7 +143,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 		style.alignment = NSTextAlignmentRight;
 	}
 	NSDictionary* attributes = @{
-		NSFontAttributeName: [NSFont fontWithName:nsFontName size:font.GetSize ()],
+		NSFontAttributeName: (NSFont*) GetFont (font),
 		NSForegroundColorAttributeName : CreateColor (textColor),
 		NSParagraphStyleAttributeName : style
 	};
@@ -163,8 +162,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
 	NSString* nsText = StdStringToNSString (text);
-	NSString* nsFontName = StdStringToNSString (font.GetFamily ());
-	NSDictionary* attributes = @{NSFontAttributeName: [NSFont fontWithName:nsFontName size:font.GetSize ()]};
+	NSDictionary* attributes = @{NSFontAttributeName: (NSFont*) GetFont (font)};
 	NSSize size = [nsText sizeWithAttributes:attributes];
 	return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
 }
@@ -177,6 +175,18 @@ bool NSViewContext::CanDrawIcon ()
 void NSViewContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 {
 	DBGBREAK ();
+}
+
+void* NSViewContext::GetFont (const NUIE::Font& font)
+{
+	NUIE::FontCacheKey key (font);
+	auto found = fontCache.find (key);
+	if (found == fontCache.end ()) {
+		NSString* nsFontName = StdStringToNSString (key.family);
+		NSFont* nsFont = [[NSFont fontWithName:nsFontName size:key.size] copy];
+		fontCache.insert ({ key, nsFont });
+	}
+	return fontCache.at (key);
 }
 
 }
