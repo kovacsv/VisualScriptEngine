@@ -3,6 +3,9 @@
 
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_Drawing.hpp"
+#include "NUIE_DrawingCacheKeys.hpp"
+
+#include <unordered_map>
 
 namespace MAS
 {
@@ -44,9 +47,13 @@ public:
 	virtual void				DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId) override;
 
 private:
+	void*						GetFont (const NUIE::Font& font);
+	
 	int							width;
 	int							height;
 	void*						nsView;
+	
+	std::unordered_map<NUIE::FontCacheKey, void*>	fontCache;
 };
 
 }
