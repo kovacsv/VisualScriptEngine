@@ -53,12 +53,14 @@ public:
 private:
 	void						CreateRenderTarget ();
 
-	HWND						hwnd;
 	int							width;
 	int							height;
+
 	Direct2DHandler				direct2DHandler;
 	Direct2DImageLoaderPtr		imageLoader;
 	ID2D1HwndRenderTarget*		renderTarget;
+
+	HWND						hwnd;
 };
 
 }
