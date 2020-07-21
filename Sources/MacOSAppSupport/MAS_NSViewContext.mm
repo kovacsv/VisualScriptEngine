@@ -31,14 +31,14 @@ void NSViewContext::Init (void* nativeHandle)
 	nsView = (NSView*) nativeHandle;
 }
 
-void NSViewContext::BlitToWindow (void* nativeHandle)
+void NSViewContext::BlitToWindow (void*)
 {
-	#pragma unused (nativeHandle)
+
 }
 
-void NSViewContext::BlitToContext (void* nativeContext)
+void NSViewContext::BlitToContext (void*)
 {
-	#pragma unused (nativeContext)
+
 }
 
 void NSViewContext::Resize (int newWidth, int newHeight)
