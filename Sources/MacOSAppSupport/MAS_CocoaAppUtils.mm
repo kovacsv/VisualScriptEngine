@@ -72,32 +72,35 @@ NUIE::Point GetViewPositionFromEvent (NSView* view, const NSEvent* event)
 	
 NSPoint CreatePoint (const NSView* view, const NUIE::Point& point)
 {
-	return NSMakePoint (point.GetX (), view.frame.size.height - point.GetY ());
+	NUIE::IntPoint intPoint (point);
+	int height = (int) std::floor (view.frame.size.height) - 1;
+	return NSMakePoint (intPoint.GetX (), height - intPoint.GetY ());
 }
 	
 NSPoint CreateScreenPoint (const NSView* view, const NUIE::Point& point)
 {
-	NSPoint viewPoint = MAS::CreatePoint (view, point);
+	NSPoint viewPoint = CreatePoint (view, point);
 	return [view convertPoint:viewPoint toView:nil];
 }
 	
 NSRect CreateRect (const NSView* view, const NUIE::Rect& rect)
 {
-	return NSMakeRect (rect.GetX (), view.frame.size.height - rect.GetHeight () - rect.GetY (), rect.GetWidth (), rect.GetHeight ());
+	NUIE::IntRect intRect (rect);
+	return NSMakeRect (intRect.GetX (), view.frame.size.height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
 }
 
 static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordered_map<int, NUIE::MenuCommandPtr>& commandTable, ContextMenu* originalMenu, ContextMenu* currentMenu, int& currentCommandId)
 {
 	if (command->HasChildCommands ()) {
 		ContextMenu* oldMenu = currentMenu;
-		ContextMenu* newMenu = [currentMenu addGroupMenuItem:MAS::StdStringToNSString (command->GetName ())];
+		ContextMenu* newMenu = [currentMenu addGroupMenuItem:StdStringToNSString (command->GetName ())];
 		currentMenu = newMenu;
 		command->EnumerateChildCommands ([&] (const NUIE::MenuCommandPtr& childCommand) {
 			AddCommandToMenu (childCommand, commandTable, originalMenu, currentMenu, currentCommandId);
 		});
 		currentMenu = oldMenu;
 	} else {
-		[currentMenu addMenuItem : MAS::StdStringToNSString (command->GetName ()) : currentCommandId : originalMenu];
+		[currentMenu addMenuItem : StdStringToNSString (command->GetName ()) : currentCommandId : originalMenu];
 		commandTable.insert ({ currentCommandId, command });
 		currentCommandId += 1;
 	}
@@ -116,7 +119,7 @@ NUIE::MenuCommandPtr SelectCommandFromContextMenu (const NSView* nsView, const N
 		AddCommandToMenu (command, commandTable, originalMenu, currentMenu, currentCommandId);
 	});
 	
-	NSPoint screenPosition = MAS::CreateScreenPoint (nsView, position);
+	NSPoint screenPosition = CreateScreenPoint (nsView, position);
 	[contextMenu setAutoenablesItems:YES];
 	[contextMenu popUpMenuPositioningItem:nil atLocation:screenPosition inView:(NSView*) nsView];
 	
