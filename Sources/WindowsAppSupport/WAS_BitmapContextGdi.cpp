@@ -243,9 +243,10 @@ void BitmapContextGdi::CreateOffscreenContext ()
 
 POINT BitmapContextGdi::CreatePoint (const NUIE::Point& point) const
 {
+	NUIE::IntPoint intPoint (point);
 	POINT gdiPoint;
-	gdiPoint.x = (int) std::floor (point.GetX ()) - 1;
-	gdiPoint.y = (int) std::floor (point.GetY ()) - 1;
+	gdiPoint.x = intPoint.GetX ();
+	gdiPoint.y = intPoint.GetY ();
 	return gdiPoint;
 }
 

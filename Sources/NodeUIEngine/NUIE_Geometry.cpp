@@ -331,6 +331,37 @@ bool Rect::IsInBounds (const Rect& rect, double boundsWidth, double boundsHeight
 	return true;
 }
 
+IntPoint::IntPoint () :
+	x (0),
+	y (0)
+{
+
+}
+
+IntPoint::IntPoint (int x, int y) :
+	x (x),
+	y (y)
+{
+
+}
+
+IntPoint::IntPoint (const Point& point) :
+	x ((int) std::floor (point.GetX ()) - 1),
+	y ((int) std::floor (point.GetY ()) - 1)
+{
+
+}
+
+int IntPoint::GetX () const
+{
+	return x;
+}
+
+int IntPoint::GetY () const
+{
+	return y;
+}
+
 IntRect::IntRect () :
 	x (0),
 	y (0),

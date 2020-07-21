@@ -116,6 +116,21 @@ private:
 	Size	size;
 };
 
+class IntPoint
+{
+public:
+	IntPoint ();
+	IntPoint (int x, int y);
+	IntPoint (const Point& point);
+
+	int		GetX () const;
+	int		GetY () const;
+
+private:
+	int x;
+	int y;
+};
+
 class IntRect
 {
 public:
