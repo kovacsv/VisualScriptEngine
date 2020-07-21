@@ -9,11 +9,6 @@ namespace MAS
 
 static const float SafetyTextRatio = 1.05f;
 	
-static NSColor* CreateColor (const NUIE::Color& color)
-{
-	return [NSColor colorWithRed:color.GetR () / 255.0f green:color.GetG () / 255.0f blue:color.GetB () / 255.0f alpha:1.0f];
-}
-	
 NSViewContext::NSViewContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),

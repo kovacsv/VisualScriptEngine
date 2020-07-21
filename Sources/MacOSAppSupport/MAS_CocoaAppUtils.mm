@@ -89,6 +89,11 @@ NSRect CreateRect (const NSView* view, const NUIE::Rect& rect)
 	return NSMakeRect (intRect.GetX (), view.frame.size.height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
 }
 
+NSColor* CreateColor (const NUIE::Color& color)
+{
+	return [NSColor colorWithRed:color.GetR () / 255.0f green:color.GetG () / 255.0f blue:color.GetB () / 255.0f alpha:1.0f];
+}
+	
 static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordered_map<int, NUIE::MenuCommandPtr>& commandTable, ContextMenu* originalMenu, ContextMenu* currentMenu, int& currentCommandId)
 {
 	if (command->HasChildCommands ()) {
