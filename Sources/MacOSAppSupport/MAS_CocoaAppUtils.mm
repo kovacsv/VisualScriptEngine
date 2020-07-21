@@ -86,7 +86,8 @@ NSPoint CreateScreenPoint (const NSView* view, const NUIE::Point& point)
 NSRect CreateRect (const NSView* view, const NUIE::Rect& rect)
 {
 	NUIE::IntRect intRect (rect);
-	return NSMakeRect (intRect.GetX (), view.frame.size.height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
+	int height = (int) std::floor (view.frame.size.height) - 1;
+	return NSMakeRect (intRect.GetX (), height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
 }
 
 NSColor* CreateColor (const NUIE::Color& color)
