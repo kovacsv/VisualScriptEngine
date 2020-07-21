@@ -3,8 +3,7 @@ language: cpp
 matrix:
   include:
     - os: linux
-      dist: trusty
-      compiler: gcc
+      dist: xenial
       addons:
         apt:
           sources:
@@ -16,7 +15,28 @@ matrix:
         - PACKAGE_NAME=Linux_gcc7
     - os: linux
       dist: xenial
-      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+      env:
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+        - PACKAGE_NAME=Linux_gcc8
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
+      env:
+        - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
+        - PACKAGE_NAME=Linux_gcc9
+    - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -28,7 +48,6 @@ matrix:
         - PACKAGE_NAME=Linux_clang7
     - os: linux
       dist: xenial
-      compiler: clang
       addons:
         apt:
           sources:
@@ -38,21 +57,29 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
         - PACKAGE_NAME=Linux_clang8
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-8
+          packages:
+            - clang-9
+      env:
+        - MATRIX_EVAL="CC=clang-9 && CXX=clang++-9"
+        - PACKAGE_NAME=Linux_clang9
     - os: osx
       osx_image: xcode10
-      compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - PACKAGE_NAME=OSX_XCode10
     - os: osx
       osx_image: xcode11
-      compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - PACKAGE_NAME=OSX_XCode11
     - os: osx
       osx_image: xcode12
-      compiler: clang
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - PACKAGE_NAME=OSX_XCode12
