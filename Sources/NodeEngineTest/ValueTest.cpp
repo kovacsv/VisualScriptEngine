@@ -16,6 +16,15 @@ public:
 
 	}
 
+	A& operator= (const A& rhs)
+	{
+		if (rhs == *this) {
+			return *this;
+		}
+		x = rhs.x;
+		return *this;
+	}
+
 	A (int x) :
 		x (x)
 	{
