@@ -64,7 +64,7 @@ NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 	return keys;
 }
 
-NUIE::Point GetViewPositionFromEvent (NSView* view, const NSEvent* event)
+NUIE::Point GetViewPositionFromEvent (const NSView* view, const NSEvent* event)
 {
 	NSPoint position = [view convertPoint:[event locationInWindow] fromView:nil];
 	return NUIE::Point (position.x, view.frame.size.height - position.y);
