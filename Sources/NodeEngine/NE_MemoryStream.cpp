@@ -1,8 +1,6 @@
 #include "NE_MemoryStream.hpp"
+#include "NE_StringUtils.hpp"
 #include "NE_Debug.hpp"
-
-#include <codecvt>
-#include <locale>
 
 namespace NE
 {
@@ -58,15 +56,13 @@ Stream::Status ReadString (MemoryInputStream& stream, std::wstring& val)
 		return status;
 	}
 
-	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> convert;
-	val = convert.from_bytes (str);
+	val = StringToWString (str);
 	return Stream::Status::NoError;
 }
 
 static Stream::Status WriteString (MemoryOutputStream& stream, const std::wstring& val)
 {
-	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> convert;
-	std::string str = convert.to_bytes (val);
+	std::string str = WStringToString (val);
 	return WriteString (stream, str);
 }
 
