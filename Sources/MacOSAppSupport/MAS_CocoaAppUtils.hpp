@@ -1,18 +1,16 @@
 #ifndef MAS_COCOAAPPUTILS_HPP
 #define MAS_COCOAAPPUTILS_HPP
 
+#include "NUIE_Drawing.hpp"
+#include "NUIE_Geometry.hpp"
 #include "NUIE_InputEventHandler.hpp"
 #include "NUIE_MenuCommands.hpp"
-#include "NUIE_Geometry.hpp"
-#include "NUIE_Drawing.hpp"
-
-#import <Cocoa/Cocoa.h>
+#include "MAS_IncludeCocoaHeaders.hpp"
 
 namespace MAS
 {
 
-NSString*				StdStringToNSString (const std::wstring& str);
-	
+NE::BasicStringSettings GetStringSettingsFromSystem ();
 NUIE::ModifierKeys		GetModifierKeysFromEvent (const NSEvent* event);
 NUIE::Point				GetViewPositionFromEvent (const NSView* view, const NSEvent* event);
 

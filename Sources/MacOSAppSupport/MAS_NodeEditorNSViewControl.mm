@@ -2,8 +2,7 @@
 #include "MAS_CocoaAppUtils.hpp"
 #include "MAS_NSViewContext.hpp"
 #include "NE_Debug.hpp"
-
-#import <Cocoa/Cocoa.h>
+#include "MAS_IncludeCocoaHeaders.hpp"
 
 @interface CocoaNSViewControl : NSView
 {

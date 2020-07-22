@@ -200,7 +200,7 @@ bool AppEventHandler::OnParameterSettings(NUIE::ParameterInterfacePtr paramAcces
 }
 
 AppNodeUIEnvironment::AppNodeUIEnvironment () :
-	stringConverter (NE::GetDefaultStringConverter ()),
+	stringConverter (NE::BasicStringConverter (MAS::GetStringSettingsFromSystem ())),
 	skinParams (GetAppSkinParams ()),
 	evaluationEnv (NE::EmptyEvaluationEnv),
 	eventHandler (),

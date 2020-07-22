@@ -1,4 +1,5 @@
 #include "MAS_CocoaAppUtils.hpp"
+#include "MAS_StringUtils.hpp"
 
 @interface ContextMenu : NSMenu
 {
@@ -47,18 +48,28 @@
 namespace MAS
 {
 
-NSString* StdStringToNSString (const std::wstring& str)
+NE::BasicStringSettings GetStringSettingsFromSystem ()
 {
-	return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
+	NE::BasicStringSettings result = NE::GetDefaultStringSettings ();
+
+	NSString* decSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator];
+	std::wstring ds = s2ws ([decSeparator cStringUsingEncoding:NSUTF8StringEncoding]).c_str ();
+	result.SetDecimalSeparator (ds.c_str ()[0]);
+
+	NSString* listSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+	std::wstring ls = s2ws ([listSeparator cStringUsingEncoding:NSUTF8StringEncoding]).c_str ();
+	result.SetListSeparator (ls.c_str ()[0]);
+
+	return result;
 }
-	
+
 NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 {
 	NUIE::ModifierKeys keys;
-	NSEventModifierFlags flags = [event modifierFlags];
-	if (flags & NSEventModifierFlagControl) {
+	if ([event modifierFlags] & NSEventModifierFlagCommand) {//TODO KAM: Control vagy Command kell?
 		keys.Insert (NUIE::ModifierKeyCode::Control);
-	} else if (flags & NSEventModifierFlagShift) {
+	}
+	if ([event modifierFlags] & NSEventModifierFlagShift) {
 		keys.Insert (NUIE::ModifierKeyCode::Shift);
 	}
 	return keys;
@@ -99,14 +110,14 @@ static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordere
 {
 	if (command->HasChildCommands ()) {
 		ContextMenu* oldMenu = currentMenu;
-		ContextMenu* newMenu = [currentMenu addGroupMenuItem:StdStringToNSString (command->GetName ())];
+		ContextMenu* newMenu = [currentMenu addGroupMenuItem:MAS::StdWStringToNSString (command->GetName ())];
 		currentMenu = newMenu;
 		command->EnumerateChildCommands ([&] (const NUIE::MenuCommandPtr& childCommand) {
 			AddCommandToMenu (childCommand, commandTable, originalMenu, currentMenu, currentCommandId);
 		});
 		currentMenu = oldMenu;
 	} else {
-		[currentMenu addMenuItem : StdStringToNSString (command->GetName ()) : currentCommandId : originalMenu];
+		[currentMenu addMenuItem:MAS::StdWStringToNSString (command->GetName ()) : currentCommandId : originalMenu];
 		commandTable.insert ({ currentCommandId, command });
 		currentCommandId += 1;
 	}

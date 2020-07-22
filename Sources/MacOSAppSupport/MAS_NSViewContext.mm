@@ -1,8 +1,8 @@
 #include "MAS_NSViewContext.hpp"
 #include "MAS_CocoaAppUtils.hpp"
+#include "MAS_StringUtils.hpp"
 #include "NE_Debug.hpp"
-
-#import <Cocoa/Cocoa.h>
+#include "MAS_IncludeCocoaHeaders.hpp"
 
 namespace MAS
 {
@@ -124,7 +124,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 	// TODO: speed (cache [NSString(NSStringDrawing) sizeWithAttributes:] result)
 	
 	[CreateColor (textColor) set];
-	NSString* nsText = StdStringToNSString (text);
+	NSString* nsText = MAS::StdWStringToNSString (text);
 	
 	NSMutableParagraphStyle* style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 	if (hAnchor == NUIE::HorizontalAnchor::Left) {
@@ -153,7 +153,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 
 NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	NSString* nsText = StdStringToNSString (text);
+	NSString* nsText = MAS::StdWStringToNSString (text);
 	NSDictionary* attributes = @{NSFontAttributeName: (NSFont*) GetFont (font)};
 	NSSize size = [nsText sizeWithAttributes:attributes];
 	return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
@@ -174,7 +174,7 @@ void* NSViewContext::GetFont (const NUIE::Font& font)
 	NUIE::FontCacheKey key (font);
 	auto found = fontCache.find (key);
 	if (found == fontCache.end ()) {
-		NSString* nsFontName = StdStringToNSString (key.family);
+		NSString* nsFontName = MAS::StdWStringToNSString (key.family);
 		NSFont* nsFont = [[NSFont fontWithName:nsFontName size:key.size] copy];
 		fontCache.insert ({ key, nsFont });
 	}
