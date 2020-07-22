@@ -1,4 +1,4 @@
 Build/*
+Sources/.clang-format
 .DS_Store
 .vscode
-Sources/.clang-format
