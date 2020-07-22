@@ -10,7 +10,7 @@ namespace MAS
 bool MACFileIO::ReadBufferFromFile (const std::wstring& fileName, std::vector<char>& buffer) const
 {
 	std::ifstream file;
-	file.open (WStringToString (fileName), std::ios::binary);
+	file.open (NE::WStringToString (fileName), std::ios::binary);
 	if (DBGERROR (!file.is_open ())) {
 		return false;
 	}
@@ -24,7 +24,7 @@ bool MACFileIO::ReadBufferFromFile (const std::wstring& fileName, std::vector<ch
 bool MACFileIO::WriteBufferToFile (const std::wstring& fileName, const std::vector<char>& buffer) const
 {
 	std::ofstream file;
-	file.open (WStringToString (fileName), std::ios::binary);
+	file.open (NE::WStringToString (fileName), std::ios::binary);
 	if (DBGERROR (!file.is_open ())) {
 		return false;
 	}
