@@ -4,6 +4,7 @@
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_Drawing.hpp"
 #include "NUIE_DrawingCacheKeys.hpp"
+#include "MAS_NSImageLoader.hpp"
 
 #include <unordered_map>
 
@@ -24,6 +25,7 @@ class NSViewContext : public NUIE::NativeDrawingContext
 {
 public:
 	NSViewContext ();
+	NSViewContext (const NSImageLoaderPtr& imageLoader);
 	NSViewContext (const NSViewContext& rhs) = delete;
 	virtual ~NSViewContext ();
 
@@ -62,6 +64,7 @@ private:
 	int							width;
 	int							height;
 	NSView*						nsView;
+	NSImageLoaderPtr			imageLoader;
 	
 	std::unordered_map<NUIE::FontCacheKey, NSFont*>		fontCache;
 };

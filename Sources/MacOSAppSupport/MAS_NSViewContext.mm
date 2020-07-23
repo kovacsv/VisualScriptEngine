@@ -14,6 +14,18 @@ NSViewContext::NSViewContext () :
 	width (0),
 	height (0),
 	nsView (nil),
+	imageLoader (nil),
+	fontCache ()
+{
+
+}
+
+NSViewContext::NSViewContext (const NSImageLoaderPtr& imageLoader) :
+	NUIE::NativeDrawingContext (),
+	width (0),
+	height (0),
+	nsView (nil),
+	imageLoader (imageLoader),
 	fontCache ()
 {
 
@@ -216,12 +228,20 @@ NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstrin
 
 bool NSViewContext::CanDrawIcon ()
 {
-	return false;
+	return true;
 }
 
-void NSViewContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
+void NSViewContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId)
 {
-	DBGBREAK ();
+	if (DBGERROR (imageLoader == nullptr)) {
+		return;
+	}
+	@try {
+		NSImage* image = imageLoader->LoadNSImage (iconId);
+		[image drawInRect:CreateRect (nsView, rect) fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0f];
+	} @catch (NSException*) {
+
+	}
 }
 
 NSFont* NSViewContext::GetFont (const NUIE::Font& font)
