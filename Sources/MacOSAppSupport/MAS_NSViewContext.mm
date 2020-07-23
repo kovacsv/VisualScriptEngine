@@ -10,12 +10,7 @@ namespace MAS
 static const float SafetyTextRatio = 1.05f;
 
 NSViewContext::NSViewContext () :
-	NUIE::NativeDrawingContext (),
-	width (0),
-	height (0),
-	nsView (nil),
-	imageLoader (nil),
-	fontCache ()
+	NSViewContext (nullptr)
 {
 
 }
