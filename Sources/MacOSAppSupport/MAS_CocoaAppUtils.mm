@@ -67,7 +67,7 @@ NE::BasicStringSettings GetStringSettingsFromSystem ()
 NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 {
 	NUIE::ModifierKeys keys;
-	if ([event modifierFlags] & NSEventModifierFlagCommand) {//TODO KAM: Control vagy Command kell?
+	if ([event modifierFlags] & NSEventModifierFlagControl) {
 		keys.Insert (NUIE::ModifierKeyCode::Control);
 	}
 	if ([event modifierFlags] & NSEventModifierFlagShift) {
