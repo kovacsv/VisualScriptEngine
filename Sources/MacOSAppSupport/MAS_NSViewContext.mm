@@ -1,8 +1,8 @@
 #include "MAS_NSViewContext.hpp"
 #include "MAS_CocoaAppUtils.hpp"
-#include "MAS_StringUtils.hpp"
-#include "NE_Debug.hpp"
 #include "MAS_IncludeCocoaHeaders.hpp"
+
+#include "NE_Debug.hpp"
 
 namespace MAS
 {

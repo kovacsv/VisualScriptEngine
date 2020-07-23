@@ -1,5 +1,4 @@
 #include "MAS_CocoaAppUtils.hpp"
-#include "MAS_StringUtils.hpp"
 #include "NE_StringUtils.hpp"
 
 @interface ContextMenu : NSMenu
@@ -49,6 +48,11 @@
 namespace MAS
 {
 
+NSString* StdWStringToNSString (const std::wstring& str)
+{
+	return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
+}
+	
 NE::BasicStringSettings GetStringSettingsFromSystem ()
 {
 	NE::BasicStringSettings result = NE::GetDefaultStringSettings ();
