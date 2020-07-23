@@ -107,7 +107,7 @@ public:
 TEST (RecalculationVisualTest)
 {
 	RecalcNodeEditorTestEnv env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("Recalculation_Initial.svg"));
+	ASSERT (env.CheckReference (L"Recalculation_Initial.svg"));
 	ASSERT (env.CheckNodeValues (0, 0));
 	ASSERT (env.CheckRecalcCounters (1, 2));
 	
@@ -116,7 +116,7 @@ TEST (RecalculationVisualTest)
 		Point dragStart = test2NodeRect.GetTopLeft () + Point (5.0, 5.0);
 		Point dragEnd (dragStart + Point (20.0, -20.0));
 		env.DragDrop (dragStart, dragEnd);
-		ASSERT (env.CheckReference ("Recalculation_Node2Moved.svg"));
+		ASSERT (env.CheckReference (L"Recalculation_Node2Moved.svg"));
 		ASSERT (env.CheckNodeValues (0, 0));
 		ASSERT (env.CheckRecalcCounters (1, 2));
 	}
@@ -129,7 +129,7 @@ TEST (RecalculationVisualTest)
 			return true;
 		});
 		env.RightClick (test1HeaderPoint);
-		ASSERT (env.CheckReference ("Recalculation_Node1Renamed.svg"));
+		ASSERT (env.CheckReference (L"Recalculation_Node1Renamed.svg"));
 		ASSERT (env.CheckNodeValues (0, 0));
 		ASSERT (env.CheckRecalcCounters (1, 2));
 	}

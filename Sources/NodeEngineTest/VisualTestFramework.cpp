@@ -321,15 +321,15 @@ NodeEditorTestEnv::NodeEditorTestEnv (const BasicSkinParams& skinParams) :
 	nodeEditor.Update ();
 }
 
-bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
+bool NodeEditorTestEnv::CheckReference (const std::wstring& referenceFileName)
 {
 	const SvgDrawingContext& context = uiEnvironment.GetSvgDrawingContext ();
-	std::string testFilesPath = GetTestFilesPath ();
+	std::wstring testFilesPath = GetTestFilesPath ();
 
-	std::string referenceFilePath = testFilesPath + referenceFileName;
+	std::wstring referenceFilePath = testFilesPath + referenceFileName;
 	std::wstring referenceContent;
 	if (!ReadUtf8File (referenceFilePath, referenceContent)) {
-		WriteUtf8File (testFilesPath + "Current_" + referenceFileName, context.GetAsString ());
+		WriteUtf8File (testFilesPath + L"Current_" + referenceFileName, context.GetAsString ());
 	}
 
 	std::wstring currentContent = context.GetAsString ();
@@ -340,7 +340,7 @@ bool NodeEditorTestEnv::CheckReference (const std::string& referenceFileName)
 		std::wcout << currentContent << std::endl;
 		std::wcout << L"=== REFERENCE ===" << std::endl;
 		std::wcout << referenceContent << std::endl;
-		WriteUtf8File (testFilesPath + "Current_" + referenceFileName, context.GetAsString ());
+		WriteUtf8File (testFilesPath + L"Current_" + referenceFileName, context.GetAsString ());
 		return false;
 	}
 	return true;
@@ -399,7 +399,7 @@ void NodeEditorTestEnv::SetNextCommandParameterSettings (const ParameterSettings
 	uiEnvironment.SetNextCommandParameterSettings (handler);
 }
 
-std::string GetTestFilesPath ()
+std::wstring GetTestFilesPath ()
 {
-	return SimpleTest::GetAppFolderLocation () + "VisualTestFiles" + PATH_SEPARATOR;
+	return SimpleTest::GetAppFolderLocation () + L"VisualTestFiles" + PATH_SEPARATOR;
 }

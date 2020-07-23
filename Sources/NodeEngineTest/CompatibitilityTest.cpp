@@ -57,38 +57,21 @@ static void WriteTestFile ()
 	env.nodeEditor.ConnectOutputSlotToInputSlot (booleanNode->GetUIOutputSlot (SlotId ("out")), viewer->GetUIInputSlot (SlotId ("in")));
 	env.nodeEditor.ConnectOutputSlotToInputSlot (multiplication->GetUIOutputSlot (SlotId ("result")), multilineViewer->GetUIInputSlot (SlotId ("in")));
 
-	MemoryOutputStream outputStream;
-	env.nodeEditor.Save (outputStream);
-	std::string fileName = GetTestFilesPath () + "Current_CompatibilityTest.ne";
-	std::ofstream file;
-	file.open (fileName, std::ios::binary);
-	if (file.is_open ()) {
-		file.write (outputStream.GetBuffer ().data (), outputStream.GetBuffer ().size ());
-		file.close ();
-	}
+	std::wstring fileName = GetTestFilesPath () + L"Current_CompatibilityTest.ne";
+	env.nodeEditor.Save (fileName);
 }
 
 TEST (CompatibilityTest)
 {
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
 
-	bool readSuccess = false;
-	std::string fileName = GetTestFilesPath () + "CompatibilityTest.ne";
-	std::ifstream file;
-	file.open (fileName, std::ios::binary);
-	if (file.is_open ()) {
-		std::vector<char> buffer;
-		buffer.assign (std::istreambuf_iterator<char> (file), std::istreambuf_iterator<char> ());
-		MemoryInputStream inputStream (buffer);
-		readSuccess = env.nodeEditor.Open (inputStream);
-		file.close ();
-	}
-	ASSERT (readSuccess);
-	if (!readSuccess) {
+	std::wstring fileName = GetTestFilesPath () + L"CompatibilityTest.ne";
+	bool readSuccess = env.nodeEditor.Open (fileName);
+	if (DBGERROR (!readSuccess)) {
 		WriteTestFile ();
 	}
 
-	ASSERT (env.CheckReference ("Compatibility_AfterRead.svg"));
+	ASSERT (env.CheckReference (L"Compatibility_AfterRead.svg"));
 }
 
 }

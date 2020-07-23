@@ -78,7 +78,7 @@ class NodeEditorTestEnv
 public:
 	NodeEditorTestEnv (const BasicSkinParams& skinParams);
 
-	bool	CheckReference (const std::string& referenceFileName);
+	bool	CheckReference (const std::wstring& referenceFileName);
 	void	Click (const Point& point);
 	void	CtrlClick (const Point& point);
 	void	RightClick (const Point& point);
@@ -93,6 +93,6 @@ public:
 	NodeEditor				nodeEditor;
 };
 
-std::string GetTestFilesPath ();
+std::wstring GetTestFilesPath ();
 
 #endif

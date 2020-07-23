@@ -6,8 +6,8 @@
 #include <string>
 #include <memory>
 
-#define WIN_PATH_SEPARATOR	'\\'
-#define PATH_SEPARATOR		'/'
+#define WIN_PATH_SEPARATOR	L'\\'
+#define PATH_SEPARATOR		L'/'
 
 #define TEST(TESTNAME)											\
 namespace TESTNAME##TestNamespace {								\
@@ -65,9 +65,9 @@ private:
 	std::vector<std::shared_ptr<Test>> tests;
 };
 
-void			SetAppLocation (const std::string& newAppLocation);
-std::string		GetAppLocation ();
-std::string		GetAppFolderLocation ();
+void			SetAppLocation (const std::wstring& newAppLocation);
+std::wstring	GetAppLocation ();
+std::wstring	GetAppFolderLocation ();
 
 bool			RunTests ();
 void			RegisterTest (Test* test);

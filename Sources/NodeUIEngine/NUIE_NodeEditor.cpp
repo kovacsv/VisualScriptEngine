@@ -177,10 +177,10 @@ void NodeEditor::New ()
 	Update ();
 }
 
-bool NodeEditor::Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO)
+bool NodeEditor::Open (const std::wstring& fileName)
 {
 	std::vector<char> buffer;
-	if (DBGERROR (!externalFileIO->ReadBufferFromFile (fileName, buffer))) {
+	if (DBGERROR (!ReadBufferFromFile (fileName, buffer))) {
 		return false;
 	}
 
@@ -210,7 +210,7 @@ bool NodeEditor::Open (NE::InputStream& inputStream)
 	return true;
 }
 
-bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO)
+bool NodeEditor::Save (const std::wstring& fileName)
 {
 	NE::MemoryOutputStream outputStream;
 	if (DBGERROR (!Save (outputStream))) {
@@ -218,7 +218,7 @@ bool NodeEditor::Save (const std::wstring& fileName, const ExternalFileIO* exter
 	}
 
 	const std::vector<char>& buffer = outputStream.GetBuffer ();
-	if (DBGERROR (!externalFileIO->WriteBufferToFile (fileName, buffer))) {
+	if (DBGERROR (!WriteBufferToFile (fileName, buffer))) {
 		return false;
 	}
 

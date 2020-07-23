@@ -76,7 +76,7 @@ private:
 };
 #endif
 
-static std::string appLocation;
+static std::wstring appLocation;
 
 Test::Test (const std::string& testName) :
 	testName (testName),
@@ -181,7 +181,7 @@ Suite& Suite::Get ()
 	return suite;
 }
 
-void SetAppLocation (const std::string& newAppLocation)
+void SetAppLocation (const std::wstring& newAppLocation)
 {
 	appLocation = newAppLocation;
 	for (size_t i = 0; i < appLocation.length (); ++i) {
@@ -191,18 +191,18 @@ void SetAppLocation (const std::string& newAppLocation)
 	}
 }
 
-std::string GetAppLocation ()
+std::wstring GetAppLocation ()
 {
 	return appLocation;
 }
 
-std::string GetAppFolderLocation ()
+std::wstring GetAppFolderLocation ()
 {
 	size_t lastSeparator = appLocation.find_last_of (PATH_SEPARATOR);
 	if (lastSeparator == std::wstring::npos) {
-		return std::string ();
+		return std::wstring ();
 	}
-    std::string directoryPath = appLocation.substr (0, lastSeparator) + PATH_SEPARATOR;
+    std::wstring directoryPath = appLocation.substr (0, lastSeparator) + PATH_SEPARATOR;
 	return directoryPath;
 }
 

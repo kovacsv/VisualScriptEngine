@@ -126,71 +126,71 @@ TEST (SelectionTest)
 	
 	{ // deselect all
 		env.Click (env.pointInBackground);
-		ASSERT (env.CheckReference ("Selection_NoSelection.svg"));
+		ASSERT (env.CheckReference (L"Selection_NoSelection.svg"));
 	}
 
 	{ // select one node by clicking on the header
 		Point doubleInputHeaderPoint = env.doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
 		env.Click (doubleInputHeaderPoint);
-		ASSERT (env.CheckReference ("Selection_DoubleNodeSelected.svg"));
+		ASSERT (env.CheckReference (L"Selection_DoubleNodeSelected.svg"));
 	}
 
 	{ // deselect all nodes by clicking on the empty are
 		env.Click (Point (5.0, 5.0));
-		ASSERT (env.CheckReference ("Selection_NoSelection.svg"));
+		ASSERT (env.CheckReference (L"Selection_NoSelection.svg"));
 	}
 	
 	{ // select node with selection rect
 		Point rectSelectStart = env.rangeInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd (env.viewer2InputRect.GetCenter ().GetX (), env.rangeInputRect.GetBottom () + 10.0);
 		env.DragDrop (rectSelectStart, rectSelectEnd, [&] () {
-			ASSERT (env.CheckReference ("Selection_SelectionRect.svg"));
+			ASSERT (env.CheckReference (L"Selection_SelectionRect.svg"));
 		});
-		ASSERT (env.CheckReference ("Selection_RangeNodeSelected.svg"));
+		ASSERT (env.CheckReference (L"Selection_RangeNodeSelected.svg"));
 	}
 
 	{ // deselect all
 		env.Click (env.pointInBackground);
-		ASSERT (env.CheckReference ("Selection_NoSelection.svg"));
+		ASSERT (env.CheckReference (L"Selection_NoSelection.svg"));
 	}
 
 	{ // select two nodes with selection rect
 		Point rectSelectStart = env.rangeInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd (env.viewer2InputRect.GetRight () + 10.0, env.rangeInputRect.GetBottom () + 10.0);
 		env.DragDrop (rectSelectStart, rectSelectEnd, [&] () {
-			ASSERT (env.CheckReference ("Selection_SelectionRect2.svg"));
+			ASSERT (env.CheckReference (L"Selection_SelectionRect2.svg"));
 		});
-		ASSERT (env.CheckReference ("Selection_RangeAndViewer2Selected.svg"));
+		ASSERT (env.CheckReference (L"Selection_RangeAndViewer2Selected.svg"));
 	}
 
 	{ // select another node by clicking on the header
 		Point doubleInputHeaderPoint = env.doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
 		env.Click (doubleInputHeaderPoint);
-		ASSERT (env.CheckReference ("Selection_DoubleNodeSelected.svg"));
+		ASSERT (env.CheckReference (L"Selection_DoubleNodeSelected.svg"));
 	}
 
 	{ // append another node to selection
 		Point viewer1InputHeaderPoint = env.viewer1InputRect.GetTopCenter () + Point (5.0, 5.0);
 		env.CtrlClick (viewer1InputHeaderPoint);
-		ASSERT (env.CheckReference ("Selection_DoubleAndViewer1Selected.svg"));
+		ASSERT (env.CheckReference (L"Selection_DoubleAndViewer1Selected.svg"));
 	}
 
 	{ // remove the other node from selection
 		Point viewer1InputHeaderPoint = env.viewer1InputRect.GetTopCenter () + Point (5.0, 5.0);
 		env.CtrlClick (viewer1InputHeaderPoint);
-		ASSERT (env.CheckReference ("Selection_DoubleNodeSelected.svg"));
+		ASSERT (env.CheckReference (L"Selection_DoubleNodeSelected.svg"));
 	}
 
 	{ // deselect all
 		env.Click (env.pointInBackground);
-		ASSERT (env.CheckReference ("Selection_NoSelection.svg"));
+		ASSERT (env.CheckReference (L"Selection_NoSelection.svg"));
 	}
 
 	{ // select two nodes with selection rect
 		Point rectSelectStart = env.rangeInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd (env.viewer2InputRect.GetRight () + 10.0, env.rangeInputRect.GetBottom () + 10.0);
 		env.DragDrop (rectSelectStart, rectSelectEnd);
-		ASSERT (env.CheckReference ("Selection_RangeAndViewer2Selected.svg"));
+		ASSERT (env.CheckReference (L"Selection_RangeAndViewer2Selected.svg"));
 	}
 
 	{ // select nodes with selection rect
@@ -199,7 +199,7 @@ TEST (SelectionTest)
 		env.nodeEditor.OnMouseDown (ModifierKeys ({ ModifierKeyCode::Control }), MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
 		env.nodeEditor.OnMouseMove (ModifierKeys ({ ModifierKeyCode::Control }), (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
 		env.nodeEditor.OnMouseUp (ModifierKeys ({ ModifierKeyCode::Control }), MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
-		ASSERT (env.CheckReference ("Selection_DoubleRangeAndViewer2Selected.svg"));
+		ASSERT (env.CheckReference (L"Selection_DoubleRangeAndViewer2Selected.svg"));
 	}
 }
 
@@ -211,12 +211,12 @@ TEST (CreateGroupTest)
 		Point rectSelectStart = env.rangeInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd (env.viewer2InputRect.GetRight () + 10.0, env.rangeInputRect.GetBottom () + 10.0);
 		env.DragDrop (rectSelectStart, rectSelectEnd);
-		ASSERT (env.CheckReference ("CreateGroup_NodesSelected.svg"));
+		ASSERT (env.CheckReference (L"CreateGroup_NodesSelected.svg"));
 	}
 
 	{ // create group
 		env.KeyPress (Key (KeyCode::Group));
-		ASSERT (env.CheckReference ("CreateGroup_GroupCreated.svg"));
+		ASSERT (env.CheckReference (L"CreateGroup_GroupCreated.svg"));
 	}
 }
 
@@ -229,13 +229,13 @@ TEST (MoveNodesTest)
 		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd = env.rangeInputRect.GetBottomRight () + Point (10.0, 10.0);
 		env.DragDrop (rectSelectStart, rectSelectEnd);
-		ASSERT (env.CheckReference ("Move_DoubleAndRangeSelected.svg"));
+		ASSERT (env.CheckReference (L"Move_DoubleAndRangeSelected.svg"));
 	}
 
 	{ // move the three nodes together
 		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, 40.0);
 		env.DragDrop (env.rangeInputHeaderPoint, targetPoint);
-		ASSERT (env.CheckReference ("Move_DoubleAndRangeMoved.svg"));
+		ASSERT (env.CheckReference (L"Move_DoubleAndRangeMoved.svg"));
 	}
 }
 
@@ -248,15 +248,15 @@ TEST (MoveCopyNodesTest)
 		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
 		Point rectSelectEnd = env.rangeInputRect.GetBottomRight () + Point (10.0, 10.0);
 		env.DragDrop (rectSelectStart, rectSelectEnd);
-		ASSERT (env.CheckReference ("MoveCopy_DoubleAndRangeSelected.svg"));
+		ASSERT (env.CheckReference (L"MoveCopy_DoubleAndRangeSelected.svg"));
 	}
 
 	{ // duplicate the three nodes together
 		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, -60.0);
 		env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeInputHeaderPoint, targetPoint, [&] () {
-			ASSERT (env.CheckReference ("MoveCopy_DoubleAndRangeDuringDuplicate.svg"));
+			ASSERT (env.CheckReference (L"MoveCopy_DoubleAndRangeDuringDuplicate.svg"));
 		});
-		ASSERT (env.CheckReference ("MoveCopy_DoubleAndRangeDuplicated.svg"));
+		ASSERT (env.CheckReference (L"MoveCopy_DoubleAndRangeDuplicated.svg"));
 	}
 }
 
@@ -271,65 +271,65 @@ TEST (SlotConnectionTest)
 	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
 	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.uiEnvironment, SlotId ("start")).GetCenter ();
 
-	ASSERT (env.CheckReference ("SlotConnection_Basic.svg"));
+	ASSERT (env.CheckReference (L"SlotConnection_Basic.svg"));
 
 	{ // start connecting double output slot without target
 		Point targetPosition = doubleOutputSlotPosition + Point (200.0, -100.0);
 		env.DragDrop (doubleOutputSlotPosition, targetPosition, [&] () {
-			ASSERT (env.CheckReference ("SlotConnection_DraggingDoubleOutput.svg"));
+			ASSERT (env.CheckReference (L"SlotConnection_DraggingDoubleOutput.svg"));
 		});
-		ASSERT (env.CheckReference ("SlotConnection_Basic.svg"));
+		ASSERT (env.CheckReference (L"SlotConnection_Basic.svg"));
 	}
 
 	{ // start connecting viewer1 input slot without target
 		Point targetPosition = viewer1InputSlotPosition - Point (200.0, -100.0);
 		env.DragDrop (viewer1InputSlotPosition, targetPosition, [&] () {
-			ASSERT (env.CheckReference ("SlotConnection_DraggingViewer1Input.svg"));
+			ASSERT (env.CheckReference (L"SlotConnection_DraggingViewer1Input.svg"));
 		});
-		ASSERT (env.CheckReference ("SlotConnection_Basic.svg"));
+		ASSERT (env.CheckReference (L"SlotConnection_Basic.svg"));
 	}
 
 	{ // connect double output slot to viewer1 input slot
 		Point targetPos = viewer1InputSlotRect.GetLeftCenter () - Point (5.0, 0.0);
 		env.DragDrop (doubleOutputSlotPosition, targetPos, [&] () {
-			ASSERT (env.CheckReference ("SlotConnection_ConnectingDoubleToViewer1.svg"));
+			ASSERT (env.CheckReference (L"SlotConnection_ConnectingDoubleToViewer1.svg"));
 		});
-		ASSERT (env.CheckReference ("SlotConnection_DoubleConnectedToViewer1.svg"));
+		ASSERT (env.CheckReference (L"SlotConnection_DoubleConnectedToViewer1.svg"));
 	}
 
 	{ // start connecting double output slot without target again
 		Point targetPosition = doubleOutputSlotPosition + Point (200.0, -100.0);
 		env.DragDrop (doubleOutputSlotPosition, targetPosition, [&] () {
-			ASSERT (env.CheckReference ("SlotConnection_DraggingConnectedViewer1Input.svg"));
+			ASSERT (env.CheckReference (L"SlotConnection_DraggingConnectedViewer1Input.svg"));
 		});
-		ASSERT (env.CheckReference ("SlotConnection_DoubleConnectedToViewer1.svg"));
+		ASSERT (env.CheckReference (L"SlotConnection_DoubleConnectedToViewer1.svg"));
 	}
 
 	{ // connect viewer2 input slot to range output slot
 		env.DragDrop (viewer2InputSlotPosition, rangeOutputSlotPosition, [&] () {
-			ASSERT (env.CheckReference ("SlotConnection_ConnectingViewer2ToRange.svg"));
+			ASSERT (env.CheckReference (L"SlotConnection_ConnectingViewer2ToRange.svg"));
 		});
-		ASSERT (env.CheckReference ("SlotConnection_AllViewersConnected.svg"));
+		ASSERT (env.CheckReference (L"SlotConnection_AllViewersConnected.svg"));
 	}
 
 	{ // connect double output slot to range start slot
 		env.DragDrop (doubleOutputSlotPosition, rangeStartInputSlotPosition);
-		ASSERT (env.CheckReference ("SlotConnection_AllConnected.svg"));
+		ASSERT (env.CheckReference (L"SlotConnection_AllConnected.svg"));
 	}
 
 	viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
 	{ // connect double output slot to viewer2 input slot
 		env.DragDrop (doubleOutputSlotPosition, viewer2InputSlotPosition, [&] () {
-			ASSERT (env.CheckReference ("SlotConnection_ConnectingDoubleToViewer2.svg"));
+			ASSERT (env.CheckReference (L"SlotConnection_ConnectingDoubleToViewer2.svg"));
 		});
-		ASSERT (env.CheckReference ("SlotConnection_DoubleToViewer2Connected.svg"));
+		ASSERT (env.CheckReference (L"SlotConnection_DoubleToViewer2Connected.svg"));
 	}
 }
 
 TEST (PanAndZoomTest)
 {
 	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("PanAndZoom_Basic.svg"));
+	ASSERT (env.CheckReference (L"PanAndZoom_Basic.svg"));
 
 	Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
 	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.uiEnvironment, SlotId ("start")).GetCenter ();
@@ -338,7 +338,7 @@ TEST (PanAndZoomTest)
 	{
 		env.DragDrop (doubleOutputSlotPosition, rangeStartInputSlotPosition);	
 		env.DragDrop (rangeOutputSlotPosition, viewer2InputSlotPosition);
-		ASSERT (env.CheckReference ("PanAndZoom_Connections.svg"));
+		ASSERT (env.CheckReference (L"PanAndZoom_Connections.svg"));
 	}
 
 	Point panStartPoint = env.rangeInputNode->GetNodeRect (env.uiEnvironment).GetTopLeft ();
@@ -348,58 +348,58 @@ TEST (PanAndZoomTest)
 		env.nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Right, (int) panStartPoint.GetX (), (int) panStartPoint.GetY ());
 		env.nodeEditor.OnMouseMove (EmptyModifierKeys, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 		env.nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Right, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
-		ASSERT (env.CheckReference ("PanAndZoom_Panned.svg"));
+		ASSERT (env.CheckReference (L"PanAndZoom_Panned.svg"));
 	}
 
 	for (size_t i = 0; i < 5; i++) {
 		env.nodeEditor.OnMouseWheel (EmptyModifierKeys, MouseWheelRotation::Forward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
-	ASSERT (env.CheckReference ("PanAndZoom_ZoomedIn.svg"));
+	ASSERT (env.CheckReference (L"PanAndZoom_ZoomedIn.svg"));
 
 	for (size_t i = 0; i < 10; i++) {
 		env.nodeEditor.OnMouseWheel (EmptyModifierKeys, MouseWheelRotation::Forward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
-	ASSERT (env.CheckReference ("PanAndZoom_ZoomedIn2.svg"));
+	ASSERT (env.CheckReference (L"PanAndZoom_ZoomedIn2.svg"));
 
 	for (size_t i = 0; i < 20; i++) {
 		env.nodeEditor.OnMouseWheel (EmptyModifierKeys, MouseWheelRotation::Backward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
-	ASSERT (env.CheckReference ("PanAndZoom_ZoomedOut.svg"));
+	ASSERT (env.CheckReference (L"PanAndZoom_ZoomedOut.svg"));
 
 	for (size_t i = 0; i < 10; i++) {
 		env.nodeEditor.OnMouseWheel (EmptyModifierKeys, MouseWheelRotation::Backward, (int) panEndPoint.GetX (), (int) panEndPoint.GetY ());
 	}
-	ASSERT (env.CheckReference ("PanAndZoom_ZoomedOut2.svg"));
+	ASSERT (env.CheckReference (L"PanAndZoom_ZoomedOut2.svg"));
 }
 
 TEST (DeleteNodeTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("Delete_Basic.svg"));
+	ASSERT (env.CheckReference (L"Delete_Basic.svg"));
 	env.SetNextCommandName (L"Delete Nodes");
 	env.RightClick (env.rangeInputHeaderPoint);
-	ASSERT (env.CheckReference ("Delete_RangeDeleted.svg"));
+	ASSERT (env.CheckReference (L"Delete_RangeDeleted.svg"));
 }
 
 TEST (CopyPasteTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("CopyPaste_Basic.svg"));
+	ASSERT (env.CheckReference (L"CopyPaste_Basic.svg"));
 	env.Click (env.rangeInputHeaderPoint);
 	env.CtrlClick (env.doubleInputHeaderPoint);
-	ASSERT (env.CheckReference ("CopyPaste_TwoNodesSelected.svg"));
+	ASSERT (env.CheckReference (L"CopyPaste_TwoNodesSelected.svg"));
 	env.SetNextCommandName (L"Copy Nodes");
 	env.RightClick (env.doubleInputHeaderPoint);
 	Point targetPoint = env.doubleInputHeaderPoint + Point (120, 20);
 	env.SetNextCommandName (L"Paste Nodes");
 	env.RightClick (targetPoint);
-	ASSERT (env.CheckReference ("CopyPaste_TwoNodesPasted.svg"));
+	ASSERT (env.CheckReference (L"CopyPaste_TwoNodesPasted.svg"));
 }
 
 TEST (NodeGroupingTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("NodeGrouping_Basic.svg"));
+	ASSERT (env.CheckReference (L"NodeGrouping_Basic.svg"));
 
 	{ // select nodes with selection rect
 		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
@@ -407,70 +407,70 @@ TEST (NodeGroupingTest)
 		env.nodeEditor.OnMouseDown (NUIE::EmptyModifierKeys, MouseButton::Left, (int) rectSelectStart.GetX (), (int) rectSelectStart.GetY ());
 		env.nodeEditor.OnMouseMove (NUIE::EmptyModifierKeys, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
 		env.nodeEditor.OnMouseUp (NUIE::EmptyModifierKeys, MouseButton::Left, (int) rectSelectEnd.GetX (), (int) rectSelectEnd.GetY ());
-		ASSERT (env.CheckReference ("NodeGrouping_DoubleAndRangeSelected.svg"));
+		ASSERT (env.CheckReference (L"NodeGrouping_DoubleAndRangeSelected.svg"));
 	}
 
 	{ // group the selected nodes, and deselect all
 		env.SetNextCommandName (L"Create New Group");
 		env.RightClick (env.rangeInputHeaderPoint);
 		env.Click (env.pointInBackground);
-		ASSERT (env.CheckReference ("NodeGrouping_DoubleAndRangeGrouped.svg"));
+		ASSERT (env.CheckReference (L"NodeGrouping_DoubleAndRangeGrouped.svg"));
 	}
 
 	{ // move the group
 		env.DragDrop (env.doubleInputRect.GetTopRight () + Point (10.0, 0.0), env.doubleInputRect.GetTopRight () + Point (20.0, 10.0));
-		ASSERT (env.CheckReference ("NodeGrouping_GroupMoved.svg"));
+		ASSERT (env.CheckReference (L"NodeGrouping_GroupMoved.svg"));
 	}
 
 	{ // move one node
 		Point currentRangeInputHeaderPoint = env.rangeInputNode->GetNodeRect (env.uiEnvironment).GetTopCenter () + Point (5.0, 5.0);
 		env.DragDrop (currentRangeInputHeaderPoint, currentRangeInputHeaderPoint + Point (10.0, 10.0), [&] () {
-			ASSERT (env.CheckReference ("NodeGrouping_RangeInputMoving.svg"));
+			ASSERT (env.CheckReference (L"NodeGrouping_RangeInputMoving.svg"));
 		});
-		ASSERT (env.CheckReference ("NodeGrouping_RangeInputMoved.svg"));
+		ASSERT (env.CheckReference (L"NodeGrouping_RangeInputMoved.svg"));
 	}
 }
 
 TEST (InputSlotReconnectionTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("InputSlotReconnection_Basic.svg"));
+	ASSERT (env.CheckReference (L"InputSlotReconnection_Basic.svg"));
 
 	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.viewer1InputSlotRect.GetCenter (), env.viewer2InputSlotRect.GetCenter (), [&] () {
-		ASSERT (env.CheckReference ("InputSlotReconnection_DuringConnection.svg"));
+		ASSERT (env.CheckReference (L"InputSlotReconnection_DuringConnection.svg"));
 	});
 
-	ASSERT (env.CheckReference ("InputSlotReconnection_Reconnected.svg"));
+	ASSERT (env.CheckReference (L"InputSlotReconnection_Reconnected.svg"));
 	
 	env.nodeEditor.Undo ();
-	ASSERT (env.CheckReference ("InputSlotReconnection_AfterUndo.svg"));
+	ASSERT (env.CheckReference (L"InputSlotReconnection_AfterUndo.svg"));
 
 	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.viewer1InputSlotRect.GetCenter (), Point (0.0, 0.0));
-	ASSERT (env.CheckReference ("InputSlotReconnection_AfterDisconnect.svg"));
+	ASSERT (env.CheckReference (L"InputSlotReconnection_AfterDisconnect.svg"));
 }
 
 TEST (OutputSlotReconnectionTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("OutputSlotReconnection_Basic.svg"));
+	ASSERT (env.CheckReference (L"OutputSlotReconnection_Basic.svg"));
 
 	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeOutputSlotSRect.GetCenter (), env.doubleUpDownOutputSlotRect.GetCenter (), [&] () {
-		ASSERT (env.CheckReference ("OutputSlotReconnection_DuringConnection.svg"));
+		ASSERT (env.CheckReference (L"OutputSlotReconnection_DuringConnection.svg"));
 	});
 
-	ASSERT (env.CheckReference ("OutputSlotReconnection_Reconnected.svg"));
+	ASSERT (env.CheckReference (L"OutputSlotReconnection_Reconnected.svg"));
 
 	env.nodeEditor.Undo ();
-	ASSERT (env.CheckReference ("OutputSlotReconnection_AfterUndo.svg"));
+	ASSERT (env.CheckReference (L"OutputSlotReconnection_AfterUndo.svg"));
 
 	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Control }), env.rangeOutputSlotSRect.GetCenter (), Point (0.0, 0.0));
-	ASSERT (env.CheckReference ("OutputSlotReconnection_AfterDisconnect.svg"));
+	ASSERT (env.CheckReference (L"OutputSlotReconnection_AfterDisconnect.svg"));
 }
 
 TEST (UndoTest)
 {
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("UndoTest_Empty.svg"));
+	ASSERT (env.CheckReference (L"UndoTest_Empty.svg"));
 
 	env.SetNextCommandName (L"Create Number Node");
 	env.RightClick (Point (100, 100));
@@ -492,23 +492,23 @@ TEST (UndoTest)
 	env.SetNextCommandName (L"Delete Nodes");
 	env.RightClick (Point (320, 180));
 
-	ASSERT (env.CheckReference ("UndoTest_Initial.svg"));
+	ASSERT (env.CheckReference (L"UndoTest_Initial.svg"));
 
 	for (int i = 1; i <= 11; i++) {
 		env.nodeEditor.OnKeyPress (Key (KeyCode::Undo));
-		std::string indexString = std::to_string (i);
+		std::wstring indexString = std::to_wstring (i);
 		while (indexString.length () < 2) {
-			indexString = "0" + indexString;
+			indexString = L"0" + indexString;
 		}
-		ASSERT (env.CheckReference ("UndoTest_Undo_" + indexString + ".svg"));
+		ASSERT (env.CheckReference (L"UndoTest_Undo_" + indexString + L".svg"));
 	}
 	for (int i = 1; i <= 11; i++) {
 		env.nodeEditor.OnKeyPress (Key (KeyCode::Redo));
-		std::string indexString = std::to_string (i);
+		std::wstring indexString = std::to_wstring (i);
 		while (indexString.length () < 2) {
-			indexString = "0" + indexString;
+			indexString = L"0" + indexString;
 		}
-		ASSERT (env.CheckReference ("UndoTest_Redo_" + indexString + ".svg"));
+		ASSERT (env.CheckReference (L"UndoTest_Redo_" + indexString + L".svg"));
 	}
 }
 
@@ -523,17 +523,17 @@ TEST (ManualUpdateTest)
 	env.RightClick (Point (600, 300));
 	env.DragDrop (Point (125, 100), Point (240, 220));
 	env.DragDrop (Point (360, 220), Point (530, 300));
-	ASSERT (env.CheckReference ("ManualUpdateTest_Init.svg"));
+	ASSERT (env.CheckReference (L"ManualUpdateTest_Init.svg"));
 
 	env.Click (Point (145, 140));
-	ASSERT (env.CheckReference ("ManualUpdateTest_AutoUpdateMode.svg"));
+	ASSERT (env.CheckReference (L"ManualUpdateTest_AutoUpdateMode.svg"));
 	env.nodeEditor.SetUpdateMode (NodeEditor::UpdateMode::Manual);
 
 	env.Click (Point (145, 140));
-	ASSERT (env.CheckReference ("ManualUpdateTest_ManualUpdateMode.svg"));
+	ASSERT (env.CheckReference (L"ManualUpdateTest_ManualUpdateMode.svg"));
 	
 	env.nodeEditor.ManualUpdate ();
-	ASSERT (env.CheckReference ("ManualUpdateTest_ManualUpdateMode_ForceUpdate.svg"));
+	ASSERT (env.CheckReference (L"ManualUpdateTest_ManualUpdateMode_ForceUpdate.svg"));
 }
 
 TEST (ManualUpdateTestUndo)
@@ -549,71 +549,71 @@ TEST (ManualUpdateTestUndo)
 	env.RightClick (Point (600, 300));
 	env.DragDrop (Point (360, 220), Point (530, 300));
 	env.DragDrop (Point (125, 100), Point (240, 220));
-	ASSERT (env.CheckReference ("ManualUpdateTestUndo_Init.svg"));
+	ASSERT (env.CheckReference (L"ManualUpdateTestUndo_Init.svg"));
 
 	env.nodeEditor.ManualUpdate ();
-	ASSERT (env.CheckReference ("ManualUpdateTestUndo_ManualUpdate.svg"));
+	ASSERT (env.CheckReference (L"ManualUpdateTestUndo_ManualUpdate.svg"));
 
 	env.nodeEditor.Undo ();
-	ASSERT (env.CheckReference ("ManualUpdateTestUndo_AfterUndo.svg"));
+	ASSERT (env.CheckReference (L"ManualUpdateTestUndo_AfterUndo.svg"));
 
 	env.nodeEditor.ManualUpdate ();
-	ASSERT (env.CheckReference ("ManualUpdateTestUndo_ManualUpdateAfterUndo.svg"));
+	ASSERT (env.CheckReference (L"ManualUpdateTestUndo_ManualUpdateAfterUndo.svg"));
 }
 
 TEST (FitToWindowTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("FitToWindow_Basic.svg"));
+	ASSERT (env.CheckReference (L"FitToWindow_Basic.svg"));
 	env.nodeEditor.FitToWindow ();
-	ASSERT (env.CheckReference ("FitToWindow_Fit.svg"));
+	ASSERT (env.CheckReference (L"FitToWindow_Fit.svg"));
 }
 
 TEST (AlignToWindowTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("AlignToWindow_Basic.svg"));
+	ASSERT (env.CheckReference (L"AlignToWindow_Basic.svg"));
 	env.nodeEditor.AlignToWindow ();
-	ASSERT (env.CheckReference ("AlignToWindow_Align.svg"));
+	ASSERT (env.CheckReference (L"AlignToWindow_Align.svg"));
 }
 
 TEST (AlignToWindowTestWithScale)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	env.uiEnvironment.SetWindowScale (1.5);
-	ASSERT (env.CheckReference ("AlignToWindowWithScale_Basic.svg"));
+	ASSERT (env.CheckReference (L"AlignToWindowWithScale_Basic.svg"));
 	env.nodeEditor.AlignToWindow ();
-	ASSERT (env.CheckReference ("AlignToWindowWithScale_Align.svg"));
+	ASSERT (env.CheckReference (L"AlignToWindowWithScale_Align.svg"));
 }
 
 TEST (CenterToWindowTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference ("CenterToWindow_Basic.svg"));
+	ASSERT (env.CheckReference (L"CenterToWindow_Basic.svg"));
 	env.nodeEditor.CenterToWindow ();
-	ASSERT (env.CheckReference ("CenterToWindow_Align.svg"));
+	ASSERT (env.CheckReference (L"CenterToWindow_Align.svg"));
 }
 
 TEST (CenterToWindowTestWithScale)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	env.uiEnvironment.SetWindowScale (1.5);
-	ASSERT (env.CheckReference ("CenterToWindowWithScale_Basic.svg"));
+	ASSERT (env.CheckReference (L"CenterToWindowWithScale_Basic.svg"));
 	env.nodeEditor.CenterToWindow ();
-	ASSERT (env.CheckReference ("CenterToWindowWithScale_Align.svg"));
+	ASSERT (env.CheckReference (L"CenterToWindowWithScale_Align.svg"));
 }
 
 TEST (SlotCirclesTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithSlotCircles ());
-	ASSERT (env.CheckReference ("SlotCircles.svg"));
+	ASSERT (env.CheckReference (L"SlotCircles.svg"));
 }
 
 TEST (SlotCirclesFitToWindowTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithSlotCircles ());
 	env.nodeEditor.FitToWindow ();
-	ASSERT (env.CheckReference ("SlotCircles_FitToWindow.svg"));
+	ASSERT (env.CheckReference (L"SlotCircles_FitToWindow.svg"));
 }
 
 TEST (SkinParamsTest)
@@ -658,7 +658,7 @@ TEST (SkinParamsTest)
 		env.Click (env.rangeInputHeaderPoint);
 	}
 
-	ASSERT (env.CheckReference ("SkinParams_Basic.svg"));
+	ASSERT (env.CheckReference (L"SkinParams_Basic.svg"));
 }
 
 }

@@ -9,6 +9,7 @@
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_ExternalFileIO.hpp"
 #include "NUIE_SkinParams.hpp"
+#include "NUIE_FileIO.hpp"
 
 namespace NUIE
 {
@@ -55,9 +56,9 @@ public:
 	void						SetSelectedNodes (const NE::NodeCollection& newSelectedNodes);
 
 	void						New ();
-	bool						Open (const std::wstring& fileName, const ExternalFileIO* externalFileIO);
+	bool						Open (const std::wstring& fileName);
 	bool						Open (NE::InputStream& inputStream);
-	bool						Save (const std::wstring& fileName, const ExternalFileIO* externalFileIO);
+	bool						Save (const std::wstring& fileName);
 	bool						Save (NE::OutputStream& outputStream);
 	bool						NeedToSave () const;
 
