@@ -5,6 +5,14 @@
 #include "NUIE_NativeNodeEditorControl.hpp"
 #include "NUIE_DrawingContext.hpp"
 
+#ifdef __cplusplus
+#ifdef __OBJC__
+	@class NSView;
+#else
+	struct NSView;
+#endif
+#endif
+
 namespace MAS
 {
 
@@ -29,7 +37,7 @@ public:
 private:
 	NUIE::NodeEditor*				nodeEditor;
 	NUIE::NativeDrawingContextPtr	nativeContext;
-	void*							nsView;
+	NSView*							nsView;
 };
 
 }

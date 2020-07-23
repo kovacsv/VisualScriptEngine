@@ -1,9 +1,10 @@
 #include "Application.hpp"
+#include "MAS_CocoaAppUtils.hpp"
+#include "MAS_MacOSAppUtils.hpp"
+#include "MAS_IncludeCocoaHeaders.hpp"
+
 #include "NUIE_NodeTree.hpp"
 #include "BI_BuiltInNodes.hpp"
-#include "MAS_CocoaAppUtils.hpp"
-
-#import <Cocoa/Cocoa.h>
 
 @interface WindowController : NSWindowController<NSWindowDelegate>
 {

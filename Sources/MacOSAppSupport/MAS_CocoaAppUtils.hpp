@@ -10,16 +10,17 @@
 namespace MAS
 {
 
-NE::BasicStringSettings GetStringSettingsFromSystem ();
-NUIE::ModifierKeys		GetModifierKeysFromEvent (const NSEvent* event);
-NUIE::Point				GetViewPositionFromEvent (const NSView* view, const NSEvent* event);
-
-NSPoint					CreatePoint (const NSView* view, const NUIE::Point& point);
-NSPoint					CreateScreenPoint (const NSView* view, const NUIE::Point& point);
-NSRect					CreateRect (const NSView* view, const NUIE::Rect& rect);
-NSColor*				CreateColor (const NUIE::Color& color);
+NSString*					StdWStringToNSString (const std::wstring& str);
 	
-NUIE::MenuCommandPtr	SelectCommandFromContextMenu (const NSView* nsView, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
+NUIE::ModifierKeys			GetModifierKeysFromEvent (const NSEvent* event);
+NUIE::Point					GetViewPositionFromEvent (const NSView* view, const NSEvent* event);
+
+NSPoint						CreatePoint (const NSView* view, const NUIE::Point& point);
+NSPoint						CreateScreenPoint (const NSView* view, const NUIE::Point& point);
+NSRect						CreateRect (const NSView* view, const NUIE::Rect& rect);
+NSColor*					CreateColor (const NUIE::Color& color);
+	
+NUIE::MenuCommandPtr		SelectCommandFromContextMenu (const NSView* nsView, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
 	
 }
 

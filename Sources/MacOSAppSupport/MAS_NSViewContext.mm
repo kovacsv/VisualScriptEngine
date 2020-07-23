@@ -1,14 +1,14 @@
 #include "MAS_NSViewContext.hpp"
 #include "MAS_CocoaAppUtils.hpp"
-#include "MAS_StringUtils.hpp"
-#include "NE_Debug.hpp"
 #include "MAS_IncludeCocoaHeaders.hpp"
+
+#include "NE_Debug.hpp"
 
 namespace MAS
 {
 
 static const float SafetyTextRatio = 1.05f;
-	
+
 NSViewContext::NSViewContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
@@ -21,8 +21,14 @@ NSViewContext::NSViewContext () :
 
 NSViewContext::~NSViewContext ()
 {
-	for (auto& it : fontCache) {
-		[(NSFont*) it.second release];
+	@autoreleasepool {
+		@try {
+			for (auto& it : fontCache) {
+				[it.second release];
+			}
+		} @catch (NSException*) {
+			
+		}
 	}
 }
 
@@ -74,89 +80,138 @@ bool NSViewContext::NeedToDraw (ItemPreviewMode)
 
 void NSViewContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
-	[CreateColor (pen.GetColor ()) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
-	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath moveToPoint:CreatePoint ((NSView*) nsView, beg)];
-	[bezierPath lineToPoint:CreatePoint ((NSView*) nsView, end)];
-	[bezierPath stroke];
+	@autoreleasepool {
+		@try {
+			[CreateColor (pen.GetColor ()) set];
+			NSBezierPath* bezierPath = [NSBezierPath bezierPath];
+			[bezierPath setLineWidth:pen.GetThickness ()];
+			[bezierPath moveToPoint:CreatePoint (nsView, beg)];
+			[bezierPath lineToPoint:CreatePoint (nsView, end)];
+			[bezierPath stroke];
+		} @catch (NSException*) {
+			
+		}
+	}
 }
 
 void NSViewContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
-	[CreateColor (pen.GetColor ()) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
-	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath moveToPoint:CreatePoint ((NSView*) nsView, p1)];
-	[bezierPath curveToPoint:CreatePoint ((NSView*) nsView, p4) controlPoint1:CreatePoint ((NSView*) nsView, p2) controlPoint2:CreatePoint ((NSView*) nsView, p3)];
-	[bezierPath stroke];
+	@autoreleasepool {
+		@try {
+			[CreateColor (pen.GetColor ()) set];
+			NSBezierPath* bezierPath = [NSBezierPath bezierPath];
+			[bezierPath setLineWidth:pen.GetThickness ()];
+			[bezierPath moveToPoint:CreatePoint (nsView, p1)];
+			[bezierPath curveToPoint:CreatePoint (nsView, p4) controlPoint1:CreatePoint (nsView, p2) controlPoint2:CreatePoint (nsView, p3)];
+			[bezierPath stroke];
+		} @catch (NSException*) {
+			
+		}
+	}
 }
 
 void NSViewContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	[CreateColor (pen.GetColor ()) set];
-	NSFrameRectWithWidth (CreateRect ((NSView*) nsView, rect), pen.GetThickness ());
+	@autoreleasepool {
+		@try {
+			[CreateColor (pen.GetColor ()) set];
+			NSFrameRectWithWidth (CreateRect (nsView, rect), pen.GetThickness ());
+		} @catch (NSException*) {
+			
+		}
+	}
 }
 
 void NSViewContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	[CreateColor (color) set];
-	NSRectFill (CreateRect ((NSView*) nsView, rect));
+	@autoreleasepool {
+		@try {
+			[CreateColor (color) set];
+			NSRectFill (CreateRect (nsView, rect));
+		} @catch (NSException*) {
+			
+		}
+	}
 }
 
 void NSViewContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	[CreateColor (pen.GetColor ()) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect ((NSView*) nsView, rect)];
-	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath stroke];
+	@autoreleasepool {
+		@try {
+			[CreateColor (pen.GetColor ()) set];
+			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (nsView, rect)];
+			[bezierPath setLineWidth:pen.GetThickness ()];
+			[bezierPath stroke];
+		} @catch (NSException*) {
+			
+		}
+	}
 }
 
 void NSViewContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	[CreateColor (color) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect ((NSView*) nsView, rect)];
-	[bezierPath fill];
+	@autoreleasepool {
+		@try {
+			[CreateColor (color) set];
+			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (nsView, rect)];
+			[bezierPath fill];
+		} @catch (NSException*) {
+			
+		}
+	}
 }
 
 void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
-	// TODO: speed (cache [NSString(NSStringDrawing) sizeWithAttributes:] result)
-	
-	[CreateColor (textColor) set];
-	NSString* nsText = MAS::StdWStringToNSString (text);
-	
-	NSMutableParagraphStyle* style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-	if (hAnchor == NUIE::HorizontalAnchor::Left) {
-		style.alignment = NSTextAlignmentLeft;
-	} else if (hAnchor == NUIE::HorizontalAnchor::Center) {
-		style.alignment = NSTextAlignmentCenter;
-	} else if (hAnchor == NUIE::HorizontalAnchor::Right) {
-		style.alignment = NSTextAlignmentRight;
+	@autoreleasepool {
+		@try {
+			// TODO: speed (cache [NSString(NSStringDrawing) sizeWithAttributes:] result)
+			
+			[CreateColor (textColor) set];
+			NSString* nsText = MAS::StdWStringToNSString (text);
+			
+			NSMutableParagraphStyle* style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+			if (hAnchor == NUIE::HorizontalAnchor::Left) {
+				style.alignment = NSTextAlignmentLeft;
+			} else if (hAnchor == NUIE::HorizontalAnchor::Center) {
+				style.alignment = NSTextAlignmentCenter;
+			} else if (hAnchor == NUIE::HorizontalAnchor::Right) {
+				style.alignment = NSTextAlignmentRight;
+			}
+			NSDictionary* attributes = @{
+										 NSFontAttributeName: GetFont (font),
+										 NSForegroundColorAttributeName : CreateColor (textColor),
+										 NSParagraphStyleAttributeName : style
+										 };
+			NSRect textRect = CreateRect (nsView, rect);
+			NSSize textSize = [nsText sizeWithAttributes:attributes];
+			if (vAnchor == NUIE::VerticalAnchor::Top) {
+				// nothing to do
+			} else if (vAnchor == NUIE::VerticalAnchor::Center) {
+				textRect.origin.y -= (textRect.size.height - textSize.height) / 2.0;
+			} else if (vAnchor == NUIE::VerticalAnchor::Bottom) {
+				textRect.origin.y -= (textRect.size.height - textSize.height);
+			}
+			[nsText drawInRect:textRect withAttributes:attributes];
+		} @catch (NSException*) {
+			
+		}
 	}
-	NSDictionary* attributes = @{
-		NSFontAttributeName: (NSFont*) GetFont (font),
-		NSForegroundColorAttributeName : CreateColor (textColor),
-		NSParagraphStyleAttributeName : style
-	};
-	NSRect textRect = CreateRect ((NSView*) nsView, rect);
-	NSSize textSize = [nsText sizeWithAttributes:attributes];
-	if (vAnchor == NUIE::VerticalAnchor::Top) {
-		// nothing to do
-	} else if (vAnchor == NUIE::VerticalAnchor::Center) {
-		textRect.origin.y -= (textRect.size.height - textSize.height) / 2.0;
-	} else if (vAnchor == NUIE::VerticalAnchor::Bottom) {
-		textRect.origin.y -= (textRect.size.height - textSize.height);
-	}
-	[nsText drawInRect:textRect withAttributes:attributes];
 }
 
 NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	NSString* nsText = MAS::StdWStringToNSString (text);
-	NSDictionary* attributes = @{NSFontAttributeName: (NSFont*) GetFont (font)};
-	NSSize size = [nsText sizeWithAttributes:attributes];
-	return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
+	@autoreleasepool {
+		@try {
+			NSString* nsText = MAS::StdWStringToNSString (text);
+			NSDictionary* attributes = @{NSFontAttributeName: GetFont (font)};
+			NSSize size = [nsText sizeWithAttributes:attributes];
+			return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
+		} @catch (NSException*) {
+
+		}
+	}
+	return NUIE::Size ();
 }
 
 bool NSViewContext::CanDrawIcon ()
@@ -169,16 +224,23 @@ void NSViewContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 	DBGBREAK ();
 }
 
-void* NSViewContext::GetFont (const NUIE::Font& font)
+NSFont* NSViewContext::GetFont (const NUIE::Font& font)
 {
-	NUIE::FontCacheKey key (font);
-	auto found = fontCache.find (key);
-	if (found == fontCache.end ()) {
-		NSString* nsFontName = MAS::StdWStringToNSString (key.family);
-		NSFont* nsFont = [[NSFont fontWithName:nsFontName size:key.size] copy];
-		fontCache.insert ({ key, nsFont });
+	@autoreleasepool {
+		@try {
+			NUIE::FontCacheKey key (font);
+			auto found = fontCache.find (key);
+			if (found == fontCache.end ()) {
+				NSString* nsFontName = MAS::StdWStringToNSString (key.family);
+				NSFont* nsFont = [[NSFont fontWithName:nsFontName size:key.size] copy];
+				fontCache.insert ({ key, nsFont });
+			}
+			return fontCache.at (key);
+		} @catch (NSException*) {
+			return nil;
+		}
 	}
-	return fontCache.at (key);
+	return nil;
 }
 
 }

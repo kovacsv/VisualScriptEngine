@@ -1,5 +1,4 @@
 #include "MAS_CocoaAppUtils.hpp"
-#include "MAS_StringUtils.hpp"
 #include "NE_StringUtils.hpp"
 
 @interface ContextMenu : NSMenu
@@ -49,25 +48,15 @@
 namespace MAS
 {
 
-NE::BasicStringSettings GetStringSettingsFromSystem ()
+NSString* StdWStringToNSString (const std::wstring& str)
 {
-	NE::BasicStringSettings result = NE::GetDefaultStringSettings ();
-
-	NSString* decSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator];
-	std::wstring ds = NE::StringToWString ([decSeparator cStringUsingEncoding:NSUTF8StringEncoding]).c_str ();
-	result.SetDecimalSeparator (ds.c_str ()[0]);
-
-	NSString* listSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
-	std::wstring ls = NE::StringToWString ([listSeparator cStringUsingEncoding:NSUTF8StringEncoding]).c_str ();
-	result.SetListSeparator (ls.c_str ()[0]);
-
-	return result;
+	return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
 }
 
 NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 {
 	NUIE::ModifierKeys keys;
-	if ([event modifierFlags] & NSEventModifierFlagCommand) {//TODO KAM: Control vagy Command kell?
+	if ([event modifierFlags] & NSEventModifierFlagControl) {
 		keys.Insert (NUIE::ModifierKeyCode::Control);
 	}
 	if ([event modifierFlags] & NSEventModifierFlagShift) {
@@ -126,26 +115,34 @@ static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordere
 
 NUIE::MenuCommandPtr SelectCommandFromContextMenu (const NSView* nsView, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
-	ContextMenu* contextMenu = [[[ContextMenu alloc] init] autorelease];
-	int currentCommandId = 0;
-	
-	std::unordered_map<int, NUIE::MenuCommandPtr> commandTable;
-	
-	ContextMenu* originalMenu = contextMenu;
-	ContextMenu* currentMenu = contextMenu;
-	commands.EnumerateCommands ([&] (const NUIE::MenuCommandPtr& command) {
-		AddCommandToMenu (command, commandTable, originalMenu, currentMenu, currentCommandId);
-	});
-	
-	NSPoint screenPosition = CreateScreenPoint (nsView, position);
-	[contextMenu setAutoenablesItems:YES];
-	[contextMenu popUpMenuPositioningItem:nil atLocation:screenPosition inView:(NSView*) nsView];
-	
-	int selectedItem = [contextMenu getSelectedItem];
-	if (selectedItem == -1) {
-		return nullptr;
+	@autoreleasepool {
+		@try {
+			ContextMenu* contextMenu = [[[ContextMenu alloc] init] autorelease];
+			int currentCommandId = 0;
+			
+			std::unordered_map<int, NUIE::MenuCommandPtr> commandTable;
+			
+			ContextMenu* originalMenu = contextMenu;
+			ContextMenu* currentMenu = contextMenu;
+			commands.EnumerateCommands ([&] (const NUIE::MenuCommandPtr& command) {
+				AddCommandToMenu (command, commandTable, originalMenu, currentMenu, currentCommandId);
+			});
+			
+			NSPoint screenPosition = CreateScreenPoint (nsView, position);
+			[contextMenu setAutoenablesItems:YES];
+			[contextMenu popUpMenuPositioningItem:nil atLocation:screenPosition inView:(NSView*) nsView];
+			
+			int selectedItem = [contextMenu getSelectedItem];
+			if (selectedItem == -1) {
+				return nullptr;
+			}
+			return commandTable[selectedItem];
+			
+		} @catch (NSException*) {
+			
+		}
 	}
-	return commandTable[selectedItem];
+	return nullptr;
 }
 	
 }
