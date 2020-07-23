@@ -15,8 +15,12 @@ VisualScriptEngine is a node based visual scripting engine designed for embeddin
 
 [PARAM-O](https://graphisoft.com/param-o), the visual scripting solution in [ARCHICAD](https://graphisoft.com/solutions/products/archicad) is powered by VisualScriptEngine.
 
-## Example
+## Screenshots
 
-Here you can see a screenshot of the embedding demo application.
+Windows demo application:
 
 ![Screenshot](Documentation/WindowsEmbeddingDemo01.png?raw=true "Windows Embedding Demo")
+
+MacOS demo application:
+
+![Screenshot](Documentation/MacOSEmbeddingDemo01.png?raw=true "MacOS Embedding Demo")
