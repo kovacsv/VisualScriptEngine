@@ -7,7 +7,6 @@
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_InteractionHandler.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
-#include "NUIE_ExternalFileIO.hpp"
 #include "NUIE_SkinParams.hpp"
 #include "NUIE_FileIO.hpp"
 
