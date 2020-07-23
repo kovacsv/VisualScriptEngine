@@ -17,6 +17,10 @@ VisualScriptEngine is a node based visual scripting engine designed for embeddin
 
 ## Example
 
-Here you can see a screenshot of the embedding demo application.
+Here you can see a screenshot of the embedding demo application on windows.
 
 ![Screenshot](Documentation/WindowsEmbeddingDemo01.png?raw=true "Windows Embedding Demo")
+
+And here is one from the demo application on MacOS.
+
+![Screenshot](Documentation/MacOSEmbeddingDemo01.png?raw=true "MacOS Embedding Demo")
