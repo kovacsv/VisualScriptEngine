@@ -263,9 +263,14 @@ if (APPLE)
 		${MacOSEmbeddingDemoHeaderFiles}
 		${MacOSEmbeddingDemoSourceFiles}
 	)
+	set (
+		MacOSEmbeddingDemoResourceFiles
+		
+	)
 	source_group ("Sources" FILES ${MacOSEmbeddingDemoFiles})
-	add_executable (MacOSEmbeddingDemo ${MacOSEmbeddingDemoFiles})
-	set_target_properties (MacOSEmbeddingDemo PROPERTIES MACOSX_BUNDLE TRUE)
+	file (GLOB_RECURSE MacOSEmbeddingDemoResourceFiles ${MacOSEmbeddingDemoSourcesFolder}/icons/*.png)
+	add_executable (MacOSEmbeddingDemo MACOSX_BUNDLE ${MacOSEmbeddingDemoFiles} ${MacOSEmbeddingDemoResourceFiles})
+	set_source_files_properties (${MacOSEmbeddingDemoResourceFiles} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 	set_target_properties (MacOSEmbeddingDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
 	target_include_directories (
 		MacOSEmbeddingDemo PUBLIC

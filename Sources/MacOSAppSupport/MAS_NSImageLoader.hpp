@@ -25,9 +25,9 @@ public:
 	NSImage*				LoadNSImage (const NUIE::IconId& iconId);
 	void					ClearCache ();
 
+private:
 	virtual NSImage*		CreateNSImage (const NUIE::IconId& iconId) = 0;
 
-protected:
 	std::unordered_map<NUIE::IconId, NSImage*>	imageCache;
 };
 

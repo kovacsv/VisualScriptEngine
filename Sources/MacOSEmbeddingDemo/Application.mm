@@ -1,6 +1,8 @@
 #include "Application.hpp"
 #include "MAS_CocoaAppUtils.hpp"
 #include "MAS_MacOSAppUtils.hpp"
+#include "MAS_NSImageLoader.hpp"
+#include "MAS_NSViewContext.hpp"
 #include "MAS_IncludeCocoaHeaders.hpp"
 
 #include "NUIE_NodeTree.hpp"
@@ -87,49 +89,80 @@ static const NUIE::BasicSkinParams& GetAppSkinParams ()
 	return skinParams;
 }
 
+static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, int iconIndex, const NUIE::CreatorFunction& creator)
+{
+	nodeTree.AddItem (groupIndex, name, [=] (const NUIE::Point& position) {
+		NUIE::UINodePtr node = creator (position);
+		BI::BasicUINodePtr basicNode = std::dynamic_pointer_cast<BI::BasicUINode> (node);
+		if (basicNode != nullptr) {
+			basicNode->SetIconId (NUIE::IconId (iconIndex));
+		}
+		return node;
+	});
+}
+
+static const std::vector<NSString*> IconResourceNames = {
+	@"Integer.png",
+	@"Number.png",
+	@"Addition.png",
+	@"Subtraction.png",
+	@"Multiplication.png",
+	@"Division.png",
+	@"Viewer.png",
+};
 
 static void InitNodeTree (NUIE::NodeTree& nodeTree)
 {
 	size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-	nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
-		return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
+	AddNodeTreeItem (nodeTree, inputNodes, L"Integer", 1, [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 1));
 	});
-	nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
-		return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
+	AddNodeTreeItem (nodeTree, inputNodes, L"Number", 2, [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 1.0));
 	});
-	nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
-		return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
-	});
-	nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", 1, [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
 	});
-	nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, inputNodes, L"Number Increment", 2, [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
 	});
-	nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", 2, [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
 	});
-	nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
-		return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
-	});
 	size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
-	nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", 3, [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
 	});
-	nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Subtraction", 4, [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
 	});
-	nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Multiplication", 5, [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
 	});
-	nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", 6, [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
 	});
 	size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-	nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", 7, [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
 	});
 }
+
+class AppImageLoader : public MAS::NSImageLoader
+{
+public:
+	AppImageLoader () :
+		MAS::NSImageLoader ()
+	{
+		
+	}
+	
+private:
+	virtual NSImage* CreateNSImage (const NUIE::IconId& iconId) override
+	{
+		return [NSImage imageNamed : IconResourceNames[iconId.GetId () - 1]];
+	}
+};
 
 AppEventHandler::AppEventHandler () :
 	nodeTree (),
@@ -206,7 +239,7 @@ AppNodeUIEnvironment::AppNodeUIEnvironment () :
 	evaluationEnv (NE::EmptyEvaluationEnv),
 	eventHandler (),
 	clipboardHandler (),
-	nodeEditorControl ()
+	nodeEditorControl (NUIE::NativeDrawingContextPtr (new MAS::NSViewContext (MAS::NSImageLoaderPtr (new AppImageLoader ()))))
 {
 	
 }
@@ -324,13 +357,15 @@ void Application::Run ()
 	[myWindow setDelegate:myWindowController];
 
 	// TODO: temporary
-	nodeEditor.AddNode(NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), NUIE::Point (100, 100), 5, 1)));
-	nodeEditor.AddNode(NUIE::UINodePtr (new BI::ViewerNode (NE::LocString (L"Viewer"), NUIE::Point (300, 200))));
+	nodeEditor.AddNode (NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), NUIE::Point (100, 100), 5, 1)));
+	nodeEditor.AddNode (NUIE::UINodePtr (new BI::ViewerNode (NE::LocString (L"Viewer"), NUIE::Point (300, 200))));
 
 	uiEnvironment.Init (&nodeEditor, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow center];
 	[myWindow makeKeyAndOrderFront:nil];
 
+	NSImage* image = [NSImage imageNamed:@"Additi2on.png"];
+#pragma unused (image)
 	[NSApp run];
 
 	[NSApp release];
