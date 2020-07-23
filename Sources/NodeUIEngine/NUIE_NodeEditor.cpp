@@ -11,11 +11,6 @@ namespace NUIE
 
 static const std::string NodeEditorFileMarker = "NodeEditorFile";
 
-ExternalFileIO::~ExternalFileIO ()
-{
-
-}
-
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (uiEnvironment),
 	interactionHandler (uiManager),

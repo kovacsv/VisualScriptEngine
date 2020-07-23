@@ -7,19 +7,11 @@
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_InteractionHandler.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
+#include "NUIE_ExternalFileIO.hpp"
 #include "NUIE_SkinParams.hpp"
 
 namespace NUIE
 {
-
-class ExternalFileIO
-{
-public:
-	virtual ~ExternalFileIO ();
-
-	virtual bool	ReadBufferFromFile (const std::wstring& fileName, std::vector<char>& buffer) const = 0;
-	virtual bool	WriteBufferToFile (const std::wstring& fileName, const std::vector<char>& buffer) const = 0;
-};
 
 class NodeEditor
 {
