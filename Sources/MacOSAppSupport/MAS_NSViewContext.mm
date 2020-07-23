@@ -201,17 +201,17 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 
 NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	NSSize size;
 	@autoreleasepool {
 		@try {
 			NSString* nsText = MAS::StdWStringToNSString (text);
 			NSDictionary* attributes = @{NSFontAttributeName: GetFont (font)};
-			size = [nsText sizeWithAttributes:attributes];
+			NSSize size = [nsText sizeWithAttributes:attributes];
+			return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
 		} @catch (NSException*) {
 
 		}
 	}
-	return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
+	return NUIE::Size ();
 }
 
 bool NSViewContext::CanDrawIcon ()
@@ -226,20 +226,21 @@ void NSViewContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 
 NSFont* NSViewContext::GetFont (const NUIE::Font& font)
 {
-	NUIE::FontCacheKey key (font);
-	auto found = fontCache.find (key);
-	if (found == fontCache.end ()) {
-		@autoreleasepool {
-			@try {
+	@autoreleasepool {
+		@try {
+			NUIE::FontCacheKey key (font);
+			auto found = fontCache.find (key);
+			if (found == fontCache.end ()) {
 				NSString* nsFontName = MAS::StdWStringToNSString (key.family);
 				NSFont* nsFont = [[NSFont fontWithName:nsFontName size:key.size] copy];
 				fontCache.insert ({ key, nsFont });
-			} @catch (NSException*) {
-				return nil;
 			}
+			return fontCache.at (key);
+		} @catch (NSException*) {
+			return nil;
 		}
 	}
-	return fontCache.at (key);
+	return nil;
 }
 
 }

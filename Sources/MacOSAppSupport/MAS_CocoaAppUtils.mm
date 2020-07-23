@@ -50,60 +50,86 @@ namespace MAS
 
 NSString* StdWStringToNSString (const std::wstring& str)
 {
-	return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
-}
-	
-NE::BasicStringSettings GetStringSettingsFromSystem ()
-{
-	NE::BasicStringSettings result = NE::GetDefaultStringSettings ();
-
-	NSString* decSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator];
-	std::wstring ds = NE::StringToWString ([decSeparator cStringUsingEncoding:NSUTF8StringEncoding]).c_str ();
-	result.SetDecimalSeparator (ds.c_str ()[0]);
-
-	NSString* listSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
-	std::wstring ls = NE::StringToWString ([listSeparator cStringUsingEncoding:NSUTF8StringEncoding]).c_str ();
-	result.SetListSeparator (ls.c_str ()[0]);
-
-	return result;
+	@autoreleasepool {
+		@try {
+			return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
+		} @catch (NSException*) {
+			
+		}
+	}
+	return nullptr;
 }
 
 NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 {
 	NUIE::ModifierKeys keys;
-	if ([event modifierFlags] & NSEventModifierFlagControl) {
-		keys.Insert (NUIE::ModifierKeyCode::Control);
-	}
-	if ([event modifierFlags] & NSEventModifierFlagShift) {
-		keys.Insert (NUIE::ModifierKeyCode::Shift);
+	@autoreleasepool {
+		@try {
+			if ([event modifierFlags] & NSEventModifierFlagControl) {
+				keys.Insert (NUIE::ModifierKeyCode::Control);
+			}
+			if ([event modifierFlags] & NSEventModifierFlagShift) {
+				keys.Insert (NUIE::ModifierKeyCode::Shift);
+			}
+		} @catch (NSException*) {
+			
+		}
 	}
 	return keys;
 }
 
 NUIE::Point GetViewPositionFromEvent (const NSView* view, const NSEvent* event)
 {
-	NSPoint position = [view convertPoint:[event locationInWindow] fromView:nil];
-	return NUIE::Point (position.x, view.frame.size.height - position.y);
+	@autoreleasepool {
+		@try {
+			NSPoint position = [view convertPoint:[event locationInWindow] fromView:nil];
+			return NUIE::Point (position.x, view.frame.size.height - position.y);
+		} @catch (NSException*) {
+			
+		}
+	}
+	return NUIE::Point ();
 }
 	
 NSPoint CreatePoint (const NSView* view, const NUIE::Point& point)
 {
-	NUIE::IntPoint intPoint (point);
-	int height = (int) std::floor (view.frame.size.height) - 1;
-	return NSMakePoint (intPoint.GetX (), height - intPoint.GetY ());
+	@autoreleasepool {
+		@try {
+			NUIE::IntPoint intPoint (point);
+			int height = (int) std::floor (view.frame.size.height) - 1;
+			return NSMakePoint (intPoint.GetX (), height - intPoint.GetY ());
+		} @catch (NSException*) {
+			
+		}
+	}
+	return NSPoint ();
 }
 	
 NSPoint CreateScreenPoint (const NSView* view, const NUIE::Point& point)
 {
-	NSPoint viewPoint = CreatePoint (view, point);
-	return [view convertPoint:viewPoint toView:nil];
+	@autoreleasepool {
+		@try {
+			NSPoint viewPoint = CreatePoint (view, point);
+			return [view convertPoint:viewPoint toView:nil];
+		} @catch (NSException*) {
+			
+		}
+	}
+	return NSPoint ();
 }
 	
 NSRect CreateRect (const NSView* view, const NUIE::Rect& rect)
 {
-	NUIE::IntRect intRect (rect);
-	int height = (int) std::floor (view.frame.size.height) - 1;
-	return NSMakeRect (intRect.GetX (), height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
+	@autoreleasepool {
+		@try {
+			NUIE::IntRect intRect (rect);
+			int height = (int) std::floor (view.frame.size.height) - 1;
+			return NSMakeRect (intRect.GetX (), height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
+		} @catch (NSException*) {
+			
+		}
+	}
+	return NSRect ();
 }
 
 NSColor* CreateColor (const NUIE::Color& color)
@@ -130,26 +156,34 @@ static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordere
 
 NUIE::MenuCommandPtr SelectCommandFromContextMenu (const NSView* nsView, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
-	ContextMenu* contextMenu = [[[ContextMenu alloc] init] autorelease];
-	int currentCommandId = 0;
-	
-	std::unordered_map<int, NUIE::MenuCommandPtr> commandTable;
-	
-	ContextMenu* originalMenu = contextMenu;
-	ContextMenu* currentMenu = contextMenu;
-	commands.EnumerateCommands ([&] (const NUIE::MenuCommandPtr& command) {
-		AddCommandToMenu (command, commandTable, originalMenu, currentMenu, currentCommandId);
-	});
-	
-	NSPoint screenPosition = CreateScreenPoint (nsView, position);
-	[contextMenu setAutoenablesItems:YES];
-	[contextMenu popUpMenuPositioningItem:nil atLocation:screenPosition inView:(NSView*) nsView];
-	
-	int selectedItem = [contextMenu getSelectedItem];
-	if (selectedItem == -1) {
-		return nullptr;
+	@autoreleasepool {
+		@try {
+			ContextMenu* contextMenu = [[[ContextMenu alloc] init] autorelease];
+			int currentCommandId = 0;
+			
+			std::unordered_map<int, NUIE::MenuCommandPtr> commandTable;
+			
+			ContextMenu* originalMenu = contextMenu;
+			ContextMenu* currentMenu = contextMenu;
+			commands.EnumerateCommands ([&] (const NUIE::MenuCommandPtr& command) {
+				AddCommandToMenu (command, commandTable, originalMenu, currentMenu, currentCommandId);
+			});
+			
+			NSPoint screenPosition = CreateScreenPoint (nsView, position);
+			[contextMenu setAutoenablesItems:YES];
+			[contextMenu popUpMenuPositioningItem:nil atLocation:screenPosition inView:(NSView*) nsView];
+			
+			int selectedItem = [contextMenu getSelectedItem];
+			if (selectedItem == -1) {
+				return nullptr;
+			}
+			return commandTable[selectedItem];
+			
+		} @catch (NSException*) {
+			
+		}
 	}
-	return commandTable[selectedItem];
+	return nullptr;
 }
 	
 }

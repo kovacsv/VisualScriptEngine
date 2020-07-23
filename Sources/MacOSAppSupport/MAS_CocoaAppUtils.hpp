@@ -12,7 +12,6 @@ namespace MAS
 
 NSString*					StdWStringToNSString (const std::wstring& str);
 	
-NE::BasicStringSettings 	GetStringSettingsFromSystem ();
 NUIE::ModifierKeys			GetModifierKeysFromEvent (const NSEvent* event);
 NUIE::Point					GetViewPositionFromEvent (const NSView* view, const NSEvent* event);
 
