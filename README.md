@@ -5,11 +5,11 @@
 
 A C++ visual scripting engine designed for embedding.
 
+![Logo](Documentation/Logo/logo_256.png?raw=truee "VisualScriptEngine")
+
 ## Links
 
 [Releases](https://github.com/kovacsv/VisualScriptEngine/releases) - [Issues](https://github.com/kovacsv/VisualScriptEngine/issues) - [Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki)
-
-![Logo](Documentation/Logo/logo_256.png?raw=truee "VisualScriptEngine")
 
 ## References
 
