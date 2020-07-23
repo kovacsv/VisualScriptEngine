@@ -50,86 +50,45 @@ namespace MAS
 
 NSString* StdWStringToNSString (const std::wstring& str)
 {
-	@autoreleasepool {
-		@try {
-			return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
-		} @catch (NSException*) {
-			
-		}
-	}
-	return nullptr;
+	return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
 }
 
 NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 {
 	NUIE::ModifierKeys keys;
-	@autoreleasepool {
-		@try {
-			if ([event modifierFlags] & NSEventModifierFlagControl) {
-				keys.Insert (NUIE::ModifierKeyCode::Control);
-			}
-			if ([event modifierFlags] & NSEventModifierFlagShift) {
-				keys.Insert (NUIE::ModifierKeyCode::Shift);
-			}
-		} @catch (NSException*) {
-			
-		}
+	if ([event modifierFlags] & NSEventModifierFlagControl) {
+		keys.Insert (NUIE::ModifierKeyCode::Control);
+	}
+	if ([event modifierFlags] & NSEventModifierFlagShift) {
+		keys.Insert (NUIE::ModifierKeyCode::Shift);
 	}
 	return keys;
 }
 
 NUIE::Point GetViewPositionFromEvent (const NSView* view, const NSEvent* event)
 {
-	@autoreleasepool {
-		@try {
-			NSPoint position = [view convertPoint:[event locationInWindow] fromView:nil];
-			return NUIE::Point (position.x, view.frame.size.height - position.y);
-		} @catch (NSException*) {
-			
-		}
-	}
-	return NUIE::Point ();
+	NSPoint position = [view convertPoint:[event locationInWindow] fromView:nil];
+	return NUIE::Point (position.x, view.frame.size.height - position.y);
 }
 	
 NSPoint CreatePoint (const NSView* view, const NUIE::Point& point)
 {
-	@autoreleasepool {
-		@try {
-			NUIE::IntPoint intPoint (point);
-			int height = (int) std::floor (view.frame.size.height) - 1;
-			return NSMakePoint (intPoint.GetX (), height - intPoint.GetY ());
-		} @catch (NSException*) {
-			
-		}
-	}
-	return NSPoint ();
+	NUIE::IntPoint intPoint (point);
+	int height = (int) std::floor (view.frame.size.height) - 1;
+	return NSMakePoint (intPoint.GetX (), height - intPoint.GetY ());
 }
 	
 NSPoint CreateScreenPoint (const NSView* view, const NUIE::Point& point)
 {
-	@autoreleasepool {
-		@try {
-			NSPoint viewPoint = CreatePoint (view, point);
-			return [view convertPoint:viewPoint toView:nil];
-		} @catch (NSException*) {
-			
-		}
-	}
-	return NSPoint ();
+	NSPoint viewPoint = CreatePoint (view, point);
+	return [view convertPoint:viewPoint toView:nil];
 }
 	
 NSRect CreateRect (const NSView* view, const NUIE::Rect& rect)
 {
-	@autoreleasepool {
-		@try {
-			NUIE::IntRect intRect (rect);
-			int height = (int) std::floor (view.frame.size.height) - 1;
-			return NSMakeRect (intRect.GetX (), height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
-		} @catch (NSException*) {
-			
-		}
-	}
-	return NSRect ();
+	NUIE::IntRect intRect (rect);
+	int height = (int) std::floor (view.frame.size.height) - 1;
+	return NSMakeRect (intRect.GetX (), height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
 }
 
 NSColor* CreateColor (const NUIE::Color& color)
