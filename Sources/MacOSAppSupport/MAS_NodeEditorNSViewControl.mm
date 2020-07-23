@@ -170,7 +170,7 @@ NodeEditorNSViewControl::NodeEditorNSViewControl (const NUIE::NativeDrawingConte
 
 NodeEditorNSViewControl::~NodeEditorNSViewControl ()
 {
-
+	[nsView release];
 }
 
 bool NodeEditorNSViewControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height)
@@ -179,9 +179,9 @@ bool NodeEditorNSViewControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativ
 	DBGASSERT (nodeEditor != nullptr);
 
 	NSRect viewRect = NSMakeRect (x, y, width, height);
-	nsView = [[[CocoaNSViewControl alloc] initWithFrame:viewRect] autorelease];
-	[((CocoaNSViewControl*) nsView) setNodeEditorControl:this];
-	[((NSView*) nativeParentHandle) addSubview:((NSView*) nsView)];
+	nsView = [[CocoaNSViewControl alloc] initWithFrame : viewRect];
+	[((CocoaNSViewControl*) nsView) setNodeEditorControl : this];
+	[((NSView*) nativeParentHandle) addSubview : nsView];
 	
 	nativeContext->Init (nsView);
 	nativeContext->Resize (width, height);
@@ -202,7 +202,7 @@ bool NodeEditorNSViewControl::IsEditorFocused () const
 void NodeEditorNSViewControl::Resize (int x, int y, int width, int height)
 {
 	NSRect viewRect = NSMakeRect (x, y, width, height);
-	[((NSView*) nsView) setFrame:viewRect];
+	[nsView setFrame:viewRect];
 	if (nodeEditor != nullptr) {
 		nodeEditor->OnResize (width, height);
 	}
@@ -210,7 +210,7 @@ void NodeEditorNSViewControl::Resize (int x, int y, int width, int height)
 
 void NodeEditorNSViewControl::Invalidate ()
 {
-	[((NSView*) nsView) setNeedsDisplay:YES];
+	[nsView setNeedsDisplay:YES];
 }
 
 void NodeEditorNSViewControl::Draw ()

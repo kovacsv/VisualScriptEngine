@@ -8,7 +8,7 @@ namespace MAS
 {
 
 static const float SafetyTextRatio = 1.05f;
-	
+
 NSViewContext::NSViewContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
@@ -22,7 +22,7 @@ NSViewContext::NSViewContext () :
 NSViewContext::~NSViewContext ()
 {
 	for (auto& it : fontCache) {
-		[(NSFont*) it.second release];
+		[it.second release];
 	}
 }
 
@@ -77,8 +77,8 @@ void NSViewContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, co
 	[CreateColor (pen.GetColor ()) set];
 	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath moveToPoint:CreatePoint ((NSView*) nsView, beg)];
-	[bezierPath lineToPoint:CreatePoint ((NSView*) nsView, end)];
+	[bezierPath moveToPoint:CreatePoint (nsView, beg)];
+	[bezierPath lineToPoint:CreatePoint (nsView, end)];
 	[bezierPath stroke];
 }
 
@@ -87,27 +87,27 @@ void NSViewContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, co
 	[CreateColor (pen.GetColor ()) set];
 	NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 	[bezierPath setLineWidth:pen.GetThickness ()];
-	[bezierPath moveToPoint:CreatePoint ((NSView*) nsView, p1)];
-	[bezierPath curveToPoint:CreatePoint ((NSView*) nsView, p4) controlPoint1:CreatePoint ((NSView*) nsView, p2) controlPoint2:CreatePoint ((NSView*) nsView, p3)];
+	[bezierPath moveToPoint:CreatePoint (nsView, p1)];
+	[bezierPath curveToPoint:CreatePoint (nsView, p4) controlPoint1:CreatePoint (nsView, p2) controlPoint2:CreatePoint (nsView, p3)];
 	[bezierPath stroke];
 }
 
 void NSViewContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	[CreateColor (pen.GetColor ()) set];
-	NSFrameRectWithWidth (CreateRect ((NSView*) nsView, rect), pen.GetThickness ());
+	NSFrameRectWithWidth (CreateRect (nsView, rect), pen.GetThickness ());
 }
 
 void NSViewContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	[CreateColor (color) set];
-	NSRectFill (CreateRect ((NSView*) nsView, rect));
+	NSRectFill (CreateRect (nsView, rect));
 }
 
 void NSViewContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	[CreateColor (pen.GetColor ()) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect ((NSView*) nsView, rect)];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (nsView, rect)];
 	[bezierPath setLineWidth:pen.GetThickness ()];
 	[bezierPath stroke];
 }
@@ -115,7 +115,7 @@ void NSViewContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 void NSViewContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	[CreateColor (color) set];
-	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect ((NSView*) nsView, rect)];
+	NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (nsView, rect)];
 	[bezierPath fill];
 }
 
@@ -135,11 +135,11 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 		style.alignment = NSTextAlignmentRight;
 	}
 	NSDictionary* attributes = @{
-		NSFontAttributeName: (NSFont*) GetFont (font),
+		NSFontAttributeName: GetFont (font),
 		NSForegroundColorAttributeName : CreateColor (textColor),
 		NSParagraphStyleAttributeName : style
 	};
-	NSRect textRect = CreateRect ((NSView*) nsView, rect);
+	NSRect textRect = CreateRect (nsView, rect);
 	NSSize textSize = [nsText sizeWithAttributes:attributes];
 	if (vAnchor == NUIE::VerticalAnchor::Top) {
 		// nothing to do
@@ -154,7 +154,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
 	NSString* nsText = MAS::StdWStringToNSString (text);
-	NSDictionary* attributes = @{NSFontAttributeName: (NSFont*) GetFont (font)};
+	NSDictionary* attributes = @{NSFontAttributeName: GetFont (font)};
 	NSSize size = [nsText sizeWithAttributes:attributes];
 	return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
 }
@@ -169,7 +169,7 @@ void NSViewContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 	DBGBREAK ();
 }
 
-void* NSViewContext::GetFont (const NUIE::Font& font)
+NSFont* NSViewContext::GetFont (const NUIE::Font& font)
 {
 	NUIE::FontCacheKey key (font);
 	auto found = fontCache.find (key);

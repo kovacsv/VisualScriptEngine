@@ -7,6 +7,16 @@
 
 #include <unordered_map>
 
+#ifdef __cplusplus
+#ifdef __OBJC__
+	@class NSView;
+	@class NSFont;
+#else
+	struct NSView;
+	struct NSFont;
+#endif
+#endif
+
 namespace MAS
 {
 
@@ -47,13 +57,13 @@ public:
 	virtual void				DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId) override;
 
 private:
-	void*						GetFont (const NUIE::Font& font);
+	NSFont*						GetFont (const NUIE::Font& font);
 	
 	int							width;
 	int							height;
-	void*						nsView;
+	NSView*						nsView;
 	
-	std::unordered_map<NUIE::FontCacheKey, void*>	fontCache;
+	std::unordered_map<NUIE::FontCacheKey, NSFont*>		fontCache;
 };
 
 }
