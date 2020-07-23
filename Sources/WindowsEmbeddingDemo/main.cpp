@@ -58,13 +58,13 @@ static const NUIE::BasicSkinParams& GetAppSkinParams ()
 	return skinParams;
 }
 
-static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, int iconIndex, const NUIE::CreatorFunction& creator)
+static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, const NUIE::IconId& iconId, const NUIE::CreatorFunction& creator)
 {
 	nodeTree.AddItem (groupIndex, name, [=] (const NUIE::Point& position) {
 		NUIE::UINodePtr node = creator (position);
 		BI::BasicUINodePtr basicNode = std::dynamic_pointer_cast<BI::BasicUINode> (node);
 		if (basicNode != nullptr) {
-			basicNode->SetIconId (NUIE::IconId (iconIndex));
+			basicNode->SetIconId (iconId);
 		}
 		return node;
 	});
@@ -99,36 +99,36 @@ public:
 		NUIE::NodeTree nodeTree;
 
 		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", 101, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", NUIE::IconId (101), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
 		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Number", 102, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Number", NUIE::IconId (102), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
 		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", 101, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", NUIE::IconId (101), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
 		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Number Increment", 102, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Number Increment", NUIE::IconId (102), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
 		});
 		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
-		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", 103, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", NUIE::IconId (103), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
 		});
-		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Subtraction", 104, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Subtraction", NUIE::IconId (104), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
 		});
-		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Multiplication", 105, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Multiplication", NUIE::IconId (105), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
 		});
-		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", 106, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", NUIE::IconId (106), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
 		});
 		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", 107, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (107), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::ViewerNode (NE::LocString (L"Viewer"), position));
 		});
-		AddNodeTreeItem (nodeTree, otherNodes, L"Multiline Viewer", 107, [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"Multiline Viewer", NUIE::IconId (107), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Multiline Viewer"), position, 5));
 		});
 
