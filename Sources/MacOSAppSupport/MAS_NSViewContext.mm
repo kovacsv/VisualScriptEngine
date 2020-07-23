@@ -228,7 +228,7 @@ NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstrin
 
 bool NSViewContext::CanDrawIcon ()
 {
-	return true;
+	return imageLoader != nullptr;
 }
 
 void NSViewContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId)
