@@ -3,12 +3,13 @@
 #include "SimpleTest.hpp"
 #include "NE_Debug.hpp"
 
-int wmain (int, wchar_t* argv[])
+int main (int, char* argv[])
 {
 	EnableLeakDetection ();
 
-    std::wstring executablePath (argv[0]);
-	SimpleTest::SetAppLocation (executablePath);
+    std::string executablePath (argv[0]);
+	std::wstring wExecutablePath (executablePath.begin (), executablePath.end ());
+	SimpleTest::SetAppLocation (wExecutablePath);
 	if (!SimpleTest::RunTests ()) {
 		return 1;
 	}
