@@ -17,6 +17,7 @@ namespace WAS
 class Direct2DContext : public NUIE::NativeDrawingContext
 {
 public:
+	Direct2DContext ();
 	Direct2DContext (const Direct2DImageLoaderPtr& imageLoader);
 	Direct2DContext (const Direct2DContext& rhs) = delete;
 	virtual ~Direct2DContext ();

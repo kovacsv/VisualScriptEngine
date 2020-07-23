@@ -15,6 +15,12 @@ static void SafeRelease (Interface** interfaceToRelease)
 	}
 }
 
+Direct2DContext::Direct2DContext () :
+	Direct2DContext (nullptr)
+{
+
+}
+
 Direct2DContext::Direct2DContext (const Direct2DImageLoaderPtr& imageLoader) :
 	NUIE::NativeDrawingContext (),
 	direct2DHandler (),
@@ -131,7 +137,7 @@ NUIE::Size Direct2DContext::MeasureText (const NUIE::Font& font, const std::wstr
 
 bool Direct2DContext::CanDrawIcon ()
 {
-	return true;
+	return imageLoader != nullptr;
 }
 
 void Direct2DContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId)
