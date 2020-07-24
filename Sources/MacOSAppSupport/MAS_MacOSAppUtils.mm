@@ -12,12 +12,15 @@ NE::BasicStringSettings GetStringSettingsFromSystem ()
 	@autoreleasepool {
 		@try {
 			NSString* decSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator];
-			std::wstring ds = NE::StringToWString ([decSeparator cStringUsingEncoding:NSUTF8StringEncoding]).c_str ();
-			result.SetDecimalSeparator (ds.c_str ()[0]);
-			
-			NSString* listSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
-			std::wstring ls = NE::StringToWString ([listSeparator cStringUsingEncoding:NSUTF8StringEncoding]).c_str ();
-			result.SetListSeparator (ls.c_str ()[0]);
+			std::wstring decimalSeparatorStr = NE::StringToWString ([decSeparator cStringUsingEncoding:NSUTF8StringEncoding]);
+			wchar_t decimalSeparatorChar = decimalSeparatorStr[0];
+			result.SetDecimalSeparator (decimalSeparatorChar);
+
+			wchar_t listSeparatorChar = L',';
+			if (listSeparatorChar == decimalSeparatorChar) {
+				listSeparatorChar = L';';
+			}
+			result.SetListSeparator (listSeparatorChar);
 		} @catch (NSException*) {
 			
 		}

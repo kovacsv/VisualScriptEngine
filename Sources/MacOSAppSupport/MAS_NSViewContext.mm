@@ -252,7 +252,7 @@ NSFont* NSViewContext::GetFont (const NUIE::Font& font)
 			}
 			return fontCache.at (key);
 		} @catch (NSException*) {
-			return nil;
+
 		}
 	}
 	return nil;
