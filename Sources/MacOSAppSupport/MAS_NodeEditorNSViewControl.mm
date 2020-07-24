@@ -135,7 +135,7 @@
 			}
 		} else {
 			static const unichar EscapeKeyCode = u'\x1b';
-			if (character == NSDeleteFunctionKey) {
+			if (character == NSDeleteFunctionKey || character == NSDeleteCharacter) {
 				pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
 			} else if (character == EscapeKeyCode) {
 				pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
