@@ -340,6 +340,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 							pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
 							break;
 						case VK_DELETE:
+						case VK_BACK:
 							pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
 							break;
 					}

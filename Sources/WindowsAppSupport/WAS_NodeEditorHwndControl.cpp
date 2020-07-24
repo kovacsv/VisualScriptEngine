@@ -159,6 +159,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 							pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
 							break;
 						case VK_DELETE:
+						case VK_BACK:
 							pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
 							break;
 					}
