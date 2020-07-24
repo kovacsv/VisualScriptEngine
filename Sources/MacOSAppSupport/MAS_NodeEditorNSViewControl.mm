@@ -26,7 +26,7 @@
 	return self;
 }
 
--(void) setNodeEditorControl : (MAS::NodeEditorNSViewControl*) newNodeEditorControl
+- (void) setNodeEditorControl : (MAS::NodeEditorNSViewControl*) newNodeEditorControl
 {
 	nodeEditorControl = newNodeEditorControl;
 }

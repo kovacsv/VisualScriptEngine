@@ -25,23 +25,23 @@
 	return self;
 }
 
--(void) setUIEnvironment : (AppNodeUIEnvironment*) newUIEnvironment
+- (void) setUIEnvironment : (AppNodeUIEnvironment*) newUIEnvironment
 {
 	uiEnvironment = newUIEnvironment;
 }
 
--(void) windowDidLoad
+- (void) windowDidLoad
 {
     
 }
 
--(void) windowWillClose : (NSNotification*) notification
+- (void) windowWillClose : (NSNotification*) notification
 {
 	#pragma unused (notification)
 	[NSApp terminate:self];
 }
 
--(void) windowDidResize:(NSNotification *) notification
+- (void) windowDidResize : (NSNotification *) notification
 {
 	#pragma unused (notification)
 	NSRect clientRect = [[[self window] contentView] frame];
