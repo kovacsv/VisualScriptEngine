@@ -211,8 +211,10 @@ void* NodeEditorNSViewControl::GetEditorNativeHandle () const
 
 bool NodeEditorNSViewControl::IsMouseInEditorWindow () const
 {
-	// TODO
-	return false;
+	NSPoint mousePos = [NSEvent mouseLocation];
+	NSRect viewRect = [nsView bounds];
+	NSRect screenViewRect = [[nsView window] convertRectToScreen : viewRect];
+	return [nsView mouse : mousePos inRect : screenViewRect];
 }
 
 void NodeEditorNSViewControl::Resize (int x, int y, int width, int height)
