@@ -113,6 +113,10 @@
 
 - (void) keyDown : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsMouseInEditorWindow ()) {
+		return;
+	}
+
 	NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
 	NSString* characters = [event charactersIgnoringModifiers];
 	
@@ -205,7 +209,7 @@ void* NodeEditorNSViewControl::GetEditorNativeHandle () const
 	return nsView;
 }
 
-bool NodeEditorNSViewControl::IsEditorFocused () const
+bool NodeEditorNSViewControl::IsMouseInEditorWindow () const
 {
 	// TODO
 	return false;

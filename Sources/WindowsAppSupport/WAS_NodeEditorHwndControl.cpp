@@ -130,6 +130,9 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_KEYDOWN:
 			{
+				if (!control->IsMouseInEditorWindow ()) {
+					break;
+				}
 				NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
 				bool isControlPressed = (GetKeyState (VK_CONTROL) < 0);
 				if (isControlPressed) {
@@ -220,11 +223,18 @@ void* NodeEditorHwndControl::GetEditorNativeHandle () const
 	return control.GetWindowHandle ();
 }
 
-bool NodeEditorHwndControl::IsEditorFocused () const
+bool NodeEditorHwndControl::IsMouseInEditorWindow () const
 {
-	HWND focusedHwnd = GetFocus ();
+	POINT mousePos;
+	GetCursorPos (&mousePos);
+
+	RECT rect;
 	HWND editorHwnd = (HWND) GetEditorNativeHandle ();
-	return focusedHwnd == editorHwnd;
+	if (!GetWindowRect (editorHwnd, &rect)) {
+		return false;
+	}
+
+	return PtInRect (&rect, mousePos);
 }
 
 void NodeEditorHwndControl::Resize (int x, int y, int width, int height)
