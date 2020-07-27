@@ -103,9 +103,9 @@ void* NodeEditorNodeTreeHwndControl::GetEditorNativeHandle () const
 	return nodeEditorControl.GetEditorNativeHandle ();
 }
 
-bool NodeEditorNodeTreeHwndControl::IsMouseInEditorWindow () const
+bool NodeEditorNodeTreeHwndControl::IsMouseOverEditorWindow () const
 {
-	return nodeEditorControl.IsMouseInEditorWindow ();
+	return nodeEditorControl.IsMouseOverEditorWindow ();
 }
 
 void NodeEditorNodeTreeHwndControl::Resize (int x, int y, int width, int height)

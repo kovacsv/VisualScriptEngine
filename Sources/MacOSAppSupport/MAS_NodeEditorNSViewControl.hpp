@@ -25,7 +25,7 @@ public:
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;
 	virtual void*					GetEditorNativeHandle () const override;
-	virtual bool					IsMouseInEditorWindow () const override;
+	virtual bool					IsMouseOverEditorWindow () const override;
 
 	virtual void					Resize (int x, int y, int width, int height) override;
 	virtual void					Invalidate () override;

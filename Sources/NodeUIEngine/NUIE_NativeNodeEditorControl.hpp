@@ -14,7 +14,7 @@ public:
 
 	virtual bool					Init (NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) = 0;
 	virtual void*					GetEditorNativeHandle () const = 0;
-	virtual bool					IsMouseInEditorWindow () const = 0;
+	virtual bool					IsMouseOverEditorWindow () const = 0;
 
 	virtual void					Resize (int x, int y, int width, int height) = 0;
 	virtual void					Invalidate () = 0;

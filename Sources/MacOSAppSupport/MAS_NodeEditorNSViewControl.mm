@@ -113,7 +113,7 @@
 
 - (void) keyDown : (NSEvent*) event
 {
-	if (!nodeEditorControl->IsMouseInEditorWindow ()) {
+	if (!nodeEditorControl->IsMouseOverEditorWindow ()) {
 		return;
 	}
 
@@ -209,7 +209,7 @@ void* NodeEditorNSViewControl::GetEditorNativeHandle () const
 	return nsView;
 }
 
-bool NodeEditorNSViewControl::IsMouseInEditorWindow () const
+bool NodeEditorNSViewControl::IsMouseOverEditorWindow () const
 {
 	// TODO
 	return false;

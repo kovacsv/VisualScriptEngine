@@ -130,7 +130,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_KEYDOWN:
 			{
-				if (!control->IsMouseInEditorWindow ()) {
+				if (!control->IsMouseOverEditorWindow ()) {
 					break;
 				}
 				NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
@@ -223,7 +223,7 @@ void* NodeEditorHwndControl::GetEditorNativeHandle () const
 	return control.GetWindowHandle ();
 }
 
-bool NodeEditorHwndControl::IsMouseInEditorWindow () const
+bool NodeEditorHwndControl::IsMouseOverEditorWindow () const
 {
 	POINT mousePos;
 	GetCursorPos (&mousePos);
