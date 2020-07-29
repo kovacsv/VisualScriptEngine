@@ -82,7 +82,7 @@ private:
 	std::unordered_set<ModifierKeyCode> keys;
 };
 
-extern ModifierKeys EmptyModifierKeys;
+extern const ModifierKeys EmptyModifierKeys;
 
 class Key
 {
@@ -99,7 +99,7 @@ private:
 	KeyCode		keyCode;
 };
 
-extern Key InvalidKey;
+extern const Key InvalidKey;
 
 enum class EventHandlerResult
 {

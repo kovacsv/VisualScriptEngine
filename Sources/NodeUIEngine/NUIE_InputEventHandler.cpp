@@ -4,9 +4,8 @@
 namespace NUIE
 {
 
-static const std::unordered_set<ModifierKeyCode> noKeys;
-ModifierKeys EmptyModifierKeys (noKeys);
-Key InvalidKey;
+const ModifierKeys EmptyModifierKeys;
+const Key InvalidKey;
 
 ModifierKeys::ModifierKeys () :
 	keys ()
@@ -95,7 +94,6 @@ void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys
 		movingMouseButtons.erase (mouseButton);
 		handler.HandleMouseDragStop (env, modifierKeys, mouseButton, position);
 	}
-
 	if (downMouseButtons.find (mouseButton) != downMouseButtons.end ()) {
 		downMouseButtons.erase (mouseButton);
 		handler.HandleMouseClick (env, modifierKeys, mouseButton, position);
@@ -115,7 +113,6 @@ void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const ModifierKe
 	for (MouseButton downButtonMoved : downButtonsMoved) {
 		downMouseButtons.erase (downButtonMoved);
 	}
-
 	if (!movingMouseButtons.empty ()) {
 		handler.HandleMouseDrag (env, modifierKeys, position);
 	}
