@@ -11,17 +11,8 @@
 namespace WAS
 {
 
-class SetCaptureHandler
-{
-public:
-	SetCaptureHandler ();
-
-	void HandleMouseDown (HWND hwnd);
-	void HandleMouseUp ();
-
-private:
-	int counter;
-};
+void						SetWindowCapture (HWND hwnd);
+void						ReleaseWindowCapture (HWND hwnd);
 
 NE::BasicStringSettings		GetStringSettingsFromSystem ();
 NUIE::ModifierKeys			GetModiferKeysFromEvent (WPARAM wParam);

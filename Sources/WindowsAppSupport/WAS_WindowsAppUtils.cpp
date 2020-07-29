@@ -5,26 +5,17 @@
 namespace WAS
 {
 
-SetCaptureHandler::SetCaptureHandler () :
-	counter (0)
+void SetWindowCapture (HWND hwnd)
 {
-	
-}
-
-void SetCaptureHandler::HandleMouseDown (HWND hwnd)
-{
-	if (counter == 0) {
+	if (GetCapture () != hwnd) {
 		SetCapture (hwnd);
 	}
-	counter += 1;
 }
 
-void SetCaptureHandler::HandleMouseUp ()
+void ReleaseWindowCapture (HWND hwnd)
 {
-	counter -= 1;
-	if (counter <= 0) { // sometimes down and up are not in pair
+	if (GetCapture () == hwnd) {
 		ReleaseCapture ();
-		counter = 0;
 	}
 }
 

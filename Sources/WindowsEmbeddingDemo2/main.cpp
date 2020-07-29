@@ -193,7 +193,6 @@ private:
 
 static MyNodeUIEnvironment uiEnvironment;
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
-static WAS::SetCaptureHandler setCaptureHandler;
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -223,7 +222,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			return 0;
 		case WM_LBUTTONDOWN:
 			{
-				setCaptureHandler.HandleMouseDown (hwnd);
+				WAS::SetWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
@@ -231,7 +230,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_MBUTTONDOWN:
 			{
-				setCaptureHandler.HandleMouseDown (hwnd);
+				WAS::SetWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
@@ -239,7 +238,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_RBUTTONDOWN:
 			{
-				setCaptureHandler.HandleMouseDown (hwnd);
+				WAS::SetWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
@@ -247,7 +246,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_LBUTTONUP:
 			{
-				setCaptureHandler.HandleMouseUp ();
+				WAS::ReleaseWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
@@ -255,7 +254,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_MBUTTONUP:
 			{
-				setCaptureHandler.HandleMouseUp ();
+				WAS::ReleaseWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
@@ -263,7 +262,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_RBUTTONUP:
 			{
-				setCaptureHandler.HandleMouseUp ();
+				WAS::ReleaseWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
@@ -349,6 +348,9 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 					nodeEditor.OnKeyPress (pressedKey);
 				}
 			}
+			break;
+		case WM_CANCELMODE:
+			WAS::ReleaseWindowCapture (hwnd);
 			break;
 	}
 

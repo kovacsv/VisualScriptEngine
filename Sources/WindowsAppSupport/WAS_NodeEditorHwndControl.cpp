@@ -8,8 +8,6 @@ namespace WAS
 
 static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	static SetCaptureHandler setCaptureHandler;
-
 	if (msg == WM_CREATE) {
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
@@ -35,7 +33,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			return 0;
 		case WM_LBUTTONDOWN:
 			{
-				setCaptureHandler.HandleMouseDown (hwnd);
+				SetWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor->OnMouseDown (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
@@ -43,7 +41,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_MBUTTONDOWN:
 			{
-				setCaptureHandler.HandleMouseDown (hwnd);
+				SetWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor->OnMouseDown (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
@@ -51,7 +49,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_RBUTTONDOWN:
 			{
-				setCaptureHandler.HandleMouseDown (hwnd);
+				SetWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor->OnMouseDown (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
@@ -59,7 +57,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_LBUTTONUP:
 			{
-				setCaptureHandler.HandleMouseUp ();
+				ReleaseWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor->OnMouseUp (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
@@ -67,7 +65,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_MBUTTONUP:
 			{
-				setCaptureHandler.HandleMouseUp ();
+				ReleaseWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor->OnMouseUp (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
@@ -75,7 +73,7 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 			break;
 		case WM_RBUTTONUP:
 			{
-				setCaptureHandler.HandleMouseUp ();
+				ReleaseWindowCapture (hwnd);
 				int x = GET_X_LPARAM (lParam);
 				int y = GET_Y_LPARAM (lParam);
 				nodeEditor->OnMouseUp (GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
@@ -171,6 +169,9 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 					nodeEditor->OnKeyPress (pressedKey);
 				}
 			}
+			break;
+		case WM_CANCELMODE:
+			ReleaseWindowCapture (hwnd);
 			break;
 	}
 
