@@ -26,3 +26,7 @@ Windows demo application:
 MacOS demo application:
 
 ![Screenshot](Documentation/MacOSEmbeddingDemo01.png?raw=true "MacOS Embedding Demo")
+
+## Other
+
+- [VisualScriptEngineWxWidgets](https://github.com/kovacsv/VisualScriptEngineWxWidgets) is an implementation of the user inteface elements for wxWidgets.
