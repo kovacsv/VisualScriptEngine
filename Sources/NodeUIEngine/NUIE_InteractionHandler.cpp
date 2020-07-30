@@ -119,9 +119,9 @@ private:
 	{
 		Point clientPosition = position;
 		clientPosition.SetX (std::max (clientPosition.GetX (), 1.0));
-		clientPosition.SetX (std::min (clientPosition.GetX (), uiEnvironment.GetDrawingContext ().GetWidth ()));
+		clientPosition.SetX (std::min (clientPosition.GetX (), (double) uiEnvironment.GetDrawingContext ().GetWidth ()));
 		clientPosition.SetY (std::max (clientPosition.GetY (), 1.0));
-		clientPosition.SetY (std::min (clientPosition.GetY (), uiEnvironment.GetDrawingContext ().GetHeight ()));
+		clientPosition.SetY (std::min (clientPosition.GetY (), (double) uiEnvironment.GetDrawingContext ().GetHeight ()));
 		return clientPosition;
 	}
 

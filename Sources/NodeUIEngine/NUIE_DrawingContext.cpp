@@ -29,12 +29,12 @@ void DrawingContextDecorator::Resize (int newWidth, int newHeight)
 	decorated.Resize (newWidth, newHeight);
 }
 
-double DrawingContextDecorator::GetWidth () const
+int DrawingContextDecorator::GetWidth () const
 {
 	return decorated.GetWidth ();
 }
 
-double DrawingContextDecorator::GetHeight () const
+int DrawingContextDecorator::GetHeight () const
 {
 	return decorated.GetHeight ();
 }
@@ -109,14 +109,14 @@ void NullDrawingContext::Resize (int, int)
 
 }
 
-double NullDrawingContext::GetWidth () const
+int NullDrawingContext::GetWidth () const
 {
-	return 0.0;
+	return 0;
 }
 
-double NullDrawingContext::GetHeight () const
+int NullDrawingContext::GetHeight () const
 {
-	return 0.0;
+	return 0;
 }
 
 void NullDrawingContext::BeginDraw ()

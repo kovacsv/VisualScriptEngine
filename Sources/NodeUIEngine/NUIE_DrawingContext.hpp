@@ -24,8 +24,8 @@ public:
 
 	virtual void	Resize (int newWidth, int newHeight) = 0;
 
-	virtual double	GetWidth () const = 0;
-	virtual double	GetHeight () const = 0;
+	virtual int		GetWidth () const = 0;
+	virtual int		GetHeight () const = 0;
 
 	virtual void	BeginDraw () = 0;
 	virtual void	EndDraw () = 0;
@@ -56,8 +56,8 @@ public:
 
 	virtual void	Resize (int newWidth, int newHeight) override;
 
-	virtual double	GetWidth () const override;
-	virtual double	GetHeight () const override;
+	virtual int		GetWidth () const override;
+	virtual int		GetHeight () const override;
 
 	virtual void	BeginDraw () override;
 	virtual void	EndDraw () override;
@@ -88,8 +88,8 @@ class NullDrawingContext : public DrawingContext
 public:
 	virtual void	Resize (int newWidth, int newHeight) override;
 
-	virtual double	GetWidth () const override;
-	virtual double	GetHeight () const override;
+	virtual int		GetWidth () const override;
+	virtual int		GetHeight () const override;
 
 	virtual void	BeginDraw () override;
 	virtual void	EndDraw () override;

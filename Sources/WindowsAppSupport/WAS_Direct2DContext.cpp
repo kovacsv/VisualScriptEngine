@@ -64,12 +64,12 @@ void Direct2DContext::Resize (int newWidth, int newHeight)
 	}
 }
 
-double Direct2DContext::GetWidth () const
+int Direct2DContext::GetWidth () const
 {
 	return width;
 }
 
-double Direct2DContext::GetHeight () const
+int Direct2DContext::GetHeight () const
 {
 	return height;
 }

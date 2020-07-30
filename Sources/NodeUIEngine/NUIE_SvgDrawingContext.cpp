@@ -103,7 +103,7 @@ void SvgBuilder::AddAttributes (const std::vector<std::pair<std::wstring, std::w
 }
 
 
-SvgDrawingContext::SvgDrawingContext (double width, double height) :
+SvgDrawingContext::SvgDrawingContext (int width, int height) :
 	width (width),
 	height (height)
 {
@@ -121,12 +121,12 @@ void SvgDrawingContext::Resize (int newWidth, int newHeight)
 	height = newHeight;
 }
 
-double SvgDrawingContext::GetWidth () const
+int SvgDrawingContext::GetWidth () const
 {
 	return width;
 }
 
-double SvgDrawingContext::GetHeight () const
+int SvgDrawingContext::GetHeight () const
 {
 	return height;
 }

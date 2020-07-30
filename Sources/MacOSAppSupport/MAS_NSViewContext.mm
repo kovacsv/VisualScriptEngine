@@ -60,12 +60,12 @@ void NSViewContext::Resize (int newWidth, int newHeight)
 	height = newHeight;
 }
 
-double NSViewContext::GetWidth () const
+int NSViewContext::GetWidth () const
 {
 	return width;
 }
 
-double NSViewContext::GetHeight () const
+int NSViewContext::GetHeight () const
 {
 	return height;
 }

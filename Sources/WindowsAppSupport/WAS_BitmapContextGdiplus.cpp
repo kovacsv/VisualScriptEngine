@@ -89,12 +89,12 @@ void BitmapContextGdiplus::Resize (int newWidth, int newHeight)
 	InitGraphics ();
 }
 
-double BitmapContextGdiplus::GetWidth () const
+int BitmapContextGdiplus::GetWidth () const
 {
 	return width;
 }
 
-double BitmapContextGdiplus::GetHeight () const
+int BitmapContextGdiplus::GetHeight () const
 {
 	return height;
 }

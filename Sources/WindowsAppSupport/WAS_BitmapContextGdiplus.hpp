@@ -21,8 +21,8 @@ public:
 
 	virtual void		Resize (int newWidth, int newHeight) override;
 
-	virtual double		GetWidth () const override;
-	virtual double		GetHeight () const override;
+	virtual int			GetWidth () const override;
+	virtual int			GetHeight () const override;
 
 	virtual void		BeginDraw () override;
 	virtual void		EndDraw () override;

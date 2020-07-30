@@ -75,12 +75,12 @@ void Direct2DOffscreenContext::Resize (int newWidth, int newHeight)
 	CreateOffscreenContext ();
 }
 
-double Direct2DOffscreenContext::GetWidth () const
+int Direct2DOffscreenContext::GetWidth () const
 {
 	return width;
 }
 
-double Direct2DOffscreenContext::GetHeight () const
+int Direct2DOffscreenContext::GetHeight () const
 {
 	return height;
 }

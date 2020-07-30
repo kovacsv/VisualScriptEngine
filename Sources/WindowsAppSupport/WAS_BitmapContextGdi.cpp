@@ -92,12 +92,12 @@ void BitmapContextGdi::Resize (int newWidth, int newHeight)
 	CreateOffscreenContext ();
 }
 
-double BitmapContextGdi::GetWidth () const
+int BitmapContextGdi::GetWidth () const
 {
 	return width;
 }
 
-double BitmapContextGdi::GetHeight () const
+int BitmapContextGdi::GetHeight () const
 {
 	return height;
 }
