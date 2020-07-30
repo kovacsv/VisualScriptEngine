@@ -195,7 +195,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 			if (vAnchor == NUIE::VerticalAnchor::Top) {
 				// nothing to do
 			} else if (vAnchor == NUIE::VerticalAnchor::Center) {
-				textRect.origin.y -= (textRect.size.height - textSize.height) / 2.0;
+				textRect.origin.y -= std::floor ((textRect.size.height - textSize.height) / 2.0);
 			} else if (vAnchor == NUIE::VerticalAnchor::Bottom) {
 				textRect.origin.y -= (textRect.size.height - textSize.height);
 			}
