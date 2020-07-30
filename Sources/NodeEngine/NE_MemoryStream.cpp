@@ -11,6 +11,10 @@ namespace NE
 #define SIZEOFWCHAR 4
 #endif
 
+#ifndef SIZEOFSIZET
+#define SIZEOFSIZET 8
+#endif
+
 static_assert (sizeof (bool) == 1, "invalid size for bool");
 static_assert (sizeof (char) == 1, "invalid size for char");
 static_assert (sizeof (wchar_t) == SIZEOFWCHAR, "invalid size for wchar_t");
@@ -19,7 +23,7 @@ static_assert (sizeof (char32_t) == 4, "invalid size for double");
 static_assert (sizeof (double) == 8, "invalid size for double");
 static_assert (sizeof (unsigned char) == 1, "invalid size for unsigned char");
 static_assert (sizeof (short) == 2, "invalid size for short");
-static_assert (sizeof (size_t) == 8, "invalid size for size_t");
+static_assert (sizeof (size_t) == SIZEOFSIZET, "invalid size for size_t");
 static_assert (sizeof (int) == 4, "invalid size for int");
 static_assert (sizeof (float) == 4, "invalid size for float");
 static_assert (sizeof (double) == 8, "invalid size for double");
