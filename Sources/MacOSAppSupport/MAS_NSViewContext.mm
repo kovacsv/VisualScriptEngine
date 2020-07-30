@@ -186,10 +186,10 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 				style.alignment = NSTextAlignmentRight;
 			}
 			NSDictionary* attributes = @{
-										 NSFontAttributeName: GetFont (font),
-										 NSForegroundColorAttributeName : CreateColor (textColor),
-										 NSParagraphStyleAttributeName : style
-										 };
+				NSFontAttributeName: GetFont (font),
+				NSForegroundColorAttributeName : CreateColor (textColor),
+				NSParagraphStyleAttributeName : style
+			};
 			NSRect textRect = CreateRect (nsView, rect);
 			NSSize textSize = [nsText sizeWithAttributes:attributes];
 			if (vAnchor == NUIE::VerticalAnchor::Top) {
