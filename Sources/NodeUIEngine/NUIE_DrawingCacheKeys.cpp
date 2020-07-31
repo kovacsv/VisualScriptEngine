@@ -31,7 +31,7 @@ bool PenCacheKey::operator!= (const PenCacheKey& rhs) const
 	return !operator== (rhs);
 }
 
-BrushCacheKey::BrushCacheKey () :
+ColorCacheKey::ColorCacheKey () :
 	r (0),
 	g (0),
 	b (0)
@@ -39,7 +39,7 @@ BrushCacheKey::BrushCacheKey () :
 
 }
 
-BrushCacheKey::BrushCacheKey (const NUIE::Color& color) :
+ColorCacheKey::ColorCacheKey (const NUIE::Color& color) :
 	r (color.GetR ()),
 	g (color.GetG ()),
 	b (color.GetB ())
@@ -47,12 +47,12 @@ BrushCacheKey::BrushCacheKey (const NUIE::Color& color) :
 
 }
 
-bool BrushCacheKey::operator== (const BrushCacheKey& rhs) const
+bool ColorCacheKey::operator== (const ColorCacheKey& rhs) const
 {
 	return r == rhs.r && g == rhs.g && b == rhs.b;
 }
 
-bool BrushCacheKey::operator!= (const BrushCacheKey& rhs) const
+bool ColorCacheKey::operator != (const ColorCacheKey& rhs) const
 {
 	return !operator== (rhs);
 }

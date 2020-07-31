@@ -94,7 +94,7 @@ private:
 	HBITMAP								memoryBitmap;
 
 	HandleCache<NUIE::PenCacheKey>		penCache;
-	HandleCache<NUIE::BrushCacheKey>	brushCache;
+	HandleCache<NUIE::ColorCacheKey>	brushCache;
 	HandleCache<NUIE::FontCacheKey>		fontCache;
 };
 

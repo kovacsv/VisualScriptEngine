@@ -9,7 +9,7 @@ HANDLE CreateHandle (const NUIE::PenCacheKey& key)
 	return ::CreatePen (PS_SOLID, key.thickness, RGB (key.r, key.g, key.b));
 }
 
-HANDLE CreateHandle (const NUIE::BrushCacheKey& key)
+HANDLE CreateHandle (const NUIE::ColorCacheKey& key)
 {
 	return ::CreateSolidBrush (RGB (key.r, key.g, key.b));
 }

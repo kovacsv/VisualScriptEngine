@@ -21,14 +21,14 @@ public:
 	unsigned char	b;
 };
 
-class BrushCacheKey
+class ColorCacheKey
 {
 public:
-	BrushCacheKey ();
-	BrushCacheKey (const NUIE::Color& color);
+	ColorCacheKey ();
+	ColorCacheKey (const NUIE::Color& color);
 
-	bool	operator== (const BrushCacheKey& rhs) const;
-	bool	operator!= (const BrushCacheKey& rhs) const;
+	bool	operator== (const ColorCacheKey& rhs) const;
+	bool	operator!= (const ColorCacheKey& rhs) const;
 
 	unsigned char r;
 	unsigned char g;
@@ -62,9 +62,9 @@ namespace std
 	};
 
 	template <>
-	struct hash<NUIE::BrushCacheKey>
+	struct hash<NUIE::ColorCacheKey>
 	{
-		size_t operator() (const NUIE::BrushCacheKey& key) const noexcept
+		size_t operator() (const NUIE::ColorCacheKey& key) const noexcept
 		{
 			return key.r + 24593 * key.g + 49157 * key.b;
 		}
