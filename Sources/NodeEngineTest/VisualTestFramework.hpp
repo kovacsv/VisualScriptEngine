@@ -93,6 +93,4 @@ public:
 	NodeEditor				nodeEditor;
 };
 
-std::wstring GetTestFilesPath ();
-
 #endif

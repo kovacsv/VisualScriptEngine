@@ -4,6 +4,8 @@
 #include "NE_Serializable.hpp"
 #include "NE_Checksum.hpp"
 
+#include <vector>
+
 namespace NUIE
 {
 
@@ -184,6 +186,8 @@ bool IsGreater (double a, double b);
 bool IsEqual (const Point& a, const Point& b);
 bool IsEqual (const Size& a, const Size& b);
 bool IsEqual (const Rect& a, const Rect& b);
+
+std::vector<NUIE::Point> SegmentBezier (size_t segmentCount, const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4);
 
 }
 

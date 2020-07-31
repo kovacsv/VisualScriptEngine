@@ -2,7 +2,10 @@
 #include "NUIE_FileIO.hpp"
 #include "NUIE_InputEventHandler.hpp"
 #include "BI_BuiltInNodes.hpp"
+#include "NE_StringUtils.hpp"
+
 #include "SimpleTest.hpp"
+#include "TestReference.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -324,26 +327,7 @@ NodeEditorTestEnv::NodeEditorTestEnv (const BasicSkinParams& skinParams) :
 bool NodeEditorTestEnv::CheckReference (const std::wstring& referenceFileName)
 {
 	const SvgDrawingContext& context = uiEnvironment.GetSvgDrawingContext ();
-	std::wstring testFilesPath = GetTestFilesPath ();
-
-	std::wstring referenceFilePath = testFilesPath + referenceFileName;
-	std::wstring referenceContent;
-	if (!ReadUtf8File (referenceFilePath, referenceContent)) {
-		WriteUtf8File (testFilesPath + L"Current_" + referenceFileName, context.GetAsString ());
-	}
-
-	std::wstring currentContent = context.GetAsString ();
-	referenceContent = ReplaceAll (referenceContent, L"\r\n", L"\n");
-	currentContent = ReplaceAll (currentContent, L"\r\n", L"\n");
-	if (referenceContent != currentContent) {
-		std::wcout << std::endl << L"=== CURRENT ===" << std::endl;
-		std::wcout << currentContent << std::endl;
-		std::wcout << L"=== REFERENCE ===" << std::endl;
-		std::wcout << referenceContent << std::endl;
-		WriteUtf8File (testFilesPath + L"Current_" + referenceFileName, context.GetAsString ());
-		return false;
-	}
-	return true;
+	return CheckDrawingReference (context, referenceFileName);
 }
 
 void NodeEditorTestEnv::Click (const Point& point)
@@ -397,9 +381,4 @@ void NodeEditorTestEnv::SetNextCommandName (const std::wstring& nextCommandName)
 void NodeEditorTestEnv::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
 {
 	uiEnvironment.SetNextCommandParameterSettings (handler);
-}
-
-std::wstring GetTestFilesPath ()
-{
-	return SimpleTest::GetAppFolderLocation () + L"VisualTestFiles" + PATH_SEPARATOR;
 }

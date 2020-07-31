@@ -1,0 +1,23 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="500" height="500" shape-rendering="crispEdges">
+<path d="M100,100 C200,100 200,300 300,300" style="fill:none;stroke-width:10px;stroke:rgb(200,200,200);"/>
+<line x1="100" y1="100" x2="115" y2="102" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="115" y1="102" x2="128" y2="106" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="128" y1="106" x2="139" y2="113" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="139" y1="113" x2="150" y2="121" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="150" y1="121" x2="160" y2="132" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="160" y1="132" x2="169" y2="144" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="169" y1="144" x2="177" y2="157" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="177" y1="157" x2="185" y2="171" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="185" y1="171" x2="193" y2="186" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="193" y1="186" x2="200" y2="200" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="200" y1="200" x2="208" y2="215" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="208" y1="215" x2="216" y2="230" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="216" y1="230" x2="224" y2="244" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="224" y1="244" x2="232" y2="257" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="232" y1="257" x2="241" y2="269" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="241" y1="269" x2="251" y2="280" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="251" y1="280" x2="262" y2="288" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="262" y1="288" x2="273" y2="295" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="273" y1="295" x2="286" y2="299" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+<line x1="286" y1="299" x2="300" y2="300" style="fill:none;stroke-width:3px;stroke:rgb(0,0,200);"/>
+</svg>

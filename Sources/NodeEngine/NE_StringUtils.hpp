@@ -9,6 +9,8 @@ namespace NE
 std::wstring	StringToWString (const std::string& str);
 std::string		WStringToString (const std::wstring& str);
 
+std::wstring	ReplaceAll (const std::wstring& string, const std::wstring& from, const std::wstring& to);
+
 }
 
 #endif

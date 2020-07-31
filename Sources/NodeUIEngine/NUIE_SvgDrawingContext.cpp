@@ -1,4 +1,5 @@
 #include "NUIE_SvgDrawingContext.hpp"
+#include "NE_StringUtils.hpp"
 
 #include <cmath>
 
@@ -23,8 +24,8 @@ void SvgBuilder::AddTag (const std::wstring& tag, const std::wstring& content, c
 		svgContent << L"/>" << std::endl;
 	} else {
 		std::wstring contentToWrite = content;
-		contentToWrite = ReplaceAll (contentToWrite, L"<", L"&lt;");
-		contentToWrite = ReplaceAll (contentToWrite, L">", L"&gt;");
+		contentToWrite = NE::ReplaceAll (contentToWrite, L"<", L"&lt;");
+		contentToWrite = NE::ReplaceAll (contentToWrite, L">", L"&gt;");
 		svgContent << L">" << contentToWrite;
 		AddCloseTag (tag);
 	}
@@ -102,7 +103,6 @@ void SvgBuilder::AddAttributes (const std::vector<std::pair<std::wstring, std::w
 	}
 }
 
-
 SvgDrawingContext::SvgDrawingContext (int width, int height) :
 	width (width),
 	height (height)
@@ -153,9 +153,15 @@ bool SvgDrawingContext::NeedToDraw (ItemPreviewMode)
 	return true;
 }
 
-void SvgDrawingContext::DrawLine (const Point&, const Point&, const Pen&)
+void SvgDrawingContext::DrawLine (const Point& beg, const Point& end, const Pen& pen)
 {
-	DBGBREAK ();
+	svgBuilder.AddTag (L"line", {
+		{ L"x1", SvgBuilder::ToString (beg.GetX ()) },
+		{ L"y1", SvgBuilder::ToString (beg.GetY ()) },
+		{ L"x2", SvgBuilder::ToString (end.GetX ()) },
+		{ L"y2", SvgBuilder::ToString (end.GetY ()) },
+		{ L"style", L"fill:none;" + SvgBuilder::PenToStrokeStyle (pen) }
+	});
 }
 
 void SvgDrawingContext::DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen)
@@ -269,17 +275,6 @@ bool SvgDrawingContext::CanDrawIcon ()
 void SvgDrawingContext::DrawIcon (const Rect&, const IconId&)
 {
 	DBGBREAK ();
-}
-
-std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, const std::wstring& to)
-{
-	std::wstring result = string;
-	size_t found = string.find (from);
-	while (found != std::wstring::npos) {
-		result.replace (found, from.length (), to);
-		found = result.find (from);
-	}
-	return result;
 }
 
 }

@@ -18,4 +18,15 @@ std::string WStringToString (const std::wstring& str)
 	return std::string (convert.to_bytes (str));
 }
 
+std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, const std::wstring& to)
+{
+	std::wstring result = string;
+	size_t found = string.find (from);
+	while (found != std::wstring::npos) {
+		result.replace (found, from.length (), to);
+		found = result.find (from);
+	}
+	return result;
+}
+
 }

@@ -46,19 +46,27 @@ public:
 	std::wstring		GetAsString () const;
 
 	virtual void		Resize (int newWidth, int newHeight) override;
+
 	virtual int			GetWidth () const override;
 	virtual int			GetHeight () const override;
+
 	virtual void		BeginDraw () override;
 	virtual void		EndDraw () override;
+
 	virtual bool		NeedToDraw (ItemPreviewMode mode) override;
+
 	virtual void		DrawLine (const Point& beg, const Point& end, const Pen& pen) override;
 	virtual void		DrawBezier (const Point& p1, const Point& p2, const Point& p3, const Point& p4, const Pen& pen) override;
+
 	virtual void		DrawRect (const Rect& rect, const Pen& pen) override;
 	virtual void		FillRect (const Rect& rect, const Color& color) override;
+
 	virtual void		DrawEllipse (const Rect& rect, const Pen& pen) override;
 	virtual void		FillEllipse (const Rect& rect, const Color& color) override;
+
 	virtual void		DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const NUIE::Color& textColor) override;
 	virtual Size		MeasureText (const Font& font, const std::wstring& text) override;
+	
 	virtual bool		CanDrawIcon () override;
 	virtual void		DrawIcon (const Rect& rect, const IconId& iconId) override;
 
@@ -67,8 +75,6 @@ private:
 	int			width;
 	int			height;
 };
-
-std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, const std::wstring& to);
 
 }
 

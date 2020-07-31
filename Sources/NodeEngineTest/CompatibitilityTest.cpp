@@ -5,6 +5,7 @@
 #include "BI_ArithmeticUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
 #include "VisualTestFramework.hpp"
+#include "TestReference.hpp"
 
 #include <fstream>
 
