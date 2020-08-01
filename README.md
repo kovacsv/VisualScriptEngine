@@ -29,4 +29,6 @@ MacOS demo application:
 
 ## Other
 
+- [VisualScriptEngineWeb](https://github.com/kovacsv/VisualScriptEngineWeb) is an Emscripten port of the engine running in a browser.
 - [VisualScriptEngineWxWidgets](https://github.com/kovacsv/VisualScriptEngineWxWidgets) is an implementation of the user inteface elements for wxWidgets.
+
