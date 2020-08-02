@@ -21,10 +21,10 @@ std::string WStringToString (const std::wstring& str)
 std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, const std::wstring& to)
 {
 	std::wstring result = string;
-	size_t found = string.find (from);
-	while (found != std::wstring::npos) {
-		result.replace (found, from.length (), to);
-		found = result.find (from);
+	size_t searchPos = string.find (from);
+	while (searchPos != std::wstring::npos) {
+		result.replace (searchPos, from.length (), to);
+		searchPos = result.find (from, searchPos + to.length ());
 	}
 	return result;
 }
