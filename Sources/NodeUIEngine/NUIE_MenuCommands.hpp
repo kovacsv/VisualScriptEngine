@@ -27,13 +27,14 @@ public:
 	MenuCommand (const NE::LocString& name);
 	virtual ~MenuCommand ();
 
-	virtual std::wstring	GetName () const;
+	virtual std::wstring					GetName () const;
 
-	virtual bool			IsChecked () const = 0;
-	virtual bool			HasChildCommands () const = 0;
-	virtual void			EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const = 0;
+	virtual bool							IsChecked () const = 0;
+	virtual bool							HasChildCommands () const = 0;
+	virtual std::vector<MenuCommandPtr>		GetChildCommands () const = 0;
+	virtual void							EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const = 0;
 
-	virtual void			Do () = 0;
+	virtual void							Do () = 0;
 
 private:
 	NE::LocString			name;
@@ -45,9 +46,10 @@ public:
 	SingleMenuCommand (const NE::LocString& name, bool isChecked);
 	virtual ~SingleMenuCommand ();
 
-	virtual bool	IsChecked () const override;
-	virtual bool	HasChildCommands () const override;
-	virtual void	EnumerateChildCommands (const std::function<void (const MenuCommandPtr&)>& processor) const override;
+	virtual bool							IsChecked () const override;
+	virtual bool							HasChildCommands () const override;
+	virtual std::vector<MenuCommandPtr>		GetChildCommands () const override;
+	virtual void							EnumerateChildCommands (const std::function<void (const MenuCommandPtr&)>& processor) const override;
 
 private:
 	bool isChecked;
@@ -59,13 +61,14 @@ public:
 	MultiMenuCommand (const NE::LocString& name);
 	virtual ~MultiMenuCommand ();
 
-	void			AddChildCommand (MenuCommandPtr command);
+	void									AddChildCommand (MenuCommandPtr command);
 
-	virtual bool	IsChecked () const override;
-	virtual bool	HasChildCommands () const override;
-	virtual void	EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const override;
+	virtual bool							IsChecked () const override;
+	virtual bool							HasChildCommands () const override;
+	virtual std::vector<MenuCommandPtr>		GetChildCommands () const override;
+	virtual void							EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const override;
 
-	virtual void	Do () override;
+	virtual void							Do () override;
 
 private:
 	std::vector<MenuCommandPtr> childCommands;
@@ -77,9 +80,11 @@ public:
 	MenuCommandStructure ();
 	~MenuCommandStructure ();
 
-	void	AddCommand (MenuCommandPtr command);
-	bool	IsEmpty () const;
-	void	EnumerateCommands (const std::function<void (const MenuCommandPtr&)>& processor) const;
+	void							AddCommand (MenuCommandPtr command);
+	std::vector<MenuCommandPtr>		GetCommands () const;
+
+	bool							IsEmpty () const;
+	void							EnumerateCommands (const std::function<void (const MenuCommandPtr&)>& processor) const;
 
 private:
 	std::vector<MenuCommandPtr>	commands;

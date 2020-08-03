@@ -47,6 +47,11 @@ void SingleMenuCommand::EnumerateChildCommands (const std::function<void (const 
 
 }
 
+std::vector<NUIE::MenuCommandPtr> SingleMenuCommand::GetChildCommands () const
+{
+	return {};
+}
+
 MultiMenuCommand::MultiMenuCommand (const NE::LocString& name) :
 	MenuCommand (name)
 {
@@ -81,6 +86,11 @@ void MultiMenuCommand::EnumerateChildCommands (const std::function<void (const M
 	}
 }
 
+std::vector<NUIE::MenuCommandPtr> MultiMenuCommand::GetChildCommands () const
+{
+	return childCommands;
+}
+
 void MultiMenuCommand::Do ()
 {
 	DBGBREAK ();
@@ -99,6 +109,11 @@ MenuCommandStructure::~MenuCommandStructure ()
 void MenuCommandStructure::AddCommand (MenuCommandPtr command)
 {
 	commands.push_back (command);
+}
+
+std::vector<NUIE::MenuCommandPtr> MenuCommandStructure::GetCommands () const
+{
+	return commands;
 }
 
 bool MenuCommandStructure::IsEmpty () const
