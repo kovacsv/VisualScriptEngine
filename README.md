@@ -27,6 +27,10 @@ MacOS demo application:
 
 ![Screenshot](Documentation/MacOSEmbeddingDemo01.png?raw=true "MacOS Embedding Demo")
 
+Running in a browser with [VisualScriptEngineWeb](https://github.com/kovacsv/VisualScriptEngineWeb):
+
+![Screenshot](Documentation/WebEmbeddingDemo01.png?raw=true "Web Embedding Demo")
+
 ## Other
 
 - [VisualScriptEngineWeb](https://github.com/kovacsv/VisualScriptEngineWeb) is an Emscripten port of the engine running in a browser.
