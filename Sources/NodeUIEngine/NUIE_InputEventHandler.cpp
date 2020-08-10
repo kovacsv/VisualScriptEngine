@@ -104,7 +104,7 @@ void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const ModifierKe
 {
 	std::unordered_set<MouseButton> downButtonsMoved;
 	for (const auto& it : downMouseButtons) {
-		if (it.second.DistanceTo (position) > env.GetMouseMoveMinOffset ()) {
+		if (Point::Distance (it.second, position) > env.GetMouseMoveMinOffset ()) {
 			movingMouseButtons.insert (it.first);
 			handler.HandleMouseDragStart (env, modifierKeys, it.first, it.second);
 			downButtonsMoved.insert (it.first);

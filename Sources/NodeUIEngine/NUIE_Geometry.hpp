@@ -34,9 +34,8 @@ public:
 	bool	operator== (const Point& p) const;
 	bool	operator!= (const Point& p) const;
 
-	double	DistanceTo (const Point& p) const;
-
-	static Point GetMidPoint (const Point& a, const Point& b);
+	static double	Distance (const Point& a, const Point& b);
+	static Point	GetMidPoint (const Point& a, const Point& b);
 
 private:
 	double x;

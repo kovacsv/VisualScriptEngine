@@ -28,8 +28,8 @@ TEST (PointTest)
 	ASSERT (p1 - p2 == Point (-2.0, -2.0));
 	ASSERT (p1 * 2.0 == Point (2.0, 4.0));
 	ASSERT (p1 / 2.0 == Point (0.5, 1.0));
-	ASSERT (p1.DistanceTo (Point (2.0, 2.0)) == 1.0);
-	ASSERT (p1.DistanceTo (Point (1.0, 3.0)) == 1.0);
+	ASSERT (Point::Distance (p1, Point (2.0, 2.0)) == 1.0);
+	ASSERT (Point::Distance (p1, Point (1.0, 3.0)) == 1.0);
 	ASSERT (Point::GetMidPoint (p1, Point (3.0, 2.0)) == Point (2.0, 2.0));
 }
 

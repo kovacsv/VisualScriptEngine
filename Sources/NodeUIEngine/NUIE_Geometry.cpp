@@ -83,9 +83,9 @@ bool Point::operator!= (const Point& p) const
 	return !operator== (p);
 }
 
-double Point::DistanceTo (const Point& p) const
+double Point::Distance (const Point& a, const Point& b)
 {
-	return sqrt ((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
+	return sqrt ((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
 }
 
 Point Point::GetMidPoint (const Point& a, const Point& b)

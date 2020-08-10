@@ -14,7 +14,7 @@ static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIDrawingE
 	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
 		uiNode->EnumerateUISlots<SlotType> ([&] (const SlotType& currentSlot) {
 			Point slotConnPosition = viewBox.ModelToView (uiNode->GetSlotConnPosition<SlotType> (env, currentSlot->GetId ()));
-			double distance = viewPosition.DistanceTo (slotConnPosition);
+			double distance = Point::Distance (viewPosition, slotConnPosition);
 			if (distance < minDistance) {
 				foundSlot = currentSlot;
 				minDistance = distance;
