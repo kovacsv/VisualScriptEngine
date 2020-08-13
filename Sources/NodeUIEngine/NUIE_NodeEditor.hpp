@@ -61,6 +61,8 @@ public:
 	bool						Save (NE::OutputStream& outputStream);
 	bool						NeedToSave () const;
 
+	void						ExecuteMenuCommand (const MenuCommandPtr& command);
+
 	void						SetSelectedNodesParameters ();
 	void						GroupSelectedNodes ();
 
