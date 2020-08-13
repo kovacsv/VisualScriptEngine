@@ -640,7 +640,7 @@ private:
 
 	NodeUIManager&				uiManager;
 	NodeUIEnvironment&			uiEnvironment;
-	const NE::NodeCollection&	relevantNodes;
+	NE::NodeCollection			relevantNodes;
 	MenuCommandStructure		commandStructure;
 };
 
