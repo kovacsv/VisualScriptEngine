@@ -179,9 +179,9 @@ void SetParametersMenuCommand::Do ()
 	class NodeSelectionParameterInterface : public ParameterInterface
 	{
 	public:
-		NodeSelectionParameterInterface (NodeParameterList& paramList, const UINodePtr& currentNode) :
-			paramList (paramList),
-			currentNode (currentNode)
+		NodeSelectionParameterInterface (const UINodePtr& currentNode, NodeParameterList& paramList) :
+			currentNode (currentNode),
+			paramList (paramList)
 		{
 
 		}
@@ -267,14 +267,14 @@ void SetParametersMenuCommand::Do ()
 		}
 
 	private:
-		NodeParameterList&								paramList;
-		const UINodePtr&								currentNode;
+		UINodePtr										currentNode;
+		NodeParameterList								paramList;
 		std::unordered_map<size_t, NE::ValueConstPtr>	changedParameterValues;
 	};
 
 	NodeParameterList relevantParameters;
 	RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
-	std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
+	std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (currentNode, relevantParameters));
 	if (uiEnvironment.GetEventHandler ().OnParameterSettings (paramInterface, currentNode)) {
 		CustomUndoableCommand command ([&] () {
 			paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
@@ -433,8 +433,8 @@ void SetGroupParametersMenuCommand::Do ()
 		}
 
 	private:
-		const UINodeGroupPtr&							currentGroup;
-		const NamedColorSet&							groupBackgroundColors;
+		UINodeGroupPtr									currentGroup;
+		NamedColorSet									groupBackgroundColors;
 		std::vector<GroupParameter>						groupParameters;
 		std::unordered_map<size_t, NE::ValueConstPtr>	changedParameterValues;
 	};
