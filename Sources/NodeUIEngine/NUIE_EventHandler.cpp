@@ -46,7 +46,7 @@ NUIE::MenuCommandPtr NullEventHandler::OnContextMenu (const Point&, const UINode
 	return nullptr;
 }
 
-void NullEventHandler::OnDoubleClick (MouseButton, const Point&)
+void NullEventHandler::OnDoubleClick (const Point&, MouseButton)
 {
 
 }

@@ -47,7 +47,7 @@ NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (const NUIE::Point& positio
 	return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
-void HwndEventHandler::OnDoubleClick (NUIE::MouseButton, const NUIE::Point&)
+void HwndEventHandler::OnDoubleClick (const NUIE::Point&, NUIE::MouseButton)
 {
 
 }

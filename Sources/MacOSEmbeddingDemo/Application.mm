@@ -213,7 +213,7 @@ NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position,
 
 }
 
-void AppEventHandler::OnDoubleClick(NUIE::MouseButton mouseButton, const NUIE::Point& position)
+void AppEventHandler::OnDoubleClick(const NUIE::Point& position, NUIE::MouseButton mouseButton)
 {
 	#pragma unused (mouseButton)
 	#pragma unused (position)

@@ -22,7 +22,7 @@ public:
 	virtual MenuCommandPtr		OnContextMenu (const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&) override;
 	virtual MenuCommandPtr		OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&) override;
 	virtual MenuCommandPtr		OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
-	virtual void				OnDoubleClick (MouseButton, const Point&) override;
+	virtual void				OnDoubleClick (const Point&, MouseButton) override;
 	virtual bool				OnParameterSettings (ParameterInterfacePtr, const UINodePtr&) override;
 	virtual bool				OnParameterSettings (ParameterInterfacePtr, const UINodeGroupPtr&) override;
 

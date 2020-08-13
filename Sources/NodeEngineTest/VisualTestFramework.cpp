@@ -155,7 +155,7 @@ MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UINodeGroupP
 	return SelectCommandByName (commands);
 }
 
-void TestEventHandler::OnDoubleClick (MouseButton, const Point&)
+void TestEventHandler::OnDoubleClick (const Point&, MouseButton)
 {
 
 }
