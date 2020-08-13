@@ -1,5 +1,6 @@
 #include "SimpleTest.hpp"
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_NodeCommonMenuCommands.hpp"
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
 #include "VisualTestFramework.hpp"
@@ -614,6 +615,16 @@ TEST (SlotCirclesFitToWindowTest)
 	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithSlotCircles ());
 	env.nodeEditor.FitToWindow ();
 	ASSERT (env.CheckReference (L"SlotCircles_FitToWindow.svg"));
+}
+
+TEST (GroupSelectedNodesTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference (L"GroupSelectedNodes_Basic.svg"));
+	env.Click (env.rangeInputHeaderPoint);
+	
+	env.nodeEditor.GroupSelectedNodes ();
+	ASSERT (env.CheckReference (L"GroupSelectedNodes_AfterGroup.svg"));
 }
 
 TEST (SkinParamsTest)
