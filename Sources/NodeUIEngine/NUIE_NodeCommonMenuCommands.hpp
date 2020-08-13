@@ -129,7 +129,6 @@ private:
 	NodeUIEnvironment&	uiEnvironment;
 	UINodePtr			currentNode;
 	NE::NodeCollection	relevantNodes;
-	NodeParameterList	relevantParameters;
 };
 
 class CreateGroupMenuCommand : public SingleMenuCommand

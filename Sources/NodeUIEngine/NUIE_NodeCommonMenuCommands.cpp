@@ -164,8 +164,7 @@ SetParametersMenuCommand::SetParametersMenuCommand (NodeUIManager& uiManager, No
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
 	currentNode (currentNode),
-	relevantNodes (relevantNodes),
-	relevantParameters ()
+	relevantNodes (relevantNodes)
 {
 	DBGASSERT (relevantNodes.Contains (currentNode->GetId ()));
 }
@@ -273,6 +272,7 @@ void SetParametersMenuCommand::Do ()
 		std::unordered_map<size_t, NE::ValueConstPtr>	changedParameterValues;
 	};
 
+	NodeParameterList relevantParameters;
 	RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
 	std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (relevantParameters, currentNode));
 	if (uiEnvironment.GetEventHandler ().OnParameterSettings (paramInterface, currentNode)) {
