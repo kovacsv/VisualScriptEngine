@@ -62,6 +62,7 @@ public:
 	bool						NeedToSave () const;
 
 	void						ExecuteMenuCommand (const MenuCommandPtr& command);
+	void						ApplyParameterChanges (const ParameterInterfacePtr& parameters);
 
 	void						SetSelectedNodesParameters ();
 	void						GroupSelectedNodes ();

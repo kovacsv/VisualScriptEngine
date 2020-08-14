@@ -2,6 +2,7 @@
 #define NUIE_PARAMETERINTERFACE_HPP
 
 #include "NE_Value.hpp"
+#include "NUIE_NodeUIManager.hpp"
 
 namespace NUIE
 {
@@ -40,6 +41,7 @@ public:
 	virtual const ParameterType&		GetParameterType (size_t index) const = 0;
 	virtual bool						IsValidParameterValue (size_t index, const NE::ValueConstPtr& value) const = 0;
 	virtual bool						SetParameterValue (size_t index, const NE::ValueConstPtr& value) = 0;
+	virtual void						ApplyChanges (NodeUIManager& uiManager, NE::EvaluationEnv& evalEnv) = 0;
 };
 
 using ParameterInterfacePtr = std::shared_ptr<ParameterInterface>;

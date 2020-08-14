@@ -2,6 +2,7 @@
 #define NUIE_NODEUIMANAGERCOMMANDS_HPP
 
 #include "NUIE_NodeUIManager.hpp"
+#include "NUIE_ParameterInterface.hpp"
 #include "NUIE_ClipboardHandler.hpp"
 
 namespace NUIE
@@ -247,6 +248,18 @@ public:
 
 private:
 	NE::EvaluationEnv& evaluationEnv;
+};
+
+class ApplyParametersCommand : public UndoableCommand
+{
+public:
+	ApplyParametersCommand (const ParameterInterfacePtr& paramInterface, NE::EvaluationEnv& evaluationEnv);
+
+	virtual void Do (NodeUIManager& uiManager) override;
+
+private:
+	const ParameterInterfacePtr&	paramInterface;
+	NE::EvaluationEnv&				evaluationEnv;
 };
 
 class CustomUndoableCommand : public UndoableCommand

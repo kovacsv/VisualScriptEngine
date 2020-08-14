@@ -179,19 +179,12 @@ void SetParametersMenuCommand::Do ()
 	class NodeSelectionParameterInterface : public ParameterInterface
 	{
 	public:
-		NodeSelectionParameterInterface (const UINodePtr& currentNode, NodeParameterList& paramList) :
+		NodeSelectionParameterInterface (const UINodePtr& currentNode, const NE::NodeCollection& nodeList, NodeParameterList& paramList) :
 			currentNode (currentNode),
+			nodeList (nodeList),
 			paramList (paramList)
 		{
 
-		}
-
-		void ApplyChanges (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes)
-		{
-			for (const auto& it : changedParameterValues) {
-				NodeParameterPtr& parameter = paramList.GetParameter (it.first);
-				ApplyCommonParameter (uiManager, uiEnvironment.GetEvaluationEnv (), relevantNodes, parameter, it.second);
-			}
 		}
 
 		virtual size_t GetParameterCount () const override
@@ -266,19 +259,26 @@ void SetParametersMenuCommand::Do ()
 			return true;
 		}
 
+		virtual void ApplyChanges (NodeUIManager& uiManager, NE::EvaluationEnv& evalEnv) override
+		{
+			for (const auto& it : changedParameterValues) {
+				NodeParameterPtr& parameter = paramList.GetParameter (it.first);
+				ApplyCommonParameter (uiManager, evalEnv, nodeList, parameter, it.second);
+			}
+		}
+
 	private:
 		UINodePtr										currentNode;
+		NE::NodeCollection								nodeList;
 		NodeParameterList								paramList;
 		std::unordered_map<size_t, NE::ValueConstPtr>	changedParameterValues;
 	};
 
 	NodeParameterList relevantParameters;
 	RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
-	std::shared_ptr<NodeSelectionParameterInterface> paramInterface (new NodeSelectionParameterInterface (currentNode, relevantParameters));
+	ParameterInterfacePtr paramInterface (new NodeSelectionParameterInterface (currentNode, relevantNodes, relevantParameters));
 	if (uiEnvironment.GetEventHandler ().OnParameterSettings (paramInterface, currentNode)) {
-		CustomUndoableCommand command ([&] () {
-			paramInterface->ApplyChanges (uiManager, uiEnvironment, relevantNodes);
-		});
+		ApplyParametersCommand command (paramInterface, uiEnvironment.GetEvaluationEnv ());
 		uiManager.ExecuteCommand (command);
 	}
 }
@@ -337,24 +337,6 @@ void SetGroupParametersMenuCommand::Do ()
 			})
 		{
 
-		}
-
-		void ApplyChanges (NodeUIManager& uiManager)
-		{
-			for (const auto& it : changedParameterValues) {
-				switch (it.first) {
-					case 0:
-						currentGroup->SetName (NE::StringValue::Get (it.second));
-						break;
-					case 1:
-						currentGroup->SetBackgroundColorIndex (NE::IntValue::Get (it.second));
-						break;
-					default:
-						DBGBREAK ();
-						break;
-				}
-			}
-			uiManager.RequestRedraw ();
 		}
 
 		virtual size_t GetParameterCount () const override
@@ -432,6 +414,24 @@ void SetGroupParametersMenuCommand::Do ()
 			return true;
 		}
 
+		virtual void ApplyChanges (NodeUIManager& uiManager, NE::EvaluationEnv&) override
+		{
+			for (const auto& it : changedParameterValues) {
+				switch (it.first) {
+				case 0:
+					currentGroup->SetName (NE::StringValue::Get (it.second));
+					break;
+				case 1:
+					currentGroup->SetBackgroundColorIndex (NE::IntValue::Get (it.second));
+					break;
+				default:
+					DBGBREAK ();
+					break;
+				}
+			}
+			uiManager.RequestRedraw ();
+		}
+
 	private:
 		UINodeGroupPtr									currentGroup;
 		NamedColorSet									groupBackgroundColors;
@@ -440,11 +440,9 @@ void SetGroupParametersMenuCommand::Do ()
 	};
 
 	const NamedColorSet& groupBackgroundColors = uiEnvironment.GetSkinParams ().GetGroupBackgroundColors ();
-	std::shared_ptr<GroupParameterInterface> paramInterface (new GroupParameterInterface (group, groupBackgroundColors));
+	ParameterInterfacePtr paramInterface (new GroupParameterInterface (group, groupBackgroundColors));
 	if (uiEnvironment.GetEventHandler ().OnParameterSettings (paramInterface, group)) {
-		CustomUndoableCommand command ([&] () {
-			paramInterface->ApplyChanges (uiManager);
-		});
+		ApplyParametersCommand command (paramInterface, uiEnvironment.GetEvaluationEnv ());
 		uiManager.ExecuteCommand (command);
 	}
 }

@@ -355,6 +355,17 @@ void RedoCommand::Do (NodeUIManager& uiManager)
 	uiManager.Redo (evaluationEnv);
 }
 
+ApplyParametersCommand::ApplyParametersCommand (const ParameterInterfacePtr& paramInterface, NE::EvaluationEnv& evaluationEnv) :
+	paramInterface (paramInterface),
+	evaluationEnv (evaluationEnv)
+{
+
+}
+
+void ApplyParametersCommand::Do (NodeUIManager& uiManager)
+{
+	paramInterface->ApplyChanges (uiManager, evaluationEnv);
+}
 
 CustomUndoableCommand::CustomUndoableCommand (const std::function<void ()>& func) :
 	UndoableCommand (),

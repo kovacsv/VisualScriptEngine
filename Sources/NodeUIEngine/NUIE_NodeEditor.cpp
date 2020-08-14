@@ -247,6 +247,13 @@ void NodeEditor::ExecuteMenuCommand (const MenuCommandPtr& command)
 	Update ();
 }
 
+void NodeEditor::ApplyParameterChanges (const ParameterInterfacePtr& parameters)
+{
+	ApplyParametersCommand command (parameters, uiEnvironment.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (command);
+	Update ();
+}
+
 void NodeEditor::SetSelectedNodesParameters ()
 {
 	const NE::NodeCollection& selectedNodes = GetSelectedNodes ();
