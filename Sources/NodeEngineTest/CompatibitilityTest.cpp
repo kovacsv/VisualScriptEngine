@@ -57,6 +57,10 @@ static void WriteTestFile ()
 	env.nodeEditor.ConnectOutputSlotToInputSlot (listBuilder->GetUIOutputSlot (SlotId ("out")), division->GetUIInputSlot (SlotId ("a")));
 	env.nodeEditor.ConnectOutputSlotToInputSlot (booleanNode->GetUIOutputSlot (SlotId ("out")), viewer->GetUIInputSlot (SlotId ("in")));
 	env.nodeEditor.ConnectOutputSlotToInputSlot (multiplication->GetUIOutputSlot (SlotId ("result")), multilineViewer->GetUIInputSlot (SlotId ("in")));
+	
+	env.nodeEditor.SetSelectedNodes (NE::NodeCollection ({ booleanNode->GetId () }));
+	env.nodeEditor.GroupSelectedNodes ();
+	env.nodeEditor.SetSelectedNodes (NE::EmptyNodeCollection);
 
 	std::wstring fileName = GetTestFilesPath () + L"Current_CompatibilityTest.ne";
 	env.nodeEditor.Save (fileName);
