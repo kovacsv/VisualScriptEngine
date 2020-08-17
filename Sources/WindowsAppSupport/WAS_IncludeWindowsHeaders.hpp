@@ -8,6 +8,7 @@
 #pragma warning (push)
 #pragma warning (disable : 4244)
 #pragma warning (disable : 4458)
+#include <minmax.h> // for gdiplus
 #include <gdiplus.h>
 #pragma warning (pop)
 
