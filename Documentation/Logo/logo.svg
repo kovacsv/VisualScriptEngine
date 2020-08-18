@@ -17,23 +17,11 @@
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Logo\logo_512.png"
-   inkscape:export-xdpi="1536"
-   inkscape:export-ydpi="1536">
+   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Logo\logo_016.png"
+   inkscape:export-xdpi="59.080002"
+   inkscape:export-ydpi="59.080002">
   <defs
      id="defs2">
-    <linearGradient
-       inkscape:collect="always"
-       id="Gradient-5">
-      <stop
-         style="stop-color:#005522;stop-opacity:1"
-         offset="0"
-         id="stop1308" />
-      <stop
-         style="stop-color:#008033;stop-opacity:1"
-         offset="1"
-         id="stop1310" />
-    </linearGradient>
     <linearGradient
        id="Gradient-3"
        inkscape:collect="always">
@@ -79,7 +67,7 @@
        gradientTransform="matrix(1.0000709,0,0,0.99999212,-3.0036778e-4,0.00235308)" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#Gradient-5"
+       xlink:href="#Gradient-3"
        id="linearGradient1314"
        x1="0.79374987"
        y1="292.76663"
@@ -88,7 +76,7 @@
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#Gradient-5"
+       xlink:href="#Gradient-3"
        id="linearGradient1322"
        x1="0.79374999"
        y1="292.76663"
@@ -104,15 +92,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="21.813333"
-     inkscape:cx="9.5805795"
-     inkscape:cy="12.233694"
+     inkscape:cx="16.457108"
+     inkscape:cy="14.52587"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
      units="px"
      inkscape:window-width="1920"
-     inkscape:window-height="1137"
-     inkscape:window-x="-8"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      showguides="false">
