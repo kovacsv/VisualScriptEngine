@@ -17,9 +17,9 @@
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Logo\logo_016.png"
-   inkscape:export-xdpi="59.080002"
-   inkscape:export-ydpi="59.080002">
+   inkscape:export-filename="C:\Users\kovacsv\GitRepos\VisualScriptEngine\Documentation\Logo\logo_512.png"
+   inkscape:export-xdpi="1536"
+   inkscape:export-ydpi="1536">
   <defs
      id="defs2">
     <linearGradient
@@ -69,19 +69,19 @@
        inkscape:collect="always"
        xlink:href="#Gradient-3"
        id="linearGradient1314"
-       x1="0.79374987"
-       y1="292.76663"
-       x2="7.6729164"
-       y2="292.76663"
+       x1="1.5875"
+       y1="290.12082"
+       x2="6.8791666"
+       y2="295.41248"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#Gradient-3"
        id="linearGradient1322"
-       x1="0.79374999"
-       y1="292.76663"
-       x2="7.6729169"
-       y2="292.76663"
+       x1="1.5875"
+       y1="290.12082"
+       x2="6.8791666"
+       y2="295.41248"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
@@ -93,7 +93,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="21.813333"
      inkscape:cx="16.457108"
-     inkscape:cy="14.52587"
+     inkscape:cy="16.359611"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
