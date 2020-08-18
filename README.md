@@ -5,7 +5,7 @@
 
 A C++ visual scripting engine designed for embedding.
 
-![VisualScriptEngine](Documentation/Logo/logo_128.png?raw=true)
+![VisualScriptEngine](Documentation/Logo/logo_128.png?raw=true "VisualScriptEngine")
 
 ## Links
 
