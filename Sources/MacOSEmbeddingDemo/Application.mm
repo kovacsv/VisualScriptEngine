@@ -356,10 +356,6 @@ void Application::Run ()
 	[myWindow setContentView:contentView];
 	[myWindow setDelegate:myWindowController];
 
-	// TODO: temporary
-	nodeEditor.AddNode (NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), NUIE::Point (100, 100), 5, 1)));
-	nodeEditor.AddNode (NUIE::UINodePtr (new BI::ViewerNode (NE::LocString (L"Viewer"), NUIE::Point (300, 200))));
-
 	uiEnvironment.Init (&nodeEditor, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow center];
 	[myWindow makeKeyAndOrderFront:nil];

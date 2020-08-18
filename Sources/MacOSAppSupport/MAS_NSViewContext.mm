@@ -172,8 +172,6 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 {
 	@autoreleasepool {
 		@try {
-			// TODO: speed (cache [NSString(NSStringDrawing) sizeWithAttributes:] result)
-			
 			[CreateColor (textColor) set];
 			NSString* nsText = MAS::StdWStringToNSString (text);
 			
