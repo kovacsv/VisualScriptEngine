@@ -1,13 +1,13 @@
 # VisualScriptEngine
 
-<img src="Documentation/Logo/logo_128.png?raw=true" alt="VisualScriptEngine" align="left">
-
 A C++ visual scripting engine designed for embedding.
 
 [Releases](https://github.com/kovacsv/VisualScriptEngine/releases) - [Issues](https://github.com/kovacsv/VisualScriptEngine/issues) - [Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki)
 
 [![Build Status](https://travis-ci.org/kovacsv/VisualScriptEngine.svg?branch=master)](https://travis-ci.org/kovacsv/VisualScriptEngine)
 [![Build Status](https://ci.appveyor.com/api/projects/status/c0qxxixyhymfxfdf?svg=true)](https://ci.appveyor.com/project/kovacsv/visualscriptengine)
+
+![VisualScriptEngine](Documentation/Logo/logo_128.png?raw=true "VisualScriptEngine")
 
 ## References
 
