@@ -13,8 +13,6 @@ A C++ visual scripting engine designed for embedding.
 
 ## References
 
-[![Logo](Documentation/References/PARAM-O.png?raw=true "PARAM-O")](https://graphisoft.com/param-o)
-
 [PARAM-O](https://graphisoft.com/param-o), the visual scripting solution in [ARCHICAD](https://graphisoft.com/solutions/products/archicad) is powered by VisualScriptEngine.
 
 ## Screenshots
