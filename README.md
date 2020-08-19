@@ -1,6 +1,6 @@
 # VisualScriptEngine
 
-A C++ visual scripting engine designed for embedding.
+A visual scripting engine designed for embedding. The engine is written in modern C++ and compiles on several platforms with no external dependencies. Some platform dependent user interface utilities are also provided for Windows and MacOS platforms.
 
 ![VisualScriptEngine](Documentation/Logo/logo_128.png?raw=true "VisualScriptEngine")
 
