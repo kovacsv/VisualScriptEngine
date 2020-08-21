@@ -2,7 +2,7 @@
 
 A visual scripting engine designed for embedding. The engine is written in modern C++ and compiles on several platforms with no external dependencies. Some platform dependent user interface utilities are also provided for Windows and MacOS platforms.
 
-![VisualScriptEngine](Documentation/Logo/logo_128.png?raw=true "VisualScriptEngine")
+![VisualScriptEngine](Documentation/Logo/vse_logo_128.png?raw=true "VisualScriptEngine")
 
 [Releases](https://github.com/kovacsv/VisualScriptEngine/releases) - [Issues](https://github.com/kovacsv/VisualScriptEngine/issues) - [Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki)
 
