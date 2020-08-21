@@ -131,13 +131,13 @@ public:
 			return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
 		});
 		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-		AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (107), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (111), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
 		});
-		AddNodeTreeItem (nodeTree, otherNodes, L"Multiline Viewer", NUIE::IconId (111), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"Multiline Viewer", NUIE::IconId (112), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Multiline Viewer"), position, 5));
 		});
-		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (111), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (112), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::ViewerNode (NE::LocString (L"Viewer"), position));
 		});
 
