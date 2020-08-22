@@ -11,8 +11,9 @@ namespace NE
 #define SIZEOFWCHAR 4
 #endif
 
+#define PREFERREDSIZEOFSIZET 8
 #ifndef SIZEOFSIZET
-#define SIZEOFSIZET 8
+#define SIZEOFSIZET PREFERREDSIZEOFSIZET
 #endif
 
 static_assert (sizeof (bool) == 1, "invalid size for bool");
@@ -24,6 +25,7 @@ static_assert (sizeof (double) == 8, "invalid size for double");
 static_assert (sizeof (unsigned char) == 1, "invalid size for unsigned char");
 static_assert (sizeof (short) == 2, "invalid size for short");
 static_assert (sizeof (size_t) == SIZEOFSIZET, "invalid size for size_t");
+static_assert (sizeof (uint64_t) == 8, "invalid size for uint32_t");
 static_assert (sizeof (int) == 4, "invalid size for int");
 static_assert (sizeof (float) == 4, "invalid size for float");
 static_assert (sizeof (double) == 8, "invalid size for double");
@@ -109,7 +111,13 @@ Stream::Status MemoryInputStream::Read (short& val)
 
 Stream::Status MemoryInputStream::Read (size_t& val)
 {
+#if SIZEOFSIZET == PREFERREDSIZEOFSIZET
 	Read ((char*) &val, sizeof (val));
+#else
+	uint64_t val64;
+	Read ((char*) &val64, sizeof (val64));
+	val = (size_t) val64;
+#endif
 	return GetStatus ();
 }
 
@@ -197,7 +205,12 @@ Stream::Status MemoryOutputStream::Write (const short& val)
 
 Stream::Status MemoryOutputStream::Write (const size_t& val)
 {
+#if SIZEOFSIZET == PREFERREDSIZEOFSIZET
 	Write ((const char*) &val, sizeof (val));
+#else
+	uint64_t val64 = (uint64_t) val;
+	Write ((char*) &val64, sizeof (val64));
+#endif
 	return GetStatus ();
 }
 
