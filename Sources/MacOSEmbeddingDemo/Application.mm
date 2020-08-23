@@ -90,12 +90,17 @@ static const NUIE::BasicSkinParams& GetAppSkinParams ()
 }
 
 static const std::vector<NSString*> IconResourceNames = {
+	@"Boolean.png",
 	@"Integer.png",
-	@"Number.png",
+	@"Double.png",
+	@"IntegerIncremented.png",
+	@"DoubleIncremented.png",
+	@"DoubleDistributed.png",
 	@"Addition.png",
 	@"Subtraction.png",
 	@"Multiplication.png",
 	@"Division.png",
+	@"ListBuilder.png",
 	@"Viewer.png"
 };
 
@@ -114,36 +119,42 @@ static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const 
 static void InitNodeTree (NUIE::NodeTree& nodeTree)
 {
 	size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-	AddNodeTreeItem (nodeTree, inputNodes, L"Integer", NUIE::IconId (1), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, inputNodes, L"Boolean", NUIE::IconId (1), [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
+	});
+	AddNodeTreeItem (nodeTree, inputNodes, L"Integer", NUIE::IconId (2), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 1));
 	});
-	AddNodeTreeItem (nodeTree, inputNodes, L"Number", NUIE::IconId (2), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, inputNodes, L"Number", NUIE::IconId (3), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 1.0));
 	});
-	AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", NUIE::IconId (1), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", NUIE::IconId (4), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
 	});
-	AddNodeTreeItem (nodeTree, inputNodes, L"Number Increment", NUIE::IconId (2), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, inputNodes, L"Number Increment", NUIE::IconId (5), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
 	});
-	AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", NUIE::IconId (2), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", NUIE::IconId (6), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
 	});
 	size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
-	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", NUIE::IconId (3), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", NUIE::IconId (7), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
 	});
-	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Subtraction", NUIE::IconId (4), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Subtraction", NUIE::IconId (8), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
 	});
-	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Multiplication", NUIE::IconId (5), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Multiplication", NUIE::IconId (9), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
 	});
-	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", NUIE::IconId (6), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", NUIE::IconId (10), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
 	});
 	size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-	AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (7), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (11), [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
+	});
+	AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (12), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
 	});
 }
