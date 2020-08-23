@@ -625,6 +625,9 @@ TEST (GroupSelectedNodesTest)
 	
 	env.nodeEditor.GroupSelectedNodes ();
 	ASSERT (env.CheckReference (L"GroupSelectedNodes_AfterGroup.svg"));
+
+	env.nodeEditor.UngroupSelectedNodes ();
+	ASSERT (env.CheckReference (L"GroupSelectedNodes_AfterUngroup.svg"));
 }
 
 TEST (SkinParamsTest)
