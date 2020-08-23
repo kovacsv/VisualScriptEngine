@@ -123,6 +123,7 @@
 	if ([characters length] == 1) {
 		unichar character = [characters characterAtIndex:0];
 		bool isCommandPressed = [event modifierFlags] & NSEventModifierFlagCommand;
+		bool isShiftPressed = [event modifierFlags] & NSEventModifierFlagShift;
 		if (isCommandPressed) {
 			if (character == 'a') {
 				pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
@@ -131,7 +132,11 @@
 			} else if (character == 'v') {
 				pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
 			} else if (character == 'g') {
-				pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+				if (isShiftPressed) {
+					pressedKey.SetKeyCode (NUIE::KeyCode::Ungroup);
+				} else {
+					pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+				}
 			} else if (character == 'z') {
 				pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
 			} else if (character == 'y') {

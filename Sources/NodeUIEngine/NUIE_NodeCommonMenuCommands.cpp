@@ -303,6 +303,25 @@ void CreateGroupMenuCommand::Do ()
 	uiManager.ExecuteCommand (command);
 }
 
+RemoveNodesFromGroupMenuCommand::RemoveNodesFromGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
+	SingleMenuCommand (NE::LocString (L"Remove From Group"), false),
+	uiManager (uiManager),
+	relevantNodes (relevantNodes)
+{
+
+}
+
+RemoveNodesFromGroupMenuCommand::~RemoveNodesFromGroupMenuCommand ()
+{
+
+}
+
+void RemoveNodesFromGroupMenuCommand::Do ()
+{
+	RemoveNodesFromGroupCommand command (relevantNodes);
+	uiManager.ExecuteCommand (command);
+}
+
 SetGroupParametersMenuCommand::SetGroupParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group) :
 	SingleMenuCommand (NE::LocString (L"Group Settings"), false),
 	uiManager (uiManager),
@@ -777,33 +796,6 @@ public:
 private:
 	NodeUIManager&		uiManager;
 	UINodeGroupPtr		group;
-};
-
-class RemoveNodesFromGroupMenuCommand : public SingleMenuCommand
-{
-public:
-	RemoveNodesFromGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes) :
-		SingleMenuCommand (NE::LocString (L"Remove From Group"), false),
-		uiManager (uiManager),
-		relevantNodes (relevantNodes)
-	{
-	
-	}
-
-	virtual ~RemoveNodesFromGroupMenuCommand ()
-	{
-	
-	}
-
-	virtual void Do () override
-	{
-		RemoveNodesFromGroupCommand command (relevantNodes);
-		uiManager.ExecuteCommand (command);
-	}
-
-private:
-	NodeUIManager&		uiManager;
-	NE::NodeCollection	relevantNodes;
 };
 
 class AddNodesToGroupMenuCommand : public SingleMenuCommand

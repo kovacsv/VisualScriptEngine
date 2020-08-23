@@ -38,6 +38,7 @@ enum class KeyCode
 	Copy,
 	Paste,
 	Group,
+	Ungroup,
 	Undo,
 	Redo
 };

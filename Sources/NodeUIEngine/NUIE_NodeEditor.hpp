@@ -66,6 +66,7 @@ public:
 
 	void						SetSelectedNodesParameters ();
 	void						GroupSelectedNodes ();
+	void						UngroupSelectedNodes ();
 
 	void						Undo ();
 	void						Redo ();

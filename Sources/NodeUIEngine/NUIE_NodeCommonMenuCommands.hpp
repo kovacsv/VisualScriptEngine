@@ -144,6 +144,19 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
+class RemoveNodesFromGroupMenuCommand : public SingleMenuCommand
+{
+public:
+	RemoveNodesFromGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
+	virtual ~RemoveNodesFromGroupMenuCommand ();
+
+	virtual void Do () override;
+
+private:
+	NodeUIManager&		uiManager;
+	NE::NodeCollection	relevantNodes;
+};
+
 class SetGroupParametersMenuCommand : public SingleMenuCommand
 {
 public:

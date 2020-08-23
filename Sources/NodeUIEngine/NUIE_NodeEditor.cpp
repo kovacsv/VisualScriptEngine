@@ -278,6 +278,17 @@ void NodeEditor::GroupSelectedNodes ()
 	ExecuteMenuCommand (command);
 }
 
+void NodeEditor::UngroupSelectedNodes ()
+{
+	const NE::NodeCollection& selectedNodes = GetSelectedNodes ();
+	if (selectedNodes.IsEmpty ()) {
+		return;
+	}
+
+	MenuCommandPtr command (new RemoveNodesFromGroupMenuCommand (uiManager, selectedNodes));
+	ExecuteMenuCommand (command);
+}
+
 void NodeEditor::Undo ()
 {
 	UndoCommand command (uiEnvironment.GetEvaluationEnv ());

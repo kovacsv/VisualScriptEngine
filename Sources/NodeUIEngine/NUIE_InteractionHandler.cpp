@@ -878,6 +878,13 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& uiEnvi
 				}
 			}
 			break;
+		case KeyCode::Ungroup:
+			{
+				if (!selectedNodes.IsEmpty ()) {
+					command.reset (new RemoveNodesFromGroupMenuCommand (uiManager, selectedNodes));
+				}
+			}
+			break;
 		case KeyCode::Undo:
 			{
 				command.reset (new UndoMenuCommand (uiManager, uiEnvironment));

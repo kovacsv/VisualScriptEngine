@@ -312,6 +312,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			{
 				NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
 				bool isControlPressed = (GetKeyState (VK_CONTROL) < 0);
+				bool isShiftPressed = (GetKeyState (VK_SHIFT) < 0);
 				if (isControlPressed) {
 					switch (wParam) {
 						case 'A':
@@ -324,7 +325,11 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 							pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
 							break;
 						case 'G':
-							pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+							if (isShiftPressed) {
+								pressedKey.SetKeyCode (NUIE::KeyCode::Ungroup);
+							} else {
+								pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+							}
 							break;
 						case 'Z':
 							pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
