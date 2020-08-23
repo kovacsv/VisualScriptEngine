@@ -79,7 +79,7 @@ bool ClipboardHandler::SetClipboardContent (const std::vector<char>& content)
 
 	HGLOBAL clipboardHandle = GlobalAlloc (GMEM_MOVEABLE, content.size ());
 	LPVOID pointer = GlobalLock (clipboardHandle);
-	memcpy (pointer, &content[0], content.size ());
+	memcpy (pointer, content.data (), content.size ());
 	GlobalUnlock (clipboardHandle);
 
 	HANDLE resultData = SetClipboardData (formatId, clipboardHandle);

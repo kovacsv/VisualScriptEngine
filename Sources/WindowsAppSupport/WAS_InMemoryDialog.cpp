@@ -34,7 +34,7 @@ public:
 
 	LPCDLGTEMPLATE ConvertToTemplate ()
 	{
-		return (LPCDLGTEMPLATE) &bytes[0];
+		return (LPCDLGTEMPLATE) bytes.data ();
 	}
 
 private:
