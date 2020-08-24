@@ -20,12 +20,13 @@ def GenerateWhiteIcon (sourceIconPath, whiteSvgIconPath):
 	whiteSvgContent = re.sub (r'#[0-9a-fA-F]{6}', '#FAFAFA', whiteSvgContent)
 	SetFileContent (whiteSvgIconPath, whiteSvgContent)
 
-def GeneratePngIcon (inkscapePath, sourceIconPath, pngIconPath, dpi):
+def GeneratePng (inkscapePath, sourceSvgPath, resultPngPath, size):
 	command = [
 		inkscapePath,
-		'--export-png=' + pngIconPath,
-		'--export-dpi=' + str (dpi),
-		sourceIconPath
+		'--export-png=' + resultPngPath,
+		'--export-width=' + str (size),
+		'--export-height=' + str (size),
+		sourceSvgPath
 	]
 	subprocess.call (command)
 
@@ -63,13 +64,13 @@ def Main (argv):
 		whiteSvgIconPath = os.path.join (svgWhiteIconsPath, svgName)
 		GenerateWhiteIcon (sourceIconPath, whiteSvgIconPath)
 		png18Path = os.path.join (png18IconsPath, svgBaseName + '.png')
-		GeneratePngIcon (inkscapePath, sourceIconPath, png18Path, 96)
+		GeneratePng (inkscapePath, sourceIconPath, png18Path, 18)
 		pngWhite18Path = os.path.join (pngWhite18IconsPath, svgBaseName + '.png')
-		GeneratePngIcon (inkscapePath, whiteSvgIconPath, pngWhite18Path, 96)
+		GeneratePng (inkscapePath, whiteSvgIconPath, pngWhite18Path, 18)
 		png36Path = os.path.join (png36IconsPath, svgBaseName + '.png')
-		GeneratePngIcon (inkscapePath, sourceIconPath, png36Path, 192)
+		GeneratePng (inkscapePath, sourceIconPath, png36Path, 36)
 		pngWhite36Path = os.path.join (pngWhite36IconsPath, svgBaseName + '.png')
-		GeneratePngIcon (inkscapePath, whiteSvgIconPath, pngWhite36Path, 192)
+		GeneratePng (inkscapePath, whiteSvgIconPath, pngWhite36Path, 36)
 
 	return 0
 	
