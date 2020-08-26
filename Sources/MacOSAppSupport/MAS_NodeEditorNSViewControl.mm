@@ -138,9 +138,11 @@
 					pressedKey.SetKeyCode (NUIE::KeyCode::Group);
 				}
 			} else if (character == 'z') {
-				pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
-			} else if (character == 'y') {
-				pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+				if (isShiftPressed) {
+					pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+				} else {
+					pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
+				}
 			}
 		} else {
 			static const unichar EscapeKeyCode = u'\x1b';

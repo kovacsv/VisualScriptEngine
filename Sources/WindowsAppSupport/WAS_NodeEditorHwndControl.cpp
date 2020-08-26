@@ -153,10 +153,11 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 							}
 							break;
 						case 'Z':
-							pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
-							break;
-						case 'Y':
-							pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+							if (isShiftPressed) {
+								pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+							} else {
+								pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
+							}
 							break;
 					}
 				} else {

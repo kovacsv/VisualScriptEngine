@@ -332,10 +332,11 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 							}
 							break;
 						case 'Z':
-							pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
-							break;
-						case 'Y':
-							pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+							if (isShiftPressed) {
+								pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+							} else {
+								pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
+							}
 							break;
 					}
 				} else {
