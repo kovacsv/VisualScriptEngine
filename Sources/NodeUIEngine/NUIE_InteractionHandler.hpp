@@ -52,7 +52,7 @@ public:
 	~InteractionHandler ();
 
 	const NodeDrawingModifier*		GetDrawingModifier ();
-	Point							CalculatePastePosition (NodeUIEnvironment& uiEnvironment);
+	void							ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE::CommandCode command);
 
 	virtual EventHandlerResult		HandleMouseDragStart (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult		HandleMouseDragStop (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;

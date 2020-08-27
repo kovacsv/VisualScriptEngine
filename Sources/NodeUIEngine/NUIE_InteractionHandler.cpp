@@ -613,9 +613,91 @@ const NodeDrawingModifier* InteractionHandler::GetDrawingModifier ()
 	return &multiMouseMoveHandler;
 }
 
-Point InteractionHandler::CalculatePastePosition (NodeUIEnvironment& uiEnvironment)
+void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE::CommandCode command)
 {
-	return pastePositionCalculator.CalculatePastePosition (uiManager, uiEnvironment);
+	if (command == CommandCode::Escape) {
+		HandleKeyPress (uiEnvironment, KeyCode::Escape);
+		return;
+	}
+
+	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+	MenuCommandPtr menuCommand = nullptr;
+
+	switch (command) {
+		case CommandCode::Delete:
+			{
+				if (!selectedNodes.IsEmpty ()) {
+					menuCommand.reset (new DeleteNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
+				}
+			}
+			break;
+		case CommandCode::SelectAll:
+			{
+				NE::NodeCollection allSelectedNodes;
+				uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+					allSelectedNodes.Insert (uiNode->GetId ());
+					return true;
+				});
+				uiManager.SetSelectedNodes (allSelectedNodes);
+			}
+			break;
+		case CommandCode::SetParameters:
+			{
+				if (!selectedNodes.IsEmpty ()) {
+					size_t nodeCount = selectedNodes.Count ();
+					UINodePtr currentNode = uiManager.GetUINode (selectedNodes.Get (nodeCount - 1));
+					menuCommand.reset (new SetParametersMenuCommand (uiManager, uiEnvironment, currentNode, selectedNodes));
+				}
+			}
+			break;
+		case CommandCode::Copy:
+			{
+				if (!selectedNodes.IsEmpty ()) {
+					menuCommand.reset (new CopyNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
+				}
+			}
+			break;
+		case CommandCode::Paste:
+			{
+				if (uiEnvironment.GetClipboardHandler ().HasClipboardContent ()) {
+					Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, uiEnvironment);
+					menuCommand.reset (new PasteNodesMenuCommand (uiManager, uiEnvironment, modelPastePosition));
+				}
+			}
+			break;
+		case CommandCode::Group:
+			{
+				if (!selectedNodes.IsEmpty ()) {
+					menuCommand.reset (new CreateGroupMenuCommand (uiManager, selectedNodes));
+				}
+			}
+			break;
+		case CommandCode::Ungroup:
+			{
+				if (!selectedNodes.IsEmpty ()) {
+					menuCommand.reset (new RemoveNodesFromGroupMenuCommand (uiManager, selectedNodes));
+				}
+			}
+			break;
+		case CommandCode::Undo:
+			{
+				menuCommand.reset (new UndoMenuCommand (uiManager, uiEnvironment));
+			}
+			break;
+		case CommandCode::Redo:
+			{
+				menuCommand.reset (new RedoMenuCommand (uiManager, uiEnvironment));
+			}
+			break;
+		case CommandCode::Escape:
+		case CommandCode::Undefined:
+			DBGBREAK ();
+			break;
+	}
+
+	if (menuCommand != nullptr) {
+		menuCommand->Do ();
+	}
 }
 
 EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)

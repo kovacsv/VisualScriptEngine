@@ -13,21 +13,6 @@
 namespace NUIE
 {
 
-enum class CommandCode
-{
-	Undefined,
-	Escape,
-	Delete,
-	SelectAll,
-	SetParameters,
-	Copy,
-	Paste,
-	Group,
-	Ungroup,
-	Undo,
-	Redo
-};
-
 class NodeEditor
 {
 public:

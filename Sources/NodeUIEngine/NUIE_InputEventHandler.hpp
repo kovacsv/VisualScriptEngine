@@ -34,6 +34,21 @@ enum class KeyCode
 	Escape
 };
 
+enum class CommandCode
+{
+	Undefined,
+	Escape,
+	Delete,
+	SelectAll,
+	SetParameters,
+	Copy,
+	Paste,
+	Group,
+	Ungroup,
+	Undo,
+	Redo
+};
+
 }
 
 namespace std
