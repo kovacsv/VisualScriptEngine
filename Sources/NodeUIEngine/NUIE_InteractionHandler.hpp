@@ -13,6 +13,21 @@ namespace NUIE
 
 class NodeUIManager;
 
+enum class CommandCode
+{
+	Undefined,
+	Escape,
+	Delete,
+	SelectAll,
+	SetParameters,
+	Copy,
+	Paste,
+	Group,
+	Ungroup,
+	Undo,
+	Redo
+};
+
 class PastePositionCalculator
 {
 public:
