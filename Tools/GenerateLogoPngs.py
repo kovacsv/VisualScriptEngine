@@ -28,15 +28,15 @@ def Main (argv):
 	inkscapePath = sys.argv[1] # "C:\Program Files\Inkscape\inkscape.com"
 	
 	logoFolder = os.path.abspath (os.path.join ('..', 'Documentation', 'Logo'))
-	logoSvgPath = os.path.join (logoFolder, 'svg', 'vse_logo.svg')
-	
-	for size in [16, 32, 64, 128, 256, 512]:
-		sizeStr = str (size)
-		while len (sizeStr) < 3:
-			sizeStr = '0' + sizeStr
-		pngPath = os.path.join (logoFolder, 'png', 'vse_logo_' + sizeStr + '.png')
-		onlyDrawing = (size <= 32)
-		GeneratePng (inkscapePath, logoSvgPath, pngPath, size, onlyDrawing)
+	for logoName in ['vse_logo']:
+		logoSvgPath = os.path.join (logoFolder, 'svg', logoName + '.svg')
+		for size in [16, 32, 64, 128, 256, 512]:
+			sizeStr = str (size)
+			while len (sizeStr) < 3:
+				sizeStr = '0' + sizeStr
+			pngPath = os.path.join (logoFolder, 'png', logoName + '_' + sizeStr + '.png')
+			onlyDrawing = (size <= 32)
+			GeneratePng (inkscapePath, logoSvgPath, pngPath, size, onlyDrawing)
 
 	return 0
 	
