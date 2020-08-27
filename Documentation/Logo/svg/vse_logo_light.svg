@@ -60,9 +60,9 @@
      cy="16"
      cx="16"
      id="path828"
-     style="opacity:1;fill:none;fill-opacity:1;stroke:url(#linearGradient826);stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#eeeeee;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
   <path
      id="path1279"
      d="m 12,13 4,7 4,-7"
-     style="fill:none;stroke:url(#linearGradient825);stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+     style="fill:none;stroke:#eeeeee;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
 </svg>
