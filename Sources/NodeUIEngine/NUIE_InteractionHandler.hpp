@@ -36,7 +36,7 @@ public:
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult	HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseWheelRotation rotation, const Point& position) override;
-	virtual EventHandlerResult	HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey) override;
+	virtual EventHandlerResult	HandleKeyPress (NodeUIEnvironment& env, KeyCode pressedKey) override;
 
 private:
 	EventHandlerResult			ForwardEventToNode (const std::function<EventHandlerResult ()>& forwardEvent);
@@ -52,6 +52,7 @@ public:
 	~InteractionHandler ();
 
 	const NodeDrawingModifier*		GetDrawingModifier ();
+	Point							CalculatePastePosition (NodeUIEnvironment& uiEnvironment);
 
 	virtual EventHandlerResult		HandleMouseDragStart (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult		HandleMouseDragStop (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
@@ -59,7 +60,7 @@ public:
 	virtual EventHandlerResult		HandleMouseClick (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult		HandleMouseDoubleClick (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult		HandleMouseWheel (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseWheelRotation rotation, const Point& position) override;
-	virtual EventHandlerResult		HandleKeyPress (NodeUIEnvironment& uiEnvironment, const Key& pressedKey) override;
+	virtual EventHandlerResult		HandleKeyPress (NodeUIEnvironment& uiEnvironment, KeyCode pressedKey) override;
 
 private:
 	NodeUIManager&					uiManager;

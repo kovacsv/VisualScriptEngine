@@ -216,7 +216,7 @@ TEST (CreateGroupTest)
 	}
 
 	{ // create group
-		env.KeyPress (Key (KeyCode::Group));
+		env.ExecuteCommand (CommandCode::Group);
 		ASSERT (env.CheckReference (L"CreateGroup_GroupCreated.svg"));
 	}
 }
@@ -496,7 +496,7 @@ TEST (UndoTest)
 	ASSERT (env.CheckReference (L"UndoTest_Initial.svg"));
 
 	for (int i = 1; i <= 11; i++) {
-		env.nodeEditor.OnKeyPress (Key (KeyCode::Undo));
+		env.nodeEditor.ExecuteCommand (CommandCode::Undo);
 		std::wstring indexString = std::to_wstring (i);
 		while (indexString.length () < 2) {
 			indexString = L"0" + indexString;
@@ -504,7 +504,7 @@ TEST (UndoTest)
 		ASSERT (env.CheckReference (L"UndoTest_Undo_" + indexString + L".svg"));
 	}
 	for (int i = 1; i <= 11; i++) {
-		env.nodeEditor.OnKeyPress (Key (KeyCode::Redo));
+		env.nodeEditor.ExecuteCommand (CommandCode::Redo);
 		std::wstring indexString = std::to_wstring (i);
 		while (indexString.length () < 2) {
 			indexString = L"0" + indexString;
@@ -623,10 +623,10 @@ TEST (GroupSelectedNodesTest)
 	ASSERT (env.CheckReference (L"GroupSelectedNodes_Basic.svg"));
 	env.Click (env.rangeInputHeaderPoint);
 	
-	env.nodeEditor.GroupSelectedNodes ();
+	env.nodeEditor.ExecuteCommand (NUIE::CommandCode::Group);
 	ASSERT (env.CheckReference (L"GroupSelectedNodes_AfterGroup.svg"));
 
-	env.nodeEditor.UngroupSelectedNodes ();
+	env.nodeEditor.ExecuteCommand (NUIE::CommandCode::Ungroup);
 	ASSERT (env.CheckReference (L"GroupSelectedNodes_AfterUngroup.svg"));
 }
 

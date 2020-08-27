@@ -37,7 +37,9 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		case WM_CLOSE:
-			EndDialog (hwnd, 0);
+			{
+				EndDialog (hwnd, 0);
+			}
 			break;
 		case WM_COMMAND:
 			{

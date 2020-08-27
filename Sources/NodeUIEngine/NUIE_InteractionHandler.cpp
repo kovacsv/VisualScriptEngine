@@ -572,7 +572,7 @@ EventHandlerResult NodeInputEventHandler::HandleMouseWheel (NodeUIEnvironment&, 
 	return EventHandlerResult::EventNotHandled;
 }
 
-EventHandlerResult NodeInputEventHandler::HandleKeyPress (NodeUIEnvironment&, const Key&)
+EventHandlerResult NodeInputEventHandler::HandleKeyPress (NodeUIEnvironment&, KeyCode)
 {
 	return EventHandlerResult::EventNotHandled;
 }
@@ -611,6 +611,11 @@ InteractionHandler::~InteractionHandler ()
 const NodeDrawingModifier* InteractionHandler::GetDrawingModifier ()
 {
 	return &multiMouseMoveHandler;
+}
+
+Point InteractionHandler::CalculatePastePosition (NodeUIEnvironment& uiEnvironment)
+{
+	return pastePositionCalculator.CalculatePastePosition (uiManager, uiEnvironment);
 }
 
 EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
@@ -822,9 +827,9 @@ EventHandlerResult InteractionHandler::HandleMouseWheel (NodeUIEnvironment&, con
 	return EventHandlerResult::EventHandled;
 }
 
-EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& uiEnvironment, const Key& pressedKey)
+EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment&, KeyCode pressedKey)
 {
-	if (pressedKey.GetKeyCode () == KeyCode::Escape) {
+	if (pressedKey == KeyCode::Escape) {
 		if (multiMouseMoveHandler.HasHandler ()) {
 			multiMouseMoveHandler.AbortHandlers ();
 			return EventHandlerResult::EventHandled;
@@ -832,77 +837,6 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& uiEnvi
 			NE::NodeCollection emptySelectedNodes;
 			uiManager.SetSelectedNodes (emptySelectedNodes);
 		}
-		return EventHandlerResult::EventHandled;
-	}
-
-	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
-	MenuCommandPtr command = nullptr;
-
-	switch (pressedKey.GetKeyCode ()) {
-		case KeyCode::Delete:
-			{
-				if (!selectedNodes.IsEmpty ()) {
-					command.reset (new DeleteNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
-				}
-			}
-			break;
-		case KeyCode::SelectAll:
-			{
-				NE::NodeCollection allSelectedNodes;
-				uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
-					allSelectedNodes.Insert (uiNode->GetId ());
-					return true;
-				});
-				uiManager.SetSelectedNodes (allSelectedNodes);
-			}
-			break;
-		case KeyCode::Copy:
-			{
-				if (!selectedNodes.IsEmpty ()) {
-					command.reset (new CopyNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
-				}
-			}
-			break;
-		case KeyCode::Paste:
-			{
-				if (uiEnvironment.GetClipboardHandler ().HasClipboardContent ()) {
-					Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, uiEnvironment);
-					command.reset (new PasteNodesMenuCommand (uiManager, uiEnvironment, modelPastePosition));
-				}
-			}
-			break;
-		case KeyCode::Group:
-			{
-				if (!selectedNodes.IsEmpty ()) {
-					command.reset (new CreateGroupMenuCommand (uiManager, selectedNodes));
-				}
-			}
-			break;
-		case KeyCode::Ungroup:
-			{
-				if (!selectedNodes.IsEmpty ()) {
-					command.reset (new RemoveNodesFromGroupMenuCommand (uiManager, selectedNodes));
-				}
-			}
-			break;
-		case KeyCode::Undo:
-			{
-				command.reset (new UndoMenuCommand (uiManager, uiEnvironment));
-			}
-			break;
-		case KeyCode::Redo:
-			{
-				command.reset (new RedoMenuCommand (uiManager, uiEnvironment));
-			}
-			break;
-		case KeyCode::Escape:
-		case KeyCode::Undefined:
-			DBGBREAK ();
-			break;
-	}
-
-	if (command != nullptr) {
-		command->Do ();
 		return EventHandlerResult::EventHandled;
 	}
 	return EventHandlerResult::EventNotHandled;

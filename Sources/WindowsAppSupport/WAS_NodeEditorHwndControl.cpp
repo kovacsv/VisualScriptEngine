@@ -131,48 +131,48 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 				if (!control->IsMouseOverEditorWindow ()) {
 					break;
 				}
-				NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
+				NUIE::CommandCode commandCode = NUIE::CommandCode::Undefined;
 				bool isControlPressed = (GetKeyState (VK_CONTROL) < 0);
 				bool isShiftPressed = (GetKeyState (VK_SHIFT) < 0);
 				if (isControlPressed) {
 					switch (wParam) {
 						case 'A':
-							pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
+							commandCode = NUIE::CommandCode::SelectAll;
 							break;
 						case 'C':
-							pressedKey.SetKeyCode (NUIE::KeyCode::Copy);
+							commandCode = NUIE::CommandCode::Copy;
 							break;
 						case 'V':
-							pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
+							commandCode = NUIE::CommandCode::Paste;
 							break;
 						case 'G':
 							if (isShiftPressed) {
-								pressedKey.SetKeyCode (NUIE::KeyCode::Ungroup);
+								commandCode = NUIE::CommandCode::Ungroup;
 							} else {
-								pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+								commandCode = NUIE::CommandCode::Group;
 							}
 							break;
 						case 'Z':
 							if (isShiftPressed) {
-								pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+								commandCode = NUIE::CommandCode::Redo;
 							} else {
-								pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
+								commandCode = NUIE::CommandCode::Undo;
 							}
 							break;
 					}
 				} else {
 					switch (wParam) {
 						case VK_ESCAPE:
-							pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
+							commandCode = NUIE::CommandCode::Escape;
 							break;
 						case VK_DELETE:
 						case VK_BACK:
-							pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
+							commandCode = NUIE::CommandCode::Delete;
 							break;
 					}
 				}
-				if (pressedKey.IsValid ()) {
-					nodeEditor->OnKeyPress (pressedKey);
+				if (commandCode != NUIE::CommandCode::Undefined) {
+					nodeEditor->ExecuteCommand (commandCode);
 				}
 			}
 			break;

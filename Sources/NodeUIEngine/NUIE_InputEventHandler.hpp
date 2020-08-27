@@ -31,16 +31,7 @@ enum class ModifierKeyCode
 
 enum class KeyCode
 {
-	Undefined,
-	Escape,
-	Delete,
-	SelectAll,
-	Copy,
-	Paste,
-	Group,
-	Ungroup,
-	Undo,
-	Redo
+	Escape
 };
 
 }
@@ -85,23 +76,6 @@ private:
 
 extern const ModifierKeys EmptyModifierKeys;
 
-class Key
-{
-public:
-	Key ();
-	Key (KeyCode keyCode);
-
-	bool		IsValid () const;
-
-	KeyCode		GetKeyCode () const;
-	void		SetKeyCode (KeyCode newKeyCode);
-
-private:
-	KeyCode		keyCode;
-};
-
-extern const Key InvalidKey;
-
 enum class EventHandlerResult
 {
 	EventHandled,
@@ -120,7 +94,7 @@ public:
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) = 0;
 	virtual EventHandlerResult	HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) = 0;
 	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseWheelRotation rotation, const Point& position) = 0;
-	virtual EventHandlerResult	HandleKeyPress (NodeUIEnvironment& env, const Key& pressedKey) = 0;
+	virtual EventHandlerResult	HandleKeyPress (NodeUIEnvironment& env, KeyCode pressedKey) = 0;
 };
 
 class MouseEventTranslator

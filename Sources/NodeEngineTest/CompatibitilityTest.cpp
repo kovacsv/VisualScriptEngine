@@ -59,7 +59,7 @@ static void WriteTestFile ()
 	env.nodeEditor.ConnectOutputSlotToInputSlot (multiplication->GetUIOutputSlot (SlotId ("result")), multilineViewer->GetUIInputSlot (SlotId ("in")));
 	
 	env.nodeEditor.SetSelectedNodes (NE::NodeCollection ({ booleanNode->GetId () }));
-	env.nodeEditor.GroupSelectedNodes ();
+	env.nodeEditor.ExecuteCommand (NUIE::CommandCode::Group);
 	env.nodeEditor.SetSelectedNodes (NE::EmptyNodeCollection);
 
 	std::wstring fileName = GetTestFilesPath () + L"Current_CompatibilityTest.ne";

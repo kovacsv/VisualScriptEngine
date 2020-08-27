@@ -117,7 +117,7 @@
 		return;
 	}
 
-	NUIE::Key pressedKey (NUIE::KeyCode::Undefined);
+	NUIE::CommandCode commandCode = NUIE::CommandCode::Undefined;
 	NSString* characters = [event charactersIgnoringModifiers];
 	
 	if ([characters length] == 1) {
@@ -126,36 +126,36 @@
 		bool isShiftPressed = [event modifierFlags] & NSEventModifierFlagShift;
 		if (isCommandPressed) {
 			if (character == 'a') {
-				pressedKey.SetKeyCode (NUIE::KeyCode::SelectAll);
+				commandCode = NUIE::KeyCode::SelectAll;
 			} else if (character == 'c') {
-				pressedKey.SetKeyCode (NUIE::KeyCode::Copy);
+				commandCode = NUIE::KeyCode::Copy;
 			} else if (character == 'v') {
-				pressedKey.SetKeyCode (NUIE::KeyCode::Paste);
+				commandCode = NUIE::KeyCode::Paste;
 			} else if (character == 'g') {
 				if (isShiftPressed) {
-					pressedKey.SetKeyCode (NUIE::KeyCode::Ungroup);
+					commandCode = NUIE::KeyCode::Ungroup;
 				} else {
-					pressedKey.SetKeyCode (NUIE::KeyCode::Group);
+					commandCode = NUIE::KeyCode::Group;
 				}
 			} else if (character == 'z') {
 				if (isShiftPressed) {
-					pressedKey.SetKeyCode (NUIE::KeyCode::Redo);
+					commandCode = NUIE::KeyCode::Redo;
 				} else {
-					pressedKey.SetKeyCode (NUIE::KeyCode::Undo);
+					commandCode = NUIE::KeyCode::Undo;
 				}
 			}
 		} else {
 			static const unichar EscapeKeyCode = u'\x1b';
 			if (character == NSDeleteFunctionKey || character == NSDeleteCharacter) {
-				pressedKey.SetKeyCode (NUIE::KeyCode::Delete);
+				commandCode = NUIE::KeyCode::Delete;
 			} else if (character == EscapeKeyCode) {
-				pressedKey.SetKeyCode (NUIE::KeyCode::Escape);
+				commandCode = NUIE::KeyCode::Escape;
 			}
 		}
 	}
-	if (pressedKey.IsValid ()) {
+	if (commandCode != NUIE::CommandCode::Undefined) {
 		NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
-		nodeEditor->OnKeyPress (pressedKey);
+		nodeEditor->ExecuteCommand (commandCode);
 	}
 }
 

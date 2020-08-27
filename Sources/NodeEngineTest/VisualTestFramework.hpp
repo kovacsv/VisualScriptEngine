@@ -85,7 +85,7 @@ public:
 	void	Wheel (MouseWheelRotation rotation, const Point& point);
 	void	DragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
 	void	DragDrop (const ModifierKeys& keys, const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr); 
-	void	KeyPress (const NUIE::Key& key);
+	void	ExecuteCommand (const NUIE::CommandCode& commandCode);
 	void	SetNextCommandName (const std::wstring& nextCommandName);
 	void	SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
 

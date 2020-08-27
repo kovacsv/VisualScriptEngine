@@ -5,7 +5,6 @@ namespace NUIE
 {
 
 const ModifierKeys EmptyModifierKeys;
-const Key InvalidKey;
 
 ModifierKeys::ModifierKeys () :
 	keys ()
@@ -32,34 +31,6 @@ void ModifierKeys::Insert (ModifierKeyCode keyCode)
 bool ModifierKeys::Contains (ModifierKeyCode keyCode) const
 {
 	return keys.find (keyCode) != keys.end ();
-}
-
-Key::Key () :
-	keyCode (KeyCode::Undefined)
-{
-
-}
-
-Key::Key (KeyCode keyCode) :
-	keyCode (keyCode)
-{
-
-}
-
-bool Key::IsValid () const
-{
-	return keyCode != KeyCode::Undefined;
-}
-
-KeyCode Key::GetKeyCode () const
-{
-	DBGASSERT (IsValid ());
-	return keyCode;
-}
-
-void Key::SetKeyCode (KeyCode newKeyCode)
-{
-	keyCode = newKeyCode;
 }
 
 InputEventHandler::InputEventHandler ()

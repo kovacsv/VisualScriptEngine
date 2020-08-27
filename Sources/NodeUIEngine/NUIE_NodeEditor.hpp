@@ -13,6 +13,21 @@
 namespace NUIE
 {
 
+enum class CommandCode
+{
+	Undefined,
+	Escape,
+	Delete,
+	SelectAll,
+	SetParameters,
+	Copy,
+	Paste,
+	Group,
+	Ungroup,
+	Undo,
+	Redo
+};
+
 class NodeEditor
 {
 public:
@@ -30,7 +45,6 @@ public:
 	void						OnMouseMove (const ModifierKeys& modifierKeys, int x, int y);
 	void						OnMouseWheel (const ModifierKeys& modifierKeys, MouseWheelRotation rotation, int x, int y);
 	void						OnMouseDoubleClick (const ModifierKeys& modifierKeys, MouseButton button, int x, int y);
-	void						OnKeyPress (const Key& pressedKey);
 	void						OnResize (int newWidth, int newHeight);
 	
 	UpdateMode					GetUpdateMode () const;
@@ -61,12 +75,9 @@ public:
 	bool						Save (NE::OutputStream& outputStream);
 	bool						NeedToSave () const;
 
+	void						ExecuteCommand (CommandCode command);
 	void						ExecuteMenuCommand (const MenuCommandPtr& command);
 	void						ApplyParameterChanges (const ParameterInterfacePtr& parameters);
-
-	void						SetSelectedNodesParameters ();
-	void						GroupSelectedNodes ();
-	void						UngroupSelectedNodes ();
 
 	void						Undo ();
 	void						Redo ();
