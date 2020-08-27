@@ -22,7 +22,7 @@ def Main (argv):
 	os.chdir (currentDir)
 
 	if len (argv) != 2:
-		print ('usage: GenerateIcons.py <inkscapePath>')
+		print ('usage: GenerateLogoPngs.py <inkscapePath>')
 		return 1
 
 	inkscapePath = sys.argv[1] # "C:\Program Files\Inkscape\inkscape.com"
