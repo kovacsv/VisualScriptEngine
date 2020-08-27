@@ -126,30 +126,30 @@
 		bool isShiftPressed = [event modifierFlags] & NSEventModifierFlagShift;
 		if (isCommandPressed) {
 			if (character == 'a') {
-				commandCode = NUIE::KeyCode::SelectAll;
+				commandCode = NUIE::CommandCode::SelectAll;
 			} else if (character == 'c') {
-				commandCode = NUIE::KeyCode::Copy;
+				commandCode = NUIE::CommandCode::Copy;
 			} else if (character == 'v') {
-				commandCode = NUIE::KeyCode::Paste;
+				commandCode = NUIE::CommandCode::Paste;
 			} else if (character == 'g') {
 				if (isShiftPressed) {
-					commandCode = NUIE::KeyCode::Ungroup;
+					commandCode = NUIE::CommandCode::Ungroup;
 				} else {
-					commandCode = NUIE::KeyCode::Group;
+					commandCode = NUIE::CommandCode::Group;
 				}
 			} else if (character == 'z') {
 				if (isShiftPressed) {
-					commandCode = NUIE::KeyCode::Redo;
+					commandCode = NUIE::CommandCode::Redo;
 				} else {
-					commandCode = NUIE::KeyCode::Undo;
+					commandCode = NUIE::CommandCode::Undo;
 				}
 			}
 		} else {
 			static const unichar EscapeKeyCode = u'\x1b';
 			if (character == NSDeleteFunctionKey || character == NSDeleteCharacter) {
-				commandCode = NUIE::KeyCode::Delete;
+				commandCode = NUIE::CommandCode::Delete;
 			} else if (character == EscapeKeyCode) {
-				commandCode = NUIE::KeyCode::Escape;
+				commandCode = NUIE::CommandCode::Escape;
 			}
 		}
 	}
