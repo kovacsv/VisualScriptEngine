@@ -121,7 +121,7 @@
 	NSString* characters = [event charactersIgnoringModifiers];
 	
 	if ([characters length] == 1) {
-		unichar character = [characters characterAtIndex:0];
+		unichar character = tolower ([characters characterAtIndex:0]);
 		bool isCommandPressed = [event modifierFlags] & NSEventModifierFlagCommand;
 		bool isShiftPressed = [event modifierFlags] & NSEventModifierFlagShift;
 		if (isCommandPressed) {
