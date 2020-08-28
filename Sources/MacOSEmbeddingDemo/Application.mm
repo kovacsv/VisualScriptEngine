@@ -194,50 +194,50 @@ void AppEventHandler::Init (NUIE::NodeEditor* nodeEditorPtr, void* nsViewPtr)
 	nsView = nsViewPtr;
 }
 
-NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
 	NUIE::MenuCommandStructure finalCommands = commands;
 	NUIE::AddNodeTreeToMenuStructure (nodeTree, position, nodeEditor, finalCommands);
 	return MAS::SelectCommandFromContextMenu ((NSView*) nsView, position, finalCommands);
 }
 
-NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UINodePtr&, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::UINodePtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return MAS::SelectCommandFromContextMenu ((NSView*) nsView, position, commands);
 }
 
-NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UIOutputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
-{
-	return MAS::SelectCommandFromContextMenu ((NSView*) nsView, position, commands);
-
-}
-
-NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UIInputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::UIOutputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return MAS::SelectCommandFromContextMenu ((NSView*) nsView, position, commands);
 
 }
 
-NUIE::MenuCommandPtr AppEventHandler::OnContextMenu(const NUIE::Point& position, const NUIE::UINodeGroupPtr&, const NUIE::MenuCommandStructure& commands)
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::UIInputSlotConstPtr&, const NUIE::MenuCommandStructure& commands)
 {
 	return MAS::SelectCommandFromContextMenu ((NSView*) nsView, position, commands);
 
 }
 
-void AppEventHandler::OnDoubleClick(const NUIE::Point& position, NUIE::MouseButton mouseButton)
+NUIE::MenuCommandPtr AppEventHandler::OnContextMenu (const NUIE::Point& position, const NUIE::UINodeGroupPtr&, const NUIE::MenuCommandStructure& commands)
+{
+	return MAS::SelectCommandFromContextMenu ((NSView*) nsView, position, commands);
+
+}
+
+void AppEventHandler::OnDoubleClick (const NUIE::Point& position, NUIE::MouseButton mouseButton)
 {
 	#pragma unused (mouseButton)
 	#pragma unused (position)
 }
 
-bool AppEventHandler::OnParameterSettings(NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodePtr& uiNode)
+bool AppEventHandler::OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodePtr& uiNode)
 {
 	#pragma unused (paramAccessor)
 	#pragma unused (uiNode)
 	return false;
 }
 
-bool AppEventHandler::OnParameterSettings(NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodeGroupPtr& uiGroup)
+bool AppEventHandler::OnParameterSettings (NUIE::ParameterInterfacePtr paramAccessor, const NUIE::UINodeGroupPtr& uiGroup)
 {
 	#pragma unused (paramAccessor)
 	#pragma unused (uiGroup)

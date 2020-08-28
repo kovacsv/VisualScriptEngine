@@ -4,6 +4,16 @@
 #include "NE_Debug.hpp"
 #include "MAS_IncludeCocoaHeaders.hpp"
 
+static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::MouseButton button, int x, int y)
+{
+	NUIE::ModifierKeys modifierKeys = MAS::GetModifierKeysFromEvent (event);
+	if (event.clickCount == 2) {
+		nodeEditor->OnMouseDoubleClick (modifierKeys, button, x, y);
+	} else {
+		nodeEditor->OnMouseDown (modifierKeys, button, x, y);
+	}
+}
+
 @interface CocoaNSViewControl : NSView
 {
 @private MAS::NodeEditorNSViewControl* nodeEditorControl;
@@ -41,7 +51,7 @@
 {
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
-	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
+	MouseDownEvent (nodeEditor, event, NUIE::MouseButton::Left, position.GetX (), position.GetY ());
 }
 
 - (void) mouseUp : (NSEvent*) event
@@ -55,7 +65,7 @@
 {
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
-	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
+	MouseDownEvent (nodeEditor, event, NUIE::MouseButton::Right, position.GetX (), position.GetY ());
 }
 
 - (void) rightMouseUp : (NSEvent*) event
@@ -69,7 +79,7 @@
 {
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
-	nodeEditor->OnMouseDown (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
+	MouseDownEvent (nodeEditor, event, NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
 }
 
 - (void) otherMouseUp : (NSEvent*) event
