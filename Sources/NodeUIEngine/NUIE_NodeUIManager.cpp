@@ -44,7 +44,10 @@ private:
 	NE::EvaluationEnv&	env;
 };
 
-NodeUIManager::Status::Status ()
+NodeUIManager::Status::Status () :
+	needToRecalculate (false),
+	needToRedraw (false),
+	needToSave (false)
 {
 	Reset ();
 }
