@@ -53,8 +53,8 @@ public:
 	virtual void				RegisterCommands (NUIE::NodeCommandRegistrator& commandRegistrator) const = 0;
 	virtual void				RegisterParameters (NUIE::NodeParameterList& parameterList) const = 0;
 
-	virtual NE::Stream::Status	Read (NE::InputStream& inputStream);
-	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
+	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
+	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 	template <class Type>
 	static Type* Cast (NodeFeature* feature);

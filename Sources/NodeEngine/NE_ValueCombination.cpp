@@ -31,12 +31,12 @@ static bool EnumerateShortestCombinations (	const std::vector<IListValueConstPtr
 
 		}
 
-		virtual size_t GetSize () const
+		virtual size_t GetSize () const override
 		{
 			return values.size ();
 		}
 
-		virtual const ValueConstPtr& GetValue (size_t valueIndex) const
+		virtual const ValueConstPtr& GetValue (size_t valueIndex) const override
 		{
 			return values[valueIndex]->GetValue (combinationIndex);
 		}
@@ -75,12 +75,12 @@ static bool EnumerateLongestCombinations (	const std::vector<IListValueConstPtr>
 
 		}
 
-		virtual size_t GetSize () const
+		virtual size_t GetSize () const override
 		{
 			return values.size ();
 		}
 
-		virtual const ValueConstPtr& GetValue (size_t valueIndex) const
+		virtual const ValueConstPtr& GetValue (size_t valueIndex) const override
 		{
 			const IListValueConstPtr& value = values[valueIndex];
 			if (combinationIndex < value->GetSize ()) {
@@ -124,12 +124,12 @@ static bool EnumerateCrossProductCombinations (	const std::vector<IListValueCons
 
 		}
 
-		virtual size_t GetSize () const
+		virtual size_t GetSize () const override
 		{
 			return values.size ();
 		}
 
-		virtual const ValueConstPtr& GetValue (size_t valueIndex) const
+		virtual const ValueConstPtr& GetValue (size_t valueIndex) const override
 		{
 			return values[valueIndex]->GetValue (indices[valueIndex]);
 		}

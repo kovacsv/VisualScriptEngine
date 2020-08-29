@@ -245,6 +245,9 @@ DynamicSerializable* ReadDynamicObject (InputStream& inputStream)
 
 bool WriteDynamicObject (OutputStream& outputStream, const DynamicSerializable* object)
 {
+	if (DBGERROR (object == nullptr)) {
+		return false;
+	}
 	const DynamicSerializationInfo* serializationInfo = object->GetDynamicSerializationInfo ();
 	if (DBGERROR (serializationInfo == nullptr)) {
 		return false;
