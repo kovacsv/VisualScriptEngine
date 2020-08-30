@@ -24,6 +24,13 @@ EvaluationEnv::~EvaluationEnv ()
 
 }
 
+void EvaluationEnv::Clear ()
+{
+	if (data != nullptr) {
+		data->Clear ();
+	}
+}
+
 EvaluationEnv EmptyEvaluationEnv (nullptr);
 
 }

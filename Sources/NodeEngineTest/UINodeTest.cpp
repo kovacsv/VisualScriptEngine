@@ -200,7 +200,7 @@ private:
 
 TEST (NodeParametersTest)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 	UINodePtr node (new TestNode (LocString (L"TestNode"), Point (0, 0)));
 
@@ -234,7 +234,7 @@ TEST (NodeParametersTest)
 
 TEST (NodeParametersTest2)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
 	UINodePtr node (new TestNode (LocString (L"TestNode"), Point (0, 0)));
@@ -277,7 +277,7 @@ TEST (NodeParametersTest2)
 
 TEST (NodeParametersTest3)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
 	UINodePtr node (new TestNode (LocString (L"TestNode"), Point (0, 0)));
@@ -303,7 +303,7 @@ TEST (NodeParametersTest3)
 
 TEST (NodeParametersTest4)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
 	std::shared_ptr<EnumerationParamTestNode> node (new EnumerationParamTestNode (LocString (L"TestNode"), Point (0, 0)));
@@ -330,10 +330,9 @@ TEST (NodeParametersTest4)
 	}
 }
 
-
 TEST (DuplicateNodeTest)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
 	UINodePtr node1 = uiManager.AddNode (UINodePtr (new TestNode (LocString (L"TestNode"), Point (0, 0))), NE::EmptyEvaluationEnv);

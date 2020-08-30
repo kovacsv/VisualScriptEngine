@@ -73,6 +73,11 @@ public:
 class DummyEvaluationData : public NE::EvaluationData
 {
 public:
+	virtual void Clear () override
+	{
+
+	}
+
 	int x = 5;
 };
 
@@ -316,7 +321,6 @@ TEST (EnumerateDependentNodesTest)
 TEST (EvaluationEnvTest)
 {
 	NodeManager manager;
-
 
 	std::shared_ptr<DummyEvaluationData> evalData (new DummyEvaluationData ());
 	ASSERT (evalData->x == 5);

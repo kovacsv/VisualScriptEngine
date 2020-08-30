@@ -23,6 +23,11 @@ namespace EnableDisableFeatureTest
 class CalculatedCollector : public EvaluationData
 {
 public:
+	virtual void Clear () override
+	{
+		values.clear ();
+	}
+
 	std::unordered_map<NodeId, int> values;
 };
 
@@ -155,7 +160,7 @@ DYNAMIC_SERIALIZATION_INFO (TestNode, 1, "{747EB91C-99ED-401A-98DF-A5BBA8FA4CE6}
 
 TEST (EnableDisableTest)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 	TestCalcEnvironment calcEnv;
 

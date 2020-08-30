@@ -11,6 +11,8 @@ class EvaluationData
 public:
 	EvaluationData ();
 	virtual ~EvaluationData ();
+
+	virtual void Clear () = 0;
 };
 
 using EvaluationDataPtr = std::shared_ptr<EvaluationData>;
@@ -27,6 +29,8 @@ public:
 
 	template <typename T>
 	std::shared_ptr<T> GetData ();
+
+	void Clear ();
 
 private:
 	EvaluationDataPtr data;

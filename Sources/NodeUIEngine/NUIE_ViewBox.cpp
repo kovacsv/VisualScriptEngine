@@ -9,10 +9,23 @@ ViewBox::ViewBox (const Point& offset, double scale) :
 {
 }
 
+ViewBox::ViewBox () :
+	offset (Point ()),
+	scale (1.0)
+{
+
+}
+
 void ViewBox::Reset ()
 {
 	offset.Set (0.0, 0.0);
 	scale = 1.0;
+}
+
+void ViewBox::Set (const Point& newOffset, double newScale)
+{
+	offset = newOffset;
+	scale = newScale;
 }
 
 const Point& ViewBox::GetOffset () const

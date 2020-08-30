@@ -11,9 +11,11 @@ namespace NUIE
 class ViewBox
 {
 public:
+	ViewBox ();
 	ViewBox (const Point& offset, double scale);
 
 	void			Reset ();
+	void			Set (const Point& newOffset, double newScale);
 
 	const Point&	GetOffset () const;
 	void			SetOffset (const Point& newOffset);

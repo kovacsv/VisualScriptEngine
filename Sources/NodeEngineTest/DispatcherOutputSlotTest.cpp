@@ -96,7 +96,7 @@ public:
 
 TEST (DispatcherOutputSlotEvaluationTest)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
 	UINodePtr dispatcherNode (new DispatcherNode (LocString (L"Node"), Point (0.0, 0.0)));

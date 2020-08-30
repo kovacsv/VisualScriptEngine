@@ -12,7 +12,7 @@ namespace InputNodesTest
 
 TEST (TestListBuilderNode)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
 	UINodePtr intNode = uiManager.AddNode (UINodePtr (new IntegerUpDownNode (LocString (L"Value1"), Point (0, 0), 1, 1)), EmptyEvaluationEnv);

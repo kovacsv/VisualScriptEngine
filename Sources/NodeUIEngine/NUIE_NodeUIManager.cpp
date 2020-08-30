@@ -146,11 +146,11 @@ void NodeUIManagerNodeInvalidator::RequestRedraw ()
 	uiManager.RequestRedraw ();
 }
 
-NodeUIManager::NodeUIManager (NodeUIDrawingEnvironment& env) :
+NodeUIManager::NodeUIManager (NodeUIEnvironment& env) :
 	nodeManager (),
 	selectedNodes (),
 	undoHandler (),
-	viewBox (Point (0.0, 0.0), env.GetWindowScale ()),
+	viewBox (),
 	status ()
 {
 	New (env);
@@ -577,13 +577,13 @@ void NodeUIManager::SetUpdateMode (UpdateMode newUpdateMode)
 	}
 }
 
-void NodeUIManager::New (NodeUIDrawingEnvironment& env)
+void NodeUIManager::New (NodeUIEnvironment& env)
 {
 	Clear (env);
 	RequestRecalculateAndRedraw ();
 }
 
-bool NodeUIManager::Open (NodeUIDrawingEnvironment& env, NE::InputStream& inputStream)
+bool NodeUIManager::Open (NodeUIEnvironment& env, NE::InputStream& inputStream)
 {
 	Clear (env);
 	Read (inputStream);
@@ -721,12 +721,18 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
 	ExecuteCommand (*command);
 }
 
-void NodeUIManager::Clear (NodeUIDrawingEnvironment& env)
+void NodeUIManager::Clear (NodeUIEnvironment& env)
 {
+	NE::EvaluationEnv& evalEnv = env.GetEvaluationEnv ();
+	double windowScale = env.GetWindowScale ();
+
 	selectedNodes.Clear ();
 	undoHandler.Clear ();
 	nodeManager.Clear ();
-	viewBox = ViewBox (Point (0.0, 0.0), env.GetWindowScale ());
+
+	evalEnv.Clear ();
+	viewBox.Set (Point (0.0, 0.0), windowScale);
+
 	status.Reset ();
 }
 

@@ -13,7 +13,7 @@ namespace ArithmeticNodesTest
 
 TEST (TestAllArithmeticNodes)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
 	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (0, 0), 1.0, 1.0)), EmptyEvaluationEnv);

@@ -16,6 +16,17 @@ using namespace NUIE;
 namespace NodeUIEngineTest
 {
 
+class ClearCalculatorEvalData : public EvaluationData
+{
+public:
+	virtual void Clear () override
+	{
+		clearCount++;
+	}
+
+	int clearCount = 0;
+};
+
 class TestInputSlot : public UIInputSlot
 {
 public:
@@ -35,7 +46,6 @@ public:
 
 	}
 };
-
 
 class TestNode : public SerializableTestUINode
 {
@@ -66,7 +76,7 @@ public:
 
 TEST (UIManagerBaseTest)
 {
-	TestDrawingEnvironment env;
+	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
 	UINodePtr node1 (new TestNode (Point (0.0, 0.0)));
@@ -199,6 +209,19 @@ TEST (ViewBoxFitTest)
 		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.2, (3.0 - (2.0 * expectedScale)) / 2.0)));
 		ASSERT (IsEqual (viewBox.GetScale (), expectedScale));
 	}
+}
+
+TEST (EvaluationEnvClearTest)
+{
+	std::shared_ptr<ClearCalculatorEvalData> evalData (new ClearCalculatorEvalData ());
+	TestUIEnvironment env (evalData);
+	ASSERT (evalData->clearCount == 0);
+
+	NodeUIManager uiManager (env);
+	ASSERT (evalData->clearCount == 1);
+
+	uiManager.New (env);
+	ASSERT (evalData->clearCount == 2);
 }
 
 }
