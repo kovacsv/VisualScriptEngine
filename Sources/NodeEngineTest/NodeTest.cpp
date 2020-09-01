@@ -62,11 +62,6 @@ public:
 
 	}
 
-	virtual void Clear () override
-	{
-
-	}
-
 	int x;
 };
 

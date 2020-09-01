@@ -23,11 +23,6 @@ namespace EnableDisableFeatureTest
 class CalculatedCollector : public EvaluationData
 {
 public:
-	virtual void Clear () override
-	{
-		values.clear ();
-	}
-
 	std::unordered_map<NodeId, int> values;
 };
 

@@ -723,16 +723,13 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
 
 void NodeUIManager::Clear (NodeUIEnvironment& env)
 {
-	NE::EvaluationEnv& evalEnv = env.GetEvaluationEnv ();
 	double windowScale = env.GetWindowScale ();
 
 	selectedNodes.Clear ();
 	undoHandler.Clear ();
 	nodeManager.Clear ();
 
-	evalEnv.Clear ();
 	viewBox.Set (Point (0.0, 0.0), windowScale);
-
 	status.Reset ();
 }
 

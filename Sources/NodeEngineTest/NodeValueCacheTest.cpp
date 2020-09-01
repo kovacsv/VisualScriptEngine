@@ -73,11 +73,6 @@ public:
 class DummyEvaluationData : public NE::EvaluationData
 {
 public:
-	virtual void Clear () override
-	{
-
-	}
-
 	int x = 5;
 };
 
