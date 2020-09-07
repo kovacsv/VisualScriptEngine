@@ -76,7 +76,7 @@ void MoveNodesCommand::Do (NodeUIManager& uiManager)
 	for (size_t i = 0; i < nodes.Count (); i++) {
 		const NE::NodeId& nodeId = nodes.Get (i);
 		UINodePtr uiNode = uiManager.GetUINode (nodeId);
-		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
+		uiNode->SetPosition (uiNode->GetPosition () + offset);
 		uiManager.InvalidateNodeGroupDrawing (uiNode);
 	}
 }
@@ -97,7 +97,7 @@ void MoveNodesWithOffsetsCommand::Do (NodeUIManager& uiManager)
 		const NE::NodeId& nodeId = nodes.Get (i);
 		const Point& offset = offsets[i];
 		UINodePtr uiNode = uiManager.GetUINode (nodeId);
-		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
+		uiNode->SetPosition (uiNode->GetPosition () + offset);
 		uiManager.InvalidateNodeGroupDrawing (uiNode);
 	}
 }
@@ -114,7 +114,7 @@ void CopyMoveNodesCommand::Do (NodeUIManager& uiManager)
 	NE::NodeCollection duplicatedNodes = uiManager.Duplicate (nodes);
 	duplicatedNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 		UINodePtr uiNode = uiManager.GetUINode (nodeId);
-		uiNode->SetNodePosition (uiNode->GetNodePosition () + offset);
+		uiNode->SetPosition (uiNode->GetPosition () + offset);
 		return true;
 	});
 	uiManager.SetSelectedNodes (duplicatedNodes);
@@ -263,7 +263,7 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 
 	Point centerPosition;
 	for (UINodePtr& uiNode : newNodes) {
-		Point nodePosition = uiNode->GetNodePosition ();
+		Point nodePosition = uiNode->GetPosition ();
 		centerPosition = centerPosition + nodePosition;
 	}
 
@@ -271,8 +271,8 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 	centerPosition = centerPosition / (double) newNodes.size ();
 	Point nodeOffset = position - centerPosition;
 	for (UINodePtr& uiNode : newNodes) {
-		Point nodePosition = uiNode->GetNodePosition ();
-		uiNode->SetNodePosition (nodePosition + nodeOffset);
+		Point nodePosition = uiNode->GetPosition ();
+		uiNode->SetPosition (nodePosition + nodeOffset);
 		newSelection.Insert (uiNode->GetId ());
 	}
 

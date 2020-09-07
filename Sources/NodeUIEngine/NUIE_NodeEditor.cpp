@@ -268,4 +268,43 @@ void NodeEditor::Redo ()
 	Update ();
 }
 
+NodeEditorInfo NodeEditor::GetInfo () const
+{
+	NodeEditorInfo info;
+
+	const ViewBox& viewBox = uiManager.GetViewBox ();
+	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+		NodeInfo nodeInfo;
+		nodeInfo.id = uiNode->GetId ();
+		nodeInfo.name = uiNode->GetName ().GetLocalized ();
+		nodeInfo.modelRect = uiNode->GetRect (uiEnvironment);
+		nodeInfo.screenRect = viewBox.ModelToView (nodeInfo.modelRect);
+
+		uiNode->EnumerateUIInputSlots ([&] (const UIInputSlotConstPtr& inputSlot) {
+			SlotInfo slotInfo;
+			slotInfo.id = inputSlot->GetId ();
+			slotInfo.name = inputSlot->GetName ().GetLocalized ();
+			slotInfo.modelRect = uiNode->GetInputSlotRect (uiEnvironment, slotInfo.id);
+			slotInfo.screenRect = viewBox.ModelToView (slotInfo.modelRect);
+			nodeInfo.inputSlots.push_back (slotInfo);
+			return true;
+		});
+
+		uiNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
+			SlotInfo slotInfo;
+			slotInfo.id = outputSlot->GetId ();
+			slotInfo.name = outputSlot->GetName ().GetLocalized ();
+			slotInfo.modelRect = uiNode->GetOutputSlotRect (uiEnvironment, slotInfo.id);
+			slotInfo.screenRect = viewBox.ModelToView (slotInfo.modelRect);
+			nodeInfo.outputSlots.push_back (slotInfo);
+			return true;
+		});
+
+		info.nodes.push_back (nodeInfo);
+		return true;
+	});
+
+	return info;
+}
+
 }

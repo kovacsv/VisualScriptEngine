@@ -112,7 +112,7 @@ TEST (RecalculationVisualTest)
 	ASSERT (env.CheckRecalcCounters (1, 2));
 	
 	{
-		Rect test2NodeRect = env.testNode2->GetNodeRect (env.uiEnvironment);
+		Rect test2NodeRect = env.testNode2->GetRect (env.uiEnvironment);
 		Point dragStart = test2NodeRect.GetTopLeft () + Point (5.0, 5.0);
 		Point dragEnd (dragStart + Point (20.0, -20.0));
 		env.DragDrop (dragStart, dragEnd);
@@ -122,7 +122,7 @@ TEST (RecalculationVisualTest)
 	}
 
 	{
-		Rect test1NodeRect = env.testNode1->GetNodeRect (env.uiEnvironment);
+		Rect test1NodeRect = env.testNode1->GetRect (env.uiEnvironment);
 		Point test1HeaderPoint = test1NodeRect.GetTopLeft () + Point (5.0, 5.0);
 		env.SetNextCommandParameterSettings ([&] (ParameterInterfacePtr paramInterface) {
 			paramInterface->SetParameterValue (0, ValueConstPtr (new StringValue (L"Test 1 New")));

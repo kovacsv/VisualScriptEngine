@@ -45,22 +45,22 @@ UINode::~UINode ()
 
 }
 
-const NE::LocString& UINode::GetNodeName () const
+const NE::LocString& UINode::GetName () const
 {
 	return nodeName;
 }
 
-void UINode::SetNodeName (const std::wstring& newNodeName)
+void UINode::SetName (const std::wstring& newNodeName)
 {
 	nodeName.SetCustom (newNodeName);
 }
 
-const Point& UINode::GetNodePosition () const
+const Point& UINode::GetPosition () const
 {
 	return nodePosition;
 }
 
-void UINode::SetNodePosition (const Point& newPosition)
+void UINode::SetPosition (const Point& newPosition)
 {
 	nodePosition = newPosition;
 }
@@ -73,7 +73,7 @@ void UINode::Draw (NodeUIDrawingEnvironment& env) const
 	DrawInplace (nodeEnv);
 }
 
-Rect UINode::GetNodeRect (NodeUIDrawingEnvironment& env) const
+Rect UINode::GetRect (NodeUIDrawingEnvironment& env) const
 {
 	Rect nodeRect = GetNodeDrawingImage (env).GetNodeRect ();
 	return nodeRect.Offset (nodePosition);
@@ -222,12 +222,12 @@ void UINode::RegisterParameters (NodeParameterList& parameterList) const
 
 		virtual NE::ValueConstPtr GetValueInternal (const UINodeConstPtr& uiNode) const override
 		{
-			return NE::ValuePtr (new NE::StringValue (uiNode->GetNodeName ().GetLocalized ()));
+			return NE::ValuePtr (new NE::StringValue (uiNode->GetName ().GetLocalized ()));
 		}
 
 		virtual bool SetValueInternal (UINodeInvalidator& invalidator, NE::EvaluationEnv&, UINodePtr& uiNode, const NE::ValueConstPtr& value) override
 		{
-			uiNode->SetNodeName (NE::StringValue::Get (value));
+			uiNode->SetName (NE::StringValue::Get (value));
 			invalidator.InvalidateDrawing ();
 			return true;
 		}

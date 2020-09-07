@@ -218,7 +218,7 @@ void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const 
 
 void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, SelectionMode selectionMode, const UINode* uiNode) const
 {
-	Rect nodeRect = uiNode->GetNodeRect (drawingEnv);
+	Rect nodeRect = uiNode->GetRect (drawingEnv);
 	double selectionThickness = scaleIndependentData.GetSelectionThickness ();
 	Rect selectionRect = nodeRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
 	if (selectionMode == SelectionMode::Selected) {
@@ -277,7 +277,7 @@ bool NodeUIManagerDrawer::IsRectVisible (NodeUIDrawingEnvironment& drawingEnv, c
 
 Rect NodeUIManagerDrawer::GetNodeRect (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const
 {
-	Rect nodeRect = uiNode->GetNodeRect (drawingEnv);
+	Rect nodeRect = uiNode->GetRect (drawingEnv);
 	return nodeRect.Offset (drawModifier->GetNodeOffset (uiNode->GetId ()));
 }
 
@@ -305,7 +305,7 @@ Rect ExtendNodeRect (NodeUIDrawingEnvironment& drawingEnv, const Rect& originalR
 
 Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& drawingEnv, const UINode* uiNode)
 {
-	Rect nodeRect = uiNode->GetNodeRect (drawingEnv);
+	Rect nodeRect = uiNode->GetRect (drawingEnv);
 	return ExtendNodeRect (drawingEnv, nodeRect);
 }
 

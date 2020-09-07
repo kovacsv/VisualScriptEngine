@@ -91,7 +91,7 @@ public:
 		std::unordered_set<UINodePtr> nodesToSelect;
 		uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) {
 			const NE::NodeId& uiNodeId = uiNode->GetId ();
-			Rect nodeRect = uiNode->GetNodeRect (uiEnvironment);
+			Rect nodeRect = uiNode->GetRect (uiEnvironment);
 			if (modelSelectionRect.Contains (nodeRect)) {
 				if (selectedNodes.Contains (uiNodeId)) {
 					selectedNodes.Erase (uiNodeId);

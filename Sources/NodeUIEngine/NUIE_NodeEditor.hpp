@@ -9,6 +9,7 @@
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_SkinParams.hpp"
 #include "NUIE_FileIO.hpp"
+#include "NUIE_NodeEditorInfo.hpp"
 
 namespace NUIE
 {
@@ -66,6 +67,8 @@ public:
 
 	void						Undo ();
 	void						Redo ();
+
+	NodeEditorInfo				GetInfo () const;
 
 private:
 	NodeUIManager				uiManager;

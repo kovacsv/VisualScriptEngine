@@ -35,15 +35,15 @@ public:
 	UINode (const NE::LocString& nodeName, const Point& nodePosition);
 	virtual ~UINode ();
 
-	const NE::LocString&		GetNodeName () const;
-	void						SetNodeName (const std::wstring& newNodeName);
+	const NE::LocString&		GetName () const;
+	void						SetName (const std::wstring& newNodeName);
 
-	const Point&				GetNodePosition () const;
-	void						SetNodePosition (const Point& newPosition);
+	const Point&				GetPosition () const;
+	void						SetPosition (const Point& newPosition);
 
 	void						Draw (NodeUIDrawingEnvironment& env) const;
 
-	Rect						GetNodeRect (NodeUIDrawingEnvironment& env) const;
+	Rect						GetRect (NodeUIDrawingEnvironment& env) const;
 	void						InvalidateDrawing () const;
 
 	Point						GetInputSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;

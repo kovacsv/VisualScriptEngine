@@ -52,7 +52,7 @@ UINodePtr FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironm
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	UINodePtr foundNode = nullptr;
 	uiManager.EnumerateUINodes ([&] (const UINodePtr& uiNode) {
-		Rect nodeRect = viewBox.ModelToView (uiNode->GetNodeRect (env));
+		Rect nodeRect = viewBox.ModelToView (uiNode->GetRect (env));
 		if (nodeRect.Contains (viewPosition)) {
 			if (foundNode == nullptr || foundNode->GetId () < uiNode->GetId ()) {
 				foundNode = uiNode;
@@ -78,7 +78,7 @@ UINodeGroupPtr FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawi
 		virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override
 		{
 			UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
-			return uiNode->GetNodeRect (env);
+			return uiNode->GetRect (env);
 		}
 
 	private:

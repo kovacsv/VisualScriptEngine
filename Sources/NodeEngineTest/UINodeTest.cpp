@@ -215,12 +215,12 @@ TEST (NodeParametersTest)
 
 	ASSERT (paramList.GetParameterCount () == 2);
 	
-	ASSERT (node->GetNodeName ().GetLocalized () == L"TestNode");
+	ASSERT (node->GetName ().GetLocalized () == L"TestNode");
 	NodeParameterPtr nameParam = paramList.GetParameter (0);
 	ASSERT (nameParam->GetName ().GetLocalized () == L"Node Name");
 	ValuePtr newNameValue (new StringValue (L"NewNodeName"));
 	nameParam->SetValue (invalidator, NE::EmptyEvaluationEnv, node, newNameValue);
-	ASSERT (node->GetNodeName ().GetLocalized () == L"NewNodeName");
+	ASSERT (node->GetName ().GetLocalized () == L"NewNodeName");
 
 	NodeParameterPtr in1DefParam = paramList.GetParameter (1);
 	ASSERT (in1DefParam->GetName ().GetLocalized () == L"In1");
@@ -296,8 +296,8 @@ TEST (NodeParametersTest3)
 		ASSERT (paramList.GetParameter (1)->GetName ().GetLocalized () == L"In1");
 		ValuePtr newName (new StringValue (L"NewName"));
 		ApplyCommonParameter (uiManager, EmptyEvaluationEnv, nodeCollection, paramList.GetParameter (0), newName);
-		ASSERT (node->GetNodeName ().GetLocalized () == L"NewName");
-		ASSERT (node2->GetNodeName ().GetLocalized () == L"NewName");
+		ASSERT (node->GetName ().GetLocalized () == L"NewName");
+		ASSERT (node2->GetName ().GetLocalized () == L"NewName");
 	}
 }
 
@@ -349,12 +349,12 @@ TEST (DuplicateNodeTest)
 
 	ASSERT (node3 != nullptr);
 	ASSERT (node3->GetId () != NullNodeId);
-	ASSERT (node3->GetNodeName ().GetLocalized () == L"TestNode");
+	ASSERT (node3->GetName ().GetLocalized () == L"TestNode");
 	ASSERT (uiManager.ContainsUINode (node3->GetId ()));
 
 	ASSERT (node4 != nullptr);
 	ASSERT (node4->GetId () != NullNodeId);
-	ASSERT (node4->GetNodeName ().GetLocalized () == L"TestNode2");
+	ASSERT (node4->GetName ().GetLocalized () == L"TestNode2");
 	ASSERT (uiManager.ContainsUINode (node4->GetId ()));
 }
 

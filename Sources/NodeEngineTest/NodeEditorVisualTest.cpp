@@ -74,10 +74,10 @@ public:
 	void RecalcPositions ()
 	{
 		pointInBackground = Point (5.0, 5.0);
-		doubleInputRect = doubleUpDownNode->GetNodeRect (uiEnvironment);
-		rangeInputRect = rangeInputNode->GetNodeRect (uiEnvironment);
-		viewer1InputRect = viewerUINode1->GetNodeRect (uiEnvironment);
-		viewer2InputRect = viewerUINode2->GetNodeRect (uiEnvironment);
+		doubleInputRect = doubleUpDownNode->GetRect (uiEnvironment);
+		rangeInputRect = rangeInputNode->GetRect (uiEnvironment);
+		viewer1InputRect = viewerUINode1->GetRect (uiEnvironment);
+		viewer2InputRect = viewerUINode2->GetRect (uiEnvironment);
 		viewer1InputSlotRect = viewerUINode1->GetInputSlotRect (uiEnvironment, SlotId ("in"));
 		viewer2InputSlotRect = viewerUINode2->GetInputSlotRect (uiEnvironment, SlotId ("in"));
 		doubleUpDownOutputSlotRect = doubleUpDownNode->GetOutputSlotRect (uiEnvironment, SlotId ("out"));
@@ -342,7 +342,7 @@ TEST (PanAndZoomTest)
 		ASSERT (env.CheckReference (L"PanAndZoom_Connections.svg"));
 	}
 
-	Point panStartPoint = env.rangeInputNode->GetNodeRect (env.uiEnvironment).GetTopLeft ();
+	Point panStartPoint = env.rangeInputNode->GetRect (env.uiEnvironment).GetTopLeft ();
 	Point panEndPoint = panStartPoint + Point (50.0, -50.0);
 
 	{
@@ -424,7 +424,7 @@ TEST (NodeGroupingTest)
 	}
 
 	{ // move one node
-		Point currentRangeInputHeaderPoint = env.rangeInputNode->GetNodeRect (env.uiEnvironment).GetTopCenter () + Point (5.0, 5.0);
+		Point currentRangeInputHeaderPoint = env.rangeInputNode->GetRect (env.uiEnvironment).GetTopCenter () + Point (5.0, 5.0);
 		env.DragDrop (currentRangeInputHeaderPoint, currentRangeInputHeaderPoint + Point (10.0, 10.0), [&] () {
 			ASSERT (env.CheckReference (L"NodeGrouping_RangeInputMoving.svg"));
 		});
