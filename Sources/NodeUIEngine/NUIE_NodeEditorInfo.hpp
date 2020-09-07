@@ -35,12 +35,22 @@ struct NodeInfo
 	std::vector<SlotInfo>	outputSlots;
 };
 
+struct ConnectionInfo
+{
+	ConnectionInfo ();
+
+	NE::NodeId				fromNodeId;
+	NE::SlotId				fromSlotId;
+	NE::NodeId				toNodeId;
+	NE::SlotId				toSlotId;
+};
+
 struct NodeEditorInfo
 {
 	NodeEditorInfo ();
 
-	std::vector<NodeInfo>	nodes;
-
+	std::vector<NodeInfo>			nodes;
+	std::vector<ConnectionInfo>		connections;
 };
 
 }

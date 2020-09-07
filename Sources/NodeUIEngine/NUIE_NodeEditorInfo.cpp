@@ -23,6 +23,15 @@ NodeInfo::NodeInfo () :
 
 }
 
+ConnectionInfo::ConnectionInfo () :
+	fromNodeId (),
+	fromSlotId (),
+	toNodeId (),
+	toSlotId ()
+{
+
+}
+
 NodeEditorInfo::NodeEditorInfo () :
 	nodes ()
 {

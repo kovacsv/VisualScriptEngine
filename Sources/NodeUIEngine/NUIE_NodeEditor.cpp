@@ -300,6 +300,18 @@ NodeEditorInfo NodeEditor::GetInfo () const
 			return true;
 		});
 
+		uiNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
+			uiManager.EnumerateConnectedUIInputSlots (outputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
+				ConnectionInfo connectionInfo;
+				connectionInfo.fromNodeId = uiNode->GetId ();
+				connectionInfo.fromSlotId = outputSlot->GetId ();
+				connectionInfo.toNodeId = inputSlot->GetOwnerNodeId ();
+				connectionInfo.toSlotId = inputSlot->GetId ();
+				info.connections.push_back (connectionInfo);
+			});
+			return true;
+		});
+
 		info.nodes.push_back (nodeInfo);
 		return true;
 	});
