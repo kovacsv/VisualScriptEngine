@@ -179,7 +179,7 @@ void SetParametersMenuCommand::Do ()
 	class NodeSelectionParameterInterface : public ParameterInterface
 	{
 	public:
-		NodeSelectionParameterInterface (const UINodePtr& currentNode, const NE::NodeCollection& nodeList, NodeParameterList& paramList) :
+		NodeSelectionParameterInterface (const UINodePtr& currentNode, const NE::NodeCollection& nodeList, const NodeParameterList& paramList) :
 			currentNode (currentNode),
 			nodeList (nodeList),
 			paramList (paramList)
