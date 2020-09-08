@@ -23,6 +23,15 @@ NodeInfo::NodeInfo () :
 
 }
 
+GroupInfo::GroupInfo () :
+	name (),
+	modelRect (),
+	screenRect (),
+	nodesInGroup ()
+{
+
+}
+
 ConnectionInfo::ConnectionInfo () :
 	fromNodeId (),
 	fromSlotId (),

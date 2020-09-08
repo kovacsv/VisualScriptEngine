@@ -63,9 +63,9 @@ UINodeGroup::~UINodeGroup ()
 
 }
 
-std::wstring UINodeGroup::GetName () const
+const NE::LocString& UINodeGroup::GetName () const
 {
-	return name.GetLocalized ();
+	return name;
 }
 
 void UINodeGroup::SetName (const std::wstring& newName)

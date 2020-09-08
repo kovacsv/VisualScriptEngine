@@ -316,6 +316,21 @@ NodeEditorInfo NodeEditor::GetInfo () const
 		return true;
 	});
 
+	NodeUIManagerNodeRectGetter rectGetter (uiManager, uiEnvironment);
+	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
+		GroupInfo groupInfo;
+		NE::NodeCollection nodesInGroup = uiManager.GetUIGroupNodes (uiGroup);
+		groupInfo.name = uiGroup->GetName ().GetLocalized ();
+		groupInfo.modelRect = uiGroup->GetRect (uiEnvironment, rectGetter, nodesInGroup);
+		groupInfo.screenRect = viewBox.ModelToView (groupInfo.modelRect);
+		nodesInGroup.Enumerate ([&] (const NE::NodeId& nodeId) {
+			groupInfo.nodesInGroup.push_back (nodeId);
+			return true;
+		});
+		info.groups.push_back (groupInfo);
+		return true;
+	});
+
 	return info;
 }
 

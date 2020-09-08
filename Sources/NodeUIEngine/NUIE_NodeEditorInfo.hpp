@@ -35,6 +35,18 @@ struct NodeInfo
 	std::vector<SlotInfo>	outputSlots;
 };
 
+struct GroupInfo
+{
+	GroupInfo ();
+
+	std::wstring				name;
+
+	Rect						modelRect;
+	Rect						screenRect;
+
+	std::vector<NE::NodeId>		nodesInGroup;
+};
+
 struct ConnectionInfo
 {
 	ConnectionInfo ();
@@ -50,6 +62,7 @@ struct NodeEditorInfo
 	NodeEditorInfo ();
 
 	std::vector<NodeInfo>			nodes;
+	std::vector<GroupInfo>			groups;
 	std::vector<ConnectionInfo>		connections;
 };
 

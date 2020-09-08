@@ -373,7 +373,7 @@ void SetGroupParametersMenuCommand::Do ()
 		{
 			switch (index) {
 				case 0:
-					return NE::ValuePtr (new NE::StringValue (currentGroup->GetName ()));
+					return NE::ValuePtr (new NE::StringValue (currentGroup->GetName ().GetLocalized ()));
 				case 1:
 					return NE::ValuePtr (new NE::IntValue ((int) currentGroup->GetBackgroundColorIndex ()));
 				default:
@@ -817,7 +817,8 @@ public:
 
 	virtual std::wstring GetName () const override
 	{
-		return NE::FormatString (NE::LocalizeString (SingleMenuCommand::GetName ()), uiNodeGroup->GetName ().c_str ());
+		std::wstring groupName = uiNodeGroup->GetName ().GetLocalized ();
+		return NE::FormatString (NE::LocalizeString (SingleMenuCommand::GetName ()), groupName.c_str ());
 	}
 
 	virtual void Do () override

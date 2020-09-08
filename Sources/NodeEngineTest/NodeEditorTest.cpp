@@ -50,6 +50,8 @@ TEST (NodeEditorGetInfoTest)
 	env.nodeEditor.AddNode (viewerNode2);
 	env.nodeEditor.ConnectOutputSlotToInputSlot (intNode->GetUIOutputSlot (SlotId ("out")), viewerNode1->GetUIInputSlot (SlotId ("in")));
 	env.nodeEditor.ConnectOutputSlotToInputSlot (intNode->GetUIOutputSlot (SlotId ("out")), viewerNode2->GetUIInputSlot (SlotId ("in")));
+	env.nodeEditor.SetSelectedNodes (NE::NodeCollection ({ viewerNode1->GetId (), viewerNode2->GetId () }));
+	env.nodeEditor.ExecuteCommand (CommandCode::Group);
 	
 	NodeEditorInfo info = env.nodeEditor.GetInfo ();
 
@@ -64,6 +66,10 @@ TEST (NodeEditorGetInfoTest)
 	ASSERT (info.connections[0].fromSlotId == SlotId ("out"));
 	ASSERT (info.connections[0].toNodeId == viewerNode1->GetId ());
 	ASSERT (info.connections[0].toSlotId == SlotId ("in"));
+
+	ASSERT (info.groups.size () == 1);
+	ASSERT (info.groups[0].name == L"Group");
+	ASSERT (info.groups[0].nodesInGroup.size () == 2);
 }
 
 }

@@ -49,6 +49,18 @@ private:
 	UINodePtr& uiNode;
 };
 
+class NodeUIManagerNodeRectGetter : public NodeRectGetter
+{
+public:
+	NodeUIManagerNodeRectGetter (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env);
+	
+	virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override;
+
+private:
+	const NodeUIManager& uiManager;
+	NodeUIDrawingEnvironment& env;
+};
+
 class NodeUIManager
 {
 	SERIALIZABLE;

@@ -41,7 +41,7 @@ public:
 	UINodeGroup (const NE::LocString& name);
 	~UINodeGroup ();
 
-	std::wstring				GetName () const;
+	const NE::LocString&		GetName () const;
 	void						SetName (const std::wstring& newName);
 
 	size_t						GetBackgroundColorIndex () const;

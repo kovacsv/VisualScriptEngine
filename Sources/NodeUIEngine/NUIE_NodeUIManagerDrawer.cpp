@@ -92,10 +92,10 @@ void NodeUIManagerDrawer::DrawBackground (NodeUIDrawingEnvironment& drawingEnv) 
 
 void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawModifier) const
 {
-	class NodeUIManagerNodeRectGetter : public NodeRectGetter
+	class ModifiedNodeRectGetter : public NodeRectGetter
 	{
 	public:
-		NodeUIManagerNodeRectGetter (const NodeUIManager& uiManager, const NodeUIManagerDrawer& uiManagerDrawer, const NodeDrawingModifier* drawModifier, NodeUIDrawingEnvironment& drawingEnv) :
+		ModifiedNodeRectGetter (const NodeUIManager& uiManager, const NodeUIManagerDrawer& uiManagerDrawer, const NodeDrawingModifier* drawModifier, NodeUIDrawingEnvironment& drawingEnv) :
 			uiManager (uiManager),
 			uiManagerDrawer (uiManagerDrawer),
 			drawModifier (drawModifier),
@@ -117,7 +117,7 @@ void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& drawingEnv, cons
 		NodeUIDrawingEnvironment& drawingEnv;
 	};
 
-	NodeUIManagerNodeRectGetter rectGetter (uiManager, *this, drawModifier, drawingEnv);
+	ModifiedNodeRectGetter rectGetter (uiManager, *this, drawModifier, drawingEnv);
 	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& group) {
 		Rect groupRect = group->GetRect (drawingEnv, rectGetter, uiManager.GetUIGroupNodes (group));
 		if (IsRectVisible (drawingEnv, groupRect)) {
