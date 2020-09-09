@@ -55,8 +55,8 @@ TEST (NodeEditorGetInfoTest)
 	
 	NodeEditorInfo info = env.nodeEditor.GetInfo ();
 
-	ASSERT (info.canvas.width = 800);
-	ASSERT (info.canvas.height = 600);
+	ASSERT (info.view.width = 800);
+	ASSERT (info.view.height = 600);
 
 	ASSERT (info.nodes.size () == 3);
 	ASSERT (info.nodes[0].id == intNode->GetId ());

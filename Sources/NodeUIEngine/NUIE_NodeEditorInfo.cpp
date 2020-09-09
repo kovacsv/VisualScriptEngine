@@ -3,7 +3,7 @@
 namespace NUIE
 {
 
-CanvasInfo::CanvasInfo () :
+ViewInfo::ViewInfo () :
 	width (0),
 	height (0)
 {
@@ -14,7 +14,7 @@ SlotInfo::SlotInfo () :
 	id (),
 	name (),
 	modelRect (),
-	screenRect ()
+	viewRect ()
 {
 
 }
@@ -23,7 +23,7 @@ NodeInfo::NodeInfo () :
 	id (),
 	name (),
 	modelRect (),
-	screenRect (),
+	viewRect (),
 	inputSlots (),
 	outputSlots ()
 {
@@ -33,7 +33,7 @@ NodeInfo::NodeInfo () :
 GroupInfo::GroupInfo () :
 	name (),
 	modelRect (),
-	screenRect (),
+	viewRect (),
 	nodesInGroup ()
 {
 
@@ -49,7 +49,7 @@ ConnectionInfo::ConnectionInfo () :
 }
 
 NodeEditorInfo::NodeEditorInfo () :
-	canvas (),
+	view (),
 	nodes (),
 	groups (),
 	connections ()

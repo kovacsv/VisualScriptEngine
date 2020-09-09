@@ -273,8 +273,8 @@ NodeEditorInfo NodeEditor::GetInfo () const
 	NodeEditorInfo info;
 
 	DrawingContext& context = uiEnvironment.GetDrawingContext ();
-	info.canvas.width = context.GetWidth ();
-	info.canvas.height = context.GetHeight ();
+	info.view.width = context.GetWidth ();
+	info.view.height = context.GetHeight ();
 
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
@@ -282,14 +282,14 @@ NodeEditorInfo NodeEditor::GetInfo () const
 		nodeInfo.id = uiNode->GetId ();
 		nodeInfo.name = uiNode->GetName ().GetLocalized ();
 		nodeInfo.modelRect = uiNode->GetRect (uiEnvironment);
-		nodeInfo.screenRect = viewBox.ModelToView (nodeInfo.modelRect);
+		nodeInfo.viewRect = viewBox.ModelToView (nodeInfo.modelRect);
 
 		uiNode->EnumerateUIInputSlots ([&] (const UIInputSlotConstPtr& inputSlot) {
 			SlotInfo slotInfo;
 			slotInfo.id = inputSlot->GetId ();
 			slotInfo.name = inputSlot->GetName ().GetLocalized ();
 			slotInfo.modelRect = uiNode->GetInputSlotRect (uiEnvironment, slotInfo.id);
-			slotInfo.screenRect = viewBox.ModelToView (slotInfo.modelRect);
+			slotInfo.viewRect = viewBox.ModelToView (slotInfo.modelRect);
 			nodeInfo.inputSlots.push_back (slotInfo);
 			return true;
 		});
@@ -299,7 +299,7 @@ NodeEditorInfo NodeEditor::GetInfo () const
 			slotInfo.id = outputSlot->GetId ();
 			slotInfo.name = outputSlot->GetName ().GetLocalized ();
 			slotInfo.modelRect = uiNode->GetOutputSlotRect (uiEnvironment, slotInfo.id);
-			slotInfo.screenRect = viewBox.ModelToView (slotInfo.modelRect);
+			slotInfo.viewRect = viewBox.ModelToView (slotInfo.modelRect);
 			nodeInfo.outputSlots.push_back (slotInfo);
 			return true;
 		});
@@ -326,7 +326,7 @@ NodeEditorInfo NodeEditor::GetInfo () const
 		NE::NodeCollection nodesInGroup = uiManager.GetUIGroupNodes (uiGroup);
 		groupInfo.name = uiGroup->GetName ().GetLocalized ();
 		groupInfo.modelRect = uiGroup->GetRect (uiEnvironment, rectGetter, nodesInGroup);
-		groupInfo.screenRect = viewBox.ModelToView (groupInfo.modelRect);
+		groupInfo.viewRect = viewBox.ModelToView (groupInfo.modelRect);
 		nodesInGroup.Enumerate ([&] (const NE::NodeId& nodeId) {
 			groupInfo.nodesInGroup.push_back (nodeId);
 			return true;

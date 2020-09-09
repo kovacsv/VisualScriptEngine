@@ -11,9 +11,9 @@
 namespace NUIE
 {
 
-struct CanvasInfo
+struct ViewInfo
 {
-	CanvasInfo ();
+	ViewInfo ();
 
 	int		width;
 	int		height;
@@ -26,7 +26,7 @@ struct SlotInfo
 	NE::SlotId		id;
 	std::wstring	name;
 	Rect			modelRect;
-	Rect			screenRect;
+	Rect			viewRect;
 };
 
 struct NodeInfo
@@ -37,7 +37,7 @@ struct NodeInfo
 	std::wstring			name;
 	
 	Rect					modelRect;
-	Rect					screenRect;
+	Rect					viewRect;
 
 	std::vector<SlotInfo>	inputSlots;
 	std::vector<SlotInfo>	outputSlots;
@@ -50,7 +50,7 @@ struct GroupInfo
 	std::wstring				name;
 
 	Rect						modelRect;
-	Rect						screenRect;
+	Rect						viewRect;
 
 	std::vector<NE::NodeId>		nodesInGroup;
 };
@@ -69,7 +69,7 @@ struct NodeEditorInfo
 {
 	NodeEditorInfo ();
 
-	CanvasInfo						canvas;
+	ViewInfo						view;
 	std::vector<NodeInfo>			nodes;
 	std::vector<GroupInfo>			groups;
 	std::vector<ConnectionInfo>		connections;
