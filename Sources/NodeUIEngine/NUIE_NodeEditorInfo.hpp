@@ -15,8 +15,8 @@ struct CanvasInfo
 {
 	CanvasInfo ();
 
-	int width;
-	int height;
+	int		width;
+	int		height;
 };
 
 struct SlotInfo
