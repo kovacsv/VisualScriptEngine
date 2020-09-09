@@ -11,6 +11,14 @@
 namespace NUIE
 {
 
+struct CanvasInfo
+{
+	CanvasInfo ();
+
+	int width;
+	int height;
+};
+
 struct SlotInfo
 {
 	SlotInfo ();
@@ -61,6 +69,7 @@ struct NodeEditorInfo
 {
 	NodeEditorInfo ();
 
+	CanvasInfo						canvas;
 	std::vector<NodeInfo>			nodes;
 	std::vector<GroupInfo>			groups;
 	std::vector<ConnectionInfo>		connections;

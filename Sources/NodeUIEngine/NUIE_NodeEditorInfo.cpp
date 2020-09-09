@@ -3,6 +3,13 @@
 namespace NUIE
 {
 
+CanvasInfo::CanvasInfo () :
+	width (0),
+	height (0)
+{
+
+}
+
 SlotInfo::SlotInfo () :
 	id (),
 	name (),
@@ -42,7 +49,10 @@ ConnectionInfo::ConnectionInfo () :
 }
 
 NodeEditorInfo::NodeEditorInfo () :
-	nodes ()
+	canvas (),
+	nodes (),
+	groups (),
+	connections ()
 {
 
 }

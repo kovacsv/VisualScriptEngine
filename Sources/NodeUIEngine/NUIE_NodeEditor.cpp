@@ -272,6 +272,10 @@ NodeEditorInfo NodeEditor::GetInfo () const
 {
 	NodeEditorInfo info;
 
+	DrawingContext& context = uiEnvironment.GetDrawingContext ();
+	info.canvas.width = context.GetWidth ();
+	info.canvas.height = context.GetHeight ();
+
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
 		NodeInfo nodeInfo;
