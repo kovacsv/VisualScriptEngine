@@ -624,13 +624,6 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE:
 	MenuCommandPtr menuCommand = nullptr;
 
 	switch (command) {
-		case CommandCode::Delete:
-			{
-				if (!selectedNodes.IsEmpty ()) {
-					menuCommand.reset (new DeleteNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
-				}
-			}
-			break;
 		case CommandCode::SelectAll:
 			{
 				NE::NodeCollection allSelectedNodes;
@@ -647,6 +640,13 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE:
 					size_t nodeCount = selectedNodes.Count ();
 					UINodePtr currentNode = uiManager.GetUINode (selectedNodes.Get (nodeCount - 1));
 					menuCommand.reset (new SetParametersMenuCommand (uiManager, uiEnvironment, currentNode, selectedNodes));
+				}
+			}
+			break;
+		case CommandCode::Delete:
+			{
+				if (!selectedNodes.IsEmpty ()) {
+					menuCommand.reset (new DeleteNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
 				}
 			}
 			break;
@@ -681,12 +681,16 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE:
 			break;
 		case CommandCode::Undo:
 			{
-				menuCommand.reset (new UndoMenuCommand (uiManager, uiEnvironment));
+				if (uiManager.CanUndo ()) {
+					menuCommand.reset (new UndoMenuCommand (uiManager, uiEnvironment));
+				}
 			}
 			break;
 		case CommandCode::Redo:
 			{
-				menuCommand.reset (new RedoMenuCommand (uiManager, uiEnvironment));
+				if (uiManager.CanRedo ()) {
+					menuCommand.reset (new RedoMenuCommand (uiManager, uiEnvironment));
+				}
 			}
 			break;
 		case CommandCode::Escape:

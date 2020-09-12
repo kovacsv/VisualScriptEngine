@@ -22,9 +22,19 @@ void UndoHandler::SaveUndoState (const NE::NodeManager& nodeManager)
 	SaveAndAddState (nodeManager, undoStack);
 }
 
+bool UndoHandler::CanUndo () const
+{
+	return !undoStack.empty ();
+}
+
+bool UndoHandler::CanRedo () const
+{
+	return !redoStack.empty ();
+}
+
 bool UndoHandler::Undo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler)
 {
-	if (undoStack.empty ()) {
+	if (!CanUndo ()) {
 		return false;
 	}
 
@@ -38,7 +48,7 @@ bool UndoHandler::Undo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandl
 
 bool UndoHandler::Redo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler)
 {
-	if (redoStack.empty ()) {
+	if (!CanRedo ()) {
 		return false;
 	}
 

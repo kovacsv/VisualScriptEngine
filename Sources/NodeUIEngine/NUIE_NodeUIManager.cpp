@@ -625,6 +625,16 @@ void NodeUIManager::SaveUndoState ()
 	undoHandler.SaveUndoState (nodeManager);
 }
 
+bool NodeUIManager::CanUndo () const
+{
+	return undoHandler.CanUndo ();
+}
+
+bool NodeUIManager::CanRedo () const
+{
+	return undoHandler.CanRedo ();
+}
+
 bool NodeUIManager::Undo (NE::EvaluationEnv& env)
 {
 	NodeUIManagerUpdateEventHandler eventHandler (*this, env);

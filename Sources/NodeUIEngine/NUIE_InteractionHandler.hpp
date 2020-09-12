@@ -17,9 +17,9 @@ enum class CommandCode
 {
 	Undefined,
 	Escape,
-	Delete,
 	SelectAll,
 	SetParameters,
+	Delete,
 	Copy,
 	Paste,
 	Group,

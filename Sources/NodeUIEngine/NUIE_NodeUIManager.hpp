@@ -153,6 +153,8 @@ public:
 	NE::NodeCollection			Duplicate (const NE::NodeCollection& nodeCollection);
 
 	void						SaveUndoState ();
+	bool						CanUndo () const;
+	bool						CanRedo () const;
 	bool						Undo (NE::EvaluationEnv& env);
 	bool						Redo (NE::EvaluationEnv& env);
 

@@ -15,8 +15,13 @@ public:
 	UndoHandler ();
 
 	void	SaveUndoState (const NE::NodeManager& nodeManager);
+
+	bool	CanUndo () const;
+	bool	CanRedo () const;
+
 	bool	Undo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler);
 	bool	Redo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler);
+
 	void	Clear ();
 
 private:
