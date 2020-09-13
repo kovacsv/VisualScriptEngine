@@ -81,7 +81,7 @@ void NodeUIManager::Status::RequestRedraw ()
 
 void NodeUIManager::Status::ResetRedraw ()
 {
-	needToRedraw = true;
+	needToRedraw = false;
 }
 
 bool NodeUIManager::Status::NeedToRedraw () const
