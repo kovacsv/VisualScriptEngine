@@ -83,7 +83,12 @@ public:
 	
 	}
 
-	virtual void Do () override
+	virtual bool WillModify () const override
+	{
+		return true;
+	}
+
+	virtual void DoModification () override
 	{
 		const NUIE::ViewBox& viewBox = nodeEditor->GetViewBox ();
 		nodeEditor->AddNode (CreateNode (viewBox.ViewToModel (position)));

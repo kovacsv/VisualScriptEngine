@@ -15,7 +15,8 @@ public:
 	DeleteNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
 	virtual ~DeleteNodesMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&		uiManager;
@@ -29,7 +30,8 @@ public:
 	CopyNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const NE::NodeCollection& relevantNodes);
 	virtual ~CopyNodesMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&					uiManager;
@@ -43,7 +45,8 @@ public:
 	PasteNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const Point& position);
 	virtual ~PasteNodesMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&					uiManager;
@@ -57,7 +60,8 @@ public:
 	AlignToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
 	virtual ~AlignToWindowMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&				uiManager;
@@ -70,7 +74,8 @@ public:
 	CenterToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
 	virtual ~CenterToWindowMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&				uiManager;
@@ -83,7 +88,8 @@ public:
 	FitToWindowMenuCommand (NodeUIManager& uiManager, NodeUIDrawingEnvironment& uiEnvironment);
 	virtual ~FitToWindowMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&				uiManager;
@@ -96,7 +102,8 @@ public:
 	UndoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
 	virtual ~UndoMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&		uiManager;
@@ -109,7 +116,8 @@ public:
 	RedoMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment);
 	virtual ~RedoMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&		uiManager;
@@ -122,7 +130,8 @@ public:
 	SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes);
 	virtual ~SetParametersMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&		uiManager;
@@ -137,7 +146,8 @@ public:
 	CreateGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
 	virtual ~CreateGroupMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&		uiManager;
@@ -150,7 +160,8 @@ public:
 	RemoveNodesFromGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
 	virtual ~RemoveNodesFromGroupMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&		uiManager;
@@ -163,7 +174,8 @@ public:
 	SetGroupParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
 	virtual ~SetGroupParametersMenuCommand ();
 
-	virtual void Do () override;
+	virtual bool WillModify () const override;
+	virtual void DoModification () override;
 
 private:
 	NodeUIManager&		uiManager;

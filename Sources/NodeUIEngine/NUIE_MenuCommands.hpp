@@ -27,6 +27,8 @@ public:
 	MenuCommand (const NE::LocString& name);
 	virtual ~MenuCommand ();
 
+	void									Do ();
+
 	virtual std::wstring					GetName () const;
 
 	virtual bool							IsChecked () const = 0;
@@ -34,7 +36,8 @@ public:
 	virtual std::vector<MenuCommandPtr>		GetChildCommands () const = 0;
 	virtual void							EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const = 0;
 
-	virtual void							Do () = 0;
+	virtual bool							WillModify () const = 0;
+	virtual void							DoModification () = 0;
 
 private:
 	NE::LocString			name;
@@ -68,7 +71,8 @@ public:
 	virtual std::vector<MenuCommandPtr>		GetChildCommands () const override;
 	virtual void							EnumerateChildCommands (const std::function<void (const MenuCommandPtr& command)>& processor) const override;
 
-	virtual void							Do () override;
+	virtual bool							WillModify () const override;
+	virtual void							DoModification () override;
 
 private:
 	std::vector<MenuCommandPtr> childCommands;

@@ -645,52 +645,38 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE:
 			break;
 		case CommandCode::Delete:
 			{
-				if (!selectedNodes.IsEmpty ()) {
-					menuCommand.reset (new DeleteNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
-				}
+				menuCommand.reset (new DeleteNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
 			}
 			break;
 		case CommandCode::Copy:
 			{
-				if (!selectedNodes.IsEmpty ()) {
-					menuCommand.reset (new CopyNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
-				}
+				menuCommand.reset (new CopyNodesMenuCommand (uiManager, uiEnvironment, selectedNodes));
 			}
 			break;
 		case CommandCode::Paste:
 			{
-				if (uiEnvironment.GetClipboardHandler ().HasClipboardContent ()) {
-					Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, uiEnvironment);
-					menuCommand.reset (new PasteNodesMenuCommand (uiManager, uiEnvironment, modelPastePosition));
-				}
+				Point modelPastePosition = pastePositionCalculator.CalculatePastePosition (uiManager, uiEnvironment);
+				menuCommand.reset (new PasteNodesMenuCommand (uiManager, uiEnvironment, modelPastePosition));
 			}
 			break;
 		case CommandCode::Group:
 			{
-				if (!selectedNodes.IsEmpty ()) {
-					menuCommand.reset (new CreateGroupMenuCommand (uiManager, selectedNodes));
-				}
+				menuCommand.reset (new CreateGroupMenuCommand (uiManager, selectedNodes));
 			}
 			break;
 		case CommandCode::Ungroup:
 			{
-				if (!selectedNodes.IsEmpty ()) {
-					menuCommand.reset (new RemoveNodesFromGroupMenuCommand (uiManager, selectedNodes));
-				}
+				menuCommand.reset (new RemoveNodesFromGroupMenuCommand (uiManager, selectedNodes));
 			}
 			break;
 		case CommandCode::Undo:
 			{
-				if (uiManager.CanUndo ()) {
-					menuCommand.reset (new UndoMenuCommand (uiManager, uiEnvironment));
-				}
+				menuCommand.reset (new UndoMenuCommand (uiManager, uiEnvironment));
 			}
 			break;
 		case CommandCode::Redo:
 			{
-				if (uiManager.CanRedo ()) {
-					menuCommand.reset (new RedoMenuCommand (uiManager, uiEnvironment));
-				}
+				menuCommand.reset (new RedoMenuCommand (uiManager, uiEnvironment));
 			}
 			break;
 		case CommandCode::Escape:

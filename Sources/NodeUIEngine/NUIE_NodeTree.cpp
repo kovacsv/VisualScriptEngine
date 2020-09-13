@@ -79,7 +79,12 @@ void AddNodeTreeToMenuStructure (const NodeTree& nodeTree, const NUIE::Point& po
 
 		}
 
-		virtual void Do () override
+		virtual bool WillModify () const override
+		{
+			return true;
+		}
+
+		virtual void DoModification () override
 		{
 			NUIE::UINodePtr uiNode = creator (nodeEditor->ViewToModel (position));
 			nodeEditor->AddNode (uiNode);

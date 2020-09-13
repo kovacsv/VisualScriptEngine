@@ -27,7 +27,12 @@ DeleteNodesMenuCommand::~DeleteNodesMenuCommand ()
 
 }
 
-void DeleteNodesMenuCommand::Do ()
+bool DeleteNodesMenuCommand::WillModify () const
+{
+	return !relevantNodes.IsEmpty ();
+}
+
+void DeleteNodesMenuCommand::DoModification ()
 {
 	DeleteNodesCommand command (relevantNodes, uiEnvironment.GetEvaluationEnv ());
 	uiManager.ExecuteCommand (command);
@@ -47,7 +52,12 @@ CopyNodesMenuCommand::~CopyNodesMenuCommand ()
 
 }
 
-void CopyNodesMenuCommand::Do ()
+bool CopyNodesMenuCommand::WillModify () const
+{
+	return !relevantNodes.IsEmpty ();
+}
+
+void CopyNodesMenuCommand::DoModification ()
 {
 	CopyNodesCommand command (relevantNodes, interactionEnv.GetClipboardHandler ());
 	uiManager.ExecuteCommand (command);
@@ -67,7 +77,12 @@ PasteNodesMenuCommand::~PasteNodesMenuCommand ()
 
 }
 
-void PasteNodesMenuCommand::Do ()
+bool PasteNodesMenuCommand::WillModify () const
+{
+	return interactionEnv.GetClipboardHandler ().HasClipboardContent ();
+}
+
+void PasteNodesMenuCommand::DoModification ()
 {
 	PasteNodesCommand command (position, interactionEnv.GetClipboardHandler ());
 	uiManager.ExecuteCommand (command);
@@ -84,7 +99,12 @@ AlignToWindowMenuCommand::~AlignToWindowMenuCommand ()
 {
 }
 
-void AlignToWindowMenuCommand::Do ()
+bool AlignToWindowMenuCommand::WillModify () const
+{
+	return true;
+}
+
+void AlignToWindowMenuCommand::DoModification ()
 {
 	uiManager.AlignToWindow (uiEnvironment);
 }
@@ -100,7 +120,12 @@ CenterToWindowMenuCommand::~CenterToWindowMenuCommand ()
 {
 }
 
-void CenterToWindowMenuCommand::Do ()
+bool CenterToWindowMenuCommand::WillModify () const
+{
+	return true;
+}
+
+void CenterToWindowMenuCommand::DoModification ()
 {
 	uiManager.CenterToWindow (uiEnvironment);
 }
@@ -116,7 +141,12 @@ FitToWindowMenuCommand::~FitToWindowMenuCommand ()
 {
 }
 
-void FitToWindowMenuCommand::Do ()
+bool FitToWindowMenuCommand::WillModify () const
+{
+	return true;
+}
+
+void FitToWindowMenuCommand::DoModification ()
 {
 	uiManager.FitToWindow (uiEnvironment);
 }
@@ -134,7 +164,12 @@ UndoMenuCommand::~UndoMenuCommand ()
 
 }
 
-void UndoMenuCommand::Do ()
+bool UndoMenuCommand::WillModify () const
+{
+	return uiManager.CanUndo ();
+}
+
+void UndoMenuCommand::DoModification ()
 {
 	UndoCommand command (uiEnvironment.GetEvaluationEnv ());
 	uiManager.ExecuteCommand (command);
@@ -153,7 +188,12 @@ RedoMenuCommand::~RedoMenuCommand ()
 
 }
 
-void RedoMenuCommand::Do ()
+bool RedoMenuCommand::WillModify () const
+{
+	return uiManager.CanRedo ();
+}
+
+void RedoMenuCommand::DoModification ()
 {
 	RedoCommand command (uiEnvironment.GetEvaluationEnv ());
 	uiManager.ExecuteCommand (command);
@@ -174,7 +214,12 @@ SetParametersMenuCommand::~SetParametersMenuCommand ()
 
 }
 
-void SetParametersMenuCommand::Do ()
+bool SetParametersMenuCommand::WillModify () const
+{
+	return !relevantNodes.IsEmpty ();
+}
+
+void SetParametersMenuCommand::DoModification ()
 {
 	class NodeSelectionParameterInterface : public ParameterInterface
 	{
@@ -296,7 +341,12 @@ CreateGroupMenuCommand::~CreateGroupMenuCommand ()
 
 }
 
-void CreateGroupMenuCommand::Do ()
+bool CreateGroupMenuCommand::WillModify () const
+{
+	return !relevantNodes.IsEmpty ();
+}
+
+void CreateGroupMenuCommand::DoModification ()
 {
 	UINodeGroupPtr group (new UINodeGroup (NE::LocString (L"Group")));
 	AddGroupCommand command (group, relevantNodes);
@@ -316,7 +366,12 @@ RemoveNodesFromGroupMenuCommand::~RemoveNodesFromGroupMenuCommand ()
 
 }
 
-void RemoveNodesFromGroupMenuCommand::Do ()
+bool RemoveNodesFromGroupMenuCommand::WillModify () const
+{
+	return !relevantNodes.IsEmpty ();
+}
+
+void RemoveNodesFromGroupMenuCommand::DoModification ()
 {
 	RemoveNodesFromGroupCommand command (relevantNodes);
 	uiManager.ExecuteCommand (command);
@@ -336,7 +391,12 @@ SetGroupParametersMenuCommand::~SetGroupParametersMenuCommand ()
 
 }
 
-void SetGroupParametersMenuCommand::Do ()
+bool SetGroupParametersMenuCommand::WillModify () const
+{
+	return true;
+}
+
+void SetGroupParametersMenuCommand::DoModification ()
 {
 	class GroupParameterInterface : public ParameterInterface
 	{
@@ -581,7 +641,12 @@ public:
 		}
 	}
 
-	virtual void Do () override
+	virtual bool WillModify () const override
+	{
+		return true;
+	}
+
+	virtual void DoModification () override
 	{
 		if (DBGERROR (nodeCommand == nullptr)) {
 			return;
@@ -680,7 +745,12 @@ public:
 
 	}
 
-	virtual void Do () override
+	virtual bool WillModify () const override
+	{
+		return true;
+	}
+
+	virtual void DoModification () override
 	{
 		if (DBGERROR (command == nullptr)) {
 			return;
@@ -760,7 +830,12 @@ public:
 	
 	}
 
-	virtual void Do () override
+	virtual bool WillModify () const override
+	{
+		return true;
+	}
+
+	virtual void DoModification () override
 	{
 		DeleteGroupCommand command (group);
 		uiManager.ExecuteCommand (command);
@@ -787,7 +862,12 @@ public:
 
 	}
 
-	virtual void Do () override
+	virtual bool WillModify () const override
+	{
+		return true;
+	}
+
+	virtual void DoModification () override
 	{
 		NE::NodeCollection groupNodes = uiManager.GetUIGroupNodes (group);
 		uiManager.SetSelectedNodes (groupNodes);
@@ -821,7 +901,12 @@ public:
 		return NE::FormatString (NE::LocalizeString (SingleMenuCommand::GetName ()), groupName.c_str ());
 	}
 
-	virtual void Do () override
+	virtual bool WillModify () const override
+	{
+		return !relevantNodes.IsEmpty ();
+	}
+
+	virtual void DoModification () override
 	{
 		AddNodesToGroupCommand command (uiNodeGroup, relevantNodes);
 		uiManager.ExecuteCommand (command);
@@ -861,12 +946,13 @@ public:
 
 	}
 
-	virtual void Do () override
+	virtual bool WillModify () const override
 	{
-		if (DBGERROR (relevantNodes.Count () < 2)) {
-			return;
-		}
+		return relevantNodes.Count () >= 2;
+	}
 
+	virtual void DoModification () override
+	{
 		std::vector<Rect> nodeRects;
 		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 			UINodePtr uiNode = uiManager.GetUINode (nodeId);

@@ -15,6 +15,14 @@ MenuCommand::~MenuCommand ()
 
 }
 
+void MenuCommand::Do ()
+{
+	if (!WillModify ()) {
+		return;
+	}
+	DoModification ();
+}
+
 std::wstring MenuCommand::GetName () const
 {
 	return name.GetLocalized ();
@@ -91,7 +99,13 @@ std::vector<NUIE::MenuCommandPtr> MultiMenuCommand::GetChildCommands () const
 	return childCommands;
 }
 
-void MultiMenuCommand::Do ()
+bool MultiMenuCommand::WillModify () const
+{
+	DBGBREAK ();
+	return false;
+}
+
+void MultiMenuCommand::DoModification ()
 {
 	DBGBREAK ();
 }
