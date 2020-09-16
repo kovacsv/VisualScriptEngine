@@ -1,11 +1,6 @@
 language: cpp
 
-env:
-- CONFIGURATION=Debug
-- CONFIGURATION=RelWithDebInfo
-- CONFIGURATION=Release
-
-jobs:
+matrix:
   include:
     - os: linux
       addons:
@@ -90,9 +85,33 @@ before_install:
 
 script:
   - mkdir Build
-  - cmake ../.. -DCMAKE_BUILD_TYPE=%CONFIGURATION%
+  - cd Build
+  - mkdir Debug
+  - cd Debug
+  - cmake ../.. -DCMAKE_BUILD_TYPE=Debug
   - make
   - make test ARGS="-V"
   - make install
   - cd ..
-  - python CreatePackage.py Build/DevKit ${PACKAGE_NAME} %CONFIGURATION%
+  - cd ..
+  - python CreatePackage.py Build/Debug/DevKit ${PACKAGE_NAME} Debug
+  - cd Build
+  - mkdir Release
+  - cd Release
+  - cmake ../.. -DCMAKE_BUILD_TYPE=Release
+  - make
+  - make test ARGS="-V"
+  - make install
+  - cd ..
+  - cd ..
+  - python CreatePackage.py Build/Release/DevKit ${PACKAGE_NAME} Release
+  - cd Build
+  - mkdir RelWithDebInfo
+  - cd RelWithDebInfo
+  - cmake ../.. -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  - make
+  - make test ARGS="-V"
+  - make install
+  - cd ..
+  - cd ..
+  - python CreatePackage.py Build/RelWithDebInfo/DevKit ${PACKAGE_NAME} RelWithDebInfo
