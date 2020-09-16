@@ -106,7 +106,7 @@ Stream::Status MemoryInputStream::Read (short& val)
 
 Stream::Status MemoryInputStream::Read (size_t& val)
 {
-	uint64_t val64;
+	uint64_t val64 = 0;
 	Read ((char*) &val64, sizeof (val64));
 	val = (size_t) val64;
 	return GetStatus ();
