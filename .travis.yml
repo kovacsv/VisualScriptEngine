@@ -68,12 +68,17 @@ matrix:
       osx_image: xcode10.3
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
-        - PACKAGE_NAME=OSX_XCode10
+        - PACKAGE_NAME=OSX_XCode10_3
     - os: osx
       osx_image: xcode11
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - PACKAGE_NAME=OSX_XCode11
+    - os: osx
+      osx_image: xcode11.6
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - PACKAGE_NAME=OSX_XCode11_6
     - os: osx
       osx_image: xcode12
       env:
