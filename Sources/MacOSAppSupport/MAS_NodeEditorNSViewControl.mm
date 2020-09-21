@@ -170,6 +170,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 }
 
 - (void) cursorUpdate : (NSEvent *) theEvent {
+	#pragma unused (theEvent)
 	[[NSCursor arrowCursor] set];
 }
 
