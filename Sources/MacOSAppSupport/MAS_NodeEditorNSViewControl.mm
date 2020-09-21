@@ -169,6 +169,10 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 	}
 }
 
+- (void) cursorUpdate : (NSEvent *) theEvent {
+	[[NSCursor arrowCursor] set];
+}
+
 @end
 
 namespace MAS
@@ -229,9 +233,9 @@ void* NodeEditorNSViewControl::GetEditorNativeHandle () const
 bool NodeEditorNSViewControl::IsMouseOverEditorWindow () const
 {
 	NSPoint mousePos = [NSEvent mouseLocation];
-	NSRect viewRect = [nsView bounds];
-	NSRect screenViewRect = [[nsView window] convertRectToScreen : viewRect];
-	return [nsView mouse : mousePos inRect : screenViewRect];
+	NSPoint windowLocation = [[nsView window] convertPointFromScreen : mousePos];
+	NSPoint viewLocation = [nsView convertPoint : windowLocation fromView: nil];
+	return NSPointInRect (viewLocation, [nsView bounds]);
 }
 
 void NodeEditorNSViewControl::Resize (int x, int y, int width, int height)
