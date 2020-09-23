@@ -69,11 +69,15 @@ public:
 		nodeEditor = nodeEditorPtr;
 	}
 
-	virtual NUIE::MenuCommandPtr OnContextMenu (const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
+	virtual NUIE::MenuCommandPtr OnContextMenu (NUIE::EventHandler::ContextMenuType type, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
 	{
-		NUIE::MenuCommandStructure finalCommands = commands;
-		NUIE::AddNodeTreeToMenuStructure (nodeTree, position, nodeEditor, finalCommands);
-		return WAS::SelectCommandFromContextMenu (hwnd, position, finalCommands);
+		if (type == NUIE::EventHandler::ContextMenuType::EmptyArea) {
+			NUIE::MenuCommandStructure finalCommands = commands;
+			NUIE::AddNodeTreeToMenuStructure (nodeTree, position, nodeEditor, finalCommands);
+			return WAS::SelectCommandFromContextMenu (hwnd, position, finalCommands);
+		} else {
+			return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
+		}
 	}
 
 private:

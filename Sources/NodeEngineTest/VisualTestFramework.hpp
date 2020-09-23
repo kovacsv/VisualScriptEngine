@@ -17,14 +17,9 @@ class TestEventHandler : public EventHandler
 public:
 	TestEventHandler (NodeEditor* nodeEditor);
 
-	virtual MenuCommandPtr		OnContextMenu (const Point&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr		OnContextMenu (const Point&, const UINodePtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr		OnContextMenu (const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr		OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure&) override;
-	virtual MenuCommandPtr		OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure&) override;
+	virtual MenuCommandPtr		OnContextMenu (ContextMenuType, const Point&, const MenuCommandStructure&) override;
+	virtual bool				OnParameterSettings (ParameterSettingsType, ParameterInterfacePtr) override;
 	virtual void				OnDoubleClick (const Point&, MouseButton) override;
-	virtual bool				OnParameterSettings (ParameterInterfacePtr, const UINodePtr&) override;
-	virtual bool				OnParameterSettings (ParameterInterfacePtr, const UINodeGroupPtr&) override;
 
 	void						SetNextCommandName (const std::wstring& nextCommandName);
 	void						SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);

@@ -199,7 +199,7 @@ void RedoMenuCommand::DoModification ()
 	uiManager.ExecuteCommand (command);
 }
 
-SetParametersMenuCommand::SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes) :
+SetParametersMenuCommand::SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeConstPtr& currentNode, const NE::NodeCollection& relevantNodes) :
 	SingleMenuCommand (NE::LocString (L"Node Settings"), false),
 	uiManager (uiManager),
 	uiEnvironment (uiEnvironment),
@@ -224,7 +224,7 @@ void SetParametersMenuCommand::DoModification ()
 	class NodeSelectionParameterInterface : public ParameterInterface
 	{
 	public:
-		NodeSelectionParameterInterface (const UINodePtr& currentNode, const NE::NodeCollection& nodeList, const NodeParameterList& paramList) :
+		NodeSelectionParameterInterface (const UINodeConstPtr& currentNode, const NE::NodeCollection& nodeList, const NodeParameterList& paramList) :
 			currentNode (currentNode),
 			nodeList (nodeList),
 			paramList (paramList)
@@ -313,7 +313,7 @@ void SetParametersMenuCommand::DoModification ()
 		}
 
 	private:
-		UINodePtr										currentNode;
+		UINodeConstPtr									currentNode;
 		NE::NodeCollection								nodeList;
 		NodeParameterList								paramList;
 		std::unordered_map<size_t, NE::ValueConstPtr>	changedParameterValues;
@@ -322,7 +322,7 @@ void SetParametersMenuCommand::DoModification ()
 	NodeParameterList relevantParameters;
 	RegisterCommonParameters (uiManager, relevantNodes, relevantParameters);
 	ParameterInterfacePtr paramInterface (new NodeSelectionParameterInterface (currentNode, relevantNodes, relevantParameters));
-	if (uiEnvironment.GetEventHandler ().OnParameterSettings (paramInterface, currentNode)) {
+	if (uiEnvironment.GetEventHandler ().OnParameterSettings (EventHandler::ParameterSettingsType::Node, paramInterface)) {
 		ApplyParametersCommand command (paramInterface, uiEnvironment.GetEvaluationEnv ());
 		uiManager.ExecuteCommand (command);
 	}
@@ -520,7 +520,7 @@ void SetGroupParametersMenuCommand::DoModification ()
 
 	const NamedColorSet& groupBackgroundColors = uiEnvironment.GetSkinParams ().GetGroupBackgroundColors ();
 	ParameterInterfacePtr paramInterface (new GroupParameterInterface (group, groupBackgroundColors));
-	if (uiEnvironment.GetEventHandler ().OnParameterSettings (paramInterface, group)) {
+	if (uiEnvironment.GetEventHandler ().OnParameterSettings (EventHandler::ParameterSettingsType::Group, paramInterface)) {
 		ApplyParametersCommand command (paramInterface, uiEnvironment.GetEvaluationEnv ());
 		uiManager.ExecuteCommand (command);
 	}
@@ -1031,7 +1031,7 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
-NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode)
+NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodeConstPtr& uiNode)
 {
 	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
 	if (selectedNodes.Contains (uiNode->GetId ())) {
@@ -1052,7 +1052,7 @@ MenuCommandStructure CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, 
 	return commandStructure;
 }
 
-MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode)
+MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeConstPtr& uiNode)
 {
 	NE::NodeCollection relevantNodes = GetNodesForCommand (uiManager, uiNode);
 	NodeCommandStructureBuilder commandStructureBuilder (uiManager, uiEnvironment, relevantNodes);

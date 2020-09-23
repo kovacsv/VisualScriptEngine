@@ -830,25 +830,25 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& uiEn
 		bool found = FindItemUnderPosition (uiManager, uiEnvironment, position,
 			[&] (const UIInputSlotConstPtr& foundInputSlot) {
 				MenuCommandStructure commands = CreateInputSlotCommandStructure (uiManager, uiEnvironment, foundInputSlot);
-				selectedCommand = eventHandler.OnContextMenu (position, foundInputSlot, commands);
+				selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::InputSlot, position, commands);
 			},
 			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
 				MenuCommandStructure commands = CreateOutputSlotCommandStructure (uiManager, uiEnvironment, foundOutputSlot);
-				selectedCommand = eventHandler.OnContextMenu (position, foundOutputSlot, commands);
+				selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::OutputSlot, position, commands);
 			},
 			[&] (const UINodePtr& foundNode) {
 				MenuCommandStructure commands = CreateNodeCommandStructure (uiManager, uiEnvironment, foundNode);
-				selectedCommand = eventHandler.OnContextMenu (position, foundNode, commands);
+				selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::Node, position, commands);
 			},
 			[&] (const UINodeGroupPtr& foundGroup) {
 				MenuCommandStructure commands = CreateNodeGroupCommandStructure (uiManager, uiEnvironment, foundGroup);
-				selectedCommand = eventHandler.OnContextMenu (position, foundGroup, commands);
+				selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::Group, position, commands);
 			}
 		);
 		if (!found) {
 			Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
 			MenuCommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, uiEnvironment, modelPosition);
-			selectedCommand = eventHandler.OnContextMenu (position, commands);
+			selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::EmptyArea, position, commands);
 		}
 		if (selectedCommand != nullptr) {
 			selectedCommand->Do ();

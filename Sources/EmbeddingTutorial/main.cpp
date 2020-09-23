@@ -12,42 +12,19 @@ public:
 	}
 
 	virtual NUIE::MenuCommandPtr OnContextMenu (
+		ContextMenuType type,
 		const NUIE::Point& position,
 		const NUIE::MenuCommandStructure& commands) override
 	{
 		return nullptr;
 	}
 
-	virtual NUIE::MenuCommandPtr OnContextMenu (
-		const NUIE::Point& position,
-		const NUIE::UINodePtr& uiNode,
-		const NUIE::MenuCommandStructure& commands) override
-	{
-		return nullptr;
-	}
 
-	virtual NUIE::MenuCommandPtr OnContextMenu (
-		const NUIE::Point& position,
-		const NUIE::UIOutputSlotConstPtr& inputSlot,
-		const NUIE::MenuCommandStructure& commands) override
+	virtual bool OnParameterSettings (
+		ParameterSettingsType type,
+		NUIE::ParameterInterfacePtr paramAccessor) override
 	{
-		return nullptr;
-	}
-
-	virtual NUIE::MenuCommandPtr OnContextMenu (
-		const NUIE::Point& position,
-		const NUIE::UIInputSlotConstPtr& inputSlot,
-		const NUIE::MenuCommandStructure& commands) override
-	{
-		return nullptr;
-	}
-
-	virtual NUIE::MenuCommandPtr OnContextMenu (
-		const NUIE::Point& position,
-		const NUIE::UINodeGroupPtr& group,
-		const NUIE::MenuCommandStructure& commands) override
-	{
-		return nullptr;
+		return false;
 	}
 
 	virtual void OnDoubleClick (
@@ -55,20 +32,6 @@ public:
 		NUIE::MouseButton mouseButton) override
 	{
 
-	}
-
-	virtual bool OnParameterSettings (
-		NUIE::ParameterInterfacePtr paramAccessor,
-		const NUIE::UINodePtr& uiNode) override
-	{
-		return false;
-	}
-
-	virtual bool OnParameterSettings (
-		NUIE::ParameterInterfacePtr paramAccessor,
-		const NUIE::UINodeGroupPtr& uiGroup) override
-	{
-		return false;
 	}
 };
 

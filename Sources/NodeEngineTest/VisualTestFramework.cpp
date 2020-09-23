@@ -125,64 +125,38 @@ TestEventHandler::TestEventHandler (NodeEditor* nodeEditor) :
 	
 }
 
-MenuCommandPtr TestEventHandler::OnContextMenu (const Point& position, const MenuCommandStructure& commands)
+MenuCommandPtr TestEventHandler::OnContextMenu (ContextMenuType type, const Point& position, const MenuCommandStructure& commands)
 {
-	NUIE::MenuCommandStructure actualCommands = commands;
-	NUIE::MultiMenuCommandPtr createMultiCommand (new NUIE::MultiMenuCommand (NE::LocString (L"Add Node")));
+	if (type == ContextMenuType::EmptyArea) {
+		NUIE::MenuCommandStructure actualCommands = commands;
+		NUIE::MultiMenuCommandPtr createMultiCommand (new NUIE::MultiMenuCommand (NE::LocString (L"Add Node")));
 
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Number, NE::LocString (L"Create Number Node"), position)));
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Integer, NE::LocString (L"Create Integer Node"), position)));
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Addition, NE::LocString (L"Create Addition Node"), position)));
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Increase, NE::LocString (L"Create Increase Node"), position)));
-	createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Viewer, NE::LocString (L"Create Viewer Node"), position)));
-	actualCommands.AddCommand (createMultiCommand);
+		createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Number, NE::LocString (L"Create Number Node"), position)));
+		createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Integer, NE::LocString (L"Create Integer Node"), position)));
+		createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Addition, NE::LocString (L"Create Addition Node"), position)));
+		createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Increase, NE::LocString (L"Create Increase Node"), position)));
+		createMultiCommand->AddChildCommand (NUIE::MenuCommandPtr (new MyCreateNodeCommand (nodeEditor, MyCreateNodeCommand::NodeType::Viewer, NE::LocString (L"Create Viewer Node"), position)));
+		actualCommands.AddCommand (createMultiCommand);
 
-	return SelectCommandByName (actualCommands);
+		return SelectCommandByName (actualCommands);
+	} else {
+		return SelectCommandByName (commands);
+	}
 }
 
-MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UINodePtr&, const MenuCommandStructure& commands)
+bool TestEventHandler::OnParameterSettings (ParameterSettingsType, ParameterInterfacePtr paramInterface)
 {
-	return SelectCommandByName (commands);
-}
-
-MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UIOutputSlotConstPtr&, const MenuCommandStructure& commands)
-{
-	return SelectCommandByName (commands);
-}
-
-MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UIInputSlotConstPtr&, const MenuCommandStructure& commands)
-{
-	return SelectCommandByName (commands);
-}
-
-MenuCommandPtr TestEventHandler::OnContextMenu (const Point&, const UINodeGroupPtr&, const MenuCommandStructure& commands)
-{
-	return SelectCommandByName (commands);
+	if (DBGERROR (paramSettingsHandler == nullptr)) {
+		return false;
+	}
+	bool result = paramSettingsHandler (paramInterface);
+	paramSettingsHandler = nullptr;
+	return result;
 }
 
 void TestEventHandler::OnDoubleClick (const Point&, MouseButton)
 {
 
-}
-
-bool TestEventHandler::OnParameterSettings (ParameterInterfacePtr paramInterface, const UINodePtr&)
-{
-	if (DBGERROR (paramSettingsHandler == nullptr)) {
-		return false;
-	}
-	bool result = paramSettingsHandler (paramInterface);
-	paramSettingsHandler = nullptr;
-	return result;
-}
-
-bool TestEventHandler::OnParameterSettings (ParameterInterfacePtr paramInterface, const UINodeGroupPtr&)
-{
-	if (DBGERROR (paramSettingsHandler == nullptr)) {
-		return false;
-	}
-	bool result = paramSettingsHandler (paramInterface);
-	paramSettingsHandler = nullptr;
-	return result;
 }
 
 void TestEventHandler::SetNextCommandName (const std::wstring& nextCommandName)

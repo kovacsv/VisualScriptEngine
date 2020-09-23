@@ -127,7 +127,7 @@ private:
 class SetParametersMenuCommand : public SingleMenuCommand
 {
 public:
-	SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& currentNode, const NE::NodeCollection& relevantNodes);
+	SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeConstPtr& currentNode, const NE::NodeCollection& relevantNodes);
 	virtual ~SetParametersMenuCommand ();
 
 	virtual bool WillModify () const override;
@@ -136,7 +136,7 @@ public:
 private:
 	NodeUIManager&		uiManager;
 	NodeUIEnvironment&	uiEnvironment;
-	UINodePtr			currentNode;
+	UINodeConstPtr		currentNode;
 	NE::NodeCollection	relevantNodes;
 };
 
@@ -183,10 +183,10 @@ private:
 	UINodeGroupPtr		group;
 };
 
-NE::NodeCollection		GetNodesForCommand (const NodeUIManager& uiManager, const UINodePtr& uiNode);
+NE::NodeCollection		GetNodesForCommand (const NodeUIManager& uiManager, const UINodeConstPtr& uiNode);
 
 MenuCommandStructure	CreateEmptyAreaCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
-MenuCommandStructure	CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodePtr& uiNode);
+MenuCommandStructure	CreateNodeCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeConstPtr& uiNode);
 MenuCommandStructure	CreateOutputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIOutputSlotConstPtr& outputSlot);
 MenuCommandStructure	CreateInputSlotCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UIInputSlotConstPtr& inputSlot);
 MenuCommandStructure	CreateNodeGroupCommandStructure (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeGroupPtr& group);
