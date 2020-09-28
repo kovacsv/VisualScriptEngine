@@ -206,7 +206,7 @@ NUIE::Size D2D1MeasureText (IDWriteFactory* directWriteFactory, ID2D1RenderTarge
 {
 	IDWriteTextLayout* textLayout = nullptr;
 	IDWriteTextFormat* textFormat = CreateTextFormat (directWriteFactory, renderTarget, font);
-	directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, 1000.0, 1000.0, &textLayout);
+	directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, FLT_MAX, FLT_MAX, &textLayout);
 	DWRITE_TEXT_METRICS metrics;
 	textLayout->GetMetrics (&metrics);
 	SafeRelease (&textLayout);
