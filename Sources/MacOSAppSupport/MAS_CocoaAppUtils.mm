@@ -56,7 +56,7 @@ NSString* StdWStringToNSString (const std::wstring& str)
 NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 {
 	NUIE::ModifierKeys keys;
-	if ([event modifierFlags] & NSEventModifierFlagControl) {
+	if ([event modifierFlags] & NSEventModifierFlagCommand) {
 		keys.Insert (NUIE::ModifierKeyCode::Control);
 	}
 	if ([event modifierFlags] & NSEventModifierFlagShift) {
