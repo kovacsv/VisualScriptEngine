@@ -345,8 +345,6 @@ void Application::Run ()
 	[myWindow center];
 	[myWindow makeKeyAndOrderFront:nil];
 
-	NSImage* image = [NSImage imageNamed:@"Additi2on.png"];
-#pragma unused (image)
 	[NSApp run];
 
 	[NSApp release];
