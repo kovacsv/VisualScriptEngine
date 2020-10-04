@@ -137,12 +137,12 @@ size_t NodeManager::GetConnectionCount () const
 
 void NodeManager::EnumerateNodes (const std::function<bool (const NodePtr&)>& processor)
 {
-	nodeList.EnumerateNodes (processor);
+	nodeList.Enumerate (processor);
 }
 
 void NodeManager::EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const
 {
-	nodeList.EnumerateNodes (processor);
+	nodeList.Enumerate (processor);
 }
 
 bool NodeManager::ContainsNode (const NodeId& id) const

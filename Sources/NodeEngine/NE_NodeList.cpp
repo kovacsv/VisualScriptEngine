@@ -81,7 +81,7 @@ void NodeList::Clear ()
 	nodeIdToNodeTable.clear ();
 }
 
-void NodeList::EnumerateNodes (const std::function<bool (const NodePtr&)>& processor)
+void NodeList::Enumerate (const std::function<bool (const NodePtr&)>& processor)
 {
 	DBGASSERT (nodeIdList.size () == nodeIdToNodeTable.size ());
 	for (const NodeId& nodeId : nodeIdList) {
@@ -89,7 +89,7 @@ void NodeList::EnumerateNodes (const std::function<bool (const NodePtr&)>& proce
 	}
 }
 
-void NodeList::EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const
+void NodeList::Enumerate (const std::function<bool (const NodeConstPtr&)>& processor) const
 {
 	DBGASSERT (nodeIdList.size () == nodeIdToNodeTable.size ());
 	for (const NodeId& nodeId : nodeIdList) {
