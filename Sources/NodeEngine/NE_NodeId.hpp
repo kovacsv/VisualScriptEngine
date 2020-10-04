@@ -11,23 +11,6 @@ namespace NE
 
 using NodeIdType = size_t;
 
-class NodeIdGenerator
-{
-	SERIALIZABLE;
-
-public:
-	NodeIdGenerator ();
-	~NodeIdGenerator ();
-
-	NodeIdType		GenerateUniqueId ();
-
-	Stream::Status	Read (InputStream& inputStream);
-	Stream::Status	Write (OutputStream& outputStream) const;
-
-private:
-	std::atomic<size_t> nextId;
-};
-
 class NodeId
 {
 	SERIALIZABLE;

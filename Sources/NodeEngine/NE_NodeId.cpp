@@ -3,41 +3,7 @@
 namespace NE
 {
 
-SERIALIZATION_INFO (NodeIdGenerator, 1);
 SERIALIZATION_INFO (NodeId, 1);
-
-NodeIdGenerator::NodeIdGenerator () :
-	nextId (1)
-{
-
-}
-
-NodeIdGenerator::~NodeIdGenerator ()
-{
-
-}
-
-NodeIdType NodeIdGenerator::GenerateUniqueId ()
-{
-	NodeIdType newId = nextId++;
-	return newId;
-}
-
-Stream::Status NodeIdGenerator::Read (InputStream& inputStream)
-{
-	ObjectHeader header (inputStream);
-	NodeIdType nextIdFromStream = 0;
-	inputStream.Read (nextIdFromStream);
-	nextId = nextIdFromStream;
-	return inputStream.GetStatus ();
-}
-
-Stream::Status NodeIdGenerator::Write (OutputStream& outputStream) const
-{
-	ObjectHeader header (outputStream, serializationInfo);
-	outputStream.Write (nextId);
-	return outputStream.GetStatus ();
-}
 
 NodeId::NodeId () :
 	id (0)

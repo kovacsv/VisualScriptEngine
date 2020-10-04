@@ -12,6 +12,7 @@
 #include "NE_NodeList.hpp"
 #include "NE_NodeGroupList.hpp"
 #include "NE_NodeValueCache.hpp"
+#include "NE_UniqueIdGenerator.hpp"
 #include <functional>
 
 namespace NE
@@ -120,7 +121,7 @@ private:
 	Stream::Status		ReadNodes (InputStream& inputStream);
 	Stream::Status		WriteNodes (OutputStream& outputStream) const;
 
-	NodeIdGenerator							idGenerator;
+	UniqueIdGenerator						idGenerator;
 	NodeList								nodeList;
 	ConnectionManager						connectionManager;
 	NodeGroupList							nodeGroupList;
