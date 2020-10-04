@@ -2,6 +2,7 @@
 #define NE_UNIQUEIDGENERATOR_HPP
 
 #include "NE_Serializable.hpp"
+#include "NE_NodeId.hpp"
 
 #include <atomic>
 
@@ -18,7 +19,7 @@ public:
 	UniqueIdGenerator ();
 	~UniqueIdGenerator ();
 
-	IdType					GenerateUniqueId ();
+	NodeId					GenerateNodeId ();
 
 	Stream::Status			Read (InputStream& inputStream);
 	Stream::Status			Write (OutputStream& outputStream) const;

@@ -550,7 +550,7 @@ NodePtr NodeManager::AddUninitializedNode (const NodePtr& node)
 		return nullptr;
 	}
 
-	NodeId newNodeId (idGenerator.GenerateUniqueId ());
+	NodeId newNodeId = idGenerator.GenerateNodeId ();
 	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::Initialize);
 	return AddNode (node, setter);
 }
@@ -565,7 +565,9 @@ NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy i
 	if (idHandling == IdHandlingPolicy::KeepOriginalId) {
 		newNodeId = node->GetId ();
 	} else if (idHandling == IdHandlingPolicy::GenerateNewId) {
-		newNodeId.SetUniqueId (idGenerator.GenerateUniqueId ());
+		newNodeId = idGenerator.GenerateNodeId ();
+	} else {
+		DBGBREAK ();
 	}
 
 	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::DoNotInitialize);

@@ -16,10 +16,10 @@ UniqueIdGenerator::~UniqueIdGenerator ()
 
 }
 
-IdType UniqueIdGenerator::GenerateUniqueId ()
+NodeId UniqueIdGenerator::GenerateNodeId ()
 {
 	IdType newId = nextId++;
-	return newId;
+	return NodeId (newId);
 }
 
 Stream::Status UniqueIdGenerator::Read (InputStream& inputStream)
