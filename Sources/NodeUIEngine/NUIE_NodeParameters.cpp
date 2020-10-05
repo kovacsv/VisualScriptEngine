@@ -124,7 +124,7 @@ void RegisterCommonParameters (const NodeUIManager& uiManager, const NE::NodeCol
 {
 	std::vector<UINodeConstPtr> uiNodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
-		UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
+		UINodeConstPtr uiNode = uiManager.GetNode (nodeId);
 		if (DBGVERIFY (uiNode != nullptr)) {
 			uiNodes.push_back (uiNode);
 		}
@@ -153,7 +153,7 @@ bool ApplyCommonParameter (NodeUIManager& uiManager, NE::EvaluationEnv& evaluati
 {
 	std::vector<UINodePtr> uiNodes;
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
-		UINodePtr uiNode = uiManager.GetUINode (nodeId);
+		UINodePtr uiNode = uiManager.GetNode (nodeId);
 		if (DBGVERIFY (uiNode != nullptr)) {
 			uiNodes.push_back (uiNode);
 		}

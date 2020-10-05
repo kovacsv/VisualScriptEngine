@@ -344,18 +344,18 @@ TEST (DuplicateNodeTest)
 	NE::NodeCollection duplicatedNodes = uiManager.Duplicate (nodesToDuplicate);
 
 	ASSERT (duplicatedNodes.Count () == 2);
-	UINodePtr node3 = uiManager.GetUINode (duplicatedNodes.Get (0));
-	UINodePtr node4 = uiManager.GetUINode (duplicatedNodes.Get (1));
+	UINodePtr node3 = uiManager.GetNode (duplicatedNodes.Get (0));
+	UINodePtr node4 = uiManager.GetNode (duplicatedNodes.Get (1));
 
 	ASSERT (node3 != nullptr);
 	ASSERT (node3->GetId () != NullNodeId);
 	ASSERT (node3->GetName ().GetLocalized () == L"TestNode");
-	ASSERT (uiManager.ContainsUINode (node3->GetId ()));
+	ASSERT (uiManager.ContainsNode (node3->GetId ()));
 
 	ASSERT (node4 != nullptr);
 	ASSERT (node4->GetId () != NullNodeId);
 	ASSERT (node4->GetName ().GetLocalized () == L"TestNode2");
-	ASSERT (uiManager.ContainsUINode (node4->GetId ()));
+	ASSERT (uiManager.ContainsNode (node4->GetId ()));
 }
 
 }

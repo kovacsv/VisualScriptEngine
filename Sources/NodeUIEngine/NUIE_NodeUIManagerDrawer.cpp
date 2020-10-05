@@ -11,7 +11,7 @@ namespace NUIE
 
 NodeIdToNodeMap::NodeIdToNodeMap (const NodeUIManager& uiManager)
 {
-	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+	uiManager.EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
 		const UINode* uiNodePtr = uiNode.get ();
 		Insert (uiNodePtr->GetId (), uiNodePtr);
 		return true;
@@ -106,7 +106,7 @@ void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& drawingEnv, cons
 
 		virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override
 		{
-			UINodeConstPtr uiNode = uiManager.GetUINode (nodeId);
+			UINodeConstPtr uiNode = uiManager.GetNode (nodeId);
 			return uiManagerDrawer.GetNodeRect (drawingEnv, drawModifier, uiNode.get ());
 		}
 
@@ -118,10 +118,10 @@ void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& drawingEnv, cons
 	};
 
 	ModifiedNodeRectGetter rectGetter (uiManager, *this, drawModifier, drawingEnv);
-	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& group) {
-		Rect groupRect = group->GetRect (drawingEnv, rectGetter, uiManager.GetUIGroupNodes (group));
+	uiManager.EnumerateNodeGroups ([&] (const UINodeGroupConstPtr& group) {
+		Rect groupRect = group->GetRect (drawingEnv, rectGetter, uiManager.GetGroupNodes (group));
 		if (IsRectVisible (drawingEnv, groupRect)) {
-			group->Draw (drawingEnv, rectGetter, uiManager.GetUIGroupNodes (group));
+			group->Draw (drawingEnv, rectGetter, uiManager.GetGroupNodes (group));
 		}
 		return true;
 	});

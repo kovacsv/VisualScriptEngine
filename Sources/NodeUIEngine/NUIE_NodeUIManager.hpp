@@ -105,12 +105,12 @@ public:
 	void						EnumerateConnectedUIInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const;
 	void						EnumerateConnectedUIOutputSlots (const UIInputSlotConstPtr& inputSlot, const std::function<void (UIOutputSlotConstPtr)>& processor) const;
 
-	bool						ContainsUINode (const NE::NodeId& nodeId) const;
-	UINodePtr					GetUINode (const NE::NodeId& nodeId);
-	UINodeConstPtr				GetUINode (const NE::NodeId& nodeId) const;
+	bool						ContainsNode (const NE::NodeId& nodeId) const;
+	UINodePtr					GetNode (const NE::NodeId& nodeId);
+	UINodeConstPtr				GetNode (const NE::NodeId& nodeId) const;
 
-	void						EnumerateUINodes (const std::function<bool (const UINodePtr&)>& processor);
-	void						EnumerateUINodes (const std::function<bool (const UINodeConstPtr&)>& processor) const;
+	void						EnumerateNodes (const std::function<bool (const UINodePtr&)>& processor);
+	void						EnumerateNodes (const std::function<bool (const UINodeConstPtr&)>& processor) const;
 
 	void						RequestRecalculateAndRedraw ();
 	void						RequestRecalculate ();
@@ -158,16 +158,16 @@ public:
 	bool						Undo (NE::EvaluationEnv& env);
 	bool						Redo (NE::EvaluationEnv& env);
 
-	bool						AddUINodeGroup (const UINodeGroupPtr& group);
-	void						DeleteUINodeGroup (const UINodeGroupPtr& group);
-	void						AddNodesToUIGroup (const UINodeGroupPtr& group, const NE::NodeCollection& nodeCollection);
-	bool						RemoveNodesFromUIGroup (const NE::NodeCollection& nodeCollection);
+	bool						AddNodeGroup (const UINodeGroupPtr& group);
+	void						DeleteNodeGroup (const UINodeGroupPtr& group);
+	void						AddNodesToGroup (const UINodeGroupPtr& group, const NE::NodeCollection& nodeCollection);
+	bool						RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection);
 
-	const NE::NodeCollection&	GetUIGroupNodes (const UINodeGroupConstPtr& group) const;
-	UINodeGroupConstPtr			GetUINodeGroup (const NE::NodeId& nodeId) const;
+	const NE::NodeCollection&	GetGroupNodes (const UINodeGroupConstPtr& group) const;
+	UINodeGroupConstPtr			GetNodeGroup (const NE::NodeId& nodeId) const;
 
-	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
-	void						EnumerateUINodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
+	void						EnumerateNodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
+	void						EnumerateNodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
 
 	void						ExecuteCommand (NodeUIManagerCommand& command);
 	void						ExecuteCommand (NodeUIManagerCommandPtr& command);

@@ -277,7 +277,7 @@ NodeEditorInfo NodeEditor::GetInfo () const
 	info.view.height = context.GetHeight ();
 
 	const ViewBox& viewBox = uiManager.GetViewBox ();
-	uiManager.EnumerateUINodes ([&] (const UINodeConstPtr& uiNode) {
+	uiManager.EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
 		NodeInfo nodeInfo;
 		nodeInfo.id = uiNode->GetId ();
 		nodeInfo.name = uiNode->GetName ().GetLocalized ();
@@ -321,9 +321,9 @@ NodeEditorInfo NodeEditor::GetInfo () const
 	});
 
 	NodeUIManagerNodeRectGetter rectGetter (uiManager, uiEnvironment);
-	uiManager.EnumerateUINodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
+	uiManager.EnumerateNodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
 		GroupInfo groupInfo;
-		NE::NodeCollection nodesInGroup = uiManager.GetUIGroupNodes (uiGroup);
+		NE::NodeCollection nodesInGroup = uiManager.GetGroupNodes (uiGroup);
 		groupInfo.name = uiGroup->GetName ().GetLocalized ();
 		groupInfo.modelRect = uiGroup->GetRect (uiEnvironment, rectGetter, nodesInGroup);
 		groupInfo.viewRect = viewBox.ModelToView (groupInfo.modelRect);

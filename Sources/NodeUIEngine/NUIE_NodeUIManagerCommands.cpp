@@ -75,7 +75,7 @@ void MoveNodesCommand::Do (NodeUIManager& uiManager)
 {
 	for (size_t i = 0; i < nodes.Count (); i++) {
 		const NE::NodeId& nodeId = nodes.Get (i);
-		UINodePtr uiNode = uiManager.GetUINode (nodeId);
+		UINodePtr uiNode = uiManager.GetNode (nodeId);
 		uiNode->SetPosition (uiNode->GetPosition () + offset);
 		uiManager.InvalidateNodeGroupDrawing (uiNode);
 	}
@@ -96,7 +96,7 @@ void MoveNodesWithOffsetsCommand::Do (NodeUIManager& uiManager)
 	for (size_t i = 0; i < nodes.Count (); i++) {
 		const NE::NodeId& nodeId = nodes.Get (i);
 		const Point& offset = offsets[i];
-		UINodePtr uiNode = uiManager.GetUINode (nodeId);
+		UINodePtr uiNode = uiManager.GetNode (nodeId);
 		uiNode->SetPosition (uiNode->GetPosition () + offset);
 		uiManager.InvalidateNodeGroupDrawing (uiNode);
 	}
@@ -113,7 +113,7 @@ void CopyMoveNodesCommand::Do (NodeUIManager& uiManager)
 {
 	NE::NodeCollection duplicatedNodes = uiManager.Duplicate (nodes);
 	duplicatedNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-		UINodePtr uiNode = uiManager.GetUINode (nodeId);
+		UINodePtr uiNode = uiManager.GetNode (nodeId);
 		uiNode->SetPosition (uiNode->GetPosition () + offset);
 		return true;
 	});
@@ -257,7 +257,7 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 	NE::NodeCollection newNodeIds = uiManager.PasteFromNodeManager (clipboardNodeManager);
 	std::vector<UINodePtr> newNodes;
 	newNodeIds.Enumerate ([&] (const NE::NodeId& nodeId) {
-		newNodes.push_back (uiManager.GetUINode (nodeId));
+		newNodes.push_back (uiManager.GetNode (nodeId));
 		return true;
 	});
 
@@ -292,8 +292,8 @@ void AddGroupCommand::Do (NodeUIManager& uiManager)
 	if (DBGERROR (nodes.IsEmpty ())) {
 		return;
 	}
-	uiManager.AddUINodeGroup (uiGroup);
-	uiManager.AddNodesToUIGroup (uiGroup, nodes);
+	uiManager.AddNodeGroup (uiGroup);
+	uiManager.AddNodesToGroup (uiGroup, nodes);
 }
 
 DeleteGroupCommand::DeleteGroupCommand (const UINodeGroupPtr& uiGroup) :
@@ -305,7 +305,7 @@ DeleteGroupCommand::DeleteGroupCommand (const UINodeGroupPtr& uiGroup) :
 
 void DeleteGroupCommand::Do (NodeUIManager& uiManager)
 {
-	uiManager.DeleteUINodeGroup (uiGroup);
+	uiManager.DeleteNodeGroup (uiGroup);
 }
 
 AddNodesToGroupCommand::AddNodesToGroupCommand (const UINodeGroupPtr& uiGroup, const NE::NodeCollection& nodes) :
@@ -318,7 +318,7 @@ AddNodesToGroupCommand::AddNodesToGroupCommand (const UINodeGroupPtr& uiGroup, c
 
 void AddNodesToGroupCommand::Do (NodeUIManager& uiManager)
 {
-	uiManager.AddNodesToUIGroup (uiGroup, nodes);
+	uiManager.AddNodesToGroup (uiGroup, nodes);
 }
 
 RemoveNodesFromGroupCommand::RemoveNodesFromGroupCommand (const NE::NodeCollection& nodes) :
@@ -330,7 +330,7 @@ RemoveNodesFromGroupCommand::RemoveNodesFromGroupCommand (const NE::NodeCollecti
 
 void RemoveNodesFromGroupCommand::Do (NodeUIManager& uiManager)
 {
-	uiManager.RemoveNodesFromUIGroup (nodes);
+	uiManager.RemoveNodesFromGroup (nodes);
 }
 
 UndoCommand::UndoCommand (NE::EvaluationEnv& evaluationEnv) :
