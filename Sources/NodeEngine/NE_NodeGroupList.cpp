@@ -99,8 +99,8 @@ void NodeGroupList::AddNodeToGroup (const NodeGroupId& groupId, const NodeId& no
 		return;
 	}
 
-	NodeGroupConstPtr existingGroup = GetNodeGroup (nodeId);
-	if (existingGroup != nullptr && groupId == existingGroup->GetId ()) {
+	NodeGroupId existingGroupId = GetNodeGroupId (nodeId);
+	if (existingGroupId != NullNodeGroupId && groupId == existingGroupId) {
 		return;
 	}
 
@@ -116,17 +116,26 @@ const NodeCollection& NodeGroupList::GetGroupNodes (const NodeGroupId& groupId) 
 
 void NodeGroupList::RemoveNodeFromGroup (const NodeId& nodeId)
 {
-	NodeGroupConstPtr group = GetNodeGroup (nodeId);
-	if (group == nullptr) {
+	NodeGroupId existingGroupId = GetNodeGroupId (nodeId);
+	if (existingGroupId == NullNodeGroupId) {
 		return;
 	}
 
-	NodeCollection& nodes = groupToNodes[group->GetId ()];
+	NodeCollection& nodes = groupToNodes[existingGroupId];
 	nodes.Erase (nodeId);
 	nodeToGroup.erase (nodeId);
 	if (nodes.IsEmpty ()) {
-		DeleteGroup (group->GetId ());
+		DeleteGroup (existingGroupId);
 	}
+}
+
+NE::NodeGroupId NodeGroupList::GetNodeGroupId (const NodeId& nodeId) const
+{
+	auto found = nodeToGroup.find (nodeId);
+	if (found == nodeToGroup.end ()) {
+		return NullNodeGroupId;
+	}
+	return found->second;
 }
 
 NodeGroupConstPtr NodeGroupList::GetNodeGroup (const NodeId& nodeId) const

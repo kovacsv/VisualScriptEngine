@@ -31,6 +31,7 @@ public:
 	void					AddNodeToGroup (const NodeGroupId& groupId, const NodeId& nodeId);
 	void					RemoveNodeFromGroup (const NodeId& nodeId);
 	const NodeCollection&	GetGroupNodes (const NodeGroupId& groupId) const;
+	NodeGroupId				GetNodeGroupId (const NodeId& nodeId) const;
 	NodeGroupConstPtr		GetNodeGroup (const NodeId& nodeId) const;
 
 	void					Clear ();
