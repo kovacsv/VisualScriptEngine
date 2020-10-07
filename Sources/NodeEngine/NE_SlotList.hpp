@@ -2,6 +2,7 @@
 #define NE_SLOTLIST_HPP
 
 #include "NE_Debug.hpp"
+#include "NE_OrderedMap.hpp"
 #include "NE_SlotId.hpp"
 
 #include <vector>
@@ -34,12 +35,12 @@ public:
 	void								Enumerate (const std::function<bool (const std::shared_ptr<const SlotType>&)>& processor) const;
 
 private:
-	std::vector<SlotId>										slotIdList;
-	std::unordered_map<SlotId, std::shared_ptr<SlotType>>	slotIdMap;
+	OrderedMap<SlotId, std::shared_ptr<SlotType>>	slots;
 };
 
 template <class SlotType>
-SlotList<SlotType>::SlotList ()
+SlotList<SlotType>::SlotList () :
+	slots ()
 {
 
 }
@@ -47,107 +48,71 @@ SlotList<SlotType>::SlotList ()
 template <class SlotType>
 bool SlotList<SlotType>::Insert (const std::shared_ptr<SlotType>& slot)
 {
-	auto foundSlot = slotIdMap.find (slot->GetId ());
-	if (DBGERROR (foundSlot != slotIdMap.end ())) {
-		return false;
-	}
-	slotIdList.push_back (slot->GetId ());
-	slotIdMap.insert ({ slot->GetId (), slot });
-	return true;
+	return slots.Insert (slot->GetId (), slot);
 }
 
 template <class SlotType>
 bool SlotList<SlotType>::InsertBefore (const std::shared_ptr<SlotType>& slot, const SlotId& nextSlotId)
 {
-	auto foundPrevSlot = slotIdMap.find (nextSlotId);
-	if (DBGERROR (foundPrevSlot == slotIdMap.end ())) {
-		return false;
-	}
-
-	auto foundNextSlotId = std::find (slotIdList.begin (), slotIdList.end (), nextSlotId);
-	if (DBGERROR (foundNextSlotId == slotIdList.end ())) {
-		return false;
-	}
-
-	slotIdList.insert (foundNextSlotId, slot->GetId ());
-	slotIdMap.insert ({ slot->GetId (), slot });
-	return true;
+	return slots.InsertBefore (slot->GetId (), slot, nextSlotId);
 }
 
 template <class SlotType>
 bool SlotList<SlotType>::InsertAfter (const std::shared_ptr<SlotType>& slot, const SlotId& prevSlotId)
 {
-	auto foundPrevSlot = slotIdMap.find (prevSlotId);
-	if (DBGERROR (foundPrevSlot == slotIdMap.end ())) {
-		return false;
-	}
-
-	auto foundPrevSlotId = std::find (slotIdList.begin (), slotIdList.end (), prevSlotId);
-	if (DBGERROR (foundPrevSlotId == slotIdList.end ())) {
-		return false;
-	}
-
-	slotIdList.insert (foundPrevSlotId + 1, slot->GetId ());
-	slotIdMap.insert ({ slot->GetId (), slot });
-	return true;
+	return slots.InsertAfter (slot->GetId (), slot, prevSlotId);
 }
 
 template <class SlotType>
 std::shared_ptr<SlotType> SlotList<SlotType>::Get (const SlotId& slotId)
 {
-	auto foundSlot = slotIdMap.find (slotId);
-	if (DBGERROR (foundSlot == slotIdMap.end ())) {
+	if (DBGERROR (!slots.Contains (slotId))) {
 		return nullptr;
 	}
-	return foundSlot->second;
+	return slots.GetValue (slotId);
 }
 
 template <class SlotType>
 std::shared_ptr<const SlotType> SlotList<SlotType>::Get (const SlotId& slotId) const
 {
-	auto foundSlot = slotIdMap.find (slotId);
-	if (DBGERROR (foundSlot == slotIdMap.end ())) {
+	if (DBGERROR (!slots.Contains (slotId))) {
 		return nullptr;
 	}
-	return foundSlot->second;
+	return slots.GetValue (slotId);
 }
 
 template <class SlotType>
 bool SlotList<SlotType>::Contains (const SlotId& slotId) const
 {
-	return slotIdMap.find (slotId) != slotIdMap.end ();
+	return slots.Contains (slotId);
 }
 
 template <class SlotType>
 size_t SlotList<SlotType>::Count () const
 {
-	return slotIdList.size ();
+	return slots.Count ();
 }
 
 template <class SlotType>
 bool SlotList<SlotType>::IsEmpty () const
 {
-	return slotIdList.size () == 0;
+	return slots.IsEmpty ();
 }
 
 template <class SlotType>
 void SlotList<SlotType>::Enumerate (const std::function<bool (const std::shared_ptr<SlotType>&)>& processor)
 {
-	for (const SlotId& slotId : slotIdList) {
-		if (!processor (Get (slotId))) {
-			break;
-		}
-	}
+	slots.Enumerate ([&] (const std::shared_ptr<SlotType>& slot) {
+		return processor (slot);
+	});
 }
 
 template <class SlotType>
 void SlotList<SlotType>::Enumerate (const std::function<bool (const std::shared_ptr<const SlotType>&)>& processor) const
 {
-	for (const SlotId& slotId : slotIdList) {
-		if (!processor (Get (slotId))) {
-			break;
-		}
-	}
+	slots.Enumerate ([&] (const std::shared_ptr<SlotType>& slot) {
+		return processor (slot);
+	});
 }
 
 }

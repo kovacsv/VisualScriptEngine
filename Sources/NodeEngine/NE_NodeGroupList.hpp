@@ -2,6 +2,7 @@
 #define NE_NODEGROUPLSIT_HPP
 
 #include "NE_NodeGroup.hpp"
+#include "NE_OrderedMap.hpp"
 
 #include <memory>
 #include <unordered_map>
@@ -22,9 +23,6 @@ public:
 	NodeGroupPtr			GetGroup (const NodeGroupId& groupId);
 	NodeGroupConstPtr		GetGroup (const NodeGroupId& groupId) const;
 
-	void					Enumerate (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
-	void					Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor);
-
 	bool					AddGroup (const NodeGroupPtr& group);
 	void					DeleteGroup (const NodeGroupId& groupId);
 
@@ -36,9 +34,11 @@ public:
 
 	void					Clear ();
 
+	void					Enumerate (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
+	void					Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor);
+
 private:
-	std::vector<NodeGroupId>							groupIdList;
-	std::unordered_map<NodeGroupId, NodeGroupPtr>		groupIdToGroup;
+	OrderedMap<NodeGroupId, NodeGroupPtr>				groups;
 	std::unordered_map<NodeGroupId, NodeCollection>		groupIdToNodes;
 	std::unordered_map<NodeId, NodeGroupId>				nodeToGroup;
 };
