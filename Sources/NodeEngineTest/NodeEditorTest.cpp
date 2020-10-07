@@ -59,18 +59,19 @@ TEST (NodeEditorGetInfoTest)
 	ASSERT (info.view.height == 600);
 
 	ASSERT (info.nodes.size () == 3);
-	ASSERT (info.nodes[0].id == intNode->GetId ());
+	ASSERT (info.nodes[0].id == NE::NodeId (1));
 	ASSERT (info.nodes[0].name == L"Integer");
 	ASSERT (info.nodes[0].inputSlots.size () == 0);
 	ASSERT (info.nodes[0].outputSlots.size () == 1);
 
 	ASSERT (info.connections.size () == 2);
-	ASSERT (info.connections[0].fromNodeId == intNode->GetId ());
+	ASSERT (info.connections[0].fromNodeId == NE::NodeId (1));
 	ASSERT (info.connections[0].fromSlotId == SlotId ("out"));
-	ASSERT (info.connections[0].toNodeId == viewerNode1->GetId ());
+	ASSERT (info.connections[0].toNodeId == NE::NodeId (2));
 	ASSERT (info.connections[0].toSlotId == SlotId ("in"));
 
 	ASSERT (info.groups.size () == 1);
+	ASSERT (info.groups[0].id == NE::NodeGroupId (1));
 	ASSERT (info.groups[0].name == L"Group");
 	ASSERT (info.groups[0].nodesInGroup.size () == 2);
 }

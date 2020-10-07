@@ -172,8 +172,8 @@ TEST (NodeGroupSerializationTest)
 	source.ConnectOutputSlotToInputSlot (sourceNode2->GetOutputSlot (SlotId ("c")), sourceNode3->GetInputSlot (SlotId ("b")));
 	NodeGroupPtr testGroup (new TestGroup (L"Test"));
 	source.AddNodeGroup (testGroup);
-	source.AddNodeToGroup (testGroup, sourceNode1->GetId ());
-	source.AddNodeToGroup (testGroup, sourceNode2->GetId ());
+	source.AddNodeToGroup (testGroup->GetId (), sourceNode1->GetId ());
+	source.AddNodeToGroup (testGroup->GetId (), sourceNode2->GetId ());
 
 	NodeManager target;
 	ASSERT (NodeManager::Clone (source, target));

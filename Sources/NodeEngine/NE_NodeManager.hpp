@@ -84,13 +84,13 @@ public:
 	void					EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 	void					EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 
-	bool					AddNodeGroup (const NodeGroupPtr& group);
-	void					DeleteNodeGroup (const NodeGroupPtr& group);
-	void					AddNodeToGroup (const NodeGroupPtr& group, const NodeId& nodeId);
+	NodeGroupPtr			AddNodeGroup (const NodeGroupPtr& group);
+	void					DeleteNodeGroup (const NodeGroupId& groupId);
+	void					AddNodeToGroup (const NodeGroupId& groupId, const NodeId& nodeId);
 	void					RemoveNodeFromGroup (const NodeId& nodeId);
 
 	NodeGroupConstPtr		GetNodeGroup (const NodeId& nodeId) const;
-	const NodeCollection&	GetGroupNodes (const NodeGroupConstPtr& group) const;
+	const NodeCollection&	GetGroupNodes (const NodeGroupId& groupId) const;
 
 	void					EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
 	void					EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor);
@@ -118,8 +118,15 @@ private:
 	NodePtr				AddUninitializedNode (const NodePtr& node);
 	NodePtr				AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling);
 
+	NodeGroupPtr		AddNodeGroup (const NodeGroupPtr& group, const NE::NodeGroupId& groupId);
+	NodeGroupPtr		AddUninitializedNodeGroup (const NodeGroupPtr& group);
+	NodeGroupPtr		AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling);
+
 	Stream::Status		ReadNodes (InputStream& inputStream);
 	Stream::Status		WriteNodes (OutputStream& outputStream) const;
+
+	Stream::Status		ReadGroups (InputStream& inputStream, const ObjectVersion& version);
+	Stream::Status		WriteGroups (OutputStream& outputStream) const;
 
 	UniqueIdGenerator						idGenerator;
 	NodeList								nodeList;

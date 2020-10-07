@@ -158,7 +158,7 @@ public:
 	bool						Undo (NE::EvaluationEnv& env);
 	bool						Redo (NE::EvaluationEnv& env);
 
-	bool						AddNodeGroup (const UINodeGroupPtr& group);
+	UINodeGroupPtr				AddNodeGroup (const UINodeGroupPtr& group);
 	void						DeleteNodeGroup (const UINodeGroupPtr& group);
 	void						AddNodesToGroup (const UINodeGroupPtr& group, const NE::NodeCollection& nodeCollection);
 	bool						RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection);

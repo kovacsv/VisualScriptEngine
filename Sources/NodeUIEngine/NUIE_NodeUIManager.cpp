@@ -653,23 +653,26 @@ bool NodeUIManager::Redo (NE::EvaluationEnv& env)
 	return success;
 }
 
-bool NodeUIManager::AddNodeGroup (const UINodeGroupPtr& group)
+UINodeGroupPtr NodeUIManager::AddNodeGroup (const UINodeGroupPtr& group)
 {
-	bool success = nodeManager.AddNodeGroup (group);
+	NE::NodeGroupPtr resultGroup = nodeManager.AddNodeGroup (group);
+	if (resultGroup == nullptr) {
+		return nullptr;
+	}
 	InvalidateAllNodeGroupsDrawing ();
-	return success;
+	return group;
 }
 
 void NodeUIManager::DeleteNodeGroup (const UINodeGroupPtr& group)
 {
-	nodeManager.DeleteNodeGroup (group);
+	nodeManager.DeleteNodeGroup (group->GetId ());
 	RequestRedraw ();
 }
 
 void NodeUIManager::AddNodesToGroup (const UINodeGroupPtr& group, const NE::NodeCollection& nodeCollection)
 {
 	nodeCollection.Enumerate ([&] (const NE::NodeId& nodeId) {
-		nodeManager.AddNodeToGroup (group, nodeId);
+		nodeManager.AddNodeToGroup (group->GetId (), nodeId);
 		return true;
 	});
 	InvalidateAllNodeGroupsDrawing ();
@@ -687,7 +690,7 @@ bool NodeUIManager::RemoveNodesFromGroup (const NE::NodeCollection& nodeCollecti
 
 const NE::NodeCollection& NodeUIManager::GetGroupNodes (const UINodeGroupConstPtr& group) const
 {
-	return nodeManager.GetGroupNodes (group);
+	return nodeManager.GetGroupNodes (group->GetId ());
 }
 
 UINodeGroupConstPtr NodeUIManager::GetNodeGroup (const NE::NodeId& nodeId) const

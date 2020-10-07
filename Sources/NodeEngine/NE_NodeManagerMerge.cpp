@@ -267,11 +267,11 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 	target.DeleteAllNodeGroups ();
 	source.EnumerateNodeGroups ([&] (const NodeGroupConstPtr& sourceGroup) {
 		NodeGroupPtr targetGroup (NodeGroup::Clone (sourceGroup));
-		target.AddNodeGroup (targetGroup);
-		const NodeCollection& sourceGroupNodes = source.GetGroupNodes (sourceGroup);
+		target.AddInitializedNodeGroup (targetGroup, NodeManager::IdHandlingPolicy::KeepOriginalId);
+		const NodeCollection& sourceGroupNodes = source.GetGroupNodes (sourceGroup->GetId ());
 		sourceGroupNodes.Enumerate ([&] (const NodeId& sourceNodeId) {
 			if (target.ContainsNode (sourceNodeId)) {
-				target.AddNodeToGroup (targetGroup, sourceNodeId);
+				target.AddNodeToGroup (targetGroup->GetId (), sourceNodeId);
 			}
 			return true;
 		});

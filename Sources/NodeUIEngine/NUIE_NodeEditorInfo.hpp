@@ -3,6 +3,7 @@
 
 #include "NE_SlotId.hpp"
 #include "NE_NodeId.hpp"
+#include "NE_NodeGroupId.hpp"
 #include "NUIE_Geometry.hpp"
 
 #include <vector>
@@ -46,6 +47,8 @@ struct NodeInfo
 struct GroupInfo
 {
 	GroupInfo ();
+
+	NE::NodeGroupId				id;
 
 	std::wstring				name;
 

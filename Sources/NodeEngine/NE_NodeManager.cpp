@@ -9,7 +9,7 @@
 namespace NE
 {
 
-SERIALIZATION_INFO (NodeManager, 1);
+SERIALIZATION_INFO (NodeManager, 2);
 
 class NodeManagerNodeEvaluator : public NodeEvaluator
 {
@@ -399,20 +399,27 @@ void NodeManager::EnumerateDependentNodesRecursive (const NodeConstPtr& node, co
 	});
 }
 
-bool NodeManager::AddNodeGroup (const NodeGroupPtr& group)
+NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group)
 {
-	return nodeGroupList.AddGroup (group);
+	return AddUninitializedNodeGroup (group);
 }
 
-void NodeManager::DeleteNodeGroup (const NodeGroupPtr& group)
+NE::NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group, const NE::NodeGroupId& groupId)
 {
-	return nodeGroupList.DeleteGroup (group);
+	group->SetId (groupId);
+	nodeGroupList.AddGroup (group);
+	return group;
 }
 
-void NodeManager::AddNodeToGroup (const NodeGroupPtr& group, const NodeId& nodeId)
+void NodeManager::DeleteNodeGroup (const NodeGroupId& groupId)
+{
+	return nodeGroupList.DeleteGroup (groupId);
+}
+
+void NodeManager::AddNodeToGroup (const NodeGroupId& groupId, const NodeId& nodeId)
 {
 	DBGASSERT (ContainsNode (nodeId));
-	nodeGroupList.AddNodeToGroup (group, nodeId);
+	nodeGroupList.AddNodeToGroup (groupId, nodeId);
 }
 
 void NodeManager::RemoveNodeFromGroup (const NodeId& nodeId)
@@ -425,9 +432,9 @@ NodeGroupConstPtr NodeManager::GetNodeGroup (const NodeId& nodeId) const
 	return nodeGroupList.GetNodeGroup (nodeId);
 }
 
-const NodeCollection& NodeManager::GetGroupNodes (const NodeGroupConstPtr& group) const
+const NodeCollection& NodeManager::GetGroupNodes (const NodeGroupId& groupId) const
 {
-	return nodeGroupList.GetGroupNodes (group);
+	return nodeGroupList.GetGroupNodes (groupId);
 }
 
 void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const
@@ -474,7 +481,11 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 		return nodeStatus;
 	}
 
-	nodeGroupList.Read (inputStream);
+	Stream::Status groupStatus = ReadGroups (inputStream, header.GetVersion ());
+	if (DBGERROR (groupStatus != Stream::Status::NoError)) {
+		return groupStatus;
+	}
+	
 	ReadEnum (inputStream, updateMode);
 
 	return inputStream.GetStatus ();
@@ -490,7 +501,11 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 		return nodeStatus;
 	}
 
-	nodeGroupList.Write (outputStream);
+	Stream::Status groupStatus = WriteGroups (outputStream);
+	if (DBGERROR (groupStatus != Stream::Status::NoError)) {
+		return groupStatus;
+	}
+
 	WriteEnum (outputStream, updateMode);
 
 	return outputStream.GetStatus ();
@@ -574,6 +589,34 @@ NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy i
 	return AddNode (node, setter);
 }
 
+NE::NodeGroupPtr NodeManager::AddUninitializedNodeGroup (const NodeGroupPtr& group)
+{
+	if (DBGERROR (group == nullptr || group->GetId () != NullNodeGroupId)) {
+		return nullptr;
+	}
+
+	NodeGroupId newGroupId = idGenerator.GenerateNodeGroupId ();
+	return AddNodeGroup (group, newGroupId);
+}
+
+NE::NodeGroupPtr NodeManager::AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling)
+{
+	if (DBGERROR (group == nullptr || group->GetId () == NullNodeGroupId)) {
+		return nullptr;
+	}
+
+	NodeGroupId newGroupId;
+	if (idHandling == IdHandlingPolicy::KeepOriginalId) {
+		newGroupId = group->GetId ();
+	} else if (idHandling == IdHandlingPolicy::GenerateNewId) {
+		newGroupId = idGenerator.GenerateNodeGroupId ();
+	} else {
+		DBGBREAK ();
+	}
+
+	return AddNodeGroup (group, newGroupId);
+}
+
 Stream::Status NodeManager::ReadNodes (InputStream& inputStream)
 {
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
@@ -654,6 +697,49 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
 		connection.GetInputSlotId ().Write (outputStream);
 	}
 
+	return outputStream.GetStatus ();
+}
+
+Stream::Status NodeManager::ReadGroups (InputStream& inputStream, const ObjectVersion& version)
+{
+	DBGASSERT (nodeGroupList.IsEmpty ());
+	if (version < 2) {
+		ObjectHeader legacyGroupListHeader (inputStream);
+		if (DBGERROR (legacyGroupListHeader.GetVersion () != 1)) {
+			return Stream::Status::Error;
+		}
+	}
+
+	size_t groupCount = 0;
+	inputStream.Read (groupCount);
+	for (size_t i = 0; i < groupCount; i++) {
+		NodeGroupPtr group (ReadDynamicObject<NodeGroup> (inputStream));
+		if (version < 2) {
+			AddUninitializedNodeGroup (group);
+		} else {
+			AddInitializedNodeGroup (group, IdHandlingPolicy::KeepOriginalId);
+		}
+
+		NodeCollection nodes;
+		nodes.Read (inputStream);
+		nodes.Enumerate ([&] (const NodeId& nodeId) {
+			nodeGroupList.AddNodeToGroup (group->GetId (), nodeId);
+			return true;
+		});
+	}
+
+	return inputStream.GetStatus ();
+}
+
+Stream::Status NodeManager::WriteGroups (OutputStream& outputStream) const
+{
+	outputStream.Write (nodeGroupList.Count ());
+	nodeGroupList.Enumerate ([&] (const NodeGroupConstPtr& group) {
+		WriteDynamicObject (outputStream, group.get ());
+		const NodeCollection& nodes = nodeGroupList.GetGroupNodes (group->GetId ());
+		nodes.Write (outputStream);
+		return true;
+	});
 	return outputStream.GetStatus ();
 }
 

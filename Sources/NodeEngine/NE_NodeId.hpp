@@ -3,7 +3,6 @@
 
 #include "NE_Serializable.hpp"
 
-#include <atomic>
 #include <functional>
 
 namespace NE

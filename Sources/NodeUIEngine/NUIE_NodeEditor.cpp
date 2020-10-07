@@ -324,6 +324,7 @@ NodeEditorInfo NodeEditor::GetInfo () const
 	uiManager.EnumerateNodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
 		GroupInfo groupInfo;
 		NE::NodeCollection nodesInGroup = uiManager.GetGroupNodes (uiGroup);
+		groupInfo.id = uiGroup->GetId ();
 		groupInfo.name = uiGroup->GetName ().GetLocalized ();
 		groupInfo.modelRect = uiGroup->GetRect (uiEnvironment, rectGetter, nodesInGroup);
 		groupInfo.viewRect = viewBox.ModelToView (groupInfo.modelRect);

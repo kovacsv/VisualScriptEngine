@@ -3,6 +3,7 @@
 
 #include "NE_Serializable.hpp"
 #include "NE_NodeId.hpp"
+#include "NE_NodeGroupId.hpp"
 
 #include <atomic>
 
@@ -20,12 +21,14 @@ public:
 	~UniqueIdGenerator ();
 
 	NodeId					GenerateNodeId ();
+	NodeGroupId				GenerateNodeGroupId ();
 
 	Stream::Status			Read (InputStream& inputStream);
 	Stream::Status			Write (OutputStream& outputStream) const;
 
 private:
-	std::atomic<IdType>		nextId;
+	std::atomic<IdType>		nextNodeId;
+	std::atomic<IdType>		nextNodeGroupId;
 };
 
 }

@@ -4,8 +4,6 @@
 namespace NE
 {
 
-SERIALIZATION_INFO (NodeGroupList, 1);
-
 NodeGroupList::NodeGroupList ()
 {
 
@@ -16,10 +14,43 @@ NodeGroupList::~NodeGroupList ()
 
 }
 
+bool NodeGroupList::IsEmpty () const
+{
+	return groups.empty ();
+}
+
+bool NodeGroupList::Contains (const NodeGroupId& groupId) const
+{
+	return groups.find (groupId) != groups.end ();
+}
+
+size_t NodeGroupList::Count () const
+{
+	return groups.size ();
+}
+
+NE::NodeGroupPtr NodeGroupList::GetGroup (const NodeGroupId& groupId)
+{
+	auto found = groups.find (groupId);
+	if (found == groups.end ()) {
+		return nullptr;
+	}
+	return found->second;
+}
+
+NE::NodeGroupConstPtr NodeGroupList::GetGroup (const NodeGroupId& groupId) const
+{
+	auto found = groups.find (groupId);
+	if (found == groups.end ()) {
+		return nullptr;
+	}
+	return found->second;
+}
+
 void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupConstPtr&)>& processor) const
 {
-	for (const NodeGroupPtr& group : groups) {
-		if (!processor (group)) {
+	for (const auto& group : groups) {
+		if (!processor (group.second)) {
 			break;
 		}
 	}
@@ -27,8 +58,8 @@ void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupConstPtr
 
 void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor)
 {
-	for (const NodeGroupPtr& group : groups) {
-		if (!processor (group)) {
+	for (const auto& group : groups) {
+		if (!processor (group.second)) {
 			break;
 		}
 	}
@@ -36,37 +67,51 @@ void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupPtr&)>& 
 
 bool NodeGroupList::AddGroup (const NodeGroupPtr& group)
 {
-	groups.push_back (group);
-	groupToNodes.insert ({ group, NodeCollection () });
+	if (DBGERROR (group->GetId () == NullNodeGroupId)) {
+		return false;
+	}
+	groups.insert ({ group->GetId (), group });
+	groupToNodes.insert ({ group->GetId (), NodeCollection () });
 	return true;
 }
 
-void NodeGroupList::DeleteGroup (const NodeGroupConstPtr& group)
+void NodeGroupList::DeleteGroup (const NodeGroupId& groupId)
 {
-	const NodeCollection& nodes = GetGroupNodes (group);
+	auto foundInGroups = groups.find (groupId);
+	if (DBGERROR (foundInGroups == groups.end ())) {
+		return;
+	}
+
+	const NodeCollection& nodes = GetGroupNodes (groupId);
 	nodes.Enumerate ([&] (const NodeId& nodeId) {
 		nodeToGroup.erase (nodeId);
 		return true;
 	});
-	auto foundInGroups = std::find (groups.begin (), groups.end (), group);
+
 	groups.erase (foundInGroups);
-	groupToNodes.erase (group);
+	groupToNodes.erase (groupId);
 }
 
-void NodeGroupList::AddNodeToGroup (const NodeGroupPtr& group, const NodeId& nodeId)
+void NodeGroupList::AddNodeToGroup (const NodeGroupId& groupId, const NodeId& nodeId)
 {
-	NodeGroupConstPtr existingGroup = GetNodeGroup (nodeId);
-	if (existingGroup != nullptr && group == existingGroup) {
+	auto foundInGroups = groups.find (groupId);
+	if (DBGERROR (foundInGroups == groups.end ())) {
 		return;
 	}
+
+	NodeGroupConstPtr existingGroup = GetNodeGroup (nodeId);
+	if (existingGroup != nullptr && groupId == existingGroup->GetId ()) {
+		return;
+	}
+
 	RemoveNodeFromGroup (nodeId);
-	groupToNodes[group].Insert (nodeId);
-	nodeToGroup.insert ({ nodeId, group });
+	groupToNodes[groupId].Insert (nodeId);
+	nodeToGroup.insert ({ nodeId, groupId });
 }
 
-const NodeCollection& NodeGroupList::GetGroupNodes (const NodeGroupConstPtr& group) const
+const NodeCollection& NodeGroupList::GetGroupNodes (const NodeGroupId& groupId) const
 {
-	return groupToNodes.at (group);
+	return groupToNodes.at (groupId);
 }
 
 void NodeGroupList::RemoveNodeFromGroup (const NodeId& nodeId)
@@ -76,11 +121,11 @@ void NodeGroupList::RemoveNodeFromGroup (const NodeId& nodeId)
 		return;
 	}
 
-	NodeCollection& nodes = groupToNodes[group];
+	NodeCollection& nodes = groupToNodes[group->GetId ()];
 	nodes.Erase (nodeId);
 	nodeToGroup.erase (nodeId);
 	if (nodes.IsEmpty ()) {
-		DeleteGroup (group);
+		DeleteGroup (group->GetId ());
 	}
 }
 
@@ -90,7 +135,7 @@ NodeGroupConstPtr NodeGroupList::GetNodeGroup (const NodeId& nodeId) const
 	if (found == nodeToGroup.end ()) {
 		return nullptr;
 	}
-	return found->second;
+	return GetGroup (found->second);
 }
 
 void NodeGroupList::Clear ()
@@ -98,37 +143,6 @@ void NodeGroupList::Clear ()
 	groups.clear ();
 	groupToNodes.clear ();
 	nodeToGroup.clear ();
-}
-
-Stream::Status NodeGroupList::Read (InputStream& inputStream)
-{
-	DBGASSERT (groups.empty ());
-	ObjectHeader header (inputStream);
-	size_t groupCount = 0;
-	inputStream.Read (groupCount);
-	for (size_t i = 0; i < groupCount; i++) {
-		NodeGroupPtr group (ReadDynamicObject<NodeGroup> (inputStream));
-		NodeCollection nodes;
-		nodes.Read (inputStream);
-		AddGroup (group);
-		nodes.Enumerate ([&] (const NodeId& nodeId) {
-			AddNodeToGroup (group, nodeId);
-			return true;
-		});
-	}
-	return inputStream.GetStatus ();
-}
-
-Stream::Status NodeGroupList::Write (OutputStream& outputStream) const
-{
-	ObjectHeader header (outputStream, serializationInfo);
-	outputStream.Write (groups.size ());
-	for (const NodeGroupPtr& group : groups) {
-		WriteDynamicObject (outputStream, group.get ());
-		const NodeCollection& nodes = groupToNodes.at (group);
-		nodes.Write (outputStream);
-	}
-	return outputStream.GetStatus ();
 }
 
 }
