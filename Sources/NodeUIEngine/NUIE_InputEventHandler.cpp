@@ -5,6 +5,7 @@ namespace NUIE
 {
 
 const ModifierKeys EmptyModifierKeys;
+static const double MouseMoveMinOffset = 2.0;
 
 ModifierKeys::ModifierKeys () :
 	keys ()
@@ -75,7 +76,7 @@ void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const ModifierKe
 {
 	std::unordered_set<MouseButton> downButtonsMoved;
 	for (const auto& it : downMouseButtons) {
-		if (Point::Distance (it.second, position) > env.GetMouseMoveMinOffset ()) {
+		if (Point::Distance (it.second, position) > MouseMoveMinOffset) {
 			movingMouseButtons.insert (it.first);
 			handler.HandleMouseDragStart (env, modifierKeys, it.first, it.second);
 			downButtonsMoved.insert (it.first);

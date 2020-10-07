@@ -27,7 +27,6 @@ public:
 
 	virtual EventHandler&				GetEventHandler () override;
 	virtual ClipboardHandler&			GetClipboardHandler () override;
-	virtual double						GetMouseMoveMinOffset () override;
 
 private:
 	NE::EvaluationEnv					evalEnv;

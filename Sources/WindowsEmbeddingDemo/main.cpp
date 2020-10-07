@@ -211,11 +211,6 @@ public:
 		return clipboardHandler;
 	}
 
-	virtual double GetMouseMoveMinOffset () override
-	{
-		return 2.0;
-	}
-
 private:
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;

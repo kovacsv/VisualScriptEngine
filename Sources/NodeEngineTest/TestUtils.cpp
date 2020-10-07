@@ -72,8 +72,3 @@ NUIE::ClipboardHandler& TestUIEnvironment::GetClipboardHandler ()
 {
 	return clipboardHandler;
 }
-
-double TestUIEnvironment::GetMouseMoveMinOffset ()
-{
-	return 2.0;
-}
