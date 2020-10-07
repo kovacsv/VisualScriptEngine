@@ -74,6 +74,8 @@ TEST (NodeEditorGetInfoTest)
 	ASSERT (info.groups[0].id == NE::NodeGroupId (1));
 	ASSERT (info.groups[0].name == L"Group");
 	ASSERT (info.groups[0].nodesInGroup.size () == 2);
+	ASSERT (info.groups[0].nodesInGroup[0] == NE::NodeId (2));
+	ASSERT (info.groups[0].nodesInGroup[1] == NE::NodeId (3));
 }
 
 }
