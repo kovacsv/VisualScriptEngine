@@ -51,8 +51,8 @@ public:
 	const ViewBox&				GetViewBox () const;
 	void						SetViewBox (const ViewBox& newViewBox);
 
-	const NE::NodeCollection&	GetSelectedNodes () const;
-	void						SetSelectedNodes (const NE::NodeCollection& newSelectedNodes);
+	const Selection&			GetSelection () const;
+	void						SetSelection (const Selection& newSelection);
 
 	void						New ();
 	bool						Open (const std::wstring& fileName);

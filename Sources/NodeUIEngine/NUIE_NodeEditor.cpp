@@ -154,14 +154,14 @@ void NodeEditor::SetViewBox (const ViewBox& newViewBox)
 	Update ();
 }
 
-const NE::NodeCollection& NodeEditor::GetSelectedNodes () const
+const Selection& NodeEditor::GetSelection () const
 {
-	return uiManager.GetSelectedNodes ();
+	return uiManager.GetSelection ();
 }
 
-void NodeEditor::SetSelectedNodes (const NE::NodeCollection& newSelectedNodes)
+void NodeEditor::SetSelection (const Selection& newSelection)
 {
-	uiManager.SetSelectedNodes (newSelectedNodes);
+	uiManager.SetSelection (newSelection);
 	Update ();
 }
 

@@ -8,6 +8,7 @@
 #include "NUIE_NodeUIEnvironment.hpp"
 #include "NUIE_UINodeInvalidator.hpp"
 #include "NUIE_UndoHandler.hpp"
+#include "NUIE_Selection.hpp"
 #include "NUIE_ViewBox.hpp"
 
 #include <unordered_map>
@@ -84,8 +85,8 @@ public:
 	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env);
 	bool						DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env);
 
-	const NE::NodeCollection&	GetSelectedNodes () const;
-	void						SetSelectedNodes (const NE::NodeCollection& newSelectedNodes);
+	const Selection&			GetSelection () const;
+	void						SetSelection (const Selection& newSelection);
 
 	bool						IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
 	bool						CanConnectMoreOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;
@@ -212,8 +213,8 @@ private:
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;
 
 	NE::NodeManager		nodeManager;
-	NE::NodeCollection	selectedNodes;
 	UndoHandler			undoHandler;
+	Selection			selection;
 	ViewBox				viewBox;
 	Status				status;
 };

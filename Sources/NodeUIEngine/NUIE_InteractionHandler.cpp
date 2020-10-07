@@ -84,24 +84,24 @@ public:
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Rect modelSelectionRect = viewBox.ViewToModel (selectionRect);
-		NE::NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
+		Selection selection = uiManager.GetSelection ();
 		if (!modifierKeys.Contains (ModifierKeyCode::Control)) {
-			selectedNodes.Clear ();
+			selection.Clear ();
 		}
 		std::unordered_set<UINodePtr> nodesToSelect;
 		uiManager.EnumerateNodes ([&] (const UINodePtr& uiNode) {
 			const NE::NodeId& uiNodeId = uiNode->GetId ();
 			Rect nodeRect = uiNode->GetRect (uiEnvironment);
 			if (modelSelectionRect.Contains (nodeRect)) {
-				if (selectedNodes.Contains (uiNodeId)) {
-					selectedNodes.Erase (uiNodeId);
+				if (selection.ContainsNode (uiNodeId)) {
+					selection.RemoveNode (uiNodeId);
 				} else {
-					selectedNodes.Insert (uiNodeId);
+					selection.AddNode (uiNodeId);
 				}
 			}
 			return true;
 		});
-		uiManager.SetSelectedNodes (selectedNodes);
+		uiManager.SetSelection (selection);
 	}
 
 	virtual void HandleAbort () override
@@ -620,18 +620,19 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE:
 		return;
 	}
 
-	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+	const Selection& selection = uiManager.GetSelection ();
+	const NE::NodeCollection& selectedNodes = selection.GetNodes ();
 	MenuCommandPtr menuCommand = nullptr;
 
 	switch (command) {
 		case CommandCode::SelectAll:
 			{
-				NE::NodeCollection allSelectedNodes;
+				Selection allSelection;
 				uiManager.EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
-					allSelectedNodes.Insert (uiNode->GetId ());
+					allSelection.AddNode (uiNode->GetId ());
 					return true;
 				});
-				uiManager.SetSelectedNodes (allSelectedNodes);
+				uiManager.SetSelection (allSelection);
 			}
 			break;
 		case CommandCode::SetParameters:
@@ -807,22 +808,22 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& uiEn
 	}
 
 	if (mouseButton == MouseButton::Left) {
-		NE::NodeCollection selectedNodes;
+		Selection selection;
 		if (foundNode != nullptr) {
 			const NE::NodeId& foundNodeId = foundNode->GetId ();
-			selectedNodes = uiManager.GetSelectedNodes ();
+			selection = uiManager.GetSelection ();
 			if (modifierKeys.Contains (ModifierKeyCode::Control)) {
-				if (selectedNodes.Contains (foundNodeId)) {
-					selectedNodes.Erase (foundNodeId);
+				if (selection.ContainsNode (foundNodeId)) {
+					selection.RemoveNode (foundNodeId);
 				} else {
-					selectedNodes.Insert (foundNodeId);
+					selection.AddNode (foundNodeId);
 				}
 			} else {
-				selectedNodes.Clear ();
-				selectedNodes.Insert (foundNodeId);
+				selection.Clear ();
+				selection.AddNode (foundNodeId);
 			}
 		}
-		uiManager.SetSelectedNodes (selectedNodes);
+		uiManager.SetSelection (selection);
 		handlerResult = EventHandlerResult::EventHandled;
 	} else if (mouseButton == MouseButton::Right) {
 		EventHandler& eventHandler = uiEnvironment.GetEventHandler ();
@@ -906,8 +907,7 @@ EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment&, KeyCo
 			multiMouseMoveHandler.AbortHandlers ();
 			return EventHandlerResult::EventHandled;
 		} else {
-			NE::NodeCollection emptySelectedNodes;
-			uiManager.SetSelectedNodes (emptySelectedNodes);
+			uiManager.SetSelection (EmptySelection);
 		}
 		return EventHandlerResult::EventHandled;
 	}

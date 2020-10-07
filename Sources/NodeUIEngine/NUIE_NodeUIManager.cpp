@@ -34,9 +34,9 @@ public:
 		}
 		uiNode->OnDelete (env);
 
-		NE::NodeCollection selectedNodes = uiManager.GetSelectedNodes ();
-		selectedNodes.Erase (nodeId);
-		uiManager.SetSelectedNodes (selectedNodes);
+		Selection selection = uiManager.GetSelection ();
+		selection.RemoveNode (nodeId);
+		uiManager.SetSelection (selection);
 	}
 
 private:
@@ -160,8 +160,8 @@ Rect NodeUIManagerNodeRectGetter::GetNodeRect (const NE::NodeId& nodeId) const
 
 NodeUIManager::NodeUIManager (NodeUIEnvironment& env) :
 	nodeManager (),
-	selectedNodes (),
 	undoHandler (),
+	selection (),
 	viewBox (),
 	status ()
 {
@@ -193,7 +193,7 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 		return false;
 	}
 	uiNode->OnDelete (env);
-	selectedNodes.Erase (uiNode->GetId ());
+	selection.RemoveNode (uiNode->GetId ());
 	InvalidateNodeDrawing (uiNode);
 	if (!nodeManager.DeleteNode (uiNode)) {
 		return false;
@@ -211,15 +211,14 @@ bool NodeUIManager::DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env
 	return DeleteNode (node, env);
 }
 
-const NE::NodeCollection& NodeUIManager::GetSelectedNodes () const
+const Selection& NodeUIManager::GetSelection () const
 {
-	return selectedNodes;
+	return selection;
 }
 
-void NodeUIManager::SetSelectedNodes (const NE::NodeCollection& newSelectedNodes)
+void NodeUIManager::SetSelection (const Selection& newSelection)
 {
-	selectedNodes = newSelectedNodes;
-	selectedNodes.MakeSorted ();
+	selection.Update (newSelection);
 	status.RequestRedraw ();
 }
 
@@ -730,7 +729,7 @@ void NodeUIManager::Clear (NodeUIEnvironment& env)
 {
 	double windowScale = env.GetWindowScale ();
 
-	selectedNodes.Clear ();
+	selection.Clear ();
 	undoHandler.Clear ();
 	nodeManager.Clear ();
 

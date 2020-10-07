@@ -58,9 +58,11 @@ static void InitNodeEditor (NodeEditor& nodeEditor)
 	nodeEditor.ConnectOutputSlotToInputSlot (booleanNode->GetUIOutputSlot (SlotId ("out")), viewer->GetUIInputSlot (SlotId ("in")));
 	nodeEditor.ConnectOutputSlotToInputSlot (multiplication->GetUIOutputSlot (SlotId ("result")), multilineViewer->GetUIInputSlot (SlotId ("in")));
 
-	nodeEditor.SetSelectedNodes (NE::NodeCollection ({ booleanNode->GetId () }));
+	Selection selection;
+	selection.SetNodes (NE::NodeCollection ({ booleanNode->GetId () }));
+	nodeEditor.SetSelection (selection);
 	nodeEditor.ExecuteCommand (NUIE::CommandCode::Group);
-	nodeEditor.SetSelectedNodes (NE::EmptyNodeCollection);
+	nodeEditor.SetSelection (EmptySelection);
 }
 
 static void WriteTestFile ()

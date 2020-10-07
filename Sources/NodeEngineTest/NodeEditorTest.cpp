@@ -50,7 +50,9 @@ TEST (NodeEditorGetInfoTest)
 	env.nodeEditor.AddNode (viewerNode2);
 	env.nodeEditor.ConnectOutputSlotToInputSlot (intNode->GetUIOutputSlot (SlotId ("out")), viewerNode1->GetUIInputSlot (SlotId ("in")));
 	env.nodeEditor.ConnectOutputSlotToInputSlot (intNode->GetUIOutputSlot (SlotId ("out")), viewerNode2->GetUIInputSlot (SlotId ("in")));
-	env.nodeEditor.SetSelectedNodes (NE::NodeCollection ({ viewerNode1->GetId (), viewerNode2->GetId () }));
+	Selection selection;
+	selection.SetNodes (NE::NodeCollection ({ viewerNode1->GetId (), viewerNode2->GetId () }));
+	env.nodeEditor.SetSelection (selection);
 	env.nodeEditor.ExecuteCommand (CommandCode::Group);
 	
 	NodeEditorInfo info = env.nodeEditor.GetInfo ();

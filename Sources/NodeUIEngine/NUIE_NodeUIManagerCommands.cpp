@@ -117,7 +117,9 @@ void CopyMoveNodesCommand::Do (NodeUIManager& uiManager)
 		uiNode->SetPosition (uiNode->GetPosition () + offset);
 		return true;
 	});
-	uiManager.SetSelectedNodes (duplicatedNodes);
+	Selection newSelection;
+	newSelection.SetNodes (duplicatedNodes);
+	uiManager.SetSelection (newSelection);
 }
 
 ConnectSlotsCommand::ConnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
@@ -267,16 +269,16 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 		centerPosition = centerPosition + nodePosition;
 	}
 
-	NE::NodeCollection newSelection;
+	Selection newSelection;
 	centerPosition = centerPosition / (double) newNodes.size ();
 	Point nodeOffset = position - centerPosition;
 	for (UINodePtr& uiNode : newNodes) {
 		Point nodePosition = uiNode->GetPosition ();
 		uiNode->SetPosition (nodePosition + nodeOffset);
-		newSelection.Insert (uiNode->GetId ());
+		newSelection.AddNode (uiNode->GetId ());
 	}
 
-	uiManager.SetSelectedNodes (newSelection);
+	uiManager.SetSelection (newSelection);
 }
 
 AddGroupCommand::AddGroupCommand (const UINodeGroupPtr& uiGroup, const NE::NodeCollection& nodes) :

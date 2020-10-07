@@ -133,7 +133,8 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv,
 	const Pen& pen = skinParams.GetConnectionLinePen ();
 	Pen selectionPen (skinParams.GetNodeSelectionRectPen ().GetColor (), scaleIndependentData.GetSelectionThickness ());
 
-	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+	const Selection& selection = uiManager.GetSelection ();
+	const NE::NodeCollection& selectedNodes = selection.GetNodes ();
 	for (const UINode* begNode : sortedNodeList) {
 		bool begSelected = selectedNodes.Contains (begNode->GetId ());
 		begNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
@@ -184,7 +185,7 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& drawingEnv, const
 		}
 		
 		SelectionMode selectionMode = SelectionMode::NotSelected;
-		if (uiManager.GetSelectedNodes ().Contains (uiNode->GetId ())) {
+		if (uiManager.GetSelection ().ContainsNode (uiNode->GetId ())) {
 			selectionMode = SelectionMode::Selected;
 		}
 

@@ -869,8 +869,10 @@ public:
 
 	virtual void DoModification () override
 	{
+		Selection selection;
 		NE::NodeCollection groupNodes = uiManager.GetGroupNodes (group);
-		uiManager.SetSelectedNodes (groupNodes);
+		selection.SetNodes (groupNodes);
+		uiManager.SetSelection (selection);
 	}
 
 private:
@@ -1033,7 +1035,8 @@ private:
 
 NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodeConstPtr& uiNode)
 {
-	const NE::NodeCollection& selectedNodes = uiManager.GetSelectedNodes ();
+	const Selection& selection = uiManager.GetSelection ();
+	const NE::NodeCollection& selectedNodes = selection.GetNodes ();
 	if (selectedNodes.Contains (uiNode->GetId ())) {
 		return selectedNodes;
 	}
