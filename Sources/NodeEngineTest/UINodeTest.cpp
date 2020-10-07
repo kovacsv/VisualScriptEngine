@@ -339,8 +339,6 @@ TEST (DuplicateNodeTest)
 	UINodePtr node2 = uiManager.AddNode (UINodePtr (new TestNode (LocString (L"TestNode2"), Point (0, 0))), NE::EmptyEvaluationEnv);
 
 	NE::NodeCollection nodesToDuplicate ({ node1->GetId (), node2->GetId () });
-	nodesToDuplicate.MakeSorted ();
-
 	NE::NodeCollection duplicatedNodes = uiManager.Duplicate (nodesToDuplicate);
 
 	ASSERT (duplicatedNodes.Count () == 2);

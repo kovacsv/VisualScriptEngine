@@ -156,7 +156,6 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 		nodesToClone.Insert (nodeId);
 		return true;
 	});
-	nodesToClone.MakeSorted ();
 
 	// add nodes
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;

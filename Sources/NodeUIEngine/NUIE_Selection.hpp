@@ -19,14 +19,15 @@ public:
 	~Selection ();
 
 	bool						IsEmpty () const;
-	OperationResult				Update (const Selection& newSelection);
-
-	const NE::NodeCollection&	GetNodes () const;
-	OperationResult				SetNodes (const NE::NodeCollection& newNodes);
 
 	bool						ContainsNode (const NE::NodeId& nodeId) const;
+	const NE::NodeCollection&	GetNodes () const;
+
+	OperationResult				Update (const Selection& newSelection);
+
+	OperationResult				SetNodes (const NE::NodeCollection& newNodes);
 	OperationResult				AddNode (const NE::NodeId& nodeId);
-	OperationResult				RemoveNode (const NE::NodeId& nodeId);
+	OperationResult				DeleteNode (const NE::NodeId& nodeId);
 
 	OperationResult				Clear ();
 

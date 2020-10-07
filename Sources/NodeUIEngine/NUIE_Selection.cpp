@@ -19,6 +19,16 @@ bool Selection::IsEmpty () const
 	return nodes.IsEmpty ();
 }
 
+bool Selection::ContainsNode (const NE::NodeId& nodeId) const
+{
+	return nodes.Contains (nodeId);
+}
+
+const NE::NodeCollection& Selection::GetNodes () const
+{
+	return nodes;
+}
+
 Selection::OperationResult Selection::Update (const Selection& newSelection)
 {
 	OperationResult result = OperationResult::NotChanged;
@@ -29,25 +39,14 @@ Selection::OperationResult Selection::Update (const Selection& newSelection)
 	return result;
 }
 
-const NE::NodeCollection& Selection::GetNodes () const
-{
-	return nodes;
-}
-
 Selection::OperationResult Selection::SetNodes (const NE::NodeCollection& newNodes)
 {
 	OperationResult result = OperationResult::NotChanged;
 	if (nodes != newNodes) {
 		nodes = newNodes;
-		// nodes.MakeSorted ();
 		result = OperationResult::Changed;
 	}
 	return result;
-}
-
-bool Selection::ContainsNode (const NE::NodeId& nodeId) const
-{
-	return nodes.Contains (nodeId);
 }
 
 Selection::OperationResult Selection::AddNode (const NE::NodeId& nodeId)
@@ -60,7 +59,7 @@ Selection::OperationResult Selection::AddNode (const NE::NodeId& nodeId)
 	return result;
 }
 
-Selection::OperationResult Selection::RemoveNode (const NE::NodeId& nodeId)
+Selection::OperationResult Selection::DeleteNode (const NE::NodeId& nodeId)
 {
 	OperationResult result = OperationResult::NotChanged;
 	if (nodes.Contains (nodeId)) {

@@ -28,8 +28,6 @@ public:
 	void				Erase (const NodeId& nodeId);
 	void				Clear ();
 
-	void				MakeSorted ();
-	
 	bool				operator== (const NodeCollection& rhs) const;
 	bool				operator!= (const NodeCollection& rhs) const;
 

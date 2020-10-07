@@ -94,7 +94,7 @@ public:
 			Rect nodeRect = uiNode->GetRect (uiEnvironment);
 			if (modelSelectionRect.Contains (nodeRect)) {
 				if (selection.ContainsNode (uiNodeId)) {
-					selection.RemoveNode (uiNodeId);
+					selection.DeleteNode (uiNodeId);
 				} else {
 					selection.AddNode (uiNodeId);
 				}
@@ -814,7 +814,7 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& uiEn
 			selection = uiManager.GetSelection ();
 			if (modifierKeys.Contains (ModifierKeyCode::Control)) {
 				if (selection.ContainsNode (foundNodeId)) {
-					selection.RemoveNode (foundNodeId);
+					selection.DeleteNode (foundNodeId);
 				} else {
 					selection.AddNode (foundNodeId);
 				}

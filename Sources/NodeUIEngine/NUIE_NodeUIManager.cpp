@@ -35,7 +35,7 @@ public:
 		uiNode->OnDelete (env);
 
 		Selection selection = uiManager.GetSelection ();
-		selection.RemoveNode (nodeId);
+		selection.DeleteNode (nodeId);
 		uiManager.SetSelection (selection);
 	}
 
@@ -193,7 +193,7 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
 		return false;
 	}
 	uiNode->OnDelete (env);
-	selection.RemoveNode (uiNode->GetId ());
+	selection.DeleteNode (uiNode->GetId ());
 	InvalidateNodeDrawing (uiNode);
 	if (!nodeManager.DeleteNode (uiNode)) {
 		return false;
