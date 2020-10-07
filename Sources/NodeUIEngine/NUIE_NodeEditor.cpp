@@ -272,7 +272,7 @@ NodeEditorInfo NodeEditor::GetInfo () const
 {
 	NodeEditorInfo info;
 
-	DrawingContext& context = uiEnvironment.GetDrawingContext ();
+	const DrawingContext& context = uiEnvironment.GetDrawingContext ();
 	info.view.width = context.GetWidth ();
 	info.view.height = context.GetHeight ();
 
