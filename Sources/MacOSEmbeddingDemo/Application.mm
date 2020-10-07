@@ -300,11 +300,6 @@ NUIE::ClipboardHandler& AppNodeUIEnvironment::GetClipboardHandler ()
 	return clipboardHandler;
 }
 
-double AppNodeUIEnvironment::GetMouseMoveMinOffset ()
-{
-	return 2.0;
-}
-
 Application::Application () :
 	uiEnvironment (),
 	nodeEditor (uiEnvironment)

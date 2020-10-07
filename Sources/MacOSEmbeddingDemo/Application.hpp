@@ -44,7 +44,6 @@ public:
 
 	virtual NUIE::EventHandler&			GetEventHandler () override;
 	virtual NUIE::ClipboardHandler&		GetClipboardHandler () override;
-	virtual double						GetMouseMoveMinOffset () override;
 	
 private:
 	NE::BasicStringConverter			stringConverter;
