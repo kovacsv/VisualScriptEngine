@@ -15,7 +15,7 @@ class NodeCollection
 
 public:
 	NodeCollection ();
-	NodeCollection (const std::unordered_set<NodeId>& nodeIds);
+	NodeCollection (const std::vector<NodeId>& nodeIds);
 	~NodeCollection ();
 
 	bool				IsEmpty () const;

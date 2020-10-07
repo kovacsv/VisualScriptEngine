@@ -12,7 +12,7 @@ NodeCollection::NodeCollection ()
 
 }
 
-NodeCollection::NodeCollection (const std::unordered_set<NodeId>& nodeIds)
+NodeCollection::NodeCollection (const std::vector<NodeId>& nodeIds)
 {
 	for (const NodeId& nodeId : nodeIds) {
 		Insert (nodeId);
