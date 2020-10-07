@@ -4,7 +4,11 @@
 namespace NE
 {
 
-NodeGroupList::NodeGroupList ()
+NodeGroupList::NodeGroupList () :
+	groupIdList (),
+	groupIdToGroup (),
+	groupIdToNodes (),
+	nodeToGroup ()
 {
 
 }
@@ -16,23 +20,23 @@ NodeGroupList::~NodeGroupList ()
 
 bool NodeGroupList::IsEmpty () const
 {
-	return groups.empty ();
+	return groupIdList.empty ();
 }
 
 bool NodeGroupList::Contains (const NodeGroupId& groupId) const
 {
-	return groups.find (groupId) != groups.end ();
+	return groupIdToGroup.find (groupId) != groupIdToGroup.end ();
 }
 
 size_t NodeGroupList::Count () const
 {
-	return groups.size ();
+	return groupIdList.size ();
 }
 
 NE::NodeGroupPtr NodeGroupList::GetGroup (const NodeGroupId& groupId)
 {
-	auto found = groups.find (groupId);
-	if (found == groups.end ()) {
+	auto found = groupIdToGroup.find (groupId);
+	if (found == groupIdToGroup.end ()) {
 		return nullptr;
 	}
 	return found->second;
@@ -40,8 +44,8 @@ NE::NodeGroupPtr NodeGroupList::GetGroup (const NodeGroupId& groupId)
 
 NE::NodeGroupConstPtr NodeGroupList::GetGroup (const NodeGroupId& groupId) const
 {
-	auto found = groups.find (groupId);
-	if (found == groups.end ()) {
+	auto found = groupIdToGroup.find (groupId);
+	if (found == groupIdToGroup.end ()) {
 		return nullptr;
 	}
 	return found->second;
@@ -49,8 +53,9 @@ NE::NodeGroupConstPtr NodeGroupList::GetGroup (const NodeGroupId& groupId) const
 
 void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupConstPtr&)>& processor) const
 {
-	for (const auto& group : groups) {
-		if (!processor (group.second)) {
+	DBGASSERT (groupIdList.size () == groupIdToGroup.size ());
+	for (const NodeGroupId& groupId : groupIdList) {
+		if (!processor (groupIdToGroup.at (groupId))) {
 			break;
 		}
 	}
@@ -58,8 +63,9 @@ void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupConstPtr
 
 void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor)
 {
-	for (const auto& group : groups) {
-		if (!processor (group.second)) {
+	DBGASSERT (groupIdList.size () == groupIdToGroup.size ());
+	for (const NodeGroupId& groupId : groupIdList) {
+		if (!processor (groupIdToGroup.at (groupId))) {
 			break;
 		}
 	}
@@ -67,18 +73,31 @@ void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupPtr&)>& 
 
 bool NodeGroupList::AddGroup (const NodeGroupPtr& group)
 {
-	if (DBGERROR (group->GetId () == NullNodeGroupId)) {
+	const NodeGroupId& groupId = group->GetId ();
+
+	if (DBGERROR (groupId == NullNodeGroupId)) {
 		return false;
 	}
-	groups.insert ({ group->GetId (), group });
-	groupToNodes.insert ({ group->GetId (), NodeCollection () });
+	if (DBGERROR (Contains (groupId))) {
+		return false;
+	}
+
+	groupIdList.push_back (group->GetId ());
+	groupIdToGroup.insert ({ group->GetId (), group });
+	groupIdToNodes.insert ({ group->GetId (), NodeCollection () });
+
 	return true;
 }
 
 void NodeGroupList::DeleteGroup (const NodeGroupId& groupId)
 {
-	auto foundInGroups = groups.find (groupId);
-	if (DBGERROR (foundInGroups == groups.end ())) {
+	auto foundInList = std::find (groupIdList.begin (), groupIdList.end (), groupId);
+	if (DBGERROR (foundInList == groupIdList.end ())) {
+		return;
+	}
+
+	auto foundInGroups = groupIdToGroup.find (groupId);
+	if (DBGERROR (foundInGroups == groupIdToGroup.end ())) {
 		return;
 	}
 
@@ -88,14 +107,14 @@ void NodeGroupList::DeleteGroup (const NodeGroupId& groupId)
 		return true;
 	});
 
-	groups.erase (foundInGroups);
-	groupToNodes.erase (groupId);
+	groupIdList.erase (foundInList);
+	groupIdToGroup.erase (foundInGroups);
+	groupIdToNodes.erase (groupId);
 }
 
 void NodeGroupList::AddNodeToGroup (const NodeGroupId& groupId, const NodeId& nodeId)
 {
-	auto foundInGroups = groups.find (groupId);
-	if (DBGERROR (foundInGroups == groups.end ())) {
+	if (DBGERROR (!Contains (groupId))) {
 		return;
 	}
 
@@ -105,13 +124,13 @@ void NodeGroupList::AddNodeToGroup (const NodeGroupId& groupId, const NodeId& no
 	}
 
 	RemoveNodeFromGroup (nodeId);
-	groupToNodes[groupId].Insert (nodeId);
+	groupIdToNodes[groupId].Insert (nodeId);
 	nodeToGroup.insert ({ nodeId, groupId });
 }
 
 const NodeCollection& NodeGroupList::GetGroupNodes (const NodeGroupId& groupId) const
 {
-	return groupToNodes.at (groupId);
+	return groupIdToNodes.at (groupId);
 }
 
 void NodeGroupList::RemoveNodeFromGroup (const NodeId& nodeId)
@@ -121,7 +140,7 @@ void NodeGroupList::RemoveNodeFromGroup (const NodeId& nodeId)
 		return;
 	}
 
-	NodeCollection& nodes = groupToNodes[existingGroupId];
+	NodeCollection& nodes = groupIdToNodes[existingGroupId];
 	nodes.Erase (nodeId);
 	nodeToGroup.erase (nodeId);
 	if (nodes.IsEmpty ()) {
@@ -149,8 +168,9 @@ NodeGroupConstPtr NodeGroupList::GetNodeGroup (const NodeId& nodeId) const
 
 void NodeGroupList::Clear ()
 {
-	groups.clear ();
-	groupToNodes.clear ();
+	groupIdList.clear ();
+	groupIdToGroup.clear ();
+	groupIdToNodes.clear ();
 	nodeToGroup.clear ();
 }
 

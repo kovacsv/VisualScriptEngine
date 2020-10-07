@@ -37,8 +37,9 @@ public:
 	void					Clear ();
 
 private:
-	std::unordered_map<NodeGroupId, NodeGroupPtr>		groups;
-	std::unordered_map<NodeGroupId, NodeCollection>		groupToNodes;
+	std::vector<NodeGroupId>							groupIdList;
+	std::unordered_map<NodeGroupId, NodeGroupPtr>		groupIdToGroup;
+	std::unordered_map<NodeGroupId, NodeCollection>		groupIdToNodes;
 	std::unordered_map<NodeId, NodeGroupId>				nodeToGroup;
 };
 
