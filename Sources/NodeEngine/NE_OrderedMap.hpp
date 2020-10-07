@@ -29,6 +29,7 @@ public:
 	bool			Erase (const Key& key);
 	void			Clear ();
 
+	void			Enumerate (const std::function<bool (Value&)>& processor);
 	void			Enumerate (const std::function<bool (const Value&)>& processor) const;
 
 private:
@@ -162,6 +163,17 @@ void OrderedMap<Key, Value>::Clear ()
 	DBGASSERT (keyList.size () == keyToValueTable.size ());
 	keyList.clear ();
 	keyToValueTable.clear ();
+}
+
+template <typename Key, typename Value>
+void OrderedMap<Key, Value>::Enumerate (const std::function<bool (Value&)>& processor)
+{
+	DBGASSERT (keyList.size () == keyToValueTable.size ());
+	for (Key& key : keyList) {
+		if (!processor (keyToValueTable.at (key))) {
+			break;
+		}
+	}
 }
 
 template <typename Key, typename Value>
