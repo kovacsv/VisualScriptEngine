@@ -23,7 +23,7 @@ def Main (argv):
 	inkscapePath = sys.argv[1] # "C:\Program Files\Inkscape\inkscape.com"
 	
 	logoFolder = os.path.abspath (os.path.join ('..', 'Documentation', 'Logo'))
-	for logoName in ['vse_logo', 'vse_logo_light', 'vse_logo_dark', 'vse_logo_text_dark']:
+	for logoName in ['vse_logo', 'vse_logo_light', 'vse_logo_text']:
 		logoSvgPath = os.path.join (logoFolder, 'svg', logoName + '.svg')
 		for height in [16, 24, 32, 48, 64, 128, 256, 512]:
 			heightStr = str (height)

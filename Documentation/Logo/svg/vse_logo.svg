@@ -25,13 +25,13 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1137"
+     inkscape:window-height="1017"
      id="namedview902"
      showgrid="true"
-     inkscape:zoom="20.85965"
-     inkscape:cx="12.190006"
-     inkscape:cy="18.101802"
-     inkscape:window-x="-8"
+     inkscape:zoom="29.5"
+     inkscape:cx="5.787182"
+     inkscape:cy="16.132262"
+     inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg8">
@@ -56,16 +56,16 @@
        gradientTransform="matrix(3.7795277,0,0,3.7795277,2.5000011,-1089.0196)"
        xlink:href="#Gradient"
        id="linearGradient825"
-       x1="0.3968747"
-       y1="289.19476"
-       x2="6.7468743"
-       y2="295.54477"
+       x1="1.3229164"
+       y1="289.85623"
+       x2="7.1437497"
+       y2="295.67706"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
-       y2="295.94162"
-       x2="7.4083328"
-       y1="289.59164"
-       x1="1.0583332"
+       y2="295.67706"
+       x2="7.1437497"
+       y1="289.85623"
+       x1="1.3229164"
        gradientTransform="matrix(3.7795277,0,0,3.7795277,6.4403054e-7,-1090.5196)"
        gradientUnits="userSpaceOnUse"
        id="linearGradient826"
@@ -84,13 +84,13 @@
     </rdf:RDF>
   </metadata>
   <circle
-     style="opacity:1;fill:none;fill-opacity:1;stroke:url(#linearGradient826);stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+     r="14.5"
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#222222;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
      id="path828"
      cx="16"
-     cy="16"
-     r="14.5" />
+     cy="16" />
   <path
-     style="fill:none;stroke:url(#linearGradient825);stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;stroke:#222222;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="m 12.5,12.5 v 9 c 6,0 9,-3 9,-9"
      id="path1279"
      inkscape:connector-curvature="0"
