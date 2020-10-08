@@ -46,10 +46,10 @@ void AddNodeCommand::Do (NodeUIManager& uiManager)
 	uiManager.AddNode (uiNode, evaluationEnv);
 }
 
-DeleteNodesCommand::DeleteNodesCommand (const NE::NodeCollection& nodes, NE::EvaluationEnv& evaluationEnv) :
+DeleteNodesCommand::DeleteNodesCommand (NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& nodes) :
 	UndoableCommand (),
-	nodes (nodes),
-	evaluationEnv (evaluationEnv)
+	uiEnvironment (uiEnvironment),
+	nodes (nodes)
 {
 }
 
@@ -59,7 +59,7 @@ void DeleteNodesCommand::Do (NodeUIManager& uiManager)
 		return;
 	}
 	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-		uiManager.DeleteNode (nodeId, evaluationEnv);
+		uiManager.DeleteNode (nodeId, uiEnvironment.GetEvaluationEnv (), uiEnvironment);
 		return true;
 	});
 }
@@ -102,8 +102,9 @@ void MoveNodesWithOffsetsCommand::Do (NodeUIManager& uiManager)
 	}
 }
 
-CopyMoveNodesCommand::CopyMoveNodesCommand (const NE::NodeCollection& nodes, const Point& offset) :
+CopyMoveNodesCommand::CopyMoveNodesCommand (NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& nodes, const Point& offset) :
 	UndoableCommand (),
+	uiEnvironment (uiEnvironment),
 	nodes (nodes),
 	offset (offset)
 {
@@ -119,7 +120,7 @@ void CopyMoveNodesCommand::Do (NodeUIManager& uiManager)
 	});
 	Selection newSelection;
 	newSelection.SetNodes (duplicatedNodes);
-	uiManager.SetSelection (newSelection);
+	uiManager.SetSelection (newSelection, uiEnvironment);
 }
 
 ConnectSlotsCommand::ConnectSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) :
@@ -225,15 +226,16 @@ void CopyNodesCommand::Do (NodeUIManager& uiManager)
 	clipboard.SetClipboardContent (outputStream.GetBuffer ());
 }
 
-PasteNodesCommand::PasteNodesCommand (const Point& position, ClipboardHandler& clipboard) :
+PasteNodesCommand::PasteNodesCommand (NodeUIEnvironment& uiEnvironment, const Point& position) :
 	UndoableCommand (),
-	position (position),
-	clipboard (clipboard)
+	uiEnvironment (uiEnvironment),
+	position (position)
 {
 }
 
 void PasteNodesCommand::Do (NodeUIManager& uiManager)
 {
+	ClipboardHandler& clipboard = uiEnvironment.GetClipboardHandler ();
 	if (DBGERROR (!clipboard.HasClipboardContent ())) {
 		return;
 	}
@@ -278,7 +280,7 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 		newSelection.AddNode (uiNode->GetId ());
 	}
 
-	uiManager.SetSelection (newSelection);
+	uiManager.SetSelection (newSelection, uiEnvironment);
 }
 
 AddGroupCommand::AddGroupCommand (const UINodeGroupPtr& uiGroup, const NE::NodeCollection& nodes) :
@@ -335,26 +337,26 @@ void RemoveNodesFromGroupCommand::Do (NodeUIManager& uiManager)
 	uiManager.RemoveNodesFromGroup (nodes);
 }
 
-UndoCommand::UndoCommand (NE::EvaluationEnv& evaluationEnv) :
+UndoCommand::UndoCommand (NodeUIEnvironment& uiEnvironment) :
 	NotUndoableCommand (),
-	evaluationEnv (evaluationEnv)
+	uiEnvironment (uiEnvironment)
 {
 }
 
 void UndoCommand::Do (NodeUIManager& uiManager)
 {
-	uiManager.Undo (evaluationEnv);
+	uiManager.Undo (uiEnvironment.GetEvaluationEnv (), uiEnvironment);
 }
 
-RedoCommand::RedoCommand (NE::EvaluationEnv& evaluationEnv) :
+RedoCommand::RedoCommand (NodeUIEnvironment& uiEnvironment) :
 	NotUndoableCommand (),
-	evaluationEnv (evaluationEnv)
+	uiEnvironment (uiEnvironment)
 {
 }
 
 void RedoCommand::Do (NodeUIManager& uiManager)
 {
-	uiManager.Redo (evaluationEnv);
+	uiManager.Redo (uiEnvironment.GetEvaluationEnv (), uiEnvironment);
 }
 
 ApplyParametersCommand::ApplyParametersCommand (const ParameterInterfacePtr& paramInterface, NE::EvaluationEnv& evaluationEnv) :

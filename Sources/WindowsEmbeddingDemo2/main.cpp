@@ -178,6 +178,11 @@ public:
 		return clipboardHandler;
 	}
 
+	virtual void OnSelectionChanged (const NUIE::Selection&) override
+	{
+
+	}
+
 private:
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;

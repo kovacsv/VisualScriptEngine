@@ -271,6 +271,11 @@ ClipboardHandler& TestNodeUIEnvironment::GetClipboardHandler ()
 	return clipboardHandler;
 }
 
+void TestNodeUIEnvironment::OnSelectionChanged (const Selection&)
+{
+
+}
+
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	eventHandler.SetNextCommandName (nextCommandName);

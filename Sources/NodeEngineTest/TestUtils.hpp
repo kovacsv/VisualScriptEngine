@@ -27,6 +27,7 @@ public:
 
 	virtual EventHandler&				GetEventHandler () override;
 	virtual ClipboardHandler&			GetClipboardHandler () override;
+	virtual void						OnSelectionChanged (const Selection& selection) override;
 
 private:
 	NE::EvaluationEnv					evalEnv;

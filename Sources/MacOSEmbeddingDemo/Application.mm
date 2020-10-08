@@ -300,6 +300,11 @@ NUIE::ClipboardHandler& AppNodeUIEnvironment::GetClipboardHandler ()
 	return clipboardHandler;
 }
 
+void AppNodeUIEnvironment::OnSelectionChanged (const NUIE::Selection&)
+{
+
+}
+
 Application::Application () :
 	uiEnvironment (),
 	nodeEditor (uiEnvironment)

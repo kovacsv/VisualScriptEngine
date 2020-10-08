@@ -101,7 +101,7 @@ public:
 			}
 			return true;
 		});
-		uiManager.SetSelection (selection);
+		uiManager.SetSelection (selection, uiEnvironment);
 	}
 
 	virtual void HandleAbort () override
@@ -226,12 +226,12 @@ public:
 		RequestRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	override
+	virtual void HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point& position)	override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point offset = viewBox.ViewToModel (position) - startModelPosition;
 
-		CopyMoveNodesCommand command (relevantNodes, offset);
+		CopyMoveNodesCommand command (uiEnvironment, relevantNodes, offset);
 		uiManager.ExecuteCommand (command);
 
 		uiManager.RequestRedraw ();
@@ -632,7 +632,7 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE:
 					allSelection.AddNode (uiNode->GetId ());
 					return true;
 				});
-				uiManager.SetSelection (allSelection);
+				uiManager.SetSelection (allSelection, uiEnvironment);
 			}
 			break;
 		case CommandCode::SetParameters:
@@ -823,7 +823,7 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& uiEn
 				selection.AddNode (foundNodeId);
 			}
 		}
-		uiManager.SetSelection (selection);
+		uiManager.SetSelection (selection, uiEnvironment);
 		handlerResult = EventHandlerResult::EventHandled;
 	} else if (mouseButton == MouseButton::Right) {
 		EventHandler& eventHandler = uiEnvironment.GetEventHandler ();
@@ -900,14 +900,14 @@ EventHandlerResult InteractionHandler::HandleMouseWheel (NodeUIEnvironment&, con
 	return EventHandlerResult::EventHandled;
 }
 
-EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment&, KeyCode pressedKey)
+EventHandlerResult InteractionHandler::HandleKeyPress (NodeUIEnvironment& uiEnvironment, KeyCode pressedKey)
 {
 	if (pressedKey == KeyCode::Escape) {
 		if (multiMouseMoveHandler.HasHandler ()) {
 			multiMouseMoveHandler.AbortHandlers ();
 			return EventHandlerResult::EventHandled;
 		} else {
-			uiManager.SetSelection (EmptySelection);
+			uiManager.SetSelection (EmptySelection, uiEnvironment);
 		}
 		return EventHandlerResult::EventHandled;
 	}

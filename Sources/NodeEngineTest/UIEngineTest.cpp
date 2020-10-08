@@ -81,7 +81,7 @@ TEST (UIManagerBaseTest)
 
 	ASSERT (uiManager.ConnectOutputSlotToInputSlot (node1->GetUIOutputSlot (SlotId ("out")), node2->GetUIInputSlot (SlotId ("in1"))));
 	ASSERT (uiManager.ConnectOutputSlotToInputSlot (node1->GetUIOutputSlot (SlotId ("out")), node2->GetUIInputSlot (SlotId ("in2"))));
-	ASSERT (uiManager.DeleteNode (node1->GetId (), NE::EmptyEvaluationEnv));
+	ASSERT (uiManager.DeleteNode (node1->GetId (), NE::EmptyEvaluationEnv, env));
 }
 
 TEST (ViewBoxTest)

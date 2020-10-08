@@ -81,12 +81,12 @@ public:
 	NodeUIManager&				operator= (const NodeUIManager& rhs) = delete;
 	NodeUIManager&				operator= (NodeUIManager&& rhs) = delete;
 
-	UINodePtr					AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& env);
-	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env);
-	bool						DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env);
+	UINodePtr					AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv);
+	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv, NodeUIInteractionEnvironment& interactionEnv);
+	bool						DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evaluationEnv, NodeUIInteractionEnvironment& interactionEnv);
 
 	const Selection&			GetSelection () const;
-	void						SetSelection (const Selection& newSelection);
+	void						SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& env);
 
 	bool						IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
 	bool						CanConnectMoreOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;
@@ -156,8 +156,8 @@ public:
 	void						SaveUndoState ();
 	bool						CanUndo () const;
 	bool						CanRedo () const;
-	bool						Undo (NE::EvaluationEnv& env);
-	bool						Redo (NE::EvaluationEnv& env);
+	bool						Undo (NE::EvaluationEnv& env, NodeUIInteractionEnvironment& interactionEnv);
+	bool						Redo (NE::EvaluationEnv& env, NodeUIInteractionEnvironment& interactionEnv);
 
 	UINodeGroupPtr				AddNodeGroup (const UINodeGroupPtr& group);
 	void						DeleteNodeGroup (const UINodeGroupPtr& group);
@@ -208,6 +208,7 @@ private:
 	void				Clear (NodeUIEnvironment& env);
 	void				InvalidateDrawingsForInvalidatedNodes ();
 	void				UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode);
+	void				HandleSelectionChanged (Selection::ChangeResult selResult, NodeUIInteractionEnvironment& env);
 
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;

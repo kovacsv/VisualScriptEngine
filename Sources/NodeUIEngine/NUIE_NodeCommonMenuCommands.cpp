@@ -34,7 +34,7 @@ bool DeleteNodesMenuCommand::WillModify () const
 
 void DeleteNodesMenuCommand::DoModification ()
 {
-	DeleteNodesCommand command (relevantNodes, uiEnvironment.GetEvaluationEnv ());
+	DeleteNodesCommand command (uiEnvironment, relevantNodes);
 	uiManager.ExecuteCommand (command);
 }
 
@@ -63,10 +63,10 @@ void CopyNodesMenuCommand::DoModification ()
 	uiManager.ExecuteCommand (command);
 }
 
-PasteNodesMenuCommand::PasteNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const Point& position) :
+PasteNodesMenuCommand::PasteNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position) :
 	SingleMenuCommand (NE::LocString (L"Paste Nodes"), false),
 	uiManager (uiManager),
-	interactionEnv (interactionEnv),
+	uiEnvironment (uiEnvironment),
 	position (position)
 {
 
@@ -79,12 +79,13 @@ PasteNodesMenuCommand::~PasteNodesMenuCommand ()
 
 bool PasteNodesMenuCommand::WillModify () const
 {
-	return interactionEnv.GetClipboardHandler ().HasClipboardContent ();
+	ClipboardHandler& clipboard = uiEnvironment.GetClipboardHandler ();
+	return clipboard.HasClipboardContent ();
 }
 
 void PasteNodesMenuCommand::DoModification ()
 {
-	PasteNodesCommand command (position, interactionEnv.GetClipboardHandler ());
+	PasteNodesCommand command (uiEnvironment, position);
 	uiManager.ExecuteCommand (command);
 }
 
@@ -171,7 +172,7 @@ bool UndoMenuCommand::WillModify () const
 
 void UndoMenuCommand::DoModification ()
 {
-	UndoCommand command (uiEnvironment.GetEvaluationEnv ());
+	UndoCommand command (uiEnvironment);
 	uiManager.ExecuteCommand (command);
 }
 
@@ -195,7 +196,7 @@ bool RedoMenuCommand::WillModify () const
 
 void RedoMenuCommand::DoModification ()
 {
-	RedoCommand command (uiEnvironment.GetEvaluationEnv ());
+	RedoCommand command (uiEnvironment);
 	uiManager.ExecuteCommand (command);
 }
 
@@ -849,9 +850,10 @@ private:
 class SelectGroupNodesCommand : public SingleMenuCommand
 {
 public:
-	SelectGroupNodesCommand (NodeUIManager& uiManager, UINodeGroupPtr group) :
+	SelectGroupNodesCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, UINodeGroupPtr group) :
 		SingleMenuCommand (NE::LocString (L"Select Nodes"), false),
 		uiManager (uiManager),
+		uiEnvironment (uiEnvironment),
 		group (group)
 	{
 
@@ -872,11 +874,12 @@ public:
 		Selection selection;
 		NE::NodeCollection groupNodes = uiManager.GetGroupNodes (group);
 		selection.SetNodes (groupNodes);
-		uiManager.SetSelection (selection);
+		uiManager.SetSelection (selection, uiEnvironment);
 	}
 
 private:
 	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
 	UINodeGroupPtr		group;
 };
 
@@ -1135,7 +1138,7 @@ MenuCommandStructure CreateNodeGroupCommandStructure (NodeUIManager& uiManager, 
 	MenuCommandStructure commandStructure;
 	commandStructure.AddCommand (MenuCommandPtr (new SetGroupParametersMenuCommand (uiManager, uiEnvironment, group)));
 	commandStructure.AddCommand (MenuCommandPtr (new DeleteGroupMenuCommand (uiManager, group)));
-	commandStructure.AddCommand (MenuCommandPtr (new SelectGroupNodesCommand (uiManager, group)));
+	commandStructure.AddCommand (MenuCommandPtr (new SelectGroupNodesCommand (uiManager, uiEnvironment, group)));
 	return commandStructure;
 }
 

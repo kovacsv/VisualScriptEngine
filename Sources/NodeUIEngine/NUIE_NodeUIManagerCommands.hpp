@@ -41,13 +41,13 @@ private:
 class DeleteNodesCommand : public UndoableCommand
 {
 public:
-	DeleteNodesCommand (const NE::NodeCollection& nodes, NE::EvaluationEnv& evaluationEnv);
+	DeleteNodesCommand (NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& nodes);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
+	NodeUIEnvironment&			uiEnvironment;
 	const NE::NodeCollection&	nodes;
-	NE::EvaluationEnv&			evaluationEnv;
 };
 
 class MoveNodesCommand : public UndoableCommand
@@ -77,11 +77,12 @@ private:
 class CopyMoveNodesCommand : public UndoableCommand
 {
 public:
-	CopyMoveNodesCommand (const NE::NodeCollection& nodes, const Point& offset);
+	CopyMoveNodesCommand (NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& nodes, const Point& offset);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
+	NodeUIEnvironment&			uiEnvironment;
 	const NE::NodeCollection&	nodes;
 	Point						offset;
 };
@@ -173,13 +174,13 @@ private:
 class PasteNodesCommand : public UndoableCommand
 {
 public:
-	PasteNodesCommand (const Point& position, ClipboardHandler& clipboard);
+	PasteNodesCommand (NodeUIEnvironment& uiEnvironment, const Point& position);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
+	NodeUIEnvironment&	uiEnvironment;
 	const Point&		position;
-	ClipboardHandler&	clipboard;
 };
 
 class AddGroupCommand : public UndoableCommand
@@ -231,23 +232,23 @@ private:
 class UndoCommand : public NotUndoableCommand
 {
 public:
-	UndoCommand (NE::EvaluationEnv& evaluationEnv);
+	UndoCommand (NodeUIEnvironment& uiEnvironment);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
-	NE::EvaluationEnv& evaluationEnv;
+	NodeUIEnvironment& uiEnvironment;
 };
 
 class RedoCommand : public NotUndoableCommand
 {
 public:
-	RedoCommand (NE::EvaluationEnv& evaluationEnv);
+	RedoCommand (NodeUIEnvironment& uiEnvironment);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
-	NE::EvaluationEnv& evaluationEnv;
+	NodeUIEnvironment& uiEnvironment;
 };
 
 class ApplyParametersCommand : public UndoableCommand

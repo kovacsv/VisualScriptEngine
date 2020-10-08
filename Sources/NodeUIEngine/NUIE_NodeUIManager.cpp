@@ -14,8 +14,9 @@ SERIALIZATION_INFO (NodeUIManager, 1);
 class NodeUIManagerUpdateEventHandler : public NE::UpdateEventHandler
 {
 public:
-	NodeUIManagerUpdateEventHandler (NodeUIManager& uiManager, NE::EvaluationEnv& env) :
+	NodeUIManagerUpdateEventHandler (NodeUIManager& uiManager, NodeUIInteractionEnvironment& uiEnvironment, NE::EvaluationEnv& env) :
 		uiManager (uiManager),
+		uiEnvironment (uiEnvironment),
 		env (env)
 	{
 	
@@ -36,12 +37,13 @@ public:
 
 		Selection selection = uiManager.GetSelection ();
 		selection.DeleteNode (nodeId);
-		uiManager.SetSelection (selection);
+		uiManager.SetSelection (selection, uiEnvironment);
 	}
 
 private:
-	NodeUIManager&		uiManager;
-	NE::EvaluationEnv&	env;
+	NodeUIManager&					uiManager;
+	NodeUIInteractionEnvironment&	uiEnvironment;
+	NE::EvaluationEnv&				env;
 };
 
 NodeUIManager::Status::Status () :
@@ -173,7 +175,7 @@ NodeUIManager::~NodeUIManager ()
 
 }
 
-UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
+UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv)
 {
 	if (DBGERROR (uiNode == nullptr)) {
 		return nullptr;
@@ -182,33 +184,38 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& en
 	if (resultNode == nullptr) {
 		return nullptr;
 	}
-	uiNode->OnAdd (env);
+	uiNode->OnAdd (evaluationEnv);
 	RequestRecalculateAndRedraw ();
 	return uiNode;
 }
 
-bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& env)
+bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv, NodeUIInteractionEnvironment& interactionEnv)
 {
 	if (DBGERROR (uiNode == nullptr)) {
 		return false;
 	}
-	uiNode->OnDelete (env);
-	selection.DeleteNode (uiNode->GetId ());
+
+	uiNode->OnDelete (evaluationEnv);
+	
+	Selection::ChangeResult selResult = selection.DeleteNode (uiNode->GetId ());
+	HandleSelectionChanged (selResult, interactionEnv);
+	
 	InvalidateNodeDrawing (uiNode);
 	if (!nodeManager.DeleteNode (uiNode)) {
 		return false;
 	}
+
 	RequestRecalculateAndRedraw ();
 	return true;
 }
 
-bool NodeUIManager::DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& env)
+bool NodeUIManager::DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evaluationEnv, NodeUIInteractionEnvironment& interactionEnv)
 {
 	if (DBGERROR (!nodeManager.ContainsNode (nodeId))) {
 		return false;
 	}
 	UINodePtr node = GetNode (nodeId);
-	return DeleteNode (node, env);
+	return DeleteNode (node, evaluationEnv, interactionEnv);
 }
 
 const Selection& NodeUIManager::GetSelection () const
@@ -216,9 +223,10 @@ const Selection& NodeUIManager::GetSelection () const
 	return selection;
 }
 
-void NodeUIManager::SetSelection (const Selection& newSelection)
+void NodeUIManager::SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& env)
 {
-	selection.Update (newSelection);
+	Selection::ChangeResult selResult = selection.Update (newSelection);
+	HandleSelectionChanged (selResult, env);
 	status.RequestRedraw ();
 }
 
@@ -634,18 +642,18 @@ bool NodeUIManager::CanRedo () const
 	return undoHandler.CanRedo ();
 }
 
-bool NodeUIManager::Undo (NE::EvaluationEnv& env)
+bool NodeUIManager::Undo (NE::EvaluationEnv& env, NodeUIInteractionEnvironment& interactionEnv)
 {
-	NodeUIManagerUpdateEventHandler eventHandler (*this, env);
+	NodeUIManagerUpdateEventHandler eventHandler (*this, interactionEnv, env);
 	bool success = undoHandler.Undo (nodeManager, eventHandler);
 	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculateAndRedraw ();
 	return success;
 }
 
-bool NodeUIManager::Redo (NE::EvaluationEnv& env)
+bool NodeUIManager::Redo (NE::EvaluationEnv& env, NodeUIInteractionEnvironment& interactionEnv)
 {
-	NodeUIManagerUpdateEventHandler eventHandler (*this, env);
+	NodeUIManagerUpdateEventHandler eventHandler (*this, interactionEnv, env);
 	bool success = undoHandler.Redo (nodeManager, eventHandler);
 	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculateAndRedraw ();
@@ -729,7 +737,9 @@ void NodeUIManager::Clear (NodeUIEnvironment& env)
 {
 	double windowScale = env.GetWindowScale ();
 
-	selection.Clear ();
+	Selection::ChangeResult selResult = selection.Clear ();
+	HandleSelectionChanged (selResult, env);
+
 	undoHandler.Clear ();
 	nodeManager.Clear ();
 
@@ -770,6 +780,13 @@ void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalU
 	if (status.NeedToRedraw ()) {
 		env.OnRedrawRequested ();
 		status.ResetRedraw ();
+	}
+}
+
+void NodeUIManager::HandleSelectionChanged (Selection::ChangeResult selResult, NodeUIInteractionEnvironment& env)
+{
+	if (selResult == Selection::ChangeResult::Changed) {
+		env.OnSelectionChanged (selection);
 	}
 }
 

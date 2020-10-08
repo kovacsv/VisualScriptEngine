@@ -72,3 +72,8 @@ NUIE::ClipboardHandler& TestUIEnvironment::GetClipboardHandler ()
 {
 	return clipboardHandler;
 }
+
+void TestUIEnvironment::OnSelectionChanged (const Selection&)
+{
+
+}

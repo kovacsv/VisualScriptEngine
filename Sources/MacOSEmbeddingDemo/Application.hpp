@@ -44,6 +44,7 @@ public:
 
 	virtual NUIE::EventHandler&			GetEventHandler () override;
 	virtual NUIE::ClipboardHandler&		GetClipboardHandler () override;
+	virtual void						OnSelectionChanged (const NUIE::Selection&) override;
 	
 private:
 	NE::BasicStringConverter			stringConverter;

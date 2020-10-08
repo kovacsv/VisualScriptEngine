@@ -49,6 +49,7 @@ public:
 	virtual void					OnRedrawRequested () override;
 	virtual EventHandler&			GetEventHandler () override;
 	virtual ClipboardHandler&		GetClipboardHandler () override;
+	virtual void					OnSelectionChanged (const Selection& selection) override;
 
 	void							SetNextCommandName (const std::wstring& nextCommandName);
 	void							SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);

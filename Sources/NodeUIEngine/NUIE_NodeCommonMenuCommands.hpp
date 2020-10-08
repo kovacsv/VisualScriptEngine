@@ -42,16 +42,16 @@ private:
 class PasteNodesMenuCommand : public SingleMenuCommand
 {
 public:
-	PasteNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const Point& position);
+	PasteNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const Point& position);
 	virtual ~PasteNodesMenuCommand ();
 
 	virtual bool WillModify () const override;
 	virtual void DoModification () override;
 
 private:
-	NodeUIManager&					uiManager;
-	NodeUIInteractionEnvironment&	interactionEnv;
-	Point							position;
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	Point				position;
 };
 
 class AlignToWindowMenuCommand : public SingleMenuCommand

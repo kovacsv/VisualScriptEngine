@@ -161,7 +161,7 @@ const Selection& NodeEditor::GetSelection () const
 
 void NodeEditor::SetSelection (const Selection& newSelection)
 {
-	uiManager.SetSelection (newSelection);
+	uiManager.SetSelection (newSelection, uiEnvironment);
 	Update ();
 }
 
@@ -256,14 +256,14 @@ void NodeEditor::ApplyParameterChanges (const ParameterInterfacePtr& parameters)
 
 void NodeEditor::Undo ()
 {
-	UndoCommand command (uiEnvironment.GetEvaluationEnv ());
+	UndoCommand command (uiEnvironment);
 	uiManager.ExecuteCommand (command);
 	Update ();
 }
 
 void NodeEditor::Redo ()
 {
-	RedoCommand command (uiEnvironment.GetEvaluationEnv ());
+	RedoCommand command (uiEnvironment);
 	uiManager.ExecuteCommand (command);
 	Update ();
 }
