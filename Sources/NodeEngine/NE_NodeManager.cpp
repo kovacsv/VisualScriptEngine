@@ -100,10 +100,10 @@ NodeManager::NodeManager () :
 	nodeGroupList (),
 	updateMode (UpdateMode::Automatic),
 	nodeValueCache (),
-	nodeEvaluator (new NodeManagerNodeEvaluator (*this, nodeValueCache)),
+	nodeEvaluator (nullptr),
 	isForceCalculate (false)
 {
-
+	nodeEvaluator.reset (new NodeManagerNodeEvaluator (*this, nodeValueCache));
 }
 
 NodeManager::~NodeManager ()
