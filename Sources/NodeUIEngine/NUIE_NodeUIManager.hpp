@@ -153,7 +153,6 @@ public:
 	NE::NodeCollection			PasteFromNodeManager (const NE::NodeManager& source);
 	NE::NodeCollection			Duplicate (const NE::NodeCollection& nodeCollection);
 
-	void						SaveUndoState ();
 	bool						CanUndo () const;
 	bool						CanRedo () const;
 	bool						Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);

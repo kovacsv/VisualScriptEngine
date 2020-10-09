@@ -627,11 +627,6 @@ NE::NodeCollection NodeUIManager::Duplicate (const NE::NodeCollection& nodeColle
 	return PasteFromNodeManager (tempNodeManager);
 }
 
-void NodeUIManager::SaveUndoState ()
-{
-	undoHandler.SaveUndoState (nodeManager);
-}
-
 bool NodeUIManager::CanUndo () const
 {
 	return undoHandler.CanUndo ();
@@ -722,7 +717,7 @@ void NodeUIManager::EnumerateNodeGroups (const std::function<bool (const UINodeG
 void NodeUIManager::ExecuteCommand (NodeUIManagerCommand& command)
 {
 	if (command.IsUndoable ()) {
-		SaveUndoState ();
+		undoHandler.SaveUndoState (nodeManager);
 	}
 	command.Do (*this);
 	status.RequestSave ();
