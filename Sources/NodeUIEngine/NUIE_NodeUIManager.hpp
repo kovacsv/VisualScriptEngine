@@ -53,13 +53,13 @@ private:
 class NodeUIManagerNodeRectGetter : public NodeRectGetter
 {
 public:
-	NodeUIManagerNodeRectGetter (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env);
+	NodeUIManagerNodeRectGetter (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& drawingEnv);
 	
 	virtual Rect GetNodeRect (const NE::NodeId& nodeId) const override;
 
 private:
 	const NodeUIManager& uiManager;
-	NodeUIDrawingEnvironment& env;
+	NodeUIDrawingEnvironment& drawingEnv;
 };
 
 class NodeUIManager
@@ -73,7 +73,7 @@ public:
 		Manual
 	};
 
-	NodeUIManager (NodeUIEnvironment& env);
+	NodeUIManager (NodeUIEnvironment& uiEnvironment);
 	NodeUIManager (const NodeUIManager& src) = delete;
 	NodeUIManager (NodeUIManager&& src) = delete;
 	~NodeUIManager ();
@@ -81,12 +81,12 @@ public:
 	NodeUIManager&				operator= (const NodeUIManager& rhs) = delete;
 	NodeUIManager&				operator= (NodeUIManager&& rhs) = delete;
 
-	UINodePtr					AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv);
-	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv, NodeUIInteractionEnvironment& interactionEnv);
-	bool						DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evaluationEnv, NodeUIInteractionEnvironment& interactionEnv);
+	UINodePtr					AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& evalEnv);
+	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
+	bool						DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
 
 	const Selection&			GetSelection () const;
-	void						SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& env);
+	void						SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& interactionEnv);
 
 	bool						IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
 	bool						CanConnectMoreOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;
@@ -127,15 +127,15 @@ public:
 	void						InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
 	void						InvalidateNodeGroupDrawing (const UINodePtr& uiNode);
 
-	void						Update (NodeUICalculationEnvironment& env);
-	void						ManualUpdate (NodeUICalculationEnvironment& env);
-	void						Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawingModifier);
-	void						ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight);
+	void						Update (NodeUICalculationEnvironment& calcEnv);
+	void						ManualUpdate (NodeUICalculationEnvironment& calcEnv);
+	void						Draw (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawingModifier);
+	void						ResizeContext (NodeUIDrawingEnvironment& drawingEnv, int newWidth, int newHeight);
 
-	bool						GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundingRect) const;
-	void						AlignToWindow (NodeUIDrawingEnvironment& env);
-	void						CenterToWindow (NodeUIDrawingEnvironment& env);
-	void						FitToWindow (NodeUIDrawingEnvironment& env);
+	bool						GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& boundingRect) const;
+	void						AlignToWindow (NodeUIDrawingEnvironment& drawingEnv);
+	void						CenterToWindow (NodeUIDrawingEnvironment& drawingEnv);
+	void						FitToWindow (NodeUIDrawingEnvironment& drawingEnv);
 
 	const ViewBox&				GetViewBox () const;
 	void						SetViewBox (const ViewBox& newViewBox);
@@ -144,8 +144,8 @@ public:
 	UpdateMode					GetUpdateMode () const;
 	void						SetUpdateMode (UpdateMode newUpdateMode);
 
-	void						New (NodeUIEnvironment& env);
-	bool						Open (NodeUIEnvironment& env, NE::InputStream& inputStream);
+	void						New (NodeUIEnvironment& uiEnvironment);
+	bool						Open (NodeUIEnvironment& uiEnvironment, NE::InputStream& inputStream);
 	bool						Save (NE::OutputStream& outputStream);
 	bool						NeedToSave () const;
 
@@ -156,8 +156,8 @@ public:
 	void						SaveUndoState ();
 	bool						CanUndo () const;
 	bool						CanRedo () const;
-	bool						Undo (NE::EvaluationEnv& env, NodeUIInteractionEnvironment& interactionEnv);
-	bool						Redo (NE::EvaluationEnv& env, NodeUIInteractionEnvironment& interactionEnv);
+	bool						Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
+	bool						Redo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
 
 	UINodeGroupPtr				AddNodeGroup (const UINodeGroupPtr& group);
 	void						DeleteNodeGroup (const UINodeGroupPtr& group);
@@ -205,10 +205,10 @@ private:
 		Manual
 	};
 
-	void				Clear (NodeUIEnvironment& env);
+	void				Clear (NodeUIEnvironment& uiEnvironment);
 	void				InvalidateDrawingsForInvalidatedNodes ();
-	void				UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode);
-	void				HandleSelectionChanged (Selection::ChangeResult selResult, NodeUIInteractionEnvironment& env);
+	void				UpdateInternal (NodeUICalculationEnvironment& calcEnv, InternalUpdateMode mode);
+	void				HandleSelectionChanged (Selection::ChangeResult selResult, NodeUIInteractionEnvironment& interactionEnv);
 
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;

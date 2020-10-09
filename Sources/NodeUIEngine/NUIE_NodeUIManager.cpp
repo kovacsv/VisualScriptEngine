@@ -14,10 +14,10 @@ SERIALIZATION_INFO (NodeUIManager, 1);
 class NodeUIManagerUpdateEventHandler : public NE::UpdateEventHandler
 {
 public:
-	NodeUIManagerUpdateEventHandler (NodeUIManager& uiManager, NodeUIInteractionEnvironment& uiEnvironment, NE::EvaluationEnv& env) :
+	NodeUIManagerUpdateEventHandler (NodeUIManager& uiManager, NodeUIInteractionEnvironment& uiEnvironment, NE::EvaluationEnv& evalEnv) :
 		uiManager (uiManager),
 		uiEnvironment (uiEnvironment),
-		env (env)
+		evalEnv (evalEnv)
 	{
 	
 	}
@@ -33,7 +33,7 @@ public:
 		if (DBGERROR (uiNode == nullptr)) {
 			return;
 		}
-		uiNode->OnDelete (env);
+		uiNode->OnDelete (evalEnv);
 
 		Selection selection = uiManager.GetSelection ();
 		selection.DeleteNode (nodeId);
@@ -43,7 +43,7 @@ public:
 private:
 	NodeUIManager&					uiManager;
 	NodeUIInteractionEnvironment&	uiEnvironment;
-	NE::EvaluationEnv&				env;
+	NE::EvaluationEnv&				evalEnv;
 };
 
 NodeUIManager::Status::Status () :
@@ -148,26 +148,26 @@ void NodeUIManagerNodeInvalidator::RequestRedraw ()
 	uiManager.RequestRedraw ();
 }
 
-NodeUIManagerNodeRectGetter::NodeUIManagerNodeRectGetter (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env) :
+NodeUIManagerNodeRectGetter::NodeUIManagerNodeRectGetter (const NodeUIManager& uiManager, NodeUIDrawingEnvironment& drawingEnv) :
 	uiManager (uiManager),
-	env (env)
+	drawingEnv (drawingEnv)
 {
 }
 
 Rect NodeUIManagerNodeRectGetter::GetNodeRect (const NE::NodeId& nodeId) const
 {
 	UINodeConstPtr uiNode = uiManager.GetNode (nodeId);
-	return uiNode->GetRect (env);
+	return uiNode->GetRect (drawingEnv);
 }
 
-NodeUIManager::NodeUIManager (NodeUIEnvironment& env) :
+NodeUIManager::NodeUIManager (NodeUIEnvironment& uiEnvironment) :
 	nodeManager (),
 	undoHandler (),
 	selection (),
 	viewBox (),
 	status ()
 {
-	New (env);
+	New (uiEnvironment);
 }
 
 NodeUIManager::~NodeUIManager ()
@@ -175,7 +175,7 @@ NodeUIManager::~NodeUIManager ()
 
 }
 
-UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv)
+UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& evalEnv)
 {
 	if (DBGERROR (uiNode == nullptr)) {
 		return nullptr;
@@ -184,18 +184,18 @@ UINodePtr NodeUIManager::AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& ev
 	if (resultNode == nullptr) {
 		return nullptr;
 	}
-	uiNode->OnAdd (evaluationEnv);
+	uiNode->OnAdd (evalEnv);
 	RequestRecalculateAndRedraw ();
 	return uiNode;
 }
 
-bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv, NodeUIInteractionEnvironment& interactionEnv)
+bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv)
 {
 	if (DBGERROR (uiNode == nullptr)) {
 		return false;
 	}
 
-	uiNode->OnDelete (evaluationEnv);
+	uiNode->OnDelete (evalEnv);
 	
 	Selection::ChangeResult selResult = selection.DeleteNode (uiNode->GetId ());
 	HandleSelectionChanged (selResult, interactionEnv);
@@ -209,13 +209,13 @@ bool NodeUIManager::DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& eval
 	return true;
 }
 
-bool NodeUIManager::DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evaluationEnv, NodeUIInteractionEnvironment& interactionEnv)
+bool NodeUIManager::DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv)
 {
 	if (DBGERROR (!nodeManager.ContainsNode (nodeId))) {
 		return false;
 	}
 	UINodePtr node = GetNode (nodeId);
-	return DeleteNode (node, evaluationEnv, interactionEnv);
+	return DeleteNode (node, evalEnv, interactionEnv);
 }
 
 const Selection& NodeUIManager::GetSelection () const
@@ -223,10 +223,10 @@ const Selection& NodeUIManager::GetSelection () const
 	return selection;
 }
 
-void NodeUIManager::SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& env)
+void NodeUIManager::SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& interactionEnv)
 {
 	Selection::ChangeResult selResult = selection.Update (newSelection);
-	HandleSelectionChanged (selResult, env);
+	HandleSelectionChanged (selResult, interactionEnv);
 	status.RequestRedraw ();
 }
 
@@ -435,41 +435,41 @@ void NodeUIManager::InvalidateNodeGroupDrawing (const UINodePtr& uiNode)
 	InvalidateNodeGroupDrawing (uiNode->GetId ());
 }
 
-void NodeUIManager::Update (NodeUICalculationEnvironment& env)
+void NodeUIManager::Update (NodeUICalculationEnvironment& calcEnv)
 {
-	UpdateInternal (env, InternalUpdateMode::Normal);
+	UpdateInternal (calcEnv, InternalUpdateMode::Normal);
 }
 
-void NodeUIManager::ManualUpdate (NodeUICalculationEnvironment& env)
+void NodeUIManager::ManualUpdate (NodeUICalculationEnvironment& calcEnv)
 {
 	InvalidateDrawingsForInvalidatedNodes ();
-	UpdateInternal (env, InternalUpdateMode::Manual);
+	UpdateInternal (calcEnv, InternalUpdateMode::Manual);
 }
 
-void NodeUIManager::Draw (NodeUIDrawingEnvironment& env, const NodeDrawingModifier* drawingModifier)
+void NodeUIManager::Draw (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawingModifier)
 {
 	NodeUIManagerDrawer drawer (*this);
-	drawer.Draw (env, drawingModifier);
+	drawer.Draw (drawingEnv, drawingModifier);
 }
 
-void NodeUIManager::ResizeContext (NodeUIDrawingEnvironment& env, int newWidth, int newHeight)
+void NodeUIManager::ResizeContext (NodeUIDrawingEnvironment& drawingEnv, int newWidth, int newHeight)
 {
-	env.GetDrawingContext ().Resize (newWidth, newHeight);
+	drawingEnv.GetDrawingContext ().Resize (newWidth, newHeight);
 	status.RequestRedraw ();
 }
 
-bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundingRect) const
+bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& boundingRect) const
 {
 	BoundingRectCalculator boundingRectCalculator;
 	EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
-		Rect nodeRect = GetNodeExtendedRect (env, uiNode.get ());
+		Rect nodeRect = GetNodeExtendedRect (drawingEnv, uiNode.get ());
 		boundingRectCalculator.AddRect (nodeRect);
 		return true;
 	});
 
-	NodeUIManagerNodeRectGetter nodeRectGetter (*this, env);
+	NodeUIManagerNodeRectGetter nodeRectGetter (*this, drawingEnv);
 	EnumerateNodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
-		Rect groupRect = uiGroup->GetRect (env, nodeRectGetter, GetGroupNodes (uiGroup));
+		Rect groupRect = uiGroup->GetRect (drawingEnv, nodeRectGetter, GetGroupNodes (uiGroup));
 		boundingRectCalculator.AddRect (groupRect);
 		return true;
 	});
@@ -482,29 +482,29 @@ bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& env, Rect& boundi
 	return true;
 }
 
-void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& env)
+void NodeUIManager::AlignToWindow (NodeUIDrawingEnvironment& drawingEnv)
 {
 	Rect boundingRect;
-	if (!GetBoundingRect (env, boundingRect)) {
+	if (!GetBoundingRect (drawingEnv, boundingRect)) {
 		return;
 	}
 
-	double scale = env.GetWindowScale ();
-	double viewPadding = env.GetSkinParams ().GetNodePadding ();
+	double scale = drawingEnv.GetWindowScale ();
+	double viewPadding = drawingEnv.GetSkinParams ().GetNodePadding ();
 	ViewBox newViewBox (-boundingRect.GetTopLeft () * scale + Point (viewPadding, viewPadding), scale);
 	SetViewBox (newViewBox);
 	status.RequestRedraw ();
 }
 
-void NodeUIManager::CenterToWindow (NodeUIDrawingEnvironment& env)
+void NodeUIManager::CenterToWindow (NodeUIDrawingEnvironment& drawingEnv)
 {
 	Rect boundingRect;
-	if (!GetBoundingRect (env, boundingRect)) {
+	if (!GetBoundingRect (drawingEnv, boundingRect)) {
 		return;
 	}
 
-	double scale = env.GetWindowScale ();
-	const DrawingContext& drawingContext = env.GetDrawingContext ();
+	double scale = drawingEnv.GetWindowScale ();
+	const DrawingContext& drawingContext = drawingEnv.GetDrawingContext ();
 	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
 	Point boundingRectPosition = boundingRect.GetPosition () * scale;
 	Size boundingRectSize = boundingRect.GetSize () * scale;
@@ -518,15 +518,15 @@ void NodeUIManager::CenterToWindow (NodeUIDrawingEnvironment& env)
 	status.RequestRedraw ();
 }
 
-void NodeUIManager::FitToWindow (NodeUIDrawingEnvironment& env)
+void NodeUIManager::FitToWindow (NodeUIDrawingEnvironment& drawingEnv)
 {
 	Rect boundingRect;
-	if (!GetBoundingRect (env, boundingRect)) {
+	if (!GetBoundingRect (drawingEnv, boundingRect)) {
 		return;
 	}
 
-	double viewPadding = env.GetSkinParams ().GetNodePadding ();
-	const DrawingContext& drawingContext = env.GetDrawingContext ();
+	double viewPadding = drawingEnv.GetSkinParams ().GetNodePadding ();
+	const DrawingContext& drawingContext = drawingEnv.GetDrawingContext ();
 	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
 	ViewBox newViewBox = FitRectToSize (contextSize, viewPadding, boundingRect);
 	SetViewBox (newViewBox);
@@ -576,15 +576,15 @@ void NodeUIManager::SetUpdateMode (UpdateMode newUpdateMode)
 	}
 }
 
-void NodeUIManager::New (NodeUIEnvironment& env)
+void NodeUIManager::New (NodeUIEnvironment& uiEnvironment)
 {
-	Clear (env);
+	Clear (uiEnvironment);
 	RequestRecalculateAndRedraw ();
 }
 
-bool NodeUIManager::Open (NodeUIEnvironment& env, NE::InputStream& inputStream)
+bool NodeUIManager::Open (NodeUIEnvironment& uiEnvironment, NE::InputStream& inputStream)
 {
-	Clear (env);
+	Clear (uiEnvironment);
 	Read (inputStream);
 	RequestRecalculateAndRedraw ();
 	return inputStream.GetStatus() == NE::Stream::Status::NoError;
@@ -642,18 +642,18 @@ bool NodeUIManager::CanRedo () const
 	return undoHandler.CanRedo ();
 }
 
-bool NodeUIManager::Undo (NE::EvaluationEnv& env, NodeUIInteractionEnvironment& interactionEnv)
+bool NodeUIManager::Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv)
 {
-	NodeUIManagerUpdateEventHandler eventHandler (*this, interactionEnv, env);
+	NodeUIManagerUpdateEventHandler eventHandler (*this, interactionEnv, evalEnv);
 	bool success = undoHandler.Undo (nodeManager, eventHandler);
 	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculateAndRedraw ();
 	return success;
 }
 
-bool NodeUIManager::Redo (NE::EvaluationEnv& env, NodeUIInteractionEnvironment& interactionEnv)
+bool NodeUIManager::Redo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv)
 {
-	NodeUIManagerUpdateEventHandler eventHandler (*this, interactionEnv, env);
+	NodeUIManagerUpdateEventHandler eventHandler (*this, interactionEnv, evalEnv);
 	bool success = undoHandler.Redo (nodeManager, eventHandler);
 	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculateAndRedraw ();
@@ -733,12 +733,12 @@ void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
 	ExecuteCommand (*command);
 }
 
-void NodeUIManager::Clear (NodeUIEnvironment& env)
+void NodeUIManager::Clear (NodeUIEnvironment& uiEnvironment)
 {
-	double windowScale = env.GetWindowScale ();
+	double windowScale = uiEnvironment.GetWindowScale ();
 
 	Selection::ChangeResult selResult = selection.Clear ();
-	HandleSelectionChanged (selResult, env);
+	HandleSelectionChanged (selResult, uiEnvironment);
 
 	undoHandler.Clear ();
 	nodeManager.Clear ();
@@ -763,30 +763,30 @@ void NodeUIManager::InvalidateDrawingsForInvalidatedNodes ()
 	status.RequestRedraw ();
 }
 
-void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& env, InternalUpdateMode mode)
+void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& calcEnv, InternalUpdateMode mode)
 {
 	if (status.NeedToRecalculate ()) {
-		env.OnEvaluationBegin ();
+		calcEnv.OnEvaluationBegin ();
 		if (mode == InternalUpdateMode::Normal) {
-			nodeManager.EvaluateAllNodes (env.GetEvaluationEnv ());
+			nodeManager.EvaluateAllNodes (calcEnv.GetEvaluationEnv ());
 		} else if (mode == InternalUpdateMode::Manual) {
-			nodeManager.ForceEvaluateAllNodes (env.GetEvaluationEnv ());
+			nodeManager.ForceEvaluateAllNodes (calcEnv.GetEvaluationEnv ());
 		}
-		env.OnEvaluationEnd ();
+		calcEnv.OnEvaluationEnd ();
 
-		env.OnValuesRecalculated ();
+		calcEnv.OnValuesRecalculated ();
 		status.ResetRecalculate ();
 	}
 	if (status.NeedToRedraw ()) {
-		env.OnRedrawRequested ();
+		calcEnv.OnRedrawRequested ();
 		status.ResetRedraw ();
 	}
 }
 
-void NodeUIManager::HandleSelectionChanged (Selection::ChangeResult selResult, NodeUIInteractionEnvironment& env)
+void NodeUIManager::HandleSelectionChanged (Selection::ChangeResult selResult, NodeUIInteractionEnvironment& interactionEnv)
 {
 	if (selResult == Selection::ChangeResult::Changed) {
-		env.OnSelectionChanged (selection);
+		interactionEnv.OnSelectionChanged (selection);
 	}
 }
 
