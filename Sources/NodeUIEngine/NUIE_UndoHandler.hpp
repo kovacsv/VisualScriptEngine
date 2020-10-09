@@ -14,7 +14,7 @@ class UndoHandler
 public:
 	UndoHandler ();
 
-	void	SaveUndoState (const NE::NodeManager& nodeManager);
+	void	AddUndoStep (const NE::NodeManager& nodeManager);
 
 	bool	CanUndo () const;
 	bool	CanRedo () const;

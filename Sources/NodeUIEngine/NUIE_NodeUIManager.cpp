@@ -717,7 +717,7 @@ void NodeUIManager::EnumerateNodeGroups (const std::function<bool (const UINodeG
 void NodeUIManager::ExecuteCommand (NodeUIManagerCommand& command)
 {
 	if (command.IsUndoable ()) {
-		undoHandler.SaveUndoState (nodeManager);
+		undoHandler.AddUndoStep (nodeManager);
 	}
 	command.Do (*this);
 	status.RequestSave ();

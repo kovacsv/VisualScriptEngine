@@ -4,7 +4,7 @@
 namespace NUIE
 {
 
-static void SaveAndAddState (const NE::NodeManager& nodeManager, std::vector<std::shared_ptr<NE::NodeManager>>& stack)
+static void AddStateToStack (const NE::NodeManager& nodeManager, std::vector<std::shared_ptr<NE::NodeManager>>& stack)
 {
 	std::shared_ptr<NE::NodeManager> undoState (new NE::NodeManager ());
 	NE::NodeManager::Clone (nodeManager, *undoState.get ());
@@ -16,10 +16,10 @@ UndoHandler::UndoHandler ()
 
 }
 
-void UndoHandler::SaveUndoState (const NE::NodeManager& nodeManager)
+void UndoHandler::AddUndoStep (const NE::NodeManager& nodeManager)
 {
 	redoStack.clear ();
-	SaveAndAddState (nodeManager, undoStack);
+	AddStateToStack (nodeManager, undoStack);
 }
 
 bool UndoHandler::CanUndo () const
@@ -38,7 +38,7 @@ bool UndoHandler::Undo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandl
 		return false;
 	}
 
-	SaveAndAddState (targetNodeManager, redoStack);
+	AddStateToStack (targetNodeManager, redoStack);
 
 	std::shared_ptr<NE::NodeManager> undoState = undoStack.back ();
 	undoStack.pop_back ();
@@ -52,9 +52,11 @@ bool UndoHandler::Redo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandl
 		return false;
 	}
 
-	SaveAndAddState (targetNodeManager, undoStack);
+	AddStateToStack (targetNodeManager, undoStack);
+
 	std::shared_ptr<NE::NodeManager> redoState = redoStack.back ();
 	redoStack.pop_back ();
+
 	return NE::NodeManagerMerge::UpdateNodeManager (*redoState.get (), targetNodeManager, eventHandler);
 }
 
