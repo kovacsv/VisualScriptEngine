@@ -7,6 +7,7 @@ namespace WAS
 {
 
 static const short NodeListWidth = 200;
+static const short NodeListRightMargin = 5;
 
 static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -93,7 +94,7 @@ bool NodeEditorNodeTreeHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, void*
 
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
 	nodeTreeView.Init (mainHandle, 0, 0, NodeListWidth, height);
-	nodeEditorControl.Init (nodeEditorPtr, mainHandle, NodeListWidth, 0, width - NodeListWidth, height);
+	nodeEditorControl.Init (nodeEditorPtr, mainHandle, NodeListWidth + NodeListRightMargin, 0, width - NodeListWidth - NodeListRightMargin, height);
 
 	return true;
 }
@@ -115,8 +116,8 @@ void NodeEditorNodeTreeHwndControl::Resize (int x, int y, int width, int height)
 		return;
 	}
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
-	nodeTreeView.Resize (x, y, NodeListWidth, height);
-	nodeEditorControl.Resize (x + NodeListWidth, y, width - NodeListWidth, height);
+	nodeTreeView.Resize (0, 0, NodeListWidth, height);
+	nodeEditorControl.Resize (NodeListWidth + NodeListRightMargin, 0, width - NodeListWidth - NodeListRightMargin, height);
 }
 
 void NodeEditorNodeTreeHwndControl::Invalidate ()

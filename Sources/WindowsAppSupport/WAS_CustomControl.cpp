@@ -41,7 +41,7 @@ public:
 		windowClass.cbWndExtra = 0;
 		windowClass.hInstance = NULL;
 		windowClass.hCursor = LoadCursor (NULL, IDC_ARROW);
-		windowClass.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
+		windowClass.hbrBackground = (HBRUSH) COLOR_WINDOW;
 		windowClass.lpszMenuName = NULL;
 		windowClass.lpszClassName = className;
 

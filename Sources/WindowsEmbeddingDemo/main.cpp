@@ -19,10 +19,12 @@
 #pragma comment (lib, "d2d1.lib")
 #pragma comment (lib, "dwrite.lib")
 
+static const int ControlPadding = 5;
+
 static const NUIE::BasicSkinParams& GetAppSkinParams ()
 {
 	static const NUIE::BasicSkinParams skinParams (
-		/*backgroundColor*/ NUIE::Color (250, 250, 250),
+		/*backgroundColor*/ NUIE::Color (255, 255, 255),
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
@@ -146,14 +148,14 @@ public:
 		int width = clientRect.right - clientRect.left;
 		int height = clientRect.bottom - clientRect.top;
 
-		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
+		nodeEditorControl.Init (nodeEditorPtr, parentHandle, ControlPadding, ControlPadding, width - ControlPadding * 2, height - ControlPadding * 2);
 		nodeEditorControl.FillNodeTree (nodeTree);
 		eventHandler.Init ((HWND) nodeEditorControl.GetEditorNativeHandle ());
 	}
 
 	void OnResize (int x, int y, int width, int height)
 	{
-		nodeEditorControl.Resize (x, y, width, height);
+		nodeEditorControl.Resize (x + ControlPadding, y + ControlPadding, width - ControlPadding * 2, height - ControlPadding * 2);
 	}
 
 	virtual const NE::StringConverter& GetStringConverter () override
@@ -290,7 +292,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	windowClass.hInstance = hInstance;
 	windowClass.hIcon = LoadIcon (NULL, IDI_APPLICATION);
 	windowClass.hCursor = LoadCursor (NULL, IDC_ARROW);
-	windowClass.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
+	windowClass.hbrBackground = (HBRUSH) COLOR_WINDOW;
 	windowClass.lpszMenuName = NULL;
 	windowClass.lpszClassName = L"WindowsEmbeddingDemo";
 	windowClass.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
