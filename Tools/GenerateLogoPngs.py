@@ -31,6 +31,11 @@ def Main (argv):
 				heightStr = '0' + heightStr
 			pngPath = os.path.join (logoFolder, 'png', logoName + '_' + heightStr + '.png')
 			GeneratePng (inkscapePath, logoSvgPath, pngPath, height)
+	GeneratePng (
+		inkscapePath,
+		os.path.join (logoFolder, 'svg', 'vse_logo_text_sm.svg'),
+		os.path.join (logoFolder, 'png', 'vse_logo_text_sm.png'),
+		640)
 
 	return 0
 	
