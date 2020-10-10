@@ -13,7 +13,7 @@
    viewBox="0 0 1280 640"
    height="640"
    width="1280"
-   sodipodi:docname="vse_logo_text_dark_sm.svg"
+   sodipodi:docname="vse_logo_text_sm.svg"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    inkscape:export-filename="C:\Users\kovacsv\Desktop\vse_logo_text_sm.png"
    inkscape:export-xdpi="96"
@@ -31,9 +31,9 @@
      inkscape:window-height="1137"
      id="namedview32"
      showgrid="false"
-     inkscape:zoom="0.75016775"
-     inkscape:cx="614.88183"
-     inkscape:cy="313.71854"
+     inkscape:zoom="1.5003355"
+     inkscape:cx="535.04611"
+     inkscape:cy="194.3873"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -78,7 +78,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -104,7 +104,7 @@
      id="text894"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.66667175px;line-height:1.25;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
      aria-label="VSE"
-     transform="matrix(3.125,0,0,3.125,150.3125,245)">
+     transform="matrix(3.125,0,0,3.125,150.3125,261)">
     <g
        transform="translate(1.5,-0.25)"
        id="text874"
@@ -202,15 +202,4 @@
          inkscape:connector-curvature="0" />
     </g>
   </g>
-  <text
-     xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:29.87465477px;line-height:1.25;font-family:Montserrat;-inkscape-font-specification:Montserrat;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.80074883"
-     x="294.02988"
-     y="354.02505"
-     id="text841"><tspan
-       sodipodi:role="line"
-       id="tspan839"
-       x="294.02988"
-       y="354.02505"
-       style="fill:#ffffff;fill-opacity:1;stroke-width:2.80074883">A visual scripting engine designed for embedding.</tspan></text>
 </svg>
