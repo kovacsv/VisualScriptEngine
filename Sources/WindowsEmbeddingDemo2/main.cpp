@@ -188,6 +188,11 @@ public:
 
 	}
 
+	virtual void OnClipboardStateChanged (const NUIE::ClipboardState&) override
+	{
+
+	}
+
 private:
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;

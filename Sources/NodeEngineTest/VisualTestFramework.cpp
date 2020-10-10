@@ -281,6 +281,11 @@ void TestNodeUIEnvironment::OnUndoStateChanged (const UndoState&)
 
 }
 
+void TestNodeUIEnvironment::OnClipboardStateChanged (const ClipboardState&)
+{
+
+}
+
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	eventHandler.SetNextCommandName (nextCommandName);

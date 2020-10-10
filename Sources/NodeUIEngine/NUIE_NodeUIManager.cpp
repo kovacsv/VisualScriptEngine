@@ -602,14 +602,14 @@ bool NodeUIManager::NeedToSave () const
 	return status.NeedToSave ();
 }
 
-bool NodeUIManager::CopyToNodeManager (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const
+bool NodeUIManager::Copy (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const
 {
 	NE::NodeCollectionFilter nodeFilter (nodeCollection);
 	NE::EmptyAppendEventHandler eventHandler;
 	return NE::NodeManagerMerge::AppendNodeManager (nodeManager, result, nodeFilter, eventHandler);
 }
 
-NE::NodeCollection NodeUIManager::PasteFromNodeManager (const NE::NodeManager& source)
+NE::NodeCollection NodeUIManager::Paste (const NE::NodeManager& source)
 {
 	NE::AllNodesFilter allNodesFilter;
 	NE::NodeCollectorAppendEventHandler eventHandler;
@@ -623,8 +623,8 @@ NE::NodeCollection NodeUIManager::PasteFromNodeManager (const NE::NodeManager& s
 NE::NodeCollection NodeUIManager::Duplicate (const NE::NodeCollection& nodeCollection)
 {
 	NE::NodeManager tempNodeManager;
-	CopyToNodeManager (nodeCollection, tempNodeManager);
-	return PasteFromNodeManager (tempNodeManager);
+	Copy (nodeCollection, tempNodeManager);
+	return Paste (tempNodeManager);
 }
 
 bool NodeUIManager::CanUndo () const

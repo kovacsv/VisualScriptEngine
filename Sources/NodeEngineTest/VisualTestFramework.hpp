@@ -51,6 +51,7 @@ public:
 	virtual ClipboardHandler&		GetClipboardHandler () override;
 	virtual void					OnSelectionChanged (const Selection& selection) override;
 	virtual void					OnUndoStateChanged (const UndoState& undoState) override;
+	virtual void					OnClipboardStateChanged (const ClipboardState& clipboardState) override;
 
 	void							SetNextCommandName (const std::wstring& nextCommandName);
 	void							SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);

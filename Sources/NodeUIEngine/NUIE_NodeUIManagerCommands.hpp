@@ -162,13 +162,13 @@ private:
 class CopyNodesCommand : public NotUndoableCommand
 {
 public:
-	CopyNodesCommand (const NE::NodeCollection& nodes, ClipboardHandler& clipboard);
+	CopyNodesCommand (NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& nodes);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
+	NodeUIEnvironment&			uiEnvironment;
 	const NE::NodeCollection&	nodes;
-	ClipboardHandler&			clipboard;
 };
 
 class PasteNodesCommand : public UndoableCommand

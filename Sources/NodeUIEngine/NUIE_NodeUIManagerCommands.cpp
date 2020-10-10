@@ -197,10 +197,10 @@ void DisconnectAllOutputSlotsCommand::Do (NodeUIManager& uiManager)
 	uiManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
 }
 
-CopyNodesCommand::CopyNodesCommand (const NE::NodeCollection& nodes, ClipboardHandler& clipboard) :
+CopyNodesCommand::CopyNodesCommand (NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& nodes) :
 	NotUndoableCommand (),
-	nodes (nodes),
-	clipboard (clipboard)
+	uiEnvironment (uiEnvironment),
+	nodes (nodes)
 {
 }
 
@@ -211,11 +211,12 @@ void CopyNodesCommand::Do (NodeUIManager& uiManager)
 	}
 
 	NE::NodeManager clipboardNodeManager;
-	if (DBGERROR (!uiManager.CopyToNodeManager (nodes, clipboardNodeManager))) {
+	if (DBGERROR (!uiManager.Copy (nodes, clipboardNodeManager))) {
 		return;
 	}
 
 	NE::MemoryOutputStream outputStream;
+	ClipboardHandler& clipboard = uiEnvironment.GetClipboardHandler ();
 	Version currentVersion = clipboard.GetCurrentVersion ();
 	currentVersion.Write (outputStream);
 	clipboardNodeManager.Write (outputStream);
@@ -223,7 +224,12 @@ void CopyNodesCommand::Do (NodeUIManager& uiManager)
 		return;
 	}
 
+	bool hasPrevContent = clipboard.HasClipboardContent ();
 	clipboard.SetClipboardContent (outputStream.GetBuffer ());
+	if (!hasPrevContent) {
+		ClipboardState clipboardState (clipboard.HasClipboardContent ());
+		uiEnvironment.OnClipboardStateChanged (clipboardState);
+	}
 }
 
 PasteNodesCommand::PasteNodesCommand (NodeUIEnvironment& uiEnvironment, const Point& position) :
@@ -258,7 +264,7 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 		return;
 	}
 
-	NE::NodeCollection newNodeIds = uiManager.PasteFromNodeManager (clipboardNodeManager);
+	NE::NodeCollection newNodeIds = uiManager.Paste (clipboardNodeManager);
 	std::vector<UINodePtr> newNodes;
 	newNodeIds.Enumerate ([&] (const NE::NodeId& nodeId) {
 		newNodes.push_back (uiManager.GetNode (nodeId));

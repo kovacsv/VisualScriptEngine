@@ -114,6 +114,11 @@ public:
 
 	}
 
+	virtual void OnClipboardStateChanged (const NUIE::ClipboardState& clipboardState) override
+	{
+
+	}
+
 private:
 	NE::BasicStringConverter		stringConverter;
 	NUIE::BasicSkinParams			skinParams;

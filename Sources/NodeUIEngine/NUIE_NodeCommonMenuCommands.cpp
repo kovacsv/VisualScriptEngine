@@ -59,7 +59,7 @@ bool CopyNodesMenuCommand::WillModify () const
 
 void CopyNodesMenuCommand::DoModification ()
 {
-	CopyNodesCommand command (relevantNodes, uiEnvironment.GetClipboardHandler ());
+	CopyNodesCommand command (uiEnvironment, relevantNodes);
 	uiManager.ExecuteCommand (command, uiEnvironment);
 }
 

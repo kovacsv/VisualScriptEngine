@@ -82,3 +82,8 @@ void TestUIEnvironment::OnUndoStateChanged (const UndoState&)
 {
 
 }
+
+void TestUIEnvironment::OnClipboardStateChanged (const ClipboardState&)
+{
+
+}

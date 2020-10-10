@@ -15,7 +15,8 @@ class OnChangedCounterEnv : public TestUIEnvironment
 public:
 	OnChangedCounterEnv () :
 		selectionChangedCount (0),
-		undoStateChangedCount (0)
+		undoStateChangedCount (0),
+		clipboardStateChangedCount (0)
 	{
 
 	}
@@ -30,8 +31,14 @@ public:
 		undoStateChangedCount++;
 	}
 
+	virtual void OnClipboardStateChanged (const ClipboardState&) override
+	{
+		clipboardStateChangedCount++;
+	}
+
 	int selectionChangedCount;
 	int undoStateChangedCount;
+	int clipboardStateChangedCount;
 };
 
 TEST (NodeEditorOnSelectionChangedEventTest)
@@ -99,6 +106,33 @@ TEST (NodeEditorOnUndoStateChangedEventTest)
 	UndoCommand uc5 (env);
 	uiManager.ExecuteCommand (uc5, env);
 	DBGASSERT (env.undoStateChangedCount == 6);
+}
+
+TEST (NodeEditorOnClipboardStateChangedEventTest)
+{
+	OnChangedCounterEnv env;
+	NodeUIManager uiManager (env);
+	DBGASSERT (env.clipboardStateChangedCount == 0);
+
+	UINodePtr val1 (new DoubleUpDownNode (LocString (L"Value1"), Point (100, 100), 1.0, 1.0));
+	AddNodeCommand addNode1 (val1, env.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (addNode1, env);
+	DBGASSERT (env.clipboardStateChangedCount == 0);
+
+	UINodePtr val2 (new DoubleUpDownNode (LocString (L"Value2"), Point (300, 200), 1.0, 1.0));
+	AddNodeCommand addNode2 (val2, env.GetEvaluationEnv ());
+	uiManager.ExecuteCommand (addNode2, env);
+	DBGASSERT (env.clipboardStateChangedCount == 0);
+
+	NE::NodeCollection val1Coll ({ val1->GetId () });
+	CopyNodesCommand copyCommand1 (env, val1Coll);
+	uiManager.ExecuteCommand (copyCommand1, env);
+	DBGASSERT (env.clipboardStateChangedCount == 1);
+
+	NE::NodeCollection val2Coll ({ val2->GetId () });
+	CopyNodesCommand copyCommand2 (env, val2Coll);
+	uiManager.ExecuteCommand (copyCommand2, env);
+	DBGASSERT (env.clipboardStateChangedCount == 1);
 }
 
 }

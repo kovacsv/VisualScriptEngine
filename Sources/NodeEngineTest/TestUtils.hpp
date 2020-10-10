@@ -29,6 +29,7 @@ public:
 	virtual ClipboardHandler&			GetClipboardHandler () override;
 	virtual void						OnSelectionChanged (const Selection& selection) override;
 	virtual void						OnUndoStateChanged (const UndoState& undoState) override;
+	virtual void						OnClipboardStateChanged (const ClipboardState& clipboardState) override;
 
 private:
 	NE::EvaluationEnv					evalEnv;

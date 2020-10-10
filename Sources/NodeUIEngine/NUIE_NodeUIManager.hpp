@@ -149,8 +149,8 @@ public:
 	bool						Save (NE::OutputStream& outputStream);
 	bool						NeedToSave () const;
 
-	bool						CopyToNodeManager (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const;
-	NE::NodeCollection			PasteFromNodeManager (const NE::NodeManager& source);
+	bool						Copy (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const;
+	NE::NodeCollection			Paste (const NE::NodeManager& source);
 	NE::NodeCollection			Duplicate (const NE::NodeCollection& nodeCollection);
 
 	bool						CanUndo () const;
