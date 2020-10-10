@@ -46,6 +46,7 @@ public:
 	virtual NUIE::ClipboardHandler&		GetClipboardHandler () override;
 	virtual void						OnSelectionChanged (const NUIE::Selection& selection) override;
 	virtual void 						OnUndoStateChanged (const NUIE::UndoState& undoState) override;
+	virtual void						OnClipboardStateChanged (const NUIE::ClipboardState& clipboardState) override;
 	
 private:
 	NE::BasicStringConverter			stringConverter;

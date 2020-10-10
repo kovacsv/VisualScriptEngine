@@ -310,6 +310,11 @@ void AppNodeUIEnvironment::OnUndoStateChanged (const NUIE::UndoState&)
 	
 }
 
+void AppNodeUIEnvironment::OnClipboardStateChanged (const NUIE::ClipboardState&)
+{
+
+}
+
 Application::Application () :
 	uiEnvironment (),
 	nodeEditor (uiEnvironment)
