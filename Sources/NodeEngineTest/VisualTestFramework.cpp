@@ -276,6 +276,11 @@ void TestNodeUIEnvironment::OnSelectionChanged (const Selection&)
 
 }
 
+void TestNodeUIEnvironment::OnUndoStateChanged (const UndoState&)
+{
+
+}
+
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	eventHandler.SetNextCommandName (nextCommandName);

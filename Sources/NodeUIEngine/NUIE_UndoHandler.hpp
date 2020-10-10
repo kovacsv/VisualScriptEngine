@@ -12,17 +12,23 @@ namespace NUIE
 class UndoHandler
 {
 public:
+	enum class ChangeResult
+	{
+		Changed,
+		NotChanged
+	};
+
 	UndoHandler ();
 
-	void	AddUndoStep (const NE::NodeManager& nodeManager);
+	bool			CanUndo () const;
+	bool			CanRedo () const;
 
-	bool	CanUndo () const;
-	bool	CanRedo () const;
+	ChangeResult	AddUndoStep (const NE::NodeManager& nodeManager);
 
-	bool	Undo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler);
-	bool	Redo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler);
+	ChangeResult	Undo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler);
+	ChangeResult	Redo (NE::NodeManager& targetNodeManager, NE::UpdateEventHandler& eventHandler);
 
-	void	Clear ();
+	ChangeResult	Clear ();
 
 private:
 	std::vector<std::shared_ptr<NE::NodeManager>>	undoStack;

@@ -155,8 +155,8 @@ public:
 
 	bool						CanUndo () const;
 	bool						CanRedo () const;
-	bool						Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
-	bool						Redo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
+	void						Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
+	void						Redo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
 
 	UINodeGroupPtr				AddNodeGroup (const UINodeGroupPtr& group);
 	void						DeleteNodeGroup (const UINodeGroupPtr& group);
@@ -169,8 +169,8 @@ public:
 	void						EnumerateNodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
 	void						EnumerateNodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
 
-	void						ExecuteCommand (NodeUIManagerCommand& command);
-	void						ExecuteCommand (NodeUIManagerCommandPtr& command);
+	void						ExecuteCommand (NodeUIManagerCommand& command, NodeUIInteractionEnvironment& interactionEnv);
+	void						ExecuteCommand (NodeUIManagerCommandPtr& command, NodeUIInteractionEnvironment& interactionEnv);
 
 private:
 	class Status
@@ -207,7 +207,8 @@ private:
 	void				Clear (NodeUIEnvironment& uiEnvironment);
 	void				InvalidateDrawingsForInvalidatedNodes ();
 	void				UpdateInternal (NodeUICalculationEnvironment& calcEnv, InternalUpdateMode mode);
-	void				HandleSelectionChanged (Selection::ChangeResult selResult, NodeUIInteractionEnvironment& interactionEnv);
+	void				HandleSelectionChanged (Selection::ChangeResult changeResult, NodeUIInteractionEnvironment& interactionEnv);
+	void				HandleUndoStateChanged (UndoHandler::ChangeResult changeResult, NodeUIInteractionEnvironment& interactionEnv);
 
 	NE::Stream::Status	Read (NE::InputStream& inputStream);
 	NE::Stream::Status	Write (NE::OutputStream& outputStream) const;

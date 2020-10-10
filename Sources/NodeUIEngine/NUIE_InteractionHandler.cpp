@@ -156,13 +156,13 @@ public:
 		RequestRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point& position)	override
+	virtual void HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point& position)	override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point offset = viewBox.ViewToModel (position) - startModelPosition;
 
 		MoveNodesCommand command (relevantNodes, offset);
-		uiManager.ExecuteCommand (command);
+		uiManager.ExecuteCommand (command, uiEnvironment);
 
 		uiManager.RequestRedraw ();
 	}
@@ -232,7 +232,7 @@ public:
 		Point offset = viewBox.ViewToModel (position) - startModelPosition;
 
 		CopyMoveNodesCommand command (uiEnvironment, relevantNodes, offset);
-		uiManager.ExecuteCommand (command);
+		uiManager.ExecuteCommand (command, uiEnvironment);
 
 		uiManager.RequestRedraw ();
 	}
@@ -331,11 +331,11 @@ public:
 		uiManager.RequestRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
+	virtual void HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
 			ConnectSlotsCommand command (startSlot, endSlot);
-			uiManager.ExecuteCommand (command);
+			uiManager.ExecuteCommand (command, uiEnvironment);
 		} else {
 			uiManager.RequestRedraw ();
 		}
@@ -369,14 +369,14 @@ public:
 		return true;
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
+	virtual void HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr && endSlot != originalEndSlot) {
 			ReconnectInputSlotCommand command (startSlot, originalEndSlot, endSlot);
-			uiManager.ExecuteCommand (command);
+			uiManager.ExecuteCommand (command, uiEnvironment);
 		} else if (endSlot == nullptr) {
 			DisconnectSlotsCommand disconnectCommand (startSlot, originalEndSlot);
-			uiManager.ExecuteCommand (disconnectCommand);
+			uiManager.ExecuteCommand (disconnectCommand, uiEnvironment);
 		} else {
 			uiManager.RequestRedraw ();
 		}
@@ -423,11 +423,11 @@ public:
 		uiManager.RequestRedraw ();
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
+	virtual void HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr) {
 			ConnectSlotsCommand command (endSlot, startSlot);
-			uiManager.ExecuteCommand (command);
+			uiManager.ExecuteCommand (command, uiEnvironment);
 		} else {
 			uiManager.RequestRedraw ();
 		}
@@ -460,14 +460,14 @@ public:
 		return true;
 	}
 
-	virtual void HandleMouseUp (NodeUIEnvironment&, const ModifierKeys&, const Point&) override
+	virtual void HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override
 	{
 		if (endSlot != nullptr && endSlot != originalEndSlot) {
 			ReconnectOutputSlotCommand command (originalEndSlot, endSlot, startSlot);
-			uiManager.ExecuteCommand (command);
+			uiManager.ExecuteCommand (command, uiEnvironment);
 		} else if (endSlot == nullptr) {
 			DisconnectSlotsCommand disconnectCommand (originalEndSlot, startSlot);
-			uiManager.ExecuteCommand (disconnectCommand);
+			uiManager.ExecuteCommand (disconnectCommand, uiEnvironment);
 		} else {
 			uiManager.RequestRedraw ();
 		}
@@ -485,9 +485,10 @@ private:
 class UINodeInteractionCommandInterface : public UINodeCommandInterface
 {
 public:
-	UINodeInteractionCommandInterface (NodeUIManager& uiManager) :
+	UINodeInteractionCommandInterface (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment) :
 		UINodeCommandInterface (),
-		uiManager (uiManager)
+		uiManager (uiManager),
+		uiEnvironment (uiEnvironment)
 	{
 
 	}
@@ -495,11 +496,12 @@ public:
 	virtual void RunUndoableCommand (const std::function<void ()>& func) override
 	{
 		CustomUndoableCommand command (func);
-		uiManager.ExecuteCommand (command);
+		uiManager.ExecuteCommand (command, uiEnvironment);
 	}
 
 private:
 	NodeUIManager& uiManager;
+	NodeUIEnvironment& uiEnvironment;
 };
 
 PastePositionCalculator::PastePositionCalculator () :
@@ -552,7 +554,7 @@ EventHandlerResult NodeInputEventHandler::HandleMouseDrag (NodeUIEnvironment&, c
 EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	return ForwardEventToNode ([&] () {
-		UINodeInteractionCommandInterface commandInterface (uiManager);
+		UINodeInteractionCommandInterface commandInterface (uiManager, uiEnvironment);
 		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
 		return uiNode->HandleMouseClick (uiEnvironment, modifierKeys, mouseButton, modelPosition, commandInterface);
 	});
@@ -561,7 +563,7 @@ EventHandlerResult NodeInputEventHandler::HandleMouseClick (NodeUIEnvironment& u
 EventHandlerResult NodeInputEventHandler::HandleMouseDoubleClick (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	return ForwardEventToNode ([&] () {
-		UINodeInteractionCommandInterface commandInterface (uiManager);
+		UINodeInteractionCommandInterface commandInterface (uiManager, uiEnvironment);
 		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
 		return uiNode->HandleMouseDoubleClick (uiEnvironment, modifierKeys, mouseButton, modelPosition, commandInterface);
 	});
@@ -662,12 +664,12 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE:
 			break;
 		case CommandCode::Group:
 			{
-				menuCommand.reset (new CreateGroupMenuCommand (uiManager, selectedNodes));
+				menuCommand.reset (new CreateGroupMenuCommand (uiManager, uiEnvironment, selectedNodes));
 			}
 			break;
 		case CommandCode::Ungroup:
 			{
-				menuCommand.reset (new RemoveNodesFromGroupMenuCommand (uiManager, selectedNodes));
+				menuCommand.reset (new RemoveNodesFromGroupMenuCommand (uiManager, uiEnvironment, selectedNodes));
 			}
 			break;
 		case CommandCode::Undo:

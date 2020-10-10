@@ -637,22 +637,22 @@ bool NodeUIManager::CanRedo () const
 	return undoHandler.CanRedo ();
 }
 
-bool NodeUIManager::Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv)
+void NodeUIManager::Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv)
 {
 	NodeUIManagerUpdateEventHandler eventHandler (*this, interactionEnv, evalEnv);
-	bool success = undoHandler.Undo (nodeManager, eventHandler);
+	UndoHandler::ChangeResult undoResult = undoHandler.Undo (nodeManager, eventHandler);
+	HandleUndoStateChanged (undoResult, interactionEnv);
 	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculateAndRedraw ();
-	return success;
 }
 
-bool NodeUIManager::Redo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv)
+void NodeUIManager::Redo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv)
 {
 	NodeUIManagerUpdateEventHandler eventHandler (*this, interactionEnv, evalEnv);
-	bool success = undoHandler.Redo (nodeManager, eventHandler);
+	UndoHandler::ChangeResult undoResult = undoHandler.Redo (nodeManager, eventHandler);
+	HandleUndoStateChanged (undoResult, interactionEnv);
 	InvalidateDrawingsForInvalidatedNodes ();
 	RequestRecalculateAndRedraw ();
-	return success;
 }
 
 UINodeGroupPtr NodeUIManager::AddNodeGroup (const UINodeGroupPtr& group)
@@ -714,18 +714,22 @@ void NodeUIManager::EnumerateNodeGroups (const std::function<bool (const UINodeG
 	});
 }
 
-void NodeUIManager::ExecuteCommand (NodeUIManagerCommand& command)
+void NodeUIManager::ExecuteCommand (NodeUIManagerCommand& command, NodeUIInteractionEnvironment& interactionEnv)
 {
 	if (command.IsUndoable ()) {
-		undoHandler.AddUndoStep (nodeManager);
+		UndoHandler::ChangeResult result = undoHandler.AddUndoStep (nodeManager);
+		HandleUndoStateChanged (result, interactionEnv);
 	}
 	command.Do (*this);
 	status.RequestSave ();
 }
 
-void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command)
+void NodeUIManager::ExecuteCommand (NodeUIManagerCommandPtr& command, NodeUIInteractionEnvironment& interactionEnv)
 {
-	ExecuteCommand (*command);
+	if (DBGERROR (command == nullptr)) {
+		return;
+	}
+	ExecuteCommand (*command, interactionEnv);
 }
 
 void NodeUIManager::Clear (NodeUIEnvironment& uiEnvironment)
@@ -735,7 +739,9 @@ void NodeUIManager::Clear (NodeUIEnvironment& uiEnvironment)
 	Selection::ChangeResult selResult = selection.Clear ();
 	HandleSelectionChanged (selResult, uiEnvironment);
 
-	undoHandler.Clear ();
+	UndoHandler::ChangeResult undoResult = undoHandler.Clear ();
+	HandleUndoStateChanged (undoResult, uiEnvironment);
+
 	nodeManager.Clear ();
 
 	viewBox.Set (Point (0.0, 0.0), windowScale);
@@ -778,10 +784,18 @@ void NodeUIManager::UpdateInternal (NodeUICalculationEnvironment& calcEnv, Inter
 	}
 }
 
-void NodeUIManager::HandleSelectionChanged (Selection::ChangeResult selResult, NodeUIInteractionEnvironment& interactionEnv)
+void NodeUIManager::HandleSelectionChanged (Selection::ChangeResult changeResult, NodeUIInteractionEnvironment& interactionEnv)
 {
-	if (selResult == Selection::ChangeResult::Changed) {
+	if (changeResult == Selection::ChangeResult::Changed) {
 		interactionEnv.OnSelectionChanged (selection);
+	}
+}
+
+void NodeUIManager::HandleUndoStateChanged (UndoHandler::ChangeResult changeResult, NodeUIInteractionEnvironment&interactionEnv)
+{
+	if (changeResult == UndoHandler::ChangeResult::Changed) {
+		UndoState undoState (undoHandler.CanUndo (), undoHandler.CanRedo ());
+		interactionEnv.OnUndoStateChanged (undoState);
 	}
 }
 

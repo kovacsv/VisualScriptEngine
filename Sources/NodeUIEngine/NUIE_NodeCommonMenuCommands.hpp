@@ -27,16 +27,16 @@ private:
 class CopyNodesMenuCommand : public SingleMenuCommand
 {
 public:
-	CopyNodesMenuCommand (NodeUIManager& uiManager, NodeUIInteractionEnvironment& interactionEnv, const NE::NodeCollection& relevantNodes);
+	CopyNodesMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
 	virtual ~CopyNodesMenuCommand ();
 
 	virtual bool WillModify () const override;
 	virtual void DoModification () override;
 
 private:
-	NodeUIManager&					uiManager;
-	NodeUIInteractionEnvironment&	interactionEnv;
-	NE::NodeCollection				relevantNodes;
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	NE::NodeCollection	relevantNodes;
 };
 
 class PasteNodesMenuCommand : public SingleMenuCommand
@@ -143,7 +143,7 @@ private:
 class CreateGroupMenuCommand : public SingleMenuCommand
 {
 public:
-	CreateGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
+	CreateGroupMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
 	virtual ~CreateGroupMenuCommand ();
 
 	virtual bool WillModify () const override;
@@ -151,13 +151,14 @@ public:
 
 private:
 	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
 	NE::NodeCollection	relevantNodes;
 };
 
 class RemoveNodesFromGroupMenuCommand : public SingleMenuCommand
 {
 public:
-	RemoveNodesFromGroupMenuCommand (NodeUIManager& uiManager, const NE::NodeCollection& relevantNodes);
+	RemoveNodesFromGroupMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes);
 	virtual ~RemoveNodesFromGroupMenuCommand ();
 
 	virtual bool WillModify () const override;
@@ -165,6 +166,7 @@ public:
 
 private:
 	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
 	NE::NodeCollection	relevantNodes;
 };
 

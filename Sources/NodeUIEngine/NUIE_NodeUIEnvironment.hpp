@@ -4,6 +4,7 @@
 #include "NE_StringConverter.hpp"
 #include "NE_EvaluationEnv.hpp"
 #include "NUIE_Selection.hpp"
+#include "NUIE_UndoState.hpp"
 
 #include <memory>
 
@@ -49,6 +50,7 @@ public:
 	virtual EventHandler&		GetEventHandler () = 0;
 	virtual ClipboardHandler&	GetClipboardHandler () = 0;
 	virtual void				OnSelectionChanged (const Selection& selection) = 0;
+	virtual void				OnUndoStateChanged (const UndoState& undoState) = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,

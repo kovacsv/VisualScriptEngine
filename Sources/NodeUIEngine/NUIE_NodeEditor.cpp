@@ -108,14 +108,14 @@ void NodeEditor::Draw ()
 void NodeEditor::AddNode (const UINodePtr& uiNode)
 {
 	AddNodeCommand command (uiNode, uiEnvironment.GetEvaluationEnv ());
-	uiManager.ExecuteCommand (command);
+	uiManager.ExecuteCommand (command, uiEnvironment);
 	Update ();
 }
 
 void NodeEditor::ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot)
 {
 	ConnectSlotsCommand command (outputSlot, inputSlot);
-	uiManager.ExecuteCommand (command);
+	uiManager.ExecuteCommand (command, uiEnvironment);
 	Update ();
 }
 
@@ -250,21 +250,21 @@ void NodeEditor::ExecuteMenuCommand (const MenuCommandPtr& command)
 void NodeEditor::ApplyParameterChanges (const ParameterInterfacePtr& parameters)
 {
 	ApplyParametersCommand command (parameters, uiEnvironment.GetEvaluationEnv ());
-	uiManager.ExecuteCommand (command);
+	uiManager.ExecuteCommand (command, uiEnvironment);
 	Update ();
 }
 
 void NodeEditor::Undo ()
 {
 	UndoCommand command (uiEnvironment);
-	uiManager.ExecuteCommand (command);
+	uiManager.ExecuteCommand (command, uiEnvironment);
 	Update ();
 }
 
 void NodeEditor::Redo ()
 {
 	RedoCommand command (uiEnvironment);
-	uiManager.ExecuteCommand (command);
+	uiManager.ExecuteCommand (command, uiEnvironment);
 	Update ();
 }
 

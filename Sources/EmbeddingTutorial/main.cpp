@@ -110,6 +110,11 @@ public:
 
 	}
 
+	virtual void OnUndoStateChanged (const NUIE::UndoState& undoState) override
+	{
+
+	}
+
 private:
 	NE::BasicStringConverter		stringConverter;
 	NUIE::BasicSkinParams			skinParams;

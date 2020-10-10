@@ -305,6 +305,11 @@ void AppNodeUIEnvironment::OnSelectionChanged (const NUIE::Selection&)
 
 }
 
+void AppNodeUIEnvironment::OnUndoStateChanged (const NUIE::UndoState&)
+{
+	
+}
+
 Application::Application () :
 	uiEnvironment (),
 	nodeEditor (uiEnvironment)

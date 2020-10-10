@@ -77,3 +77,8 @@ void TestUIEnvironment::OnSelectionChanged (const Selection&)
 {
 
 }
+
+void TestUIEnvironment::OnUndoStateChanged (const UndoState&)
+{
+
+}
