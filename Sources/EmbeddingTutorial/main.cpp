@@ -19,7 +19,6 @@ public:
 		return nullptr;
 	}
 
-
 	virtual bool OnParameterSettings (
 		ParameterSettingsType type,
 		NUIE::ParameterInterfacePtr paramAccessor) override
