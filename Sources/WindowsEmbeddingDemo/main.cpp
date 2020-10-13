@@ -240,11 +240,48 @@ private:
 static MyNodeUIEnvironment uiEnvironment;
 static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
+#define FILE_NEW		1101
+#define FILE_QUIT		1102
+#define EDIT_UNDO		1201
+#define EDIT_REDO		1202
+#define EDIT_COPY		1203
+#define EDIT_PASTE		1204
+#define EDIT_DELETE		1205
+#define EDIT_GROUP		1206
+#define EDIT_UNGROUP	1207
+
+void CreateFileMenu (HWND hwnd)
+{
+	HMENU menuBar = CreateMenu ();
+	
+	HMENU fileMenu = CreateMenu ();
+	AppendMenu (fileMenu, MF_STRING, FILE_NEW, L"New");
+	AppendMenu (fileMenu, MF_SEPARATOR, 0, NULL);
+	AppendMenu (fileMenu, MF_STRING, FILE_QUIT, L"Quit");
+
+	HMENU editMenu = CreateMenu ();
+	AppendMenu (editMenu, MF_STRING, EDIT_UNDO, L"Undo");
+	AppendMenu (editMenu, MF_STRING, EDIT_REDO, L"Redo");
+	AppendMenu (editMenu, MF_SEPARATOR, 0, NULL);
+	AppendMenu (editMenu, MF_STRING, EDIT_COPY, L"Copy");
+	AppendMenu (editMenu, MF_STRING, EDIT_PASTE, L"Paste");
+	AppendMenu (editMenu, MF_STRING, EDIT_DELETE, L"Delete");
+	AppendMenu (editMenu, MF_SEPARATOR, 0, NULL);
+	AppendMenu (editMenu, MF_STRING, EDIT_GROUP, L"Group");
+	AppendMenu (editMenu, MF_STRING, EDIT_UNGROUP, L"Ungroup");
+
+	AppendMenu (menuBar, MF_POPUP, (UINT_PTR) fileMenu, L"File");
+	AppendMenu (menuBar, MF_POPUP, (UINT_PTR) editMenu, L"Edit");
+
+	SetMenu (hwnd, menuBar);
+}
+
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg) {
 		case WM_CREATE:
 			{
+				CreateFileMenu (hwnd);
 				uiEnvironment.Init (&nodeEditor, hwnd);
 			}
 			break;
@@ -256,6 +293,37 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				int newWidth = LOWORD (lParam);
 				int newHeight = HIWORD (lParam);
 				uiEnvironment.OnResize (0, 0, newWidth, newHeight);
+			}
+			break;
+		case WM_COMMAND:
+			switch (LOWORD (wParam)) {
+				case FILE_NEW:
+					nodeEditor.New ();
+					break;
+				case EDIT_UNDO:
+					nodeEditor.ExecuteCommand (NUIE::CommandCode::Undo);
+					break;
+				case EDIT_REDO:
+					nodeEditor.ExecuteCommand (NUIE::CommandCode::Redo);
+					break;
+				case EDIT_COPY:
+					nodeEditor.ExecuteCommand (NUIE::CommandCode::Copy);
+					break;
+				case EDIT_PASTE:
+					nodeEditor.ExecuteCommand (NUIE::CommandCode::Paste);
+					break;
+				case EDIT_DELETE:
+					nodeEditor.ExecuteCommand (NUIE::CommandCode::Delete);
+					break;
+				case EDIT_GROUP:
+					nodeEditor.ExecuteCommand (NUIE::CommandCode::Group);
+					break;
+				case EDIT_UNGROUP:
+					nodeEditor.ExecuteCommand (NUIE::CommandCode::Ungroup);
+					break;
+				case FILE_QUIT:
+					SendMessage (hwnd, WM_CLOSE, 0, 0);
+					break;
 			}
 			break;
 		case WM_DESTROY:

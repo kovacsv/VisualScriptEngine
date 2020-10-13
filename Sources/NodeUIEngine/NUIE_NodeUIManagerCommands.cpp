@@ -257,6 +257,7 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 	if (!clipboard.IsCompatibleVersion (readVersion)) {
 		return;
 	}
+
 	NE::NodeManager clipboardNodeManager;
 	clipboardNodeManager.Read (inputStream);
 
