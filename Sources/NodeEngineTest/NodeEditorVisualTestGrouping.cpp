@@ -11,7 +11,24 @@ using namespace BI;
 namespace NodeEditorVisualTestGrouping
 {
 
-TEST (GroupingVisualTest)
+TEST (CreateGroupTest)
+{
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
+
+	{ // select two nodes with selection rect
+		Point rectSelectStart = env.rangeInputRect.GetTopLeft () - Point (10.0, 10.0);
+		Point rectSelectEnd (env.viewer2InputRect.GetRight () + 10.0, env.rangeInputRect.GetBottom () + 10.0);
+		env.DragDrop (rectSelectStart, rectSelectEnd);
+		ASSERT (env.CheckReference (L"CreateGroup_NodesSelected.svg"));
+	}
+
+	{ // create group
+		env.ExecuteCommand (CommandCode::Group);
+		ASSERT (env.CheckReference (L"CreateGroup_GroupCreated.svg"));
+	}
+}
+
+TEST (CreateAndDeleteGroupTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference (L"Grouping_Initial.svg"));
