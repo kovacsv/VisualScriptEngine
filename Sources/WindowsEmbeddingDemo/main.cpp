@@ -81,10 +81,10 @@ class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 	}
 };
 
-class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
+class AppUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
-	MyNodeUIEnvironment () :
+	AppUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
 		stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
 		skinParams (GetAppSkinParams ()),
@@ -237,8 +237,39 @@ private:
 	WAS::NodeEditorNodeTreeHwndControl	nodeEditorControl;
 };
 
-static MyNodeUIEnvironment uiEnvironment;
-static NUIE::NodeEditor nodeEditor (uiEnvironment);
+class Application
+{
+public:
+	Application () :
+		uiEnvironment (),
+		nodeEditor (uiEnvironment)
+	{
+
+	}
+
+	void Init (HWND hwnd)
+	{
+		uiEnvironment.Init (&nodeEditor, hwnd);
+	}
+
+	void New ()
+	{
+		nodeEditor.New ();
+	}
+
+	void ExecuteCommand (NUIE::CommandCode command)
+	{
+		nodeEditor.ExecuteCommand (command);
+	}
+
+	void OnResize (int x, int y, int width, int height)
+	{
+		uiEnvironment.OnResize (x, y, width, height);
+	}
+
+	AppUIEnvironment	uiEnvironment;
+	NUIE::NodeEditor	nodeEditor;
+};
 
 #define FILE_NEW		1101
 #define FILE_QUIT		1102
@@ -278,57 +309,70 @@ void CreateFileMenu (HWND hwnd)
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	if (msg == WM_CREATE) {
+		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
+		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
+	} else if (msg == WM_DESTROY) {
+		SetWindowLongPtr (hwnd, GWLP_USERDATA, NULL);
+		PostQuitMessage (0);
+		DestroyWindow (hwnd);
+	}
+
+	Application* application = (Application*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
+	if (application == nullptr) {
+		return DefWindowProc (hwnd, msg, wParam, lParam);
+	}
+
 	switch (msg) {
 		case WM_CREATE:
 			{
 				CreateFileMenu (hwnd);
-				uiEnvironment.Init (&nodeEditor, hwnd);
+				application->Init (hwnd);
 			}
 			break;
 		case WM_CLOSE:
-			DestroyWindow (hwnd);
-			break;
+			{
+				DestroyWindow (hwnd);
+				break;
+			}
 		case WM_SIZE:
 			{
 				int newWidth = LOWORD (lParam);
 				int newHeight = HIWORD (lParam);
-				uiEnvironment.OnResize (0, 0, newWidth, newHeight);
+				
+				application->OnResize (0, 0, newWidth, newHeight);
 			}
 			break;
 		case WM_COMMAND:
 			switch (LOWORD (wParam)) {
 				case FILE_NEW:
-					nodeEditor.New ();
+					application->New ();
 					break;
 				case EDIT_UNDO:
-					nodeEditor.ExecuteCommand (NUIE::CommandCode::Undo);
+					application->ExecuteCommand (NUIE::CommandCode::Undo);
 					break;
 				case EDIT_REDO:
-					nodeEditor.ExecuteCommand (NUIE::CommandCode::Redo);
+					application->ExecuteCommand (NUIE::CommandCode::Redo);
 					break;
 				case EDIT_COPY:
-					nodeEditor.ExecuteCommand (NUIE::CommandCode::Copy);
+					application->ExecuteCommand (NUIE::CommandCode::Copy);
 					break;
 				case EDIT_PASTE:
-					nodeEditor.ExecuteCommand (NUIE::CommandCode::Paste);
+					application->ExecuteCommand (NUIE::CommandCode::Paste);
 					break;
 				case EDIT_DELETE:
-					nodeEditor.ExecuteCommand (NUIE::CommandCode::Delete);
+					application->ExecuteCommand (NUIE::CommandCode::Delete);
 					break;
 				case EDIT_GROUP:
-					nodeEditor.ExecuteCommand (NUIE::CommandCode::Group);
+					application->ExecuteCommand (NUIE::CommandCode::Group);
 					break;
 				case EDIT_UNGROUP:
-					nodeEditor.ExecuteCommand (NUIE::CommandCode::Ungroup);
+					application->ExecuteCommand (NUIE::CommandCode::Ungroup);
 					break;
 				case FILE_QUIT:
 					SendMessage (hwnd, WM_CLOSE, 0, 0);
 					break;
 			}
-			break;
-		case WM_DESTROY:
-			PostQuitMessage (0);
-			DestroyWindow (hwnd);
 			break;
 	}
 
@@ -337,6 +381,8 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
+	Application application;
+
 #ifdef LOCALIZATION_TEST
 	std::wstring poContent = LR"str(
 		msgid "Integer"
@@ -384,7 +430,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 
 	HWND windowHandle = CreateWindowEx (
 		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, L"VisualScriptEngine Embedding Demo", WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, nullptr
+		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, &application
 	);
 
 	if (windowHandle == NULL) {
