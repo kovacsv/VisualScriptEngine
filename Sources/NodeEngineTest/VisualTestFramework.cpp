@@ -371,3 +371,49 @@ void NodeEditorTestEnv::SetNextCommandParameterSettings (const ParameterSettings
 {
 	uiEnvironment.SetNextCommandParameterSettings (handler);
 }
+
+SimpleNodeEditorTestEnv::SimpleNodeEditorTestEnv (const BasicSkinParams& skinParams) :
+	NodeEditorTestEnv (skinParams)
+{
+	doubleUpDownNode.reset (new BI::DoubleUpDownNode (LocString (L"Number"), NUIE::Point (100, 200), 20, 10));
+	rangeInputNode.reset (new BI::DoubleIncrementedNode (LocString (L"Range"), NUIE::Point (300, 400)));
+	viewerUINode1.reset (new BI::MultiLineViewerNode (LocString (L"Viewer"), NUIE::Point (600, 100), 5));
+	viewerUINode2.reset (new BI::MultiLineViewerNode (LocString (L"Viewer 2"), NUIE::Point (600, 400), 5));
+
+	nodeEditor.AddNode (doubleUpDownNode);
+	nodeEditor.AddNode (rangeInputNode);
+	nodeEditor.AddNode (viewerUINode1);
+	nodeEditor.AddNode (viewerUINode2);
+
+	nodeEditor.Update ();
+	RecalcPositions ();
+}
+
+void SimpleNodeEditorTestEnv::RecalcPositions ()
+{
+	pointInBackground = Point (5.0, 5.0);
+	doubleInputRect = doubleUpDownNode->GetRect (uiEnvironment);
+	rangeInputRect = rangeInputNode->GetRect (uiEnvironment);
+	viewer1InputRect = viewerUINode1->GetRect (uiEnvironment);
+	viewer2InputRect = viewerUINode2->GetRect (uiEnvironment);
+	viewer1InputSlotRect = viewerUINode1->GetInputSlotRect (uiEnvironment, SlotId ("in"));
+	viewer2InputSlotRect = viewerUINode2->GetInputSlotRect (uiEnvironment, SlotId ("in"));
+	doubleUpDownOutputSlotRect = doubleUpDownNode->GetOutputSlotRect (uiEnvironment, SlotId ("out"));
+	rangeOutputSlotSRect = rangeInputNode->GetOutputSlotRect (uiEnvironment, SlotId ("out"));
+	doubleInputHeaderPoint = doubleInputRect.GetTopCenter () + Point (5.0, 5.0);
+	rangeInputHeaderPoint = rangeInputRect.GetTopCenter () + Point (5.0, 5.0);
+	viewer1HeaderPoint = viewer1InputRect.GetTopCenter () + Point (5.0, 5.0);
+	viewer2HeaderPoint = viewer2InputRect.GetTopCenter () + Point (5.0, 5.0);
+}
+
+SimpleNodeEditorTestEnvWithConnections::SimpleNodeEditorTestEnvWithConnections (const BasicSkinParams& skinParams) :
+	SimpleNodeEditorTestEnv (skinParams)
+{
+	nodeEditor.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("start")));
+	nodeEditor.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), rangeInputNode->GetUIInputSlot (SlotId ("step")));
+	nodeEditor.ConnectOutputSlotToInputSlot (doubleUpDownNode->GetUIOutputSlot (SlotId ("out")), viewerUINode1->GetUIInputSlot (SlotId ("in")));
+	nodeEditor.ConnectOutputSlotToInputSlot (rangeInputNode->GetUIOutputSlot (SlotId ("out")), viewerUINode2->GetUIInputSlot (SlotId ("in")));
+
+	nodeEditor.Update ();
+	RecalcPositions ();
+}

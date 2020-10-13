@@ -8,7 +8,7 @@ using namespace NE;
 using namespace NUIE;
 using namespace BI;
 
-namespace NodeEditorisualTestRecalculation
+namespace NodeEditorVisualTestRecalculation
 {
 
 class TestNode : public BasicUINode

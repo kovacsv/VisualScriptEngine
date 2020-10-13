@@ -90,4 +90,39 @@ public:
 	NodeEditor				nodeEditor;
 };
 
+class SimpleNodeEditorTestEnv : public NodeEditorTestEnv
+{
+public:
+	SimpleNodeEditorTestEnv (const BasicSkinParams& skinParams);
+
+	void RecalcPositions ();
+
+	UINodePtr	doubleUpDownNode;
+	UINodePtr	rangeInputNode;
+	UINodePtr	viewerUINode1;
+	UINodePtr	viewerUINode2;
+
+	Point		pointInBackground;
+	Rect		doubleInputRect;
+	Rect		rangeInputRect;
+	Rect		viewer1InputRect;
+	Rect		viewer2InputRect;
+	Rect		viewer1InputSlotRect;
+	Rect		viewer2InputSlotRect;
+	Rect		doubleUpDownOutputSlotRect;
+	Rect		rangeOutputSlotSRect;
+
+	Point		doubleInputHeaderPoint;
+	Point		rangeInputHeaderPoint;
+	Point		viewer1HeaderPoint;
+	Point		viewer2HeaderPoint;
+};
+
+
+class SimpleNodeEditorTestEnvWithConnections : public SimpleNodeEditorTestEnv
+{
+public:
+	SimpleNodeEditorTestEnvWithConnections (const BasicSkinParams& skinParams);
+};
+
 #endif
