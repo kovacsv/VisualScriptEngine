@@ -666,9 +666,6 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
 		nodesToWrite.push_back (node);
 		return true;
 	});
-	std::sort (nodesToWrite.begin (), nodesToWrite.end (), [&] (const NodeConstPtr& a, const NodeConstPtr& b) {
-		return a->GetId () < b->GetId ();
-	});
 
 	outputStream.Write (nodesToWrite.size ());
 	for (const NodeConstPtr& node : nodesToWrite) {

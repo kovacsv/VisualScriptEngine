@@ -215,8 +215,6 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 		}
 		return true;
 	});
-	std::sort (nodesToCreate.begin (), nodesToCreate.end ());
-	std::sort (nodesToDelete.begin (), nodesToDelete.end ());
 
 	// delete and create nodes
 	for (const NodeId& nodeId : nodesToDelete) {
