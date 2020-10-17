@@ -87,3 +87,8 @@ void TestUIEnvironment::OnClipboardStateChanged (const ClipboardState&)
 {
 
 }
+
+void TestUIEnvironment::OnIncompatibleVersionPasted (const Version&)
+{
+
+}

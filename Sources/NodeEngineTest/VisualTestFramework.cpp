@@ -286,6 +286,11 @@ void TestNodeUIEnvironment::OnClipboardStateChanged (const ClipboardState&)
 
 }
 
+void TestNodeUIEnvironment::OnIncompatibleVersionPasted (const Version&)
+{
+
+}
+
 void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandName)
 {
 	eventHandler.SetNextCommandName (nextCommandName);

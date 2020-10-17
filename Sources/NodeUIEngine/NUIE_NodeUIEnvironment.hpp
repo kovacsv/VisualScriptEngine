@@ -3,6 +3,7 @@
 
 #include "NE_StringConverter.hpp"
 #include "NE_EvaluationEnv.hpp"
+#include "NUIE_Version.hpp"
 #include "NUIE_Selection.hpp"
 #include "NUIE_UndoState.hpp"
 #include "NUIE_ClipboardState.hpp"
@@ -53,6 +54,7 @@ public:
 	virtual void				OnSelectionChanged (const Selection& selection) = 0;
 	virtual void				OnUndoStateChanged (const UndoState& undoState) = 0;
 	virtual void				OnClipboardStateChanged (const ClipboardState& clipboardState) = 0;
+	virtual void				OnIncompatibleVersionPasted (const Version& version) = 0;
 };
 
 class NodeUIEnvironment :	public NodeUIDrawingEnvironment,

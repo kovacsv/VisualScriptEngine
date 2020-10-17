@@ -315,6 +315,11 @@ void AppNodeUIEnvironment::OnClipboardStateChanged (const NUIE::ClipboardState&)
 
 }
 
+void AppNodeUIEnvironment::OnIncompatibleVersionPasted (const NUIE::Version&)
+{
+
+}
+
 Application::Application () :
 	uiEnvironment (),
 	nodeEditor (uiEnvironment)

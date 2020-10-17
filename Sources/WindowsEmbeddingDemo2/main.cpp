@@ -193,6 +193,11 @@ public:
 
 	}
 
+	virtual void OnIncompatibleVersionPasted (const NUIE::Version&) override
+	{
+
+	}
+
 private:
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;

@@ -30,6 +30,7 @@ public:
 	virtual void						OnSelectionChanged (const Selection& selection) override;
 	virtual void						OnUndoStateChanged (const UndoState& undoState) override;
 	virtual void						OnClipboardStateChanged (const ClipboardState& clipboardState) override;
+	virtual void						OnIncompatibleVersionPasted (const Version& version) override;
 
 private:
 	NE::EvaluationEnv					evalEnv;

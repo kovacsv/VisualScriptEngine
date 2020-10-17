@@ -255,6 +255,7 @@ void PasteNodesCommand::Do (NodeUIManager& uiManager)
 	Version readVersion;
 	readVersion.Read (inputStream);
 	if (!clipboard.IsCompatibleVersion (readVersion)) {
+		uiEnvironment.OnIncompatibleVersionPasted (readVersion);
 		return;
 	}
 
