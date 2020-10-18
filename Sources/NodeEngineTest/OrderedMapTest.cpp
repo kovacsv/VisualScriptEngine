@@ -6,6 +6,14 @@ using namespace NE;
 namespace OrderedMapTest
 {
 
+OrderedMap<int, std::string> MoveTest ()
+{
+	OrderedMap<int, std::string> map;
+	map.Insert (5, "five");
+	map.Insert (6, "six");
+	return map;
+}
+
 static std::vector<std::string> GetEnumeratedValues (const OrderedMap<int, std::string>& map)
 {
 	std::vector<std::string> enumeratedValues;
@@ -117,7 +125,7 @@ TEST (OrderedMapOrderAfterDeleteTest)
 	ASSERT (numbersAfterDelete == enumeratedNumbers);
 }
 
-TEST (OrderedMapOrderInsertBeforeAfterTest)
+TEST (OrderedMapOrderInsertBeforeTest)
 {
 	OrderedMap<int, std::string> map;
 	std::vector<std::string> numbers = { "one", "two", "three" };
@@ -136,6 +144,15 @@ TEST (OrderedMapOrderInsertBeforeAfterTest)
 		ASSERT (newMap.InsertBefore (4, "four", 3));
 		ASSERT (GetEnumeratedValues (newMap) == std::vector<std::string> ({ "one", "two", "four", "three" }));
 	}
+}
+
+TEST (OrderedMapOrderInsertAfterTest)
+{
+	OrderedMap<int, std::string> map;
+	std::vector<std::string> numbers = { "one", "two", "three" };
+	for (int i = 1; i <= 3; i++) {
+		ASSERT (map.Insert (i, numbers[i - 1]));
+	}
 
 	{
 		OrderedMap<int, std::string> newMap = map;
@@ -148,6 +165,43 @@ TEST (OrderedMapOrderInsertBeforeAfterTest)
 		ASSERT (newMap.InsertAfter (4, "four", 3));
 		ASSERT (GetEnumeratedValues (newMap) == std::vector<std::string> ({ "one", "two", "three", "four" }));
 	}
+}
+
+TEST (OrderedMapCopyTest)
+{
+	OrderedMap<int, std::string> map;
+	std::vector<std::string> numbers = { "one", "two", "three" };
+	for (int i = 1; i <= 3; i++) {
+		ASSERT (map.Insert (i, numbers[i - 1]));
+	}
+
+	OrderedMap<int, std::string> map2 = map;
+	OrderedMap<int, std::string> map3;
+	map3.Insert (5, "five");
+	map3 = map;
+	
+	ASSERT (GetEnumeratedValues (map) == std::vector<std::string> ({ "one", "two", "three" }));
+	ASSERT (GetEnumeratedValues (map2) == std::vector<std::string> ({ "one", "two", "three" }));
+	ASSERT (GetEnumeratedValues (map3) == std::vector<std::string> ({ "one", "two", "three" }));
+	ASSERT (map.GetValue (2) == "two");
+	ASSERT (map2.GetValue (2) == "two");
+	ASSERT (map3.GetValue (2) == "two");
+}
+
+TEST (OrderedMapMoveTest)
+{
+	OrderedMap<int, std::string> map = MoveTest ();
+	ASSERT (GetEnumeratedValues (map) == std::vector<std::string> ({ "five", "six" }));
+	ASSERT (map.GetValue (5) == "five");
+	ASSERT (map.GetValue (6) == "six");
+
+	OrderedMap<int, std::string> map2;
+	map2.Insert (5, "five");
+	map2 = std::move (map);
+
+	ASSERT (GetEnumeratedValues (map2) == std::vector<std::string> ({ "five", "six" }));
+	ASSERT (map2.GetValue (5) == "five");
+	ASSERT (map2.GetValue (6) == "six");
 }
 
 }

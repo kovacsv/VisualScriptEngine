@@ -3,7 +3,8 @@
 
 #include "NE_Debug.hpp"
 
-#include <vector>
+#include <utility>
+#include <list>
 #include <unordered_map>
 #include <functional>
 #include <algorithm>
@@ -16,7 +17,12 @@ class OrderedMap
 {
 public:
 	OrderedMap ();
+	OrderedMap (const OrderedMap& rhs);
+	OrderedMap (OrderedMap&& rhs);
 	~OrderedMap ();
+
+	OrderedMap&		operator= (const OrderedMap& rhs);
+	OrderedMap&		operator= (OrderedMap&& rhs);
 
 	bool			IsEmpty () const;
 	bool			Contains (const Key& key) const;
@@ -33,16 +39,38 @@ public:
 	void			Enumerate (const std::function<bool (const Value&)>& processor) const;
 
 private:
-	std::vector<Key>				keyList;
-	std::unordered_map<Key, Value>	keyToValueTable;
+	using KeyValue	= std::pair<Key, Value>;
+	using List		= std::list<KeyValue>;
+	using Iterator	= typename List::iterator;
+
+	void			CopyFrom (const OrderedMap& rhs);
+
+	List								valueList;
+	std::unordered_map<Key, Iterator>	keyToValueMap;
 };
 
 template <typename Key, typename Value>
 OrderedMap<Key, Value>::OrderedMap () :
-	keyList (),
-	keyToValueTable ()
+	valueList (),
+	keyToValueMap ()
 {
 
+}
+
+template <typename Key, typename Value>
+OrderedMap<Key, Value>::OrderedMap (const OrderedMap& rhs) :
+	valueList (),
+	keyToValueMap ()
+{
+	CopyFrom (rhs);
+}
+
+template <typename Key, typename Value>
+OrderedMap<Key, Value>::OrderedMap (OrderedMap&& rhs) :
+	valueList (std::move (rhs.valueList)),
+	keyToValueMap (std::move (rhs.keyToValueMap))
+{
+	
 }
 
 template <typename Key, typename Value>
@@ -52,125 +80,121 @@ OrderedMap<Key, Value>::~OrderedMap ()
 }
 
 template <typename Key, typename Value>
+OrderedMap<Key, Value>& OrderedMap<Key, Value>::operator= (const OrderedMap& rhs)
+{
+	if (this != &rhs) {
+		CopyFrom (rhs);
+	}
+	return *this;
+}
+
+template <typename Key, typename Value>
+OrderedMap<Key, Value>& OrderedMap<Key, Value>::operator= (OrderedMap&& rhs)
+{
+	if (this != &rhs) {
+		valueList = std::move (rhs.valueList);
+		keyToValueMap = std::move (rhs.keyToValueMap);
+	}
+	return *this;
+}
+
+template <typename Key, typename Value>
 bool OrderedMap<Key, Value>::IsEmpty () const
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	return keyList.empty ();
+	return keyToValueMap.empty ();
 }
 
 template <typename Key, typename Value>
 bool OrderedMap<Key, Value>::Contains (const Key& key) const
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	return keyToValueTable.find (key) != keyToValueTable.end ();
+	return keyToValueMap.find (key) != keyToValueMap.end ();
 }
 
 template <typename Key, typename Value>
 const Value& OrderedMap<Key, Value>::GetValue (const Key& key) const
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	return keyToValueTable.at (key);
+	const Iterator& iterator = keyToValueMap.at (key);
+	const KeyValue& keyValue = *iterator;
+	return keyValue.second;
 }
 
 template <typename Key, typename Value>
 size_t OrderedMap<Key, Value>::Count () const
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	return keyList.size ();
+	return keyToValueMap.size ();
 }
 
 template <typename Key, typename Value>
 bool OrderedMap<Key, Value>::Insert (const Key& key, const Value& value)
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	if (DBGERROR (keyToValueTable.find (key) != keyToValueTable.end ())) {
+	if (DBGERROR (keyToValueMap.find (key) != keyToValueMap.end ())) {
 		return false;
 	}
 
-	keyList.push_back (key);
-	keyToValueTable.insert ({ key, value });
+	auto inserted = valueList.insert (valueList.end (), { key, value } );
+	keyToValueMap.insert ({ key, inserted });
 	return true;
 }
 
 template <typename Key, typename Value>
 bool OrderedMap<Key, Value>::InsertBefore (const Key& key, const Value& value, const Key& nextKey)
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	if (DBGERROR (keyToValueTable.find (key) != keyToValueTable.end ())) {
+	if (DBGERROR (keyToValueMap.find (key) != keyToValueMap.end ())) {
 		return false;
 	}
 
-	auto foundNextValue = keyToValueTable.find (nextKey);
-	if (DBGERROR (foundNextValue == keyToValueTable.end ())) {
+	auto foundNextValue = keyToValueMap.find (nextKey);
+	if (DBGERROR (foundNextValue == keyToValueMap.end ())) {
 		return false;
 	}
-
-	auto foundNextKeyIndex = std::find (keyList.begin (), keyList.end (), nextKey);
-	if (DBGERROR (foundNextKeyIndex == keyList.end ())) {
-		return false;
-	}
-
-	keyList.insert (foundNextKeyIndex, key);
-	keyToValueTable.insert ({ key, value });
+	
+	auto inserted = valueList.insert (foundNextValue->second, { key, value });
+	keyToValueMap.insert ({ key, inserted });
 	return true;
 }
 
 template <typename Key, typename Value>
 bool OrderedMap<Key, Value>::InsertAfter (const Key& key, const Value& value, const Key& prevKey)
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	if (DBGERROR (keyToValueTable.find (key) != keyToValueTable.end ())) {
+	if (DBGERROR (keyToValueMap.find (key) != keyToValueMap.end ())) {
 		return false;
 	}
 
-	auto foundPrevValue = keyToValueTable.find (prevKey);
-	if (DBGERROR (foundPrevValue == keyToValueTable.end ())) {
+	auto foundPrevValue = keyToValueMap.find (prevKey);
+	if (DBGERROR (foundPrevValue == keyToValueMap.end ())) {
 		return false;
 	}
 
-	auto foundPrevKeyIndex = std::find (keyList.begin (), keyList.end (), prevKey);
-	if (DBGERROR (foundPrevKeyIndex == keyList.end ())) {
-		return false;
-	}
-
-	keyList.insert (foundPrevKeyIndex + 1, key);
-	keyToValueTable.insert ({ key, value });
+	auto inserted = valueList.insert (std::next (foundPrevValue->second), { key, value });
+	keyToValueMap.insert ({ key, inserted });
 	return true;
 }
 
 template <typename Key, typename Value>
 bool OrderedMap<Key, Value>::Erase (const Key& key)
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	auto foundInList = std::find (keyList.begin (), keyList.end (), key);
-	if (DBGERROR (foundInList == keyList.end ())) {
+	auto foundInMap = keyToValueMap.find (key);
+	if (DBGERROR (foundInMap == keyToValueMap.end ())) {
 		return false;
 	}
 
-	auto foundInTable = keyToValueTable.find (key);
-	if (DBGERROR (foundInTable == keyToValueTable.end ())) {
-		return false;
-	}
-
-	keyList.erase (foundInList);
-	keyToValueTable.erase (foundInTable->first);
+	valueList.erase (foundInMap->second);
+	keyToValueMap.erase (key);
 	return true;
 }
 
 template <typename Key, typename Value>
 void OrderedMap<Key, Value>::Clear ()
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	keyList.clear ();
-	keyToValueTable.clear ();
+	valueList.clear ();
+	keyToValueMap.clear ();
 }
 
 template <typename Key, typename Value>
 void OrderedMap<Key, Value>::Enumerate (const std::function<bool (Value&)>& processor)
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	for (Key& key : keyList) {
-		if (!processor (keyToValueTable.at (key))) {
+	for (KeyValue& keyValue : valueList) {
+		if (!processor (keyValue.second)) {
 			break;
 		}
 	}
@@ -179,11 +203,21 @@ void OrderedMap<Key, Value>::Enumerate (const std::function<bool (Value&)>& proc
 template <typename Key, typename Value>
 void OrderedMap<Key, Value>::Enumerate (const std::function<bool (const Value&)>& processor) const
 {
-	DBGASSERT (keyList.size () == keyToValueTable.size ());
-	for (const Key& key : keyList) {
-		if (!processor (keyToValueTable.at (key))) {
+	for (const KeyValue& keyValue : valueList) {
+		if (!processor (keyValue.second)) {
 			break;
 		}
+	}
+}
+
+template <typename Key, typename Value>
+void OrderedMap<Key, Value>::CopyFrom (const OrderedMap& rhs)
+{
+	valueList.clear ();
+	keyToValueMap.clear ();
+	for (const KeyValue& keyValue : rhs.valueList) {
+		auto inserted = valueList.insert (valueList.end (), { keyValue.first, keyValue.second });
+		keyToValueMap.insert ({ keyValue.first, inserted });
 	}
 }
 
