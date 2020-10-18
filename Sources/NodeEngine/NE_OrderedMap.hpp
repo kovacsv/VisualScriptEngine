@@ -43,8 +43,6 @@ private:
 	using List		= std::list<KeyValue>;
 	using Iterator	= typename List::iterator;
 
-	void			CopyFrom (const OrderedMap& rhs);
-
 	List								valueList;
 	std::unordered_map<Key, Iterator>	keyToValueMap;
 };
@@ -59,10 +57,13 @@ OrderedMap<Key, Value>::OrderedMap () :
 
 template <typename Key, typename Value>
 OrderedMap<Key, Value>::OrderedMap (const OrderedMap& rhs) :
-	valueList (),
+	valueList (rhs.valueList),
 	keyToValueMap ()
 {
-	CopyFrom (rhs);
+	for (auto it = valueList.begin (); it != valueList.end (); ++it) {
+		const KeyValue& keyValue = *it;
+		keyToValueMap.insert ({ keyValue.first, it });
+	}
 }
 
 template <typename Key, typename Value>
@@ -83,7 +84,12 @@ template <typename Key, typename Value>
 OrderedMap<Key, Value>& OrderedMap<Key, Value>::operator= (const OrderedMap& rhs)
 {
 	if (this != &rhs) {
-		CopyFrom (rhs);
+		valueList = rhs.valueList;
+		keyToValueMap.clear ();
+		for (auto it = valueList.begin (); it != valueList.end (); ++it) {
+			const KeyValue& keyValue = *it;
+			keyToValueMap.insert ({ keyValue.first, it });
+		}
 	}
 	return *this;
 }
@@ -207,17 +213,6 @@ void OrderedMap<Key, Value>::Enumerate (const std::function<bool (const Value&)>
 		if (!processor (keyValue.second)) {
 			break;
 		}
-	}
-}
-
-template <typename Key, typename Value>
-void OrderedMap<Key, Value>::CopyFrom (const OrderedMap& rhs)
-{
-	valueList.clear ();
-	keyToValueMap.clear ();
-	for (const KeyValue& keyValue : rhs.valueList) {
-		auto inserted = valueList.insert (valueList.end (), { keyValue.first, keyValue.second });
-		keyToValueMap.insert ({ keyValue.first, inserted });
 	}
 }
 
