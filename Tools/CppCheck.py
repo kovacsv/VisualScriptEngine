@@ -12,6 +12,7 @@ def Main (argv):
 		cppCheckPath,
 		sourcesDir,
 		'--enable=all',
+		'--suppress=unreadVariable',
 		'--suppress=unusedFunction',
 		'--suppress=noExplicitConstructor',
 		'--suppress=cstyleCast',

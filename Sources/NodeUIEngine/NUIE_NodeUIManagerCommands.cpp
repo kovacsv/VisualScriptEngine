@@ -241,7 +241,7 @@ PasteNodesCommand::PasteNodesCommand (NodeUIEnvironment& uiEnvironment, const Po
 
 void PasteNodesCommand::Do (NodeUIManager& uiManager)
 {
-	ClipboardHandler& clipboard = uiEnvironment.GetClipboardHandler ();
+	const ClipboardHandler& clipboard = uiEnvironment.GetClipboardHandler ();
 	if (DBGERROR (!clipboard.HasClipboardContent ())) {
 		return;
 	}

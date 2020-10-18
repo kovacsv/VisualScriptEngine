@@ -79,7 +79,7 @@ PasteNodesMenuCommand::~PasteNodesMenuCommand ()
 
 bool PasteNodesMenuCommand::WillModify () const
 {
-	ClipboardHandler& clipboard = uiEnvironment.GetClipboardHandler ();
+	const ClipboardHandler& clipboard = uiEnvironment.GetClipboardHandler ();
 	return clipboard.HasClipboardContent ();
 }
 

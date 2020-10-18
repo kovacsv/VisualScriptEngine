@@ -63,12 +63,12 @@ void MouseEventTranslator::OnMouseDown (NodeUIEnvironment&, const ModifierKeys&,
 void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	if (movingMouseButtons.find (mouseButton) != movingMouseButtons.end ()) {
-		movingMouseButtons.erase (mouseButton);
 		handler.HandleMouseDragStop (env, modifierKeys, mouseButton, position);
+		movingMouseButtons.erase (mouseButton);
 	}
 	if (downMouseButtons.find (mouseButton) != downMouseButtons.end ()) {
-		downMouseButtons.erase (mouseButton);
 		handler.HandleMouseClick (env, modifierKeys, mouseButton, position);
+		downMouseButtons.erase (mouseButton);
 	}
 }
 
