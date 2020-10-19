@@ -5,6 +5,7 @@
 #include "WAS_ClipboardHandler.hpp"
 #include "WAS_NodeEditorNodeTreeHwndControl.hpp"
 #include "WAS_ParameterDialog.hpp"
+#include "WAS_FileMenu.hpp"
 
 #include "BI_BuiltInNodes.hpp"
 #include "NUIE_Localization.hpp"
@@ -81,6 +82,16 @@ class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 	}
 };
 
+#define FILE_NEW		1101
+#define FILE_QUIT		1102
+#define EDIT_UNDO		1201
+#define EDIT_REDO		1202
+#define EDIT_COPY		1203
+#define EDIT_PASTE		1204
+#define EDIT_DELETE		1205
+#define EDIT_GROUP		1206
+#define EDIT_UNGROUP	1207
+
 class AppUIEnvironment : public NUIE::NodeUIEnvironment
 {
 public:
@@ -91,12 +102,13 @@ public:
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
-		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (WAS::Direct2DImageLoaderPtr (new MyResourceImageLoader ()))))
+		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (WAS::Direct2DImageLoaderPtr (new MyResourceImageLoader ())))),
+		fileMenu (nullptr)
 	{
 	
 	}
 
-	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND parentHandle)
+	void Init (NUIE::NodeEditor* nodeEditorPtr, WAS::FileMenu* fileMenuPtr, HWND parentHandle)
 	{
 		NUIE::NodeTree nodeTree;
 
@@ -151,6 +163,15 @@ public:
 		nodeEditorControl.Init (nodeEditorPtr, parentHandle, ControlPadding, ControlPadding, width - ControlPadding * 2, height - ControlPadding * 2);
 		nodeEditorControl.FillNodeTree (nodeTree);
 		eventHandler.Init ((HWND) nodeEditorControl.GetEditorNativeHandle ());
+
+		fileMenu = fileMenuPtr;
+		fileMenu->EnablePopupMenuItem (EDIT_COPY, false);
+		fileMenu->EnablePopupMenuItem (EDIT_DELETE, false);
+		fileMenu->EnablePopupMenuItem (EDIT_GROUP, false);
+		fileMenu->EnablePopupMenuItem (EDIT_UNGROUP, false);
+		fileMenu->EnablePopupMenuItem (EDIT_UNDO, false);
+		fileMenu->EnablePopupMenuItem (EDIT_REDO, false);
+		fileMenu->EnablePopupMenuItem (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
 	}
 
 	void OnResize (int x, int y, int width, int height)
@@ -213,19 +234,24 @@ public:
 		return clipboardHandler;
 	}
 
-	virtual void OnSelectionChanged (const NUIE::Selection&) override
+	virtual void OnSelectionChanged (const NUIE::Selection& selection) override
 	{
-
+		bool hasSelection = !selection.IsEmpty ();
+		fileMenu->EnablePopupMenuItem (EDIT_COPY, hasSelection);
+		fileMenu->EnablePopupMenuItem (EDIT_DELETE, hasSelection);
+		fileMenu->EnablePopupMenuItem (EDIT_GROUP, hasSelection);
+		fileMenu->EnablePopupMenuItem (EDIT_UNGROUP, hasSelection);
 	}
 
-	virtual void OnUndoStateChanged (const NUIE::UndoState&) override
+	virtual void OnUndoStateChanged (const NUIE::UndoState& undoState) override
 	{
-
+		fileMenu->EnablePopupMenuItem (EDIT_UNDO, undoState.CanUndo ());
+		fileMenu->EnablePopupMenuItem (EDIT_REDO, undoState.CanRedo ());
 	}
 
-	virtual void OnClipboardStateChanged (const NUIE::ClipboardState&) override
+	virtual void OnClipboardStateChanged (const NUIE::ClipboardState& clipboardState) override
 	{
-
+		fileMenu->EnablePopupMenuItem (EDIT_PASTE, clipboardState.HasContent ());
 	}
 
 	virtual void OnIncompatibleVersionPasted (const NUIE::Version&) override
@@ -240,17 +266,8 @@ private:
 	WAS::ClipboardHandler				clipboardHandler;
 	NE::EvaluationEnv					evaluationEnv;
 	WAS::NodeEditorNodeTreeHwndControl	nodeEditorControl;
+	WAS::FileMenu*						fileMenu;
 };
-
-#define FILE_NEW		1101
-#define FILE_QUIT		1102
-#define EDIT_UNDO		1201
-#define EDIT_REDO		1202
-#define EDIT_COPY		1203
-#define EDIT_PASTE		1204
-#define EDIT_DELETE		1205
-#define EDIT_GROUP		1206
-#define EDIT_UNGROUP	1207
 
 class Application
 {
@@ -264,8 +281,8 @@ public:
 
 	void Init (HWND hwnd)
 	{
-		CreateFileMenu (hwnd);
-		uiEnvironment.Init (&nodeEditor, hwnd);
+		InitFileMenu (hwnd);
+		uiEnvironment.Init (&nodeEditor, &fileMenu, hwnd);
 	}
 
 	void New ()
@@ -284,32 +301,28 @@ public:
 	}
 
 private:
-	void CreateFileMenu (HWND hwnd)
+	void InitFileMenu (HWND hwnd)
 	{
-		HMENU menuBar = CreateMenu ();
+		HMENU file = fileMenu.AddPopupMenu (L"File");
+		fileMenu.AddPopupMenuItem (file, FILE_NEW, L"New");
+		fileMenu.AddPopupMenuSeparator (file);
+		fileMenu.AddPopupMenuItem (file, FILE_QUIT, L"Quit");
 
-		HMENU fileMenu = CreateMenu ();
-		AppendMenu (fileMenu, MF_STRING, FILE_NEW, L"New");
-		AppendMenu (fileMenu, MF_SEPARATOR, 0, NULL);
-		AppendMenu (fileMenu, MF_STRING, FILE_QUIT, L"Quit");
+		HMENU edit = fileMenu.AddPopupMenu (L"Edit");
+		fileMenu.AddPopupMenuItem (edit, EDIT_UNDO, L"Undo");
+		fileMenu.AddPopupMenuItem (edit, EDIT_REDO, L"Redo");
+		fileMenu.AddPopupMenuSeparator (edit);
+		fileMenu.AddPopupMenuItem (edit, EDIT_COPY, L"Copy");
+		fileMenu.AddPopupMenuItem (edit, EDIT_PASTE, L"Paste");
+		fileMenu.AddPopupMenuItem (edit, EDIT_DELETE, L"Delete");
+		fileMenu.AddPopupMenuSeparator (edit);
+		fileMenu.AddPopupMenuItem (edit, EDIT_GROUP, L"Group");
+		fileMenu.AddPopupMenuItem (edit, EDIT_UNGROUP, L"Ungroup");
 
-		HMENU editMenu = CreateMenu ();
-		AppendMenu (editMenu, MF_STRING, EDIT_UNDO, L"Undo");
-		AppendMenu (editMenu, MF_STRING, EDIT_REDO, L"Redo");
-		AppendMenu (editMenu, MF_SEPARATOR, 0, NULL);
-		AppendMenu (editMenu, MF_STRING, EDIT_COPY, L"Copy");
-		AppendMenu (editMenu, MF_STRING, EDIT_PASTE, L"Paste");
-		AppendMenu (editMenu, MF_STRING, EDIT_DELETE, L"Delete");
-		AppendMenu (editMenu, MF_SEPARATOR, 0, NULL);
-		AppendMenu (editMenu, MF_STRING, EDIT_GROUP, L"Group");
-		AppendMenu (editMenu, MF_STRING, EDIT_UNGROUP, L"Ungroup");
-
-		AppendMenu (menuBar, MF_POPUP, (UINT_PTR) fileMenu, L"File");
-		AppendMenu (menuBar, MF_POPUP, (UINT_PTR) editMenu, L"Edit");
-
-		SetMenu (hwnd, menuBar);
+		SetMenu (hwnd, fileMenu.GetMenuBar ());
 	}
 
+	WAS::FileMenu		fileMenu;
 	AppUIEnvironment	uiEnvironment;
 	NUIE::NodeEditor	nodeEditor;
 };
