@@ -80,7 +80,7 @@ TEST (OrderedMapConstEnumerateTest)
 	ASSERT (numbers == enumeratedNumbers);
 }
 
-TEST (OrderedMapNonConstEnumerateTest)
+TEST (OrderedMapNonConstTest)
 {
 	OrderedMap<int, std::string> map;
 	std::vector<std::string> numbers = { "one", "two", "three", "four", "five" };
@@ -105,6 +105,16 @@ TEST (OrderedMapNonConstEnumerateTest)
 	});
 
 	ASSERT (enumeratedNumbers == std::vector<std::string> ({ "reset", "reset", "reset", "reset", "reset" }));
+
+	std::string& threeVal = map.GetValue (3);
+	threeVal = "newThreeVal";
+	ASSERT (map.GetValue (3) == "newThreeVal");
+	enumeratedNumbers.clear ();
+	map.Enumerate ([&] (const std::string& number) {
+		enumeratedNumbers.push_back (number);
+		return true;
+	});
+	ASSERT (enumeratedNumbers == std::vector<std::string> ({ "reset", "reset", "newThreeVal", "reset", "reset" }));
 }
 
 TEST (OrderedMapOrderAfterDeleteTest)

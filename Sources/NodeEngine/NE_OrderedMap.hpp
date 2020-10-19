@@ -26,8 +26,10 @@ public:
 
 	bool			IsEmpty () const;
 	bool			Contains (const Key& key) const;
-	const Value&	GetValue (const Key& key) const;
 	size_t			Count () const;
+
+	Value&			GetValue (const Key& key);
+	const Value&	GetValue (const Key& key) const;
 
 	bool			Insert (const Key& key, const Value& value);
 	bool			InsertBefore (const Key& key, const Value& value, const Key& nextKey);
@@ -117,17 +119,25 @@ bool OrderedMap<Key, Value>::Contains (const Key& key) const
 }
 
 template <typename Key, typename Value>
+size_t OrderedMap<Key, Value>::Count () const
+{
+	return keyToValueMap.size ();
+}
+
+template <typename Key, typename Value>
+Value& OrderedMap<Key, Value>::GetValue (const Key& key)
+{
+	Iterator& iterator = keyToValueMap.at (key);
+	KeyValue& keyValue = *iterator;
+	return keyValue.second;
+}
+
+template <typename Key, typename Value>
 const Value& OrderedMap<Key, Value>::GetValue (const Key& key) const
 {
 	const Iterator& iterator = keyToValueMap.at (key);
 	const KeyValue& keyValue = *iterator;
 	return keyValue.second;
-}
-
-template <typename Key, typename Value>
-size_t OrderedMap<Key, Value>::Count () const
-{
-	return keyToValueMap.size ();
 }
 
 template <typename Key, typename Value>
