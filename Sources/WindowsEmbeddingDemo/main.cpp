@@ -83,7 +83,9 @@ class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 };
 
 #define FILE_NEW		1101
-#define FILE_QUIT		1102
+#define FILE_OPEN		1102
+#define FILE_SAVE		1103
+#define FILE_QUIT		1104
 #define EDIT_UNDO		1201
 #define EDIT_REDO		1202
 #define EDIT_COPY		1203
@@ -290,6 +292,17 @@ public:
 		nodeEditor.New ();
 	}
 
+	void Open (const std::wstring& fileName)
+	{
+		nodeEditor.Open (fileName);
+		nodeEditor.AlignToWindow ();
+	}
+
+	void Save (const std::wstring& fileName)
+	{
+		nodeEditor.Save (fileName);
+	}
+
 	void ExecuteCommand (NUIE::CommandCode command)
 	{
 		nodeEditor.ExecuteCommand (command);
@@ -305,6 +318,8 @@ private:
 	{
 		HMENU file = fileMenu.AddPopupMenu (L"File");
 		fileMenu.AddPopupMenuItem (file, FILE_NEW, L"New");
+		fileMenu.AddPopupMenuItem (file, FILE_OPEN, L"Open");
+		fileMenu.AddPopupMenuItem (file, FILE_SAVE, L"Save");
 		fileMenu.AddPopupMenuSeparator (file);
 		fileMenu.AddPopupMenuItem (file, FILE_QUIT, L"Quit");
 
@@ -366,6 +381,22 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			switch (LOWORD (wParam)) {
 				case FILE_NEW:
 					application->New ();
+					break;
+				case FILE_OPEN:
+					{
+						std::wstring fileName;
+						if (WAS::OpenFileDialog (hwnd, L"Visual Script Engine", L"vse", fileName)) {
+							application->Open (fileName);
+						}
+					}
+					break;
+				case FILE_SAVE:
+					{
+						std::wstring fileName;
+						if (WAS::SaveFileDialog (hwnd, L"Visual Script Engine", L"vse", fileName)) {
+							application->Save (fileName);
+						}
+					}
 					break;
 				case EDIT_UNDO:
 					application->ExecuteCommand (NUIE::CommandCode::Undo);

@@ -2,6 +2,9 @@
 
 #include <unordered_map>
 
+#define MAX_PATH_LENGTH 4096
+#define MAX_STR_LENGTH 4096
+
 namespace WAS
 {
 
@@ -98,6 +101,64 @@ NUIE::MenuCommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point&
 	}
 
 	return commandTable[selectedItem];
+}
+
+enum class FileDialogType
+{
+	Open,
+	Save
+};
+
+static bool OpenSaveFileDialog (FileDialogType type, HWND hwnd, const std::wstring& fileType, const std::wstring& extension, std::wstring& selectedFileName)
+{
+	OPENFILENAME openFileName;
+	ZeroMemory (&openFileName, sizeof (openFileName));
+
+	wchar_t fileName[MAX_PATH_LENGTH];
+	ZeroMemory (&fileName, sizeof (fileName));
+
+	wchar_t filterString[MAX_STR_LENGTH];
+	ZeroMemory (&filterString, sizeof (filterString));
+	swprintf (filterString, MAX_STR_LENGTH, L"%ls (*.%ls)", fileType.c_str (), extension.c_str ());
+	swprintf (filterString + wcslen (filterString) + 1, MAX_STR_LENGTH, L"*.%ls", extension.c_str ());
+
+	openFileName.hwndOwner = hwnd;
+	openFileName.lStructSize = sizeof (openFileName);
+	openFileName.lpstrFilter = filterString;
+	openFileName.lpstrFile = fileName;
+	openFileName.nMaxFile = MAX_PATH_LENGTH;
+	openFileName.Flags = OFN_EXPLORER;
+
+	if (type == FileDialogType::Open) {
+		if (!GetOpenFileName (&openFileName)) {
+			return false;
+		}
+	} else if (type == FileDialogType::Save) {
+		if (!GetSaveFileName (&openFileName)) {
+			return false;
+		}
+	} else {
+		DBGBREAK ();
+		return false;
+	}
+
+	if (openFileName.nFileExtension == 0) {
+		std::wstring extensionString = L"." + extension;
+		wcscat_s (fileName, MAX_PATH_LENGTH, extensionString.c_str ());
+	}
+
+	selectedFileName = fileName;
+	return true;
+}
+
+bool OpenFileDialog (HWND hwnd, const std::wstring& fileType, const std::wstring& extension, std::wstring& selectedFileName)
+{
+	return OpenSaveFileDialog (FileDialogType::Open, hwnd, fileType, extension, selectedFileName);
+}
+
+bool SaveFileDialog (HWND hwnd, const std::wstring& fileType, const std::wstring& extension, std::wstring& selectedFileName)
+{
+	return OpenSaveFileDialog (FileDialogType::Save, hwnd, fileType, extension, selectedFileName);
 }
 
 }

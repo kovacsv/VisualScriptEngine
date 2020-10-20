@@ -18,6 +18,9 @@ NE::BasicStringSettings		GetStringSettingsFromSystem ();
 NUIE::ModifierKeys			GetModiferKeysFromEvent (WPARAM wParam);
 NUIE::MenuCommandPtr		SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
 
+bool						OpenFileDialog (HWND hwnd, const std::wstring& fileType, const std::wstring& extension, std::wstring& selectedFileName);
+bool						SaveFileDialog (HWND hwnd, const std::wstring& fileType, const std::wstring& extension, std::wstring& selectedFileName);
+
 }
 
 #endif
