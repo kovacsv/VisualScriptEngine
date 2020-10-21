@@ -109,7 +109,7 @@ enum class FileDialogType
 	Save
 };
 
-static bool OpenSaveFileDialog (FileDialogType type, HWND hwnd, const std::wstring& fileType, const std::wstring& extension, std::wstring& selectedFileName)
+static bool OpenSaveFileDialog (FileDialogType type, HWND hwnd, const FileFilter& filter, std::wstring& selectedFileName)
 {
 	OPENFILENAME openFileName;
 	ZeroMemory (&openFileName, sizeof (openFileName));
@@ -119,8 +119,8 @@ static bool OpenSaveFileDialog (FileDialogType type, HWND hwnd, const std::wstri
 
 	wchar_t filterString[MAX_STR_LENGTH];
 	ZeroMemory (&filterString, sizeof (filterString));
-	swprintf (filterString, MAX_STR_LENGTH, L"%ls (*.%ls)", fileType.c_str (), extension.c_str ());
-	swprintf (filterString + wcslen (filterString) + 1, MAX_STR_LENGTH, L"*.%ls", extension.c_str ());
+	swprintf (filterString, MAX_STR_LENGTH, L"%ls (*.%ls)", filter.fileType.c_str (), filter.fileExtension.c_str ());
+	swprintf (filterString + wcslen (filterString) + 1, MAX_STR_LENGTH, L"*.%ls", filter.fileExtension.c_str ());
 
 	openFileName.hwndOwner = hwnd;
 	openFileName.lStructSize = sizeof (openFileName);
@@ -143,7 +143,7 @@ static bool OpenSaveFileDialog (FileDialogType type, HWND hwnd, const std::wstri
 	}
 
 	if (openFileName.nFileExtension == 0) {
-		std::wstring extensionString = L"." + extension;
+		std::wstring extensionString = L"." + filter.fileExtension;
 		wcscat_s (fileName, MAX_PATH_LENGTH, extensionString.c_str ());
 	}
 
@@ -151,14 +151,14 @@ static bool OpenSaveFileDialog (FileDialogType type, HWND hwnd, const std::wstri
 	return true;
 }
 
-bool OpenFileDialog (HWND hwnd, const std::wstring& fileType, const std::wstring& extension, std::wstring& selectedFileName)
+bool OpenFileDialog (HWND hwnd, const FileFilter& filter, std::wstring& selectedFileName)
 {
-	return OpenSaveFileDialog (FileDialogType::Open, hwnd, fileType, extension, selectedFileName);
+	return OpenSaveFileDialog (FileDialogType::Open, hwnd, filter, selectedFileName);
 }
 
-bool SaveFileDialog (HWND hwnd, const std::wstring& fileType, const std::wstring& extension, std::wstring& selectedFileName)
+bool SaveFileDialog (HWND hwnd, const FileFilter& filter, std::wstring& selectedFileName)
 {
-	return OpenSaveFileDialog (FileDialogType::Save, hwnd, fileType, extension, selectedFileName);
+	return OpenSaveFileDialog (FileDialogType::Save, hwnd, filter, selectedFileName);
 }
 
 }

@@ -378,50 +378,56 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			}
 			break;
 		case WM_COMMAND:
-			switch (LOWORD (wParam)) {
-				case FILE_NEW:
-					application->New ();
-					break;
-				case FILE_OPEN:
-					{
-						std::wstring fileName;
-						if (WAS::OpenFileDialog (hwnd, L"Visual Script Engine", L"vse", fileName)) {
-							application->Open (fileName);
+			{
+				WORD command = LOWORD (wParam);
+				switch (command) {
+					case FILE_NEW:
+						application->New ();
+						break;
+					case FILE_OPEN:
+					case FILE_SAVE:
+						{
+							WAS::FileFilter filter { L"Visual Script Engine", L"vse" };
+							if (command == FILE_OPEN) {
+								std::wstring fileName;
+								if (WAS::OpenFileDialog (hwnd, filter, fileName)) {
+									application->Open (fileName);
+								}
+							} else if (command == FILE_SAVE) {
+								std::wstring fileName;
+								if (WAS::SaveFileDialog (hwnd, filter, fileName)) {
+									application->Save (fileName);
+								}
+							} else {
+								DBGBREAK ();
+							}
 						}
-					}
-					break;
-				case FILE_SAVE:
-					{
-						std::wstring fileName;
-						if (WAS::SaveFileDialog (hwnd, L"Visual Script Engine", L"vse", fileName)) {
-							application->Save (fileName);
-						}
-					}
-					break;
-				case EDIT_UNDO:
-					application->ExecuteCommand (NUIE::CommandCode::Undo);
-					break;
-				case EDIT_REDO:
-					application->ExecuteCommand (NUIE::CommandCode::Redo);
-					break;
-				case EDIT_COPY:
-					application->ExecuteCommand (NUIE::CommandCode::Copy);
-					break;
-				case EDIT_PASTE:
-					application->ExecuteCommand (NUIE::CommandCode::Paste);
-					break;
-				case EDIT_DELETE:
-					application->ExecuteCommand (NUIE::CommandCode::Delete);
-					break;
-				case EDIT_GROUP:
-					application->ExecuteCommand (NUIE::CommandCode::Group);
-					break;
-				case EDIT_UNGROUP:
-					application->ExecuteCommand (NUIE::CommandCode::Ungroup);
-					break;
-				case FILE_QUIT:
-					SendMessage (hwnd, WM_CLOSE, 0, 0);
-					break;
+						break;
+					case EDIT_UNDO:
+						application->ExecuteCommand (NUIE::CommandCode::Undo);
+						break;
+					case EDIT_REDO:
+						application->ExecuteCommand (NUIE::CommandCode::Redo);
+						break;
+					case EDIT_COPY:
+						application->ExecuteCommand (NUIE::CommandCode::Copy);
+						break;
+					case EDIT_PASTE:
+						application->ExecuteCommand (NUIE::CommandCode::Paste);
+						break;
+					case EDIT_DELETE:
+						application->ExecuteCommand (NUIE::CommandCode::Delete);
+						break;
+					case EDIT_GROUP:
+						application->ExecuteCommand (NUIE::CommandCode::Group);
+						break;
+					case EDIT_UNGROUP:
+						application->ExecuteCommand (NUIE::CommandCode::Ungroup);
+						break;
+					case FILE_QUIT:
+						SendMessage (hwnd, WM_CLOSE, 0, 0);
+						break;
+				}
 			}
 			break;
 	}
