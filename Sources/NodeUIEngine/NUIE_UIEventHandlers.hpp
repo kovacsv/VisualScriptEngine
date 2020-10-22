@@ -47,6 +47,8 @@ class MultiMouseMoveHandler : public NodeDrawingModifier
 public:
 	MultiMouseMoveHandler ();
 
+	void								Clear ();
+
 	bool								HasHandler (MouseButton mouseButton) const;
 	std::shared_ptr<MouseMoveHandler>&	GetHandler (MouseButton mouseButton);
 	void								AbortHandlers ();

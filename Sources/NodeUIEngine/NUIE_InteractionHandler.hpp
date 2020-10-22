@@ -33,6 +33,8 @@ class PastePositionCalculator
 public:
 	PastePositionCalculator ();
 
+	void	Clear ();
+
 	Point	CalculatePastePosition (const NodeUIManager& uiManager, NodeUIEnvironment& env);
 
 private:
@@ -56,8 +58,8 @@ public:
 private:
 	EventHandlerResult			ForwardEventToNode (const std::function<EventHandlerResult ()>& forwardEvent);
 
-	NodeUIManager&	uiManager;
-	UINodePtr&		uiNode;
+	NodeUIManager&				uiManager;
+	UINodePtr&					uiNode;
 };
 
 class InteractionHandler : public InputEventHandler
@@ -65,6 +67,8 @@ class InteractionHandler : public InputEventHandler
 public:
 	InteractionHandler (NodeUIManager& uiManager);
 	~InteractionHandler ();
+
+	void							Clear ();
 
 	const NodeDrawingModifier*		GetDrawingModifier ();
 	void							ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE::CommandCode command);

@@ -511,6 +511,12 @@ PastePositionCalculator::PastePositionCalculator () :
 
 }
 
+void PastePositionCalculator::Clear ()
+{
+	lastPastePosition.Set (0.0, 0.0);
+	samePositionPasteCounter = 0;
+}
+
 Point PastePositionCalculator::CalculatePastePosition (const NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment)
 {
 	static const Point pasteOffset (20.0, 20.0);
@@ -608,6 +614,12 @@ InteractionHandler::InteractionHandler (NodeUIManager& uiManager) :
 InteractionHandler::~InteractionHandler ()
 {
 
+}
+
+void InteractionHandler::Clear ()
+{
+	multiMouseMoveHandler.Clear ();
+	pastePositionCalculator.Clear ();
 }
 
 const NodeDrawingModifier* InteractionHandler::GetDrawingModifier ()

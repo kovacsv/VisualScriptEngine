@@ -90,9 +90,15 @@ Point MouseMoveHandler::GetNodeOffset (const NE::NodeId&) const
 	return Point (0.0, 0.0);
 }
 
-MultiMouseMoveHandler::MultiMouseMoveHandler ()
+MultiMouseMoveHandler::MultiMouseMoveHandler () :
+	handlers ()
 {
 
+}
+
+void MultiMouseMoveHandler::Clear ()
+{
+	handlers.clear ();
 }
 
 bool MultiMouseMoveHandler::HasHandler (MouseButton mouseButton) const

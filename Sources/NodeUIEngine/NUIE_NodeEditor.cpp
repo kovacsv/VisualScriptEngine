@@ -167,6 +167,7 @@ void NodeEditor::SetSelection (const Selection& newSelection)
 
 void NodeEditor::New ()
 {
+	interactionHandler.Clear ();
 	uiManager.New (uiEnvironment);
 	Update ();
 }
@@ -196,6 +197,7 @@ bool NodeEditor::Open (NE::InputStream& inputStream)
 		return false;
 	}
 
+	interactionHandler.Clear ();
 	if (DBGERROR (!uiManager.Open (uiEnvironment, inputStream))) {
 		return false;
 	}
