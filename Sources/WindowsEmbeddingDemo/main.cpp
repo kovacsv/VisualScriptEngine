@@ -276,7 +276,9 @@ class Application
 public:
 	Application () :
 		uiEnvironment (),
-		nodeEditor (uiEnvironment)
+		nodeEditor (uiEnvironment),
+		fileMenu (),
+		fileFilter ({ L"Visual Script Engine", L"vse" })
 	{
 
 	}
@@ -287,20 +289,38 @@ public:
 		uiEnvironment.Init (&nodeEditor, &fileMenu, hwnd);
 	}
 
-	void New ()
+	void New (HWND hwnd)
 	{
+		if (nodeEditor.NeedToSave ()) {
+			int result = MessageBox (hwnd, L"You have made some changes that are not saved. Would you like to start new file?", L"New File", MB_YESNO);
+			if (result == IDNO) {
+				return;
+			}
+		}
 		nodeEditor.New ();
 	}
 
-	void Open (const std::wstring& fileName)
+	void Open (HWND hwnd)
 	{
-		nodeEditor.Open (fileName);
-		nodeEditor.AlignToWindow ();
+		if (nodeEditor.NeedToSave ()) {
+			int result = MessageBox (hwnd, L"You have made some changes that are not saved. Would you like to open file?", L"Open File", MB_YESNO);
+			if (result == IDNO) {
+				return;
+			}
+		}
+		std::wstring fileName;
+		if (WAS::OpenFileDialog (hwnd, fileFilter, fileName)) {
+			nodeEditor.Open (fileName);
+			nodeEditor.AlignToWindow ();
+		}
 	}
 
-	void Save (const std::wstring& fileName)
+	void Save (HWND hwnd)
 	{
-		nodeEditor.Save (fileName);
+		std::wstring fileName;
+		if (WAS::SaveFileDialog (hwnd, fileFilter, fileName)) {
+			nodeEditor.Save (fileName);
+		}
 	}
 
 	void ExecuteCommand (NUIE::CommandCode command)
@@ -337,9 +357,10 @@ private:
 		SetMenu (hwnd, fileMenu.GetMenuBar ());
 	}
 
-	WAS::FileMenu		fileMenu;
 	AppUIEnvironment	uiEnvironment;
 	NUIE::NodeEditor	nodeEditor;
+	WAS::FileMenu		fileMenu;
+	WAS::FileFilter		fileFilter;
 };
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -382,26 +403,13 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				WORD command = LOWORD (wParam);
 				switch (command) {
 					case FILE_NEW:
-						application->New ();
+						application->New (hwnd);
 						break;
 					case FILE_OPEN:
+						application->Open (hwnd);
+						break;
 					case FILE_SAVE:
-						{
-							WAS::FileFilter filter { L"Visual Script Engine", L"vse" };
-							if (command == FILE_OPEN) {
-								std::wstring fileName;
-								if (WAS::OpenFileDialog (hwnd, filter, fileName)) {
-									application->Open (fileName);
-								}
-							} else if (command == FILE_SAVE) {
-								std::wstring fileName;
-								if (WAS::SaveFileDialog (hwnd, filter, fileName)) {
-									application->Save (fileName);
-								}
-							} else {
-								DBGBREAK ();
-							}
-						}
+						application->Save (hwnd);
 						break;
 					case EDIT_UNDO:
 						application->ExecuteCommand (NUIE::CommandCode::Undo);
