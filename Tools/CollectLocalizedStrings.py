@@ -4,7 +4,7 @@ import re
 import codecs
 
 def GetFileContent (fileName):
-	file = open (fileName, 'rb')
+	file = codecs.open (fileName, 'r', 'utf-8')
 	content = file.read ()
 	file.close ()
 	return content
@@ -33,7 +33,7 @@ def Main (argv):
 	sourceFolders = []
 	for i in range (1, argCount - 1):
 		sourceFolders.append (argv[i])
-	resultPoFile = argv[argCount - 1]
+	resultPoFile = os.path.abspath (argv[argCount - 1])
 	
 	locStrings = []
 	for sourceFolder in sourceFolders:
@@ -49,8 +49,8 @@ def Main (argv):
 	resultFileDir = os.path.dirname (resultPoFile)
 	if not os.path.exists (resultFileDir):
 		os.makedirs (resultFileDir)
-	poFile = open (resultPoFile, 'w')
-	poFile.write (codecs.BOM_UTF8)
+	poFile = codecs.open (resultPoFile, 'w', 'utf-8')
+	poFile.write ('\ufeff')
 	for locString in locStrings:
 		poFile.write ('msgid "' + locString + '"\n')
 		poFile.write ('msgstr "' + locString + '"\n\n')

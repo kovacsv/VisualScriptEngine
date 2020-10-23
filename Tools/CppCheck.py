@@ -22,7 +22,7 @@ def Main (argv):
 	]
 	proc = subprocess.Popen (command, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
 	stdout, stderr = proc.communicate ()
-	print stderr
+	print (stderr)
 	
 	return 0
 	

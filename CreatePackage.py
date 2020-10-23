@@ -3,15 +3,16 @@ import sys
 import re
 import platform
 import zipfile
+import codecs
 
 def PrintInfo (message):
-	print 'INFO: ' + message
+	print ('INFO: ' + message)
 
 def PrintError (message):
-	print 'ERROR: ' + message
+	print ('ERROR: ' + message)
 
 def GetVersionFromCMakeLists (cMakeListsPath):
-	file = open (cMakeListsPath, 'rb')
+	file = codecs.open (cMakeListsPath, 'r', 'utf-8')
 	content = file.read ()
 	file.close ()
 	match1 = re.search (r'set \(VSE_VERSION_1 ([0-9]+)\)', content)
@@ -24,7 +25,7 @@ def Main (argv):
 	os.chdir (currentDir)
 	
 	if len (argv) != 4:
-		print 'usage: CreatePackage.py <devKitDir> <packageName> <buildType>'
+		print ('usage: CreatePackage.py <devKitDir> <packageName> <buildType>')
 		return 1
 
 	devKitDir = argv[1]

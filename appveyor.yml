@@ -2,6 +2,9 @@ version: "{build}"
 
 clone_folder: c:\projects\VisualScriptEngine
 
+environment:
+  PY_DIR: C:/Python38-x64
+
 image:
   - Visual Studio 2017
   - Visual Studio 2019
@@ -15,9 +18,9 @@ platform:
   - x64
 
 init:
-- set cMakeParams=
-- if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" ( set cMakeParams=-G "Visual Studio 15 2017 Win64" )
-- if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" ( set cMakeParams=-G "Visual Studio 16 2019" -A "x64")
+  - set cMakeParams=
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" ( set cMakeParams=-G "Visual Studio 15 2017 Win64" )
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" ( set cMakeParams=-G "Visual Studio 16 2019" -A "x64")
 
 before_build:
   - mkdir Build
@@ -33,8 +36,8 @@ after_build:
   - set packageName=
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" (set packageName=Windows_VS2017)
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" (set packageName=Windows_VS2019)
-  - python CreateDevKit.py "MSBuild" %configuration%
-  - python CreatePackage.py Build\DevKit %packageName% %configuration%
+  - %PY_DIR%\python.exe CreateDevKit.py "MSBuild" %configuration%
+  - %PY_DIR%\python.exe CreatePackage.py Build\DevKit %packageName% %configuration%
 
 test_script:
   - cd Build

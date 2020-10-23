@@ -92,6 +92,8 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
+  - sudo apt-get update
+  - sudo apt-get install python3  
 
 script:
   - mkdir Build
@@ -104,7 +106,7 @@ script:
   - make install
   - cd ..
   - cd ..
-  - python CreatePackage.py Build/Debug/DevKit ${PACKAGE_NAME} Debug
+  - python3 CreatePackage.py Build/Debug/DevKit ${PACKAGE_NAME} Debug
   - cd Build
   - mkdir Release
   - cd Release
@@ -114,7 +116,7 @@ script:
   - make install
   - cd ..
   - cd ..
-  - python CreatePackage.py Build/Release/DevKit ${PACKAGE_NAME} Release
+  - python3 CreatePackage.py Build/Release/DevKit ${PACKAGE_NAME} Release
   - cd Build
   - mkdir RelWithDebInfo
   - cd RelWithDebInfo
@@ -124,4 +126,4 @@ script:
   - make install
   - cd ..
   - cd ..
-  - python CreatePackage.py Build/RelWithDebInfo/DevKit ${PACKAGE_NAME} RelWithDebInfo
+  - python3 CreatePackage.py Build/RelWithDebInfo/DevKit ${PACKAGE_NAME} RelWithDebInfo

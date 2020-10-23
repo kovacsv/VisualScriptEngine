@@ -5,17 +5,17 @@ import subprocess
 import zipfile
 
 def PrintInfo (message):
-	print 'INFO: ' + message
+	print ('INFO: ' + message)
 
 def PrintError (message):
-	print 'ERROR: ' + message
+	print ('ERROR: ' + message)
 	
 def Main (argv):
 	currentDir = os.path.dirname (os.path.abspath (__file__))
 	os.chdir (currentDir)
 	
 	if len (argv) != 3:
-		print 'usage: CreateDevKit.py <msBuildPath> <msBuildConfiguration>'
+		print ('usage: CreateDevKit.py <msBuildPath> <msBuildConfiguration>')
 		return 1
 
 	msBuildPath = argv[1]

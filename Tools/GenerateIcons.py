@@ -2,15 +2,16 @@ import os
 import sys
 import re
 import subprocess
+import codecs
 
 def GetFileContent (fileName):
-	file = open (fileName, 'rb')
+	file = codecs.open (fileName, 'r', 'utf-8')
 	content = file.read ()
 	file.close ()
 	return content
 
 def SetFileContent (fileName, content):
-	file = open (fileName, 'wb')
+	file = codecs.open (fileName, 'w', 'utf-8')
 	file.write (content)
 	file.close ()
 	
