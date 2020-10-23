@@ -81,6 +81,7 @@ public:
 		ListValuePtr result (new ListValue ());
 		FlatEnumerate (val, [&] (const ValueConstPtr& flatVal) {
 			result->Push (flatVal->Clone ());
+			return true;
 		});
 		return result;
 	}

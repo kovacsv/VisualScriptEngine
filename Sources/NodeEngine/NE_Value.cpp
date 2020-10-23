@@ -155,11 +155,14 @@ const NE::ValueConstPtr& ListValue::GetValue (size_t index) const
 	return values[index];
 }
 
-void ListValue::Enumerate (const std::function<void (const ValueConstPtr&)>& processor) const
+bool ListValue::Enumerate (const std::function<bool (const ValueConstPtr&)>& processor) const
 {
 	for (const ValueConstPtr& value : values) {
-		processor (value);
+		if (!processor (value)) {
+			return false;
+		}
 	}
+	return true;
 }
 
 void ListValue::Push (const ValueConstPtr& value)
@@ -183,9 +186,9 @@ const NE::ValueConstPtr& ValueToListValueAdapter::GetValue (size_t) const
 	return val;
 }
 
-void ValueToListValueAdapter::Enumerate (const std::function<void (const ValueConstPtr&)>& processor) const
+bool ValueToListValueAdapter::Enumerate (const std::function<bool (const ValueConstPtr&)>& processor) const
 {
-	processor (val);
+	return processor (val);
 }
 
 bool IsSingleValue (const ValueConstPtr& value)
@@ -227,19 +230,21 @@ IListValueConstPtr CreateListValue (const ValueConstPtr& value)
 	return nullptr;
 }
 
-void FlatEnumerate (const ValueConstPtr& value, const std::function<void (const ValueConstPtr&)>& processor)
+bool FlatEnumerate (const ValueConstPtr& value, const std::function<bool (const ValueConstPtr&)>& processor)
 {
 	if (value == nullptr) {
-		processor (value);
-		return;
+		return processor (value);
 	}
 	IListValueConstPtr listValue = CreateListValue (value);
-	listValue->Enumerate ([&] (const ValueConstPtr& innerValue) {
+	return listValue->Enumerate ([&] (const ValueConstPtr& innerValue) {
 		if (Value::IsType<SingleValue> (innerValue)) {
-			processor (innerValue);
+			if (!processor (innerValue)) {
+				return false;
+			}
 		} else {
-			FlatEnumerate (innerValue, processor);
+			return FlatEnumerate (innerValue, processor);
 		}
+		return true;
 	});
 }
 
@@ -248,6 +253,7 @@ ValueConstPtr FlattenValue (const ValueConstPtr& value)
 	ListValuePtr listValue (new ListValue ());
 	FlatEnumerate (value, [&] (const ValueConstPtr& value) {
 		listValue->Push (value);
+		return true;
 	});
 	return listValue;
 }

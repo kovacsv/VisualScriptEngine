@@ -787,6 +787,7 @@ NE::ValueConstPtr ListBuilderNode::Calculate (NE::EvaluationEnv& env) const
 	NE::ListValuePtr list (new NE::ListValue ());
 	NE::FlatEnumerate (in, [&] (const NE::ValueConstPtr& innerVal) {
 		list->Push (innerVal);
+		return true;
 	});
 	return list;
 }

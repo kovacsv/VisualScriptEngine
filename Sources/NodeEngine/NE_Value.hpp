@@ -127,7 +127,7 @@ public:
 
 	virtual size_t					GetSize () const = 0;
 	virtual const ValueConstPtr&	GetValue (size_t index) const = 0;
-	virtual void					Enumerate (const std::function<void (const ValueConstPtr&)>& processor) const = 0;
+	virtual bool					Enumerate (const std::function<bool (const ValueConstPtr&)>& processor) const = 0;
 };
 
 class ListValue :	public Value,
@@ -147,7 +147,7 @@ public:
 
 	virtual size_t					GetSize () const override;
 	virtual const ValueConstPtr&	GetValue (size_t index) const override;
-	virtual void					Enumerate (const std::function<void (const ValueConstPtr&)>& processor) const override;
+	virtual bool					Enumerate (const std::function<bool (const ValueConstPtr&)>& processor) const override;
 
 	void							Push (const ValueConstPtr& value);
 	
@@ -162,7 +162,7 @@ public:
 
 	virtual size_t					GetSize () const override;
 	virtual const ValueConstPtr&	GetValue (size_t index) const override;
-	virtual void					Enumerate (const std::function<void (const ValueConstPtr&)>& processor) const override;
+	virtual bool					Enumerate (const std::function<bool (const ValueConstPtr&)>& processor) const override;
 
 private:
 	const ValueConstPtr& val;
@@ -199,6 +199,7 @@ bool IsComplexType (const ValueConstPtr& val)
 			if (!IsComplexType<Type> (innerVal)) {
 				isType = false;
 			}
+			return isType;
 		});
 		return isType;
 	}
@@ -211,7 +212,7 @@ bool				IsListValue (const ValueConstPtr& value);
 ValueConstPtr		CreateSingleValue (const ValueConstPtr& value);
 IListValueConstPtr	CreateListValue (const ValueConstPtr& value);
 
-void				FlatEnumerate (const ValueConstPtr& value, const std::function<void (const ValueConstPtr&)>& processor);
+bool				FlatEnumerate (const ValueConstPtr& value, const std::function<bool (const ValueConstPtr&)>& processor);
 ValueConstPtr		FlattenValue (const ValueConstPtr& value);
 
 }

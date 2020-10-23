@@ -46,8 +46,7 @@ NE::ValueConstPtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 	}
 
 	if (NE::IsSingleValue (aValue) && NE::IsSingleValue (bValue)) {
-		NE::ValuePtr result = DoSingleOperation (aValue, bValue);
-		return result;
+		return DoSingleOperation (aValue, bValue);
 	} else {
 		NE::ListValuePtr resultListValue (new NE::ListValue ());
 		std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (this);

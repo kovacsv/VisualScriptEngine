@@ -103,6 +103,7 @@ void MultiLineViewerNode::Layout::GetTextInfo (const BasicUINode& uiNode,
 				} else {
 					texts.push_back (NE::LocalizeString (L"<empty>"));
 				}
+				return true;
 			});
 		}
 	}

@@ -77,6 +77,7 @@ public:
 		if (IsComplexType<NumberValue> (val)) {
 			NE::FlatEnumerate (val, [&] (const NE::ValueConstPtr& value) {
 				result += IntValue::Get (value);
+				return true;
 			});
 		}
 		return ValueConstPtr (new IntValue (result));

@@ -186,6 +186,7 @@ public:
 		int sum = 0;
 		FlatEnumerate (result, [&] (const ValueConstPtr& val) {
 			sum += IntValue::Get (val);
+			return true;
 		});
 		return ValuePtr (new IntValue (sum));
 	}

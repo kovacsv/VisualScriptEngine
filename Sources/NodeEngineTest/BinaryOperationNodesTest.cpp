@@ -40,9 +40,11 @@ TEST (TestAdditionNodeWithList)
 
 	ValueConstPtr val = op->Evaluate (EmptyEvaluationEnv);
 	ASSERT (Value::IsType<ListValue> (val));
+	ASSERT (IsComplexType<NumberValue> (val));
 	std::vector<double> values;
 	FlatEnumerate (val, [&] (const ValueConstPtr& v) {
 		values.push_back (NumberValue::ToDouble (v));
+		return true;
 	});
 	ASSERT (values == std::vector<double> ({ 0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0 }));
 }
