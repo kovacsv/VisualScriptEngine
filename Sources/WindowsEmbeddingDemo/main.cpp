@@ -176,6 +176,11 @@ public:
 		fileMenu->EnablePopupMenuItem (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
 	}
 
+	void RefreshFileMenu ()
+	{
+		fileMenu->EnablePopupMenuItem (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
+	}
+
 	void OnResize (int x, int y, int width, int height)
 	{
 		nodeEditorControl.Resize (x + ControlPadding, y + ControlPadding, width - ControlPadding * 2, height - ControlPadding * 2);
@@ -289,6 +294,11 @@ public:
 		uiEnvironment.Init (&nodeEditor, &fileMenu, hwnd);
 	}
 
+	void RefreshFileMenu ()
+	{
+		uiEnvironment.RefreshFileMenu ();
+	}
+
 	void New (HWND hwnd)
 	{
 		if (nodeEditor.NeedToSave ()) {
@@ -383,6 +393,11 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 		case WM_CREATE:
 			{
 				application->Init (hwnd);
+			}
+			break;
+		case WM_ACTIVATE:
+			{
+				application->RefreshFileMenu ();
 			}
 			break;
 		case WM_CLOSE:
