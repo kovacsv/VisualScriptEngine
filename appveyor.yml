@@ -23,6 +23,7 @@ init:
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" ( set cMakeParams=-G "Visual Studio 16 2019" -A "x64")
 
 before_build:
+  - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
   - mkdir Build
   - cd Build
   - cmake %cMakeParams% ..
@@ -36,7 +37,6 @@ after_build:
   - set packageName=
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" (set packageName=Windows_VS2017)
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" (set packageName=Windows_VS2019)
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - python CreateDevKit.py "MSBuild" %configuration%
   - python CreatePackage.py Build\DevKit %packageName% %configuration%
 
