@@ -18,12 +18,13 @@ platform:
   - x64
 
 init:
+  - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+  - python -V
   - set cMakeParams=
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" ( set cMakeParams=-G "Visual Studio 15 2017 Win64" )
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" ( set cMakeParams=-G "Visual Studio 16 2019" -A "x64")
 
 before_build:
-  - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
   - mkdir Build
   - cd Build
   - cmake %cMakeParams% ..
