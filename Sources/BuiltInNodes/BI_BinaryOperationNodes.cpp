@@ -45,23 +45,25 @@ NE::ValueConstPtr BinaryOperationNode::Calculate (NE::EvaluationEnv& env) const
 		return nullptr;
 	}
 
-	NE::ListValuePtr resultListValue (new NE::ListValue ());
-	std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (this);
-	bool isValid = valueCombination->CombineValues ({aValue, bValue}, [&] (const NE::ValueCombination& combination) {
-		double aDouble = NE::NumberValue::ToDouble (combination.GetValue (0));
-		double bDouble = NE::NumberValue::ToDouble (combination.GetValue (1));
-		double result = DoOperation (aDouble, bDouble);
-		if (std::isnan (result) || std::isinf (result)) {
-			return false;
+	if (NE::IsSingleValue (aValue) && NE::IsSingleValue (bValue)) {
+		NE::ValuePtr result = DoSingleOperation (aValue, bValue);
+		return result;
+	} else {
+		NE::ListValuePtr resultListValue (new NE::ListValue ());
+		std::shared_ptr<ValueCombinationFeature> valueCombination = GetValueCombinationFeature (this);
+		bool isValid = valueCombination->CombineValues ({ aValue, bValue }, [&] (const NE::ValueCombination& combination) {
+			NE::ValuePtr result = DoSingleOperation (combination.GetValue (0), combination.GetValue (1));
+			if (result == nullptr) {
+				return false;
+			}
+			resultListValue->Push (result);
+			return true;
+		});
+		if (!isValid) {
+			return nullptr;
 		}
-		resultListValue->Push (NE::ValuePtr (new NE::DoubleValue (result)));
-		return true;
-	});
-
-	if (!isValid) {
-		return nullptr;
+		return resultListValue;
 	}
-	return resultListValue;
 }
 
 void BinaryOperationNode::RegisterParameters (NUIE::NodeParameterList& parameterList) const
@@ -88,6 +90,17 @@ NE::Stream::Status BinaryOperationNode::Write (NE::OutputStream& outputStream) c
 	NE::ObjectHeader header (outputStream, serializationInfo);
 	BasicUINode::Write (outputStream);
 	return outputStream.GetStatus ();
+}
+
+NE::ValuePtr BinaryOperationNode::DoSingleOperation (const NE::ValueConstPtr& aValue, const NE::ValueConstPtr& bValue) const
+{
+	double aDouble = NE::NumberValue::ToDouble (aValue);
+	double bDouble = NE::NumberValue::ToDouble (bValue);
+	double result = DoOperation (aDouble, bDouble);
+	if (std::isnan (result) || std::isinf (result)) {
+		return nullptr;
+	}
+	return NE::ValuePtr (new NE::DoubleValue (result));
 }
 
 AdditionNode::AdditionNode () :

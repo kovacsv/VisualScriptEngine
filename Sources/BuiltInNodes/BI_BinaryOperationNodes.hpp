@@ -27,6 +27,7 @@ public:
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
 private:
+	NE::ValuePtr				DoSingleOperation (const NE::ValueConstPtr& aValue, const NE::ValueConstPtr& bValue) const;
 	virtual double				DoOperation (double a, double b) const = 0;
 };
 

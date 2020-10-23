@@ -87,6 +87,8 @@ TEST (ValueTest)
 {
 	IntValue intValue (5);
 	ValuePtr intValuePtr (new IntValue (6));
+	ASSERT (IsSingleValue (intValuePtr));
+	ASSERT (!IsListValue (intValuePtr));
 	ASSERT (Value::IsType<NumberValue> (&intValue));
 	ASSERT (Value::IsType<IntValue> (&intValue));
 	ASSERT (Value::IsType<IntValue> (intValuePtr));
@@ -98,6 +100,13 @@ TEST (ValueTest)
 	ASSERT (GenericValue<int>::Get (intValuePtr) == 6);
 	ASSERT (NumberValue::ToDouble (&intValue) == 5.0);
 	ASSERT (NumberValue::ToDouble (intValuePtr) == 6.0);
+}
+
+TEST (ListValueTest)
+{
+	ValuePtr listValue (new ListValue ());
+	ASSERT (!IsSingleValue (listValue));
+	ASSERT (IsListValue (listValue));
 }
 
 TEST (BooleanValueTest)

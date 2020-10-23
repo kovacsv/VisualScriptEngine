@@ -27,6 +27,26 @@ TEST (TestAdditionNode)
 	ASSERT (IsEqual (DoubleValue::Get (CreateSingleValue (val)), 3.0));
 }
 
+TEST (TestAdditionNodeWithList)
+{
+	TestUIEnvironment env;
+	NodeUIManager uiManager (env);
+
+	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value1"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value2"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr op = uiManager.AddNode (UINodePtr (new AdditionNode (LocString (L"Addition"), Point (0, 0))), EmptyEvaluationEnv);
+	uiManager.ConnectOutputSlotToInputSlot (val1->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("a")));
+	uiManager.ConnectOutputSlotToInputSlot (val2->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("b")));
+
+	ValueConstPtr val = op->Evaluate (EmptyEvaluationEnv);
+	ASSERT (Value::IsType<ListValue> (val));
+	std::vector<double> values;
+	FlatEnumerate (val, [&] (const ValueConstPtr& v) {
+		values.push_back (NumberValue::ToDouble (v));
+	});
+	ASSERT (values == std::vector<double> ({ 0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0 }));
+}
+
 TEST (TestSubtractionNode)
 {
 	TestUIEnvironment env;

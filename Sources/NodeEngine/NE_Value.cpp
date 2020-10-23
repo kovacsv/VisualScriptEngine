@@ -188,6 +188,16 @@ void ValueToListValueAdapter::Enumerate (const std::function<void (const ValueCo
 	processor (val);
 }
 
+bool IsSingleValue (const ValueConstPtr& value)
+{
+	return Value::IsType<SingleValue> (value);
+}
+
+bool IsListValue (const ValueConstPtr& value)
+{
+	return Value::IsType<ListValue> (value);
+}
+
 ValueConstPtr CreateSingleValue (const ValueConstPtr& value)
 {
 	if (Value::IsType<SingleValue> (value)) {

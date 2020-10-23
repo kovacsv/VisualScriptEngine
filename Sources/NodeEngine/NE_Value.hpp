@@ -205,8 +205,12 @@ bool IsComplexType (const ValueConstPtr& val)
 	return false;
 }
 
+bool				IsSingleValue (const ValueConstPtr& value);
+bool				IsListValue (const ValueConstPtr& value);
+
 ValueConstPtr		CreateSingleValue (const ValueConstPtr& value);
 IListValueConstPtr	CreateListValue (const ValueConstPtr& value);
+
 void				FlatEnumerate (const ValueConstPtr& value, const std::function<void (const ValueConstPtr&)>& processor);
 ValueConstPtr		FlattenValue (const ValueConstPtr& value);
 
