@@ -1,6 +1,6 @@
 #include "SimpleTest.hpp"
 #include "NUIE_NodeUIManager.hpp"
-#include "BI_ArithmeticUINodes.hpp"
+#include "BI_BinaryOperationNodes.hpp"
 #include "BI_InputUINodes.hpp"
 #include "TestUtils.hpp"
 
@@ -8,10 +8,10 @@ using namespace NE;
 using namespace NUIE;
 using namespace BI;
 
-namespace ArithmeticNodesTest
+namespace BinaryOperationNodesTest
 {
 
-TEST (TestAllArithmeticNodes)
+TEST (TestAllBinaryOperationNodes)
 {
 	TestUIEnvironment env;
 	NodeUIManager uiManager (env);

@@ -1,5 +1,5 @@
-#ifndef BI_ARITHMETICUINODES_HPP
-#define BI_ARITHMETICUINODES_HPP
+#ifndef BI_BINARYOPERATIONNODES_HPP
+#define BI_BINARYOPERATIONNODES_HPP
 
 #include "NE_SingleValues.hpp"
 #include "BI_BasicUINode.hpp"
