@@ -1,5 +1,5 @@
-#ifndef BI_UNARYFUNCTIONNODES_HPP
-#define BI_UNARYFUNCTIONNODES_HPP
+#ifndef BI_UNARYOPERATIONNODES_HPP
+#define BI_UNARYOPERATIONNODES_HPP
 
 #include "NE_SingleValues.hpp"
 #include "BI_BasicUINode.hpp"
@@ -8,14 +8,14 @@
 namespace BI
 {
 
-class UnaryFunctionNode : public BasicUINode
+class UnaryOperationNode : public BasicUINode
 {
 	SERIALIZABLE;
 
 public:
-	UnaryFunctionNode ();
-	UnaryFunctionNode (const NE::LocString& name, const NUIE::Point& position);
-	virtual ~UnaryFunctionNode ();
+	UnaryOperationNode ();
+	UnaryOperationNode (const NE::LocString& name, const NUIE::Point& position);
+	virtual ~UnaryOperationNode ();
 
 	virtual void				Initialize () override;
 	virtual NE::ValueConstPtr	Calculate (NE::EvaluationEnv& env) const override;
@@ -31,7 +31,7 @@ private:
 	virtual double				DoOperation (double a) const = 0;
 };
 
-class AbsoluteNode : public UnaryFunctionNode
+class AbsoluteNode : public UnaryOperationNode
 {
 	DYNAMIC_SERIALIZABLE (AbsoluteNode);
 
@@ -44,7 +44,7 @@ private:
 	virtual double DoOperation (double a) const override;
 };
 
-class FloorNode : public UnaryFunctionNode
+class FloorNode : public UnaryOperationNode
 {
 	DYNAMIC_SERIALIZABLE (FloorNode);
 
@@ -57,7 +57,7 @@ private:
 	virtual double DoOperation (double a) const override;
 };
 
-class CeilNode : public UnaryFunctionNode
+class CeilNode : public UnaryOperationNode
 {
 	DYNAMIC_SERIALIZABLE (CeilNode);
 

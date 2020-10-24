@@ -1,6 +1,6 @@
 #include "SimpleTest.hpp"
 #include "NUIE_NodeUIManager.hpp"
-#include "BI_UnaryFunctionNodes.hpp"
+#include "BI_UnaryOperationNodes.hpp"
 #include "BI_InputUINodes.hpp"
 #include "TestUtils.hpp"
 
@@ -8,10 +8,10 @@ using namespace NE;
 using namespace NUIE;
 using namespace BI;
 
-namespace UnaryFunctionNodesTest
+namespace UnaryOperationNodesTest
 {
 
-static double GetUnaryFunctionResult (double a, const std::function<UINodePtr ()>& nodeCreator)
+static double GetUnaryOperationResult (double a, const std::function<UINodePtr ()>& nodeCreator)
 {
 	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
@@ -26,7 +26,7 @@ static double GetUnaryFunctionResult (double a, const std::function<UINodePtr ()
 
 TEST (TestAbsoluteNode)
 {
-	double result = GetUnaryFunctionResult (-2.0, [&] () {
+	double result = GetUnaryOperationResult (-2.0, [&] () {
 		return UINodePtr (new AbsoluteNode (LocString (L"AbsoluteValue"), Point (0, 0)));
 	});
 	ASSERT (IsEqual (result, 2.0));
@@ -55,7 +55,7 @@ TEST (TestAbsoluteNodeWithList)
 
 TEST (TestFloorNode)
 {
-	double result = GetUnaryFunctionResult (2.3, [&] () {
+	double result = GetUnaryOperationResult (2.3, [&] () {
 		return UINodePtr (new FloorNode (LocString (L"Floor"), Point (0, 0)));
 	});
 	ASSERT (IsEqual (result, 2.0));
@@ -63,7 +63,7 @@ TEST (TestFloorNode)
 
 TEST (TestCeilNode)
 {
-	double result = GetUnaryFunctionResult (2.3, [&] () {
+	double result = GetUnaryOperationResult (2.3, [&] () {
 		return UINodePtr (new CeilNode (LocString (L"Ceil"), Point (0, 0)));
 	});
 	ASSERT (IsEqual (result, 3.0));
