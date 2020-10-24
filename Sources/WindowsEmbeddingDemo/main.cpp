@@ -133,18 +133,27 @@ public:
 		AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", NUIE::IconId (106), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
 		});
-		size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
-		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", NUIE::IconId (107), [&] (const NUIE::Point& position) {
+		size_t mathematicalNodes = nodeTree.AddGroup (L"Mathematical Nodes");
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Addition", NUIE::IconId (107), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
 		});
-		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Subtraction", NUIE::IconId (108), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Subtraction", NUIE::IconId (108), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
 		});
-		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Multiplication", NUIE::IconId (109), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Multiplication", NUIE::IconId (109), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
 		});
-		AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", NUIE::IconId (110), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Division", NUIE::IconId (110), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
+		});
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Abs", NUIE::IconId (113), [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::AbsoluteNode (NE::LocString (L"Abs"), position));
+		});
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Floor", NUIE::IconId (114), [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::FloorNode (NE::LocString (L"Floor"), position));
+		});
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Ceil", NUIE::IconId (115), [&] (const NUIE::Point& position) {
+			return NUIE::UINodePtr (new BI::CeilNode (NE::LocString (L"Ceil"), position));
 		});
 		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
 		AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (111), [&] (const NUIE::Point& position) {

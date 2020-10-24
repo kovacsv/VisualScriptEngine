@@ -31,14 +31,40 @@ private:
 	virtual double				DoOperation (double a) const = 0;
 };
 
-class AbsoluteValueNode : public UnaryFunctionNode
+class AbsoluteNode : public UnaryFunctionNode
 {
-	DYNAMIC_SERIALIZABLE (AbsoluteValueNode);
+	DYNAMIC_SERIALIZABLE (AbsoluteNode);
 
 public:
-	AbsoluteValueNode ();
-	AbsoluteValueNode (const NE::LocString& name, const NUIE::Point& position);
-	virtual ~AbsoluteValueNode ();
+	AbsoluteNode ();
+	AbsoluteNode (const NE::LocString& name, const NUIE::Point& position);
+	virtual ~AbsoluteNode ();
+
+private:
+	virtual double DoOperation (double a) const override;
+};
+
+class FloorNode : public UnaryFunctionNode
+{
+	DYNAMIC_SERIALIZABLE (FloorNode);
+
+public:
+	FloorNode ();
+	FloorNode (const NE::LocString& name, const NUIE::Point& position);
+	virtual ~FloorNode ();
+
+private:
+	virtual double DoOperation (double a) const override;
+};
+
+class CeilNode : public UnaryFunctionNode
+{
+	DYNAMIC_SERIALIZABLE (CeilNode);
+
+public:
+	CeilNode ();
+	CeilNode (const NE::LocString& name, const NUIE::Point& position);
+	virtual ~CeilNode ();
 
 private:
 	virtual double DoOperation (double a) const override;

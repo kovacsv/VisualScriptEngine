@@ -8,7 +8,9 @@ namespace BI
 {
 
 SERIALIZATION_INFO (UnaryFunctionNode, 1);
-DYNAMIC_SERIALIZATION_INFO (AbsoluteValueNode, 1, "{125E8E5E-F1CB-4AE4-8EA9-53343ACD193B}");
+DYNAMIC_SERIALIZATION_INFO (AbsoluteNode, 1, "{125E8E5E-F1CB-4AE4-8EA9-53343ACD193B}");
+DYNAMIC_SERIALIZATION_INFO (CeilNode, 1, "{60B0DFF2-2718-46A1-B7D5-AA614BF21FDD}");
+DYNAMIC_SERIALIZATION_INFO (FloorNode, 1, "{0DB3D5E3-8B32-43A4-82D2-F5B816AB5CC1}");
 
 UnaryFunctionNode::UnaryFunctionNode () :
 	UnaryFunctionNode (NE::LocString (), NUIE::Point ())
@@ -93,26 +95,70 @@ NE::ValuePtr UnaryFunctionNode::DoSingleOperation (const NE::ValueConstPtr& aVal
 	return NE::ValuePtr (new NE::DoubleValue (result));
 }
 
-AbsoluteValueNode::AbsoluteValueNode () :
+AbsoluteNode::AbsoluteNode () :
 	UnaryFunctionNode ()
 {
 
 }
 
-AbsoluteValueNode::AbsoluteValueNode (const NE::LocString& name, const NUIE::Point& position) :
+AbsoluteNode::AbsoluteNode (const NE::LocString& name, const NUIE::Point& position) :
 	UnaryFunctionNode (name, position)
 {
 
 }
 
-AbsoluteValueNode::~AbsoluteValueNode ()
+AbsoluteNode::~AbsoluteNode ()
 {
 
 }
 
-double AbsoluteValueNode::DoOperation (double a) const
+double AbsoluteNode::DoOperation (double a) const
 {
 	return std::abs (a);
+}
+
+FloorNode::FloorNode () :
+	UnaryFunctionNode ()
+{
+
+}
+
+FloorNode::FloorNode (const NE::LocString& name, const NUIE::Point& position) :
+	UnaryFunctionNode (name, position)
+{
+
+}
+
+FloorNode::~FloorNode ()
+{
+
+}
+
+double FloorNode::DoOperation (double a) const
+{
+	return std::floor (a);
+}
+
+CeilNode::CeilNode () :
+	UnaryFunctionNode ()
+{
+
+}
+
+CeilNode::CeilNode (const NE::LocString& name, const NUIE::Point& position) :
+	UnaryFunctionNode (name, position)
+{
+
+}
+
+CeilNode::~CeilNode ()
+{
+
+}
+
+double CeilNode::DoOperation (double a) const
+{
+	return std::ceil (a);
 }
 
 }

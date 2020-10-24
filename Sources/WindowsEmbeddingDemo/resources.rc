@@ -10,3 +10,6 @@
 110	IMAGE "icons/Division.png"
 111	IMAGE "icons/ListBuilder.png"
 112	IMAGE "icons/Viewer.png"
+113 IMAGE "icons/Abs.png"
+114 IMAGE "icons/Floor.png"
+115 IMAGE "icons/Ceil.png"
