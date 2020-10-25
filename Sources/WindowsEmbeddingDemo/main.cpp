@@ -10,11 +10,12 @@
 #include "BI_BuiltInNodes.hpp"
 #include "NUIE_Localization.hpp"
 
-#include <windows.h>
-#include <windowsx.h>
-
 #include "WAS_Direct2DContext.hpp"
 #include "WAS_Direct2DOffscreenContext.hpp"
+
+#include <windows.h>
+#include <windowsx.h>
+#include "resources.hpp"
 
 #pragma comment (lib, "windowscodecs.lib")
 #pragma comment (lib, "d2d1.lib")
@@ -115,60 +116,60 @@ public:
 		NUIE::NodeTree nodeTree;
 
 		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-		AddNodeTreeItem (nodeTree, inputNodes, L"Boolean", NUIE::IconId (101), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Boolean", NUIE::IconId (BOOLEAN_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
 		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", NUIE::IconId (102), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", NUIE::IconId (INTEGER_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
 		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Number", NUIE::IconId (103), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Number", NUIE::IconId (DOUBLE_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
 		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", NUIE::IconId (104), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", NUIE::IconId (INTEGERINCREMENTED_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
 		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Number Increment", NUIE::IconId (105), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Number Increment", NUIE::IconId (DOUBLEINCREMENTED_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
 		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", NUIE::IconId (106), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", NUIE::IconId (DOUBLEDISTRIBUTED_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
 		});
 		size_t mathematicalNodes = nodeTree.AddGroup (L"Mathematical Nodes");
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Addition", NUIE::IconId (107), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Addition", NUIE::IconId (ADDITION_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
 		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Subtraction", NUIE::IconId (108), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Subtraction", NUIE::IconId (SUBTRACTION_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
 		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Multiplication", NUIE::IconId (109), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Multiplication", NUIE::IconId (MULTIPLICATION_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
 		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Division", NUIE::IconId (110), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Division", NUIE::IconId (DIVISION_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
 		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Floor", NUIE::IconId (113), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Floor", NUIE::IconId (FLOOR_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::FloorNode (NE::LocString (L"Floor"), position));
 		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Ceil", NUIE::IconId (114), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Ceil", NUIE::IconId (CEIL_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::CeilNode (NE::LocString (L"Ceil"), position));
 		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Abs", NUIE::IconId (115), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Abs", NUIE::IconId (ABS_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::AbsNode (NE::LocString (L"Abs"), position));
 		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Negative", NUIE::IconId (116), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Negative", NUIE::IconId (NEGATIVE_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::NegativeNode (NE::LocString (L"Negative"), position));
 		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Sqrt", NUIE::IconId (117), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Sqrt", NUIE::IconId (SQRT_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::SqrtNode (NE::LocString (L"Sqrt"), position));
 		});
 		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-		AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (111), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (LISTBUILDER_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
 		});
-		AddNodeTreeItem (nodeTree, otherNodes, L"Multiline Viewer", NUIE::IconId (112), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"Multiline Viewer", NUIE::IconId (VIEWER_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Multiline Viewer"), position, 5));
 		});
-		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (112), [&] (const NUIE::Point& position) {
+		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (VIEWER_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::ViewerNode (NE::LocString (L"Viewer"), position));
 		});
 
