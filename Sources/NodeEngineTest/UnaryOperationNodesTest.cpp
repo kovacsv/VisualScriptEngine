@@ -27,7 +27,7 @@ static double GetUnaryOperationResult (double a, const std::function<UINodePtr (
 TEST (TestAbsoluteNode)
 {
 	double result = GetUnaryOperationResult (-2.0, [&] () {
-		return UINodePtr (new AbsoluteNode (LocString (L"AbsoluteValue"), Point (0, 0)));
+		return UINodePtr (new AbsNode (LocString (L"Abs"), Point (0, 0)));
 	});
 	ASSERT (IsEqual (result, 2.0));
 }
@@ -39,7 +39,7 @@ TEST (TestAbsoluteNodeWithList)
 
 	UINodePtr val = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value"), Point (0, 0), -5.0, 1.0)), EmptyEvaluationEnv);
 	UINodePtr listVal = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value"), Point (0, 0))), EmptyEvaluationEnv);
-	UINodePtr op = uiManager.AddNode (UINodePtr (new AbsoluteNode (LocString (L"AbsoluteValue"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr op = uiManager.AddNode (UINodePtr (new AbsNode (LocString (L"Abs"), Point (0, 0))), EmptyEvaluationEnv);
 	uiManager.ConnectOutputSlotToInputSlot (val->GetUIOutputSlot (SlotId ("out")), listVal->GetUIInputSlot (SlotId ("start")));
 	uiManager.ConnectOutputSlotToInputSlot (listVal->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("a")));
 
@@ -65,6 +65,22 @@ TEST (TestCeilNode)
 {
 	double result = GetUnaryOperationResult (2.3, [&] () {
 		return UINodePtr (new CeilNode (LocString (L"Ceil"), Point (0, 0)));
+	});
+	ASSERT (IsEqual (result, 3.0));
+}
+
+TEST (TestNegativeNode)
+{
+	double result = GetUnaryOperationResult (2.0, [&] () {
+		return UINodePtr (new NegativeNode (LocString (L"Negative"), Point (0, 0)));
+	});
+	ASSERT (IsEqual (result, -2.0));
+}
+
+TEST (TestSqrtNode)
+{
+	double result = GetUnaryOperationResult (9.0, [&] () {
+		return UINodePtr (new SqrtNode (LocString (L"Sqrt"), Point (0, 0)));
 	});
 	ASSERT (IsEqual (result, 3.0));
 }

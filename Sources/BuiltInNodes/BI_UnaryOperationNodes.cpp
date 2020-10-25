@@ -8,9 +8,11 @@ namespace BI
 {
 
 SERIALIZATION_INFO (UnaryOperationNode, 1);
-DYNAMIC_SERIALIZATION_INFO (AbsoluteNode, 1, "{125E8E5E-F1CB-4AE4-8EA9-53343ACD193B}");
-DYNAMIC_SERIALIZATION_INFO (CeilNode, 1, "{60B0DFF2-2718-46A1-B7D5-AA614BF21FDD}");
+DYNAMIC_SERIALIZATION_INFO (AbsNode, 1, "{125E8E5E-F1CB-4AE4-8EA9-53343ACD193B}");
 DYNAMIC_SERIALIZATION_INFO (FloorNode, 1, "{0DB3D5E3-8B32-43A4-82D2-F5B816AB5CC1}");
+DYNAMIC_SERIALIZATION_INFO (CeilNode, 1, "{60B0DFF2-2718-46A1-B7D5-AA614BF21FDD}");
+DYNAMIC_SERIALIZATION_INFO (NegativeNode, 1, "{6440468C-E161-4245-9F8A-4DB637869BB5}");
+DYNAMIC_SERIALIZATION_INFO (SqrtNode, 1, "{FCDA9CB6-43CA-4E95-907E-63405D410D79}");
 
 UnaryOperationNode::UnaryOperationNode () :
 	UnaryOperationNode (NE::LocString (), NUIE::Point ())
@@ -88,6 +90,9 @@ NE::Stream::Status UnaryOperationNode::Write (NE::OutputStream& outputStream) co
 NE::ValuePtr UnaryOperationNode::DoSingleOperation (const NE::ValueConstPtr& aValue) const
 {
 	double aDouble = NE::NumberValue::ToDouble (aValue);
+	if (!IsValidInput (aDouble)) {
+		return nullptr;
+	}
 	double result = DoOperation (aDouble);
 	if (std::isnan (result) || std::isinf (result)) {
 		return nullptr;
@@ -95,24 +100,29 @@ NE::ValuePtr UnaryOperationNode::DoSingleOperation (const NE::ValueConstPtr& aVa
 	return NE::ValuePtr (new NE::DoubleValue (result));
 }
 
-AbsoluteNode::AbsoluteNode () :
+bool UnaryOperationNode::IsValidInput (double) const
+{
+	return true;
+}
+
+AbsNode::AbsNode () :
 	UnaryOperationNode ()
 {
 
 }
 
-AbsoluteNode::AbsoluteNode (const NE::LocString& name, const NUIE::Point& position) :
+AbsNode::AbsNode (const NE::LocString& name, const NUIE::Point& position) :
 	UnaryOperationNode (name, position)
 {
 
 }
 
-AbsoluteNode::~AbsoluteNode ()
+AbsNode::~AbsNode ()
 {
 
 }
 
-double AbsoluteNode::DoOperation (double a) const
+double AbsNode::DoOperation (double a) const
 {
 	return std::abs (a);
 }
@@ -159,6 +169,55 @@ CeilNode::~CeilNode ()
 double CeilNode::DoOperation (double a) const
 {
 	return std::ceil (a);
+}
+
+NegativeNode::NegativeNode () :
+	UnaryOperationNode ()
+{
+
+}
+
+NegativeNode::NegativeNode (const NE::LocString& name, const NUIE::Point& position) :
+	UnaryOperationNode (name, position)
+{
+
+}
+
+NegativeNode::~NegativeNode ()
+{
+
+}
+
+double NegativeNode::DoOperation (double a) const
+{
+	return a * -1.0;
+}
+
+SqrtNode::SqrtNode () :
+	UnaryOperationNode ()
+{
+
+}
+
+SqrtNode::SqrtNode (const NE::LocString& name, const NUIE::Point& position) :
+	UnaryOperationNode (name, position)
+{
+
+}
+
+SqrtNode::~SqrtNode ()
+{
+
+}
+
+bool SqrtNode::IsValidInput (double a) const
+{
+	return a >= 0.0;
+}
+
+double SqrtNode::DoOperation (double a) const
+{
+	return sqrt (a);
 }
 
 }

@@ -28,17 +28,18 @@ public:
 
 private:
 	NE::ValuePtr				DoSingleOperation (const NE::ValueConstPtr& aValue) const;
+	virtual bool				IsValidInput (double a) const;
 	virtual double				DoOperation (double a) const = 0;
 };
 
-class AbsoluteNode : public UnaryOperationNode
+class AbsNode : public UnaryOperationNode
 {
-	DYNAMIC_SERIALIZABLE (AbsoluteNode);
+	DYNAMIC_SERIALIZABLE (AbsNode);
 
 public:
-	AbsoluteNode ();
-	AbsoluteNode (const NE::LocString& name, const NUIE::Point& position);
-	virtual ~AbsoluteNode ();
+	AbsNode ();
+	AbsNode (const NE::LocString& name, const NUIE::Point& position);
+	virtual ~AbsNode ();
 
 private:
 	virtual double DoOperation (double a) const override;
@@ -68,6 +69,33 @@ public:
 
 private:
 	virtual double DoOperation (double a) const override;
+};
+
+class NegativeNode : public UnaryOperationNode
+{
+	DYNAMIC_SERIALIZABLE (NegativeNode);
+
+public:
+	NegativeNode ();
+	NegativeNode (const NE::LocString& name, const NUIE::Point& position);
+	virtual ~NegativeNode ();
+
+private:
+	virtual double DoOperation (double a) const override;
+};
+
+class SqrtNode : public UnaryOperationNode
+{
+	DYNAMIC_SERIALIZABLE (SqrtNode);
+
+public:
+	SqrtNode ();
+	SqrtNode (const NE::LocString& name, const NUIE::Point& position);
+	virtual ~SqrtNode ();
+
+private:
+	virtual bool	IsValidInput (double a) const override;
+	virtual double	DoOperation (double a) const override;
 };
 
 }
