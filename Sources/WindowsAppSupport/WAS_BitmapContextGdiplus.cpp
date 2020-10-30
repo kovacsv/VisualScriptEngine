@@ -6,30 +6,22 @@
 namespace WAS
 {
 
-class GdiplusInitializer
+GdiplusInitializer::GdiplusInitializer ()
 {
-public:
-	GdiplusInitializer ()
-	{
-		Gdiplus::GdiplusStartupInput input;
-		Gdiplus::GdiplusStartupOutput output;
-		DBGONLY (Gdiplus::Status status =) Gdiplus::GdiplusStartup (&gdiPlusToken, &input, &output);
-		DBGASSERT (status == Gdiplus::Ok);
-	}
+	Gdiplus::GdiplusStartupInput input;
+	Gdiplus::GdiplusStartupOutput output;
+	DBGONLY (Gdiplus::Status status =) Gdiplus::GdiplusStartup (&gdiPlusToken, &input, &output);
+	DBGASSERT (status == Gdiplus::Ok);
+}
 
-	~GdiplusInitializer ()
-	{
-		Gdiplus::GdiplusShutdown (gdiPlusToken);
-	}
-
-private:
-	ULONG_PTR	gdiPlusToken;
-};
-
-static GdiplusInitializer gdiplusInitializer;
+GdiplusInitializer::~GdiplusInitializer ()
+{
+	Gdiplus::GdiplusShutdown (gdiPlusToken);
+}
 
 BitmapContextGdiplus::BitmapContextGdiplus () :
 	NUIE::NativeDrawingContext (),
+	gdiplusInitializer (),
 	width (0),
 	height (0),
 	bitmap (new Gdiplus::Bitmap (width, height)),

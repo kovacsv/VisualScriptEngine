@@ -9,6 +9,16 @@
 namespace WAS
 {
 
+class GdiplusInitializer
+{
+public:
+	GdiplusInitializer ();
+	~GdiplusInitializer ();
+
+private:
+	ULONG_PTR	gdiPlusToken;
+};
+
 class BitmapContextGdiplus : public NUIE::NativeDrawingContext
 {
 public:
@@ -50,6 +60,7 @@ private:
 	Gdiplus::RectF		CreateRectF (const NUIE::Rect& rect) const;
 	void				InitGraphics ();
 
+	GdiplusInitializer					gdiplusInitializer;
 	int									width;
 	int									height;
 	std::unique_ptr<Gdiplus::Bitmap>	bitmap;
