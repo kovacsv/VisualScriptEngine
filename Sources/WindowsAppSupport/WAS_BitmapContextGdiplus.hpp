@@ -4,20 +4,11 @@
 #include <memory>
 
 #include "WAS_IncludeWindowsHeaders.hpp"
+#include "WAS_GdiplusUtils.hpp"
 #include "NUIE_DrawingContext.hpp"
 
 namespace WAS
 {
-
-class GdiplusInitializer
-{
-public:
-	GdiplusInitializer ();
-	~GdiplusInitializer ();
-
-private:
-	ULONG_PTR	gdiPlusToken;
-};
 
 class BitmapContextGdiplus : public NUIE::NativeDrawingContext
 {
