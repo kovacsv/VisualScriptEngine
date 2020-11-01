@@ -98,6 +98,7 @@ void MoveNodesWithOffsetsCommand::Do (NodeUIManager& uiManager)
 		const Point& offset = offsets[i];
 		UINodePtr uiNode = uiManager.GetNode (nodeId);
 		uiNode->SetPosition (uiNode->GetPosition () + offset);
+		uiManager.InvalidateNodeDrawing (uiNode);
 		uiManager.InvalidateNodeGroupDrawing (uiNode);
 	}
 }
