@@ -17,12 +17,15 @@ public:
 	{
 	public:
 		Item (const std::wstring& name, const CreatorFunction& creator);
+		Item (const std::wstring& name, const IconId& iconId, const CreatorFunction& creator);
 
 		const std::wstring&		GetName () const;
+		const IconId&			GetIconId () const;
 		const CreatorFunction&	GetCreator () const;
 
 	private:
 		std::wstring		name;
+		IconId				iconId;
 		CreatorFunction		creator;
 	};
 
@@ -30,26 +33,31 @@ public:
 	{
 	public:
 		Group (const std::wstring& name);
+		Group (const std::wstring& name, const IconId& iconId);
 		
 		void						AddItem (const Item& item);
 
 		const std::wstring&			GetName () const;
+		const IconId&				GetIconId () const;
 		const std::vector<Item>&	GetItems () const;
 
 	private:
 		std::wstring		name;
+		IconId				iconId;
 		std::vector<Item>	items;
 	};
 
 	NodeTree ();
 
 	size_t						AddGroup (const std::wstring& groupName);
+	size_t						AddGroup (const std::wstring& groupName, const IconId& iconId);
 	void						AddItem (size_t groupIndex, const std::wstring& itemName, const CreatorFunction& creator);
+	void						AddItem (size_t groupIndex, const std::wstring& itemName, const IconId& iconId, const CreatorFunction& creator);
 	
 	const std::vector<Group>&	GetGroups () const;
 
 private:
-	std::vector<Group> groups;
+	std::vector<Group>			groups;
 };
 
 extern const NodeTree EmptyNodeTree;

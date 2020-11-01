@@ -6,6 +6,15 @@ namespace NUIE
 
 NodeTree::Item::Item (const std::wstring& name, const CreatorFunction& creator) :
 	name (name),
+	iconId (InvalidIconId),
+	creator (creator)
+{
+
+}
+
+NodeTree::Item::Item (const std::wstring& name, const IconId& iconId, const CreatorFunction& creator) :
+	name (name),
+	iconId (iconId),
 	creator (creator)
 {
 
@@ -16,13 +25,26 @@ const std::wstring& NodeTree::Item::GetName () const
 	return name;
 }
 
+const NUIE::IconId& NodeTree::Item::GetIconId () const
+{
+	return iconId;
+}
+
 const CreatorFunction& NodeTree::Item::GetCreator () const
 {
 	return creator;
 }
 
 NodeTree::Group::Group (const std::wstring& name) :
-	name (name)
+	name (name),
+	iconId (InvalidIconId)
+{
+
+}
+
+NodeTree::Group::Group (const std::wstring& name, const IconId& iconId) :
+	name (name),
+	iconId (iconId)
 {
 
 }
@@ -35,6 +57,11 @@ void NodeTree::Group::AddItem (const Item& item)
 const std::wstring& NodeTree::Group::GetName () const
 {
 	return name;
+}
+
+const NUIE::IconId& NodeTree::Group::GetIconId () const
+{
+	return iconId;
 }
 
 const std::vector<NodeTree::Item>& NodeTree::Group::GetItems () const
@@ -53,9 +80,20 @@ size_t NodeTree::AddGroup (const std::wstring& groupName)
 	return groups.size () - 1;
 }
 
+size_t NodeTree::AddGroup (const std::wstring& groupName, const IconId& iconId)
+{
+	groups.push_back (Group (groupName, iconId));
+	return groups.size () - 1;
+}
+
 void NodeTree::AddItem (size_t groupIndex, const std::wstring& itemName, const CreatorFunction& creator)
 {
 	groups[groupIndex].AddItem (Item (itemName, creator));
+}
+
+void NodeTree::AddItem (size_t groupIndex, const std::wstring& itemName, const IconId& iconId, const CreatorFunction& creator)
+{
+	groups[groupIndex].AddItem (Item (itemName, iconId, creator));
 }
 
 const std::vector<NodeTree::Group>& NodeTree::GetGroups () const

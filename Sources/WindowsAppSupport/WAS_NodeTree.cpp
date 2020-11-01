@@ -1,19 +1,24 @@
 #include "WAS_NodeTree.hpp"
 #include "WAS_WindowsAppUtils.hpp"
+#include "WAS_GdiplusUtils.hpp"
 #include "NE_Debug.hpp"
 
 namespace WAS
 {
 
 NodeTreeView::NodeTreeView () :
-	listHandle (NULL)
+	listHandle (NULL),
+	imageList (NULL),
+	groups ()
 {
 
 }
 
 NodeTreeView::~NodeTreeView ()
 {
-
+	if (imageList != NULL) {
+		ImageList_Destroy (imageList);
+	}
 }
 
 bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
@@ -25,6 +30,19 @@ bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
 	if (DBGERROR (listHandle == NULL)) {
 		return false;
 	}
+	return true;
+}
+
+bool NodeTreeView::InitImageList ()
+{
+	if (DBGERROR (imageList != NULL)) {
+		return false;
+	}
+	imageList = ImageList_Create (18, 18, ILC_COLOR32, 1, 1);
+	if (DBGERROR (imageList == NULL)) {
+		return false;
+	}
+	TreeView_SetImageList (listHandle, imageList, TVSIL_NORMAL);
 	return true;
 }
 
@@ -41,7 +59,7 @@ bool NodeTreeView::HasGroup (const std::wstring& group) const
 	return groups.find (group) != groups.end ();
 }
 
-void NodeTreeView::AddGroup (const std::wstring& group)
+void NodeTreeView::AddGroup (const std::wstring& group, HBITMAP bitmap)
 {
 	auto found = groups.find (group);
 	if (DBGERROR (found != groups.end ())) {
@@ -57,11 +75,19 @@ void NodeTreeView::AddGroup (const std::wstring& group)
 	tvInsertStruct.item.cchTextMax = sizeof (tvInsertStruct.item.pszText) / sizeof (wchar_t);
 	tvInsertStruct.item.lParam = (LPARAM) -1;
 
+	if (imageList != NULL && bitmap != NULL) {
+		int imageIndex = ImageList_GetImageCount (imageList);
+		ImageList_Add (imageList, bitmap, NULL);
+		tvInsertStruct.item.mask |= TVIF_IMAGE | TVIF_SELECTEDIMAGE;
+		tvInsertStruct.item.iImage = imageIndex;
+		tvInsertStruct.item.iSelectedImage = imageIndex;
+	}
+
 	HTREEITEM groupItem = (HTREEITEM) SendMessage (listHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
 	groups.insert ({ group, groupItem });
 }
 
-void NodeTreeView::AddItem (const std::wstring& group, const std::wstring& text, LPARAM lParam)
+void NodeTreeView::AddItem (const std::wstring& group, const std::wstring& text, HBITMAP bitmap, LPARAM lParam)
 {
 	auto found = groups.find (group);
 	if (DBGERROR (found == groups.end ())) {
@@ -76,6 +102,15 @@ void NodeTreeView::AddItem (const std::wstring& group, const std::wstring& text,
 	tvInsertStruct.item.pszText = (LPWSTR) text.c_str ();
 	tvInsertStruct.item.cchTextMax = sizeof (tvInsertStruct.item.pszText) / sizeof (wchar_t);
 	tvInsertStruct.item.lParam = lParam;
+
+	if (imageList != NULL && bitmap != NULL) {
+		int imageIndex = ImageList_GetImageCount (imageList);
+		ImageList_Add (imageList, bitmap, NULL);
+		tvInsertStruct.item.mask |= TVIF_IMAGE | TVIF_SELECTEDIMAGE;
+		tvInsertStruct.item.iImage = imageIndex;
+		tvInsertStruct.item.iSelectedImage = imageIndex;
+	}
+
 	SendMessage (listHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
 }
 

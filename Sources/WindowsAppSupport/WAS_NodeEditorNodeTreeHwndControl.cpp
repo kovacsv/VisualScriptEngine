@@ -53,6 +53,27 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
+static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageLoader, const NUIE::IconId& iconId)
+{
+	if (imageLoader == nullptr) {
+		return NULL;
+	}
+	if (iconId == NUIE::InvalidIconId) {
+		return NULL;
+	}
+	return imageLoader->LoadImage (iconId);
+}
+
+NodeEditorNodeTreeHwndControl::ImageLoader::ImageLoader ()
+{
+
+}
+
+NodeEditorNodeTreeHwndControl::ImageLoader::~ImageLoader ()
+{
+
+}
+
 NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl () :
 	NUIE::NativeNodeEditorControl (),
 	nodeTreeView (),
@@ -144,13 +165,18 @@ void NodeEditorNodeTreeHwndControl::TreeViewSelectionChanged (LPNMTREEVIEW lpnmt
 	selectedNode = lpnmtv->itemNew.lParam;
 }
 
-void NodeEditorNodeTreeHwndControl::FillNodeTree (const NUIE::NodeTree& nodeTree)
+void NodeEditorNodeTreeHwndControl::FillNodeTree (const NUIE::NodeTree& nodeTree, ImageLoader* imageLoader)
 {
+	if (imageLoader != nullptr) {
+		nodeTreeView.InitImageList ();
+	}
 	LPARAM nextNodeId = 0;
 	for (const NUIE::NodeTree::Group& group : nodeTree.GetGroups ()) {
-		nodeTreeView.AddGroup (group.GetName ());
+		HBITMAP groupIcon = LoadTreeImage (imageLoader, group.GetIconId ());
+		nodeTreeView.AddGroup (group.GetName (), groupIcon);
 		for (const NUIE::NodeTree::Item& item : group.GetItems ()) {
-			nodeTreeView.AddItem (group.GetName (), item.GetName (), nextNodeId);
+			HBITMAP itemIcon = LoadTreeImage (imageLoader, item.GetIconId ());
+			nodeTreeView.AddItem (group.GetName (), item.GetName (), itemIcon, nextNodeId);
 			nodeIdToCreator.insert ({ nextNodeId, item.GetCreator () });
 			nextNodeId++;
 		}

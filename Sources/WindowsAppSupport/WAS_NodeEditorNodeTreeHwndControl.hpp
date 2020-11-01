@@ -12,6 +12,15 @@ namespace WAS
 class NodeEditorNodeTreeHwndControl : public NUIE::NativeNodeEditorControl
 {
 public:
+	class ImageLoader
+	{
+	public:
+		ImageLoader ();
+		virtual ~ImageLoader ();
+
+		virtual HBITMAP LoadImage (const NUIE::IconId& iconId) = 0;
+	};
+
 	NodeEditorNodeTreeHwndControl ();
 	NodeEditorNodeTreeHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorNodeTreeHwndControl ();
@@ -26,7 +35,7 @@ public:
 	
 	virtual NUIE::DrawingContext&	GetDrawingContext () override;
 
-	void							FillNodeTree (const NUIE::NodeTree& nodeTree);
+	void							FillNodeTree (const NUIE::NodeTree& nodeTree, ImageLoader* imageLoader);
 	void							TreeViewDoubleClick (LPNMHDR lpnmhdr);
 	void							TreeViewSelectionChanged (LPNMTREEVIEW lpnmtv);
 	void							TreeViewBeginDrag (LPNMTREEVIEW lpnmtv);
