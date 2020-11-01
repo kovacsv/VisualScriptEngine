@@ -14,7 +14,7 @@ public:
 	~NodeTreeView ();
 
 	bool		Init (HWND parentHandle, int x, int y, int width, int height);
-	bool		InitImageList (HBITMAP closedBitmap, HBITMAP openedBitmap);
+	bool		InitImageList (HBITMAP groupClosedBitmap, HBITMAP groupOpenedBitmap);
 	void		Resize (int x, int y, int width, int height);
 
 	bool		HasGroup (const std::wstring& group) const;
@@ -28,8 +28,8 @@ public:
 private:
 	HWND											treeHandle;
 	HIMAGELIST										imageList;
-	int												groupClosedBitmap;
-	int												groupOpenedBitmap;
+	int												closedBitmapIndex;
+	int												openedBitmapIndex;
 	std::unordered_map<std::wstring, HTREEITEM>		groups;
 };
 

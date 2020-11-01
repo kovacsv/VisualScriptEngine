@@ -9,8 +9,8 @@ namespace WAS
 NodeTreeView::NodeTreeView () :
 	treeHandle (NULL),
 	imageList (NULL),
-	groupClosedBitmap (-1),
-	groupOpenedBitmap (-1),
+	closedBitmapIndex (-1),
+	openedBitmapIndex (-1),
 	groups ()
 {
 
@@ -36,7 +36,7 @@ bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
 	return true;
 }
 
-bool NodeTreeView::InitImageList (HBITMAP closedBitmap, HBITMAP openedBitmap)
+bool NodeTreeView::InitImageList (HBITMAP groupClosedBitmap, HBITMAP groupOpenedBitmap)
 {
 	if (DBGERROR (imageList != NULL)) {
 		return false;
@@ -45,8 +45,8 @@ bool NodeTreeView::InitImageList (HBITMAP closedBitmap, HBITMAP openedBitmap)
 	if (DBGERROR (imageList == NULL)) {
 		return false;
 	}
-	groupClosedBitmap = ImageList_Add (imageList, closedBitmap, NULL);
-	groupOpenedBitmap = ImageList_Add (imageList, openedBitmap, NULL);
+	closedBitmapIndex = ImageList_Add (imageList, groupClosedBitmap, NULL);
+	openedBitmapIndex = ImageList_Add (imageList, groupOpenedBitmap, NULL);
 	TreeView_SetImageList (treeHandle, imageList, TVSIL_NORMAL);
 	return true;
 }
@@ -82,8 +82,8 @@ void NodeTreeView::AddGroup (const std::wstring& group)
 
 	if (imageList != NULL) {
 		tvInsertStruct.item.mask |= TVIF_IMAGE | TVIF_SELECTEDIMAGE;
-		tvInsertStruct.item.iImage = groupClosedBitmap;
-		tvInsertStruct.item.iSelectedImage = groupClosedBitmap;
+		tvInsertStruct.item.iImage = closedBitmapIndex;
+		tvInsertStruct.item.iSelectedImage = closedBitmapIndex;
 	}
 
 	HTREEITEM groupItem = (HTREEITEM) SendMessage (treeHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
@@ -120,11 +120,11 @@ void NodeTreeView::GroupExpanded (const TVITEMW& group)
 {
 	TVITEM newGroup = group;
 	if (group.state & TVIS_EXPANDED) {
-		newGroup.iImage = groupOpenedBitmap;
-		newGroup.iSelectedImage = groupOpenedBitmap;
+		newGroup.iImage = openedBitmapIndex;
+		newGroup.iSelectedImage = openedBitmapIndex;
 	} else {
-		newGroup.iImage = groupClosedBitmap;
-		newGroup.iSelectedImage = groupClosedBitmap;
+		newGroup.iImage = closedBitmapIndex;
+		newGroup.iSelectedImage = closedBitmapIndex;
 	}
 	TreeView_SetItem (treeHandle, &newGroup);
 }
