@@ -36,15 +36,7 @@ const CreatorFunction& NodeTree::Item::GetCreator () const
 }
 
 NodeTree::Group::Group (const std::wstring& name) :
-	name (name),
-	iconId (InvalidIconId)
-{
-
-}
-
-NodeTree::Group::Group (const std::wstring& name, const IconId& iconId) :
-	name (name),
-	iconId (iconId)
+	name (name)
 {
 
 }
@@ -57,11 +49,6 @@ void NodeTree::Group::AddItem (const Item& item)
 const std::wstring& NodeTree::Group::GetName () const
 {
 	return name;
-}
-
-const NUIE::IconId& NodeTree::Group::GetIconId () const
-{
-	return iconId;
 }
 
 const std::vector<NodeTree::Item>& NodeTree::Group::GetItems () const
@@ -77,12 +64,6 @@ NodeTree::NodeTree ()
 size_t NodeTree::AddGroup (const std::wstring& groupName)
 {
 	groups.push_back (Group (groupName));
-	return groups.size () - 1;
-}
-
-size_t NodeTree::AddGroup (const std::wstring& groupName, const IconId& iconId)
-{
-	groups.push_back (Group (groupName, iconId));
 	return groups.size () - 1;
 }
 

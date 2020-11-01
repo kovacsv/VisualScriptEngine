@@ -42,6 +42,8 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 				case TVN_SELCHANGED:
 					control->TreeViewSelectionChanged ((LPNMTREEVIEW) lParam);
 					break;
+				case TVN_ITEMEXPANDED:
+					control->TreeViewItemExpanded ((LPNMTREEVIEW) lParam);
 				case NM_DBLCLK:
 					control->TreeViewDoubleClick (header);
 					break;
@@ -165,15 +167,26 @@ void NodeEditorNodeTreeHwndControl::TreeViewSelectionChanged (LPNMTREEVIEW lpnmt
 	selectedNode = lpnmtv->itemNew.lParam;
 }
 
+void NodeEditorNodeTreeHwndControl::TreeViewItemExpanded (LPNMTREEVIEW lpnmtv)
+{
+	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetListHandle ()) {
+		return;
+	}
+
+	nodeTreeView.GroupExpanded (lpnmtv->itemNew);
+}
+
 void NodeEditorNodeTreeHwndControl::FillNodeTree (const NUIE::NodeTree& nodeTree, ImageLoader* imageLoader)
 {
 	if (imageLoader != nullptr) {
-		nodeTreeView.InitImageList ();
+		nodeTreeView.InitImageList (
+			imageLoader->LoadGroupClosedImage (),
+			imageLoader->LoadGroupOpenedImage ()
+		);
 	}
 	LPARAM nextNodeId = 0;
 	for (const NUIE::NodeTree::Group& group : nodeTree.GetGroups ()) {
-		HBITMAP groupIcon = LoadTreeImage (imageLoader, group.GetIconId ());
-		nodeTreeView.AddGroup (group.GetName (), groupIcon);
+		nodeTreeView.AddGroup (group.GetName ());
 		for (const NUIE::NodeTree::Item& item : group.GetItems ()) {
 			HBITMAP itemIcon = LoadTreeImage (imageLoader, item.GetIconId ());
 			nodeTreeView.AddItem (group.GetName (), item.GetName (), itemIcon, nextNodeId);

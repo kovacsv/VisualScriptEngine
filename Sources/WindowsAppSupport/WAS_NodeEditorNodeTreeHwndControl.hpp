@@ -18,6 +18,8 @@ public:
 		ImageLoader ();
 		virtual ~ImageLoader ();
 
+		virtual HBITMAP LoadGroupClosedImage () = 0;
+		virtual HBITMAP LoadGroupOpenedImage () = 0;
 		virtual HBITMAP LoadImage (const NUIE::IconId& iconId) = 0;
 	};
 
@@ -38,6 +40,7 @@ public:
 	void							FillNodeTree (const NUIE::NodeTree& nodeTree, ImageLoader* imageLoader);
 	void							TreeViewDoubleClick (LPNMHDR lpnmhdr);
 	void							TreeViewSelectionChanged (LPNMTREEVIEW lpnmtv);
+	void							TreeViewItemExpanded (LPNMTREEVIEW lpnmtv);
 	void							TreeViewBeginDrag (LPNMTREEVIEW lpnmtv);
 	void							TreeViewEndDrag (int x, int y);
 

@@ -123,6 +123,16 @@ public:
 		class ImageLoader : public WAS::NodeEditorNodeTreeHwndControl::ImageLoader
 		{
 		public:
+			virtual HBITMAP LoadGroupClosedImage () override
+			{
+				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDERCLOSED_ICON), L"IMAGE");
+			}
+
+			virtual HBITMAP LoadGroupOpenedImage () override
+			{
+				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDEROPENED_ICON), L"IMAGE");
+			}
+
 			virtual HBITMAP LoadImage (const NUIE::IconId& iconId) override
 			{
 				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE");
@@ -131,7 +141,7 @@ public:
 
 		NUIE::NodeTree nodeTree;
 
-		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes", NUIE::IconId (FOLDEROPENED_ICON));
+		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
 		AddNodeTreeItem (nodeTree, inputNodes, L"Boolean", NUIE::IconId (TREE_BOOLEAN_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
 		});
@@ -150,7 +160,7 @@ public:
 		AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", NUIE::IconId (TREE_DOUBLEDISTRIBUTED_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
 		});
-		size_t mathematicalNodes = nodeTree.AddGroup (L"Mathematical Nodes", NUIE::IconId (FOLDEROPENED_ICON));
+		size_t mathematicalNodes = nodeTree.AddGroup (L"Mathematical Nodes");
 		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Addition", NUIE::IconId (TREE_ADDITION_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
 		});
@@ -178,7 +188,7 @@ public:
 		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Sqrt", NUIE::IconId (TREE_SQRT_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::SqrtNode (NE::LocString (L"Sqrt"), position));
 		});
-		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes", NUIE::IconId (FOLDEROPENED_ICON));
+		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
 		AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (TREE_LISTBUILDER_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
 		});

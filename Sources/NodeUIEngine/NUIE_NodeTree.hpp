@@ -38,19 +38,16 @@ public:
 		void						AddItem (const Item& item);
 
 		const std::wstring&			GetName () const;
-		const IconId&				GetIconId () const;
 		const std::vector<Item>&	GetItems () const;
 
 	private:
 		std::wstring		name;
-		IconId				iconId;
 		std::vector<Item>	items;
 	};
 
 	NodeTree ();
 
 	size_t						AddGroup (const std::wstring& groupName);
-	size_t						AddGroup (const std::wstring& groupName, const IconId& iconId);
 	void						AddItem (size_t groupIndex, const std::wstring& itemName, const CreatorFunction& creator);
 	void						AddItem (size_t groupIndex, const std::wstring& itemName, const IconId& iconId, const CreatorFunction& creator);
 	

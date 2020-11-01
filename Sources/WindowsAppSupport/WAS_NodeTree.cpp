@@ -7,8 +7,10 @@ namespace WAS
 {
 
 NodeTreeView::NodeTreeView () :
-	listHandle (NULL),
+	treeHandle (NULL),
 	imageList (NULL),
+	groupClosedBitmap (-1),
+	groupOpenedBitmap (-1),
 	groups ()
 {
 
@@ -23,35 +25,38 @@ NodeTreeView::~NodeTreeView ()
 
 bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
 {
-	listHandle = CreateWindowEx (
+	treeHandle = CreateWindowEx (
 		0, WC_TREEVIEW, NULL, WS_VISIBLE | WS_CHILD | TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS, 
 		x, y, width, height, parentHandle, NULL, NULL, NULL
 	);
-	if (DBGERROR (listHandle == NULL)) {
+	if (DBGERROR (treeHandle == NULL)) {
 		return false;
 	}
+	TreeView_SetItemHeight (treeHandle, 20);
 	return true;
 }
 
-bool NodeTreeView::InitImageList ()
+bool NodeTreeView::InitImageList (HBITMAP closedBitmap, HBITMAP openedBitmap)
 {
 	if (DBGERROR (imageList != NULL)) {
 		return false;
 	}
-	imageList = ImageList_Create (18, 18, ILC_COLOR32, 1, 1);
+	imageList = ImageList_Create (18, 18, ILC_COLOR32, 2, 1);
 	if (DBGERROR (imageList == NULL)) {
 		return false;
 	}
-	TreeView_SetImageList (listHandle, imageList, TVSIL_NORMAL);
+	groupClosedBitmap = ImageList_Add (imageList, closedBitmap, NULL);
+	groupOpenedBitmap = ImageList_Add (imageList, openedBitmap, NULL);
+	TreeView_SetImageList (treeHandle, imageList, TVSIL_NORMAL);
 	return true;
 }
 
 void NodeTreeView::Resize (int x, int y, int width, int height)
 {
-	if (listHandle == NULL) {
+	if (treeHandle == NULL) {
 		return;
 	}
-	MoveWindow (listHandle, x, y, width, height, TRUE);
+	MoveWindow (treeHandle, x, y, width, height, TRUE);
 }
 
 bool NodeTreeView::HasGroup (const std::wstring& group) const
@@ -59,7 +64,7 @@ bool NodeTreeView::HasGroup (const std::wstring& group) const
 	return groups.find (group) != groups.end ();
 }
 
-void NodeTreeView::AddGroup (const std::wstring& group, HBITMAP bitmap)
+void NodeTreeView::AddGroup (const std::wstring& group)
 {
 	auto found = groups.find (group);
 	if (DBGERROR (found != groups.end ())) {
@@ -75,15 +80,13 @@ void NodeTreeView::AddGroup (const std::wstring& group, HBITMAP bitmap)
 	tvInsertStruct.item.cchTextMax = sizeof (tvInsertStruct.item.pszText) / sizeof (wchar_t);
 	tvInsertStruct.item.lParam = (LPARAM) -1;
 
-	if (imageList != NULL && bitmap != NULL) {
-		int imageIndex = ImageList_GetImageCount (imageList);
-		ImageList_Add (imageList, bitmap, NULL);
+	if (imageList != NULL) {
 		tvInsertStruct.item.mask |= TVIF_IMAGE | TVIF_SELECTEDIMAGE;
-		tvInsertStruct.item.iImage = imageIndex;
-		tvInsertStruct.item.iSelectedImage = imageIndex;
+		tvInsertStruct.item.iImage = groupClosedBitmap;
+		tvInsertStruct.item.iSelectedImage = groupClosedBitmap;
 	}
 
-	HTREEITEM groupItem = (HTREEITEM) SendMessage (listHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
+	HTREEITEM groupItem = (HTREEITEM) SendMessage (treeHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
 	groups.insert ({ group, groupItem });
 }
 
@@ -104,26 +107,38 @@ void NodeTreeView::AddItem (const std::wstring& group, const std::wstring& text,
 	tvInsertStruct.item.lParam = lParam;
 
 	if (imageList != NULL && bitmap != NULL) {
-		int imageIndex = ImageList_GetImageCount (imageList);
-		ImageList_Add (imageList, bitmap, NULL);
+		int imageIndex = ImageList_Add (imageList, bitmap, NULL);
 		tvInsertStruct.item.mask |= TVIF_IMAGE | TVIF_SELECTEDIMAGE;
 		tvInsertStruct.item.iImage = imageIndex;
 		tvInsertStruct.item.iSelectedImage = imageIndex;
 	}
 
-	SendMessage (listHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
+	SendMessage (treeHandle, TVM_INSERTITEM, 0, (LPARAM) &tvInsertStruct);
+}
+
+void NodeTreeView::GroupExpanded (const TVITEMW& group)
+{
+	TVITEM newGroup = group;
+	if (group.state & TVIS_EXPANDED) {
+		newGroup.iImage = groupOpenedBitmap;
+		newGroup.iSelectedImage = groupOpenedBitmap;
+	} else {
+		newGroup.iImage = groupClosedBitmap;
+		newGroup.iSelectedImage = groupClosedBitmap;
+	}
+	TreeView_SetItem (treeHandle, &newGroup);
 }
 
 void NodeTreeView::ExpandAll ()
 {
 	for (const auto& it : groups) {
-		TreeView_Expand (listHandle, it.second, TVM_EXPAND);
+		TreeView_Expand (treeHandle, it.second, TVM_EXPAND);
 	}
 }
 
 HWND NodeTreeView::GetListHandle ()
 {
-	return listHandle;
+	return treeHandle;
 }
 
 }
