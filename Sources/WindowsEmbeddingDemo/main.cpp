@@ -24,7 +24,25 @@
 #pragma comment (lib, "d2d1.lib")
 #pragma comment (lib, "dwrite.lib")
 
+#define FILE_NEW		1101
+#define FILE_OPEN		1102
+#define FILE_SAVE		1103
+#define FILE_QUIT		1104
+#define EDIT_UNDO		1201
+#define EDIT_REDO		1202
+#define EDIT_COPY		1203
+#define EDIT_PASTE		1204
+#define EDIT_DELETE		1205
+#define EDIT_GROUP		1206
+#define EDIT_UNGROUP	1207
+
 static const int ControlPadding = 5;
+
+static bool MessageBoxYesNo (HWND hwnd, LPCWSTR text, LPCWSTR caption)
+{
+	int result = MessageBox (hwnd, text, caption, MB_YESNO | MB_ICONWARNING);
+	return (result == IDYES);
+}
 
 static const NUIE::BasicSkinParams& GetAppSkinParams ()
 {
@@ -89,18 +107,6 @@ class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 		return resHandle;
 	}
 };
-
-#define FILE_NEW		1101
-#define FILE_OPEN		1102
-#define FILE_SAVE		1103
-#define FILE_QUIT		1104
-#define EDIT_UNDO		1201
-#define EDIT_REDO		1202
-#define EDIT_COPY		1203
-#define EDIT_PASTE		1204
-#define EDIT_DELETE		1205
-#define EDIT_GROUP		1206
-#define EDIT_UNGROUP	1207
 
 class AppUIEnvironment : public NUIE::NodeUIEnvironment
 {
@@ -342,8 +348,8 @@ public:
 	void New (HWND hwnd)
 	{
 		if (nodeEditor.NeedToSave ()) {
-			int result = MessageBox (hwnd, L"You have made some changes that are not saved. Would you like to start new file?", L"New File", MB_YESNO);
-			if (result == IDNO) {
+			bool result = MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to start new file?", L"New File");
+			if (!result) {
 				return;
 			}
 		}
@@ -353,8 +359,8 @@ public:
 	void Open (HWND hwnd)
 	{
 		if (nodeEditor.NeedToSave ()) {
-			int result = MessageBox (hwnd, L"You have made some changes that are not saved. Would you like to open file?", L"Open File", MB_YESNO);
-			if (result == IDNO) {
+			bool result = MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to open file?", L"Open File");
+			if (!result) {
 				return;
 			}
 		}
@@ -376,10 +382,7 @@ public:
 	bool Close (HWND hwnd)
 	{
 		if (nodeEditor.NeedToSave ()) {
-			int result = MessageBox (hwnd, L"You have made some changes that are not saved. Would you like to quit?", L"Quit", MB_YESNO);
-			if (result == IDNO) {
-				return false;
-			}
+			return MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to quit?", L"Quit");
 		}
 		return true;
 	}
