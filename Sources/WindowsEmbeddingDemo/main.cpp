@@ -373,6 +373,17 @@ public:
 		}
 	}
 
+	bool Close (HWND hwnd)
+	{
+		if (nodeEditor.NeedToSave ()) {
+			int result = MessageBox (hwnd, L"You have made some changes that are not saved. Would you like to quit?", L"Quit", MB_YESNO);
+			if (result == IDNO) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	void ExecuteCommand (NUIE::CommandCode command)
 	{
 		nodeEditor.ExecuteCommand (command);
@@ -421,7 +432,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	} else if (msg == WM_DESTROY) {
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, NULL);
 		PostQuitMessage (0);
-		DestroyWindow (hwnd);
 	}
 
 	Application* application = (Application*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
@@ -442,8 +452,10 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_CLOSE:
 			{
-				DestroyWindow (hwnd);
-				break;
+				if (application->Close (hwnd)) {
+					DestroyWindow (hwnd);
+				}
+				return 0;
 			}
 		case WM_SIZE:
 			{
