@@ -40,7 +40,7 @@ static const int ControlPadding = 5;
 
 static bool MessageBoxYesNo (HWND hwnd, LPCWSTR text, LPCWSTR caption)
 {
-	int result = MessageBox (hwnd, text, caption, MB_YESNO | MB_ICONWARNING);
+	int result = MessageBox (hwnd, text, caption, MB_ICONWARNING | MB_YESNO);
 	return (result == IDYES);
 }
 
