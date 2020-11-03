@@ -114,7 +114,7 @@ NUIE::EventHandlerResult BasicUINode::HandleMouseDoubleClick (NUIE::NodeUIEnviro
 	return HandleMouseClick (env, modifierKeys, mouseButton, position, commandInterface);
 }
 
-void BasicUINode::UpdateNodeDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
+void BasicUINode::UpdateDrawingImage (NUIE::NodeUIDrawingEnvironment& env, NUIE::NodeDrawingImage& drawingImage) const
 {
 	layout->Draw (*this, env, drawingImage);
 }

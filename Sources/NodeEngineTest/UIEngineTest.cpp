@@ -57,7 +57,7 @@ public:
 		return ValuePtr (new IntValue (42));
 	}
 
-	virtual void UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
+	virtual void UpdateDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
 	{
 	
 	}

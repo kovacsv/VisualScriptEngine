@@ -65,7 +65,7 @@ public:
 		parameterList.AddParameter (NodeParameterPtr (new In1DefaultValueParameter ()));
 	}
 
-	virtual void UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
+	virtual void UpdateDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
 	{
 	
 	}
@@ -113,7 +113,7 @@ public:
 		parameterList.AddParameter (NodeParameterPtr (new In2DefaultValueParameter ()));
 	}
 
-	virtual void UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
+	virtual void UpdateDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
 	{
 
 	}
@@ -179,7 +179,7 @@ public:
 		parameterList.AddParameter (NodeParameterPtr (new MyEnumerationParameter ()));
 	}
 
-	virtual void UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
+	virtual void UpdateDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const override
 	{
 
 	}

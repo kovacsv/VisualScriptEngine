@@ -30,7 +30,7 @@ public:
 
 	virtual void				Initialize () override;
 	virtual ValueConstPtr		Calculate (NE::EvaluationEnv&) const override;
-	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
+	virtual void				UpdateDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const override;
 
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;

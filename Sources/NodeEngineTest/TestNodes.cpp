@@ -55,7 +55,7 @@ ValueConstPtr SerializableTestUINode::Calculate (NE::EvaluationEnv&) const
 	return nullptr;
 }
 
-void SerializableTestUINode::UpdateNodeDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const
+void SerializableTestUINode::UpdateDrawingImage (NodeUIDrawingEnvironment&, NodeDrawingImage&) const
 {
 	DBGBREAK ();
 }

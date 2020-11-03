@@ -104,8 +104,8 @@ private:
 	UIInputSlotPtr				GetModifiableUIInputSlot (const NE::SlotId& slotId);
 	UIOutputSlotPtr				GetModifiableUIOutputSlot (const NE::SlotId& slotId);
 
-	const NodeDrawingImage&		GetNodeDrawingImage (NodeUIDrawingEnvironment& env) const;
-	virtual void				UpdateNodeDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
+	const NodeDrawingImage&		GetDrawingImage (NodeUIDrawingEnvironment& env) const;
+	virtual void				UpdateDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
 
 	NE::LocString				nodeName;
 	Point						nodePosition;
