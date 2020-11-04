@@ -51,7 +51,11 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 {
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
-	MouseDownEvent (nodeEditor, event, NUIE::MouseButton::Left, position.GetX (), position.GetY ());
+	if ([event modifierFlags] & NSEventModifierFlagControl) {
+		nodeEditor->OnContextMenuRequest (position.GetX (), position.GetY ());
+	} else {
+		MouseDownEvent (nodeEditor, event, NUIE::MouseButton::Left, position.GetX (), position.GetY ());
+	}
 }
 
 - (void) mouseUp : (NSEvent*) event
@@ -112,13 +116,33 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) scrollWheel : (NSEvent*) event
 {
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	if ([event modifierFlags] & NSEventModifierFlagOption || [event subtype] == 0) {
+		NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
+		NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
+		if ([event scrollingDeltaX] + [event scrollingDeltaY] < 0) {
+			rotation = NUIE::MouseWheelRotation::Backward;
+		}
+		nodeEditor->OnMouseWheel (MAS::GetModifierKeysFromEvent(event), rotation, position.GetX (), position.GetY ());
+	} else {
+		nodeEditor->OffsetViewBox ([event scrollingDeltaX], [event scrollingDeltaY]);
+	}
+}
+
+- (void) magnifyWithEvent : (NSEvent*) event
+{
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
-	if ([event deltaX] + [event deltaY] < 0) {
+	if ([event magnification] < 0) {
 		rotation = NUIE::MouseWheelRotation::Backward;
 	}
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OnMouseWheel(MAS::GetModifierKeysFromEvent(event), rotation, position.GetX (), position.GetY ());
+}
+
+- (void) swipeWithEvent : (NSEvent*) event {
+	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	nodeEditor->OffsetViewBox ([event deltaX], [event deltaY]);
 }
 
 - (void) keyDown : (NSEvent*) event

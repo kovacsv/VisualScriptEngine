@@ -51,6 +51,7 @@ public:
 
 	const ViewBox&				GetViewBox () const;
 	void						SetViewBox (const ViewBox& newViewBox);
+	void						OffsetViewBox (int x, int y);
 
 	const Selection&			GetSelection () const;
 	void						SetSelection (const Selection& newSelection);

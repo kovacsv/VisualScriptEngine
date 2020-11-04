@@ -160,6 +160,15 @@ void NodeEditor::SetViewBox (const ViewBox& newViewBox)
 	Update ();
 }
 
+void NodeEditor::OffsetViewBox (int x, int y)
+{
+	ViewBox viewBox = uiManager.GetViewBox ();
+	Point diff = viewBox.GetOffset () + Point (x, y);
+	viewBox.SetOffset (diff);
+	uiManager.SetViewBox (viewBox);
+	Update ();
+}
+
 const Selection& NodeEditor::GetSelection () const
 {
 	return uiManager.GetSelection ();
