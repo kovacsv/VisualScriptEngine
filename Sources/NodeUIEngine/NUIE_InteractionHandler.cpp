@@ -85,7 +85,7 @@ public:
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Rect modelSelectionRect = viewBox.ViewToModel (selectionRect);
 		Selection selection = uiManager.GetSelection ();
-		if (!modifierKeys.Contains (ModifierKeyCode::Control)) {
+		if (!modifierKeys.Contains (ModifierKeyCode::Command)) {
 			selection.Clear ();
 		}
 		std::unordered_set<UINodePtr> nodesToSelect;
@@ -747,7 +747,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 	if (mouseButton == MouseButton::Left) {
 		bool found = FindItemUnderPosition (uiManager, uiEnvironment, position,
 			[&] (const UIInputSlotConstPtr& foundInputSlot) {
-				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
+				if (modifierKeys.Contains (ModifierKeyCode::Command)) {
 					if (uiManager.GetConnectedOutputSlotCount (foundInputSlot) == 1) {
 						UIOutputSlotConstPtr foundOutputSlot = nullptr;
 						uiManager.EnumerateConnectedUIOutputSlots (foundInputSlot, [&] (const UIOutputSlotConstPtr& outputSlot) {
@@ -769,7 +769,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 				}
 			},
 			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
-				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
+				if (modifierKeys.Contains (ModifierKeyCode::Command)) {
 					if (uiManager.GetConnectedInputSlotCount (foundOutputSlot) == 1) {
 						UIInputSlotConstPtr foundInputSlot = nullptr;
 						uiManager.EnumerateConnectedUIInputSlots (foundOutputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
@@ -790,7 +790,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 			},
 			[&] (const UINodePtr& foundNode) {
 				NE::NodeCollection nodesToMove = GetNodesForCommand (uiManager, foundNode);
-				if (modifierKeys.Contains (ModifierKeyCode::Control)) {
+				if (modifierKeys.Contains (ModifierKeyCode::Command)) {
 					multiMouseMoveHandler.AddHandler (mouseButton, new NodeCopyMovingHandler (uiEnvironment, uiManager, nodesToMove));
 				} else {
 					multiMouseMoveHandler.AddHandler (mouseButton, new NodeMovingHandler (uiManager, nodesToMove));
@@ -858,7 +858,7 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& uiEn
 		if (foundNode != nullptr) {
 			const NE::NodeId& foundNodeId = foundNode->GetId ();
 			selection = uiManager.GetSelection ();
-			if (modifierKeys.Contains (ModifierKeyCode::Control)) {
+			if (modifierKeys.Contains (ModifierKeyCode::Command)) {
 				if (selection.ContainsNode (foundNodeId)) {
 					selection.DeleteNode (foundNodeId);
 				} else {
