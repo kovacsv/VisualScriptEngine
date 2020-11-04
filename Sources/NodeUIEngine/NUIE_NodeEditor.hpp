@@ -26,11 +26,12 @@ public:
 	NodeEditor (NodeUIEnvironment& uiEnvironment);
 	virtual ~NodeEditor ();
 
-	void						OnMouseDown (const ModifierKeys& modifierKeys, MouseButton button, int x, int y);
-	void						OnMouseUp (const ModifierKeys& modifierKeys, MouseButton button, int x, int y);
-	void						OnMouseMove (const ModifierKeys& modifierKeys, int x, int y);
-	void						OnMouseWheel (const ModifierKeys& modifierKeys, MouseWheelRotation rotation, int x, int y);
-	void						OnMouseDoubleClick (const ModifierKeys& modifierKeys, MouseButton button, int x, int y);
+	void						OnMouseDown (const ModifierKeys& keys, MouseButton button, int x, int y);
+	void						OnMouseUp (const ModifierKeys& keys, MouseButton button, int x, int y);
+	void						OnMouseMove (const ModifierKeys& keys, int x, int y);
+	void						OnMouseWheel (const ModifierKeys& keys, MouseWheelRotation rotation, int x, int y);
+	void						OnMouseSwipe (const ModifierKeys& keys, int x, int y);
+	void						OnMouseDoubleClick (const ModifierKeys& keys, MouseButton button, int x, int y);
 	void						OnContextMenuRequest (int x, int y);
 	void						OnResize (int newWidth, int newHeight);
 
@@ -51,7 +52,6 @@ public:
 
 	const ViewBox&				GetViewBox () const;
 	void						SetViewBox (const ViewBox& newViewBox);
-	void						OffsetViewBox (int x, int y);
 
 	const Selection&			GetSelection () const;
 	void						SetSelection (const Selection& newSelection);

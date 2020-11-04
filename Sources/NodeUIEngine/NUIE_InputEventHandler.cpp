@@ -90,14 +90,4 @@ void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const ModifierKe
 	}
 }
 
-void MouseEventTranslator::OnMouseWheel (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseWheelRotation rotation, const Point& position)
-{
-	handler.HandleMouseWheel (env, modifierKeys, rotation, position);
-}
-
-void MouseEventTranslator::OnMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
-{
-	handler.HandleMouseDoubleClick (env, modifierKeys, mouseButton, position);
-}
-
 }

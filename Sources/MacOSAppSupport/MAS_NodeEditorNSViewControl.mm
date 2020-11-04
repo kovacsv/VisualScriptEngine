@@ -117,15 +117,16 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) scrollWheel : (NSEvent*) event
 {
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
+	NUIE::ModifierKeys modifierKeys = MAS::GetModifierKeysFromEvent (event);
 	if ([event modifierFlags] & NSEventModifierFlagOption || [event subtype] == 0) {
 		NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 		NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
 		if ([event scrollingDeltaX] + [event scrollingDeltaY] < 0) {
 			rotation = NUIE::MouseWheelRotation::Backward;
 		}
-		nodeEditor->OnMouseWheel (MAS::GetModifierKeysFromEvent(event), rotation, position.GetX (), position.GetY ());
+		nodeEditor->OnMouseWheel (modifierKeys, rotation, position.GetX (), position.GetY ());
 	} else {
-		nodeEditor->OffsetViewBox ([event scrollingDeltaX], [event scrollingDeltaY]);
+		nodeEditor->OnMouseSwipe (modifierKeys, [event scrollingDeltaX], [event scrollingDeltaY]);
 	}
 }
 
@@ -137,13 +138,13 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 		rotation = NUIE::MouseWheelRotation::Backward;
 	}
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
-	nodeEditor->OnMouseWheel(MAS::GetModifierKeysFromEvent(event), rotation, position.GetX (), position.GetY ());
+	nodeEditor->OnMouseWheel (MAS::GetModifierKeysFromEvent (event), rotation, position.GetX (), position.GetY ());
 }
 
 - (void) swipeWithEvent : (NSEvent*) event
 {
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
-	nodeEditor->OffsetViewBox ([event deltaX], [event deltaY]);
+	nodeEditor->OnMouseSwipe (MAS::GetModifierKeysFromEvent (event), [event deltaX], [event deltaY]);
 }
 
 - (void) keyDown : (NSEvent*) event

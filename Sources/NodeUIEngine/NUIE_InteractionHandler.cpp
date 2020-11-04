@@ -580,6 +580,11 @@ EventHandlerResult NodeInputEventHandler::HandleMouseWheel (NodeUIEnvironment&, 
 	return EventHandlerResult::EventNotHandled;
 }
 
+EventHandlerResult NodeInputEventHandler::HandleMouseSwipe (NodeUIEnvironment&, const ModifierKeys&, const Point&)
+{
+	return EventHandlerResult::EventNotHandled;
+}
+
 EventHandlerResult NodeInputEventHandler::HandleKeyPress (NodeUIEnvironment&, KeyCode)
 {
 	return EventHandlerResult::EventNotHandled;
@@ -915,6 +920,14 @@ EventHandlerResult InteractionHandler::HandleMouseWheel (NodeUIEnvironment&, con
 	ViewBox viewBox = uiManager.GetViewBox ();
 	double scaleRatio = (rotation == MouseWheelRotation::Forward ? 1.1 : 0.9);
 	viewBox.SetScale (viewBox.GetScale () * scaleRatio, position);
+	uiManager.SetViewBox (viewBox);
+	return EventHandlerResult::EventHandled;
+}
+
+NUIE::EventHandlerResult InteractionHandler::HandleMouseSwipe (NodeUIEnvironment&, const ModifierKeys&, const Point& offset)
+{
+	ViewBox viewBox = uiManager.GetViewBox ();
+	viewBox.SetOffset (viewBox.GetOffset () + offset);
 	uiManager.SetViewBox (viewBox);
 	return EventHandlerResult::EventHandled;
 }

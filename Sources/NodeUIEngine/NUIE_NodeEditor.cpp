@@ -45,13 +45,19 @@ void NodeEditor::OnMouseMove (const ModifierKeys& keys, int x, int y)
 
 void NodeEditor::OnMouseWheel (const ModifierKeys& keys, MouseWheelRotation rotation, int x, int y)
 {
-	mouseEventTranslator.OnMouseWheel (uiEnvironment, keys, rotation, Point (x, y));
+	interactionHandler.HandleMouseWheel (uiEnvironment, keys, rotation, Point (x, y));
+	Update ();
+}
+
+void NodeEditor::OnMouseSwipe (const ModifierKeys& keys, int x, int y)
+{
+	interactionHandler.HandleMouseSwipe (uiEnvironment, keys, Point (x, y));
 	Update ();
 }
 
 void NodeEditor::OnMouseDoubleClick (const ModifierKeys& keys, MouseButton button, int x, int y)
 {
-	mouseEventTranslator.OnMouseDoubleClick (uiEnvironment, keys, button, Point (x, y));
+	interactionHandler.HandleMouseDoubleClick (uiEnvironment, keys, button, Point (x, y));
 	Update ();
 }
 
@@ -157,15 +163,6 @@ const ViewBox& NodeEditor::GetViewBox () const
 void NodeEditor::SetViewBox (const ViewBox& newViewBox)
 {
 	uiManager.SetViewBox (newViewBox);
-	Update ();
-}
-
-void NodeEditor::OffsetViewBox (int x, int y)
-{
-	ViewBox viewBox = uiManager.GetViewBox ();
-	Point newOffset = viewBox.GetOffset () + Point (x, y);
-	viewBox.SetOffset (newOffset);
-	uiManager.SetViewBox (viewBox);
 	Update ();
 }
 

@@ -288,6 +288,14 @@ TEST (PanAndZoomTest)
 	ASSERT (env.CheckReference (L"PanAndZoom_ZoomedOut2.svg"));
 }
 
+TEST (SwipeTest)
+{
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference (L"Swipe_Basic.svg"));
+	env.nodeEditor.OnMouseSwipe (EmptyModifierKeys, 10, 100);
+	ASSERT (env.CheckReference (L"Swipe_AfterSwipe.svg"));
+}
+
 TEST (DeleteNodeTest)
 {
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());

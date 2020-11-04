@@ -53,6 +53,7 @@ public:
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult	HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult	HandleMouseWheel (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseWheelRotation rotation, const Point& position) override;
+	virtual EventHandlerResult	HandleMouseSwipe (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& offset) override;
 	virtual EventHandlerResult	HandleKeyPress (NodeUIEnvironment& env, KeyCode pressedKey) override;
 
 private:
@@ -80,6 +81,7 @@ public:
 	virtual EventHandlerResult		HandleMouseClick (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult		HandleMouseDoubleClick (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult		HandleMouseWheel (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseWheelRotation rotation, const Point& position) override;
+	virtual EventHandlerResult		HandleMouseSwipe (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& offset) override;
 	virtual EventHandlerResult		HandleKeyPress (NodeUIEnvironment& uiEnvironment, KeyCode pressedKey) override;
 
 private:
