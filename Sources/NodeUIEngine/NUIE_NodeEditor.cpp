@@ -25,45 +25,45 @@ NodeEditor::~NodeEditor ()
 
 }
 
-void NodeEditor::OnMouseDown (const ModifierKeys& keys, MouseButton button, int x, int y)
+void NodeEditor::OnMouseDown (const ModifierKeys& keys, MouseButton button, int posX, int posY)
 {
-	mouseEventTranslator.OnMouseDown (uiEnvironment, keys, button, Point (x, y));
+	mouseEventTranslator.OnMouseDown (uiEnvironment, keys, button, Point (posX, posY));
 	Update ();
 }
 
-void NodeEditor::OnMouseUp (const ModifierKeys& keys, MouseButton button, int x, int y)
+void NodeEditor::OnMouseUp (const ModifierKeys& keys, MouseButton button, int posX, int posY)
 {
-	mouseEventTranslator.OnMouseUp (uiEnvironment, keys, button, Point (x, y));
+	mouseEventTranslator.OnMouseUp (uiEnvironment, keys, button, Point (posX, posY));
 	Update ();
 }
 
-void NodeEditor::OnMouseMove (const ModifierKeys& keys, int x, int y)
+void NodeEditor::OnMouseMove (const ModifierKeys& keys, int posX, int posY)
 {
-	mouseEventTranslator.OnMouseMove (uiEnvironment, keys, Point (x, y));
+	mouseEventTranslator.OnMouseMove (uiEnvironment, keys, Point (posX, posY));
 	Update ();
 }
 
-void NodeEditor::OnMouseWheel (const ModifierKeys& keys, MouseWheelRotation rotation, int x, int y)
+void NodeEditor::OnMouseWheel (const ModifierKeys& keys, MouseWheelRotation rotation, int posX, int posY)
 {
-	interactionHandler.HandleMouseWheel (uiEnvironment, keys, rotation, Point (x, y));
+	interactionHandler.HandleMouseWheel (uiEnvironment, keys, rotation, Point (posX, posY));
 	Update ();
 }
 
-void NodeEditor::OnMouseSwipe (const ModifierKeys& keys, int x, int y)
+void NodeEditor::OnMouseSwipe (const ModifierKeys& keys, int offsetX, int offsetY)
 {
-	interactionHandler.HandleMouseSwipe (uiEnvironment, keys, Point (x, y));
+	interactionHandler.HandleMouseSwipe (uiEnvironment, keys, Point (offsetX, offsetY));
 	Update ();
 }
 
-void NodeEditor::OnMouseDoubleClick (const ModifierKeys& keys, MouseButton button, int x, int y)
+void NodeEditor::OnMouseDoubleClick (const ModifierKeys& keys, MouseButton button, int posX, int posY)
 {
-	interactionHandler.HandleMouseDoubleClick (uiEnvironment, keys, button, Point (x, y));
+	interactionHandler.HandleMouseDoubleClick (uiEnvironment, keys, button, Point (posX, posY));
 	Update ();
 }
 
-void NodeEditor::OnContextMenuRequest (int x, int y)
+void NodeEditor::OnContextMenuRequest (int posX, int posY)
 {
-	interactionHandler.HandleContextMenuRequest (uiEnvironment, Point (x, y));
+	interactionHandler.HandleContextMenuRequest (uiEnvironment, Point (posX, posY));
 	Update ();
 }
 
