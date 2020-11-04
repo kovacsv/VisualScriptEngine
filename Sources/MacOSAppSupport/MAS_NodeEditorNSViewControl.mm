@@ -140,7 +140,8 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 	nodeEditor->OnMouseWheel(MAS::GetModifierKeysFromEvent(event), rotation, position.GetX (), position.GetY ());
 }
 
-- (void) swipeWithEvent : (NSEvent*) event {
+- (void) swipeWithEvent : (NSEvent*) event
+{
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OffsetViewBox ([event deltaX], [event deltaY]);
 }
@@ -193,7 +194,8 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 	}
 }
 
-- (void) cursorUpdate : (NSEvent *) theEvent {
+- (void) cursorUpdate : (NSEvent *) theEvent
+{
 	#pragma unused (theEvent)
 	[[NSCursor arrowCursor] set];
 }

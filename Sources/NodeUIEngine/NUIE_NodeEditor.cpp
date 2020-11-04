@@ -163,8 +163,8 @@ void NodeEditor::SetViewBox (const ViewBox& newViewBox)
 void NodeEditor::OffsetViewBox (int x, int y)
 {
 	ViewBox viewBox = uiManager.GetViewBox ();
-	Point diff = viewBox.GetOffset () + Point (x, y);
-	viewBox.SetOffset (diff);
+	Point newOffset = viewBox.GetOffset () + Point (x, y);
+	viewBox.SetOffset (newOffset);
 	uiManager.SetViewBox (viewBox);
 	Update ();
 }
