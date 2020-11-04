@@ -102,6 +102,11 @@ static const std::vector<NSString*> IconResourceNames = {
 	@"Subtraction.png",
 	@"Multiplication.png",
 	@"Division.png",
+	@"Floor.png",
+	@"Ceil.png",
+	@"Abs.png",
+	@"Negative.png",
+	@"Sqrt.png",
 	@"ListBuilder.png",
 	@"Viewer.png"
 };
@@ -139,7 +144,7 @@ static void InitNodeTree (NUIE::NodeTree& nodeTree)
 	AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", NUIE::IconId (6), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
 	});
-	size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
+	size_t arithmeticNodes = nodeTree.AddGroup (L"Mathematical Nodes");
 	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Addition", NUIE::IconId (7), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
 	});
@@ -152,11 +157,26 @@ static void InitNodeTree (NUIE::NodeTree& nodeTree)
 	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Division", NUIE::IconId (10), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
 	});
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Floor", NUIE::IconId (11), [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::FloorNode (NE::LocString (L"Floor"), position));
+	});
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Ceil", NUIE::IconId (12), [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::CeilNode (NE::LocString (L"Ceil"), position));
+	});
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Abs", NUIE::IconId (13), [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::AbsNode (NE::LocString (L"Abs"), position));
+	});
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Negative", NUIE::IconId (14), [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::NegativeNode (NE::LocString (L"Negative"), position));
+	});
+	AddNodeTreeItem (nodeTree, arithmeticNodes, L"Sqrt", NUIE::IconId (15), [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::SqrtNode (NE::LocString (L"Sqrt"), position));
+	});
 	size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-	AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (11), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (16), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
 	});
-	AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (12), [&] (const NUIE::Point& position) {
+	AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (17), [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
 	});
 }
