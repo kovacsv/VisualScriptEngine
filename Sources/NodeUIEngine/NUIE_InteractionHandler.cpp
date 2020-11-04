@@ -705,6 +705,38 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE:
 	}
 }
 
+void InteractionHandler::HandleContextMenuRequest (NodeUIEnvironment& uiEnvironment, const Point& position)
+{
+	EventHandler& eventHandler = uiEnvironment.GetEventHandler ();
+	MenuCommandPtr selectedCommand;
+	bool found = FindItemUnderPosition (uiManager, uiEnvironment, position,
+		[&] (const UIInputSlotConstPtr& foundInputSlot) {
+			MenuCommandStructure commands = CreateInputSlotCommandStructure (uiManager, uiEnvironment, foundInputSlot);
+			selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::InputSlot, position, commands);
+		},
+		[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
+			MenuCommandStructure commands = CreateOutputSlotCommandStructure (uiManager, uiEnvironment, foundOutputSlot);
+			selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::OutputSlot, position, commands);
+		},
+		[&] (const UINodePtr& foundNode) {
+			MenuCommandStructure commands = CreateNodeCommandStructure (uiManager, uiEnvironment, foundNode);
+			selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::Node, position, commands);
+		},
+		[&] (const UINodeGroupPtr& foundGroup) {
+			MenuCommandStructure commands = CreateNodeGroupCommandStructure (uiManager, uiEnvironment, foundGroup);
+			selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::Group, position, commands);
+		}
+	);
+	if (!found) {
+		Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
+		MenuCommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, uiEnvironment, modelPosition);
+		selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::EmptyArea, position, commands);
+	}
+	if (selectedCommand != nullptr) {
+		selectedCommand->Do ();
+	}
+}
+
 EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position)
 {
 	EventHandlerResult handlerResult = EventHandlerResult::EventNotHandled;
@@ -840,34 +872,7 @@ EventHandlerResult InteractionHandler::HandleMouseClick (NodeUIEnvironment& uiEn
 		uiManager.SetSelection (selection, uiEnvironment);
 		handlerResult = EventHandlerResult::EventHandled;
 	} else if (mouseButton == MouseButton::Right) {
-		EventHandler& eventHandler = uiEnvironment.GetEventHandler ();
-		MenuCommandPtr selectedCommand;
-		bool found = FindItemUnderPosition (uiManager, uiEnvironment, position,
-			[&] (const UIInputSlotConstPtr& foundInputSlot) {
-				MenuCommandStructure commands = CreateInputSlotCommandStructure (uiManager, uiEnvironment, foundInputSlot);
-				selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::InputSlot, position, commands);
-			},
-			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
-				MenuCommandStructure commands = CreateOutputSlotCommandStructure (uiManager, uiEnvironment, foundOutputSlot);
-				selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::OutputSlot, position, commands);
-			},
-			[&] (const UINodePtr& foundNode) {
-				MenuCommandStructure commands = CreateNodeCommandStructure (uiManager, uiEnvironment, foundNode);
-				selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::Node, position, commands);
-			},
-			[&] (const UINodeGroupPtr& foundGroup) {
-				MenuCommandStructure commands = CreateNodeGroupCommandStructure (uiManager, uiEnvironment, foundGroup);
-				selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::Group, position, commands);
-			}
-		);
-		if (!found) {
-			Point modelPosition = uiManager.GetViewBox ().ViewToModel (position);
-			MenuCommandStructure commands = CreateEmptyAreaCommandStructure (uiManager, uiEnvironment, modelPosition);
-			selectedCommand = eventHandler.OnContextMenu (EventHandler::ContextMenuType::EmptyArea, position, commands);
-		}
-		if (selectedCommand != nullptr) {
-			selectedCommand->Do ();
-		}
+		HandleContextMenuRequest (uiEnvironment, position);
 		handlerResult = EventHandlerResult::EventHandled;
 	}
 

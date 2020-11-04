@@ -55,6 +55,12 @@ void NodeEditor::OnMouseDoubleClick (const ModifierKeys& keys, MouseButton butto
 	Update ();
 }
 
+void NodeEditor::OnContextMenuRequest (int x, int y)
+{
+	interactionHandler.HandleContextMenuRequest (uiEnvironment, Point (x, y));
+	Update ();
+}
+
 void NodeEditor::OnResize (int newWidth, int newHeight)
 {
 	uiManager.ResizeContext (uiEnvironment, newWidth, newHeight);

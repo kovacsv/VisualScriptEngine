@@ -31,8 +31,9 @@ public:
 	void						OnMouseMove (const ModifierKeys& modifierKeys, int x, int y);
 	void						OnMouseWheel (const ModifierKeys& modifierKeys, MouseWheelRotation rotation, int x, int y);
 	void						OnMouseDoubleClick (const ModifierKeys& modifierKeys, MouseButton button, int x, int y);
+	void						OnContextMenuRequest (int x, int y);
 	void						OnResize (int newWidth, int newHeight);
-	
+
 	UpdateMode					GetUpdateMode () const;
 	void						SetUpdateMode (UpdateMode newUpdateMode);
 	void						ManualUpdate ();

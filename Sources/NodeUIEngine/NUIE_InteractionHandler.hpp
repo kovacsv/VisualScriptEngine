@@ -72,6 +72,7 @@ public:
 
 	const NodeDrawingModifier*		GetDrawingModifier ();
 	void							ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE::CommandCode command);
+	void							HandleContextMenuRequest (NodeUIEnvironment& uiEnvironment, const Point& position);
 
 	virtual EventHandlerResult		HandleMouseDragStart (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
 	virtual EventHandlerResult		HandleMouseDragStop (NodeUIEnvironment& uiEnvironment, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position) override;
