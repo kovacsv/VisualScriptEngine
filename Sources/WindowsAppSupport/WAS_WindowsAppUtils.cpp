@@ -45,7 +45,7 @@ NUIE::ModifierKeys GetModiferKeysFromEvent (WPARAM wParam)
 {
 	NUIE::ModifierKeys keys;
 	if (wParam & MK_CONTROL) {
-		keys.Insert (NUIE::ModifierKeyCode::Control);
+		keys.Insert (NUIE::ModifierKeyCode::Command);
 	}
 	if (wParam & MK_SHIFT) {
 		keys.Insert (NUIE::ModifierKeyCode::Shift);

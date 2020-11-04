@@ -332,8 +332,8 @@ void NodeEditorTestEnv::Click (const Point& point)
 
 void NodeEditorTestEnv::CtrlClick (const Point& point)
 {
-	nodeEditor.OnMouseDown (ModifierKeys ({ ModifierKeyCode::Control }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
-	nodeEditor.OnMouseUp (ModifierKeys ({ ModifierKeyCode::Control }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseDown (ModifierKeys ({ ModifierKeyCode::Command }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
+	nodeEditor.OnMouseUp (ModifierKeys ({ ModifierKeyCode::Command }), MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
 }
 
 void NodeEditorTestEnv::RightClick (const Point& point)

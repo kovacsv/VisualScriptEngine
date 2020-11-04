@@ -25,7 +25,7 @@ enum class MouseWheelRotation
 
 enum class ModifierKeyCode
 {
-	Control		= 1,
+	Command		= 1,
 	Shift		= 2
 };
 

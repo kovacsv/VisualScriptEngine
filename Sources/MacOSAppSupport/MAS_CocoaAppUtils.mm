@@ -57,7 +57,7 @@ NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 {
 	NUIE::ModifierKeys keys;
 	if ([event modifierFlags] & NSEventModifierFlagCommand) {
-		keys.Insert (NUIE::ModifierKeyCode::Control);
+		keys.Insert (NUIE::ModifierKeyCode::Command);
 	}
 	if ([event modifierFlags] & NSEventModifierFlagShift) {
 		keys.Insert (NUIE::ModifierKeyCode::Shift);
