@@ -46,12 +46,11 @@ static bool MessageBoxYesNo (HWND hwnd, LPCWSTR text, LPCWSTR caption)
 
 static const NUIE::BasicSkinParams& GetAppSkinParams ()
 {
-	HBITMAP bmp = WAS::LoadBitmapFromResource (MAKEINTRESOURCE (101), L"IMAGE");
-	(void) bmp;
-
 	static const NUIE::BasicSkinParams skinParams (
 		/*backgroundColor*/ NUIE::Color (255, 255, 255),
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
+		/*connectionMarker */ NUIE::SkinParams::ConnectionMarker::Circle,
+		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
@@ -64,8 +63,8 @@ static const NUIE::BasicSkinParams& GetAppSkinParams ()
 		/*nodeContentBackgroundColor*/ NUIE::Color (236, 236, 236),
 		/*slotTextColor*/ NUIE::Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
-		/*needToDrawSlotCircles*/ true,
-		/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
+		/*slotMarker*/ NUIE::SkinParams::SlotMarker::Circle,
+		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
 		/*selectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 1.0),

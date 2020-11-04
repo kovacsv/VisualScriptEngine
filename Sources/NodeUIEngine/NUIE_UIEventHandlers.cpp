@@ -70,7 +70,7 @@ void MouseMoveHandler::EnumerateSelectionRectangles (const std::function<void (c
 
 }
 
-void MouseMoveHandler::EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>&) const
+void MouseMoveHandler::EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&, Direction)>&) const
 {
 
 }
@@ -164,7 +164,7 @@ void MultiMouseMoveHandler::EnumerateSelectionRectangles (const std::function<vo
 	}
 }
 
-void MultiMouseMoveHandler::EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end)>& processor) const
+void MultiMouseMoveHandler::EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction)>& processor) const
 {
 	for (const auto& it : handlers) {
 		it.second->EnumerateTemporaryConnections (processor);

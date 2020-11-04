@@ -242,12 +242,12 @@ public:
 		RequestRedraw ();
 	}
 
-	virtual void EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&)>& processor) const override
+	virtual void EnumerateTemporaryConnections (const std::function<void (const Point&, const Point&, Direction)>& processor) const override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point diff = viewBox.ViewToModel (currentPosition) - startModelPosition;
 		for (const auto& connection : temporaryConnections) {
-			processor (connection.first + diff, connection.second + diff);
+			processor (connection.first + diff, connection.second + diff, Direction::None);
 		}
 	}
 
@@ -308,11 +308,11 @@ public:
 	
 	}
 
-	virtual void EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end)>& processor) const override
+	virtual void EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction dir)>& processor) const override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point position = viewBox.ViewToModel (currentPosition);
-		processor (startSlotPosition, position);
+		processor (startSlotPosition, position, Direction::Forward);
 	}
 
 	virtual void HandleMouseMove (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point& position) override
@@ -400,11 +400,11 @@ public:
 	
 	}
 
-	virtual void EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end)>& processor) const override
+	virtual void EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction dir)>& processor) const override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
 		Point position = viewBox.ViewToModel (currentPosition);
-		processor (position, startSlotPosition);
+		processor (position, startSlotPosition, Direction::Backward);
 	}
 
 	virtual void HandleMouseMove (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point& position) override

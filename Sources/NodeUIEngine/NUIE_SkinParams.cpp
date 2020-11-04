@@ -27,6 +27,8 @@ SkinParams::~SkinParams ()
 BasicSkinParams::BasicSkinParams (
 	const Color&			backgroundColor,
 	const Pen&				connectionLinePen,
+	ConnectionMarker		connectionMarker,
+	const Size&				connectionMarkerSize,
 	const double&			nodePadding,
 	const Pen&				nodeBorderPen,
 	const Font&				nodeHeaderTextFont,
@@ -39,8 +41,8 @@ BasicSkinParams::BasicSkinParams (
 	const Color&			nodeContentBackgroundColor,
 	const Color&			slotTextColor,
 	const Color&			slotTextBackgroundColor,
-	bool					needToDrawSlotCircles,
-	const Size&				slotCircleSize,
+	SlotMarker				slotMarker,
+	const Size&				slotMarkerSize,
 	const BlendColor&		disabledBlendColor,
 	const BlendColor&		selectionBlendColor,
 	const Pen&				selectionRectPen,
@@ -56,6 +58,8 @@ BasicSkinParams::BasicSkinParams (
 ) :
 	backgroundColor (backgroundColor),
 	connectionLinePen (connectionLinePen),
+	connectionMarker (connectionMarker),
+	connectionMarkerSize (connectionMarkerSize),
 	nodePadding (nodePadding),
 	nodeBorderPen (nodeBorderPen),
 	nodeHeaderTextFont (nodeHeaderTextFont),
@@ -68,8 +72,8 @@ BasicSkinParams::BasicSkinParams (
 	nodeContentBackgroundColor (nodeContentBackgroundColor),
 	slotTextColor (slotTextColor),
 	slotTextBackgroundColor (slotTextBackgroundColor),
-	needToDrawSlotCircles (needToDrawSlotCircles),
-	slotCircleSize (slotCircleSize),
+	slotMarker (slotMarker),
+	slotMarkerSize (slotMarkerSize),
 	disabledBlendColor (disabledBlendColor),
 	selectionBlendColor (selectionBlendColor),
 	selectionRectPen (selectionRectPen),
@@ -99,6 +103,16 @@ const Color& BasicSkinParams::GetBackgroundColor () const
 const Pen& BasicSkinParams::GetConnectionLinePen () const
 {
 	return connectionLinePen;
+}
+
+SkinParams::ConnectionMarker BasicSkinParams::GetConnectionMarker () const
+{
+	return connectionMarker;
+}
+
+const NUIE::Size& BasicSkinParams::GetConnectionMarkerSize () const
+{
+	return connectionMarkerSize;
 }
 
 double BasicSkinParams::GetNodePadding () const
@@ -161,14 +175,14 @@ const Color& BasicSkinParams::GetSlotTextBackgroundColor () const
 	return slotTextBackgroundColor;
 }
 
-bool BasicSkinParams::NeedToDrawSlotCircles () const
+SkinParams::SlotMarker BasicSkinParams::GetSlotMarker () const
 {
-	return needToDrawSlotCircles;
+	return slotMarker;
 }
 
-const Size& BasicSkinParams::GetSlotCircleSize () const
+const Size& BasicSkinParams::GetSlotMarkerSize () const
 {
-	return slotCircleSize;
+	return slotMarkerSize;
 }
 
 const BlendColor& BasicSkinParams::GetDisabledBlendColor () const
@@ -236,6 +250,8 @@ const BasicSkinParams& GetDefaultSkinParams ()
 	static const BasicSkinParams defaultSkinParams (
 		/*backgroundColor*/ NUIE::Color (250, 250, 250),
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
+		/*connectionMarker*/ SkinParams::ConnectionMarker::None,
+		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
@@ -248,8 +264,8 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*nodeContentBackgroundColor*/ NUIE::Color (236, 236, 236),
 		/*slotTextColor*/ NUIE::Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
-		/*needToDrawSlotCircles*/ false,
-		/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
+		/*slotMarker*/ SkinParams::SlotMarker::None,
+		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
 		/*selectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 1.0),

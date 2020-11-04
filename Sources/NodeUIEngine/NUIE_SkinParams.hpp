@@ -29,11 +29,25 @@ private:
 class SkinParams
 {
 public:
+	enum class ConnectionMarker
+	{
+		None,
+		Circle
+	};
+
+	enum class SlotMarker
+	{
+		None,
+		Circle
+	};
+
 	SkinParams ();
 	virtual ~SkinParams ();
 
 	virtual const Color&			GetBackgroundColor () const = 0;
 	virtual const Pen&				GetConnectionLinePen () const = 0;
+	virtual ConnectionMarker		GetConnectionMarker () const = 0;
+	virtual const Size&				GetConnectionMarkerSize () const = 0;
 
 	virtual double					GetNodePadding () const = 0;
 	virtual const Pen&				GetNodeBorderPen () const = 0;
@@ -50,8 +64,8 @@ public:
 
 	virtual const Color&			GetSlotTextColor () const = 0;
 	virtual const Color&			GetSlotTextBackgroundColor () const = 0;
-	virtual bool					NeedToDrawSlotCircles () const = 0;
-	virtual const Size&				GetSlotCircleSize () const = 0;
+	virtual SlotMarker				GetSlotMarker () const = 0;
+	virtual const Size&				GetSlotMarkerSize () const = 0;
 
 	virtual const BlendColor&		GetDisabledBlendColor () const = 0;
 	virtual const BlendColor&		GetSelectionBlendColor () const = 0;
@@ -80,6 +94,8 @@ public:
 	BasicSkinParams (
 		const Color&			backgroundColor,
 		const Pen&				connectionLinePen,
+		ConnectionMarker		connectionMarker,
+		const Size&				connectionMarkerSize,
 		const double&			nodePadding,
 		const Pen&				nodeBorderPen,
 		const Font&				nodeHeaderTextFont,
@@ -92,8 +108,8 @@ public:
 		const Color&			nodeContentBackgroundColor,
 		const Color&			slotTextColor,
 		const Color&			slotTextBackgroundColor,
-		bool					needToDrawSlotCircles,
-		const Size&				slotCircleSize,
+		SlotMarker				slotMarker,
+		const Size&				slotMarkerSize,
 		const BlendColor&		disabledBlendColor,
 		const BlendColor&		selectionBlendColor,
 		const Pen&				selectionRectPen,
@@ -111,6 +127,8 @@ public:
 
 	virtual const Color&			GetBackgroundColor () const override;
 	virtual const Pen&				GetConnectionLinePen () const override;
+	virtual ConnectionMarker		GetConnectionMarker () const override;
+	virtual const Size&				GetConnectionMarkerSize () const override;
 
 	virtual double					GetNodePadding () const override;
 	virtual const Font&				GetNodeContentTextFont () const override;
@@ -125,8 +143,8 @@ public:
 
 	virtual const Color&			GetSlotTextColor () const override;
 	virtual const Color&			GetSlotTextBackgroundColor () const override;
-	virtual bool					NeedToDrawSlotCircles () const override;
-	virtual const Size&				GetSlotCircleSize () const override;
+	virtual SlotMarker				GetSlotMarker () const override;
+	virtual const Size&				GetSlotMarkerSize () const override;
 
 	virtual const BlendColor&		GetDisabledBlendColor () const override;
 	virtual const BlendColor&		GetSelectionBlendColor () const override;
@@ -145,42 +163,44 @@ public:
 	virtual double					GetGroupPadding () const override;
 
 private:
-	Color			backgroundColor;
-	Pen				connectionLinePen;
+	Color				backgroundColor;
+	Pen					connectionLinePen;
+	ConnectionMarker	connectionMarker;
+	Size				connectionMarkerSize;
 
-	double			nodePadding;
-	Pen				nodeBorderPen;
+	double				nodePadding;
+	Pen					nodeBorderPen;
 
-	Font			nodeHeaderTextFont;
-	Color			nodeHeaderTextColor;
-	Color			nodeHeaderErrorTextColor;
-	Color			nodeHeaderBackgroundColor;
-	Color			nodeHeaderErrorBackgroundColor;
+	Font				nodeHeaderTextFont;
+	Color				nodeHeaderTextColor;
+	Color				nodeHeaderErrorTextColor;
+	Color				nodeHeaderBackgroundColor;
+	Color				nodeHeaderErrorBackgroundColor;
 
-	Font			nodeContentTextFont;
-	Color			nodeContentTextColor;
-	Color			nodeContentBackgroundColor;
+	Font				nodeContentTextFont;
+	Color				nodeContentTextColor;
+	Color				nodeContentBackgroundColor;
 
-	Color			slotTextColor;
-	Color			slotTextBackgroundColor;
-	bool			needToDrawSlotCircles;
-	Size			slotCircleSize;
+	Color				slotTextColor;
+	Color				slotTextBackgroundColor;
+	SlotMarker			slotMarker;
+	Size				slotMarkerSize;
 
-	BlendColor		disabledBlendColor;
-	BlendColor		selectionBlendColor;
-	Pen				selectionRectPen;
-	Pen				nodeSelectionRectPen;
+	BlendColor			disabledBlendColor;
+	BlendColor			selectionBlendColor;
+	Pen					selectionRectPen;
+	Pen					nodeSelectionRectPen;
 
-	Pen				buttonBorderPen;
-	Color			buttonBackgroundColor;
+	Pen					buttonBorderPen;
+	Color				buttonBackgroundColor;
 
-	Color			textPanelTextColor;
-	Color			textPanelBackgroundColor;
+	Color				textPanelTextColor;
+	Color				textPanelBackgroundColor;
 
-	Font			groupNameFont;
-	Color			groupNameColor;
-	NamedColorSet	groupBackgroundColors;
-	double			groupPadding;
+	Font				groupNameFont;
+	Color				groupNameColor;
+	NamedColorSet		groupBackgroundColors;
+	double				groupPadding;
 };
 
 const BasicSkinParams& GetDefaultSkinParams ();

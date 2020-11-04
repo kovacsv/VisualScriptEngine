@@ -273,8 +273,8 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 		NUIE::Rect textRect = slotRect.Expand (NUIE::Size (2.0 * -nodePadding, -nodePadding));
 		drawingImage.AddInputSlotConnPosition (slotId, slotRect.GetLeftCenter ());
 		drawingImage.AddInputSlotRect (slotId, slotRect);
-		if (skinParams.NeedToDrawSlotCircles ()) {
-			NUIE::Rect connCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetSlotCircleSize ());
+		if (skinParams.GetSlotMarker () == NUIE::SkinParams::SlotMarker::Circle) {
+			NUIE::Rect connCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetSlotMarkerSize ());
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (connCircleRect, skinParams.GetSlotTextBackgroundColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (connCircleRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 		}
@@ -288,8 +288,8 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 		NUIE::Rect textRect = slotRect.Expand (NUIE::Size (2.0 * -nodePadding, -nodePadding));
 		drawingImage.AddOutputSlotConnPosition (slotId, slotRect.GetRightCenter ());
 		drawingImage.AddOutputSlotRect (slotId, slotRect);
-		if (skinParams.NeedToDrawSlotCircles ()) {
-			NUIE::Rect connCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetRightCenter (), skinParams.GetSlotCircleSize ());
+		if (skinParams.GetSlotMarker () == NUIE::SkinParams::SlotMarker::Circle) {
+			NUIE::Rect connCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetRightCenter (), skinParams.GetSlotMarkerSize ());
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (connCircleRect, skinParams.GetSlotTextBackgroundColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (connCircleRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 		}

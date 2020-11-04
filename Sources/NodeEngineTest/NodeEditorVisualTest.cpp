@@ -12,11 +12,13 @@ using namespace BI;
 namespace NodeEditorVisualTest
 {
 
-const BasicSkinParams& GetSkinParamsWithSlotCircles ()
+const BasicSkinParams& GetSkinParamsWithMarkers ()
 {
-	static const BasicSkinParams slotCirclesSkinParams (
+	static const BasicSkinParams markersSkinParams (
 		/*backgroundColor*/ NUIE::Color (250, 250, 250),
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
+		/*connectionMarker*/ NUIE::SkinParams::ConnectionMarker::Circle,
+		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
@@ -29,8 +31,8 @@ const BasicSkinParams& GetSkinParamsWithSlotCircles ()
 		/*nodeContentBackgroundColor*/ NUIE::Color (236, 236, 236),
 		/*slotTextColor*/ NUIE::Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
-		/*needToDrawSlotCircles*/ true,
-		/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
+		/*slotMarker*/ SkinParams::SlotMarker::Circle,
+		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
 		/*selectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 1.0),
@@ -48,7 +50,7 @@ const BasicSkinParams& GetSkinParamsWithSlotCircles ()
 		}),
 		/*groupPadding*/ 10.0
 	);
-	return slotCirclesSkinParams;
+	return markersSkinParams;
 }
 
 TEST (SelectionTest)
@@ -517,17 +519,33 @@ TEST (CenterToWindowTestWithScale)
 	ASSERT (env.CheckReference (L"CenterToWindowWithScale_Align.svg"));
 }
 
-TEST (SlotCirclesTest)
+TEST (SlotMarkersTest)
 {
-	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithSlotCircles ());
-	ASSERT (env.CheckReference (L"SlotCircles.svg"));
+	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithMarkers ());
+	ASSERT (env.CheckReference (L"Markers_Initial.svg"));
+
+	{ // start connecting double output slot without target
+		Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+		Point targetPosition = doubleOutputSlotPosition + Point (200.0, -100.0);
+		env.DragDrop (doubleOutputSlotPosition, targetPosition, [&] () {
+			ASSERT (env.CheckReference (L"Markers_DuringConnectionForward.svg"));
+		});
+	}
+
+	{ // start connecting viewer input slot without target
+		Point viewerInputSlotPosition = env.viewerUINode1->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
+		Point targetPosition = viewerInputSlotPosition + Point (-200.0, 100.0);
+		env.DragDrop (viewerInputSlotPosition, targetPosition, [&] () {
+			ASSERT (env.CheckReference (L"Markers_DuringConnectionBackward.svg"));
+		});
+	}
 }
 
-TEST (SlotCirclesFitToWindowTest)
+TEST (SlotMarkersFitToWindowTest)
 {
-	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithSlotCircles ());
+	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithMarkers ());
 	env.nodeEditor.FitToWindow ();
-	ASSERT (env.CheckReference (L"SlotCircles_FitToWindow.svg"));
+	ASSERT (env.CheckReference (L"Markers_FitToWindow.svg"));
 }
 
 TEST (GroupSelectedNodesTest)
@@ -548,6 +566,8 @@ TEST (SkinParamsTest)
 	BasicSkinParams skinParams (
 		/*backgroundColor*/ NUIE::Color (250, 250, 250),
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (0, 0, 200), 5.0),
+		/*connectionMarker*/ NUIE::SkinParams::ConnectionMarker::None,
+		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*nodePadding*/ 10.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (0, 200, 0), 5.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
@@ -560,8 +580,8 @@ TEST (SkinParamsTest)
 		/*nodeContentBackgroundColor*/ NUIE::Color (180, 200, 180),
 		/*slotTextColor*/ NUIE::Color (100, 100, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (180, 250, 250),
-		/*needToDrawSlotCircles*/ false,
-		/*slotCircleSize*/ NUIE::Size (8.0, 8.0),
+		/*slotMarker*/ SkinParams::SlotMarker::None,
+		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 0, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
 		/*selectionRectPen*/ NUIE::Pen (NUIE::Color (0, 0, 255), 5.0),
