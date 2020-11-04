@@ -632,7 +632,7 @@ const NodeDrawingModifier* InteractionHandler::GetDrawingModifier ()
 	return &multiMouseMoveHandler;
 }
 
-void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, NUIE::CommandCode command)
+void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, CommandCode command)
 {
 	if (command == CommandCode::Escape) {
 		HandleKeyPress (uiEnvironment, KeyCode::Escape);
@@ -924,7 +924,7 @@ EventHandlerResult InteractionHandler::HandleMouseWheel (NodeUIEnvironment&, con
 	return EventHandlerResult::EventHandled;
 }
 
-NUIE::EventHandlerResult InteractionHandler::HandleMouseSwipe (NodeUIEnvironment&, const ModifierKeys&, const Point& offset)
+EventHandlerResult InteractionHandler::HandleMouseSwipe (NodeUIEnvironment&, const ModifierKeys&, const Point& offset)
 {
 	ViewBox viewBox = uiManager.GetViewBox ();
 	viewBox.SetOffset (viewBox.GetOffset () + offset);

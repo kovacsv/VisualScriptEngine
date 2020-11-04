@@ -86,7 +86,7 @@ void NodeCollectorAppendEventHandler::TargetNodeAdded (const NodeId& nodeId)
 	targetNodes.Insert (nodeId);
 }
 
-const NE::NodeCollection& NodeCollectorAppendEventHandler::GetAddedTargetNodes () const
+const NodeCollection& NodeCollectorAppendEventHandler::GetAddedTargetNodes () const
 {
 	return targetNodes;
 }

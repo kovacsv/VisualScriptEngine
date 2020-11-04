@@ -523,14 +523,14 @@ bool IsEqual (const Rect& a, const Rect& b)
 	return IsEqual (a.GetPosition (), b.GetPosition ()) && IsEqual (a.GetSize (), b.GetSize ());
 }
 
-std::vector<NUIE::Point> SegmentBezier (size_t segmentCount, const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4)
+std::vector<Point> SegmentBezier (size_t segmentCount, const Point& p1, const Point& p2, const Point& p3, const Point& p4)
 {
-	std::vector<NUIE::Point> points;
+	std::vector<Point> points;
 	double tStep = 1.0 / segmentCount;
 	for (size_t i = 0; i <= segmentCount; i++) {
 		double t = i * tStep;
 		double omt = 1.0 - t;
-		NUIE::Point pt = p1 * std::pow (omt, 3) + p2 * (3.0 * std::pow (omt, 2) * t) + p3 * (3.0 * omt * std::pow (t, 2)) + p4 * std::pow (t, 3);
+		Point pt = p1 * std::pow (omt, 3) + p2 * (3.0 * std::pow (omt, 2) * t) + p3 * (3.0 * omt * std::pow (t, 2)) + p4 * std::pow (t, 3);
 		points.push_back (pt);
 	}
 	return points;

@@ -32,7 +32,7 @@ size_t NodeGroupList::Count () const
 	return groups.Count ();
 }
 
-NE::NodeGroupPtr NodeGroupList::GetGroup (const NodeGroupId& groupId)
+NodeGroupPtr NodeGroupList::GetGroup (const NodeGroupId& groupId)
 {
 	if (DBGERROR (!groups.Contains (groupId))) {
 		return nullptr;
@@ -40,7 +40,7 @@ NE::NodeGroupPtr NodeGroupList::GetGroup (const NodeGroupId& groupId)
 	return groups.GetValue (groupId);
 }
 
-NE::NodeGroupConstPtr NodeGroupList::GetGroup (const NodeGroupId& groupId) const
+NodeGroupConstPtr NodeGroupList::GetGroup (const NodeGroupId& groupId) const
 {
 	if (DBGERROR (!groups.Contains (groupId))) {
 		return nullptr;
@@ -117,7 +117,7 @@ void NodeGroupList::RemoveNodeFromGroup (const NodeId& nodeId)
 	}
 }
 
-NE::NodeGroupId NodeGroupList::GetNodeGroupId (const NodeId& nodeId) const
+NodeGroupId NodeGroupList::GetNodeGroupId (const NodeId& nodeId) const
 {
 	auto found = nodeToGroup.find (nodeId);
 	if (found == nodeToGroup.end ()) {

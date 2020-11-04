@@ -216,7 +216,7 @@ void SvgDrawingContext::FillEllipse (const Rect& rect, const Color& color)
 	});
 }
 				 
-void SvgDrawingContext::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const NUIE::Color& textColor)
+void SvgDrawingContext::DrawFormattedText (const Rect& rect, const Font& font, const std::wstring& text, HorizontalAnchor hAnchor, VerticalAnchor vAnchor, const Color& textColor)
 {
 	std::wstring textAnchor;
 	std::wstring dominantBaseline;

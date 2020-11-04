@@ -46,7 +46,7 @@ const CreatorFunction & NodeRegistry::NodeData::GetCreatorFunction () const
 	return creator;
 }
 
-NUIE::UINodePtr NodeRegistry::NodeData::CreateNode (const NUIE::Point& position) const
+UINodePtr NodeRegistry::NodeData::CreateNode (const Point& position) const
 {
 	return creator (position);
 }

@@ -30,7 +30,7 @@ bool NodeList::ContainsNode (const NodeId& nodeId) const
 	return nodes.Contains (nodeId);
 }
 
-NE::NodePtr NodeList::GetNode (const NodeId& nodeId)
+NodePtr NodeList::GetNode (const NodeId& nodeId)
 {
 	if (DBGERROR (!nodes.Contains (nodeId))) {
 		return nullptr;
@@ -38,7 +38,7 @@ NE::NodePtr NodeList::GetNode (const NodeId& nodeId)
 	return nodes.GetValue (nodeId);
 }
 
-NE::NodeConstPtr NodeList::GetNode (const NodeId& nodeId) const
+NodeConstPtr NodeList::GetNode (const NodeId& nodeId) const
 {
 	if (DBGERROR (!nodes.Contains (nodeId))) {
 		return nullptr;

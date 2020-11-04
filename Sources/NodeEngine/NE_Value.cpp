@@ -150,7 +150,7 @@ size_t ListValue::GetSize () const
 	return values.size ();
 }
 
-const NE::ValueConstPtr& ListValue::GetValue (size_t index) const
+const ValueConstPtr& ListValue::GetValue (size_t index) const
 {
 	return values[index];
 }
@@ -181,7 +181,7 @@ size_t ValueToListValueAdapter::GetSize () const
 	return 1;
 }
 
-const NE::ValueConstPtr& ValueToListValueAdapter::GetValue (size_t) const
+const ValueConstPtr& ValueToListValueAdapter::GetValue (size_t) const
 {
 	return val;
 }

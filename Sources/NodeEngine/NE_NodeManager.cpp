@@ -317,7 +317,7 @@ void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 
 void NodeManager::ForceEvaluateAllNodes (EvaluationEnv& env) const
 {
-	NE::ValueGuard<bool> isForceCalculateGuard (isForceCalculate, true);
+	ValueGuard<bool> isForceCalculateGuard (isForceCalculate, true);
 	std::vector<NodeConstPtr> nodesToRecalculate;
 	EnumerateNodes ([&] (const NodeConstPtr& node) {
 		Node::CalculationStatus calcStatus = node->GetCalculationStatus ();
@@ -404,7 +404,7 @@ NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group)
 	return AddUninitializedNodeGroup (group);
 }
 
-NE::NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group, const NE::NodeGroupId& groupId)
+NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group, const NodeGroupId& groupId)
 {
 	group->SetId (groupId);
 	nodeGroupList.AddGroup (group);
@@ -589,7 +589,7 @@ NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy i
 	return AddNode (node, setter);
 }
 
-NE::NodeGroupPtr NodeManager::AddUninitializedNodeGroup (const NodeGroupPtr& group)
+NodeGroupPtr NodeManager::AddUninitializedNodeGroup (const NodeGroupPtr& group)
 {
 	if (DBGERROR (group == nullptr || group->GetId () != NullNodeGroupId)) {
 		return nullptr;
@@ -599,7 +599,7 @@ NE::NodeGroupPtr NodeManager::AddUninitializedNodeGroup (const NodeGroupPtr& gro
 	return AddNodeGroup (group, newGroupId);
 }
 
-NE::NodeGroupPtr NodeManager::AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling)
+NodeGroupPtr NodeManager::AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling)
 {
 	if (DBGERROR (group == nullptr || group->GetId () == NullNodeGroupId)) {
 		return nullptr;

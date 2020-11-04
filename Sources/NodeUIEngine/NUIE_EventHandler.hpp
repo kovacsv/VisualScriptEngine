@@ -33,9 +33,9 @@ public:
 	EventHandler ();
 	virtual ~EventHandler ();
 
-	virtual NUIE::MenuCommandPtr	OnContextMenu (ContextMenuType type, const Point& position, const MenuCommandStructure& commands) = 0;
-	virtual bool					OnParameterSettings (ParameterSettingsType, ParameterInterfacePtr paramAccessor) = 0;
-	virtual void					OnDoubleClick (const Point& position, MouseButton mouseButton) = 0;
+	virtual MenuCommandPtr	OnContextMenu (ContextMenuType type, const Point& position, const MenuCommandStructure& commands) = 0;
+	virtual bool			OnParameterSettings (ParameterSettingsType, ParameterInterfacePtr paramAccessor) = 0;
+	virtual void			OnDoubleClick (const Point& position, MouseButton mouseButton) = 0;
 };
 
 using EventHandlerPtr = std::shared_ptr<EventHandler>;
@@ -47,9 +47,9 @@ public:
 	NullEventHandler ();
 	virtual ~NullEventHandler ();
 
-	virtual NUIE::MenuCommandPtr	OnContextMenu (ContextMenuType type, const Point& position, const MenuCommandStructure& commands) override;
-	virtual bool					OnParameterSettings (ParameterSettingsType type, ParameterInterfacePtr paramAccessor) override;
-	virtual void					OnDoubleClick (const Point& position, MouseButton mouseButton) override;
+	virtual MenuCommandPtr	OnContextMenu (ContextMenuType type, const Point& position, const MenuCommandStructure& commands) override;
+	virtual bool			OnParameterSettings (ParameterSettingsType type, ParameterInterfacePtr paramAccessor) override;
+	virtual void			OnDoubleClick (const Point& position, MouseButton mouseButton) override;
 };
 
 }

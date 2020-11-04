@@ -40,7 +40,7 @@ private:
 	std::vector<ChangedParameter>	paramValues;
 	std::unordered_set<size_t>		changedParams;
 
-	WAS::InMemoryDialog*			inMemoryDialog;
+	InMemoryDialog*					inMemoryDialog;
 	bool							isSetUp;
 };
 

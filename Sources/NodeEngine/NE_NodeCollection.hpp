@@ -39,7 +39,7 @@ private:
 	std::unordered_set<NodeId>	nodeSet;
 };
 
-extern const NE::NodeCollection EmptyNodeCollection;
+extern const NodeCollection EmptyNodeCollection;
 
 }
 

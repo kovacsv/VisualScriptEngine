@@ -8,7 +8,7 @@
 namespace NUIE
 {
 
-using CreatorFunction = std::function<NUIE::UINodePtr (const NUIE::Point& position)>;
+using CreatorFunction = std::function<UINodePtr (const Point& position)>;
 
 class NodeTree
 {
@@ -59,7 +59,7 @@ private:
 
 extern const NodeTree EmptyNodeTree;
 
-void AddNodeTreeToMenuStructure (const NodeTree& nodeTree, const NUIE::Point& position, NUIE::NodeEditor* nodeEditor, MenuCommandStructure& commands);
+void AddNodeTreeToMenuStructure (const NodeTree& nodeTree, const Point& position, NodeEditor* nodeEditor, MenuCommandStructure& commands);
 
 }
 

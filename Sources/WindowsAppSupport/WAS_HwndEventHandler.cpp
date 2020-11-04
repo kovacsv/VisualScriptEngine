@@ -24,12 +24,12 @@ void HwndEventHandler::Init (HWND windowHandle)
 
 NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (NUIE::EventHandler::ContextMenuType, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands)
 {
-	return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
+	return SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
 bool HwndEventHandler::OnParameterSettings (NUIE::EventHandler::ParameterSettingsType, NUIE::ParameterInterfacePtr paramAccessor)
 {
-	WAS::ParameterDialog paramDialog (paramAccessor);
+	ParameterDialog paramDialog (paramAccessor);
 	return paramDialog.Show (hwnd, 50, 50);
 }
 

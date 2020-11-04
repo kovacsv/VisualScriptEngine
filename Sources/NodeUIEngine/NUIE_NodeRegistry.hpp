@@ -7,7 +7,7 @@ namespace NUIE
 {
 
 using NodeRegistryId = size_t;
-using CreatorFunction = std::function<NUIE::UINodePtr (const NUIE::Point& position)>;
+using CreatorFunction = std::function<UINodePtr (const Point& position)>;
 
 class NodeRegistry
 {
@@ -20,7 +20,7 @@ public:
 		NodeRegistryId			GetNodeId () const;
 		const std::wstring&		GetNodeName  () const;
 		const CreatorFunction&	GetCreatorFunction () const;
-		NUIE::UINodePtr			CreateNode (const NUIE::Point& position) const;
+		UINodePtr				CreateNode (const Point& position) const;
 
 	private:
 		NodeRegistryId		id;

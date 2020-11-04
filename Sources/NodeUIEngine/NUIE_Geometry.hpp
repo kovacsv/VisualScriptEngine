@@ -181,7 +181,7 @@ bool IsEqual (const Point& a, const Point& b);
 bool IsEqual (const Size& a, const Size& b);
 bool IsEqual (const Rect& a, const Rect& b);
 
-std::vector<NUIE::Point> SegmentBezier (size_t segmentCount, const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4);
+std::vector<Point> SegmentBezier (size_t segmentCount, const Point& p1, const Point& p2, const Point& p3, const Point& p4);
 
 }
 

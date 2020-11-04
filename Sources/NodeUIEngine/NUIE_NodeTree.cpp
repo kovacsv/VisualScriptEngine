@@ -25,7 +25,7 @@ const std::wstring& NodeTree::Item::GetName () const
 	return name;
 }
 
-const NUIE::IconId& NodeTree::Item::GetIconId () const
+const IconId& NodeTree::Item::GetIconId () const
 {
 	return iconId;
 }
@@ -84,13 +84,13 @@ const std::vector<NodeTree::Group>& NodeTree::GetGroups () const
 
 const NodeTree EmptyNodeTree;
 
-void AddNodeTreeToMenuStructure (const NodeTree& nodeTree, const NUIE::Point& position, NUIE::NodeEditor* nodeEditor, MenuCommandStructure& commands)
+void AddNodeTreeToMenuStructure (const NodeTree& nodeTree, const Point& position, NodeEditor* nodeEditor, MenuCommandStructure& commands)
 {
-	class CreateNodeCommand : public NUIE::SingleMenuCommand
+	class CreateNodeCommand : public SingleMenuCommand
 	{
 	public:
-		CreateNodeCommand (NUIE::NodeEditor* nodeEditor, const NE::LocString& name, const NUIE::Point& position, const NUIE::CreatorFunction& creator) :
-			NUIE::SingleMenuCommand (name, false),
+		CreateNodeCommand (NodeEditor* nodeEditor, const NE::LocString& name, const Point& position, const CreatorFunction& creator) :
+			SingleMenuCommand (name, false),
 			nodeEditor (nodeEditor),
 			position (position),
 			creator (creator)
@@ -105,22 +105,22 @@ void AddNodeTreeToMenuStructure (const NodeTree& nodeTree, const NUIE::Point& po
 
 		virtual void DoModification () override
 		{
-			NUIE::UINodePtr uiNode = creator (nodeEditor->ViewToModel (position));
+			UINodePtr uiNode = creator (nodeEditor->ViewToModel (position));
 			nodeEditor->AddNode (uiNode);
 		}
 
 	private:
-		NUIE::NodeEditor*		nodeEditor;
-		NUIE::Point				position;
-		NUIE::CreatorFunction	creator;
+		NodeEditor*			nodeEditor;
+		Point				position;
+		CreatorFunction		creator;
 	};
 
-	for (const NUIE::NodeTree::Group& group : nodeTree.GetGroups ()) {
+	for (const NodeTree::Group& group : nodeTree.GetGroups ()) {
 		NE::LocString groupMenuCommandName (group.GetName (), NE::LocString::Localization::DoNotLocalize);
-		NUIE::MultiMenuCommandPtr multiCommand (new NUIE::MultiMenuCommand (groupMenuCommandName));
-		for (const NUIE::NodeTree::Item& item : group.GetItems ()) {
+		MultiMenuCommandPtr multiCommand (new MultiMenuCommand (groupMenuCommandName));
+		for (const NodeTree::Item& item : group.GetItems ()) {
 			NE::LocString menuCommandName (item.GetName (), NE::LocString::Localization::DoNotLocalize);
-			multiCommand->AddChildCommand (NUIE::MenuCommandPtr (new CreateNodeCommand (nodeEditor, menuCommandName, position, item.GetCreator ())));
+			multiCommand->AddChildCommand (MenuCommandPtr (new CreateNodeCommand (nodeEditor, menuCommandName, position, item.GetCreator ())));
 		}
 		commands.AddCommand (multiCommand);
 	}

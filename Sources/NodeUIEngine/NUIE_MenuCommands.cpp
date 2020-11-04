@@ -55,7 +55,7 @@ void SingleMenuCommand::EnumerateChildCommands (const std::function<void (const 
 
 }
 
-std::vector<NUIE::MenuCommandPtr> SingleMenuCommand::GetChildCommands () const
+std::vector<MenuCommandPtr> SingleMenuCommand::GetChildCommands () const
 {
 	return {};
 }
@@ -94,7 +94,7 @@ void MultiMenuCommand::EnumerateChildCommands (const std::function<void (const M
 	}
 }
 
-std::vector<NUIE::MenuCommandPtr> MultiMenuCommand::GetChildCommands () const
+std::vector<MenuCommandPtr> MultiMenuCommand::GetChildCommands () const
 {
 	return childCommands;
 }
@@ -125,7 +125,7 @@ void MenuCommandStructure::AddCommand (MenuCommandPtr command)
 	commands.push_back (command);
 }
 
-std::vector<NUIE::MenuCommandPtr> MenuCommandStructure::GetCommands () const
+std::vector<MenuCommandPtr> MenuCommandStructure::GetCommands () const
 {
 	return commands;
 }

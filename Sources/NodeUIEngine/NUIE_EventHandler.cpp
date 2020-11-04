@@ -21,7 +21,7 @@ NullEventHandler::~NullEventHandler ()
 {
 }
 
-NUIE::MenuCommandPtr NullEventHandler::OnContextMenu (ContextMenuType, const Point&, const MenuCommandStructure&)
+MenuCommandPtr NullEventHandler::OnContextMenu (ContextMenuType, const Point&, const MenuCommandStructure&)
 {
 	return nullptr;
 }

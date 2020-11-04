@@ -12,7 +12,7 @@ PenCacheKey::PenCacheKey () :
 
 }
 
-PenCacheKey::PenCacheKey (const NUIE::Pen& pen) :
+PenCacheKey::PenCacheKey (const Pen& pen) :
 	thickness ((int) pen.GetThickness ()),
 	r (pen.GetColor ().GetR ()),
 	g (pen.GetColor ().GetG ()),
@@ -39,7 +39,7 @@ ColorCacheKey::ColorCacheKey () :
 
 }
 
-ColorCacheKey::ColorCacheKey (const NUIE::Color& color) :
+ColorCacheKey::ColorCacheKey (const Color& color) :
 	r (color.GetR ()),
 	g (color.GetG ()),
 	b (color.GetB ())
@@ -64,7 +64,7 @@ FontCacheKey::FontCacheKey () :
 
 }
 
-FontCacheKey::FontCacheKey (const NUIE::Font& font) :
+FontCacheKey::FontCacheKey (const Font& font) :
 	family (font.GetFamily ()),
 	size ((int) (font.GetSize ()))
 {

@@ -20,12 +20,12 @@ ClipboardHandler::~ClipboardHandler ()
 
 NUIE::Version ClipboardHandler::GetCurrentVersion () const
 {
-	return NUIE::GetCurrentVersion ();
+	return NUIE::GetCurrentEngineVersion ();
 }
 
 bool ClipboardHandler::IsCompatibleVersion (const NUIE::Version& version) const
 {
-	return NUIE::IsCompatibleVersion (version);
+	return NUIE::IsCompatibleEngineVersion (version);
 }
 
 bool ClipboardHandler::HasClipboardContent () const

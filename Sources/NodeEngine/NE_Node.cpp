@@ -209,7 +209,7 @@ Stream::Status Node::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-NE::ValueConstPtr Node::GetInputSlotDefaultValue (const SlotId& slotId) const
+ValueConstPtr Node::GetInputSlotDefaultValue (const SlotId& slotId) const
 {
 	InputSlotConstPtr inputSlot = inputSlots.Get (slotId);
 	if (DBGERROR (inputSlot == nullptr)) {

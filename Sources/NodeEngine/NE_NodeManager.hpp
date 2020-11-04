@@ -118,7 +118,7 @@ private:
 	NodePtr				AddUninitializedNode (const NodePtr& node);
 	NodePtr				AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling);
 
-	NodeGroupPtr		AddNodeGroup (const NodeGroupPtr& group, const NE::NodeGroupId& groupId);
+	NodeGroupPtr		AddNodeGroup (const NodeGroupPtr& group, const NodeGroupId& groupId);
 	NodeGroupPtr		AddUninitializedNodeGroup (const NodeGroupPtr& group);
 	NodeGroupPtr		AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling);
 

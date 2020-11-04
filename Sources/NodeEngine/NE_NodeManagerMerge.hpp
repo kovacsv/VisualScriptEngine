@@ -60,11 +60,11 @@ public:
 	NodeCollectorAppendEventHandler ();
 	virtual ~NodeCollectorAppendEventHandler ();
 
-	virtual void				TargetNodeAdded (const NodeId& nodeId) override;
-	const NE::NodeCollection&	GetAddedTargetNodes () const;
+	virtual void			TargetNodeAdded (const NodeId& nodeId) override;
+	const NodeCollection&	GetAddedTargetNodes () const;
 
 private:
-	NE::NodeCollection targetNodes;
+	NodeCollection targetNodes;
 };
 
 class UpdateEventHandler

@@ -10,7 +10,7 @@ class PenCacheKey
 {
 public:
 	PenCacheKey ();
-	PenCacheKey (const NUIE::Pen& pen);
+	PenCacheKey (const Pen& pen);
 
 	bool	operator== (const PenCacheKey& rhs) const;
 	bool	operator!= (const PenCacheKey& rhs) const;
@@ -25,7 +25,7 @@ class ColorCacheKey
 {
 public:
 	ColorCacheKey ();
-	ColorCacheKey (const NUIE::Color& color);
+	ColorCacheKey (const Color& color);
 
 	bool	operator== (const ColorCacheKey& rhs) const;
 	bool	operator!= (const ColorCacheKey& rhs) const;
@@ -39,7 +39,7 @@ class FontCacheKey
 {
 public:
 	FontCacheKey ();
-	FontCacheKey (const NUIE::Font& font);
+	FontCacheKey (const Font& font);
 
 	bool	operator== (const FontCacheKey& rhs) const;
 	bool	operator!= (const FontCacheKey& rhs) const;

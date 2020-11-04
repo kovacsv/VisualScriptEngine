@@ -17,7 +17,7 @@ NodeGroup::~NodeGroup ()
 
 }
 
-const NE::NodeGroupId& NodeGroup::GetId () const
+const NodeGroupId& NodeGroup::GetId () const
 {
 	return id;
 }

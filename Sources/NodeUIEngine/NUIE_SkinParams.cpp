@@ -110,7 +110,7 @@ SkinParams::ConnectionMarker BasicSkinParams::GetConnectionMarker () const
 	return connectionMarker;
 }
 
-const NUIE::Size& BasicSkinParams::GetConnectionMarkerSize () const
+const Size& BasicSkinParams::GetConnectionMarkerSize () const
 {
 	return connectionMarkerSize;
 }
@@ -195,12 +195,12 @@ const BlendColor& BasicSkinParams::GetSelectionBlendColor () const
 	return selectionBlendColor;
 }
 
-const NUIE::Pen& BasicSkinParams::GetSelectionRectPen () const
+const Pen& BasicSkinParams::GetSelectionRectPen () const
 {
 	return selectionRectPen;
 }
 
-const NUIE::Pen& BasicSkinParams::GetNodeSelectionRectPen () const
+const Pen& BasicSkinParams::GetNodeSelectionRectPen () const
 {
 	return nodeSelectionRectPen;
 }
@@ -250,7 +250,7 @@ const BasicSkinParams& GetDefaultSkinParams ()
 	static const BasicSkinParams defaultSkinParams (
 		/*backgroundColor*/ NUIE::Color (250, 250, 250),
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
-		/*connectionMarker*/ SkinParams::ConnectionMarker::None,
+		/*connectionMarker*/ NUIE::SkinParams::ConnectionMarker::None,
 		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
@@ -264,7 +264,7 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*nodeContentBackgroundColor*/ NUIE::Color (236, 236, 236),
 		/*slotTextColor*/ NUIE::Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
-		/*slotMarker*/ SkinParams::SlotMarker::None,
+		/*slotMarker*/ NUIE::SkinParams::SlotMarker::None,
 		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),

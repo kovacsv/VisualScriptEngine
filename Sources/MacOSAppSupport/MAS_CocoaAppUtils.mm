@@ -100,14 +100,14 @@ static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordere
 {
 	if (command->HasChildCommands ()) {
 		ContextMenu* oldMenu = currentMenu;
-		ContextMenu* newMenu = [currentMenu addGroupMenuItem:MAS::StdWStringToNSString (command->GetName ())];
+		ContextMenu* newMenu = [currentMenu addGroupMenuItem:StdWStringToNSString (command->GetName ())];
 		currentMenu = newMenu;
 		command->EnumerateChildCommands ([&] (const NUIE::MenuCommandPtr& childCommand) {
 			AddCommandToMenu (childCommand, commandTable, originalMenu, currentMenu, currentCommandId);
 		});
 		currentMenu = oldMenu;
 	} else {
-		[currentMenu addMenuItem:MAS::StdWStringToNSString (command->GetName ()) : currentCommandId : originalMenu];
+		[currentMenu addMenuItem:StdWStringToNSString (command->GetName ()) : currentCommandId : originalMenu];
 		commandTable.insert ({ currentCommandId, command });
 		currentCommandId += 1;
 	}

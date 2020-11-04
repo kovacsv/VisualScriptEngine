@@ -205,7 +205,7 @@ bool NodeEditor::Open (NE::InputStream& inputStream)
 
 	Version readVersion;
 	readVersion.Read (inputStream);
-	if (!IsCompatibleVersion (readVersion)) {
+	if (!IsCompatibleEngineVersion (readVersion)) {
 		return false;
 	}
 
@@ -235,7 +235,7 @@ bool NodeEditor::Save (const std::wstring& fileName)
 
 bool NodeEditor::Save (NE::OutputStream& outputStream)
 {
-	const Version& currentVersion = GetCurrentVersion ();
+	const Version& currentVersion = GetCurrentEngineVersion ();
 	outputStream.Write (NodeEditorFileMarker);
 	currentVersion.Write (outputStream);
 	if (DBGERROR (!uiManager.Save (outputStream))) {

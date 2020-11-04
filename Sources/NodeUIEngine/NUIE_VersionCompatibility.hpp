@@ -6,8 +6,8 @@
 namespace NUIE
 {
 
-const Version&	GetCurrentVersion ();
-bool			IsCompatibleVersion (const Version& version);
+const Version&	GetCurrentEngineVersion ();
+bool			IsCompatibleEngineVersion (const Version& version);
 
 }
 

@@ -23,7 +23,7 @@ NodeId UniqueIdGenerator::GenerateNodeId ()
 	return NodeId (newNodeId);
 }
 
-NE::NodeGroupId UniqueIdGenerator::GenerateNodeGroupId ()
+NodeGroupId UniqueIdGenerator::GenerateNodeGroupId ()
 {
 	IdType newNodeGroupId = nextNodeGroupId++;
 	return NodeGroupId (newNodeGroupId);

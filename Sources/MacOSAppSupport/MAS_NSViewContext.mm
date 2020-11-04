@@ -173,7 +173,7 @@ void NSViewContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font&
 	@autoreleasepool {
 		@try {
 			[CreateColor (textColor) set];
-			NSString* nsText = MAS::StdWStringToNSString (text);
+			NSString* nsText = StdWStringToNSString (text);
 			
 			NSMutableParagraphStyle* style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
 			if (hAnchor == NUIE::HorizontalAnchor::Left) {
@@ -208,7 +208,7 @@ NUIE::Size NSViewContext::MeasureText (const NUIE::Font& font, const std::wstrin
 {
 	@autoreleasepool {
 		@try {
-			NSString* nsText = MAS::StdWStringToNSString (text);
+			NSString* nsText = StdWStringToNSString (text);
 			NSDictionary* attributes = @{NSFontAttributeName: GetFont (font)};
 			NSSize size = [nsText sizeWithAttributes:attributes];
 			return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
@@ -244,7 +244,7 @@ NSFont* NSViewContext::GetFont (const NUIE::Font& font)
 			NUIE::FontCacheKey key (font);
 			auto found = fontCache.find (key);
 			if (found == fontCache.end ()) {
-				NSString* nsFontName = MAS::StdWStringToNSString (key.family);
+				NSString* nsFontName = StdWStringToNSString (key.family);
 				NSFont* nsFont = [[NSFont fontWithName:nsFontName size:key.size] copy];
 				fontCache.insert ({ key, nsFont });
 			}

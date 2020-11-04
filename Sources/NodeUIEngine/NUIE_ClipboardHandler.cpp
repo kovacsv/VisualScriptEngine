@@ -25,12 +25,12 @@ NullClipboardHandler::~NullClipboardHandler ()
 
 }
 
-NUIE::Version NullClipboardHandler::GetCurrentVersion () const
+Version NullClipboardHandler::GetCurrentVersion () const
 {
-	return NUIE::Version (0, 0, 0);
+	return Version (0, 0, 0);
 }
 
-bool NullClipboardHandler::IsCompatibleVersion (const NUIE::Version&) const
+bool NullClipboardHandler::IsCompatibleVersion (const Version&) const
 {
 	return false;
 }
@@ -62,14 +62,14 @@ MemoryClipboardHandler::~MemoryClipboardHandler ()
 
 }
 
-NUIE::Version MemoryClipboardHandler::GetCurrentVersion () const
+Version MemoryClipboardHandler::GetCurrentVersion () const
 {
-	return NUIE::GetCurrentVersion ();
+	return GetCurrentEngineVersion ();
 }
 
-bool MemoryClipboardHandler::IsCompatibleVersion (const NUIE::Version& version) const
+bool MemoryClipboardHandler::IsCompatibleVersion (const Version& version) const
 {
-	return NUIE::IsCompatibleVersion (version);
+	return IsCompatibleEngineVersion (version);
 }
 
 bool MemoryClipboardHandler::HasClipboardContent () const

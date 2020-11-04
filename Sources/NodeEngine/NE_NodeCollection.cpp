@@ -108,6 +108,6 @@ Stream::Status NodeCollection::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-const NE::NodeCollection EmptyNodeCollection;
+const NodeCollection EmptyNodeCollection;
 
 }

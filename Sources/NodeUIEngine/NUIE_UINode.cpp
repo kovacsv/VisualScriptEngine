@@ -208,12 +208,12 @@ void UINode::SetUIOutputSlotName (const NE::SlotId& slotId, const std::wstring& 
 	outputSlot->SetName (newName);
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, UINodeCommandInterface&)
+EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, UINodeCommandInterface&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
 
-NUIE::EventHandlerResult UINode::HandleMouseDoubleClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, UINodeCommandInterface&)
+EventHandlerResult UINode::HandleMouseDoubleClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, UINodeCommandInterface&)
 {
 	return EventHandlerResult::EventNotHandled;
 }
