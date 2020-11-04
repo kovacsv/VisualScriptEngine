@@ -7,7 +7,7 @@ A visual scripting engine designed for embedding. The engine is written in moder
 
 ## Documentation
 
-Documentaion pages in the [Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki):
+Documentation pages in the [Wiki](https://github.com/kovacsv/VisualScriptEngine/wiki):
 * [Building the Engine](https://github.com/kovacsv/VisualScriptEngine/wiki/Building-the-Engine)
 * [Source Structure](https://github.com/kovacsv/VisualScriptEngine/wiki/Source-Structure)
 * [Embedding Tutorial](https://github.com/kovacsv/VisualScriptEngine/wiki/Embedding-Tutorial)
@@ -29,7 +29,7 @@ Running in a browser with [VisualScriptEngineWeb](https://github.com/kovacsv/Vis
 
 ## References
 
-[PARAM-O](https://graphisoft.com/param-o), the visual scripting solution in [ARCHICAD](https://graphisoft.com/solutions/products/archicad) is powered by VisualScriptEngine.
+[PARAM-O](https://graphisoft.com/param-o), the visual scripting solution in [Archicad](https://graphisoft.com/solutions/products/archicad) is powered by VisualScriptEngine.
 
 ## Other
 
