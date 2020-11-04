@@ -1,8 +1,7 @@
 #ifndef NUIE_GEOMETRY_HPP
 #define NUIE_GEOMETRY_HPP
 
-#include "NE_Serializable.hpp"
-#include "NE_Checksum.hpp"
+#include "NE_Stream.hpp"
 
 #include <vector>
 
@@ -173,10 +172,6 @@ NE::Stream::Status ReadRect (NE::InputStream& inputStream, Rect& rect);
 NE::Stream::Status WritePoint (NE::OutputStream& outputStream, const Point& point);
 NE::Stream::Status WriteSize (NE::OutputStream& outputStream, const Size& size);
 NE::Stream::Status WriteRect (NE::OutputStream& outputStream, const Rect& rect);
-
-void AddPointToChecksum (NE::Checksum& checksum, const Point& point);
-void AddSizeToChecksum (NE::Checksum& checksum, const Size& size);
-void AddRectToChecksum (NE::Checksum& checksum, const Rect& rect);
 
 bool IsEqual (double a, double b);
 bool IsLower (double a, double b);

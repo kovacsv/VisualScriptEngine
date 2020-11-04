@@ -1,4 +1,6 @@
 #include "NUIE_Geometry.hpp"
+#include "NE_Debug.hpp"
+
 #include <cmath>
 #include <algorithm>
 
@@ -489,24 +491,6 @@ NE::Stream::Status WriteRect (NE::OutputStream& outputStream, const Rect& rect)
 	WritePoint (outputStream, rect.GetTopLeft ());
 	WriteSize (outputStream, rect.GetSize ());
 	return outputStream.GetStatus ();
-}
-
-void AddPointToChecksum (NE::Checksum& checksum, const Point& point)
-{
-	checksum.Add (point.GetX ());
-	checksum.Add (point.GetY ());
-}
-
-void AddSizeToChecksum (NE::Checksum& checksum, const Size& size)
-{
-	checksum.Add (size.GetWidth ());
-	checksum.Add (size.GetHeight ());
-}
-
-void AddRectToChecksum (NE::Checksum& checksum, const Rect& rect)
-{
-	AddPointToChecksum (checksum, rect.GetTopLeft ());
-	AddSizeToChecksum (checksum, rect.GetSize ());
 }
 
 bool IsEqual (double a, double b)

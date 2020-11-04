@@ -130,25 +130,6 @@ bool Font::operator!= (const Font& rhs) const
 	return !operator== (rhs);
 }
 
-void AddColorToChecksum (NE::Checksum& checksum, const Color& color)
-{
-	checksum.Add (color.GetR ());
-	checksum.Add (color.GetG ());
-	checksum.Add (color.GetB ());
-}
-
-void AddPenToChecksum (NE::Checksum& checksum, const Pen& pen)
-{
-	AddColorToChecksum (checksum, pen.GetColor ());
-	checksum.Add (pen.GetThickness ());
-}
-
-void AddFontToChecksum (NE::Checksum& checksum, const Font& font)
-{
-	checksum.Add (font.GetFamily ());
-	checksum.Add (font.GetSize ());
-}
-
 NE::Stream::Status ReadColor (NE::InputStream& inputStream, Color& color)
 {
 	unsigned char r = 0;

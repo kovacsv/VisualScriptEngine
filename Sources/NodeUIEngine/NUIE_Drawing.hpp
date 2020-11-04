@@ -1,8 +1,8 @@
 #ifndef NUIE_DRAWING_HPP
 #define NUIE_DRAWING_HPP
 
-#include "NE_Serializable.hpp"
-#include "NE_Checksum.hpp"
+#include "NE_Stream.hpp"
+
 #include <string>
 
 namespace NUIE
@@ -89,10 +89,6 @@ private:
 	std::wstring	family;
 	double			size;
 };
-
-void AddColorToChecksum (NE::Checksum& checksum, const Color& color);
-void AddPenToChecksum (NE::Checksum& checksum, const Pen& pen);
-void AddFontToChecksum (NE::Checksum& checksum, const Font& font);
 
 NE::Stream::Status ReadColor (NE::InputStream& inputStream, Color& color);
 NE::Stream::Status WriteColor (NE::OutputStream& outputStream, const Color& color);

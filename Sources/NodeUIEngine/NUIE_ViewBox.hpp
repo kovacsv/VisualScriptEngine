@@ -3,7 +3,6 @@
 
 #include "NUIE_Geometry.hpp"
 #include "NUIE_Drawing.hpp"
-#include "NE_Serializable.hpp"
 
 namespace NUIE
 {
