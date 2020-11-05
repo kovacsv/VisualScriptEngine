@@ -128,19 +128,19 @@ public:
 		class ImageLoader : public WAS::NodeEditorNodeTreeHwndControl::ImageLoader
 		{
 		public:
-			virtual HBITMAP LoadGroupClosedImage () override
+			virtual HBITMAP LoadGroupClosedImage (COLORREF bgColor) override
 			{
-				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDERCLOSED_ICON), L"IMAGE");
+				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDERCLOSED_ICON), L"IMAGE", bgColor);
 			}
 
-			virtual HBITMAP LoadGroupOpenedImage () override
+			virtual HBITMAP LoadGroupOpenedImage (COLORREF bgColor) override
 			{
-				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDEROPENED_ICON), L"IMAGE");
+				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDEROPENED_ICON), L"IMAGE", bgColor);
 			}
 
-			virtual HBITMAP LoadImage (const NUIE::IconId& iconId) override
+			virtual HBITMAP LoadImage (const NUIE::IconId& iconId, COLORREF bgColor) override
 			{
-				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE");
+				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE", bgColor);
 			}
 		};
 

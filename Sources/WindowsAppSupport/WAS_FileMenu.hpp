@@ -17,14 +17,14 @@ public:
 	HMENU	GetMenuBar ();
 
 	HMENU	AddPopupMenu (const std::wstring& name);
-	void	AddPopupMenuItem (HMENU popupMenu, UINT id, const std::wstring& name);
+	void	AddPopupMenuItem (HMENU popupMenu, UINT commandId, const std::wstring& name);
 	void	AddPopupMenuSeparator (HMENU popupMenu);
 
 	void	EnablePopupMenuItem (UINT id, bool enabled);
 
 private:
 	HMENU									menuBar;
-	std::unordered_map<UINT_PTR, HMENU>		idToPopupMenu;
+	std::unordered_map<UINT_PTR, HMENU>		commandToPopupMenu;
 };
 
 }

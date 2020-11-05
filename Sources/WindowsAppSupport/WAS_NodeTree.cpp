@@ -136,7 +136,7 @@ void NodeTreeView::ExpandAll ()
 	}
 }
 
-HWND NodeTreeView::GetListHandle ()
+HWND NodeTreeView::GetTreeHandle ()
 {
 	return treeHandle;
 }

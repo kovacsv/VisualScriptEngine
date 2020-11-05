@@ -18,9 +18,9 @@ public:
 		ImageLoader ();
 		virtual ~ImageLoader ();
 
-		virtual HBITMAP LoadGroupClosedImage () = 0;
-		virtual HBITMAP LoadGroupOpenedImage () = 0;
-		virtual HBITMAP LoadImage (const NUIE::IconId& iconId) = 0;
+		virtual HBITMAP LoadGroupClosedImage (COLORREF bgColor) = 0;
+		virtual HBITMAP LoadGroupOpenedImage (COLORREF bgColor) = 0;
+		virtual HBITMAP LoadImage (const NUIE::IconId& iconId, COLORREF bgColor) = 0;
 	};
 
 	NodeEditorNodeTreeHwndControl ();

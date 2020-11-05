@@ -55,7 +55,7 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
-static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageLoader, const NUIE::IconId& iconId)
+static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageLoader, const NUIE::IconId& iconId, COLORREF bgColor)
 {
 	if (imageLoader == nullptr) {
 		return NULL;
@@ -63,7 +63,7 @@ static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageL
 	if (iconId == NUIE::InvalidIconId) {
 		return NULL;
 	}
-	return imageLoader->LoadImage (iconId);
+	return imageLoader->LoadImage (iconId, bgColor);
 }
 
 NodeEditorNodeTreeHwndControl::ImageLoader::ImageLoader ()
@@ -160,7 +160,7 @@ NUIE::DrawingContext& NodeEditorNodeTreeHwndControl::GetDrawingContext ()
 
 void NodeEditorNodeTreeHwndControl::TreeViewSelectionChanged (LPNMTREEVIEW lpnmtv)
 {
-	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetListHandle ()) {
+	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetTreeHandle ()) {
 		return;
 	}
 
@@ -169,7 +169,7 @@ void NodeEditorNodeTreeHwndControl::TreeViewSelectionChanged (LPNMTREEVIEW lpnmt
 
 void NodeEditorNodeTreeHwndControl::TreeViewItemExpanded (LPNMTREEVIEW lpnmtv)
 {
-	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetListHandle ()) {
+	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetTreeHandle ()) {
 		return;
 	}
 
@@ -178,17 +178,18 @@ void NodeEditorNodeTreeHwndControl::TreeViewItemExpanded (LPNMTREEVIEW lpnmtv)
 
 void NodeEditorNodeTreeHwndControl::FillNodeTree (const NUIE::NodeTree& nodeTree, ImageLoader* imageLoader)
 {
+	COLORREF bgColor = (COLORREF) TreeView_GetBkColor (nodeTreeView.GetTreeHandle ());
 	if (imageLoader != nullptr) {
 		nodeTreeView.InitImageList (
-			imageLoader->LoadGroupClosedImage (),
-			imageLoader->LoadGroupOpenedImage ()
+			imageLoader->LoadGroupClosedImage (bgColor),
+			imageLoader->LoadGroupOpenedImage (bgColor)
 		);
 	}
 	LPARAM nextNodeId = 0;
 	for (const NUIE::NodeTree::Group& group : nodeTree.GetGroups ()) {
 		nodeTreeView.AddGroup (group.GetName ());
 		for (const NUIE::NodeTree::Item& item : group.GetItems ()) {
-			HBITMAP itemIcon = LoadTreeImage (imageLoader, item.GetIconId ());
+			HBITMAP itemIcon = LoadTreeImage (imageLoader, item.GetIconId (), bgColor);
 			nodeTreeView.AddItem (group.GetName (), item.GetName (), itemIcon, nextNodeId);
 			nodeIdToCreator.insert ({ nextNodeId, item.GetCreator () });
 			nextNodeId++;
@@ -199,7 +200,7 @@ void NodeEditorNodeTreeHwndControl::FillNodeTree (const NUIE::NodeTree& nodeTree
 
 void NodeEditorNodeTreeHwndControl::TreeViewDoubleClick (LPNMHDR lpnmhdr)
 {
-	if (lpnmhdr->hwndFrom != nodeTreeView.GetListHandle ()) {
+	if (lpnmhdr->hwndFrom != nodeTreeView.GetTreeHandle ()) {
 		return;
 	}
 
@@ -216,7 +217,7 @@ void NodeEditorNodeTreeHwndControl::TreeViewDoubleClick (LPNMHDR lpnmhdr)
 
 void NodeEditorNodeTreeHwndControl::TreeViewBeginDrag (LPNMTREEVIEW lpnmtv)
 {
-	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetListHandle ()) {
+	if (lpnmtv->hdr.hwndFrom != nodeTreeView.GetTreeHandle ()) {
 		return;
 	}
 

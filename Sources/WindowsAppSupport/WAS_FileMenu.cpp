@@ -5,8 +5,8 @@ namespace WAS
 {
 
 FileMenu::FileMenu () :
-	menuBar (nullptr),
-	idToPopupMenu ()
+	menuBar (NULL),
+	commandToPopupMenu ()
 {
 	menuBar = CreateMenu ();
 }
@@ -23,13 +23,13 @@ HMENU FileMenu::AddPopupMenu (const std::wstring& name)
 	return menu;
 }
 
-void FileMenu::AddPopupMenuItem (HMENU popupMenu, UINT id, const std::wstring& name)
+void FileMenu::AddPopupMenuItem (HMENU popupMenu, UINT commandId, const std::wstring& name)
 {
-	if (DBGERROR (idToPopupMenu.find (id) != idToPopupMenu.end ())) {
+	if (DBGERROR (commandToPopupMenu.find (commandId) != commandToPopupMenu.end ())) {
 		return;
 	}
-	AppendMenu (popupMenu, MF_STRING, id, name.c_str ());
-	idToPopupMenu.insert ({ id, popupMenu });
+	AppendMenu (popupMenu, MF_STRING, commandId, name.c_str ());
+	commandToPopupMenu.insert ({ commandId, popupMenu });
 }
 
 void FileMenu::AddPopupMenuSeparator (HMENU popupMenu)
@@ -39,10 +39,10 @@ void FileMenu::AddPopupMenuSeparator (HMENU popupMenu)
 
 void FileMenu::EnablePopupMenuItem (UINT id, bool enabled)
 {
-	if (DBGERROR (idToPopupMenu.find (id) == idToPopupMenu.end ())) {
+	if (DBGERROR (commandToPopupMenu.find (id) == commandToPopupMenu.end ())) {
 		return;
 	}
-	HMENU popupMenu = idToPopupMenu.at (id);
+	HMENU popupMenu = commandToPopupMenu.at (id);
 	EnableMenuItem (popupMenu, id, enabled ? MF_ENABLED : MF_DISABLED);
 }
 

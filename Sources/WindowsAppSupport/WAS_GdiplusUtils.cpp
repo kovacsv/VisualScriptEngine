@@ -17,7 +17,7 @@ GdiplusInitializer::~GdiplusInitializer ()
 	Gdiplus::GdiplusShutdown (gdiPlusToken);
 }
 
-HBITMAP LoadBitmapFromResource (LPWSTR resourceName, LPWSTR resourceType)
+HBITMAP LoadBitmapFromResource (LPWSTR resourceName, LPWSTR resourceType, COLORREF bgColor)
 {
 	GdiplusInitializer initializer;
 	
@@ -52,7 +52,8 @@ HBITMAP LoadBitmapFromResource (LPWSTR resourceName, LPWSTR resourceType)
 			Gdiplus::Bitmap* bitmap = Gdiplus::Bitmap::FromStream (stream);
 			stream->Release ();
 			if (bitmap != nullptr) {
-				bitmap->GetHBITMAP (Gdiplus::Color (255, 255, 255), &resultBitmap);
+				Gdiplus::Color gdiplusBgColor (GetRValue (bgColor), GetGValue (bgColor), GetBValue (bgColor));
+				bitmap->GetHBITMAP (gdiplusBgColor, &resultBitmap);
 				delete bitmap;
 			}
 		}

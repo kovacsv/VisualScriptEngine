@@ -16,7 +16,7 @@ private:
 	ULONG_PTR	gdiPlusToken;
 };
 
-HBITMAP LoadBitmapFromResource (LPWSTR resourceName, LPWSTR resourceType);
+HBITMAP LoadBitmapFromResource (LPWSTR resourceName, LPWSTR resourceType, COLORREF bgColor);
 
 }
 

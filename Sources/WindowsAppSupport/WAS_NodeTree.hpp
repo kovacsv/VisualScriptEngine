@@ -23,7 +23,7 @@ public:
 	void		GroupExpanded (const TVITEMW& group);
 	void		ExpandAll ();
 
-	HWND		GetListHandle ();
+	HWND		GetTreeHandle ();
 
 private:
 	HWND											treeHandle;
