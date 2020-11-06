@@ -1,8 +1,6 @@
 import os
 import sys
-import re
 import subprocess
-import zipfile
 
 def PrintInfo (message):
 	print ('INFO: ' + message)
@@ -28,7 +26,6 @@ def Main (argv):
 		'-verbosity:m',
 		'/property:Configuration=' + msBuildConfiguration
 	])
-	buildResult = 0
 	if buildResult != 0:
 		PrintError ('Failed to build install project.')
 		return 1
