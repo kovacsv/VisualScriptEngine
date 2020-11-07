@@ -448,6 +448,9 @@ void SetGroupParametersMenuCommand::DoModification ()
 		virtual std::vector<std::wstring> GetParameterValueChoices (size_t index) const override
 		{
 			switch (index) {
+				case 0:
+					DBGBREAK ();
+					return {};
 				case 1:
 					{
 						std::vector<std::wstring> result;
