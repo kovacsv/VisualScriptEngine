@@ -52,7 +52,117 @@ private:
 	ValuePtr					bValue;
 };
 
-TEST (TestNodeValueVariations)
+TEST (TestNodeValueCombination_Shortest)
+{
+	NodeManager manager;
+
+	{
+		NodePtr simpleIntValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Shortest, ValuePtr (new IntValue (1)), ValuePtr (new IntValue (2)))));
+		ValueConstPtr result = simpleIntValues->Evaluate (EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
+		ASSERT (resultListValue->GetSize () == 1);
+		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
+	}
+
+	{
+		ListValuePtr listValue (new ListValue ());
+		listValue->Push (ValuePtr (new IntValue (2)));
+		NodePtr intAndIntListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Shortest, ValuePtr (new IntValue (1)), listValue)));
+		ValueConstPtr result = intAndIntListValues->Evaluate (EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
+		ASSERT (resultListValue->GetSize () == 1);
+		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
+	}
+
+	{
+		ListValuePtr listValue (new ListValue ());
+		listValue->Push (ValuePtr (new IntValue (2)));
+		listValue->Push (ValuePtr (new IntValue (3)));
+		NodePtr intAndIntListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Shortest, ValuePtr (new IntValue (1)), listValue)));
+		ValueConstPtr result = intAndIntListValues->Evaluate (EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
+		ASSERT (resultListValue->GetSize () == 1);
+		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
+	}
+
+	{
+		ListValuePtr listValue1 (new ListValue ());
+		listValue1->Push (ValuePtr (new IntValue (1)));
+		listValue1->Push (ValuePtr (new IntValue (2)));
+		ListValuePtr listValue2 (new ListValue ());
+		listValue2->Push (ValuePtr (new IntValue (3)));
+		listValue2->Push (ValuePtr (new IntValue (4)));
+		listValue2->Push (ValuePtr (new IntValue (5)));
+		NodePtr twoListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Shortest, listValue1, listValue2)));
+		ValueConstPtr result = twoListValues->Evaluate (EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
+		ASSERT (resultListValue->GetSize () == 2);
+		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 4);
+		ASSERT (IntValue::Get (resultListValue->GetValue (1)) == 6);
+	}
+}
+
+TEST (TestNodeValueCombination_Longest)
+{
+	NodeManager manager;
+
+	{
+		NodePtr simpleIntValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Longest, ValuePtr (new IntValue (1)), ValuePtr (new IntValue (2)))));
+		ValueConstPtr result = simpleIntValues->Evaluate (EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
+		ASSERT (resultListValue->GetSize () == 1);
+		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
+	}
+
+	{
+		ListValuePtr listValue (new ListValue ());
+		listValue->Push (ValuePtr (new IntValue (2)));
+		NodePtr intAndIntListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Longest, ValuePtr (new IntValue (1)), listValue)));
+		ValueConstPtr result = intAndIntListValues->Evaluate (EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
+		ASSERT (resultListValue->GetSize () == 1);
+		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
+	}
+
+	{
+		ListValuePtr listValue (new ListValue ());
+		listValue->Push (ValuePtr (new IntValue (2)));
+		listValue->Push (ValuePtr (new IntValue (3)));
+		NodePtr intAndIntListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Longest, ValuePtr (new IntValue (1)), listValue)));
+		ValueConstPtr result = intAndIntListValues->Evaluate (EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
+		ASSERT (resultListValue->GetSize () == 2);
+		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
+		ASSERT (IntValue::Get (resultListValue->GetValue (1)) == 4);
+	}
+
+	{
+		ListValuePtr listValue1 (new ListValue ());
+		listValue1->Push (ValuePtr (new IntValue (1)));
+		listValue1->Push (ValuePtr (new IntValue (2)));
+		ListValuePtr listValue2 (new ListValue ());
+		listValue2->Push (ValuePtr (new IntValue (3)));
+		listValue2->Push (ValuePtr (new IntValue (4)));
+		listValue2->Push (ValuePtr (new IntValue (5)));
+		NodePtr twoListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Longest, listValue1, listValue2)));
+		ValueConstPtr result = twoListValues->Evaluate (EmptyEvaluationEnv);
+		ASSERT (Value::IsType<ListValue> (result));
+		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
+		ASSERT (resultListValue->GetSize () == 3);
+		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 4);
+		ASSERT (IntValue::Get (resultListValue->GetValue (1)) == 6);
+		ASSERT (IntValue::Get (resultListValue->GetValue (2)) == 7);
+	}
+}
+
+TEST (TestNodeValueCombination_CrossProduct)
 {
 	NodeManager manager;
 
@@ -80,15 +190,6 @@ TEST (TestNodeValueVariations)
 	}
 
 	{
-		NodePtr simpleIntValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Shortest, ValuePtr (new IntValue (1)), ValuePtr (new IntValue (2)))));
-		ValueConstPtr result = simpleIntValues->Evaluate (EmptyEvaluationEnv);
-		ASSERT (Value::IsType<ListValue> (result));
-		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
-		ASSERT (resultListValue->GetSize () == 1);
-		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
-	}
-
-	{
 		NodePtr simpleIntValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::CrossProduct, ValuePtr (new IntValue (1)), ValuePtr (new IntValue (2)))));
 		ValueConstPtr result = simpleIntValues->Evaluate (EmptyEvaluationEnv);
 		ASSERT (Value::IsType<ListValue> (result));
@@ -100,30 +201,7 @@ TEST (TestNodeValueVariations)
 	{
 		ListValuePtr listValue (new ListValue ());
 		listValue->Push (ValuePtr (new IntValue (2)));
-		NodePtr intAndIntListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Shortest, ValuePtr (new IntValue (1)), listValue)));
-		ValueConstPtr result = intAndIntListValues->Evaluate (EmptyEvaluationEnv);
-		ASSERT (Value::IsType<ListValue> (result));
-		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
-		ASSERT (resultListValue->GetSize () == 1);
-		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
-	}
-
-	{
-		ListValuePtr listValue (new ListValue ());
-		listValue->Push (ValuePtr (new IntValue (2)));
 		NodePtr intAndIntListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::CrossProduct, ValuePtr (new IntValue (1)), listValue)));
-		ValueConstPtr result = intAndIntListValues->Evaluate (EmptyEvaluationEnv);
-		ASSERT (Value::IsType<ListValue> (result));
-		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
-		ASSERT (resultListValue->GetSize () == 1);
-		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
-	}
-
-	{
-		ListValuePtr listValue (new ListValue ());
-		listValue->Push (ValuePtr (new IntValue (2)));
-		listValue->Push (ValuePtr (new IntValue (3)));
-		NodePtr intAndIntListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Shortest, ValuePtr (new IntValue (1)), listValue)));
 		ValueConstPtr result = intAndIntListValues->Evaluate (EmptyEvaluationEnv);
 		ASSERT (Value::IsType<ListValue> (result));
 		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
@@ -142,23 +220,6 @@ TEST (TestNodeValueVariations)
 		ASSERT (resultListValue->GetSize () == 2);
 		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 3);
 		ASSERT (IntValue::Get (resultListValue->GetValue (1)) == 4);
-	}
-
-	{
-		ListValuePtr listValue1 (new ListValue ());
-		listValue1->Push (ValuePtr (new IntValue (1)));
-		listValue1->Push (ValuePtr (new IntValue (2)));
-		ListValuePtr listValue2 (new ListValue ());
-		listValue2->Push (ValuePtr (new IntValue (3)));
-		listValue2->Push (ValuePtr (new IntValue (4)));
-		listValue2->Push (ValuePtr (new IntValue (5)));
-		NodePtr twoListValues = manager.AddNode (NodePtr (new TestNode (NE::ValueCombinationMode::Shortest, listValue1, listValue2)));
-		ValueConstPtr result = twoListValues->Evaluate (EmptyEvaluationEnv);
-		ASSERT (Value::IsType<ListValue> (result));
-		ListValueConstPtr resultListValue = Value::Cast<ListValue> (result);
-		ASSERT (resultListValue->GetSize () == 2);
-		ASSERT (IntValue::Get (resultListValue->GetValue (0)) == 4);
-		ASSERT (IntValue::Get (resultListValue->GetValue (1)) == 6);
 	}
 
 	{
