@@ -404,12 +404,6 @@ void SetGroupParametersMenuCommand::DoModification ()
 	class GroupParameterInterface : public ParameterInterface
 	{
 	public:
-		enum class GroupParameterType : size_t
-		{
-			Name	= 0,
-			Color	= 1
-		};
-
 		struct GroupParameter
 		{
 			NE::LocString	name;
@@ -441,9 +435,9 @@ void SetGroupParametersMenuCommand::DoModification ()
 		virtual NE::ValueConstPtr GetParameterValue (size_t index) const override
 		{
 			switch (index) {
-				case GroupParameterType::Name:
+				case 0:
 					return NE::ValuePtr (new NE::StringValue (currentGroup->GetName ().GetLocalized ()));
-				case GroupParameterType::Color:
+				case 1:
 					return NE::ValuePtr (new NE::IntValue ((int) currentGroup->GetBackgroundColorIndex ()));
 				default:
 					DBGBREAK ();
@@ -454,7 +448,7 @@ void SetGroupParametersMenuCommand::DoModification ()
 		virtual std::vector<std::wstring> GetParameterValueChoices (size_t index) const override
 		{
 			switch (index) {
-				case GroupParameterType::Color:
+				case 1:
 					{
 						std::vector<std::wstring> result;
 						const std::vector<NamedColorSet::NamedColor>& colors = groupBackgroundColors.GetColors ();
