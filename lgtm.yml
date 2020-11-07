@@ -1,2 +1,5 @@
 queries:
   - include: "*"
+  - exclude: cpp/non-constant-format
+  - exclude: cpp/poorly-documented-function
+  - exclude: cpp/trivial-switch
