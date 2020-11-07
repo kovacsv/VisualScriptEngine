@@ -87,13 +87,13 @@ TEST (CompatibilityTest)
 	ASSERT (env.CheckReference (L"Compatibility_AfterRead.svg"));
 }
 
-TEST (CurrentVersionReadWriteTest)
+TEST (NewestVersionReadWriteTest)
 {
 	MemoryOutputStream outputStream;
 	{
 		NodeEditorTestEnv env (GetDefaultSkinParams ());
 		InitNodeEditor (env.nodeEditor);
-		ASSERT (env.CheckReference (L"CurrentVersionReadWrite_Original.svg"));
+		ASSERT (env.CheckReference (L"NewestVersionReadWrite_Original.svg"));
 		env.nodeEditor.Save (outputStream);
 	}
 
@@ -101,7 +101,7 @@ TEST (CurrentVersionReadWriteTest)
 		NodeEditorTestEnv env2 (GetDefaultSkinParams ());
 		MemoryInputStream inputSream (outputStream.GetBuffer ());
 		env2.nodeEditor.Open (inputSream);
-		ASSERT (env2.CheckReference (L"CurrentVersionReadWrite_AfterSaveAndLoad.svg"));
+		ASSERT (env2.CheckReference (L"NewestVersionReadWrite_AfterSaveAndLoad.svg"));
 	}
 }
 

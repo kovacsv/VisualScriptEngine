@@ -183,13 +183,16 @@ void NodeUIManagerDrawer::DrawTemporaryConnection (NodeUIDrawingEnvironment& dra
 	DrawingContext& context = drawingEnv.GetDrawingContext ();
 	DrawConnection (drawingEnv, pen, beg, end);
 	if (skinParams.GetConnectionMarker () == SkinParams::ConnectionMarker::Circle) {
+		const Color& markerColor = skinParams.GetSlotTextBackgroundColor ();
 		const Size& markerSize = skinParams.GetConnectionMarkerSize ();
 		if (dir == NodeDrawingModifier::Direction::Forward) {
 			Rect markerRect = Rect::FromCenterAndSize (end, markerSize);
-			context.FillEllipse (markerRect, pen.GetColor ());
+			context.FillEllipse (markerRect, markerColor);
+			context.DrawEllipse (markerRect, pen);
 		} else if (dir == NodeDrawingModifier::Direction::Backward) {
 			Rect markerRect = Rect::FromCenterAndSize (beg, markerSize);
-			context.FillEllipse (markerRect, pen.GetColor ());
+			context.FillEllipse (markerRect, markerColor);
+			context.DrawEllipse (markerRect, pen);
 		}
 	}
 }
