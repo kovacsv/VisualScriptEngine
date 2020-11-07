@@ -404,7 +404,7 @@ void SetGroupParametersMenuCommand::DoModification ()
 	class GroupParameterInterface : public ParameterInterface
 	{
 	public:
-		enum class GroupParameterType : int
+		enum class GroupParameterType : size_t
 		{
 			Name	= 0,
 			Color	= 1
