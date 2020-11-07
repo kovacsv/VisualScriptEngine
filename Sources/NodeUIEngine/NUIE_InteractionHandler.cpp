@@ -659,7 +659,7 @@ void InteractionHandler::ExecuteCommand (NodeUIEnvironment& uiEnvironment, Comma
 				if (!selectedNodes.IsEmpty ()) {
 					size_t nodeCount = selectedNodes.Count ();
 					UINodePtr currentNode = uiManager.GetNode (selectedNodes.Get (nodeCount - 1));
-					menuCommand.reset (new SetParametersMenuCommand (uiManager, uiEnvironment, currentNode, selectedNodes));
+					menuCommand.reset (new SetNodeParametersMenuCommand (uiManager, uiEnvironment, currentNode, selectedNodes));
 				}
 			}
 			break;
@@ -898,7 +898,7 @@ EventHandlerResult InteractionHandler::HandleMouseDoubleClick (NodeUIEnvironment
 			return handlerResult;
 		}
 
-		SetParametersMenuCommand setParameters (uiManager, uiEnvironment, foundNode, NE::NodeCollection ({ foundNode->GetId () }));
+		SetNodeParametersMenuCommand setParameters (uiManager, uiEnvironment, foundNode, NE::NodeCollection ({ foundNode->GetId () }));
 		setParameters.Do ();
 		return EventHandlerResult::EventHandled;
 	}

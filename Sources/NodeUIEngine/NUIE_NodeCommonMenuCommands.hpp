@@ -124,11 +124,11 @@ private:
 	NodeUIEnvironment&	uiEnvironment;
 };
 
-class SetParametersMenuCommand : public SingleMenuCommand
+class SetNodeParametersMenuCommand : public SingleMenuCommand
 {
 public:
-	SetParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeConstPtr& currentNode, const NE::NodeCollection& relevantNodes);
-	virtual ~SetParametersMenuCommand ();
+	SetNodeParametersMenuCommand (NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const UINodeConstPtr& currentNode, const NE::NodeCollection& relevantNodes);
+	virtual ~SetNodeParametersMenuCommand ();
 
 	virtual bool WillModify () const override;
 	virtual void DoModification () override;
