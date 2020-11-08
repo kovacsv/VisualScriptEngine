@@ -68,7 +68,7 @@ bool ConnectionManager::IsOutputSlotConnectedToInputSlot (const OutputSlotConstP
 	return outputToInputConnections.HasConnection (outputSlot, inputSlot);
 }
 
-bool ConnectionManager::CanConnectMoreOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const
+bool ConnectionManager::CanConnectOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const
 {
 	if (inputSlot == nullptr) {
 		return false;
@@ -103,7 +103,7 @@ bool ConnectionManager::CanConnectOutputSlotToInputSlot (const OutputSlotConstPt
 		return false;
 	}
 
-	if (!CanConnectMoreOutputSlotToInputSlot (inputSlot)) {
+	if (!CanConnectOutputSlotToInputSlot (inputSlot)) {
 		return false;
 	}
 

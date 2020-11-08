@@ -29,7 +29,7 @@ public:
 	void	EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const;
 
 	bool	IsOutputSlotConnectedToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const;
-	bool	CanConnectMoreOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const;
+	bool	CanConnectOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const;
 	bool	CanConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const;
 	bool	ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
 	
