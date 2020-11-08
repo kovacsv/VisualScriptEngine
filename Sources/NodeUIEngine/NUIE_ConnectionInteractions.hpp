@@ -7,80 +7,109 @@
 namespace NUIE
 {
 
-template <class StartSlotType, class EndSlotType>
-class NodeConnectionHandler : public MouseMoveHandler
+class ConnectionStartOutputSlot
 {
 public:
-	NodeConnectionHandler (NodeUIManager& uiManager, const StartSlotType& startSlot, const Point& startSlotPosition) :
-		MouseMoveHandler (),
-		uiManager (uiManager),
-		startSlot (startSlot),
-		endSlot (nullptr),
-		startSlotPosition (startSlotPosition)
-	{
-	
-	}
+	ConnectionStartOutputSlot (const UIOutputSlotConstPtr& slot, const Point& position);
 
-	virtual void HandleAbort () override
-	{
-		uiManager.RequestRedraw ();
-	}
+	UIOutputSlotConstPtr	slot;
+	Point					position;
+};
+
+class ConnectionStartInputSlot
+{
+public:
+	ConnectionStartInputSlot (const UIInputSlotConstPtr& slot, const Point& position);
+
+	UIInputSlotConstPtr		slot;
+	Point					position;
+};
+
+class NodeOutputToInputConnectionHandlerBase : public MouseMoveHandler
+{
+public:
+	NodeOutputToInputConnectionHandlerBase (NodeUIManager& uiManager);
+
+	virtual void	HandleMouseMove (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point& position) override;
+	virtual void	HandleAbort () override;
+
+	virtual bool	CanConnectToInputSlot (const UIInputSlotConstPtr& inputSlot) const = 0;
 
 protected:
-	NodeUIManager&	uiManager;
-	StartSlotType	startSlot;
-	EndSlotType		endSlot;
-	Point			startSlotPosition;
+	NodeUIManager&			uiManager;
+	UIInputSlotConstPtr		endSlot;
 };
 
-class NodeOutputToInputConnectionHandler : public NodeConnectionHandler<UIOutputSlotConstPtr, UIInputSlotConstPtr>
+class NodeOutputToInputConnectionHandler : public NodeOutputToInputConnectionHandlerBase
 {
 public:
-	NodeOutputToInputConnectionHandler (NodeUIManager& uiManager, const UIOutputSlotConstPtr& startSlot, const Point& startSlotPosition);
+	NodeOutputToInputConnectionHandler (NodeUIManager& uiManager, const ConnectionStartOutputSlot& startSlot);
 
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction dir)>& processor) const override;
-	virtual void	HandleMouseMove (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point& position) override;
 	virtual void	HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override;
-	virtual bool	CanConnectToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
-};
-
-class NodeOutputToInputReconnectionHandler : public NodeOutputToInputConnectionHandler
-{
-public:
-	NodeOutputToInputReconnectionHandler (NodeUIManager& uiManager, const UIOutputSlotConstPtr& startSlot, const UIInputSlotConstPtr& originalEndSlot, const Point& startSlotPosition);
-
-	virtual bool	NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const override;
-	virtual void	HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override;
-	virtual bool	CanConnectToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const override;
+	virtual bool	CanConnectToInputSlot (const UIInputSlotConstPtr& inputSlot) const override;
 
 private:
-	UIInputSlotConstPtr originalEndSlot;
+	ConnectionStartOutputSlot	startSlot;
 };
 
-class NodeInputToOutputConnectionHandler : public NodeConnectionHandler<UIInputSlotConstPtr, UIOutputSlotConstPtr>
+class NodeOutputToInputReconnectionHandler : public NodeOutputToInputConnectionHandlerBase
 {
 public:
-	NodeInputToOutputConnectionHandler (NodeUIManager& uiManager, const UIInputSlotConstPtr& startSlot, const Point& startSlotPosition);
+	NodeOutputToInputReconnectionHandler (NodeUIManager& uiManager, const ConnectionStartOutputSlot& startSlot, const UIInputSlotConstPtr& originalEndSlot);
 
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction dir)>& processor) const override;
-	virtual void	HandleMouseMove (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point& position) override;
-	virtual void	HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override;
-	virtual bool	CanConnectToOutputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
-};
-
-class NodeInputToOutputReconnectionHandler : public NodeInputToOutputConnectionHandler
-{
-public:
-	NodeInputToOutputReconnectionHandler (NodeUIManager& uiManager, const UIInputSlotConstPtr& startSlot, const UIOutputSlotConstPtr& originalEndSlot, const Point& startSlotPosition);
-
 	virtual bool	NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const override;
 	virtual void	HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override;
-	virtual bool	CanConnectToOutputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const override;
+	virtual bool	CanConnectToInputSlot (const UIInputSlotConstPtr& inputSlot) const override;
 
 private:
-	UIOutputSlotConstPtr originalEndSlot;
+	ConnectionStartOutputSlot	startSlot;
+	UIInputSlotConstPtr			originalEndSlot;
 };
 
+class NodeInputToOutputConnectionHandlerBase : public MouseMoveHandler
+{
+public:
+	NodeInputToOutputConnectionHandlerBase (NodeUIManager& uiManager);
+
+	virtual void	HandleMouseMove (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point& position) override;
+	virtual void	HandleAbort () override;
+
+	virtual bool	CanConnectToOutputSlot (const UIOutputSlotConstPtr& outputSlot) const = 0;
+
+protected:
+	NodeUIManager&			uiManager;
+	UIOutputSlotConstPtr	endSlot;
+};
+
+class NodeInputToOutputConnectionHandler : public NodeInputToOutputConnectionHandlerBase
+{
+public:
+	NodeInputToOutputConnectionHandler (NodeUIManager& uiManager, const ConnectionStartInputSlot& startSlot);
+
+	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction dir)>& processor) const override;
+	virtual void	HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override;
+	virtual bool	CanConnectToOutputSlot (const UIOutputSlotConstPtr& outputSlot) const override;
+
+private:
+	ConnectionStartInputSlot	startSlot;
+};
+
+class NodeInputToOutputReconnectionHandler : public NodeInputToOutputConnectionHandlerBase
+{
+public:
+	NodeInputToOutputReconnectionHandler (NodeUIManager& uiManager, const ConnectionStartInputSlot& startSlot, const UIOutputSlotConstPtr& originalEndSlot);
+
+	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction dir)>& processor) const override;
+	virtual bool	NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const override;
+	virtual void	HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&) override;
+	virtual bool	CanConnectToOutputSlot (const UIOutputSlotConstPtr& outputSlot) const override;
+
+private:
+	ConnectionStartInputSlot	startSlot;
+	UIOutputSlotConstPtr		originalEndSlot;
+};
 
 }
 

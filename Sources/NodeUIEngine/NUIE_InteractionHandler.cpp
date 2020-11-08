@@ -554,14 +554,16 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 						if (DBGVERIFY (foundOutputSlot != nullptr)) {
 							UINodeConstPtr outputNode = uiManager.GetNode (foundOutputSlot->GetOwnerNodeId ());
 							Point startSlotPosition = outputNode->GetOutputSlotConnPosition (uiEnvironment, foundOutputSlot->GetId ());
-							multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputReconnectionHandler (uiManager, foundOutputSlot, foundInputSlot, startSlotPosition));
+							ConnectionStartOutputSlot startSlot (foundOutputSlot, startSlotPosition);
+							multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputReconnectionHandler (uiManager, startSlot, foundInputSlot));
 						}
 					}
 				} else {
 					if (uiManager.CanConnectMoreOutputSlotToInputSlot (foundInputSlot)) {
 						UINodeConstPtr uiNode = uiManager.GetNode (foundInputSlot->GetOwnerNodeId ());
 						Point startSlotPosition = uiNode->GetInputSlotConnPosition (uiEnvironment, foundInputSlot->GetId ());
-						multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputConnectionHandler (uiManager, foundInputSlot, startSlotPosition));
+						ConnectionStartInputSlot startSlot (foundInputSlot, startSlotPosition);
+						multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputConnectionHandler (uiManager, startSlot));
 					}
 				}
 			},
@@ -576,13 +578,15 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 						if (DBGVERIFY (foundInputSlot != nullptr)) {
 							UINodeConstPtr inputNode = uiManager.GetNode (foundInputSlot->GetOwnerNodeId ());
 							Point startSlotPosition = inputNode->GetInputSlotConnPosition (uiEnvironment, foundInputSlot->GetId ());
-							multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputReconnectionHandler (uiManager, foundInputSlot, foundOutputSlot, startSlotPosition));
+							ConnectionStartInputSlot startSlot (foundInputSlot, startSlotPosition);
+							multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputReconnectionHandler (uiManager, startSlot, foundOutputSlot));
 						}
 					}
 				} else {
 					UINodeConstPtr uiNode = uiManager.GetNode (foundOutputSlot->GetOwnerNodeId ());
 					Point startSlotPosition = uiNode->GetOutputSlotConnPosition (uiEnvironment, foundOutputSlot->GetId ());
-					multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputConnectionHandler (uiManager, foundOutputSlot, startSlotPosition));
+					ConnectionStartOutputSlot startSlot (foundOutputSlot, startSlotPosition);
+					multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputConnectionHandler (uiManager, startSlot));
 				}
 			},
 			[&] (const UINodePtr& foundNode) {
