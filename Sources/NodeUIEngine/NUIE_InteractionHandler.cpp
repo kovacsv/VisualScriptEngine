@@ -321,7 +321,7 @@ public:
 		currentPosition = position;
 		endSlot = FindInputSlotUnderPosition (uiManager, uiEnvironment, currentPosition);
 		if (endSlot != nullptr) {
-			if (SnapToInputSlot (startSlot, endSlot)) {
+			if (CanConnectToInputSlot (startSlot, endSlot)) {
 				UINodePtr uiNode = uiManager.GetNode (endSlot->GetOwnerNodeId ());
 				currentPosition = viewBox.ModelToView (uiNode->GetInputSlotConnPosition (uiEnvironment, endSlot->GetId ()));
 			} else {
@@ -341,7 +341,7 @@ public:
 		}
 	}
 
-	virtual bool SnapToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const
+	virtual bool CanConnectToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const
 	{
 		return uiManager.CanConnectOutputSlotToInputSlot (outputSlot, inputSlot);
 	}
@@ -382,9 +382,15 @@ public:
 		}
 	}
 
-	virtual bool SnapToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const override
+	virtual bool CanConnectToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const override
 	{
-		return uiManager.CanConnectOutputSlotToInputSlot (outputSlot, inputSlot) || inputSlot == originalEndSlot;
+		if (inputSlot == originalEndSlot) {
+			return true;
+		}
+		if (uiManager.CanConnectOutputSlotToInputSlot (outputSlot, inputSlot)) {
+			return true;
+		}
+		return false;
 	}
 
 private:
@@ -413,7 +419,7 @@ public:
 		currentPosition = position;
 		endSlot = FindOutputSlotUnderPosition (uiManager, uiEnvironment, currentPosition);
 		if (endSlot != nullptr) {
-			if (SnapToOutputSlot (endSlot, startSlot)) {
+			if (CanConnectToOutputSlot (endSlot, startSlot)) {
 				UINodePtr uiNode = uiManager.GetNode (endSlot->GetOwnerNodeId ());
 				currentPosition = viewBox.ModelToView (uiNode->GetOutputSlotConnPosition (uiEnvironment, endSlot->GetId ()));
 			} else {
@@ -433,7 +439,7 @@ public:
 		}
 	}
 
-	virtual bool SnapToOutputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const
+	virtual bool CanConnectToOutputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const
 	{
 		return uiManager.CanConnectOutputSlotToInputSlot (outputSlot, inputSlot);
 	}
@@ -473,9 +479,15 @@ public:
 		}
 	}
 
-	virtual bool SnapToOutputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const override
+	virtual bool CanConnectToOutputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const override
 	{
-		return uiManager.CanConnectOutputSlotToInputSlot (outputSlot, inputSlot) || outputSlot == originalEndSlot;
+		if (outputSlot == originalEndSlot) {
+			return true;
+		}
+		if (uiManager.CanConnectOutputSlotToInputSlot (outputSlot, inputSlot)) {
+			return true;
+		}
+		return false;
 	}
 
 private:
