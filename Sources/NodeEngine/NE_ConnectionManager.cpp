@@ -79,14 +79,16 @@ bool ConnectionManager::CanConnectOutputSlotToInputSlot (const InputSlotConstPtr
 	bool canConnect = false;
 	switch (outputSlotConnectionMode) {
 		case OutputSlotConnectionMode::Disabled:
+			// it's not possible to connect to a disabled input slot
 			canConnect = false;
 			break;
 		case OutputSlotConnectionMode::Single:
-			// you can always connect to single input slot
+			// you can always connect to single input slot,
 			// the previous connection will be disconnected
 			canConnect = true;
 			break;
 		case OutputSlotConnectionMode::Multiple:
+			// you can always connect to multiple input slot
 			canConnect = true;
 			break;
 		default:

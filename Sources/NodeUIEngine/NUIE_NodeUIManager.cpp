@@ -235,9 +235,9 @@ bool NodeUIManager::IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr
 	return nodeManager.IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot);
 }
 
-bool NodeUIManager::CanConnectMoreOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const
+bool NodeUIManager::CanConnectOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const
 {
-	return nodeManager.CanConnectMoreOutputSlotToInputSlot (inputSlot);
+	return nodeManager.CanConnectOutputSlotToInputSlot (inputSlot);
 }
 
 bool NodeUIManager::CanConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const

@@ -559,7 +559,7 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 						}
 					}
 				} else {
-					if (uiManager.CanConnectMoreOutputSlotToInputSlot (foundInputSlot)) {
+					if (uiManager.CanConnectOutputSlotToInputSlot (foundInputSlot)) {
 						UINodeConstPtr uiNode = uiManager.GetNode (foundInputSlot->GetOwnerNodeId ());
 						Point startSlotPosition = uiNode->GetInputSlotConnPosition (uiEnvironment, foundInputSlot->GetId ());
 						ConnectionStartInputSlot startSlot (foundInputSlot, startSlotPosition);

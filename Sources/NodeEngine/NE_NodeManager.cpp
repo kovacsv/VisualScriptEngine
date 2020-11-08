@@ -210,7 +210,7 @@ bool NodeManager::IsOutputSlotConnectedToInputSlot (const OutputSlotConstPtr& ou
 	return connectionManager.IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot);
 }
 
-bool NodeManager::CanConnectMoreOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const
+bool NodeManager::CanConnectOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const
 {
 	return connectionManager.CanConnectOutputSlotToInputSlot (inputSlot);
 }
