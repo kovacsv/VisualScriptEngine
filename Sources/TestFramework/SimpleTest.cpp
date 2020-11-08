@@ -208,21 +208,14 @@ std::wstring GetAppFolderLocation ()
 
 bool RunTests ()
 {
-	return Suite::Get ().Run ();
+	Suite& suite = Suite::Get ();
+	return suite.Run ();
 }
 
 void RegisterTest (Test* test)
 {
-	Suite::Get ().AddTest (test);
-}
-
-bool Assert (bool condition, const std::string& fileName, int lineNumber)
-{
-	if (!condition) {
-		std::cout << "FAILURE" << std::endl;
-		std::cout << "-> " << fileName << " (" << lineNumber << ")" << std::endl;
-	}
-	return condition;
+	Suite& suite = Suite::Get ();
+	suite.AddTest (test);
 }
 
 }

@@ -10,24 +10,22 @@
 #define PATH_SEPARATOR		L'/'
 
 #define TEST(TESTNAME)											\
-namespace TESTNAME##TestNamespace {								\
-	class TESTNAME : public SimpleTest::Test {					\
+class TESTNAME##_Test : public SimpleTest::Test {				\
+public:															\
+	TESTNAME##_Test () :										\
+		SimpleTest::Test (#TESTNAME)							\
+	{															\
+	}															\
+	virtual void RunTest () override;							\
+};																\
+static class TESTNAME##_Registrator {							\
 	public:														\
-		TESTNAME () :											\
-			SimpleTest::Test (#TESTNAME)						\
+		TESTNAME##_Registrator ()								\
 		{														\
+			SimpleTest::RegisterTest (new TESTNAME##_Test ());	\
 		}														\
-		virtual void RunTest () override;						\
-	};															\
-	static class Register {										\
-		public:													\
-			Register ()											\
-			{													\
-				SimpleTest::RegisterTest (new TESTNAME ());		\
-			}													\
-	} TESTNAME##TestRegisterInstance;							\
-}																\
-void TESTNAME##TestNamespace::TESTNAME::RunTest ()
+} TESTNAME##_RegistratorInstance;								\
+void TESTNAME##_Test::RunTest ()
 
 #define ASSERT(condition) TestAssert (condition, __FILE__, __LINE__)
 
