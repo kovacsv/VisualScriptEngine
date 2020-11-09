@@ -57,9 +57,15 @@ public:
 	bool					IsOutputSlotConnectedToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const;
 	bool					CanConnectOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const;
 	bool					CanConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const;
-	
+	bool					CanConnectOutputSlotsToInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot) const;
+	bool					CanConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots) const;
+
 	bool					ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
+	bool					ConnectOutputSlotsToInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot);
+	bool					ConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots);
 	bool					DisconnectOutputSlotFromInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot);
+	bool					DisconnectOutputSlotsFromInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot);
+	bool					DisconnectOutputSlotFromInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots);
 	bool					DisconnectAllInputSlotsFromOutputSlot (const OutputSlotConstPtr& outputSlot);
 	bool					DisconnectAllOutputSlotsFromInputSlot (const InputSlotConstPtr& inputSlot);
 

@@ -261,7 +261,7 @@ TEST (SingleInputSlotConnectionTest)
 	manager.AddNode (additionNode);
 
 	ASSERT (manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first"))));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first"))));
 	ASSERT (manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first"))));
 }
 
@@ -278,9 +278,9 @@ TEST (MultiInputSlotConnectionTest)
 	manager.AddNode (additionNode);
 
 	ASSERT (manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
 	ASSERT (manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("in"))));
 
 	ASSERT (manager.HasConnectedInputSlots (firstNode->GetOutputSlot (SlotId ("out"))));
 	ASSERT (manager.GetConnectedInputSlotCount (firstNode->GetOutputSlot (SlotId ("out"))) == 1);
@@ -388,8 +388,8 @@ TEST (DisabledNodeTest)
 
 	ASSERT (!manager.CanConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first"))));
 	ASSERT (!manager.CanConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("second"))));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first"))));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("second"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (firstNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("first"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (secondNode->GetOutputSlot (SlotId ("out")), additionNode->GetInputSlot (SlotId ("second"))));
 
 	ValueConstPtr result = additionNode->Evaluate (NE::EmptyEvaluationEnv);
 	ASSERT (result != nullptr);
@@ -543,7 +543,7 @@ TEST (SlotConnectionFailedTest2)
 	NodePtr node2 = manager.AddNode (NodePtr (new AdderInputOutputNode ()));
 
 	ASSERT (manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out1")), node2->GetInputSlot (SlotId ("in"))));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out1")), node2->GetInputSlot (SlotId ("in"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out1")), node2->GetInputSlot (SlotId ("in"))));
 }
 
 TEST (DeleteNodeTest)
@@ -647,7 +647,7 @@ TEST (CycleDetectionTest1)
 {
 	NodeManager manager;
 	NodePtr node = manager.AddNode (NodePtr (new AdderInputOutputNode (1)));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (node->GetOutputSlot (SlotId ("out")), node->GetInputSlot (SlotId ("in"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (node->GetOutputSlot (SlotId ("out")), node->GetInputSlot (SlotId ("in"))));
 }
 
 TEST (CycleDetectionTest2)
@@ -658,7 +658,7 @@ TEST (CycleDetectionTest2)
 	NodePtr node2 = manager.AddNode (NodePtr (new AdderInputOutputNode (1)));
 
 	ASSERT (manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out")), node2->GetInputSlot (SlotId ("in"))));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (node2->GetOutputSlot (SlotId ("out")), node1->GetInputSlot (SlotId ("in"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (node2->GetOutputSlot (SlotId ("out")), node1->GetInputSlot (SlotId ("in"))));
 }
 
 TEST (CycleDetectionTest3)
@@ -671,7 +671,7 @@ TEST (CycleDetectionTest3)
 																		   
 	ASSERT (manager.ConnectOutputSlotToInputSlot (node1->GetOutputSlot (SlotId ("out")), node2->GetInputSlot (SlotId ("in"))));
 	ASSERT (manager.ConnectOutputSlotToInputSlot (node2->GetOutputSlot (SlotId ("out")), node3->GetInputSlot (SlotId ("in"))));
-	ASSERT (!manager.ConnectOutputSlotToInputSlot (node3->GetOutputSlot (SlotId ("out")), node1->GetInputSlot (SlotId ("in"))));
+	ASSERT (!manager.CanConnectOutputSlotToInputSlot (node3->GetOutputSlot (SlotId ("out")), node1->GetInputSlot (SlotId ("in"))));
 }
 
 TEST (HasConnectionTest)

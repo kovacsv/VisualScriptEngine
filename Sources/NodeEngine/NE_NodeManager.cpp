@@ -11,6 +11,19 @@ namespace NE
 
 SERIALIZATION_INFO (NodeManager, 2);
 
+template <class SlotType>
+static bool HasDuplicates (const std::vector<SlotType>& slots)
+{
+	std::unordered_set<SlotType> slotSet;
+	for (const SlotType& slot : slots) {
+		if (slotSet.find (slot) != slotSet.end ()) {
+			return true;
+		}
+		slotSet.insert (slot);
+	}
+	return false;
+}
+
 class NodeManagerNodeEvaluator : public NodeEvaluator
 {
 public:
@@ -249,9 +262,51 @@ bool NodeManager::CanConnectOutputSlotToInputSlot (const OutputSlotConstPtr& out
 	return true;
 }
 
+bool NodeManager::CanConnectOutputSlotsToInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot) const
+{
+	if (DBGERROR (outputSlots.empty () || inputSlot == nullptr)) {
+		return false;
+	}
+
+	if (HasDuplicates (outputSlots)) {
+		return false;
+	}
+
+	if (outputSlots.size () > 1 && inputSlot->GetOutputSlotConnectionMode () != OutputSlotConnectionMode::Multiple) {
+		return false;
+	}
+
+	for (const OutputSlotConstPtr& outputSlot : outputSlots) {
+		if (!CanConnectOutputSlotToInputSlot (outputSlot, inputSlot)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool NodeManager::CanConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots) const
+{
+	if (DBGERROR (outputSlot == nullptr || inputSlots.empty ())) {
+		return false;
+	}
+
+	if (HasDuplicates (inputSlots)) {
+		return false;
+	}
+
+	for (const InputSlotConstPtr& inputSlot : inputSlots) {
+		if (!CanConnectOutputSlotToInputSlot (outputSlot, inputSlot)) {
+			return false;
+		}
+	}
+	
+	return true;
+}
+
 bool NodeManager::ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot)
 {
-	if (!CanConnectOutputSlotToInputSlot (outputSlot, inputSlot)) {
+	if (DBGERROR (!CanConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
 		return false;
 	}
 
@@ -259,10 +314,98 @@ bool NodeManager::ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& output
 	return connectionManager.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
 }
 
+bool NodeManager::ConnectOutputSlotsToInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot)
+{
+	if (DBGERROR (!CanConnectOutputSlotsToInputSlot (outputSlots, inputSlot))) {
+		return false;
+	}
+
+	for (const OutputSlotConstPtr& outputSlot : outputSlots) {
+		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool NodeManager::ConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots)
+{
+	if (DBGERROR (!CanConnectOutputSlotToInputSlots (outputSlot, inputSlots))) {
+		return false;
+	}
+
+	for (const InputSlotConstPtr& inputSlot : inputSlots) {
+		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool NodeManager::DisconnectOutputSlotFromInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot)
 {
+	if (DBGERROR (outputSlot == nullptr || inputSlot == nullptr)) {
+		return false;
+	}
+	
+	if (DBGERROR (!IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot))) {
+		return false;
+	}
+
 	InvalidateNodeValue (GetNode (inputSlot->GetOwnerNodeId ()));
 	return connectionManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
+}
+
+bool NodeManager::DisconnectOutputSlotsFromInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot)
+{
+	if (DBGERROR (outputSlots.empty () || inputSlot == nullptr)) {
+		return false;
+	}
+
+	if (DBGERROR (HasDuplicates (outputSlots))) {
+		return false;
+	}
+
+	for (const OutputSlotConstPtr& outputSlot : outputSlots) {
+		if (DBGERROR (!IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot))) {
+			return false;
+		}
+	}
+
+	for (const OutputSlotConstPtr& outputSlot : outputSlots) {
+		if (DBGERROR (!DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot))) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool NodeManager::DisconnectOutputSlotFromInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots)
+{
+	if (DBGERROR (outputSlot == nullptr || inputSlots.empty ())) {
+		return false;
+	}
+
+	if (DBGERROR (HasDuplicates (inputSlots))) {
+		return false;
+	}
+
+	for (const InputSlotConstPtr& inputSlot : inputSlots) {
+		if (DBGERROR (!IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot))) {
+			return false;
+		}
+	}
+
+	for (const InputSlotConstPtr& inputSlot : inputSlots) {
+		if (DBGERROR (!DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot))) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool NodeManager::DisconnectAllInputSlotsFromOutputSlot (const OutputSlotConstPtr& outputSlot)

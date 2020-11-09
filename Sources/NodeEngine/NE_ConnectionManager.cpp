@@ -70,7 +70,7 @@ bool ConnectionManager::IsOutputSlotConnectedToInputSlot (const OutputSlotConstP
 
 bool ConnectionManager::CanConnectOutputSlotToInputSlot (const InputSlotConstPtr& inputSlot) const
 {
-	if (inputSlot == nullptr) {
+	if (DBGERROR (inputSlot == nullptr)) {
 		return false;
 	}
 
@@ -101,7 +101,7 @@ bool ConnectionManager::CanConnectOutputSlotToInputSlot (const InputSlotConstPtr
 
 bool ConnectionManager::CanConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) const
 {
-	if (outputSlot == nullptr || inputSlot == nullptr) {
+	if (DBGERROR (outputSlot == nullptr || inputSlot == nullptr)) {
 		return false;
 	}
 
