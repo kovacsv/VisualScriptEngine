@@ -284,14 +284,8 @@ bool NodeUIManagerDrawer::IsConnectionVisible (NodeUIDrawingEnvironment& drawing
 {
 	Point controlPoint1, controlPoint2;
 	GetBezierControlPoints (beg, end, controlPoint1, controlPoint2);
-
-	BoundingRect connectionRect;
-	connectionRect.AddPoint (beg);
-	connectionRect.AddPoint (controlPoint1);
-	connectionRect.AddPoint (controlPoint2);
-	connectionRect.AddPoint (end);
-
-	return IsRectVisible (drawingEnv, connectionRect.GetRect ());
+	Rect boundingRect = GetBezierBoundingRect (beg, controlPoint1, controlPoint2, end);
+	return IsRectVisible (drawingEnv, boundingRect);
 }
 
 bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const

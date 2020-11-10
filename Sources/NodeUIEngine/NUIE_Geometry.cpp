@@ -549,4 +549,14 @@ std::vector<Point> SegmentBezier (size_t segmentCount, const Point& p1, const Po
 	return points;
 }
 
+Rect GetBezierBoundingRect (const Point& p1, const Point& p2, const Point& p3, const Point& p4)
+{
+	BoundingRect boundingRect;
+	boundingRect.AddPoint (p1);
+	boundingRect.AddPoint (p2);
+	boundingRect.AddPoint (p3);
+	boundingRect.AddPoint (p4);
+	return boundingRect.GetRect ();
+}
+
 }

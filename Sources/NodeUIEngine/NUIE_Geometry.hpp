@@ -182,7 +182,8 @@ bool IsEqual (const Point& a, const Point& b);
 bool IsEqual (const Size& a, const Size& b);
 bool IsEqual (const Rect& a, const Rect& b);
 
-std::vector<Point> SegmentBezier (size_t segmentCount, const Point& p1, const Point& p2, const Point& p3, const Point& p4);
+std::vector<Point>	SegmentBezier (size_t segmentCount, const Point& p1, const Point& p2, const Point& p3, const Point& p4);
+Rect				GetBezierBoundingRect (const Point& p1, const Point& p2, const Point& p3, const Point& p4);
 
 }
 
