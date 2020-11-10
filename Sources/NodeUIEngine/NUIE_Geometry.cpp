@@ -411,13 +411,26 @@ int IntRect::GetHeight () const
 	return height;
 }
 
-BoundingRectCalculator::BoundingRectCalculator () :
+BoundingRect::BoundingRect () :
 	boundingRect (),
 	isValid (false)
 {
 }
 
-void BoundingRectCalculator::AddRect (const Rect& rect)
+void BoundingRect::AddPoint (const Point& point)
+{
+	if (!isValid) {
+		boundingRect = Rect::FromPositionAndSize (point, Size (0.0, 0.0));
+		isValid = true;
+	} else {
+		boundingRect = Rect::FromTwoPoints (
+			Point (std::min (point.GetX (), boundingRect.GetLeft ()), std::min (point.GetY (), boundingRect.GetTop ())),
+			Point (std::max (point.GetX (), boundingRect.GetRight ()), std::max (point.GetY (), boundingRect.GetBottom ()))
+		);
+	}
+}
+
+void BoundingRect::AddRect (const Rect& rect)
 {
 	if (!isValid) {
 		boundingRect = rect;
@@ -430,12 +443,12 @@ void BoundingRectCalculator::AddRect (const Rect& rect)
 	}
 }
 
-bool BoundingRectCalculator::IsValid () const
+bool BoundingRect::IsValid () const
 {
 	return isValid;
 }
 
-const Rect& BoundingRectCalculator::GetRect () const
+const Rect& BoundingRect::GetRect () const
 {
 	DBGASSERT (isValid);
 	return boundingRect;

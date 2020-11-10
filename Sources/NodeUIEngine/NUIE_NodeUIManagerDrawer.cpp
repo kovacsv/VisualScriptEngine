@@ -8,6 +8,14 @@
 namespace NUIE
 {
 
+static void GetBezierControlPoints (const Point& beg, const Point& end, Point& controlPoint1, Point& controlPoint2)
+{
+	double bezierOffsetVal = std::fabs (beg.GetX () - end.GetX ()) / 2.0;
+	Point bezierOffset (bezierOffsetVal, 0.0);
+	controlPoint1 = beg + bezierOffset;
+	controlPoint2 = end - bezierOffset;
+}
+
 NodeIdToNodeMap::NodeIdToNodeMap (const NodeUIManager& uiManager)
 {
 	uiManager.EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
@@ -172,9 +180,9 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv,
 void NodeUIManagerDrawer::DrawConnection (NodeUIDrawingEnvironment& drawingEnv, const Pen& pen, const Point& beg, const Point& end) const
 {
 	DrawingContext& context = drawingEnv.GetDrawingContext ();
-	double bezierOffsetVal = std::fabs (beg.GetX () - end.GetX ()) / 2.0;
-	Point bezierOffset (bezierOffsetVal, 0.0);
-	context.DrawBezier (beg, beg + bezierOffset, end - bezierOffset, end, pen);
+	Point controlPoint1, controlPoint2;
+	GetBezierControlPoints (beg, end, controlPoint1, controlPoint2);
+	context.DrawBezier (beg, controlPoint1, controlPoint2, end, pen);
 }
 
 void NodeUIManagerDrawer::DrawTemporaryConnection (NodeUIDrawingEnvironment& drawingEnv, const Pen& pen, const Point& beg, const Point& end, NodeDrawingModifier::Direction dir) const
@@ -274,8 +282,16 @@ void NodeUIManagerDrawer::InitSortedNodeList () const
 
 bool NodeUIManagerDrawer::IsConnectionVisible (NodeUIDrawingEnvironment& drawingEnv, const Point& beg, const Point& end) const
 {
-	Rect connectionRect = Rect::FromTwoPoints (beg, end);
-	return IsRectVisible (drawingEnv, connectionRect);
+	Point controlPoint1, controlPoint2;
+	GetBezierControlPoints (beg, end, controlPoint1, controlPoint2);
+
+	BoundingRect connectionRect;
+	connectionRect.AddPoint (beg);
+	connectionRect.AddPoint (controlPoint1);
+	connectionRect.AddPoint (controlPoint2);
+	connectionRect.AddPoint (end);
+
+	return IsRectVisible (drawingEnv, connectionRect.GetRect ());
 }
 
 bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier, const UINode* uiNode) const

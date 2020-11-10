@@ -150,11 +150,12 @@ private:
 	int height;
 };
 
-class BoundingRectCalculator
+class BoundingRect
 {
 public:
-	BoundingRectCalculator ();
+	BoundingRect ();
 
+	void			AddPoint (const Point& point);
 	void			AddRect (const Rect& rect);
 
 	bool			IsValid () const;

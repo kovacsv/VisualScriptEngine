@@ -94,4 +94,67 @@ TEST (RectTest)
 	ASSERT (IsEqual (r1.Expand (Size (5.0, 6.0)), Rect::FromCenterAndSize (r1.GetCenter (), r1.GetSize () + Size (5.0, 6.0))));
 }
 
+TEST (BoundingRectTest_FromRects)
+{
+	BoundingRect boundingRect;
+	ASSERT (!boundingRect.IsValid ());
+
+	Rect rect1 = Rect::FromPositionAndSize (Point (0, 0), Size (100, 100));
+	Rect rect2 = Rect::FromPositionAndSize (Point (10, 10), Size (50, 50));
+	Rect rect3 = Rect::FromPositionAndSize (Point (-10, -10), Size (20, 20));
+
+	boundingRect.AddRect (rect1);
+	ASSERT (boundingRect.IsValid ());
+	ASSERT (IsEqual (boundingRect.GetRect (), rect1));
+
+	boundingRect.AddRect (rect2);
+	ASSERT (boundingRect.IsValid ());
+	ASSERT (IsEqual (boundingRect.GetRect (), rect1));
+
+	boundingRect.AddRect (rect3);
+	ASSERT (boundingRect.IsValid ());
+	ASSERT (IsEqual (boundingRect.GetRect (), Rect::FromPositionAndSize (Point (-10, -10), Size (110, 110))));
+}
+
+TEST (BoundingRectTest_FromPoints)
+{
+	BoundingRect boundingRect;
+	ASSERT (!boundingRect.IsValid ());
+
+	boundingRect.AddPoint (Point (10, 10));
+	ASSERT (boundingRect.IsValid ());
+	ASSERT (IsEqual (boundingRect.GetRect (), Rect::FromPositionAndSize (Point (10, 10), Size (0, 0))));
+
+	boundingRect.AddPoint (Point (20, 20));
+	ASSERT (boundingRect.IsValid ());
+	ASSERT (IsEqual (boundingRect.GetRect (), Rect::FromPositionAndSize (Point (10, 10), Size (10, 10))));
+
+	boundingRect.AddPoint (Point (-10, -10));
+	ASSERT (boundingRect.IsValid ());
+	ASSERT (IsEqual (boundingRect.GetRect (), Rect::FromPositionAndSize (Point (-10, -10), Size (30, 30))));
+}
+
+TEST (BoundingRectTest_FromRectAndPoint)
+{
+	{
+		BoundingRect boundingRect;
+		ASSERT (!boundingRect.IsValid ());
+
+		boundingRect.AddPoint (Point (-10, -10));
+		boundingRect.AddRect (Rect::FromPositionAndSize (Point (0, 0), Size (20, 20)));
+		ASSERT (boundingRect.IsValid ());
+		ASSERT (IsEqual (boundingRect.GetRect (), Rect::FromPositionAndSize (Point (-10, -10), Size (30, 30))));
+	}
+
+	{
+		BoundingRect boundingRect;
+		ASSERT (!boundingRect.IsValid ());
+
+		boundingRect.AddRect (Rect::FromPositionAndSize (Point (0, 0), Size (20, 20)));
+		boundingRect.AddPoint (Point (-10, -10));
+		ASSERT (boundingRect.IsValid ());
+		ASSERT (IsEqual (boundingRect.GetRect (), Rect::FromPositionAndSize (Point (-10, -10), Size (30, 30))));
+	}
+}
+
 }

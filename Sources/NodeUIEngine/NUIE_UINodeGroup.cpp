@@ -132,7 +132,7 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 	const SkinParams& skinParams = env.GetSkinParams ();
 	DrawingContext& drawingContext = env.GetDrawingContext ();
 
-	BoundingRectCalculator boundingRectCalculator;
+	BoundingRect boundingRectCalculator;
 	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 		Rect nodeRect = rectGetter.GetNodeRect (nodeId);
 		boundingRectCalculator.AddRect (nodeRect);

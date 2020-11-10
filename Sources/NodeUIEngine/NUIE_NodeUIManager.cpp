@@ -460,7 +460,7 @@ void NodeUIManager::ResizeContext (NodeUIDrawingEnvironment& drawingEnv, int new
 
 bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& boundingRect) const
 {
-	BoundingRectCalculator boundingRectCalculator;
+	BoundingRect boundingRectCalculator;
 	EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
 		Rect nodeRect = GetNodeExtendedRect (drawingEnv, uiNode.get ());
 		boundingRectCalculator.AddRect (nodeRect);
