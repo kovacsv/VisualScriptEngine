@@ -119,7 +119,6 @@ public:
 	Point		viewer2HeaderPoint;
 };
 
-
 class SimpleNodeEditorTestEnvWithConnections : public SimpleNodeEditorTestEnv
 {
 public:

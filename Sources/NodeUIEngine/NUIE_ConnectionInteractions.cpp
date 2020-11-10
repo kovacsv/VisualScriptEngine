@@ -7,6 +7,58 @@
 namespace NUIE
 {
 
+class InteractionUIOutputSlotList : public UIOutputSlotList
+{
+public:
+	InteractionUIOutputSlotList (const std::vector<ConnectionStartOutputSlot>& startSlots) :
+		UIOutputSlotList (),
+		startSlots (startSlots)
+	{
+
+	}
+
+	virtual size_t GetSize () const override
+	{
+		return startSlots.size ();
+	}
+
+	virtual void Enumerate (const std::function<bool (const NE::OutputSlotConstPtr&)>& processor) const override
+	{
+		for (const ConnectionStartOutputSlot& startSlot : startSlots) {
+			processor (startSlot.slot);
+		}
+	}
+
+private:
+	const std::vector<ConnectionStartOutputSlot>& startSlots;
+};
+
+class InteractionUIInputSlotList : public UIInputSlotList
+{
+public:
+	InteractionUIInputSlotList (const std::vector<ConnectionStartInputSlot>& startSlots) :
+		UIInputSlotList (),
+		startSlots (startSlots)
+	{
+
+	}
+
+	virtual size_t GetSize () const override
+	{
+		return startSlots.size ();
+	}
+
+	virtual void Enumerate (const std::function<bool (const NE::InputSlotConstPtr&)>& processor) const override
+	{
+		for (const ConnectionStartInputSlot& startSlot : startSlots) {
+			processor (startSlot.slot);
+		}
+	}
+
+private:
+	const std::vector<ConnectionStartInputSlot>& startSlots;
+};
+
 ConnectionStartOutputSlot::ConnectionStartOutputSlot (const UIOutputSlotConstPtr& slot, const Point& position) :
 	slot (slot),
 	position (position)
@@ -79,9 +131,9 @@ bool NodeOutputToInputConnectionHandler::CanConnectToInputSlot (const UIInputSlo
 	return uiManager.CanConnectOutputSlotToInputSlot (startSlot.slot, inputSlot);
 }
 
-NodeOutputToInputReconnectionHandler::NodeOutputToInputReconnectionHandler (NodeUIManager& uiManager, const ConnectionStartOutputSlot& startSlot, const UIInputSlotConstPtr& originalEndSlot) :
+NodeOutputToInputReconnectionHandler::NodeOutputToInputReconnectionHandler (NodeUIManager& uiManager, const std::vector<ConnectionStartOutputSlot>& startSlots, const UIInputSlotConstPtr& originalEndSlot) :
 	NodeOutputToInputConnectionHandlerBase (uiManager),
-	startSlot (startSlot),
+	startSlots (startSlots),
 	originalEndSlot (originalEndSlot)
 {
 
@@ -91,28 +143,31 @@ void NodeOutputToInputReconnectionHandler::EnumerateTemporaryConnections (const 
 {
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	Point position = viewBox.ViewToModel (currentPosition);
-	processor (startSlot.position, position, Direction::Forward);
+	for (const ConnectionStartOutputSlot& startSlot : startSlots) {
+		processor (startSlot.position, position, Direction::Forward);
+	}
 }
 
 bool NodeOutputToInputReconnectionHandler::NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const
 {
-	if (outputNodeId == startSlot.slot->GetOwnerNodeId () &&
-		inputNodeId == originalEndSlot->GetOwnerNodeId () &&
-		outputSlotId == startSlot.slot->GetId () &&
-		inputSlotId == originalEndSlot->GetId ())
-	{
-		return false;
+	if (inputNodeId == originalEndSlot->GetOwnerNodeId () && inputSlotId == originalEndSlot->GetId ()) {
+		for (const ConnectionStartOutputSlot& startSlot : startSlots) {
+			if (outputNodeId == startSlot.slot->GetOwnerNodeId () && outputSlotId == startSlot.slot->GetId ()) {
+				return false;
+			}
+		}
 	}
 	return true;
 }
 
 void NodeOutputToInputReconnectionHandler::HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&)
 {
+	InteractionUIOutputSlotList startOutputSlots (startSlots);
 	if (endSlot != nullptr && endSlot != originalEndSlot) {
-		ReconnectInputSlotCommand command (startSlot.slot, originalEndSlot, endSlot);
+		ReconnectInputSlotCommand command (startOutputSlots, originalEndSlot, endSlot);
 		uiManager.ExecuteCommand (command, uiEnvironment);
 	} else if (endSlot == nullptr) {
-		DisconnectSlotsCommand disconnectCommand (startSlot.slot, originalEndSlot);
+		DisconnectOutputSlotsCommand disconnectCommand (startOutputSlots, originalEndSlot);
 		uiManager.ExecuteCommand (disconnectCommand, uiEnvironment);
 	} else {
 		uiManager.RequestRedraw ();
@@ -124,7 +179,8 @@ bool NodeOutputToInputReconnectionHandler::CanConnectToInputSlot (const UIInputS
 	if (inputSlot == originalEndSlot) {
 		return true;
 	}
-	if (uiManager.CanConnectOutputSlotToInputSlot (startSlot.slot, inputSlot)) {
+	InteractionUIOutputSlotList startOutputSlots (startSlots);
+	if (uiManager.CanConnectOutputSlotsToInputSlot (startOutputSlots, inputSlot)) {
 		return true;
 	}
 	return false;
@@ -188,9 +244,9 @@ bool NodeInputToOutputConnectionHandler::CanConnectToOutputSlot (const UIOutputS
 	return uiManager.CanConnectOutputSlotToInputSlot (outputSlot, startSlot.slot);
 }
 
-NodeInputToOutputReconnectionHandler::NodeInputToOutputReconnectionHandler (NodeUIManager& uiManager, const ConnectionStartInputSlot& startSlot, const UIOutputSlotConstPtr& originalEndSlot) :
+NodeInputToOutputReconnectionHandler::NodeInputToOutputReconnectionHandler (NodeUIManager& uiManager, const std::vector<ConnectionStartInputSlot>& startSlots, const UIOutputSlotConstPtr& originalEndSlot) :
 	NodeInputToOutputConnectionHandlerBase (uiManager),
-	startSlot (startSlot),
+	startSlots (startSlots),
 	originalEndSlot (originalEndSlot)
 {
 
@@ -200,27 +256,31 @@ void NodeInputToOutputReconnectionHandler::EnumerateTemporaryConnections (const 
 {
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	Point position = viewBox.ViewToModel (currentPosition);
-	processor (position, startSlot.position, Direction::Backward);
+	for (const ConnectionStartInputSlot& startSlot : startSlots) {
+		processor (position, startSlot.position, Direction::Backward);
+	}
 }
 
 bool NodeInputToOutputReconnectionHandler::NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const
 {
-	if (outputNodeId == originalEndSlot->GetOwnerNodeId () &&
-		inputNodeId == startSlot.slot->GetOwnerNodeId () &&
-		outputSlotId == originalEndSlot->GetId () &&
-		inputSlotId == startSlot.slot->GetId ()) {
-		return false;
+	if (outputNodeId == originalEndSlot->GetOwnerNodeId () && outputSlotId == originalEndSlot->GetId ()) {
+		for (const ConnectionStartInputSlot& startSlot : startSlots) {
+			if (inputNodeId == startSlot.slot->GetOwnerNodeId () && inputSlotId == startSlot.slot->GetId ()) {
+				return false;
+			}
+		}
 	}
 	return true;
 }
 
 void NodeInputToOutputReconnectionHandler::HandleMouseUp (NodeUIEnvironment& uiEnvironment, const ModifierKeys&, const Point&)
 {
+	InteractionUIInputSlotList startInputSlots (startSlots);
 	if (endSlot != nullptr && endSlot != originalEndSlot) {
-		ReconnectOutputSlotCommand command (originalEndSlot, endSlot, startSlot.slot);
+		ReconnectOutputSlotCommand command (originalEndSlot, endSlot, startInputSlots);
 		uiManager.ExecuteCommand (command, uiEnvironment);
 	} else if (endSlot == nullptr) {
-		DisconnectSlotsCommand disconnectCommand (originalEndSlot, startSlot.slot);
+		DisconnectInputSlotsCommand disconnectCommand (originalEndSlot, startInputSlots);
 		uiManager.ExecuteCommand (disconnectCommand, uiEnvironment);
 	} else {
 		uiManager.RequestRedraw ();
@@ -232,7 +292,8 @@ bool NodeInputToOutputReconnectionHandler::CanConnectToOutputSlot (const UIOutpu
 	if (outputSlot == originalEndSlot) {
 		return true;
 	}
-	if (uiManager.CanConnectOutputSlotToInputSlot (outputSlot, startSlot.slot)) {
+	InteractionUIInputSlotList startInputSlots (startSlots);
+	if (uiManager.CanConnectOutputSlotToInputSlots (outputSlot, startInputSlots)) {
 		return true;
 	}
 	return false;

@@ -102,12 +102,12 @@ private:
 class ReconnectInputSlotCommand : public UndoableCommand
 {
 public:
-	ReconnectInputSlotCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& oldInputSlot, const UIInputSlotConstPtr& newInputSlot);
+	ReconnectInputSlotCommand (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& oldInputSlot, const UIInputSlotConstPtr& newInputSlot);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
-	const UIOutputSlotConstPtr&		outputSlot;
+	const UIOutputSlotList&			outputSlots;
 	const UIInputSlotConstPtr&		oldInputSlot;
 	const UIInputSlotConstPtr&		newInputSlot;
 };
@@ -115,14 +115,14 @@ private:
 class ReconnectOutputSlotCommand : public UndoableCommand
 {
 public:
-	ReconnectOutputSlotCommand (const UIOutputSlotConstPtr& oldOutputSlot, const UIOutputSlotConstPtr& newOutputSlot, const UIInputSlotConstPtr& inputSlot);
+	ReconnectOutputSlotCommand (const UIOutputSlotConstPtr& oldOutputSlot, const UIOutputSlotConstPtr& newOutputSlot, const UIInputSlotList& inputSlots);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
 	const UIOutputSlotConstPtr&		oldOutputSlot;
 	const UIOutputSlotConstPtr&		newOutputSlot;
-	const UIInputSlotConstPtr&		inputSlot;
+	const UIInputSlotList&			inputSlots;
 };
 
 class DisconnectSlotsCommand : public UndoableCommand
@@ -135,6 +135,30 @@ public:
 private:
 	const UIOutputSlotConstPtr&		outputSlot;
 	const UIInputSlotConstPtr&		inputSlot;
+};
+
+class DisconnectOutputSlotsCommand : public UndoableCommand
+{
+public:
+	DisconnectOutputSlotsCommand (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot);
+
+	virtual void Do (NodeUIManager& uiManager) override;
+
+private:
+	const UIOutputSlotList&		outputSlots;
+	const UIInputSlotConstPtr&	inputSlot;
+};
+
+class DisconnectInputSlotsCommand : public UndoableCommand
+{
+public:
+	DisconnectInputSlotsCommand (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots);
+
+	virtual void Do (NodeUIManager& uiManager) override;
+
+private:
+	const UIOutputSlotConstPtr&		outputSlot;
+	const UIInputSlotList&			inputSlots;
 };
 
 class DisconnectAllInputSlotsCommand : public UndoableCommand

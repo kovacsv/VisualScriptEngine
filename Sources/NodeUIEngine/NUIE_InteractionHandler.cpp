@@ -545,17 +545,16 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 		bool found = FindItemUnderPosition (uiManager, uiEnvironment, position,
 			[&] (const UIInputSlotConstPtr& foundInputSlot) {
 				if (modifierKeys.Contains (ModifierKeyCode::Command)) {
-					if (uiManager.GetConnectedOutputSlotCount (foundInputSlot) == 1) {
-						UIOutputSlotConstPtr foundOutputSlot = nullptr;
+					if (uiManager.HasConnectedOutputSlots (foundInputSlot)) {
+						std::vector<ConnectionStartOutputSlot> foundOutputSlots;
 						uiManager.EnumerateConnectedUIOutputSlots (foundInputSlot, [&] (const UIOutputSlotConstPtr& outputSlot) {
-							foundOutputSlot = outputSlot;
+							UINodeConstPtr outputNode = uiManager.GetNode (outputSlot->GetOwnerNodeId ());
+							Point outputSlotPosition = outputNode->GetOutputSlotConnPosition (uiEnvironment, outputSlot->GetId ());
+							foundOutputSlots.push_back (ConnectionStartOutputSlot (outputSlot, outputSlotPosition));
 							return true;
 						});
-						if (DBGVERIFY (foundOutputSlot != nullptr)) {
-							UINodeConstPtr outputNode = uiManager.GetNode (foundOutputSlot->GetOwnerNodeId ());
-							Point startSlotPosition = outputNode->GetOutputSlotConnPosition (uiEnvironment, foundOutputSlot->GetId ());
-							ConnectionStartOutputSlot startSlot (foundOutputSlot, startSlotPosition);
-							multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputReconnectionHandler (uiManager, startSlot, foundInputSlot));
+						if (DBGVERIFY (!foundOutputSlots.empty ())) {
+							multiMouseMoveHandler.AddHandler (mouseButton, new NodeOutputToInputReconnectionHandler (uiManager, foundOutputSlots, foundInputSlot));
 						}
 					}
 				} else {
@@ -569,17 +568,16 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 			},
 			[&] (const UIOutputSlotConstPtr& foundOutputSlot) {
 				if (modifierKeys.Contains (ModifierKeyCode::Command)) {
-					if (uiManager.GetConnectedInputSlotCount (foundOutputSlot) == 1) {
-						UIInputSlotConstPtr foundInputSlot = nullptr;
+					if (uiManager.HasConnectedInputSlots (foundOutputSlot)) {
+						std::vector<ConnectionStartInputSlot> foundInputSlots;
 						uiManager.EnumerateConnectedUIInputSlots (foundOutputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
-							foundInputSlot = inputSlot;
+							UINodeConstPtr inputNode = uiManager.GetNode (inputSlot->GetOwnerNodeId ());
+							Point inputSlotPosition = inputNode->GetInputSlotConnPosition (uiEnvironment, inputSlot->GetId ());
+							foundInputSlots.push_back (ConnectionStartInputSlot (inputSlot, inputSlotPosition));
 							return true;
 						});
-						if (DBGVERIFY (foundInputSlot != nullptr)) {
-							UINodeConstPtr inputNode = uiManager.GetNode (foundInputSlot->GetOwnerNodeId ());
-							Point startSlotPosition = inputNode->GetInputSlotConnPosition (uiEnvironment, foundInputSlot->GetId ());
-							ConnectionStartInputSlot startSlot (foundInputSlot, startSlotPosition);
-							multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputReconnectionHandler (uiManager, startSlot, foundOutputSlot));
+						if (DBGVERIFY (!foundInputSlots.empty ())) {
+							multiMouseMoveHandler.AddHandler (mouseButton, new NodeInputToOutputReconnectionHandler (uiManager, foundInputSlots, foundOutputSlot));
 						}
 					}
 				} else {

@@ -56,7 +56,7 @@ private:
 class NodeOutputToInputReconnectionHandler : public NodeOutputToInputConnectionHandlerBase
 {
 public:
-	NodeOutputToInputReconnectionHandler (NodeUIManager& uiManager, const ConnectionStartOutputSlot& startSlot, const UIInputSlotConstPtr& originalEndSlot);
+	NodeOutputToInputReconnectionHandler (NodeUIManager& uiManager, const std::vector<ConnectionStartOutputSlot>& startSlots, const UIInputSlotConstPtr& originalEndSlot);
 
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction dir)>& processor) const override;
 	virtual bool	NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const override;
@@ -64,8 +64,8 @@ public:
 	virtual bool	CanConnectToInputSlot (const UIInputSlotConstPtr& inputSlot) const override;
 
 private:
-	ConnectionStartOutputSlot	startSlot;
-	UIInputSlotConstPtr			originalEndSlot;
+	std::vector<ConnectionStartOutputSlot>	startSlots;
+	UIInputSlotConstPtr						originalEndSlot;
 };
 
 class NodeInputToOutputConnectionHandlerBase : public MouseMoveHandler
@@ -99,7 +99,7 @@ private:
 class NodeInputToOutputReconnectionHandler : public NodeInputToOutputConnectionHandlerBase
 {
 public:
-	NodeInputToOutputReconnectionHandler (NodeUIManager& uiManager, const ConnectionStartInputSlot& startSlot, const UIOutputSlotConstPtr& originalEndSlot);
+	NodeInputToOutputReconnectionHandler (NodeUIManager& uiManager, const std::vector<ConnectionStartInputSlot>& startSlots, const UIOutputSlotConstPtr& originalEndSlot);
 
 	virtual void	EnumerateTemporaryConnections (const std::function<void (const Point& beg, const Point& end, Direction dir)>& processor) const override;
 	virtual bool	NeedToDrawConnection (const NE::NodeId& outputNodeId, const NE::SlotId& outputSlotId, const NE::NodeId& inputNodeId, const NE::SlotId& inputSlotId) const override;
@@ -107,8 +107,8 @@ public:
 	virtual bool	CanConnectToOutputSlot (const UIOutputSlotConstPtr& outputSlot) const override;
 
 private:
-	ConnectionStartInputSlot	startSlot;
-	UIOutputSlotConstPtr		originalEndSlot;
+	std::vector<ConnectionStartInputSlot>	startSlots;
+	UIOutputSlotConstPtr					originalEndSlot;
 };
 
 }

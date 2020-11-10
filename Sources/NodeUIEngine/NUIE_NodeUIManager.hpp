@@ -62,6 +62,20 @@ private:
 	NodeUIDrawingEnvironment& drawingEnv;
 };
 
+class UIOutputSlotList : public NE::OutputSlotList
+{
+public:
+	UIOutputSlotList ();
+	virtual ~UIOutputSlotList ();
+};
+
+class UIInputSlotList : public NE::InputSlotList
+{
+public:
+	UIInputSlotList ();
+	virtual ~UIInputSlotList ();
+};
+
 class NodeUIManager
 {
 	SERIALIZABLE;
@@ -89,10 +103,19 @@ public:
 	void						SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& interactionEnv);
 
 	bool						IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
+
 	bool						CanConnectOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;
 	bool						CanConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
+	bool						CanConnectOutputSlotsToInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot) const;
+	bool						CanConnectOutputSlotToInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots) const;
+
 	bool						ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
+	bool						ConnectOutputSlotsToInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot);
+	bool						ConnectOutputSlotToInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots);
+
 	bool						DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
+	bool						DisconnectOutputSlotsFromInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot);
+	bool						DisconnectOutputSlotFromInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots);
 	bool						DisconnectAllInputSlotsFromOutputSlot (const UIOutputSlotConstPtr& outputSlot);
 	bool						DisconnectAllOutputSlotsFromInputSlot (const UIInputSlotConstPtr& inputSlot);
 
