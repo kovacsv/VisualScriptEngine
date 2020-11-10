@@ -11,17 +11,19 @@ namespace NE
 
 SERIALIZATION_INFO (NodeManager, 2);
 
-template <class SlotType>
-static bool HasDuplicates (const std::vector<SlotType>& slots)
+template <typename SlotListType, typename SlotType>
+static bool HasDuplicates (const SlotListType& slots)
 {
+	bool hasDuplicates = false;
 	std::unordered_set<SlotType> slotSet;
-	for (const SlotType& slot : slots) {
+	slots.Enumerate ([&] (const SlotType& slot) {
 		if (slotSet.find (slot) != slotSet.end ()) {
-			return true;
+			hasDuplicates = true;
 		}
 		slotSet.insert (slot);
-	}
-	return false;
+		return !hasDuplicates;
+	});
+	return hasDuplicates;
 }
 
 class NodeManagerNodeEvaluator : public NodeEvaluator
@@ -105,6 +107,36 @@ private:
 	const NodeEvaluatorConstPtr&	newNodeEvaluator;
 	InitializationMode				initMode;
 };
+
+OutputSlotList::OutputSlotList ()
+{
+
+}
+
+OutputSlotList::~OutputSlotList ()
+{
+
+}
+
+bool OutputSlotList::IsEmpty () const
+{
+	return GetSize () == 0;
+}
+
+InputSlotList::InputSlotList ()
+{
+
+}
+
+InputSlotList::~InputSlotList ()
+{
+
+}
+
+bool InputSlotList::IsEmpty () const
+{
+	return GetSize () == 0;
+}
 
 NodeManager::NodeManager () :
 	idGenerator (),
@@ -241,7 +273,7 @@ bool NodeManager::CanConnectOutputSlotToInputSlot (const OutputSlotConstPtr& out
 	NodeConstPtr outputNode = GetNode (outputSlot->GetOwnerNodeId ());
 	NodeConstPtr inputNode = GetNode (inputSlot->GetOwnerNodeId ());
 	if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
-		return true;
+		return false;
 	}
 
 	bool willCreateCycle = false;
@@ -262,46 +294,50 @@ bool NodeManager::CanConnectOutputSlotToInputSlot (const OutputSlotConstPtr& out
 	return true;
 }
 
-bool NodeManager::CanConnectOutputSlotsToInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot) const
+bool NodeManager::CanConnectOutputSlotsToInputSlot (const OutputSlotList& outputSlots, const InputSlotConstPtr& inputSlot) const
 {
-	if (DBGERROR (outputSlots.empty () || inputSlot == nullptr)) {
+	if (DBGERROR (outputSlots.IsEmpty () || inputSlot == nullptr)) {
 		return false;
 	}
 
-	if (HasDuplicates (outputSlots)) {
+	if (HasDuplicates<OutputSlotList, OutputSlotConstPtr> (outputSlots)) {
 		return false;
 	}
 
-	if (outputSlots.size () > 1 && inputSlot->GetOutputSlotConnectionMode () != OutputSlotConnectionMode::Multiple) {
+	if (outputSlots.GetSize () > 1 && inputSlot->GetOutputSlotConnectionMode () != OutputSlotConnectionMode::Multiple) {
 		return false;
 	}
 
-	for (const OutputSlotConstPtr& outputSlot : outputSlots) {
+	bool canConnect = true;
+	outputSlots.Enumerate ([&] (const OutputSlotConstPtr& outputSlot) {
 		if (!CanConnectOutputSlotToInputSlot (outputSlot, inputSlot)) {
-			return false;
+			canConnect = false;
 		}
-	}
+		return canConnect;
+	});
 
-	return true;
+	return canConnect;
 }
 
-bool NodeManager::CanConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots) const
+bool NodeManager::CanConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outputSlot, const InputSlotList& inputSlots) const
 {
-	if (DBGERROR (outputSlot == nullptr || inputSlots.empty ())) {
+	if (DBGERROR (outputSlot == nullptr || inputSlots.IsEmpty ())) {
 		return false;
 	}
 
-	if (HasDuplicates (inputSlots)) {
+	if (HasDuplicates<InputSlotList, InputSlotConstPtr> (inputSlots)) {
 		return false;
 	}
 
-	for (const InputSlotConstPtr& inputSlot : inputSlots) {
+	bool canConnect = true;
+	inputSlots.Enumerate ([&] (const InputSlotConstPtr& inputSlot) {
 		if (!CanConnectOutputSlotToInputSlot (outputSlot, inputSlot)) {
-			return false;
+			canConnect = false;
 		}
-	}
+		return canConnect;
+	});
 	
-	return true;
+	return canConnect;
 }
 
 bool NodeManager::ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot)
@@ -314,34 +350,38 @@ bool NodeManager::ConnectOutputSlotToInputSlot (const OutputSlotConstPtr& output
 	return connectionManager.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
 }
 
-bool NodeManager::ConnectOutputSlotsToInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot)
+bool NodeManager::ConnectOutputSlotsToInputSlot (const OutputSlotList& outputSlots, const InputSlotConstPtr& inputSlot)
 {
 	if (DBGERROR (!CanConnectOutputSlotsToInputSlot (outputSlots, inputSlot))) {
 		return false;
 	}
 
-	for (const OutputSlotConstPtr& outputSlot : outputSlots) {
+	bool success = true;
+	outputSlots.Enumerate ([&] (const OutputSlotConstPtr& outputSlot) {
 		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
-			return false;
+			success = false;
 		}
-	}
+		return success;
+	});
 
-	return true;
+	return success;
 }
 
-bool NodeManager::ConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots)
+bool NodeManager::ConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outputSlot, const InputSlotList& inputSlots)
 {
 	if (DBGERROR (!CanConnectOutputSlotToInputSlots (outputSlot, inputSlots))) {
 		return false;
 	}
 
-	for (const InputSlotConstPtr& inputSlot : inputSlots) {
+	bool success = true;
+	inputSlots.Enumerate ([&] (const InputSlotConstPtr& inputSlot) {
 		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
-			return false;
+			success = false;
 		}
-	}
+		return success;
+	});
 
-	return true;
+	return success;
 }
 
 bool NodeManager::DisconnectOutputSlotFromInputSlot (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot)
@@ -358,54 +398,70 @@ bool NodeManager::DisconnectOutputSlotFromInputSlot (const OutputSlotConstPtr& o
 	return connectionManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
 }
 
-bool NodeManager::DisconnectOutputSlotsFromInputSlot (const std::vector<OutputSlotConstPtr>& outputSlots, const InputSlotConstPtr& inputSlot)
+bool NodeManager::DisconnectOutputSlotsFromInputSlot (const OutputSlotList& outputSlots, const InputSlotConstPtr& inputSlot)
 {
-	if (DBGERROR (outputSlots.empty () || inputSlot == nullptr)) {
+	if (DBGERROR (outputSlots.IsEmpty () || inputSlot == nullptr)) {
 		return false;
 	}
 
-	if (DBGERROR (HasDuplicates (outputSlots))) {
+	bool hasDuplicates = HasDuplicates<OutputSlotList, OutputSlotConstPtr> (outputSlots);
+	if (DBGERROR (hasDuplicates)) {
 		return false;
 	}
 
-	for (const OutputSlotConstPtr& outputSlot : outputSlots) {
+	bool canDisconnect = true;
+	outputSlots.Enumerate ([&] (const OutputSlotConstPtr& outputSlot) {
 		if (DBGERROR (!IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot))) {
-			return false;
+			canDisconnect = false;
 		}
+		return canDisconnect;
+	});
+	if (DBGERROR (!canDisconnect)) {
+		return false;
 	}
 
-	for (const OutputSlotConstPtr& outputSlot : outputSlots) {
+	bool success = true;
+	outputSlots.Enumerate ([&] (const OutputSlotConstPtr& outputSlot) {
 		if (DBGERROR (!DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot))) {
-			return false;
+			success = false;
 		}
-	}
+		return success;
+	});
 
-	return true;
+	return success;
 }
 
-bool NodeManager::DisconnectOutputSlotFromInputSlots (const OutputSlotConstPtr& outputSlot, const std::vector<InputSlotConstPtr>& inputSlots)
+bool NodeManager::DisconnectOutputSlotFromInputSlots (const OutputSlotConstPtr& outputSlot, const InputSlotList& inputSlots)
 {
-	if (DBGERROR (outputSlot == nullptr || inputSlots.empty ())) {
+	if (DBGERROR (outputSlot == nullptr || inputSlots.IsEmpty ())) {
 		return false;
 	}
 
-	if (DBGERROR (HasDuplicates (inputSlots))) {
+	bool hasDuplicates = HasDuplicates<InputSlotList, InputSlotConstPtr> (inputSlots);
+	if (DBGERROR (hasDuplicates)) {
 		return false;
 	}
 
-	for (const InputSlotConstPtr& inputSlot : inputSlots) {
+	bool canDisconnect = true;
+	inputSlots.Enumerate ([&] (const InputSlotConstPtr& inputSlot) {
 		if (DBGERROR (!IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot))) {
-			return false;
+			canDisconnect = false;
 		}
+		return canDisconnect;
+	});
+	if (DBGERROR (!canDisconnect)) {
+		return false;
 	}
 
-	for (const InputSlotConstPtr& inputSlot : inputSlots) {
+	bool success = true;
+	inputSlots.Enumerate ([&] (const InputSlotConstPtr& inputSlot) {
 		if (DBGERROR (!DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot))) {
-			return false;
+			success = false;
 		}
-	}
+		return success;
+	});
 
-	return true;
+	return success;
 }
 
 bool NodeManager::DisconnectAllInputSlotsFromOutputSlot (const OutputSlotConstPtr& outputSlot)

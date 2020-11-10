@@ -11,6 +11,70 @@ using namespace NE;
 namespace NodeMultipleConnectionTest
 {
 
+class TestOutputSlotList : public OutputSlotList
+{
+public:
+	TestOutputSlotList (const std::vector<OutputSlotConstPtr>& slots) :
+		slots (slots)
+	{
+
+	}
+
+	virtual ~TestOutputSlotList ()
+	{
+
+	}
+
+	virtual size_t GetSize () const override
+	{
+		return slots.size ();
+	}
+
+	virtual void Enumerate (const std::function<bool (const OutputSlotConstPtr&)>& processor) const override
+	{
+		for (const OutputSlotConstPtr& slot : slots) {
+			if (!processor (slot)) {
+				break;
+			}
+		}
+	}
+
+private:
+	std::vector<OutputSlotConstPtr> slots;
+};
+
+class TestInputSlotList : public InputSlotList
+{
+public:
+	TestInputSlotList (const std::vector<InputSlotConstPtr>& slots) :
+		slots (slots)
+	{
+
+	}
+
+	virtual ~TestInputSlotList ()
+	{
+
+	}
+
+	virtual size_t GetSize () const override
+	{
+		return slots.size ();
+	}
+
+	virtual void Enumerate (const std::function<bool (const InputSlotConstPtr&)>& processor) const override
+	{
+		for (const InputSlotConstPtr& slot : slots) {
+			if (!processor (slot)) {
+				break;
+			}
+		}
+	}
+
+private:
+	std::vector<InputSlotConstPtr> slots;
+};
+
 class SlotTypesTestNode : public SerializableTestNode
 {
 	DYNAMIC_SERIALIZABLE (SlotTypesTestNode);
@@ -130,16 +194,16 @@ TEST (MultipleOutputConnectionTest_MultipleConnections)
 	NodePtr outputNode1 = manager.AddNode (NodePtr (new SlotTypesTestNode (2)));
 	NodePtr outputNode2 = manager.AddNode (NodePtr (new SlotTypesTestNode (3)));
 
-	std::vector<OutputSlotConstPtr> outputSlotsSingle1 = {
+	TestOutputSlotList outputSlotsSingle1 ({
 		outputNode1->GetOutputSlot (SlotId ("out"))
-	};
-	std::vector<OutputSlotConstPtr> outputSlotsSingle2 = {
+	});
+	TestOutputSlotList outputSlotsSingle2 ({
 		outputNode2->GetOutputSlot (SlotId ("out"))
-	};
-	std::vector<OutputSlotConstPtr> outputSlotsMultiple = {
+	});
+	TestOutputSlotList outputSlotsMultiple ({
 		outputNode1->GetOutputSlot (SlotId ("out")),
 		outputNode2->GetOutputSlot (SlotId ("out"))
-	};
+	});
 
 	ASSERT (!manager.CanConnectOutputSlotsToInputSlot (outputSlotsSingle1, node->GetInputSlot (SlotId ("disabled"))));
 	ASSERT (!manager.CanConnectOutputSlotsToInputSlot (outputSlotsMultiple, node->GetInputSlot (SlotId ("disabled"))));
@@ -182,16 +246,16 @@ TEST (MultipleOutputConnectionTest_MultipleConnectionsCycle)
 	NodePtr outputNode1 = manager.AddNode (NodePtr (new SlotTypesTestNode (2)));
 	NodePtr outputNode2 = manager.AddNode (NodePtr (new SlotTypesTestNode (3)));
 
-	std::vector<OutputSlotConstPtr> outputSlotsSingle1 = {
+	TestOutputSlotList outputSlotsSingle1 ({
 		outputNode1->GetOutputSlot (SlotId ("out"))
-	};
-	std::vector<OutputSlotConstPtr> outputSlotsSingle2 = {
+	});
+	TestOutputSlotList outputSlotsSingle2 ({
 		outputNode2->GetOutputSlot (SlotId ("out"))
-	};
-	std::vector<OutputSlotConstPtr> outputSlotsMultiple = {
+	});
+	TestOutputSlotList outputSlotsMultiple ({
 		outputNode1->GetOutputSlot (SlotId ("out")),
 		outputNode2->GetOutputSlot (SlotId ("out"))
-	};
+	});
 
 	ASSERT (manager.ConnectOutputSlotToInputSlot (node->GetOutputSlot (SlotId ("out")), outputNode2->GetInputSlot (SlotId ("single"))));
 	ASSERT (CheckNodeValue (node, 1));
@@ -213,10 +277,10 @@ TEST (MultipleOutputConnectionTest_MultipleConnectionsDuplicated)
 	NodePtr outputNode1 = manager.AddNode (NodePtr (new SlotTypesTestNode (2)));
 	NodePtr outputNode2 = manager.AddNode (NodePtr (new SlotTypesTestNode (3)));
 
-	std::vector<OutputSlotConstPtr> outputSlotsDuplicated = {
+	TestOutputSlotList outputSlotsDuplicated ({
 		outputNode1->GetOutputSlot (SlotId ("out")),
 		outputNode1->GetOutputSlot (SlotId ("out"))
-	};
+	});
 
 	ASSERT (!manager.CanConnectOutputSlotsToInputSlot (outputSlotsDuplicated, node->GetInputSlot (SlotId ("multiple"))));
 	ASSERT (CheckNodeValue (node, 1));
@@ -229,15 +293,15 @@ TEST (MultipleOutputConnectionTest_MultipleDisconnect)
 	NodePtr outputNode1 = manager.AddNode (NodePtr (new SlotTypesTestNode (2)));
 	NodePtr outputNode2 = manager.AddNode (NodePtr (new SlotTypesTestNode (3)));
 
-	std::vector<OutputSlotConstPtr> outputSlotsDuplicated = {
+	TestOutputSlotList outputSlots ({
 		outputNode1->GetOutputSlot (SlotId ("out")),
 		outputNode2->GetOutputSlot (SlotId ("out"))
-	};
+	});
 
-	ASSERT (manager.ConnectOutputSlotsToInputSlot (outputSlotsDuplicated, node->GetInputSlot (SlotId ("multiple"))));
+	ASSERT (manager.ConnectOutputSlotsToInputSlot (outputSlots, node->GetInputSlot (SlotId ("multiple"))));
 	ASSERT (CheckNodeValue (node, 6));
 
-	ASSERT (manager.DisconnectOutputSlotsFromInputSlot (outputSlotsDuplicated, node->GetInputSlot (SlotId ("multiple"))));
+	ASSERT (manager.DisconnectOutputSlotsFromInputSlot (outputSlots, node->GetInputSlot (SlotId ("multiple"))));
 	ASSERT (CheckNodeValue (node, 1));
 }
 
@@ -248,16 +312,16 @@ TEST (MultipleInputConnectionTest_MultipleConnections)
 	NodePtr inputNode1 = manager.AddNode (NodePtr (new SlotTypesTestNode (2)));
 	NodePtr inputNode2 = manager.AddNode (NodePtr (new SlotTypesTestNode (3)));
 
-	std::vector<InputSlotConstPtr> inputSlotsSingle1 = {
+	TestInputSlotList inputSlotsSingle1 ({
 		inputNode1->GetInputSlot (SlotId ("multiple"))
-	};
-	std::vector<InputSlotConstPtr> inputSlotsSingle2 = {
+	});
+	TestInputSlotList inputSlotsSingle2 ({
 		inputNode2->GetInputSlot (SlotId ("multiple"))
-	};
-	std::vector<InputSlotConstPtr> inputSlotsMultiple = {
+	});
+	TestInputSlotList inputSlotsMultiple ({
 		inputNode1->GetInputSlot (SlotId ("multiple")),
 		inputNode2->GetInputSlot (SlotId ("multiple"))
-	};
+	});
 
 	ASSERT (manager.CanConnectOutputSlotToInputSlots (node->GetOutputSlot (SlotId ("out")), inputSlotsSingle1));
 	ASSERT (manager.CanConnectOutputSlotToInputSlots (node->GetOutputSlot (SlotId ("out")), inputSlotsSingle2));
@@ -284,16 +348,16 @@ TEST (MultipleInputConnectionTest_MultipleConnectionsCycle)
 	NodePtr inputNode1 = manager.AddNode (NodePtr (new SlotTypesTestNode (2)));
 	NodePtr inputNode2 = manager.AddNode (NodePtr (new SlotTypesTestNode (3)));
 
-	std::vector<InputSlotConstPtr> inputSlotsSingle1 = {
+	TestInputSlotList inputSlotsSingle1 ({
 		inputNode1->GetInputSlot (SlotId ("multiple"))
-	};
-	std::vector<InputSlotConstPtr> inputSlotsSingle2 = {
+	});
+	TestInputSlotList inputSlotsSingle2 ({
 		inputNode2->GetInputSlot (SlotId ("multiple"))
-	};
-	std::vector<InputSlotConstPtr> inputSlotsMultiple = {
+	});
+	TestInputSlotList inputSlotsMultiple ({
 		inputNode1->GetInputSlot (SlotId ("multiple")),
 		inputNode2->GetInputSlot (SlotId ("multiple"))
-	};
+	});
 
 	ASSERT (manager.ConnectOutputSlotToInputSlot (inputNode2->GetOutputSlot (SlotId ("out")), node->GetInputSlot (SlotId ("single"))));
 	ASSERT (manager.CanConnectOutputSlotToInputSlots (node->GetOutputSlot (SlotId ("out")), inputSlotsSingle1));
@@ -313,10 +377,10 @@ TEST (MultipleInputConnectionTest_MultipleConnectionsDuplicated)
 	NodePtr inputNode1 = manager.AddNode (NodePtr (new SlotTypesTestNode (2)));
 	NodePtr inputNode2 = manager.AddNode (NodePtr (new SlotTypesTestNode (3)));
 
-	std::vector<InputSlotConstPtr> inputSlotsDuplicated = {
+	TestInputSlotList inputSlotsDuplicated ({
 		inputNode1->GetInputSlot (SlotId ("multiple")),
 		inputNode1->GetInputSlot (SlotId ("multiple"))
-	};
+	});
 
 	ASSERT (!manager.CanConnectOutputSlotToInputSlots (node->GetOutputSlot (SlotId ("out")), inputSlotsDuplicated));
 }
@@ -328,16 +392,16 @@ TEST (MultipleInputConnectionTest_MultipleDisconnect)
 	NodePtr inputNode1 = manager.AddNode (NodePtr (new SlotTypesTestNode (2)));
 	NodePtr inputNode2 = manager.AddNode (NodePtr (new SlotTypesTestNode (3)));
 
-	std::vector<InputSlotConstPtr> inputSlotsDuplicated = {
+	TestInputSlotList inputSlots ({
 		inputNode1->GetInputSlot (SlotId ("multiple")),
 		inputNode2->GetInputSlot (SlotId ("multiple"))
-	};
+	});
 
-	ASSERT (manager.ConnectOutputSlotToInputSlots (node->GetOutputSlot (SlotId ("out")), inputSlotsDuplicated));
+	ASSERT (manager.ConnectOutputSlotToInputSlots (node->GetOutputSlot (SlotId ("out")), inputSlots));
 	ASSERT (CheckNodeValue (inputNode1, 3));
 	ASSERT (CheckNodeValue (inputNode2, 4));
 
-	ASSERT (manager.DisconnectOutputSlotFromInputSlots (node->GetOutputSlot (SlotId ("out")), inputSlotsDuplicated));
+	ASSERT (manager.DisconnectOutputSlotFromInputSlots (node->GetOutputSlot (SlotId ("out")), inputSlots));
 	ASSERT (CheckNodeValue (inputNode1, 2));
 	ASSERT (CheckNodeValue (inputNode2, 3));
 }
