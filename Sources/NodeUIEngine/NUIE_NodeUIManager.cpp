@@ -280,66 +280,74 @@ bool NodeUIManager::CanConnectOutputSlotToInputSlots (const UIOutputSlotConstPtr
 bool NodeUIManager::ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot)
 {
 	DBGASSERT (CanConnectOutputSlotToInputSlot (outputSlot, inputSlot));
-	RequestRecalculateAndRedraw ();
+	bool success = nodeManager.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
 	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
-	return nodeManager.ConnectOutputSlotToInputSlot (outputSlot, inputSlot);
+	RequestRecalculateAndRedraw ();
+	return success;
 }
 
 bool NodeUIManager::ConnectOutputSlotsToInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot)
 {
 	DBGASSERT (CanConnectOutputSlotsToInputSlot (outputSlots, inputSlot));
-	RequestRecalculateAndRedraw ();
+	bool success = nodeManager.ConnectOutputSlotsToInputSlot (outputSlots, inputSlot);
 	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
-	return nodeManager.ConnectOutputSlotsToInputSlot (outputSlots, inputSlot);
+	RequestRecalculateAndRedraw ();
+	return success;
 }
 
 bool NodeUIManager::ConnectOutputSlotToInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots)
 {
 	DBGASSERT (CanConnectOutputSlotToInputSlots (outputSlot, inputSlots));
-	RequestRecalculateAndRedraw ();
+	bool success = nodeManager.ConnectOutputSlotToInputSlots (outputSlot, inputSlots);
 	inputSlots.Enumerate ([&] (const NE::InputSlotConstPtr& inputSlot) {
 		InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
 		return true;
 	});
-	return nodeManager.ConnectOutputSlotToInputSlots (outputSlot, inputSlots);
+	RequestRecalculateAndRedraw ();
+	return success;
 }
 
 bool NodeUIManager::DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot)
 {
-	RequestRecalculateAndRedraw ();
+	bool success = nodeManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
 	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
-	return nodeManager.DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot);
+	RequestRecalculateAndRedraw ();
+	return success;
 }
 
 bool NodeUIManager::DisconnectOutputSlotsFromInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot)
 {
-	RequestRecalculateAndRedraw ();
+	bool success = nodeManager.DisconnectOutputSlotsFromInputSlot (outputSlots, inputSlot);
 	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
-	return nodeManager.DisconnectOutputSlotsFromInputSlot (outputSlots, inputSlot);
+	RequestRecalculateAndRedraw ();
+	return success;
 }
 
 bool NodeUIManager::DisconnectOutputSlotFromInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots)
 {
-	RequestRecalculateAndRedraw ();
+	bool success = nodeManager.DisconnectOutputSlotFromInputSlots (outputSlot, inputSlots);
 	inputSlots.Enumerate ([&] (const NE::InputSlotConstPtr& inputSlot) {
 		InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
 		return true;
 	});
-	return nodeManager.DisconnectOutputSlotFromInputSlots (outputSlot, inputSlots);
+	RequestRecalculateAndRedraw ();
+	return success;
 }
 
 bool NodeUIManager::DisconnectAllInputSlotsFromOutputSlot (const UIOutputSlotConstPtr& outputSlot)
 {
-	RequestRecalculateAndRedraw ();
+	bool success = nodeManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
 	InvalidateNodeDrawing (outputSlot->GetOwnerNodeId ());
-	return nodeManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
+	RequestRecalculateAndRedraw ();
+	return success;
 }
 
 bool NodeUIManager::DisconnectAllOutputSlotsFromInputSlot (const UIInputSlotConstPtr& inputSlot)
 {
-	RequestRecalculateAndRedraw ();
+	bool success = nodeManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
 	InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
-	return nodeManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
+	RequestRecalculateAndRedraw ();
+	return success;
 }
 
 bool NodeUIManager::HasConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot) const
