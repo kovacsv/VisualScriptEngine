@@ -1,5 +1,7 @@
 #include "resources.hpp"
 
+APPLICATION_ICON				ICON	"icons/vse.ico"
+
 FOLDERCLOSED_ICON				IMAGE	"icons/node_tree/FolderClosed.png"
 FOLDEROPENED_ICON				IMAGE	"icons/node_tree/FolderOpened.png"
 

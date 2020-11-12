@@ -547,8 +547,8 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
 	windowClass.hInstance = hInstance;
-	windowClass.hIcon = LoadIcon (NULL, IDI_APPLICATION);
-	windowClass.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
+	windowClass.hIcon = LoadIcon (hInstance, MAKEINTRESOURCE (APPLICATION_ICON));
+	windowClass.hIconSm = LoadIcon (hInstance, MAKEINTRESOURCE (APPLICATION_ICON));
 	windowClass.hCursor = LoadCursor (NULL, IDC_ARROW);
 	windowClass.hbrBackground = (HBRUSH) COLOR_WINDOW;
 	windowClass.lpszMenuName = NULL;

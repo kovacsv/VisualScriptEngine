@@ -1,3 +1,5 @@
+#define APPLICATION_ICON				100
+
 #define FOLDERCLOSED_ICON				101
 #define FOLDEROPENED_ICON				102
 
