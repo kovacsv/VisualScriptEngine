@@ -548,11 +548,11 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	windowClass.cbWndExtra = 0;
 	windowClass.hInstance = hInstance;
 	windowClass.hIcon = LoadIcon (NULL, IDI_APPLICATION);
+	windowClass.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
 	windowClass.hCursor = LoadCursor (NULL, IDC_ARROW);
 	windowClass.hbrBackground = (HBRUSH) COLOR_WINDOW;
 	windowClass.lpszMenuName = NULL;
 	windowClass.lpszClassName = L"WindowsEmbeddingDemo";
-	windowClass.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
 
 	if (!RegisterClassEx (&windowClass)) {
 		return false;
