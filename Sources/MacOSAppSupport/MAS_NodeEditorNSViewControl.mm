@@ -123,7 +123,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 	if ([event subtype] == NSEventSubtypeMouseEvent || [event modifierFlags] & NSEventModifierFlagOption) {
 		NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 		NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
-		if (deltaX + deltaY < 0) {
+		if (deltaX + deltaY < 0.0f) {
 			rotation = NUIE::MouseWheelRotation::Backward;
 		}
 		nodeEditor->OnMouseWheel (modifierKeys, rotation, position.GetX (), position.GetY ());
@@ -136,7 +136,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 {
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
-	if ([event magnification] < 0) {
+	if ([event magnification] < 0.0f) {
 		rotation = NUIE::MouseWheelRotation::Backward;
 	}
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
