@@ -151,10 +151,10 @@ public:
 			return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
 		});
 		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", NUIE::IconId (TREE_INTEGER_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
+			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 1));
 		});
 		AddNodeTreeItem (nodeTree, inputNodes, L"Number", NUIE::IconId (TREE_DOUBLE_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
+			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 1.0));
 		});
 		AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", NUIE::IconId (TREE_INTEGERINCREMENTED_ICON), [&] (const NUIE::Point& position) {
 			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));

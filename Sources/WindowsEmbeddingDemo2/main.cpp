@@ -17,10 +17,10 @@ static void InitNodeTree (NUIE::NodeTree& nodeTree)
 		return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
 	});
 	nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
-		return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 5));
+		return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 1));
 	});
 	nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
-		return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 5.0));
+		return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 1.0));
 	});
 	nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
 		return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
