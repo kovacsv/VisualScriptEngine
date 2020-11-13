@@ -12,6 +12,15 @@ namespace WAS
 class NodeEditorNodeTreeHwndControl : public NUIE::NativeNodeEditorControl
 {
 public:
+	class Settings
+	{
+	public:
+		Settings ();
+
+		int		treeWidth;
+		int		treeRightMargin;
+	};
+
 	class ImageLoader
 	{
 	public:
@@ -23,8 +32,8 @@ public:
 		virtual HBITMAP LoadImage (const NUIE::IconId& iconId, COLORREF bgColor) = 0;
 	};
 
-	NodeEditorNodeTreeHwndControl ();
-	NodeEditorNodeTreeHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
+	NodeEditorNodeTreeHwndControl (const Settings& settings);
+	NodeEditorNodeTreeHwndControl (const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorNodeTreeHwndControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;
@@ -47,6 +56,7 @@ public:
 private:
 	void							CreateNode (LPARAM nodeId, int screenX, int screenY);
 
+	Settings											settings;
 	NodeTreeView										nodeTreeView;
 	NodeEditorHwndControl								nodeEditorControl;
 	CustomControl										mainControl;

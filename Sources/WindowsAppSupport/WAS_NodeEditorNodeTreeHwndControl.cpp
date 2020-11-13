@@ -6,9 +6,6 @@
 namespace WAS
 {
 
-static const short NodeListWidth = 200;
-static const short NodeListRightMargin = 5;
-
 static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_CREATE) {
@@ -66,6 +63,13 @@ static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageL
 	return imageLoader->LoadImage (iconId, bgColor);
 }
 
+NodeEditorNodeTreeHwndControl::Settings::Settings () :
+	treeWidth (200),
+	treeRightMargin (2)
+{
+
+}
+
 NodeEditorNodeTreeHwndControl::ImageLoader::ImageLoader ()
 {
 
@@ -76,8 +80,9 @@ NodeEditorNodeTreeHwndControl::ImageLoader::~ImageLoader ()
 
 }
 
-NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl () :
+NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& settings) :
 	NUIE::NativeNodeEditorControl (),
+	settings (settings),
 	nodeTreeView (),
 	nodeEditorControl (),
 	mainControl (),
@@ -87,8 +92,9 @@ NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl () :
 
 }
 
-NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext) :
+NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext) :
 	NUIE::NativeNodeEditorControl (),
+	settings (settings),
 	nodeTreeView (),
 	nodeEditorControl (nativeContext),
 	mainControl (),
@@ -116,8 +122,8 @@ bool NodeEditorNodeTreeHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, void*
 	}
 
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
-	nodeTreeView.Init (mainHandle, 0, 0, NodeListWidth, height);
-	nodeEditorControl.Init (nodeEditorPtr, mainHandle, NodeListWidth + NodeListRightMargin, 0, width - NodeListWidth - NodeListRightMargin, height);
+	nodeTreeView.Init (mainHandle, 0, 0, settings.treeWidth, height);
+	nodeEditorControl.Init (nodeEditorPtr, mainHandle, settings.treeWidth + settings.treeRightMargin, 0, width - settings.treeWidth - settings.treeRightMargin, height);
 
 	return true;
 }
@@ -139,8 +145,8 @@ void NodeEditorNodeTreeHwndControl::Resize (int x, int y, int width, int height)
 		return;
 	}
 	MoveWindow (mainHandle, x, y, width, height, TRUE);
-	nodeTreeView.Resize (0, 0, NodeListWidth, height);
-	nodeEditorControl.Resize (NodeListWidth + NodeListRightMargin, 0, width - NodeListWidth - NodeListRightMargin, height);
+	nodeTreeView.Resize (0, 0, settings.treeWidth, height);
+	nodeEditorControl.Resize (settings.treeWidth + settings.treeRightMargin, 0, width - settings.treeWidth - settings.treeRightMargin, height);
 }
 
 void NodeEditorNodeTreeHwndControl::Invalidate ()

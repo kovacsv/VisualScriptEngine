@@ -367,7 +367,7 @@ void Application::Run ()
 		defer:NO
 	];
 
-	[myWindow setTitle:@"VisualScriptEngine Embedding Demo"];
+	[myWindow setTitle:@"Visual Script Engine Demo"];
 
 	WindowController* myWindowController = [[WindowController alloc] autorelease];
 	NSView* contentView = [[[NSView alloc] initWithFrame:windowRect] autorelease];

@@ -36,7 +36,7 @@
 #define EDIT_GROUP		1206
 #define EDIT_UNGROUP	1207
 
-static const int ControlPadding = 5;
+static const WAS::NodeEditorNodeTreeHwndControl::Settings NodeTreeControlSettings;
 
 static bool MessageBoxYesNo (HWND hwnd, LPCWSTR text, LPCWSTR caption)
 {
@@ -117,7 +117,7 @@ public:
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
-		nodeEditorControl (NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (WAS::Direct2DImageLoaderPtr (new MyResourceImageLoader ())))),
+		nodeEditorControl (NodeTreeControlSettings, NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (WAS::Direct2DImageLoaderPtr (new MyResourceImageLoader ())))),
 		fileMenu (nullptr)
 	{
 	
@@ -207,7 +207,7 @@ public:
 		int height = clientRect.bottom - clientRect.top;
 
 		ImageLoader imageLoader;
-		nodeEditorControl.Init (nodeEditorPtr, parentHandle, ControlPadding, ControlPadding, width - ControlPadding * 2, height - ControlPadding * 2);
+		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
 		nodeEditorControl.FillNodeTree (nodeTree, &imageLoader);
 		eventHandler.Init ((HWND) nodeEditorControl.GetEditorNativeHandle ());
 
@@ -228,7 +228,7 @@ public:
 
 	void OnResize (int x, int y, int width, int height)
 	{
-		nodeEditorControl.Resize (x + ControlPadding, y + ControlPadding, width - ControlPadding * 2, height - ControlPadding * 2);
+		nodeEditorControl.Resize (x, y, width, height);
 	}
 
 	virtual const NE::StringConverter& GetStringConverter () override
@@ -552,7 +552,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	windowClass.hCursor = LoadCursor (NULL, IDC_ARROW);
 	windowClass.hbrBackground = (HBRUSH) COLOR_WINDOW;
 	windowClass.lpszMenuName = NULL;
-	windowClass.lpszClassName = L"WindowsEmbeddingDemo";
+	windowClass.lpszClassName = L"VisualScriptEngineDemo";
 
 	if (!RegisterClassEx (&windowClass)) {
 		return false;
@@ -562,7 +562,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
 	HWND windowHandle = CreateWindowEx (
-		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, L"VisualScriptEngine Embedding Demo", WS_OVERLAPPEDWINDOW,
+		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, L"Visual Script Engine Demo", WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, &application
 	);
 
