@@ -81,7 +81,7 @@ static const NUIE::BasicSkinParams& GetAppSkinParams ()
 			{ NE::LocalizeString (L"Blue"), NUIE::Color (160, 200, 240) },
 			{ NE::LocalizeString (L"Green"), NUIE::Color (160, 239, 160) },
 			{ NE::LocalizeString (L"Red"), NUIE::Color (239, 189, 160) }
-			}),
+		}),
 		/*groupPadding*/ 10.0
 	);
 	return skinParams;
@@ -512,6 +512,13 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				}
 				return 0;
 			}
+		case WM_GETMINMAXINFO:
+			{
+				LPMINMAXINFO minMaxInfo = (LPMINMAXINFO) lParam;
+				minMaxInfo->ptMinTrackSize.x = 640;
+				minMaxInfo->ptMinTrackSize.y = 480;
+			}
+			break;
 		case WM_SIZE:
 			{
 				int newWidth = LOWORD (lParam);
@@ -614,7 +621,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 		return false;
 	}
 
-	RECT requiredRect = { 0, 0, 900, 500 };
+	RECT requiredRect = { 0, 0, 1200, 800 };
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
 	HWND windowHandle = CreateWindowEx (
