@@ -26,7 +26,7 @@ NodeTreeView::~NodeTreeView ()
 bool NodeTreeView::Init (HWND parentHandle, int x, int y, int width, int height)
 {
 	treeHandle = CreateWindowEx (
-		0, WC_TREEVIEW, NULL, WS_VISIBLE | WS_CHILD | TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS, 
+		0, WC_TREEVIEW, NULL, WS_VISIBLE | WS_CHILD | TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT, 
 		x, y, width, height, parentHandle, NULL, NULL, NULL
 	);
 	if (DBGERROR (treeHandle == NULL)) {
