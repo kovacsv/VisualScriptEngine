@@ -6,6 +6,8 @@
 namespace WAS
 {
 
+static const LPARAM InvalidNode;
+
 static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_CREATE) {
@@ -86,8 +88,8 @@ NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& se
 	nodeTreeView (),
 	nodeEditorControl (),
 	mainControl (),
-	selectedNode (-1),
-	draggedNode (-1)
+	selectedNode (InvalidNode),
+	draggedNode (InvalidNode)
 {
 
 }
@@ -98,8 +100,8 @@ NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& se
 	nodeTreeView (),
 	nodeEditorControl (nativeContext),
 	mainControl (),
-	selectedNode (-1),
-	draggedNode (-1)
+	selectedNode (InvalidNode),
+	draggedNode (InvalidNode)
 {
 
 }
@@ -210,7 +212,7 @@ void NodeEditorNodeTreeHwndControl::TreeViewDoubleClick (LPNMHDR lpnmhdr)
 		return;
 	}
 
-	if (selectedNode == (LPARAM) -1) {
+	if (selectedNode == InvalidNode) {
 		return;
 	}
 
@@ -227,7 +229,7 @@ void NodeEditorNodeTreeHwndControl::TreeViewBeginDrag (LPNMTREEVIEW lpnmtv)
 		return;
 	}
 
-	if (lpnmtv->itemNew.lParam == (LPARAM) -1) {
+	if (lpnmtv->itemNew.lParam == InvalidNode) {
 		return;
 	}
 
@@ -243,7 +245,7 @@ void NodeEditorNodeTreeHwndControl::TreeViewBeginDrag (LPNMTREEVIEW lpnmtv)
 
 void NodeEditorNodeTreeHwndControl::TreeViewEndDrag (int x, int y)
 {
-	if (DBGERROR (draggedNode == (LPARAM) -1)) {
+	if (draggedNode == InvalidNode) {
 		return;
 	}
 
@@ -255,12 +257,12 @@ void NodeEditorNodeTreeHwndControl::TreeViewEndDrag (int x, int y)
 	MapWindowPoints (editorHandle, mainHandle, (LPPOINT) &editorRect, 2);
 
 	if (x < editorRect.left || x > editorRect.right || y < editorRect.top || y > editorRect.bottom) {
-		draggedNode = (LPARAM) -1;
+		draggedNode = InvalidNode;
 		return;
 	}
 
 	CreateNode (draggedNode, x - editorRect.left, y - editorRect.top);
-	draggedNode = (LPARAM) -1;
+	draggedNode = InvalidNode;
 }
 
 void NodeEditorNodeTreeHwndControl::CreateNode (LPARAM nodeId, int screenX, int screenY)
