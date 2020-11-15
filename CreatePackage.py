@@ -59,7 +59,7 @@ def Main (argv):
 				pdbPath = os.path.join (buildDir, module + '.dir', buildType, module + '.pdb')
 				zip.write (pdbPath, os.path.join (os.path.basename (libPath), module + '.pdb'))
 		outputPath = os.path.abspath (os.path.join (buildDir, buildType))
-		for testFile in ['WindowsEmbeddingDemo.exe']:
+		for testFile in ['WindowsReferenceApp.exe']:
 			zip.write (os.path.join (outputPath, testFile), os.path.join ('testapp', testFile))
 
 	zip.close ()

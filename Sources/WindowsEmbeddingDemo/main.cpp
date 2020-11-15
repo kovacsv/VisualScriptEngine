@@ -1,244 +1,126 @@
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_NodeTree.hpp"
 #include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
-#include "WAS_ClipboardHandler.hpp"
-#include "WAS_NodeEditorNodeTreeHwndControl.hpp"
 #include "WAS_ParameterDialog.hpp"
-#include "WAS_FileMenu.hpp"
-#include "WAS_Toolbar.hpp"
-#include "WAS_GdiplusUtils.hpp"
-
+#include "WAS_NodeTree.hpp"
 #include "BI_BuiltInNodes.hpp"
-#include "NUIE_Localization.hpp"
-
-#include "WAS_Direct2DContext.hpp"
-#include "WAS_Direct2DOffscreenContext.hpp"
 
 #include <windows.h>
 #include <windowsx.h>
-#include "resources.hpp"
 
-#pragma comment (lib, "gdiplus.lib")
-#pragma comment (lib, "comctl32.lib")
-#pragma comment (lib, "windowscodecs.lib")
-#pragma comment (lib, "d2d1.lib")
-#pragma comment (lib, "dwrite.lib")
-
-#define FILE_NEW		1101
-#define FILE_OPEN		1102
-#define FILE_SAVE		1103
-#define FILE_QUIT		1104
-#define EDIT_UNDO		1201
-#define EDIT_REDO		1202
-#define EDIT_SETTINGS	1203
-#define EDIT_COPY		1204
-#define EDIT_PASTE		1205
-#define EDIT_DELETE		1206
-#define EDIT_GROUP		1207
-#define EDIT_UNGROUP	1208
-
-static const WAS::NodeEditorNodeTreeHwndControl::Settings NodeTreeControlSettings;
-
-static bool MessageBoxYesNo (HWND hwnd, LPCWSTR text, LPCWSTR caption)
+static void InitNodeTree (NUIE::NodeTree& nodeTree)
 {
-	int result = MessageBox (hwnd, text, caption, MB_ICONWARNING | MB_YESNO);
-	return (result == IDYES);
-}
-
-static const NUIE::BasicSkinParams& GetAppSkinParams ()
-{
-	static const NUIE::BasicSkinParams skinParams (
-		/*backgroundColor*/ NUIE::Color (255, 255, 255),
-		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
-		/*connectionMarker */ NUIE::SkinParams::ConnectionMarker::Circle,
-		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
-		/*nodePadding*/ 5.0,
-		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
-		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
-		/*nodeHeaderTextColor*/ NUIE::Color (250, 250, 250),
-		/*nodeHeaderErrorTextColor*/ NUIE::Color (250, 250, 250),
-		/*nodeHeaderBackgroundColor*/ NUIE::Color (41, 127, 255),
-		/*nodeHeaderErrorBackgroundColor*/ NUIE::Color (199, 80, 80),
-		/*nodeContentTextFont*/ NUIE::Font (L"Arial", 14.0),
-		/*nodeContentTextColor*/ NUIE::Color (0, 0, 0),
-		/*nodeContentBackgroundColor*/ NUIE::Color (236, 236, 236),
-		/*slotTextColor*/ NUIE::Color (0, 0, 0),
-		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
-		/*slotMarker*/ NUIE::SkinParams::SlotMarker::Circle,
-		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
-		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
-		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
-		/*selectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 1.0),
-		/*nodeSelectionRectPen*/ NUIE::Pen (NUIE::Color (41, 127, 255), 3.0),
-		/*buttonBorderPen*/ NUIE::Pen (NUIE::Color (146, 152, 155), 1.0),
-		/*buttonBackgroundColor*/ NUIE::Color (217, 217, 217),
-		/*textPanelTextColor*/ NUIE::Color (0, 0, 0),
-		/*textPanelBackgroundColor*/ NUIE::Color (236, 236, 236),
-		/*groupNameFont*/ NUIE::Font (L"Arial", 16.0),
-		/*groupNameColor*/ NUIE::Color (0, 0, 0),
-		/*groupBackgroundColors*/ NUIE::NamedColorSet ({
-			{ NE::LocalizeString (L"Blue"), NUIE::Color (160, 200, 240) },
-			{ NE::LocalizeString (L"Green"), NUIE::Color (160, 239, 160) },
-			{ NE::LocalizeString (L"Red"), NUIE::Color (239, 189, 160) }
-		}),
-		/*groupPadding*/ 10.0
-	);
-	return skinParams;
-}
-
-static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, const NUIE::IconId& iconId, const NUIE::CreatorFunction& creator)
-{
-	NUIE::IconId nodeIconId (iconId.GetId () + TREE_TO_NODE_ICON_OFFSET);
-	nodeTree.AddItem (groupIndex, name, iconId, [=] (const NUIE::Point& position) {
-		NUIE::UINodePtr node = creator (position);
-		BI::BasicUINodePtr basicNode = std::dynamic_pointer_cast<BI::BasicUINode> (node);
-		if (basicNode != nullptr) {
-			basicNode->SetIconId (nodeIconId);
-		}
-		return node;
+	size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
+	nodeTree.AddItem (inputNodes, L"Boolean", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
+	});
+	nodeTree.AddItem (inputNodes, L"Integer", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 1));
+	});
+	nodeTree.AddItem (inputNodes, L"Number", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 1.0));
+	});
+	nodeTree.AddItem (inputNodes, L"Integer Increment", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"Number Increment", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"Number Distribution", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
+	});
+	nodeTree.AddItem (inputNodes, L"List Builder", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
+	});
+	size_t arithmeticNodes = nodeTree.AddGroup (L"Arithmetic Nodes");
+	nodeTree.AddItem (arithmeticNodes, L"Addition", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Subtraction", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Multiplication", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
+	});
+	nodeTree.AddItem (arithmeticNodes, L"Division", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
+	});
+	size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
+	nodeTree.AddItem (otherNodes, L"Viewer", [&] (const NUIE::Point& position) {
+		return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
 	});
 }
 
-class MyResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
-{
-	virtual HRSRC GetImageResHandle (const NUIE::IconId& iconId) override
-	{
-		HRSRC resHandle = FindResource (NULL, MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE");
-		return resHandle;
-	}
-};
-
-class AppUIEnvironment : public NUIE::NodeUIEnvironment
+class MyEventHandler : public WAS::HwndEventHandler
 {
 public:
-	AppUIEnvironment () :
+	MyEventHandler () :
+		WAS::HwndEventHandler (),
+		nodeEditor (nullptr),
+		nodeTree ()
+	{
+		InitNodeTree (nodeTree);
+	}
+
+	void SetNodeEditor (NUIE::NodeEditor* nodeEditorPtr)
+	{
+		nodeEditor = nodeEditorPtr;
+	}
+
+	virtual NUIE::MenuCommandPtr OnContextMenu (NUIE::EventHandler::ContextMenuType type, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands) override
+	{
+		if (type == NUIE::EventHandler::ContextMenuType::EmptyArea) {
+			NUIE::MenuCommandStructure finalCommands = commands;
+			NUIE::AddNodeTreeToMenuStructure (nodeTree, position, nodeEditor, finalCommands);
+			return WAS::SelectCommandFromContextMenu (hwnd, position, finalCommands);
+		} else {
+			return WAS::SelectCommandFromContextMenu (hwnd, position, commands);
+		}
+	}
+
+private:
+	NUIE::NodeEditor*	nodeEditor;
+	NUIE::NodeTree		nodeTree;
+};
+
+class MyNodeUIEnvironment : public NUIE::NodeUIEnvironment
+{
+public:
+	MyNodeUIEnvironment () :
 		NUIE::NodeUIEnvironment (),
 		stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
-		skinParams (GetAppSkinParams ()),
+		skinParams (NUIE::GetDefaultSkinParams ()),
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
-		nodeEditorControl (NodeTreeControlSettings, NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (WAS::Direct2DImageLoaderPtr (new MyResourceImageLoader ())))),
-		fileMenu (nullptr),
-		toolbar (nullptr)
+		drawingContext (new WAS::BitmapContextGdi ()),
+		nodeEditor (nullptr),
+		editorHandle (nullptr)
 	{
-	
+
 	}
 
-	void Init (NUIE::NodeEditor* nodeEditorPtr, WAS::FileMenu* fileMenuPtr, WAS::Toolbar* toolbarPtr, HWND parentHandle)
+	void Init (NUIE::NodeEditor* nodeEditorPtr, HWND editorWindowHandle)
 	{
-		class ImageLoader : public WAS::NodeEditorNodeTreeHwndControl::ImageLoader
-		{
-		public:
-			virtual HBITMAP LoadGroupClosedImage (COLORREF bgColor) override
-			{
-				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDERCLOSED_ICON), L"IMAGE", bgColor);
-			}
+		nodeEditor = nodeEditorPtr;
+		editorHandle = editorWindowHandle;
 
-			virtual HBITMAP LoadGroupOpenedImage (COLORREF bgColor) override
-			{
-				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDEROPENED_ICON), L"IMAGE", bgColor);
-			}
-
-			virtual HBITMAP LoadImage (const NUIE::IconId& iconId, COLORREF bgColor) override
-			{
-				return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE", bgColor);
-			}
-		};
-
-		NUIE::NodeTree nodeTree;
-
-		size_t inputNodes = nodeTree.AddGroup (L"Input Nodes");
-		AddNodeTreeItem (nodeTree, inputNodes, L"Boolean", NUIE::IconId (TREE_BOOLEAN_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::BooleanNode (NE::LocString (L"Boolean"), position, true));
-		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Integer", NUIE::IconId (TREE_INTEGER_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerUpDownNode (NE::LocString (L"Integer"), position, 0, 1));
-		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Number", NUIE::IconId (TREE_DOUBLE_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleUpDownNode (NE::LocString (L"Number"), position, 0.0, 1.0));
-		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Integer Increment", NUIE::IconId (TREE_INTEGERINCREMENTED_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::IntegerIncrementedNode (NE::LocString (L"Integer Increment"), position));
-		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Number Increment", NUIE::IconId (TREE_DOUBLEINCREMENTED_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleIncrementedNode (NE::LocString (L"Number Increment"), position));
-		});
-		AddNodeTreeItem (nodeTree, inputNodes, L"Number Distribution", NUIE::IconId (TREE_DOUBLEDISTRIBUTED_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DoubleDistributedNode (NE::LocString (L"Number Distribution"), position));
-		});
-		size_t mathematicalNodes = nodeTree.AddGroup (L"Mathematical Nodes");
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Addition", NUIE::IconId (TREE_ADDITION_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::AdditionNode (NE::LocString (L"Addition"), position));
-		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Subtraction", NUIE::IconId (TREE_SUBTRACTION_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::SubtractionNode (NE::LocString (L"Subtraction"), position));
-		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Multiplication", NUIE::IconId (TREE_MULTIPLICATION_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiplicationNode (NE::LocString (L"Multiplication"), position));
-		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Division", NUIE::IconId (TREE_DIVISION_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::DivisionNode (NE::LocString (L"Division"), position));
-		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Floor", NUIE::IconId (TREE_FLOOR_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::FloorNode (NE::LocString (L"Floor"), position));
-		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Ceil", NUIE::IconId (TREE_CEIL_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::CeilNode (NE::LocString (L"Ceil"), position));
-		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Abs", NUIE::IconId (TREE_ABS_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::AbsNode (NE::LocString (L"Abs"), position));
-		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Negative", NUIE::IconId (TREE_NEGATIVE_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::NegativeNode (NE::LocString (L"Negative"), position));
-		});
-		AddNodeTreeItem (nodeTree, mathematicalNodes, L"Sqrt", NUIE::IconId (TREE_SQRT_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::SqrtNode (NE::LocString (L"Sqrt"), position));
-		});
-		size_t otherNodes = nodeTree.AddGroup (L"Other Nodes");
-		AddNodeTreeItem (nodeTree, otherNodes, L"List Builder", NUIE::IconId (TREE_LISTBUILDER_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::ListBuilderNode (NE::LocString (L"List Builder"), position));
-		});
-		AddNodeTreeItem (nodeTree, otherNodes, L"Viewer", NUIE::IconId (TREE_VIEWER_ICON), [&] (const NUIE::Point& position) {
-			return NUIE::UINodePtr (new BI::MultiLineViewerNode (NE::LocString (L"Viewer"), position, 5));
-		});
-
-		RECT clientRect;
-		GetClientRect (parentHandle, &clientRect);
-		int width = clientRect.right - clientRect.left;
-		int height = clientRect.bottom - clientRect.top;
-
-		ImageLoader imageLoader;
-		nodeEditorControl.Init (nodeEditorPtr, parentHandle, 0, 0, width, height);
-		nodeEditorControl.FillNodeTree (nodeTree, &imageLoader);
-		eventHandler.Init ((HWND) nodeEditorControl.GetEditorNativeHandle ());
-
-		fileMenu = fileMenuPtr;
-		toolbar = toolbarPtr;
-
-		EnableCommand (EDIT_SETTINGS, false);
-		EnableCommand (EDIT_COPY, false);
-		EnableCommand (EDIT_DELETE, false);
-		EnableCommand (EDIT_GROUP, false);
-		EnableCommand (EDIT_UNGROUP, false);
-		EnableCommand (EDIT_UNDO, false);
-		EnableCommand (EDIT_REDO, false);
-		EnableCommand (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
+		drawingContext->Init (editorHandle);
+		eventHandler.Init (editorHandle);
+		eventHandler.SetNodeEditor (nodeEditor);
 	}
 
-	void RefreshCommands ()
+	void OnResize (int width, int height)
 	{
-		EnableCommand (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
+		drawingContext->Resize (width, height);
 	}
 
-	void OnResize (int x, int y, int width, int height)
+	void OnPaint ()
 	{
-		int toolbarHeight = 0;
-		if (toolbar != nullptr) {
-			toolbarHeight = toolbar->GetHeight ();
-		}
-		nodeEditorControl.Resize (x, y + toolbarHeight, width, height - toolbarHeight);
+		nodeEditor->Draw ();
+		drawingContext->BlitToWindow (editorHandle);
 	}
 
 	virtual const NE::StringConverter& GetStringConverter () override
@@ -253,7 +135,7 @@ public:
 
 	virtual NUIE::DrawingContext& GetDrawingContext () override
 	{
-		return nodeEditorControl.GetDrawingContext ();
+		return *drawingContext;
 	}
 
 	virtual double GetWindowScale () override
@@ -278,12 +160,12 @@ public:
 
 	virtual void OnValuesRecalculated () override
 	{
-		
+
 	}
 
 	virtual void OnRedrawRequested () override
 	{
-		nodeEditorControl.Invalidate ();
+		InvalidateRect (editorHandle, NULL, FALSE);
 	}
 
 	virtual NUIE::EventHandler& GetEventHandler () override
@@ -296,25 +178,19 @@ public:
 		return clipboardHandler;
 	}
 
-	virtual void OnSelectionChanged (const NUIE::Selection& selection) override
+	virtual void OnSelectionChanged (const NUIE::Selection&) override
 	{
-		bool hasSelection = !selection.IsEmpty ();
-		EnableCommand (EDIT_SETTINGS, hasSelection);
-		EnableCommand (EDIT_COPY, hasSelection);
-		EnableCommand (EDIT_DELETE, hasSelection);
-		EnableCommand (EDIT_GROUP, hasSelection);
-		EnableCommand (EDIT_UNGROUP, hasSelection);
+
 	}
 
-	virtual void OnUndoStateChanged (const NUIE::UndoState& undoState) override
+	virtual void OnUndoStateChanged (const NUIE::UndoState&) override
 	{
-		EnableCommand (EDIT_UNDO, undoState.CanUndo ());
-		EnableCommand (EDIT_REDO, undoState.CanRedo ());
+
 	}
 
-	virtual void OnClipboardStateChanged (const NUIE::ClipboardState& clipboardState) override
+	virtual void OnClipboardStateChanged (const NUIE::ClipboardState&) override
 	{
-		EnableCommand (EDIT_PASTE, clipboardState.HasContent ());
+
 	}
 
 	virtual void OnIncompatibleVersionPasted (const NUIE::Version&) override
@@ -323,252 +199,183 @@ public:
 	}
 
 private:
-	void EnableCommand (UINT commandId, bool isEnabled)
-	{
-		fileMenu->EnableItem (commandId, isEnabled);
-		toolbar->EnableItem (commandId, isEnabled);
-	}
-
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;
-	WAS::HwndEventHandler				eventHandler;
-	WAS::ClipboardHandler				clipboardHandler;
+	MyEventHandler						eventHandler;
+	NUIE::MemoryClipboardHandler		clipboardHandler;
 	NE::EvaluationEnv					evaluationEnv;
-	WAS::NodeEditorNodeTreeHwndControl	nodeEditorControl;
-	WAS::FileMenu*						fileMenu;
-	WAS::Toolbar*						toolbar;
+	NUIE::NativeDrawingContextPtr		drawingContext;
+
+	NUIE::NodeEditor*					nodeEditor;
+	HWND								editorHandle;
 };
 
-class Application
-{
-public:
-	Application () :
-		uiEnvironment (),
-		nodeEditor (uiEnvironment),
-		fileMenu (),
-		toolbar (),
-		fileFilter ({ L"Visual Script Engine", L"vse" })
-	{
-
-	}
-
-	void Init (HWND hwnd)
-	{
-		InitFileMenu (hwnd);
-		InitToolbar (hwnd);
-		uiEnvironment.Init (&nodeEditor, &fileMenu, &toolbar, hwnd);
-	}
-
-	void RefreshCommands ()
-	{
-		uiEnvironment.RefreshCommands ();
-	}
-
-	void New (HWND hwnd)
-	{
-		if (nodeEditor.NeedToSave ()) {
-			bool result = MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to start new file?", L"New File");
-			if (!result) {
-				return;
-			}
-		}
-		nodeEditor.New ();
-	}
-
-	void Open (HWND hwnd)
-	{
-		if (nodeEditor.NeedToSave ()) {
-			bool result = MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to open file?", L"Open File");
-			if (!result) {
-				return;
-			}
-		}
-		std::wstring fileName;
-		if (WAS::OpenFileDialog (hwnd, fileFilter, fileName)) {
-			nodeEditor.Open (fileName);
-			nodeEditor.AlignToWindow ();
-		}
-	}
-
-	void Save (HWND hwnd)
-	{
-		std::wstring fileName;
-		if (WAS::SaveFileDialog (hwnd, fileFilter, fileName)) {
-			nodeEditor.Save (fileName);
-		}
-	}
-
-	bool Close (HWND hwnd)
-	{
-		if (nodeEditor.NeedToSave ()) {
-			return MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to quit?", L"Quit");
-		}
-		return true;
-	}
-
-	void ExecuteCommand (NUIE::CommandCode command)
-	{
-		nodeEditor.ExecuteCommand (command);
-	}
-
-	void OnResize (int x, int y, int width, int height)
-	{
-		uiEnvironment.OnResize (x, y, width, height);
-	}
-
-private:
-	void InitFileMenu (HWND hwnd)
-	{
-		HMENU file = fileMenu.AddPopupMenu (L"File");
-		fileMenu.AddPopupMenuItem (file, FILE_NEW, L"New");
-		fileMenu.AddPopupMenuItem (file, FILE_OPEN, L"Open");
-		fileMenu.AddPopupMenuItem (file, FILE_SAVE, L"Save");
-		fileMenu.AddPopupMenuSeparator (file);
-		fileMenu.AddPopupMenuItem (file, FILE_QUIT, L"Quit");
-
-		HMENU edit = fileMenu.AddPopupMenu (L"Edit");
-		fileMenu.AddPopupMenuItem (edit, EDIT_UNDO, L"Undo");
-		fileMenu.AddPopupMenuItem (edit, EDIT_REDO, L"Redo");
-		fileMenu.AddPopupMenuSeparator (edit);
-		fileMenu.AddPopupMenuItem (edit, EDIT_SETTINGS, L"Settings");
-		fileMenu.AddPopupMenuItem (edit, EDIT_COPY, L"Copy");
-		fileMenu.AddPopupMenuItem (edit, EDIT_PASTE, L"Paste");
-		fileMenu.AddPopupMenuItem (edit, EDIT_DELETE, L"Delete");
-		fileMenu.AddPopupMenuSeparator (edit);
-		fileMenu.AddPopupMenuItem (edit, EDIT_GROUP, L"Group");
-		fileMenu.AddPopupMenuItem (edit, EDIT_UNGROUP, L"Ungroup");
-
-		SetMenu (hwnd, fileMenu.GetMenuBar ());
-	}
-
-	void InitToolbar (HWND hwnd)
-	{
-		toolbar.Init (hwnd);
-
-		AddToolbarItem (TOOLBAR_ENABLED_NEW_ICON, FILE_NEW);
-		AddToolbarItem (TOOLBAR_ENABLED_OPEN_ICON, FILE_OPEN);
-		AddToolbarItem (TOOLBAR_ENABLED_SAVE_ICON, FILE_SAVE);
-		toolbar.AddSeparator ();
-		
-		AddToolbarItem (TOOLBAR_ENABLED_UNDO_ICON, EDIT_UNDO);
-		AddToolbarItem (TOOLBAR_ENABLED_REDO_ICON, EDIT_REDO);
-		toolbar.AddSeparator ();
-
-		AddToolbarItem (TOOLBAR_ENABLED_SETTINGS_ICON, EDIT_SETTINGS);
-		AddToolbarItem (TOOLBAR_ENABLED_COPY_ICON, EDIT_COPY);
-		AddToolbarItem (TOOLBAR_ENABLED_PASTE_ICON, EDIT_PASTE);
-		AddToolbarItem (TOOLBAR_ENABLED_DELETE_ICON, EDIT_DELETE);
-		toolbar.AddSeparator ();
-
-		AddToolbarItem (TOOLBAR_ENABLED_GROUP_ICON, EDIT_GROUP);
-		AddToolbarItem (TOOLBAR_ENABLED_UNGROUP_ICON, EDIT_UNGROUP);
-	}
-
-	void AddToolbarItem (WORD imageResourceId, UINT commandId)
-	{
-		COLORREF bgColor = GetSysColor (COLOR_3DFACE);
-		HBITMAP bitmap = WAS::LoadBitmapFromResource (MAKEINTRESOURCE (imageResourceId), L"IMAGE", bgColor);
-		HBITMAP disabledBitmap = WAS::LoadBitmapFromResource (MAKEINTRESOURCE (imageResourceId + ENABLED_TO_DISABLED_ICON_OFFSET), L"IMAGE", bgColor);
-		toolbar.AddItem (bitmap, disabledBitmap, commandId);
-	}
-
-	AppUIEnvironment	uiEnvironment;
-	NUIE::NodeEditor	nodeEditor;
-	WAS::FileMenu		fileMenu;
-	WAS::Toolbar		toolbar;
-	WAS::FileFilter		fileFilter;
-};
+static MyNodeUIEnvironment uiEnvironment;
+static NUIE::NodeEditor nodeEditor (uiEnvironment);
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if (msg == WM_CREATE) {
-		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
-		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
-	} else if (msg == WM_DESTROY) {
-		SetWindowLongPtr (hwnd, GWLP_USERDATA, NULL);
-		PostQuitMessage (0);
-	}
-
-	Application* application = (Application*) GetWindowLongPtr (hwnd, GWLP_USERDATA);
-	if (application == nullptr) {
-		return DefWindowProc (hwnd, msg, wParam, lParam);
-	}
-
 	switch (msg) {
 		case WM_CREATE:
 			{
-				application->Init (hwnd);
-			}
-			break;
-		case WM_ACTIVATE:
-			{
-				application->RefreshCommands ();
-			}
-			break;
-		case WM_CLOSE:
-			{
-				if (application->Close (hwnd)) {
-					DestroyWindow (hwnd);
-				}
-				return 0;
-			}
-		case WM_GETMINMAXINFO:
-			{
-				LPMINMAXINFO minMaxInfo = (LPMINMAXINFO) lParam;
-				minMaxInfo->ptMinTrackSize.x = 600;
-				minMaxInfo->ptMinTrackSize.y = 400;
+				uiEnvironment.Init (&nodeEditor, hwnd);
 			}
 			break;
 		case WM_SIZE:
 			{
 				int newWidth = LOWORD (lParam);
 				int newHeight = HIWORD (lParam);
-				
-				application->OnResize (0, 0, newWidth, newHeight);
+				uiEnvironment.OnResize (newWidth, newHeight);
 			}
 			break;
-		case WM_COMMAND:
+		case WM_PAINT:
+			uiEnvironment.OnPaint ();
+			break;
+		case WM_CLOSE:
+			DestroyWindow (hwnd);
+			break;
+		case WM_DESTROY:
+			PostQuitMessage (0);
+			break;
+		case WM_ERASEBKGND:
+			return 0;
+		case WM_LBUTTONDOWN:
 			{
-				WORD command = LOWORD (wParam);
-				switch (command) {
-					case FILE_NEW:
-						application->New (hwnd);
-						break;
-					case FILE_OPEN:
-						application->Open (hwnd);
-						break;
-					case FILE_SAVE:
-						application->Save (hwnd);
-						break;
-					case EDIT_UNDO:
-						application->ExecuteCommand (NUIE::CommandCode::Undo);
-						break;
-					case EDIT_REDO:
-						application->ExecuteCommand (NUIE::CommandCode::Redo);
-						break;
-					case EDIT_SETTINGS:
-						application->ExecuteCommand (NUIE::CommandCode::SetParameters);
-						break;
-					case EDIT_COPY:
-						application->ExecuteCommand (NUIE::CommandCode::Copy);
-						break;
-					case EDIT_PASTE:
-						application->ExecuteCommand (NUIE::CommandCode::Paste);
-						break;
-					case EDIT_DELETE:
-						application->ExecuteCommand (NUIE::CommandCode::Delete);
-						break;
-					case EDIT_GROUP:
-						application->ExecuteCommand (NUIE::CommandCode::Group);
-						break;
-					case EDIT_UNGROUP:
-						application->ExecuteCommand (NUIE::CommandCode::Ungroup);
-						break;
-					case FILE_QUIT:
-						SendMessage (hwnd, WM_CLOSE, 0, 0);
-						break;
+				WAS::SetWindowCapture (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONDOWN:
+			{
+				WAS::SetWindowCapture (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONDOWN:
+			{
+				WAS::SetWindowCapture (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDown (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+			}
+			break;
+		case WM_LBUTTONUP:
+			{
+				WAS::ReleaseWindowCapture (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONUP:
+			{
+				WAS::ReleaseWindowCapture (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONUP:
+			{
+				WAS::ReleaseWindowCapture (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseUp (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+			}
+			break;
+		case WM_MOUSEMOVE:
+			{
+				SetFocus (hwnd);
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseMove (WAS::GetModiferKeysFromEvent (wParam), x, y);
+			}
+			break;
+		case WM_MOUSEWHEEL:
+			{
+				POINT mousePos;
+				mousePos.x = GET_X_LPARAM (lParam);
+				mousePos.y = GET_Y_LPARAM (lParam);
+				ScreenToClient (hwnd, &mousePos);
+				int delta = GET_WHEEL_DELTA_WPARAM (wParam);
+				NUIE::MouseWheelRotation rotation = delta > 0 ? NUIE::MouseWheelRotation::Forward : NUIE::MouseWheelRotation::Backward;
+				nodeEditor.OnMouseWheel (WAS::GetModiferKeysFromEvent (wParam), rotation, mousePos.x, mousePos.y);
+			}
+			break;
+		case WM_LBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Left, x, y);
+			}
+			break;
+		case WM_MBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Middle, x, y);
+			}
+			break;
+		case WM_RBUTTONDBLCLK:
+			{
+				int x = GET_X_LPARAM (lParam);
+				int y = GET_Y_LPARAM (lParam);
+				nodeEditor.OnMouseDoubleClick (WAS::GetModiferKeysFromEvent (wParam), NUIE::MouseButton::Right, x, y);
+			}
+			break;
+		case WM_KEYDOWN:
+			{
+				NUIE::CommandCode commandCode = NUIE::CommandCode::Undefined;
+				bool isControlPressed = (GetKeyState (VK_CONTROL) < 0);
+				bool isShiftPressed = (GetKeyState (VK_SHIFT) < 0);
+				if (isControlPressed) {
+					switch (wParam) {
+						case 'A':
+							commandCode = NUIE::CommandCode::SelectAll;
+							break;
+						case 'C':
+							commandCode = NUIE::CommandCode::Copy;
+							break;
+						case 'V':
+							commandCode = NUIE::CommandCode::Paste;
+							break;
+						case 'G':
+							if (isShiftPressed) {
+								commandCode = NUIE::CommandCode::Ungroup;
+							} else {
+								commandCode = NUIE::CommandCode::Group;
+							}
+							break;
+						case 'Z':
+							if (isShiftPressed) {
+								commandCode = NUIE::CommandCode::Redo;
+							} else {
+								commandCode = NUIE::CommandCode::Undo;
+							}
+							break;
+					}
+				} else {
+					switch (wParam) {
+						case VK_ESCAPE:
+							commandCode = NUIE::CommandCode::Escape;
+							break;
+						case VK_DELETE:
+						case VK_BACK:
+							commandCode = NUIE::CommandCode::Delete;
+							break;
+					}
+				}
+				if (commandCode != NUIE::CommandCode::Undefined) {
+					nodeEditor.ExecuteCommand (commandCode);
 				}
 			}
+			break;
+		case WM_CANCELMODE:
+			WAS::ReleaseWindowCapture (hwnd);
 			break;
 	}
 
@@ -577,8 +384,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
-	Application application;
-
 	WNDCLASSEX windowClass;
 	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
 	windowClass.cbSize = sizeof(WNDCLASSEX);
@@ -588,8 +393,8 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
 	windowClass.hInstance = hInstance;
-	windowClass.hIcon = LoadIcon (hInstance, MAKEINTRESOURCE (APPLICATION_ICON));
-	windowClass.hIconSm = LoadIcon (hInstance, MAKEINTRESOURCE (APPLICATION_ICON));
+	windowClass.hIcon = LoadIcon (NULL, IDI_APPLICATION);
+	windowClass.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
 	windowClass.hCursor = LoadCursor (NULL, IDC_ARROW);
 	windowClass.hbrBackground = (HBRUSH) COLOR_WINDOW;
 	windowClass.lpszMenuName = NULL;
@@ -599,12 +404,12 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 		return false;
 	}
 
-	RECT requiredRect = { 0, 0, 1200, 800 };
+	RECT requiredRect = { 0, 0, 900, 500 };
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
 	HWND windowHandle = CreateWindowEx (
 		WS_EX_WINDOWEDGE, windowClass.lpszClassName, L"Visual Script Engine Demo", WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, &application
+		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, nullptr
 	);
 
 	if (windowHandle == NULL) {

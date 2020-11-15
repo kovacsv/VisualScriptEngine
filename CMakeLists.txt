@@ -175,14 +175,37 @@ if (WIN32)
 	install (FILES ${WindowsAppSupportHeaderFiles} DESTINATION include)
 	install (FILES ${WindowsAppSupportSourceFiles} DESTINATION source)
 
+	# WindowsReferenceApp
+
+	set (WindowsReferenceAppSourcesFolder Sources/WindowsReferenceApp)
+	file (GLOB WindowsReferenceAppHeaderFiles ${WindowsReferenceAppSourcesFolder}/*.hpp)
+	file (GLOB WindowsReferenceAppSourceFiles
+		${WindowsReferenceAppSourcesFolder}/*.cpp
+		${WindowsReferenceAppSourcesFolder}/*.rc
+	)
+	set (
+		WindowsReferenceAppFiles
+		${WindowsReferenceAppHeaderFiles}
+		${WindowsReferenceAppSourceFiles}
+	)
+	source_group ("Sources" FILES ${WindowsReferenceAppFiles})
+	add_executable (WindowsReferenceApp WIN32 ${WindowsReferenceAppFiles})
+	set_target_properties (WindowsReferenceApp PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
+	target_include_directories (
+		WindowsReferenceApp PUBLIC
+		${NodeEngineSourcesFolder}
+		${NodeUIEngineSourcesFolder}
+		${BuiltInNodesSourcesFolder}
+		${WindowsAppSupportSourcesFolder}
+	)
+	target_link_libraries (WindowsReferenceApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
+	SetCompilerOptions (WindowsReferenceApp)
+	
 	# WindowsEmbeddingDemo
 
 	set (WindowsEmbeddingDemoSourcesFolder Sources/WindowsEmbeddingDemo)
 	file (GLOB WindowsEmbeddingDemoHeaderFiles ${WindowsEmbeddingDemoSourcesFolder}/*.hpp)
-	file (GLOB WindowsEmbeddingDemoSourceFiles
-		${WindowsEmbeddingDemoSourcesFolder}/*.cpp
-		${WindowsEmbeddingDemoSourcesFolder}/*.rc
-	)
+	file (GLOB WindowsEmbeddingDemoSourceFiles ${WindowsEmbeddingDemoSourcesFolder}/*.cpp)
 	set (
 		WindowsEmbeddingDemoFiles
 		${WindowsEmbeddingDemoHeaderFiles}
@@ -200,29 +223,6 @@ if (WIN32)
 	)
 	target_link_libraries (WindowsEmbeddingDemo NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
 	SetCompilerOptions (WindowsEmbeddingDemo)
-	
-	# WindowsEmbeddingDemo2
-
-	set (WindowsEmbeddingDemo2SourcesFolder Sources/WindowsEmbeddingDemo2)
-	file (GLOB WindowsEmbeddingDemo2HeaderFiles ${WindowsEmbeddingDemo2SourcesFolder}/*.hpp)
-	file (GLOB WindowsEmbeddingDemo2SourceFiles ${WindowsEmbeddingDemo2SourcesFolder}/*.cpp)
-	set (
-		WindowsEmbeddingDemo2Files
-		${WindowsEmbeddingDemo2HeaderFiles}
-		${WindowsEmbeddingDemo2SourceFiles}
-	)
-	source_group ("Sources" FILES ${WindowsEmbeddingDemo2Files})
-	add_executable (WindowsEmbeddingDemo2 WIN32 ${WindowsEmbeddingDemo2Files})
-	set_target_properties (WindowsEmbeddingDemo2 PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
-	target_include_directories (
-		WindowsEmbeddingDemo2 PUBLIC
-		${NodeEngineSourcesFolder}
-		${NodeUIEngineSourcesFolder}
-		${BuiltInNodesSourcesFolder}
-		${WindowsAppSupportSourcesFolder}
-	)
-	target_link_libraries (WindowsEmbeddingDemo2 NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
-	SetCompilerOptions (WindowsEmbeddingDemo2)
 
 endif ()	
 
