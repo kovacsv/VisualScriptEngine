@@ -79,7 +79,7 @@ bool CustomControl::Init (HWND parentHandle, WNDPROC windowProc, LPCWSTR classNa
 
 	windowClassName = className;
 	windowHandle = CreateWindowEx (
-		0, windowClassName.c_str (), L"", WS_CHILD | WS_CLIPCHILDREN,
+		0, windowClassName.c_str (), L"", WS_CHILD,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parentHandle, NULL, NULL, lParam
 	);
 
