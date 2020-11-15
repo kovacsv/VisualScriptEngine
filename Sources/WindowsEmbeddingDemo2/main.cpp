@@ -408,7 +408,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
 	HWND windowHandle = CreateWindowEx (
-		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, L"Visual Script Engine Demo", WS_OVERLAPPEDWINDOW,
+		WS_EX_WINDOWEDGE, windowClass.lpszClassName, L"Visual Script Engine Demo", WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, nullptr
 	);
 

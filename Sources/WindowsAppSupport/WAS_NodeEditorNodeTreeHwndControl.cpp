@@ -6,7 +6,7 @@
 namespace WAS
 {
 
-static const LPARAM InvalidNode;
+static const LPARAM InvalidNode = -1;
 
 static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {

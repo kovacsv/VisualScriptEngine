@@ -6,6 +6,7 @@
 #include "WAS_NodeEditorNodeTreeHwndControl.hpp"
 #include "WAS_ParameterDialog.hpp"
 #include "WAS_FileMenu.hpp"
+#include "WAS_Toolbar.hpp"
 #include "WAS_GdiplusUtils.hpp"
 
 #include "BI_BuiltInNodes.hpp"
@@ -30,11 +31,12 @@
 #define FILE_QUIT		1104
 #define EDIT_UNDO		1201
 #define EDIT_REDO		1202
-#define EDIT_COPY		1203
-#define EDIT_PASTE		1204
-#define EDIT_DELETE		1205
-#define EDIT_GROUP		1206
-#define EDIT_UNGROUP	1207
+#define EDIT_SETTINGS	1203
+#define EDIT_COPY		1204
+#define EDIT_PASTE		1205
+#define EDIT_DELETE		1206
+#define EDIT_GROUP		1207
+#define EDIT_UNGROUP	1208
 
 static const WAS::NodeEditorNodeTreeHwndControl::Settings NodeTreeControlSettings;
 
@@ -118,12 +120,13 @@ public:
 		clipboardHandler (),
 		evaluationEnv (nullptr),
 		nodeEditorControl (NodeTreeControlSettings, NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (WAS::Direct2DImageLoaderPtr (new MyResourceImageLoader ())))),
-		fileMenu (nullptr)
+		fileMenu (nullptr),
+		toolbar (nullptr)
 	{
 	
 	}
 
-	void Init (NUIE::NodeEditor* nodeEditorPtr, WAS::FileMenu* fileMenuPtr, HWND parentHandle)
+	void Init (NUIE::NodeEditor* nodeEditorPtr, WAS::FileMenu* fileMenuPtr, WAS::Toolbar* toolbarPtr, HWND parentHandle)
 	{
 		class ImageLoader : public WAS::NodeEditorNodeTreeHwndControl::ImageLoader
 		{
@@ -212,23 +215,30 @@ public:
 		eventHandler.Init ((HWND) nodeEditorControl.GetEditorNativeHandle ());
 
 		fileMenu = fileMenuPtr;
-		fileMenu->EnablePopupMenuItem (EDIT_COPY, false);
-		fileMenu->EnablePopupMenuItem (EDIT_DELETE, false);
-		fileMenu->EnablePopupMenuItem (EDIT_GROUP, false);
-		fileMenu->EnablePopupMenuItem (EDIT_UNGROUP, false);
-		fileMenu->EnablePopupMenuItem (EDIT_UNDO, false);
-		fileMenu->EnablePopupMenuItem (EDIT_REDO, false);
-		fileMenu->EnablePopupMenuItem (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
+		toolbar = toolbarPtr;
+
+		EnableCommand (EDIT_SETTINGS, false);
+		EnableCommand (EDIT_COPY, false);
+		EnableCommand (EDIT_DELETE, false);
+		EnableCommand (EDIT_GROUP, false);
+		EnableCommand (EDIT_UNGROUP, false);
+		EnableCommand (EDIT_UNDO, false);
+		EnableCommand (EDIT_REDO, false);
+		EnableCommand (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
 	}
 
-	void RefreshFileMenu ()
+	void RefreshCommands ()
 	{
-		fileMenu->EnablePopupMenuItem (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
+		EnableCommand (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
 	}
 
 	void OnResize (int x, int y, int width, int height)
 	{
-		nodeEditorControl.Resize (x, y, width, height);
+		int toolbarHeight = 0;
+		if (toolbar != nullptr) {
+			toolbarHeight = toolbar->GetHeight ();
+		}
+		nodeEditorControl.Resize (x, y + toolbarHeight, width, height - toolbarHeight);
 	}
 
 	virtual const NE::StringConverter& GetStringConverter () override
@@ -289,21 +299,22 @@ public:
 	virtual void OnSelectionChanged (const NUIE::Selection& selection) override
 	{
 		bool hasSelection = !selection.IsEmpty ();
-		fileMenu->EnablePopupMenuItem (EDIT_COPY, hasSelection);
-		fileMenu->EnablePopupMenuItem (EDIT_DELETE, hasSelection);
-		fileMenu->EnablePopupMenuItem (EDIT_GROUP, hasSelection);
-		fileMenu->EnablePopupMenuItem (EDIT_UNGROUP, hasSelection);
+		EnableCommand (EDIT_SETTINGS, hasSelection);
+		EnableCommand (EDIT_COPY, hasSelection);
+		EnableCommand (EDIT_DELETE, hasSelection);
+		EnableCommand (EDIT_GROUP, hasSelection);
+		EnableCommand (EDIT_UNGROUP, hasSelection);
 	}
 
 	virtual void OnUndoStateChanged (const NUIE::UndoState& undoState) override
 	{
-		fileMenu->EnablePopupMenuItem (EDIT_UNDO, undoState.CanUndo ());
-		fileMenu->EnablePopupMenuItem (EDIT_REDO, undoState.CanRedo ());
+		EnableCommand (EDIT_UNDO, undoState.CanUndo ());
+		EnableCommand (EDIT_REDO, undoState.CanRedo ());
 	}
 
 	virtual void OnClipboardStateChanged (const NUIE::ClipboardState& clipboardState) override
 	{
-		fileMenu->EnablePopupMenuItem (EDIT_PASTE, clipboardState.HasContent ());
+		EnableCommand (EDIT_PASTE, clipboardState.HasContent ());
 	}
 
 	virtual void OnIncompatibleVersionPasted (const NUIE::Version&) override
@@ -312,6 +323,12 @@ public:
 	}
 
 private:
+	void EnableCommand (UINT commandId, bool isEnabled)
+	{
+		fileMenu->EnableItem (commandId, isEnabled);
+		toolbar->EnableItem (commandId, isEnabled);
+	}
+
 	NE::BasicStringConverter			stringConverter;
 	NUIE::BasicSkinParams				skinParams;
 	WAS::HwndEventHandler				eventHandler;
@@ -319,6 +336,7 @@ private:
 	NE::EvaluationEnv					evaluationEnv;
 	WAS::NodeEditorNodeTreeHwndControl	nodeEditorControl;
 	WAS::FileMenu*						fileMenu;
+	WAS::Toolbar*						toolbar;
 };
 
 class Application
@@ -328,6 +346,7 @@ public:
 		uiEnvironment (),
 		nodeEditor (uiEnvironment),
 		fileMenu (),
+		toolbar (),
 		fileFilter ({ L"Visual Script Engine", L"vse" })
 	{
 
@@ -336,12 +355,13 @@ public:
 	void Init (HWND hwnd)
 	{
 		InitFileMenu (hwnd);
-		uiEnvironment.Init (&nodeEditor, &fileMenu, hwnd);
+		InitToolbar (hwnd);
+		uiEnvironment.Init (&nodeEditor, &fileMenu, &toolbar, hwnd);
 	}
 
-	void RefreshFileMenu ()
+	void RefreshCommands ()
 	{
-		uiEnvironment.RefreshFileMenu ();
+		uiEnvironment.RefreshCommands ();
 	}
 
 	void New (HWND hwnd)
@@ -410,6 +430,7 @@ private:
 		fileMenu.AddPopupMenuItem (edit, EDIT_UNDO, L"Undo");
 		fileMenu.AddPopupMenuItem (edit, EDIT_REDO, L"Redo");
 		fileMenu.AddPopupMenuSeparator (edit);
+		fileMenu.AddPopupMenuItem (edit, EDIT_SETTINGS, L"Settings");
 		fileMenu.AddPopupMenuItem (edit, EDIT_COPY, L"Copy");
 		fileMenu.AddPopupMenuItem (edit, EDIT_PASTE, L"Paste");
 		fileMenu.AddPopupMenuItem (edit, EDIT_DELETE, L"Delete");
@@ -420,9 +441,41 @@ private:
 		SetMenu (hwnd, fileMenu.GetMenuBar ());
 	}
 
+	void InitToolbar (HWND hwnd)
+	{
+		toolbar.Init (hwnd);
+
+		AddToolbarItem (TOOLBAR_ENABLED_NEW_ICON, FILE_NEW);
+		AddToolbarItem (TOOLBAR_ENABLED_OPEN_ICON, FILE_OPEN);
+		AddToolbarItem (TOOLBAR_ENABLED_SAVE_ICON, FILE_SAVE);
+		toolbar.AddSeparator ();
+		
+		AddToolbarItem (TOOLBAR_ENABLED_UNDO_ICON, EDIT_UNDO);
+		AddToolbarItem (TOOLBAR_ENABLED_REDO_ICON, EDIT_REDO);
+		toolbar.AddSeparator ();
+
+		AddToolbarItem (TOOLBAR_ENABLED_SETTINGS_ICON, EDIT_SETTINGS);
+		AddToolbarItem (TOOLBAR_ENABLED_COPY_ICON, EDIT_COPY);
+		AddToolbarItem (TOOLBAR_ENABLED_PASTE_ICON, EDIT_PASTE);
+		AddToolbarItem (TOOLBAR_ENABLED_DELETE_ICON, EDIT_DELETE);
+		toolbar.AddSeparator ();
+
+		AddToolbarItem (TOOLBAR_ENABLED_GROUP_ICON, EDIT_GROUP);
+		AddToolbarItem (TOOLBAR_ENABLED_UNGROUP_ICON, EDIT_UNGROUP);
+	}
+
+	void AddToolbarItem (WORD imageResourceId, UINT commandId)
+	{
+		COLORREF bgColor = GetSysColor (COLOR_3DFACE);
+		HBITMAP bitmap = WAS::LoadBitmapFromResource (MAKEINTRESOURCE (imageResourceId), L"IMAGE", bgColor);
+		HBITMAP disabledBitmap = WAS::LoadBitmapFromResource (MAKEINTRESOURCE (imageResourceId + ENABLED_TO_DISABLED_ICON_OFFSET), L"IMAGE", bgColor);
+		toolbar.AddItem (bitmap, disabledBitmap, commandId);
+	}
+
 	AppUIEnvironment	uiEnvironment;
 	NUIE::NodeEditor	nodeEditor;
 	WAS::FileMenu		fileMenu;
+	WAS::Toolbar		toolbar;
 	WAS::FileFilter		fileFilter;
 };
 
@@ -449,7 +502,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 			break;
 		case WM_ACTIVATE:
 			{
-				application->RefreshFileMenu ();
+				application->RefreshCommands ();
 			}
 			break;
 		case WM_CLOSE:
@@ -485,6 +538,9 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 						break;
 					case EDIT_REDO:
 						application->ExecuteCommand (NUIE::CommandCode::Redo);
+						break;
+					case EDIT_SETTINGS:
+						application->ExecuteCommand (NUIE::CommandCode::SetParameters);
 						break;
 					case EDIT_COPY:
 						application->ExecuteCommand (NUIE::CommandCode::Copy);
@@ -562,7 +618,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
 	HWND windowHandle = CreateWindowEx (
-		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, L"Visual Script Engine Demo", WS_OVERLAPPEDWINDOW,
+		WS_EX_WINDOWEDGE, windowClass.lpszClassName, L"Visual Script Engine Demo", WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, &application
 	);
 

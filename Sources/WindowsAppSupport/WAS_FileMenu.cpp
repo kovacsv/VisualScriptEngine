@@ -37,7 +37,7 @@ void FileMenu::AddPopupMenuSeparator (HMENU popupMenu)
 	AppendMenu (popupMenu, MF_SEPARATOR, 0, NULL);
 }
 
-void FileMenu::EnablePopupMenuItem (UINT id, bool enabled)
+void FileMenu::EnableItem (UINT id, bool enabled)
 {
 	if (DBGERROR (commandToPopupMenu.find (id) == commandToPopupMenu.end ())) {
 		return;

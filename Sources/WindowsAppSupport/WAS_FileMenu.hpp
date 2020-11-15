@@ -20,11 +20,11 @@ public:
 	void	AddPopupMenuItem (HMENU popupMenu, UINT commandId, const std::wstring& name);
 	void	AddPopupMenuSeparator (HMENU popupMenu);
 
-	void	EnablePopupMenuItem (UINT id, bool enabled);
+	void	EnableItem (UINT id, bool enabled);
 
 private:
-	HMENU									menuBar;
-	std::unordered_map<UINT_PTR, HMENU>		commandToPopupMenu;
+	HMENU								menuBar;
+	std::unordered_map<UINT, HMENU>		commandToPopupMenu;
 };
 
 }

@@ -15,11 +15,19 @@ def SetFileContent (fileName, content):
 	file.write (content)
 	file.close ()
 	
-def GenerateWhiteIcon (sourceIconPath, whiteSvgIconPath):
+def GenerateColoredIcon (sourceIconPath, coloredSvgIconPath, color):
+	rgbColor = None
+	if color == 'white':
+		rgbColor = '#FAFAFA'
+	elif color == 'gray':
+		rgbColor = '#BBBBBB'
+	else:
+		return
+	
 	sourceContent = GetFileContent (sourceIconPath)
-	whiteSvgContent = sourceContent
-	whiteSvgContent = re.sub (r'#[0-9a-fA-F]{6}', '#FAFAFA', whiteSvgContent)
-	SetFileContent (whiteSvgIconPath, whiteSvgContent)
+	coloredSvgContent = sourceContent
+	coloredSvgContent = re.sub (r'#[0-9a-fA-F]{6}', rgbColor, coloredSvgContent)
+	SetFileContent (coloredSvgIconPath, coloredSvgContent)
 
 def GeneratePng (inkscapePath, sourceSvgPath, resultPngPath, size):
 	command = [
@@ -42,40 +50,62 @@ def Main (argv):
 	inkscapePath = sys.argv[1] # "C:\Program Files\Inkscape\inkscape.com"
 	
 	iconsPathList = [
-		os.path.abspath (os.path.join ('..', 'Documentation', 'CommandIcons')),
-		os.path.abspath (os.path.join ('..', 'Documentation', 'NodeIcons'))
+		{
+			'path' : os.path.abspath (os.path.join ('..', 'Documentation', 'CommandIcons')),
+			'generateWhite' : False,
+			'generateGray' : True
+		},
+		{
+			'path' : os.path.abspath (os.path.join ('..', 'Documentation', 'NodeIcons')),
+			'generateWhite' : True,
+			'generateGray' : False
+		}
 	]
 	
 	for iconsPath in iconsPathList:
-		svgIconsPath = os.path.join (iconsPath, 'svg')
-		svgWhiteIconsPath = os.path.join (iconsPath, 'svg_white')
-		if not os.path.exists (svgWhiteIconsPath):
-			os.makedirs (svgWhiteIconsPath)
-		png18IconsPath = os.path.join (iconsPath, 'png_18')
+		svgIconsPath = os.path.join (iconsPath['path'], 'svg')
+
+		png18IconsPath = os.path.join (iconsPath['path'], 'png_18')
 		if not os.path.exists (png18IconsPath):
 			os.makedirs (png18IconsPath)
-		pngWhite18IconsPath = os.path.join (iconsPath, 'png_white_18')
-		if not os.path.exists (pngWhite18IconsPath):
-			os.makedirs (pngWhite18IconsPath)
-		png36IconsPath = os.path.join (iconsPath, 'png_36')
+		png36IconsPath = os.path.join (iconsPath['path'], 'png_36')
 		if not os.path.exists (png36IconsPath):
 			os.makedirs (png36IconsPath)
-		pngWhite36IconsPath = os.path.join (iconsPath, 'png_white_36')
-		if not os.path.exists (pngWhite36IconsPath):
-			os.makedirs (pngWhite36IconsPath)
+
 		for svgName in os.listdir (svgIconsPath):
 			svgBaseName = os.path.splitext (svgName)[0]
 			sourceIconPath = os.path.join (svgIconsPath, svgName)
-			whiteSvgIconPath = os.path.join (svgWhiteIconsPath, svgName)
-			GenerateWhiteIcon (sourceIconPath, whiteSvgIconPath)
 			png18Path = os.path.join (png18IconsPath, svgBaseName + '.png')
 			GeneratePng (inkscapePath, sourceIconPath, png18Path, 18)
-			pngWhite18Path = os.path.join (pngWhite18IconsPath, svgBaseName + '.png')
-			GeneratePng (inkscapePath, whiteSvgIconPath, pngWhite18Path, 18)
 			png36Path = os.path.join (png36IconsPath, svgBaseName + '.png')
 			GeneratePng (inkscapePath, sourceIconPath, png36Path, 36)
-			pngWhite36Path = os.path.join (pngWhite36IconsPath, svgBaseName + '.png')
-			GeneratePng (inkscapePath, whiteSvgIconPath, pngWhite36Path, 36)
+
+		colors = []
+		if iconsPath['generateWhite']:
+			colors.append ('white')
+		if iconsPath['generateGray']:
+			colors.append ('gray')
+		
+		for color in colors:
+			svgColoredIconsPath = os.path.join (iconsPath['path'], 'svg_' + color)
+			if not os.path.exists (svgColoredIconsPath):
+				os.makedirs (svgColoredIconsPath)
+			pngColored18IconsPath = os.path.join (iconsPath['path'], 'png_' + color + '_18')
+			if not os.path.exists (pngColored18IconsPath):
+				os.makedirs (pngColored18IconsPath)
+			pngColored36IconsPath = os.path.join (iconsPath['path'], 'png_' + color + '_36')
+			if not os.path.exists (pngColored36IconsPath):
+				os.makedirs (pngColored36IconsPath)
+
+			for svgName in os.listdir (svgIconsPath):
+				svgBaseName = os.path.splitext (svgName)[0]
+				sourceIconPath = os.path.join (svgIconsPath, svgName)
+				coloredSvgIconPath = os.path.join (svgColoredIconsPath, svgName)
+				GenerateColoredIcon (sourceIconPath, coloredSvgIconPath, color)
+				pngColored18Path = os.path.join (pngColored18IconsPath, svgBaseName + '.png')
+				GeneratePng (inkscapePath, coloredSvgIconPath, pngColored18Path, 18)
+				pngColored36Path = os.path.join (pngColored36IconsPath, svgBaseName + '.png')
+				GeneratePng (inkscapePath, coloredSvgIconPath, pngColored36Path, 36)
 
 	return 0
 	
