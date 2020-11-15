@@ -515,8 +515,8 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 		case WM_GETMINMAXINFO:
 			{
 				LPMINMAXINFO minMaxInfo = (LPMINMAXINFO) lParam;
-				minMaxInfo->ptMinTrackSize.x = 640;
-				minMaxInfo->ptMinTrackSize.y = 480;
+				minMaxInfo->ptMinTrackSize.x = 600;
+				minMaxInfo->ptMinTrackSize.y = 400;
 			}
 			break;
 		case WM_SIZE:
@@ -578,28 +578,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
 	Application application;
-
-#ifdef LOCALIZATION_TEST
-	std::wstring poContent = LR"str(
-		msgid "Integer"
-		msgstr "LocInteger"
-		msgid "Group"
-		msgstr "LocGroup"
-		msgid "Input"
-		msgstr "LocInput"
-		msgid "Output"
-		msgstr "LocOutput"
-		msgid "Add To Group \"%ls\""
-		msgstr "Loc Add To Group \"%ls\""
-		msgid "%ls (%ls)"
-		msgstr "Loc %ls (%ls)"
-		msgid "Blue"
-		msgstr "Loc Blue"
-	)str";
-
-	NUIE::PoDictionarySource poDictionarySource (poContent);
-	FillDictionary (poDictionarySource);
-#endif
 
 	WNDCLASSEX windowClass;
 	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
