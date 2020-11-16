@@ -227,11 +227,6 @@ public:
 		EnableCommand (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
 	}
 
-	void RefreshCommands ()
-	{
-		EnableCommand (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
-	}
-
 	void OnResize (int x, int y, int width, int height)
 	{
 		int toolbarHeight = 0;
@@ -239,6 +234,11 @@ public:
 			toolbarHeight = toolbar->GetHeight ();
 		}
 		nodeEditorControl.Resize (x, y + toolbarHeight, width, height - toolbarHeight);
+	}
+
+	void OnClipboardChanged ()
+	{
+		EnableCommand (EDIT_PASTE, clipboardHandler.HasClipboardContent ());
 	}
 
 	virtual const NE::StringConverter& GetStringConverter () override
@@ -359,11 +359,6 @@ public:
 		uiEnvironment.Init (&nodeEditor, &fileMenu, &toolbar, hwnd);
 	}
 
-	void RefreshCommands ()
-	{
-		uiEnvironment.RefreshCommands ();
-	}
-
 	void New (HWND hwnd)
 	{
 		if (nodeEditor.NeedToSave ()) {
@@ -414,6 +409,11 @@ public:
 	void OnResize (int x, int y, int width, int height)
 	{
 		uiEnvironment.OnResize (x, y, width, height);
+	}
+
+	void OnClipboardChanged ()
+	{
+		uiEnvironment.OnClipboardChanged ();
 	}
 
 private:
@@ -500,11 +500,6 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				application->Init (hwnd);
 			}
 			break;
-		case WM_ACTIVATE:
-			{
-				application->RefreshCommands ();
-			}
-			break;
 		case WM_CLOSE:
 			{
 				if (application->Close (hwnd)) {
@@ -525,6 +520,11 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 				int newHeight = HIWORD (lParam);
 				
 				application->OnResize (0, 0, newWidth, newHeight);
+			}
+			break;
+		case WM_CLIPBOARDUPDATE:
+			{
+				application->OnClipboardChanged ();
 			}
 			break;
 		case WM_COMMAND:
@@ -611,6 +611,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 		return 1;
 	}
 
+	AddClipboardFormatListener (windowHandle);
 	ShowWindow (windowHandle, SW_SHOW);
 	UpdateWindow (windowHandle);
 
@@ -620,5 +621,6 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 		DispatchMessage (&msg);
 	}
 
+	RemoveClipboardFormatListener (windowHandle);
 	return 0;
 }
