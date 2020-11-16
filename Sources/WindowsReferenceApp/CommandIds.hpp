@@ -1,0 +1,17 @@
+#ifndef COMMANDIDS_HPP
+#define COMMANDIDS_HPP
+
+#define FILE_NEW		1101
+#define FILE_OPEN		1102
+#define FILE_SAVE		1103
+#define FILE_QUIT		1104
+#define EDIT_UNDO		1201
+#define EDIT_REDO		1202
+#define EDIT_SETTINGS	1203
+#define EDIT_COPY		1204
+#define EDIT_PASTE		1205
+#define EDIT_DELETE		1206
+#define EDIT_GROUP		1207
+#define EDIT_UNGROUP	1208
+
+#endif

@@ -1,4 +1,4 @@
-#include "resources.hpp"
+#include "ResourceIds.hpp"
 
 APPLICATION_ICON				ICON	"icons/vse.ico"
 
