@@ -24,6 +24,7 @@ struct FileFilter
 	std::wstring fileExtension;
 };
 
+FileFilter					GetDefaultFileFilter ();
 bool						OpenFileDialog (HWND hwnd, const FileFilter& filter, std::wstring& selectedFileName);
 bool						SaveFileDialog (HWND hwnd, const FileFilter& filter, std::wstring& selectedFileName);
 

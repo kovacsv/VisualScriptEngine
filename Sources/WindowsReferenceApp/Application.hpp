@@ -2,7 +2,6 @@
 #define APPLICATION_HPP
 
 #include "AppUIEnvironment.hpp"
-#include "WAS_WindowsAppUtils.hpp"
 
 #include <windows.h>
 
@@ -30,7 +29,6 @@ private:
 	NUIE::NodeEditor	nodeEditor;
 	WAS::FileMenu		fileMenu;
 	WAS::Toolbar		toolbar;
-	WAS::FileFilter		fileFilter;
 };
 
 #endif

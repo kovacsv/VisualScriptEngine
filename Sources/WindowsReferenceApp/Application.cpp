@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "WAS_WindowsAppUtils.hpp"
 #include "WAS_GdiplusUtils.hpp"
 
 #include "ResourceIds.hpp"
@@ -14,8 +15,7 @@ Application::Application () :
 	uiEnvironment (),
 	nodeEditor (uiEnvironment),
 	fileMenu (),
-	toolbar (),
-	fileFilter ({ L"Visual Script Engine", L"vse" })
+	toolbar ()
 {
 
 }
@@ -47,6 +47,7 @@ void Application::Open (HWND hwnd)
 		}
 	}
 	std::wstring fileName;
+	WAS::FileFilter fileFilter = WAS::GetDefaultFileFilter ();
 	if (WAS::OpenFileDialog (hwnd, fileFilter, fileName)) {
 		nodeEditor.Open (fileName);
 		nodeEditor.AlignToWindow ();
@@ -56,6 +57,7 @@ void Application::Open (HWND hwnd)
 void Application::Save (HWND hwnd)
 {
 	std::wstring fileName;
+	WAS::FileFilter fileFilter = WAS::GetDefaultFileFilter ();
 	if (WAS::SaveFileDialog (hwnd, fileFilter, fileName)) {
 		nodeEditor.Save (fileName);
 	}

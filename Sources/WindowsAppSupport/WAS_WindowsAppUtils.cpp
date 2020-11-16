@@ -103,6 +103,11 @@ NUIE::MenuCommandPtr SelectCommandFromContextMenu (HWND hwnd, const NUIE::Point&
 	return commandTable[selectedItem];
 }
 
+FileFilter GetDefaultFileFilter ()
+{
+	return FileFilter { L"Visual Script Engine", L"vse" };
+}
+
 enum class FileDialogType
 {
 	Open,
