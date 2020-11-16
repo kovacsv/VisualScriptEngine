@@ -132,10 +132,10 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 	const SkinParams& skinParams = env.GetSkinParams ();
 	DrawingContext& drawingContext = env.GetDrawingContext ();
 
-	BoundingRect boundingRectCalculator;
+	BoundingRect boundingRect;
 	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
 		Rect nodeRect = rectGetter.GetNodeRect (nodeId);
-		boundingRectCalculator.AddRect (nodeRect);
+		boundingRect.AddRect (nodeRect);
 		return true;
 	});
 
@@ -143,11 +143,11 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 
 	std::wstring groupName = name.GetLocalized ();
 	Size textSize = drawingContext.MeasureText (skinParams.GetGroupNameFont (), groupName);
-	Rect boundingRect = boundingRectCalculator.GetRect ();
-	double maxWidth = std::max (textSize.GetWidth (), boundingRect.GetWidth ());
+	Rect groupRect = boundingRect.GetRect ();
+	double maxWidth = std::max (textSize.GetWidth (), groupRect.GetWidth ());
 	Rect fullRect = Rect::FromPositionAndSize (
-		boundingRect.GetTopLeft () - Point (groupPadding, 2.0 * groupPadding + textSize.GetHeight ()),
-		Size (maxWidth, boundingRect.GetHeight ()) + Size (2.0 * groupPadding, 3.0 * groupPadding + textSize.GetHeight ())
+		groupRect.GetTopLeft () - Point (groupPadding, 2.0 * groupPadding + textSize.GetHeight ()),
+		Size (maxWidth, groupRect.GetHeight ()) + Size (2.0 * groupPadding, 3.0 * groupPadding + textSize.GetHeight ())
 	);
 
 	Rect textRect = Rect::FromPositionAndSize (
