@@ -155,7 +155,7 @@ public:
 	void						Draw (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawingModifier);
 	void						ResizeContext (NodeUIDrawingEnvironment& drawingEnv, int newWidth, int newHeight);
 
-	bool						GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& boundingRect) const;
+	bool						GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& rect) const;
 	void						AlignToWindow (NodeUIDrawingEnvironment& drawingEnv);
 	void						CenterToWindow (NodeUIDrawingEnvironment& drawingEnv);
 	void						FitToWindow (NodeUIDrawingEnvironment& drawingEnv);

@@ -534,27 +534,27 @@ void NodeUIManager::ResizeContext (NodeUIDrawingEnvironment& drawingEnv, int new
 	status.RequestRedraw ();
 }
 
-bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& boundingRect) const
+bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& rect) const
 {
-	BoundingRect boundingRectCalculator;
+	BoundingRect boundingRect;
 	EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
 		Rect nodeRect = GetNodeExtendedRect (drawingEnv, uiNode.get ());
-		boundingRectCalculator.AddRect (nodeRect);
+		boundingRect.AddRect (nodeRect);
 		return true;
 	});
 
 	NodeUIManagerNodeRectGetter nodeRectGetter (*this, drawingEnv);
 	EnumerateNodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
 		Rect groupRect = uiGroup->GetRect (drawingEnv, nodeRectGetter, GetGroupNodes (uiGroup));
-		boundingRectCalculator.AddRect (groupRect);
+		boundingRect.AddRect (groupRect);
 		return true;
 	});
 
-	if (!boundingRectCalculator.IsValid ()) {
+	if (!boundingRect.IsValid ()) {
 		return false;
 	}
 
-	boundingRect = boundingRectCalculator.GetRect ();
+	rect = boundingRect.GetRect ();
 	return true;
 }
 
