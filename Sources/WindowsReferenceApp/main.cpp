@@ -1,6 +1,4 @@
-#include "AppUIEnvironment.hpp"
 #include "Application.hpp"
-
 #include "ResourceIds.hpp"
 #include "CommandIds.hpp"
 
