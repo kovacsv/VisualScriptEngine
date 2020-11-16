@@ -65,9 +65,9 @@ static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageL
 	return imageLoader->LoadImage (iconId, bgColor);
 }
 
-NodeEditorNodeTreeHwndControl::Settings::Settings () :
-	treeWidth (200),
-	treeRightMargin (2)
+NodeEditorNodeTreeHwndControl::Settings::Settings (int treeWidth, int treeRightMargin) :
+	treeWidth (treeWidth),
+	treeRightMargin (treeRightMargin)
 {
 
 }

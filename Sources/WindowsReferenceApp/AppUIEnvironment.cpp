@@ -7,7 +7,7 @@
 #include "ResourceIds.hpp"
 #include "CommandIds.hpp"
 
-static const WAS::NodeEditorNodeTreeHwndControl::Settings NodeTreeControlSettings; 
+static const WAS::NodeEditorNodeTreeHwndControl::Settings NodeTreeControlSettings (200, 2); 
 
 static const NUIE::BasicSkinParams& GetAppSkinParams ()
 {
@@ -91,6 +91,12 @@ public:
 	}
 };
 
+static NUIE::NativeDrawingContextPtr CreateDrawingContext ()
+{
+	WAS::Direct2DImageLoaderPtr imageLoader (new AppResourceImageLoader ());
+	return NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (imageLoader));
+}
+
 AppUIEnvironment::AppUIEnvironment () :
 	NUIE::NodeUIEnvironment (),
 	stringConverter (NE::BasicStringConverter (WAS::GetStringSettingsFromSystem ())),
@@ -98,7 +104,7 @@ AppUIEnvironment::AppUIEnvironment () :
 	eventHandler (),
 	clipboardHandler (),
 	evaluationEnv (nullptr),
-	nodeEditorControl (NodeTreeControlSettings, NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (WAS::Direct2DImageLoaderPtr (new AppResourceImageLoader ())))),
+	nodeEditorControl (NodeTreeControlSettings, CreateDrawingContext ()),
 	fileMenu (nullptr),
 	toolbar (nullptr)
 {

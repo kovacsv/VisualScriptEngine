@@ -15,7 +15,7 @@ public:
 	class Settings
 	{
 	public:
-		Settings ();
+		Settings (int treeWidth, int treeRightMargin);
 
 		int		treeWidth;
 		int		treeRightMargin;
