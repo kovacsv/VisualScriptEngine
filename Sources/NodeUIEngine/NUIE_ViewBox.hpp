@@ -39,6 +39,7 @@ private:
 };
 
 ViewBox FitRectToSize (const Size& targetSize, double targetPadding, const Rect& rect);
+ViewBox CenterRectToSize (const Size& targetSize, double targetScale, const Rect& rect);
 
 }
 

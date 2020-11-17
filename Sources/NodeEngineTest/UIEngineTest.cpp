@@ -200,4 +200,33 @@ TEST (ViewBoxFitTest)
 	}
 }
 
+TEST (ViewBoxCenterTest)
+{
+	{
+		ViewBox viewBox = CenterRectToSize (Size (6.0, 5.0), 1.0, Rect (0.0, 0.0, 2.0, 1.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (2.0, 2.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), 1.0));
+	}
+	{
+		ViewBox viewBox = CenterRectToSize (Size (6.0, 5.0), 1.0, Rect (-10.0, 20.0, 2.0, 1.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (12.0, -18.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), 1.0));
+	}
+	{
+		ViewBox viewBox = CenterRectToSize (Size (6.0, 5.0), 1.0, Rect (2.0, 3.0, 2.0, 1.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (0.0, -1.0)));
+		ASSERT (IsEqual (viewBox.GetScale (), 1.0));
+	}
+	{
+		ViewBox viewBox = CenterRectToSize (Size (6.0, 5.0), 2.0, Rect (0.0, 0.0, 2.0, 1.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (1.0, 1.5)));
+		ASSERT (IsEqual (viewBox.GetScale (), 2.0));
+	}
+	{
+		ViewBox viewBox = CenterRectToSize (Size (6.0, 5.0), 2.0, Rect (2.0, 3.0, 2.0, 1.0));
+		ASSERT (IsEqual (viewBox.GetOffset (), Point (-3.0, -4.5)));
+		ASSERT (IsEqual (viewBox.GetScale (), 2.0));
+	}
+}
+
 }

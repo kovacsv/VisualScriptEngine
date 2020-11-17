@@ -120,4 +120,17 @@ ViewBox FitRectToSize (const Size& targetSize, double targetPadding, const Rect&
 	return ViewBox (newOffset - centerOffset, scale);
 }
 
+ViewBox CenterRectToSize (const Size& targetSize, double targetScale, const Rect& rect)
+{
+	Point rectPosition = rect.GetPosition () * targetScale;
+	Size rectSize = rect.GetSize () * targetScale;
+
+	Point centerTopLeft (
+		(targetSize.GetWidth () - rectSize.GetWidth ()) / 2.0 - rectPosition.GetX (),
+		(targetSize.GetHeight () - rectSize.GetHeight ()) / 2.0 - rectPosition.GetY ()
+	);
+
+	return ViewBox (centerTopLeft, targetScale);
+}
+
 }

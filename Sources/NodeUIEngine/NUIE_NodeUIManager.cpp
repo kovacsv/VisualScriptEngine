@@ -581,16 +581,11 @@ void NodeUIManager::CenterToWindow (NodeUIDrawingEnvironment& drawingEnv)
 
 	double scale = drawingEnv.GetWindowScale ();
 	const DrawingContext& drawingContext = drawingEnv.GetDrawingContext ();
+	
 	Size contextSize (drawingContext.GetWidth (), drawingContext.GetHeight ());
-	Point boundingRectPosition = boundingRect.GetPosition () * scale;
-	Size boundingRectSize = boundingRect.GetSize () * scale;
+	ViewBox centeredViewBox = CenterRectToSize (contextSize, scale, boundingRect);
+	SetViewBox (centeredViewBox);
 
-	Point centerTopLeft (
-		boundingRectPosition.GetX () - (contextSize.GetWidth () - boundingRectSize.GetWidth ()) / 2.0,
-		boundingRectPosition.GetY () - (contextSize.GetHeight () - boundingRectSize.GetHeight ()) / 2.0
-	);
-	ViewBox newViewBox (-centerTopLeft, scale);
-	SetViewBox (newViewBox);
 	status.RequestRedraw ();
 }
 
