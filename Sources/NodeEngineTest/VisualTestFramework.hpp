@@ -75,6 +75,7 @@ class NodeEditorTestEnv
 {
 public:
 	NodeEditorTestEnv (const BasicSkinParams& skinParams);
+	virtual ~NodeEditorTestEnv ();
 
 	bool	CheckReference (const std::wstring& referenceFileName);
 	void	Click (const Point& point);
@@ -95,6 +96,7 @@ class SimpleNodeEditorTestEnv : public NodeEditorTestEnv
 {
 public:
 	SimpleNodeEditorTestEnv (const BasicSkinParams& skinParams);
+	virtual ~SimpleNodeEditorTestEnv ();
 
 	void RecalcPositions ();
 

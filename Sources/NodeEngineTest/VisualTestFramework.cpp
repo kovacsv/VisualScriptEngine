@@ -318,6 +318,11 @@ NodeEditorTestEnv::NodeEditorTestEnv (const BasicSkinParams& skinParams) :
 	nodeEditor.Update ();
 }
 
+NodeEditorTestEnv::~NodeEditorTestEnv ()
+{
+
+}
+
 bool NodeEditorTestEnv::CheckReference (const std::wstring& referenceFileName)
 {
 	const SvgDrawingContext& context = uiEnvironment.GetSvgDrawingContext ();
@@ -392,6 +397,11 @@ SimpleNodeEditorTestEnv::SimpleNodeEditorTestEnv (const BasicSkinParams& skinPar
 
 	nodeEditor.Update ();
 	RecalcPositions ();
+}
+
+SimpleNodeEditorTestEnv::~SimpleNodeEditorTestEnv ()
+{
+
 }
 
 void SimpleNodeEditorTestEnv::RecalcPositions ()

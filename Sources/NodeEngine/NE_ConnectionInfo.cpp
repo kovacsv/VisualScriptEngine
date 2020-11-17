@@ -1,6 +1,5 @@
 #include "NE_ConnectionInfo.hpp"
 #include "NE_Node.hpp"
-#include "NE_Debug.hpp"
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NE_MemoryStream.hpp"

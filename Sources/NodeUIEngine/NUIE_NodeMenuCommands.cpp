@@ -1,7 +1,6 @@
 #include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeUIManager.hpp"
 #include "NUIE_UIItemFinder.hpp"
-#include "NE_Debug.hpp"
 
 namespace NUIE
 {

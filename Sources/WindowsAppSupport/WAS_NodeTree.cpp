@@ -1,7 +1,6 @@
 #include "WAS_NodeTree.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_GdiplusUtils.hpp"
-#include "NE_Debug.hpp"
 
 namespace WAS
 {

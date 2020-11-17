@@ -1,7 +1,6 @@
 #include "NE_InputSlot.hpp"
 #include "NE_Node.hpp"
 #include "NE_NodeManager.hpp"
-#include "NE_Debug.hpp"
 
 namespace NE
 {

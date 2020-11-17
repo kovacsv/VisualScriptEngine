@@ -1,5 +1,4 @@
 #include "NE_MemoryXmlStream.hpp"
-#include "NE_Debug.hpp"
 
 #include <string>
 

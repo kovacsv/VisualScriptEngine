@@ -1,5 +1,4 @@
 #include "NE_Stream.hpp"
-#include "NE_Debug.hpp"
 
 namespace NE
 {
