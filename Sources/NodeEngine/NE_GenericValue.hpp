@@ -13,7 +13,10 @@ class GenericValue : public SingleValue
 {
 public:
 	GenericValue (const Type& val);
+	GenericValue (const GenericValue&) = delete;
 	virtual ~GenericValue ();
+
+	GenericValue&			operator= (const GenericValue&) = delete;
 
 	void					SetValue (const Type& newVal);
 	const Type&				GetValue () const;
@@ -21,10 +24,6 @@ public:
 	static const Type&		Get (const ValueConstPtr& val);
 	static const Type&		Get (const ValuePtr& val);
 	static const Type&		Get (Value* val);
-
-private:
-	GenericValue (const GenericValue&) = delete;
-	GenericValue& operator= (const GenericValue&) = delete;
 
 protected:
 	Type val;
