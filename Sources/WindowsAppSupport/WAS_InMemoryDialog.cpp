@@ -1,7 +1,9 @@
 #include "WAS_InMemoryDialog.hpp"
 #include "NE_Debug.hpp"
 
-// https://blogs.msdn.microsoft.com/oldnewthing/20050429-00/?p=35743
+// https://devblogs.microsoft.com/oldnewthing/20050429-00/?p=35743
+// https://docs.microsoft.com/en-us/windows/win32/dlgbox/dlgtemplateex
+// https://docs.microsoft.com/en-us/windows/win32/dlgbox/dlgitemtemplateex
 
 namespace WAS
 {
@@ -50,55 +52,35 @@ private:
 };
 
 DialogParameters::DialogParameters () :
-	helpId (0),
-	extendedStyle (0),
-	style (0),
-	x (0),
-	y (0),
-	width (0),
-	height (0),
-	dialogTitle ()
+	DialogParameters (L"", 0, 0, 0, 0)
 {
 
 }
 
 DialogParameters::DialogParameters (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height) :
-	helpId (0),
-	extendedStyle (0),
-	style (WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME),
+	dialogTitle (dialogTitle),
 	x (x),
 	y (y),
 	width (width),
-	height (height),
-	dialogTitle (dialogTitle)
+	height (height)
 {
 
 }
 
 ControlParameters::ControlParameters () :
-	helpId (0),
-	extendedStyle (0),
-	style (0),
-	x (0),
-	y (0),
-	width (0),
-	height (0),
-	controlId (0),
-	controlType (0)
+	ControlParameters (0, 0, 0, 0, 0, 0, 0)
 {
 
 }
 
 ControlParameters::ControlParameters (DWORD controlType, DWORD style, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
-	helpId (0),
-	extendedStyle (0),
+	controlType (controlType),
 	style (WS_CHILD | WS_VISIBLE | style),
 	x (x),
 	y (y),
 	width (width),
 	height (height),
-	controlId (controlId),
-	controlType (controlType)
+	controlId (controlId)
 {
 
 }
@@ -254,44 +236,44 @@ INT_PTR InMemoryDialog::Show (HWND parent, DLGPROC dialogProc, LPARAM initParam)
 	if (DBGERROR (!SystemParametersInfo (SPI_GETNONCLIENTMETRICS, 0, &metrics, 0))) {
 		return -1;
 	}
-
-	DialogTemplateWriter writer;
-	writer.Write<WORD> (1);
-	writer.Write<WORD> (0xFFFF);
-	writer.Write<DWORD> (parameters.helpId);
-	writer.Write<DWORD> (parameters.extendedStyle);
-	writer.Write<DWORD> (parameters.style);
-	writer.Write<WORD> ((WORD) controls.size ());
-	writer.Write<WORD> (parameters.x);
-	writer.Write<WORD> (parameters.y);
-	writer.Write<WORD> (parameters.width);
-	writer.Write<WORD> (parameters.height);
-	writer.WriteString (L"");
-	writer.WriteString (L"");
-	writer.WriteString (parameters.dialogTitle.c_str ());
-
 	if (metrics.lfMessageFont.lfHeight < 0) {
 		metrics.lfMessageFont.lfHeight = -MulDiv (metrics.lfMessageFont.lfHeight, 72, GetDeviceCaps (hdc, LOGPIXELSY));
 	}
-	writer.Write<WORD> ((WORD) metrics.lfMessageFont.lfHeight);
-	writer.Write<WORD> ((WORD) metrics.lfMessageFont.lfWeight);
-	writer.Write<BYTE> (metrics.lfMessageFont.lfItalic);
-	writer.Write<BYTE> (metrics.lfMessageFont.lfCharSet);
-	writer.WriteString (metrics.lfMessageFont.lfFaceName);
+
+	DialogTemplateWriter writer;
+	writer.Write<WORD> (1); // dlgVer
+	writer.Write<WORD> (0xFFFF); // signature
+	writer.Write<DWORD> (0); // helpID
+	writer.Write<DWORD> (0); // exStyle
+	writer.Write<DWORD> (WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME); // style
+	writer.Write<WORD> ((WORD) controls.size ()); // cDlgItems
+	writer.Write<WORD> (parameters.x); // x
+	writer.Write<WORD> (parameters.y); // y
+	writer.Write<WORD> (parameters.width); // cx
+	writer.Write<WORD> (parameters.height); // cy
+	writer.WriteString (L""); // menu
+	writer.WriteString (L""); // windowClass
+	writer.WriteString (parameters.dialogTitle.c_str ()); // title
+	writer.Write<WORD> ((WORD) metrics.lfMessageFont.lfHeight); // pointsize
+	writer.Write<WORD> ((WORD) metrics.lfMessageFont.lfWeight); // weight
+	writer.Write<BYTE> (metrics.lfMessageFont.lfItalic); // italic
+	writer.Write<BYTE> (metrics.lfMessageFont.lfCharSet); // charset
+	writer.WriteString (metrics.lfMessageFont.lfFaceName); // typeface
 
 	for (const std::unique_ptr<InMemoryControl>& control : controls) {
 		const ControlParameters& params = control->GetParameters ();
 		writer.AlignToDword ();
-		writer.Write<DWORD> (params.helpId);
-		writer.Write<DWORD> (params.extendedStyle);
-		writer.Write<DWORD> (params.style);
-		writer.Write<WORD> (params.x);
-		writer.Write<WORD> (params.y);
-		writer.Write<WORD> (params.width);
-		writer.Write<WORD> (params.height);
-		writer.Write<DWORD> (params.controlId);
-		writer.Write<DWORD> (params.controlType);
-		writer.Write<WORD> (0);
+		writer.Write<DWORD> (0); // helpID
+		writer.Write<DWORD> (0); // exStyle
+		writer.Write<DWORD> (params.style); // style
+		writer.Write<WORD> (params.x); // x
+		writer.Write<WORD> (params.y); // y
+		writer.Write<WORD> (params.width); // cx
+		writer.Write<WORD> (params.height); // cy
+		writer.Write<DWORD> (params.controlId); // id
+		writer.Write<DWORD> (params.controlType); // windowClass
+		writer.Write<WORD> (0); // title
+		writer.Write<WORD> (0); // extraCount
 	}
 	writer.AlignToDword ();
 

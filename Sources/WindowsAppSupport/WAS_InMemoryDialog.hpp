@@ -15,14 +15,11 @@ struct DialogParameters
 	DialogParameters ();
 	DialogParameters (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height);
 
-	DWORD			helpId;
-	DWORD			extendedStyle;
-	DWORD			style;
+	std::wstring	dialogTitle;
 	WORD			x;
 	WORD			y;
 	WORD			width;
 	WORD			height;
-	std::wstring	dialogTitle;
 };
 
 struct ControlParameters
@@ -30,15 +27,13 @@ struct ControlParameters
 	ControlParameters ();
 	ControlParameters (DWORD controlType, DWORD style, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
 
-	DWORD			helpId;
-	DWORD			extendedStyle;
+	DWORD			controlType;
 	DWORD			style;
 	WORD			x;
 	WORD			y;
 	WORD			width;
 	WORD			height;
 	DWORD			controlId;
-	DWORD			controlType;
 };
 
 class InMemoryControl
