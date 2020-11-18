@@ -182,6 +182,7 @@ if (WIN32)
 	file (GLOB WindowsReferenceAppSourceFiles
 		${WindowsReferenceAppSourcesFolder}/*.cpp
 		${WindowsReferenceAppSourcesFolder}/*.rc
+		${WindowsReferenceAppSourcesFolder}/*.manifest
 	)
 	set (
 		WindowsReferenceAppFiles
