@@ -52,7 +52,8 @@ HBITMAP LoadBitmapFromResource (LPWSTR resourceName, LPWSTR resourceType, COLORR
 			Gdiplus::Bitmap* bitmap = Gdiplus::Bitmap::FromStream (stream);
 			stream->Release ();
 			if (bitmap != nullptr) {
-				Gdiplus::Color gdiplusBgColor (GetRValue (bgColor), GetGValue (bgColor), GetBValue (bgColor));
+				Gdiplus::Color gdiplusBgColor;
+				gdiplusBgColor.SetFromCOLORREF (bgColor);
 				bitmap->GetHBITMAP (gdiplusBgColor, &resultBitmap);
 				delete bitmap;
 			}
