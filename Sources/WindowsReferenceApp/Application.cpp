@@ -135,8 +135,7 @@ void Application::InitToolbar (HWND hwnd)
 
 void Application::AddToolbarItem (WORD imageResourceId, UINT commandId)
 {
-	COLORREF bgColor = GetSysColor (COLOR_3DFACE);
-	HBITMAP bitmap = WAS::LoadBitmapFromResource (MAKEINTRESOURCE (imageResourceId), L"IMAGE", bgColor);
-	HBITMAP disabledBitmap = WAS::LoadBitmapFromResource (MAKEINTRESOURCE (imageResourceId + ENABLED_TO_DISABLED_ICON_OFFSET), L"IMAGE", bgColor);
+	HBITMAP bitmap = LoadBitmap (GetModuleHandle (NULL), MAKEINTRESOURCE (imageResourceId));
+	HBITMAP disabledBitmap = LoadBitmap (GetModuleHandle (NULL), MAKEINTRESOURCE (imageResourceId + ENABLED_TO_DISABLED_ICON_OFFSET));
 	toolbar.AddItem (bitmap, disabledBitmap, commandId);
 }

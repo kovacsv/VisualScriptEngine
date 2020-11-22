@@ -54,7 +54,7 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
-static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageLoader, const NUIE::IconId& iconId, COLORREF bgColor)
+static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageLoader, const NUIE::IconId& iconId)
 {
 	if (imageLoader == nullptr) {
 		return NULL;
@@ -62,7 +62,7 @@ static HBITMAP LoadTreeImage (NodeEditorNodeTreeHwndControl::ImageLoader* imageL
 	if (iconId == NUIE::InvalidIconId) {
 		return NULL;
 	}
-	return imageLoader->LoadImage (iconId, bgColor);
+	return imageLoader->LoadImage (iconId);
 }
 
 NodeEditorNodeTreeHwndControl::Settings::Settings (int treeWidth, int treeRightMargin) :
@@ -186,18 +186,17 @@ void NodeEditorNodeTreeHwndControl::TreeViewItemExpanded (LPNMTREEVIEW lpnmtv)
 
 void NodeEditorNodeTreeHwndControl::FillNodeTree (const NUIE::NodeTree& nodeTree, ImageLoader* imageLoader)
 {
-	COLORREF bgColor = (COLORREF) TreeView_GetBkColor (nodeTreeView.GetTreeHandle ());
 	if (imageLoader != nullptr) {
 		nodeTreeView.InitImageList (
-			imageLoader->LoadGroupClosedImage (bgColor),
-			imageLoader->LoadGroupOpenedImage (bgColor)
+			imageLoader->LoadGroupClosedImage (),
+			imageLoader->LoadGroupOpenedImage ()
 		);
 	}
 	LPARAM nextNodeId = 0;
 	for (const NUIE::NodeTree::Group& group : nodeTree.GetGroups ()) {
 		nodeTreeView.AddGroup (group.GetName ());
 		for (const NUIE::NodeTree::Item& item : group.GetItems ()) {
-			HBITMAP itemIcon = LoadTreeImage (imageLoader, item.GetIconId (), bgColor);
+			HBITMAP itemIcon = LoadTreeImage (imageLoader, item.GetIconId ());
 			nodeTreeView.AddItem (group.GetName (), item.GetName (), itemIcon, nextNodeId);
 			nodeIdToCreator.insert ({ nextNodeId, item.GetCreator () });
 			nextNodeId++;

@@ -75,19 +75,19 @@ class AppResourceImageLoader : public WAS::Direct2DImageLoaderFromResource
 class NodeTreeImageLoader : public WAS::NodeEditorNodeTreeHwndControl::ImageLoader
 {
 public:
-	virtual HBITMAP LoadGroupClosedImage (COLORREF bgColor) override
+	virtual HBITMAP LoadGroupClosedImage () override
 	{
-		return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDERCLOSED_ICON), L"IMAGE", bgColor);
+		return LoadBitmap (GetModuleHandle (NULL), MAKEINTRESOURCE (FOLDERCLOSED_ICON));
 	}
 
-	virtual HBITMAP LoadGroupOpenedImage (COLORREF bgColor) override
+	virtual HBITMAP LoadGroupOpenedImage () override
 	{
-		return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (FOLDEROPENED_ICON), L"IMAGE", bgColor);
+		return LoadBitmap (GetModuleHandle (NULL), MAKEINTRESOURCE (FOLDEROPENED_ICON));
 	}
 
-	virtual HBITMAP LoadImage (const NUIE::IconId& iconId, COLORREF bgColor) override
+	virtual HBITMAP LoadImage (const NUIE::IconId& iconId) override
 	{
-		return WAS::LoadBitmapFromResource (MAKEINTRESOURCE (iconId.GetId ()), L"IMAGE", bgColor);
+		return LoadBitmap (GetModuleHandle (NULL), MAKEINTRESOURCE (iconId.GetId ()));
 	}
 };
 
