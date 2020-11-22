@@ -43,6 +43,7 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 					break;
 				case TVN_ITEMEXPANDED:
 					control->TreeViewItemExpanded ((LPNMTREEVIEW) lParam);
+					break;
 				case NM_DBLCLK:
 					control->TreeViewDoubleClick (header);
 					break;
