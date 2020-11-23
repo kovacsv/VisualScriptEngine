@@ -201,7 +201,8 @@ void ParameterDialog::CenterToParent (HWND dialogHwnd)
 		parentRect.top + (parentHeight - dialogHeight) / 2,
 		dialogWidth,
 		dialogHeight,
-		FALSE);
+		FALSE
+	);
 }
 
 void ParameterDialog::SetupControls (HWND dialogHwnd)
