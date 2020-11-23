@@ -13,26 +13,26 @@ namespace WAS
 struct DialogParameters
 {
 	DialogParameters ();
-	DialogParameters (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height);
+	DialogParameters (const std::wstring& dialogTitle, short x, short y, short width, short height);
 
 	std::wstring	dialogTitle;
-	WORD			x;
-	WORD			y;
-	WORD			width;
-	WORD			height;
+	short			x;
+	short			y;
+	short			width;
+	short			height;
 };
 
 struct ControlParameters
 {
 	ControlParameters ();
-	ControlParameters (DWORD controlType, DWORD style, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
+	ControlParameters (DWORD controlType, DWORD style, short x, short y, short width, short height, DWORD controlId);
 
 	DWORD			controlType;
 	DWORD			style;
-	WORD			x;
-	WORD			y;
-	WORD			width;
-	WORD			height;
+	short			x;
+	short			y;
+	short			width;
+	short			height;
 	DWORD			controlId;
 };
 
@@ -56,13 +56,14 @@ protected:
 class InMemoryDialog
 {
 public:
-	InMemoryDialog (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height);
+	InMemoryDialog (const std::wstring& dialogTitle, short x, short y, short width, short height);
 
-	void		AddStatic (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
-	void		AddEdit (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
-	void		AddButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
-	void		AddDefButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
-	void		AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, WORD x, WORD y, WORD width, WORD height, DWORD controlId);
+	void		AddStatic (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
+	void		AddEdit (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
+	void		AddButton (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
+	void		AddDefButton (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
+	void		AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, short x, short y, short width, short height, DWORD controlId);
+	void		AddSeparator (short x, short y, short width, DWORD controlId);
 
 	INT_PTR		Show (HWND parent, DLGPROC dialogProc, LPARAM initParam) const;
 	void		SetupControls (HWND dialogHwnd);

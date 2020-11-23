@@ -111,6 +111,8 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
+	InitCommonControls ();
+
 	Application application;
 
 	WNDCLASSEX windowClass;

@@ -10,9 +10,18 @@
 namespace WAS
 {
 
+static const short DialogPadding = 5;
+static const short StaticWidth = 60;
+static const short ControlWidth = 150;
+static const short ControlHeight = 12;
+static const short ButtonWidth = 50;
+static const short ButtonHeight = 15;
+
 static const DWORD FirstControlId = 10000;
 static const DWORD StaticControlIdOffset = 1000;
-static const DWORD OkButtonId = 2000;
+static const DWORD SeparatorId = 2000;
+static const DWORD CancelButtonId = 2001;
+static const DWORD OkButtonId = 2002;
 
 static DWORD ParamIdToControlId (size_t paramId)
 {
@@ -53,6 +62,8 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					if (paramDialog->CollectChangedValues (hwnd)) {
 						EndDialog (hwnd, 1);
 					}
+				} else if (commandId == CancelButtonId) {
+					EndDialog (hwnd, 0);
 				} else {
 					WORD notificationCode = HIWORD (wParam);
 					switch (notificationCode) {
@@ -97,68 +108,64 @@ ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface) :
 
 }
 
-bool ParameterDialog::Show (HWND parent, WORD x, WORD y)
+bool ParameterDialog::Show (HWND parent, short x, short y)
 {
-	static const WORD padding = 5;
-	static const WORD staticWidth = 60;
-	static const WORD editWidth = 100;
-	static const WORD controlHeight = 12;
-	static const WORD buttonHeight = 16;
-
-	size_t paramCount = paramInterface->GetParameterCount ();
-	WORD paramCountWord = (WORD) paramCount;
-	WORD dialogWidth = staticWidth + editWidth + 3 * padding;
-	WORD dialogHeight = paramCountWord * controlHeight + (paramCountWord + 2) * padding + buttonHeight;
+	WORD paramCount = (WORD) paramInterface->GetParameterCount ();
+	short dialogInnerWidth = StaticWidth + ControlWidth + DialogPadding;
+	short dialogWidth = dialogInnerWidth + 2 * DialogPadding;
+	short dialogHeight = paramCount * ControlHeight + (paramCount + 3) * DialogPadding + ButtonHeight;
 	InMemoryDialog dialog (NE::LocalizeString (L"Parameters"), x, y, dialogWidth, dialogHeight);
 
-	WORD currentY = padding;
-	for (size_t paramIndex = 0; paramIndex < paramCount; ++paramIndex) {
+	short currentY = DialogPadding;
+	for (WORD paramIndex = 0; paramIndex < paramCount; ++paramIndex) {
 		DWORD controlId = ParamIdToControlId (paramIndex);
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (paramIndex);
-		dialog.AddStatic (paramInterface->GetParameterName (paramIndex).c_str (), padding, currentY, staticWidth, controlHeight, controlId + StaticControlIdOffset);
+		dialog.AddStatic (paramInterface->GetParameterName (paramIndex).c_str (), DialogPadding, currentY, StaticWidth, ControlHeight, controlId + StaticControlIdOffset);
 
 		NE::ValueConstPtr value = paramInterface->GetParameterValue (paramIndex);
 		if (type == NUIE::ParameterType::Boolean) {
 			if (DBGVERIFY (NE::Value::IsType<NE::BooleanValue> (value))) {
 				int selectedChoice = NE::BooleanValue::Get (value) ? 0 : 1;
 				std::vector<std::wstring> choices = { NE::LocalizeString (L"true"), NE::LocalizeString (L"false") };
-				dialog.AddComboBox (selectedChoice, choices, staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
+				dialog.AddComboBox (selectedChoice, choices, StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Integer) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
+				dialog.AddEdit (controlText.c_str (), StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Float) {
 			if (DBGVERIFY (NE::Value::IsType<NE::FloatValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
+				dialog.AddEdit (controlText.c_str (), StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Double) {
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
+				dialog.AddEdit (controlText.c_str (), StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::String) {
 			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				dialog.AddEdit (controlText.c_str (), staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
+				dialog.AddEdit (controlText.c_str (), StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Enumeration) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 				int selectedChoice = NE::IntValue::Get (value);
 				std::vector<std::wstring> choices = paramInterface->GetParameterValueChoices (paramIndex);
-				dialog.AddComboBox (selectedChoice, choices, staticWidth + 2 * padding, currentY, editWidth, controlHeight, controlId);
+				dialog.AddComboBox (selectedChoice, choices, StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else {
 			DBGBREAK ();
 		}
 
-		currentY += controlHeight + padding;
+		currentY += ControlHeight + DialogPadding;
 	}
 
-	dialog.AddDefButton (NE::LocalizeString (L"Save"), padding, currentY, staticWidth + editWidth + padding, buttonHeight, OkButtonId);
+	dialog.AddSeparator (DialogPadding, currentY, dialogInnerWidth + 2, SeparatorId);
+	dialog.AddButton (NE::LocalizeString (L"Cancel"), dialogInnerWidth - 2 * ButtonWidth, currentY + DialogPadding, ButtonWidth, ButtonHeight, CancelButtonId);
+	dialog.AddDefButton (NE::LocalizeString (L"OK"), dialogInnerWidth - ButtonWidth + DialogPadding, currentY + DialogPadding, ButtonWidth, ButtonHeight, OkButtonId);
 
 	inMemoryDialog = &dialog;
 	if (dialog.Show (parent, DlgProc, (LPARAM) this) == 1) {

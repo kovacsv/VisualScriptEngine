@@ -15,7 +15,7 @@ class ParameterDialog
 public:
 	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface);
 
-	bool	Show (HWND parent, WORD x, WORD y);
+	bool	Show (HWND parent, short x, short y);
 	void	SetupControls (HWND dialogHwnd);
 	void	SetParameterChanged (DWORD controlId);
 	bool	CollectChangedValues (HWND hwnd);

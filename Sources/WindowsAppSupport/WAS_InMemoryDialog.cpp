@@ -57,7 +57,7 @@ DialogParameters::DialogParameters () :
 
 }
 
-DialogParameters::DialogParameters (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height) :
+DialogParameters::DialogParameters (const std::wstring& dialogTitle, short x, short y, short width, short height) :
 	dialogTitle (dialogTitle),
 	x (x),
 	y (y),
@@ -73,7 +73,7 @@ ControlParameters::ControlParameters () :
 
 }
 
-ControlParameters::ControlParameters (DWORD controlType, DWORD style, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+ControlParameters::ControlParameters (DWORD controlType, DWORD style, short x, short y, short width, short height, DWORD controlId) :
 	controlType (controlType),
 	style (WS_CHILD | WS_VISIBLE | style),
 	x (x),
@@ -133,7 +133,7 @@ private:
 class StaticControl : public TextBasedControl
 {
 public:
-	StaticControl (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+	StaticControl (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId) :
 		TextBasedControl (controlText)
 	{
 		params = ControlParameters (0x0082FFFF, WS_EX_CLIENTEDGE, x, y, width, height, controlId);
@@ -143,7 +143,7 @@ public:
 class EditControl : public TextBasedControl
 {
 public:
-	EditControl (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+	EditControl (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId) :
 		TextBasedControl (controlText)
 	{
 		params = ControlParameters (0x0081FFFF, WS_TABSTOP | WS_BORDER, x, y, width, height, controlId);
@@ -153,7 +153,7 @@ public:
 class ButtonControl : public TextBasedControl
 {
 public:
-	ButtonControl (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+	ButtonControl (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId) :
 		TextBasedControl (controlText)
 	{
 		params = ControlParameters (0x0080FFFF, WS_TABSTOP | BS_PUSHBUTTON, x, y, width, height, controlId);
@@ -163,7 +163,7 @@ public:
 class DefButtonControl : public TextBasedControl
 {
 public:
-	DefButtonControl (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+	DefButtonControl (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId) :
 		TextBasedControl (controlText)
 	{
 		params = ControlParameters (0x0080FFFF, WS_TABSTOP | BS_DEFPUSHBUTTON, x, y, width, height, controlId);
@@ -173,7 +173,7 @@ public:
 class ComboBoxControl : public InMemoryControl
 {
 public:
-	ComboBoxControl (int selectedItem, const std::vector<std::wstring>& choices, WORD x, WORD y, WORD width, WORD height, DWORD controlId) :
+	ComboBoxControl (int selectedItem, const std::vector<std::wstring>& choices, short x, short y, short width, short height, DWORD controlId) :
 		InMemoryControl (),
 		selectedItem (selectedItem),
 		choices (choices)
@@ -194,35 +194,55 @@ private:
 	std::vector<std::wstring> choices;
 };
 
-InMemoryDialog::InMemoryDialog (const std::wstring& dialogTitle, WORD x, WORD y, WORD width, WORD height) :
+class SeparatorControl : public InMemoryControl
+{
+public:
+	SeparatorControl (short x, short y, short width, DWORD controlId) :
+		InMemoryControl ()
+	{
+		params = ControlParameters (0x0082FFFF, WS_EX_CLIENTEDGE | SS_ETCHEDHORZ, x, y, width, 1, controlId);
+	}
+
+	virtual void SetupControl () override
+	{
+		
+	}
+};
+
+InMemoryDialog::InMemoryDialog (const std::wstring& dialogTitle, short x, short y, short width, short height) :
 	parameters (dialogTitle, x, y, width, height)
 {
 }
 
-void InMemoryDialog::AddStatic (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+void InMemoryDialog::AddStatic (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
 {
 	controls.push_back (std::unique_ptr<InMemoryControl> (new StaticControl (controlText, x, y, width, height, controlId)));
 }
 
-void InMemoryDialog::AddEdit (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+void InMemoryDialog::AddEdit (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
 {
 	controls.push_back (std::unique_ptr<InMemoryControl> (new EditControl (controlText, x, y, width, height, controlId)));
 }
 
-void InMemoryDialog::AddButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+void InMemoryDialog::AddButton (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
 {
 	controls.push_back (std::unique_ptr<InMemoryControl> (new ButtonControl (controlText, x, y, width, height, controlId)));
 }
 
-void InMemoryDialog::AddDefButton (const std::wstring& controlText, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+void InMemoryDialog::AddDefButton (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
 {
 	controls.push_back (std::unique_ptr<InMemoryControl> (new DefButtonControl (controlText, x, y, width, height, controlId)));
 }
 
-void InMemoryDialog::AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, WORD x, WORD y, WORD width, WORD height, DWORD controlId)
+void InMemoryDialog::AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, short x, short y, short width, short height, DWORD controlId)
 {
-	static const WORD comboBoxListHeight = 200;
+	static const short comboBoxListHeight = 200;
 	controls.push_back (std::unique_ptr<InMemoryControl> (new ComboBoxControl (selectedItem, choices, x, y, width, height + comboBoxListHeight, controlId)));
+}
+
+void InMemoryDialog::AddSeparator (short x, short y, short width, DWORD controlId)
+{
+	controls.push_back (std::unique_ptr<InMemoryControl> (new SeparatorControl (x, y, width, controlId)));
 }
 
 INT_PTR InMemoryDialog::Show (HWND parent, DLGPROC dialogProc, LPARAM initParam) const
@@ -247,10 +267,10 @@ INT_PTR InMemoryDialog::Show (HWND parent, DLGPROC dialogProc, LPARAM initParam)
 	writer.Write<DWORD> (0); // exStyle
 	writer.Write<DWORD> (WS_CAPTION | WS_SYSMENU | DS_SETFONT | DS_MODALFRAME); // style
 	writer.Write<WORD> ((WORD) controls.size ()); // cDlgItems
-	writer.Write<WORD> (parameters.x); // x
-	writer.Write<WORD> (parameters.y); // y
-	writer.Write<WORD> (parameters.width); // cx
-	writer.Write<WORD> (parameters.height); // cy
+	writer.Write<short> (parameters.x); // x
+	writer.Write<short> (parameters.y); // y
+	writer.Write<short> (parameters.width); // cx
+	writer.Write<short> (parameters.height); // cy
 	writer.WriteString (L""); // menu
 	writer.WriteString (L""); // windowClass
 	writer.WriteString (parameters.dialogTitle.c_str ()); // title
@@ -266,10 +286,10 @@ INT_PTR InMemoryDialog::Show (HWND parent, DLGPROC dialogProc, LPARAM initParam)
 		writer.Write<DWORD> (0); // helpID
 		writer.Write<DWORD> (0); // exStyle
 		writer.Write<DWORD> (params.style); // style
-		writer.Write<WORD> (params.x); // x
-		writer.Write<WORD> (params.y); // y
-		writer.Write<WORD> (params.width); // cx
-		writer.Write<WORD> (params.height); // cy
+		writer.Write<short> (params.x); // x
+		writer.Write<short> (params.y); // y
+		writer.Write<short> (params.width); // cx
+		writer.Write<short> (params.height); // cy
 		writer.Write<DWORD> (params.controlId); // id
 		writer.Write<DWORD> (params.controlType); // windowClass
 		writer.Write<WORD> (0); // title
