@@ -15,7 +15,8 @@ class ParameterDialog
 public:
 	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface);
 
-	bool	Show (HWND parent, short x, short y);
+	bool	Show (HWND parentHwnd, short x, short y);
+	void	CenterToParent (HWND dialogHwnd);
 	void	SetupControls (HWND dialogHwnd);
 	void	SetParameterChanged (DWORD controlId);
 	bool	CollectChangedValues (HWND hwnd);
@@ -41,7 +42,8 @@ private:
 	std::unordered_set<size_t>		changedParams;
 
 	InMemoryDialog*					inMemoryDialog;
-	bool							isSetUp;
+	HWND							parentWindowHandle;
+	bool							isInitialized;
 };
 
 }

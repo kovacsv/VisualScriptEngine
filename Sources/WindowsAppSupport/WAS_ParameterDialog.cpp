@@ -41,6 +41,7 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				SetWindowLongPtr (hwnd, GWLP_USERDATA, lParam);
 				ParameterDialog* paramDialog = (ParameterDialog*) lParam;
 				if (paramDialog != nullptr) {
+					paramDialog->CenterToParent (hwnd);
 					paramDialog->SetupControls (hwnd);
 				}
 			}
@@ -103,12 +104,13 @@ const NE::ValuePtr& ParameterDialog::ChangedParameter::GetValue () const
 ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface) :
 	paramInterface (paramInterface),
 	inMemoryDialog (nullptr),
-	isSetUp (false)
+	parentWindowHandle (NULL),
+	isInitialized (false)
 {
 
 }
 
-bool ParameterDialog::Show (HWND parent, short x, short y)
+bool ParameterDialog::Show (HWND parentHwnd, short x, short y)
 {
 	WORD paramCount = (WORD) paramInterface->GetParameterCount ();
 	short dialogInnerWidth = StaticWidth + ControlWidth + DialogPadding;
@@ -168,7 +170,8 @@ bool ParameterDialog::Show (HWND parent, short x, short y)
 	dialog.AddDefButton (NE::LocalizeString (L"OK"), dialogInnerWidth - ButtonWidth + DialogPadding, currentY + DialogPadding, ButtonWidth, ButtonHeight, OkButtonId);
 
 	inMemoryDialog = &dialog;
-	if (dialog.Show (parent, DlgProc, (LPARAM) this) == 1) {
+	parentWindowHandle = parentHwnd;
+	if (dialog.Show (parentHwnd, DlgProc, (LPARAM) this) == 1) {
 		ApplyParameterChanges ();
 		return true;
 	}
@@ -177,17 +180,41 @@ bool ParameterDialog::Show (HWND parent, short x, short y)
 	return false;
 }
 
+void ParameterDialog::CenterToParent (HWND dialogHwnd)
+{
+	if (DBGERROR (parentWindowHandle == NULL)) {
+		return;
+	}
+
+	RECT parentRect;
+	GetWindowRect (parentWindowHandle, &parentRect);
+	LONG parentWidth = parentRect.right - parentRect.left;
+	LONG parentHeight = parentRect.bottom - parentRect.top;
+	
+	RECT dialogRect;
+	GetWindowRect (dialogHwnd, &dialogRect);
+	LONG dialogWidth = dialogRect.right - dialogRect.left;
+	LONG dialogHeight = dialogRect.bottom - dialogRect.top;
+
+	MoveWindow (dialogHwnd,
+		parentRect.left + (parentWidth - dialogWidth) / 2,
+		parentRect.top + (parentHeight - dialogHeight) / 2,
+		dialogWidth,
+		dialogHeight,
+		FALSE);
+}
+
 void ParameterDialog::SetupControls (HWND dialogHwnd)
 {
 	if (DBGVERIFY (inMemoryDialog != nullptr)) {
 		inMemoryDialog->SetupControls (dialogHwnd);
-		isSetUp = true;
+		isInitialized = true;
 	}
 }
 
 void ParameterDialog::SetParameterChanged (DWORD controlId)
 {
-	if (!isSetUp) {
+	if (!isInitialized) {
 		return;
 	}
 	changedParams.insert (ControlIdToParamId (controlId));

@@ -65,7 +65,7 @@ public:
 	void		AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, short x, short y, short width, short height, DWORD controlId);
 	void		AddSeparator (short x, short y, short width, DWORD controlId);
 
-	INT_PTR		Show (HWND parent, DLGPROC dialogProc, LPARAM initParam) const;
+	INT_PTR		Show (HWND parentHwnd, DLGPROC dialogProc, LPARAM initParam) const;
 	void		SetupControls (HWND dialogHwnd);
 
 private:

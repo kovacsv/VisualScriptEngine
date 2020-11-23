@@ -245,7 +245,7 @@ void InMemoryDialog::AddSeparator (short x, short y, short width, DWORD controlI
 	controls.push_back (std::unique_ptr<InMemoryControl> (new SeparatorControl (x, y, width, controlId)));
 }
 
-INT_PTR InMemoryDialog::Show (HWND parent, DLGPROC dialogProc, LPARAM initParam) const
+INT_PTR InMemoryDialog::Show (HWND parentHwnd, DLGPROC dialogProc, LPARAM initParam) const
 {
 	HDC hdc = GetDC (NULL);
 	if (DBGERROR (hdc == NULL)) {
@@ -297,7 +297,7 @@ INT_PTR InMemoryDialog::Show (HWND parent, DLGPROC dialogProc, LPARAM initParam)
 	}
 	writer.AlignToDword ();
 
-	INT_PTR result = DialogBoxIndirectParam (NULL, writer.ConvertToTemplate (), parent, dialogProc, initParam);
+	INT_PTR result = DialogBoxIndirectParam (NULL, writer.ConvertToTemplate (), parentHwnd, dialogProc, initParam);
 	ReleaseDC (NULL, hdc);
 	return result;
 }
