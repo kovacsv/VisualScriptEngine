@@ -79,6 +79,7 @@ void Application::ExecuteCommand (NUIE::CommandCode command)
 void Application::OnResize (int x, int y, int width, int height)
 {
 	uiEnvironment.OnResize (x, y, width, height);
+	toolbar.AutoSize ();
 }
 
 void Application::OnClipboardChanged ()

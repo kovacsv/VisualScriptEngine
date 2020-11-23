@@ -20,6 +20,7 @@ public:
 	void		AddSeparator ();
 	void		EnableItem (UINT id, bool enabled);
 	int			GetHeight ();
+	void		AutoSize ();
 
 private:
 	HWND		toolbarHandle;

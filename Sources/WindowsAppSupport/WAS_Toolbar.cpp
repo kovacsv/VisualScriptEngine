@@ -63,10 +63,10 @@ void Toolbar::AddItem (HBITMAP bitmap, HBITMAP disabledBitmap, UINT commandId)
 	button.iBitmap = imageIndex;
 	button.idCommand = (int) commandId;
 	button.fsState = TBSTATE_ENABLED;
-	button.fsStyle = TBSTYLE_AUTOSIZE;
+	button.fsStyle = BTNS_AUTOSIZE;
 
 	SendMessage (toolbarHandle, TB_ADDBUTTONS, (WPARAM) 1, (LPARAM) &button);
-	SendMessage (toolbarHandle, TB_AUTOSIZE, 0, 0);
+	AutoSize ();
 }
 
 void Toolbar::AddSeparator ()
@@ -76,7 +76,7 @@ void Toolbar::AddSeparator ()
 	button.fsStyle = TBSTYLE_SEP;
 
 	SendMessage (toolbarHandle, TB_ADDBUTTONS, (WPARAM) 1, (LPARAM) &button);
-	SendMessage (toolbarHandle, TB_AUTOSIZE, 0, 0);
+	AutoSize ();
 }
 
 void Toolbar::EnableItem (UINT id, bool enabled)
@@ -89,6 +89,11 @@ int Toolbar::GetHeight ()
 	RECT rect;
 	GetClientRect (toolbarHandle, &rect);
 	return rect.bottom - rect.top;
+}
+
+void Toolbar::AutoSize ()
+{
+	SendMessage (toolbarHandle, TB_AUTOSIZE, 0, 0);
 }
 
 }
