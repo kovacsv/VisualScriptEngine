@@ -1,3 +1,4 @@
+#include "NE_Debug.hpp"
 #include "Application.hpp"
 #include "ResourceIds.hpp"
 #include "CommandIds.hpp"
@@ -111,6 +112,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
+	EnableLeakDetection ();
 	InitCommonControls ();
 
 	Application application;
