@@ -41,9 +41,8 @@ private:
 	std::vector<ChangedParameter>	paramValues;
 	std::unordered_set<size_t>		changedParams;
 
-	InMemoryDialog*					inMemoryDialog;
+	InMemoryDialog					paramDialog;
 	HWND							parentWindowHandle;
-	bool							isInitialized;
 };
 
 }

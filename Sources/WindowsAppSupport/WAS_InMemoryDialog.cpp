@@ -209,44 +209,67 @@ public:
 	}
 };
 
-InMemoryDialog::InMemoryDialog (const std::wstring& dialogTitle, short x, short y, short width, short height) :
-	parameters (dialogTitle, x, y, width, height)
+InMemoryDialog::InMemoryDialog () :
+	controls (),
+	status (Status::Draft)
 {
 }
 
 void InMemoryDialog::AddStatic (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
 {
+	if (DBGERROR (status != Status::Draft)) {
+		return;
+	}
 	controls.push_back (std::unique_ptr<InMemoryControl> (new StaticControl (controlText, x, y, width, height, controlId)));
 }
 
 void InMemoryDialog::AddEdit (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
 {
+	if (DBGERROR (status != Status::Draft)) {
+		return;
+	}
 	controls.push_back (std::unique_ptr<InMemoryControl> (new EditControl (controlText, x, y, width, height, controlId)));
 }
 
 void InMemoryDialog::AddButton (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
 {
+	if (DBGERROR (status != Status::Draft)) {
+		return;
+	}
 	controls.push_back (std::unique_ptr<InMemoryControl> (new ButtonControl (controlText, x, y, width, height, controlId)));
 }
 
 void InMemoryDialog::AddDefButton (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
 {
+	if (DBGERROR (status != Status::Draft)) {
+		return;
+	}
 	controls.push_back (std::unique_ptr<InMemoryControl> (new DefButtonControl (controlText, x, y, width, height, controlId)));
 }
 
 void InMemoryDialog::AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, short x, short y, short width, short height, DWORD controlId)
 {
+	if (DBGERROR (status != Status::Draft)) {
+		return;
+	}
 	static const short comboBoxListHeight = 200;
 	controls.push_back (std::unique_ptr<InMemoryControl> (new ComboBoxControl (selectedItem, choices, x, y, width, height + comboBoxListHeight, controlId)));
 }
 
 void InMemoryDialog::AddSeparator (short x, short y, short width, DWORD controlId)
 {
+	if (DBGERROR (status != Status::Draft)) {
+		return;
+	}
 	controls.push_back (std::unique_ptr<InMemoryControl> (new SeparatorControl (x, y, width, controlId)));
 }
 
-INT_PTR InMemoryDialog::Show (HWND parentHwnd, DLGPROC dialogProc, LPARAM initParam) const
+INT_PTR InMemoryDialog::Show (const DialogParameters& parameters, HWND parentHwnd, DLGPROC dialogProc, LPARAM initParam)
 {
+	if (DBGERROR (status != Status::Draft)) {
+		return -1;
+	}
+
 	HDC hdc = GetDC (NULL);
 	if (DBGERROR (hdc == NULL)) {
 		return -1;
@@ -297,17 +320,29 @@ INT_PTR InMemoryDialog::Show (HWND parentHwnd, DLGPROC dialogProc, LPARAM initPa
 	}
 	writer.AlignToDword ();
 
+	status = Status::Opened;
 	INT_PTR result = DialogBoxIndirectParam (NULL, writer.ConvertToTemplate (), parentHwnd, dialogProc, initParam);
 	ReleaseDC (NULL, hdc);
+	status = Status::Draft;
+
 	return result;
 }
 
-void InMemoryDialog::SetupControls (HWND dialogHwnd)
+void InMemoryDialog::InitControls(HWND dialogHwnd)
 {
+	if (DBGERROR (status != Status::Opened)) {
+		return;
+	}
 	for (const std::unique_ptr<InMemoryControl>& control : controls) {
 		HWND controlHwnd = GetDlgItem (dialogHwnd, control->GetId ());
 		control->Setup (controlHwnd);
 	}
+	status = Status::Initialized;
+}
+
+InMemoryDialog::Status InMemoryDialog::GetStatus () const
+{
+	return status;
 }
 
 }
