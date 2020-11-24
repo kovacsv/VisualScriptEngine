@@ -48,7 +48,7 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 		case WM_CLOSE:
 			{
-				EndDialog (hwnd, 0);
+				EndDialog (hwnd, IDCANCEL);
 			}
 			break;
 		case WM_COMMAND:
@@ -61,10 +61,10 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				WORD commandId = LOWORD (wParam);
 				if (commandId == OkButtonId) {
 					if (paramDialog->CollectChangedValues (hwnd)) {
-						EndDialog (hwnd, 1);
+						EndDialog (hwnd, IDOK);
 					}
 				} else if (commandId == CancelButtonId) {
-					EndDialog (hwnd, 0);
+					EndDialog (hwnd, IDCANCEL);
 				} else {
 					WORD notificationCode = HIWORD (wParam);
 					switch (notificationCode) {
@@ -169,7 +169,8 @@ bool ParameterDialog::Show (HWND parentHwnd, short x, short y)
 
 	DialogParameters parameters (NE::LocalizeString (L"Parameters"), x, y, dialogWidth, dialogHeight);
 	parentWindowHandle = parentHwnd;
-	if (paramDialog.Show (parameters, parentHwnd, DlgProc, (LPARAM) this) == 1) {
+	INT_PTR dialogResult = paramDialog.Show (parameters, parentHwnd, DlgProc, (LPARAM) this);
+	if (dialogResult == IDOK) {
 		ApplyParameterChanges ();
 		return true;
 	}
