@@ -5,7 +5,7 @@
 #include "ResourceIds.hpp"
 #include "CommandIds.hpp"
 
-static bool UnsavedChangesContinue (HWND hwnd, LPCWSTR caption)
+static bool ContinueWithNoSave (HWND hwnd, LPCWSTR caption)
 {
 	std::wstring text = L"You have made some changes that are not saved.\nWould you like to continue?";
 	int result = MessageBox (hwnd, text.c_str (), caption, MB_ICONWARNING | MB_YESNO);
@@ -31,7 +31,7 @@ void Application::Init (HWND hwnd)
 void Application::New (HWND hwnd)
 {
 	if (nodeEditor.NeedToSave ()) {
-		bool result = UnsavedChangesContinue (hwnd, L"New File");
+		bool result = ContinueWithNoSave (hwnd, L"New File");
 		if (!result) {
 			return;
 		}
@@ -42,7 +42,7 @@ void Application::New (HWND hwnd)
 void Application::Open (HWND hwnd)
 {
 	if (nodeEditor.NeedToSave ()) {
-		bool result = UnsavedChangesContinue (hwnd, L"Open File");
+		bool result = ContinueWithNoSave (hwnd, L"Open File");
 		if (!result) {
 			return;
 		}
@@ -67,7 +67,7 @@ void Application::Save (HWND hwnd)
 bool Application::Close (HWND hwnd)
 {
 	if (nodeEditor.NeedToSave ()) {
-		return UnsavedChangesContinue (hwnd, L"Quit");
+		return ContinueWithNoSave (hwnd, L"Quit");
 	}
 	return true;
 }
