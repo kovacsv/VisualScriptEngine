@@ -5,9 +5,10 @@
 #include "ResourceIds.hpp"
 #include "CommandIds.hpp"
 
-static bool MessageBoxYesNo (HWND hwnd, LPCWSTR text, LPCWSTR caption)
+static bool UnsavedChangesContinue (HWND hwnd, LPCWSTR caption)
 {
-	int result = MessageBox (hwnd, text, caption, MB_ICONWARNING | MB_YESNO);
+	std::wstring text = L"You have made some changes that are not saved.\nWould you like to continue?";
+	int result = MessageBox (hwnd, text.c_str (), caption, MB_ICONWARNING | MB_YESNO);
 	return (result == IDYES);
 }
 
@@ -30,7 +31,7 @@ void Application::Init (HWND hwnd)
 void Application::New (HWND hwnd)
 {
 	if (nodeEditor.NeedToSave ()) {
-		bool result = MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to start new file?", L"New File");
+		bool result = UnsavedChangesContinue (hwnd, L"New File");
 		if (!result) {
 			return;
 		}
@@ -41,7 +42,7 @@ void Application::New (HWND hwnd)
 void Application::Open (HWND hwnd)
 {
 	if (nodeEditor.NeedToSave ()) {
-		bool result = MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to open file?", L"Open File");
+		bool result = UnsavedChangesContinue (hwnd, L"Open File");
 		if (!result) {
 			return;
 		}
@@ -66,7 +67,7 @@ void Application::Save (HWND hwnd)
 bool Application::Close (HWND hwnd)
 {
 	if (nodeEditor.NeedToSave ()) {
-		return MessageBoxYesNo (hwnd, L"You have made some changes that are not saved. Would you like to quit?", L"Quit");
+		return UnsavedChangesContinue (hwnd, L"Quit");
 	}
 	return true;
 }
