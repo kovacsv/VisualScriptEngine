@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.6)
 
 set (VSE_VERSION_1 0)
-set (VSE_VERSION_2 4)
-set (VSE_VERSION_3 11)
+set (VSE_VERSION_2 5)
+set (VSE_VERSION_3 0)
 set (VSE_LIB_NAME VisualScriptEngine)
 set (VSE_CUSTOM_BUILD_OPTIONS ${VSE_CUSTOM_BUILD_OPTIONS})
 
