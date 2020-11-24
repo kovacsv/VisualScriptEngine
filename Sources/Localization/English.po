@@ -37,6 +37,9 @@ msgstr "Create New Group"
 msgid "Group"
 msgstr "Group"
 
+msgid "Remove From Group"
+msgstr "Remove From Group"
+
 msgid "Group Settings"
 msgstr "Group Settings"
 
@@ -51,9 +54,6 @@ msgstr "Ungroup Nodes"
 
 msgid "Select Nodes"
 msgstr "Select Nodes"
-
-msgid "Remove From Group"
-msgstr "Remove From Group"
 
 msgid "Grouping"
 msgstr "Grouping"
@@ -175,9 +175,12 @@ msgstr "%d / %d (%d)"
 msgid "Texts per page"
 msgstr "Texts per page"
 
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "OK"
+msgstr "OK"
+
 msgid "Parameters"
 msgstr "Parameters"
-
-msgid "Save"
-msgstr "Save"
 
