@@ -175,12 +175,15 @@ msgstr "%d / %d (%d)"
 msgid "Texts per page"
 msgstr "Texts per page"
 
+msgid "Node Parameters"
+msgstr "Node Parameters"
+
+msgid "Group Parameters"
+msgstr "Group Parameters"
+
 msgid "Cancel"
 msgstr "Cancel"
 
 msgid "OK"
 msgstr "OK"
-
-msgid "Parameters"
-msgstr "Parameters"
 

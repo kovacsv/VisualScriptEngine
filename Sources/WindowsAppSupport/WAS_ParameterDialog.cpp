@@ -109,12 +109,13 @@ ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface) :
 
 }
 
-bool ParameterDialog::Show (HWND parentHwnd, short x, short y)
+bool ParameterDialog::Show (const std::wstring& dialogTitle, HWND parentHwnd, short x, short y)
 {
 	WORD paramCount = (WORD) paramInterface->GetParameterCount ();
 	short dialogInnerWidth = StaticWidth + ControlWidth + DialogPadding;
 	short dialogWidth = dialogInnerWidth + 2 * DialogPadding;
 	short dialogHeight = paramCount * ControlHeight + (paramCount + 3) * DialogPadding + ButtonHeight;
+	paramDialog.SetParameters (dialogTitle, x, y, dialogWidth, dialogHeight);
 
 	short currentY = DialogPadding;
 	for (WORD paramIndex = 0; paramIndex < paramCount; ++paramIndex) {
@@ -167,9 +168,8 @@ bool ParameterDialog::Show (HWND parentHwnd, short x, short y)
 	paramDialog.AddButton (NE::LocalizeString (L"Cancel"), dialogInnerWidth - 2 * ButtonWidth, currentY + DialogPadding, ButtonWidth, ButtonHeight, CancelButtonId);
 	paramDialog.AddDefButton (NE::LocalizeString (L"OK"), dialogInnerWidth - ButtonWidth + DialogPadding, currentY + DialogPadding, ButtonWidth, ButtonHeight, OkButtonId);
 
-	DialogParameters parameters (NE::LocalizeString (L"Parameters"), x, y, dialogWidth, dialogHeight);
 	parentWindowHandle = parentHwnd;
-	INT_PTR dialogResult = paramDialog.Show (parameters, parentHwnd, DlgProc, (LPARAM) this);
+	INT_PTR dialogResult = paramDialog.Show (parentHwnd, DlgProc, (LPARAM) this);
 	if (dialogResult == IDOK) {
 		ApplyParameterChanges ();
 		return true;

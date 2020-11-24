@@ -27,10 +27,18 @@ NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (NUIE::EventHandler::Contex
 	return SelectCommandFromContextMenu (hwnd, position, commands);
 }
 
-bool HwndEventHandler::OnParameterSettings (NUIE::EventHandler::ParameterSettingsType, NUIE::ParameterInterfacePtr paramAccessor)
+bool HwndEventHandler::OnParameterSettings (NUIE::EventHandler::ParameterSettingsType type, NUIE::ParameterInterfacePtr paramAccessor)
 {
 	ParameterDialog paramDialog (paramAccessor);
-	return paramDialog.Show (hwnd, 0, 0);
+	std::wstring title;
+	if (type == NUIE::EventHandler::ParameterSettingsType::Node) {
+		title = NE::LocalizeString (L"Node Parameters");
+	} else if (type == NUIE::EventHandler::ParameterSettingsType::Group) {
+		title = NE::LocalizeString (L"Group Parameters");
+	} else {
+		DBGBREAK ();
+	}
+	return paramDialog.Show (title, hwnd, 0, 0);
 }
 
 void HwndEventHandler::OnDoubleClick (const NUIE::Point&, NUIE::MouseButton)

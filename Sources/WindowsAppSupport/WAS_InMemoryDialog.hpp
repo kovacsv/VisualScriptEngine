@@ -65,6 +65,7 @@ public:
 
 	InMemoryDialog ();
 
+	void		SetParameters (const std::wstring& dialogTitle, short x, short y, short width, short height);
 	void		AddStatic (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
 	void		AddEdit (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
 	void		AddButton (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
@@ -72,11 +73,12 @@ public:
 	void		AddComboBox (int selectedItem, const std::vector<std::wstring>& choices, short x, short y, short width, short height, DWORD controlId);
 	void		AddSeparator (short x, short y, short width, DWORD controlId);
 
-	INT_PTR		Show (const DialogParameters& parameters, HWND parentHwnd, DLGPROC dialogProc, LPARAM initParam);
+	INT_PTR		Show (HWND parentHwnd, DLGPROC dialogProc, LPARAM initParam);
 	void		InitControls (HWND dialogHwnd);
 	Status		GetStatus () const;
 
 private:
+	DialogParameters								parameters;
 	std::vector<std::unique_ptr<InMemoryControl>>	controls;
 	Status											status;
 };

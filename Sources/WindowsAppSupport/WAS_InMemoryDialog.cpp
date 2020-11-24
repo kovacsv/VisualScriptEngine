@@ -210,9 +210,18 @@ public:
 };
 
 InMemoryDialog::InMemoryDialog () :
+	parameters (),
 	controls (),
 	status (Status::Draft)
 {
+}
+
+void InMemoryDialog::SetParameters (const std::wstring& dialogTitle, short x, short y, short width, short height)
+{
+	if (DBGERROR (status != Status::Draft)) {
+		return;
+	}
+	parameters = DialogParameters (dialogTitle, x, y, width, height);
 }
 
 void InMemoryDialog::AddStatic (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)
@@ -264,7 +273,7 @@ void InMemoryDialog::AddSeparator (short x, short y, short width, DWORD controlI
 	controls.push_back (std::unique_ptr<InMemoryControl> (new SeparatorControl (x, y, width, controlId)));
 }
 
-INT_PTR InMemoryDialog::Show (const DialogParameters& parameters, HWND parentHwnd, DLGPROC dialogProc, LPARAM initParam)
+INT_PTR InMemoryDialog::Show (HWND parentHwnd, DLGPROC dialogProc, LPARAM initParam)
 {
 	if (DBGERROR (status != Status::Draft)) {
 		return -1;
@@ -328,7 +337,7 @@ INT_PTR InMemoryDialog::Show (const DialogParameters& parameters, HWND parentHwn
 	return result;
 }
 
-void InMemoryDialog::InitControls(HWND dialogHwnd)
+void InMemoryDialog::InitControls (HWND dialogHwnd)
 {
 	if (DBGERROR (status != Status::Opened)) {
 		return;

@@ -15,7 +15,7 @@ class ParameterDialog
 public:
 	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface);
 
-	bool	Show (HWND parentHwnd, short x, short y);
+	bool	Show (const std::wstring& dialogTitle, HWND parentHwnd, short x, short y);
 	void	CenterToParent (HWND dialogHwnd);
 	void	SetupControls (HWND dialogHwnd);
 	void	SetParameterChanged (DWORD controlId);
