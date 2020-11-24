@@ -20,8 +20,8 @@ static const short ButtonHeight = 15;
 static const DWORD FirstControlId = 10000;
 static const DWORD StaticControlIdOffset = 1000;
 static const DWORD SeparatorId = 2000;
-static const DWORD CancelButtonId = 2001;
-static const DWORD OkButtonId = 2002;
+static const DWORD CancelButtonId = IDCANCEL;
+static const DWORD OkButtonId = IDOK;
 
 static DWORD ParamIdToControlId (size_t paramId)
 {
