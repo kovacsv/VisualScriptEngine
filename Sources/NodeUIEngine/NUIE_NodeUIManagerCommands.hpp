@@ -65,13 +65,12 @@ private:
 class MoveNodesWithOffsetsCommand : public UndoableCommand
 {
 public:
-	MoveNodesWithOffsetsCommand (const NE::NodeCollection& nodes, const std::vector<Point>& offsets);
+	MoveNodesWithOffsetsCommand (const std::unordered_map<NE::NodeId, Point>& offsets);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
-	const NE::NodeCollection&	nodes;
-	const std::vector<Point>&	offsets;
+	const std::unordered_map<NE::NodeId, Point>&	offsets;
 };
 
 class CopyMoveNodesCommand : public UndoableCommand

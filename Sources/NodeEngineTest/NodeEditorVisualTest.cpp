@@ -616,4 +616,22 @@ TEST (SkinParamsTest)
 	ASSERT (env.CheckReference (L"SkinParams_Basic.svg"));
 }
 
+TEST (AlignNodesTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+
+	{ // select three nodes with selection rect
+		Point rectSelectStart = env.doubleInputRect.GetTopLeft () - Point (10.0, 10.0);
+		Point rectSelectEnd = env.viewer2InputRect.GetBottomRight () + Point (10.0, 10.0);
+		env.DragDrop (rectSelectStart, rectSelectEnd);
+		ASSERT (env.CheckReference (L"AlignNodesTest_NodesSelected.svg"));
+	}
+
+	{ // align selected nodes to bottom
+		env.SetNextCommandName (L"Bottom");
+		env.RightClick (env.viewer2HeaderPoint);
+		ASSERT (env.CheckReference (L"AlignNodesTest_AlignedToBottom.svg"));
+	}
+}
+
 }

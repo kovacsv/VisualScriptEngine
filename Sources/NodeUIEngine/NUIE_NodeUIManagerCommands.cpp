@@ -82,21 +82,17 @@ void MoveNodesCommand::Do (NodeUIManager& uiManager)
 	uiManager.RequestRedraw ();
 }
 
-MoveNodesWithOffsetsCommand::MoveNodesWithOffsetsCommand (const NE::NodeCollection& nodes, const std::vector<Point>& offsets) :
+MoveNodesWithOffsetsCommand::MoveNodesWithOffsetsCommand (const std::unordered_map<NE::NodeId, Point>& offsets) :
 	UndoableCommand (),
-	nodes (nodes),
 	offsets (offsets)
 {
 }
 
 void MoveNodesWithOffsetsCommand::Do (NodeUIManager& uiManager)
 {
-	if (DBGERROR (nodes.Count () != offsets.size ())) {
-		return;
-	}
-	for (size_t i = 0; i < nodes.Count (); i++) {
-		const NE::NodeId& nodeId = nodes.Get (i);
-		const Point& offset = offsets[i];
+	for (const auto& nodeOffset : offsets) {
+		const NE::NodeId& nodeId = nodeOffset.first;
+		const Point& offset = nodeOffset.second;
 		UINodePtr uiNode = uiManager.GetNode (nodeId);
 		uiNode->SetPosition (uiNode->GetPosition () + offset);
 		uiManager.InvalidateNodeGroupDrawing (uiNode);
