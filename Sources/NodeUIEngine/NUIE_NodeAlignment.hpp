@@ -11,15 +11,22 @@ namespace NUIE
 
 enum class Alignment
 {
-	Left,
-	Right,
-	Top,
-	Bottom,
+	HorizontalLeft,
+	HorizontalRight,
+	VerticalTop,
+	VerticalBottom,
 	HorizontalCenter,
 	VerticalCenter
 };
 
+enum class Distribution
+{
+	Horizontal,
+	Vertical
+};
+
 std::unordered_map<NE::NodeId, Point> AlignNodes (Alignment alignment, const std::unordered_map<NE::NodeId, Rect>& rects);
+std::unordered_map<NE::NodeId, Point> DistributeNodes (Distribution distribution, const std::unordered_map<NE::NodeId, Rect>& rects);
 
 }
 

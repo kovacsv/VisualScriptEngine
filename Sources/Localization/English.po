@@ -58,26 +58,35 @@ msgstr "Select Nodes"
 msgid "Grouping"
 msgstr "Grouping"
 
-msgid "Aligning"
-msgstr "Aligning"
+msgid "Align"
+msgstr "Align"
 
-msgid "Left"
-msgstr "Left"
+msgid "Horizontal Left"
+msgstr "Horizontal Left"
 
-msgid "Right"
-msgstr "Right"
-
-msgid "Top"
-msgstr "Top"
-
-msgid "Bottom"
-msgstr "Bottom"
+msgid "Horizontal Right"
+msgstr "Horizontal Right"
 
 msgid "Horizontal Center"
 msgstr "Horizontal Center"
 
+msgid "Vertical Top"
+msgstr "Vertical Top"
+
+msgid "Vertical Bottom"
+msgstr "Vertical Bottom"
+
 msgid "Vertical Center"
 msgstr "Vertical Center"
+
+msgid "Distribute"
+msgstr "Distribute"
+
+msgid "Horizontal"
+msgstr "Horizontal"
+
+msgid "Vertical"
+msgstr "Vertical"
 
 msgid "Disconnect"
 msgstr "Disconnect"

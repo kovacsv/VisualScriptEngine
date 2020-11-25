@@ -628,7 +628,7 @@ TEST (AlignNodesTest)
 	}
 
 	{ // align selected nodes to bottom
-		env.SetNextCommandName (L"Bottom");
+		env.SetNextCommandName (L"Vertical Bottom");
 		env.RightClick (env.viewer2HeaderPoint);
 		ASSERT (env.CheckReference (L"AlignNodesTest_AlignedToBottom.svg"));
 	}

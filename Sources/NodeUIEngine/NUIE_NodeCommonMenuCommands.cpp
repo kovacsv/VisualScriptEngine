@@ -977,6 +977,50 @@ private:
 	NE::NodeCollection	relevantNodes;
 };
 
+class DistributeNodesMenuCommand : public SingleMenuCommand
+{
+public:
+	DistributeNodesMenuCommand (const NE::LocString& name, Distribution distribution, NodeUIManager& uiManager, NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& relevantNodes) :
+		SingleMenuCommand (name, false),
+		distribution (distribution),
+		uiManager (uiManager),
+		uiEnvironment (uiEnvironment),
+		relevantNodes (relevantNodes)
+	{
+
+	}
+
+	virtual ~DistributeNodesMenuCommand ()
+	{
+
+	}
+
+	virtual bool WillModify () const override
+	{
+		return relevantNodes.Count () >= 3;
+	}
+
+	virtual void DoModification () override
+	{
+		std::unordered_map<NE::NodeId, Rect> rects;
+		relevantNodes.Enumerate ([&] (const NE::NodeId& nodeId) {
+			UINodeConstPtr uiNode = uiManager.GetNode (nodeId);
+			rects.insert ({ nodeId, uiNode->GetRect (uiEnvironment) });
+			return true;
+		});
+
+		std::unordered_map<NE::NodeId, Point> offsets = DistributeNodes (distribution, rects);
+		MoveNodesWithOffsetsCommand command (offsets);
+		uiManager.ExecuteCommand (command, uiEnvironment);
+	}
+
+private:
+	Distribution		distribution;
+	NodeUIManager&		uiManager;
+	NodeUIEnvironment&	uiEnvironment;
+	NE::NodeCollection	relevantNodes;
+};
+
 NE::NodeCollection GetNodesForCommand (const NodeUIManager& uiManager, const UINodeConstPtr& uiNode)
 {
 	const Selection& selection = uiManager.GetSelection ();
@@ -1023,14 +1067,20 @@ MenuCommandStructure CreateNodeCommandStructure (NodeUIManager& uiManager, NodeU
 	commandStructureBuilder.RegisterCommand (groupingMultiCommand);
 
 	if (relevantNodes.Count () > 1) {
-		MultiMenuCommandPtr alignMultiCommand (new MultiMenuCommand (NE::LocString (L"Aligning")));
-		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Left"), Alignment::Left, uiManager, uiEnvironment, relevantNodes)));
-		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Right"), Alignment::Right, uiManager, uiEnvironment, relevantNodes)));
-		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Top"), Alignment::Top, uiManager, uiEnvironment, relevantNodes)));
-		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Bottom"), Alignment::Bottom, uiManager, uiEnvironment, relevantNodes)));
+		MultiMenuCommandPtr alignMultiCommand (new MultiMenuCommand (NE::LocString (L"Align")));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Horizontal Left"), Alignment::HorizontalLeft, uiManager, uiEnvironment, relevantNodes)));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Horizontal Right"), Alignment::HorizontalRight, uiManager, uiEnvironment, relevantNodes)));
 		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Horizontal Center"), Alignment::HorizontalCenter, uiManager, uiEnvironment, relevantNodes)));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Vertical Top"), Alignment::VerticalTop, uiManager, uiEnvironment, relevantNodes)));
+		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Vertical Bottom"), Alignment::VerticalBottom, uiManager, uiEnvironment, relevantNodes)));
 		alignMultiCommand->AddChildCommand (MenuCommandPtr (new AlignNodesMenuCommand (NE::LocString (L"Vertical Center"), Alignment::VerticalCenter, uiManager, uiEnvironment, relevantNodes)));
 		commandStructureBuilder.RegisterCommand (alignMultiCommand);
+	}
+	if (relevantNodes.Count () > 2) {
+		MultiMenuCommandPtr distributeMultiCommand (new MultiMenuCommand (NE::LocString (L"Distribute")));
+		distributeMultiCommand->AddChildCommand (MenuCommandPtr (new DistributeNodesMenuCommand (NE::LocString (L"Horizontal"), Distribution::Horizontal, uiManager, uiEnvironment, relevantNodes)));
+		distributeMultiCommand->AddChildCommand (MenuCommandPtr (new DistributeNodesMenuCommand (NE::LocString (L"Vertical"), Distribution::Vertical, uiManager, uiEnvironment, relevantNodes)));
+		commandStructureBuilder.RegisterCommand (distributeMultiCommand);
 	}
 
 	return commandStructureBuilder.GetCommandStructure ();
