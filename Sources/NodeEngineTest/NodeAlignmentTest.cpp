@@ -57,7 +57,19 @@ TEST (NodeAlignmentTestVertical)
 	ASSERT (IsEqual (centerOffsets[NodeId (3)], Point (0.0, 5.0)));
 }
 
-TEST (NodeDistributionTestHorizontal)
+TEST (NodeDistributionTestHorizontal_TwoNodes)
+{
+	std::unordered_map<NodeId, Rect> rects = {
+		{ NodeId (1), Rect (10.0, 10.0, 10.0, 20.0) },
+		{ NodeId (2), Rect (30.0, 30.0, 20.0, 30.0) }
+	};
+
+	std::unordered_map<NodeId, Point> distributeOffsets = DistributeNodes (Distribution::Horizontal, rects);
+	ASSERT (IsEqual (distributeOffsets[NodeId (1)], Point (0.0, 0.0)));
+	ASSERT (IsEqual (distributeOffsets[NodeId (2)], Point (0.0, 0.0)));
+}
+
+TEST (NodeDistributionTestHorizontal_ThreeNodes)
 {
 	std::unordered_map<NodeId, Rect> rects = {
 		{ NodeId (1), Rect (10.0, 10.0, 10.0, 20.0) },
@@ -71,7 +83,23 @@ TEST (NodeDistributionTestHorizontal)
 	ASSERT (IsEqual (distributeOffsets[NodeId (3)], Point (0.0, 0.0)));
 }
 
-TEST (NodeDistributionTestHorizontalOverlapping)
+TEST (NodeDistributionTestHorizontal_FourNodes)
+{
+	std::unordered_map<NodeId, Rect> rects = {
+		{ NodeId (1), Rect (10.0, 10.0, 10.0, 20.0) },
+		{ NodeId (2), Rect (30.0, 30.0, 20.0, 30.0) },
+		{ NodeId (3), Rect (90.0, 20.0, 40.0, 10.0) },
+		{ NodeId (4), Rect (140.0, 40.0, 20.0, 10.0) }
+	};
+
+	std::unordered_map<NodeId, Point> distributeOffsets = DistributeNodes (Distribution::Horizontal, rects);
+	ASSERT (IsEqual (distributeOffsets[NodeId (1)], Point (0.0, 0.0)));
+	ASSERT (IsEqual (distributeOffsets[NodeId (2)], Point (10.0, 0.0)));
+	ASSERT (IsEqual (distributeOffsets[NodeId (3)], Point (-10.0, 0.0)));
+	ASSERT (IsEqual (distributeOffsets[NodeId (4)], Point (0.0, 0.0)));
+}
+
+TEST (NodeDistributionTestHorizontal_Overlapping)
 {
 	std::unordered_map<NodeId, Rect> rects = {
 		{ NodeId (1), Rect (10.0, 10.0, 30.0, 10.0) },
