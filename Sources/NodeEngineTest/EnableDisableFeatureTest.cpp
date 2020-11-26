@@ -164,10 +164,10 @@ TEST (EnableDisableTest)
 	std::shared_ptr<TestNode> node3 (new TestNode (LocString (L"TestNode"), Point (0, 0)));
 	std::shared_ptr<TestNode> node4 (new TestNode (LocString (L"TestNode"), Point (0, 0)));
 
-	uiManager.AddNode (node1, calcEnv.evalEnv);
-	uiManager.AddNode (node2, calcEnv.evalEnv);
-	uiManager.AddNode (node3, calcEnv.evalEnv);
-	uiManager.AddNode (node4, calcEnv.evalEnv);
+	uiManager.AddNode (node1);
+	uiManager.AddNode (node2);
+	uiManager.AddNode (node3);
+	uiManager.AddNode (node4);
 
 	uiManager.ConnectOutputSlotToInputSlot (node1->GetUIOutputSlot (SlotId ("out")), node3->GetUIInputSlot (SlotId ("in1")));
 	uiManager.ConnectOutputSlotToInputSlot (node2->GetUIOutputSlot (SlotId ("out")), node3->GetUIInputSlot (SlotId ("in2")));

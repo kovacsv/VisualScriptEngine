@@ -15,9 +15,9 @@ TEST (TestListBuilderNode)
 	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr intNode = uiManager.AddNode (UINodePtr (new IntegerUpDownNode (LocString (L"Value1"), Point (0, 0), 1, 1)), EmptyEvaluationEnv);
-	UINodePtr intIncNode = uiManager.AddNode (UINodePtr (new IntegerIncrementedNode (LocString (L"Value2"), Point (0, 0))), EmptyEvaluationEnv);
-	UINodePtr listBuilder = uiManager.AddNode (UINodePtr (new ListBuilderNode (LocString (L"List Builder"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr intNode = uiManager.AddNode (UINodePtr (new IntegerUpDownNode (LocString (L"Value1"), Point (0, 0), 1, 1)));
+	UINodePtr intIncNode = uiManager.AddNode (UINodePtr (new IntegerIncrementedNode (LocString (L"Value2"), Point (0, 0))));
+	UINodePtr listBuilder = uiManager.AddNode (UINodePtr (new ListBuilderNode (LocString (L"List Builder"), Point (0, 0))));
 
 	{
 		ValueConstPtr val = listBuilder->Evaluate (EmptyEvaluationEnv);

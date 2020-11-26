@@ -206,7 +206,7 @@ TEST (NodeParametersTest)
 
 	NodeUIManagerNodeInvalidator invalidator (uiManager, node);
 
-	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
+	ASSERT (uiManager.AddNode (node) != nullptr);
 
 	NodeParameterList paramList;
 	node->RegisterParameters (paramList);
@@ -238,9 +238,9 @@ TEST (NodeParametersTest2)
 	NodeUIManager uiManager (env);
 
 	UINodePtr node (new TestNode (LocString (L"TestNode"), Point (0, 0)));
-	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
+	ASSERT (uiManager.AddNode (node) != nullptr);
 	UINodePtr node2 (new TestNode2 (LocString (L"TestNode2"), Point (0, 0)));
-	ASSERT (uiManager.AddNode (node2, NE::EmptyEvaluationEnv) != nullptr);
+	ASSERT (uiManager.AddNode (node2) != nullptr);
 
 	{
 		NodeParameterList paramList;
@@ -281,9 +281,9 @@ TEST (NodeParametersTest3)
 	NodeUIManager uiManager (env);
 
 	UINodePtr node (new TestNode (LocString (L"TestNode"), Point (0, 0)));
-	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
+	ASSERT (uiManager.AddNode (node) != nullptr);
 	UINodePtr node2 (new TestNode (LocString (L"TestNode"), Point (0, 0)));
-	ASSERT (uiManager.AddNode (node2, NE::EmptyEvaluationEnv) != nullptr);
+	ASSERT (uiManager.AddNode (node2) != nullptr);
 
 	{
 		NodeParameterList paramList;
@@ -307,7 +307,7 @@ TEST (NodeParametersTest4)
 	NodeUIManager uiManager (env);
 
 	std::shared_ptr<EnumerationParamTestNode> node (new EnumerationParamTestNode (LocString (L"TestNode"), Point (0, 0)));
-	ASSERT (uiManager.AddNode (node, NE::EmptyEvaluationEnv) != nullptr);
+	ASSERT (uiManager.AddNode (node) != nullptr);
 
 	{
 		NodeParameterList paramList;
@@ -335,8 +335,8 @@ TEST (DuplicateNodeTest)
 	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr node1 = uiManager.AddNode (UINodePtr (new TestNode (LocString (L"TestNode"), Point (0, 0))), NE::EmptyEvaluationEnv);
-	UINodePtr node2 = uiManager.AddNode (UINodePtr (new TestNode (LocString (L"TestNode2"), Point (0, 0))), NE::EmptyEvaluationEnv);
+	UINodePtr node1 = uiManager.AddNode (UINodePtr (new TestNode (LocString (L"TestNode"), Point (0, 0))));
+	UINodePtr node2 = uiManager.AddNode (UINodePtr (new TestNode (LocString (L"TestNode2"), Point (0, 0))));
 
 	NE::NodeCollection nodesToDuplicate ({ node1->GetId (), node2->GetId () });
 	NE::NodeCollection duplicatedNodes = uiManager.Duplicate (nodesToDuplicate);

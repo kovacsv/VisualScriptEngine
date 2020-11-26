@@ -16,8 +16,8 @@ static double GetUnaryOperationResult (double a, const std::function<UINodePtr (
 	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr val = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value"), Point (0, 0), a, 1.0)), EmptyEvaluationEnv);
-	UINodePtr op = uiManager.AddNode (nodeCreator (), EmptyEvaluationEnv);
+	UINodePtr val = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value"), Point (0, 0), a, 1.0)));
+	UINodePtr op = uiManager.AddNode (nodeCreator ());
 	uiManager.ConnectOutputSlotToInputSlot (val->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("a")));
 
 	ValueConstPtr result = op->Evaluate (EmptyEvaluationEnv);
@@ -37,9 +37,9 @@ TEST (TestAbsoluteNodeWithList)
 	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr val = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value"), Point (0, 0), -5.0, 1.0)), EmptyEvaluationEnv);
-	UINodePtr listVal = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value"), Point (0, 0))), EmptyEvaluationEnv);
-	UINodePtr op = uiManager.AddNode (UINodePtr (new AbsNode (LocString (L"Abs"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr val = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value"), Point (0, 0), -5.0, 1.0)));
+	UINodePtr listVal = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value"), Point (0, 0))));
+	UINodePtr op = uiManager.AddNode (UINodePtr (new AbsNode (LocString (L"Abs"), Point (0, 0))));
 	uiManager.ConnectOutputSlotToInputSlot (val->GetUIOutputSlot (SlotId ("out")), listVal->GetUIInputSlot (SlotId ("start")));
 	uiManager.ConnectOutputSlotToInputSlot (listVal->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("a")));
 

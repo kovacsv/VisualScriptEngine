@@ -47,8 +47,8 @@ TEST (NodeEditorOnSelectionChangedEventTest)
 	NodeUIManager uiManager (env);
 	DBGASSERT (env.selectionChangedCount == 0);
 
-	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (100, 100), 1.0, 1.0)), EmptyEvaluationEnv);
-	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (300, 200), 2.0, 1.0)), EmptyEvaluationEnv);
+	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (100, 100), 1.0, 1.0)));
+	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (300, 200), 2.0, 1.0)));
 	DBGASSERT (env.selectionChangedCount == 0);
 
 	Selection newSelection;
@@ -74,12 +74,12 @@ TEST (NodeEditorOnUndoStateChangedEventTest)
 	DBGASSERT (env.undoStateChangedCount == 0);
 
 	UINodePtr val1 (new DoubleUpDownNode (LocString (L"Value1"), Point (100, 100), 1.0, 1.0));
-	AddNodeCommand addNode1 (val1, env.GetEvaluationEnv ());
+	AddNodeCommand addNode1 (val1);
 	uiManager.ExecuteCommand (addNode1, env);
 	DBGASSERT (env.undoStateChangedCount == 1);
 
 	UINodePtr val2 (new DoubleUpDownNode (LocString (L"Value2"), Point (300, 200), 1.0, 1.0));
-	AddNodeCommand addNode2 (val2, env.GetEvaluationEnv ());
+	AddNodeCommand addNode2 (val2);
 	uiManager.ExecuteCommand (addNode2, env);
 	DBGASSERT (env.undoStateChangedCount == 2);
 
@@ -115,12 +115,12 @@ TEST (NodeEditorOnClipboardStateChangedEventTest)
 	DBGASSERT (env.clipboardStateChangedCount == 0);
 
 	UINodePtr val1 (new DoubleUpDownNode (LocString (L"Value1"), Point (100, 100), 1.0, 1.0));
-	AddNodeCommand addNode1 (val1, env.GetEvaluationEnv ());
+	AddNodeCommand addNode1 (val1);
 	uiManager.ExecuteCommand (addNode1, env);
 	DBGASSERT (env.clipboardStateChangedCount == 0);
 
 	UINodePtr val2 (new DoubleUpDownNode (LocString (L"Value2"), Point (300, 200), 1.0, 1.0));
-	AddNodeCommand addNode2 (val2, env.GetEvaluationEnv ());
+	AddNodeCommand addNode2 (val2);
 	uiManager.ExecuteCommand (addNode2, env);
 	DBGASSERT (env.clipboardStateChangedCount == 0);
 

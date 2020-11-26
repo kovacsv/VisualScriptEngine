@@ -29,13 +29,12 @@ public:
 class AddNodeCommand : public UndoableCommand
 {
 public:
-	AddNodeCommand (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv);
+	AddNodeCommand (const UINodePtr& uiNode);
 
 	virtual void Do (NodeUIManager& uiManager) override;
 
 private:
 	const UINodePtr&	uiNode;
-	NE::EvaluationEnv&	evaluationEnv;
 };
 
 class DeleteNodesCommand : public UndoableCommand

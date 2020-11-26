@@ -16,9 +16,9 @@ static double GetBinaryOperationResult (double a, double b, const std::function<
 	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (0, 0), a, 1.0)), EmptyEvaluationEnv);
-	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (0, 0), b, 1.0)), EmptyEvaluationEnv);
-	UINodePtr op = uiManager.AddNode (nodeCreator (), EmptyEvaluationEnv);
+	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (0, 0), a, 1.0)));
+	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Value1"), Point (0, 0), b, 1.0)));
+	UINodePtr op = uiManager.AddNode (nodeCreator ());
 	uiManager.ConnectOutputSlotToInputSlot (val1->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("a")));
 	uiManager.ConnectOutputSlotToInputSlot (val2->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("b")));
 
@@ -39,9 +39,9 @@ TEST (TestAdditionNodeWithList)
 	TestUIEnvironment env;
 	NodeUIManager uiManager (env);
 
-	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value1"), Point (0, 0))), EmptyEvaluationEnv);
-	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value2"), Point (0, 0))), EmptyEvaluationEnv);
-	UINodePtr op = uiManager.AddNode (UINodePtr (new AdditionNode (LocString (L"Addition"), Point (0, 0))), EmptyEvaluationEnv);
+	UINodePtr val1 = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value1"), Point (0, 0))));
+	UINodePtr val2 = uiManager.AddNode (UINodePtr (new DoubleIncrementedNode (LocString (L"Value2"), Point (0, 0))));
+	UINodePtr op = uiManager.AddNode (UINodePtr (new AdditionNode (LocString (L"Addition"), Point (0, 0))));
 	uiManager.ConnectOutputSlotToInputSlot (val1->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("a")));
 	uiManager.ConnectOutputSlotToInputSlot (val2->GetUIOutputSlot (SlotId ("out")), op->GetUIInputSlot (SlotId ("b")));
 

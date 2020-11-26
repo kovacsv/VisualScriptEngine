@@ -34,16 +34,15 @@ bool NotUndoableCommand::IsUndoable () const
 	return false;
 }
 
-AddNodeCommand::AddNodeCommand (const UINodePtr& uiNode, NE::EvaluationEnv& evaluationEnv) :
+AddNodeCommand::AddNodeCommand (const UINodePtr& uiNode) :
 	UndoableCommand (),
-	uiNode (uiNode),
-	evaluationEnv (evaluationEnv)
+	uiNode (uiNode)
 {
 }
 
 void AddNodeCommand::Do (NodeUIManager& uiManager)
 {
-	uiManager.AddNode (uiNode, evaluationEnv);
+	uiManager.AddNode (uiNode);
 }
 
 DeleteNodesCommand::DeleteNodesCommand (NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& nodes) :

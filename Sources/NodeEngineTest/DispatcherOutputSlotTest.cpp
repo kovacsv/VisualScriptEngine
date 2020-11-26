@@ -103,9 +103,9 @@ TEST (DispatcherOutputSlotEvaluationTest)
 	UINodePtr valueNode1 (new ValueNode (LocString (L"Node"), Point (0.0, 0.0)));
 	UINodePtr valueNode2 (new ValueNode (LocString (L"Node"), Point (0.0, 0.0)));
 
-	ASSERT (uiManager.AddNode (dispatcherNode, NE::EmptyEvaluationEnv) != nullptr);
-	ASSERT (uiManager.AddNode (valueNode1, NE::EmptyEvaluationEnv) != nullptr);
-	ASSERT (uiManager.AddNode (valueNode2, NE::EmptyEvaluationEnv) != nullptr);
+	ASSERT (uiManager.AddNode (dispatcherNode) != nullptr);
+	ASSERT (uiManager.AddNode (valueNode1) != nullptr);
+	ASSERT (uiManager.AddNode (valueNode2) != nullptr);
 
 	ASSERT (uiManager.ConnectOutputSlotToInputSlot (dispatcherNode->GetUIOutputSlot (SlotId ("out1")), valueNode1->GetUIInputSlot (SlotId ("in"))));
 	ASSERT (uiManager.ConnectOutputSlotToInputSlot (dispatcherNode->GetUIOutputSlot (SlotId ("out2")), valueNode2->GetUIInputSlot (SlotId ("in"))));

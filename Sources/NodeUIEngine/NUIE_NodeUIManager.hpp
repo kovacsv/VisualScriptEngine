@@ -95,7 +95,7 @@ public:
 	NodeUIManager&				operator= (const NodeUIManager& rhs) = delete;
 	NodeUIManager&				operator= (NodeUIManager&& rhs) = delete;
 
-	UINodePtr					AddNode (const UINodePtr& uiNode, NE::EvaluationEnv& evalEnv);
+	UINodePtr					AddNode (const UINodePtr& uiNode);
 	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
 	bool						DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
 
