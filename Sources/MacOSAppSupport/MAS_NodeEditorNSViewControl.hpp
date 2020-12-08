@@ -19,8 +19,8 @@ namespace MAS
 class NodeEditorNSViewControl : public NUIE::NativeNodeEditorControl
 {
 public:
-	NodeEditorNSViewControl ();
-	NodeEditorNSViewControl (const NUIE::NativeDrawingContextPtr& nativeContext);
+	NodeEditorNSViewControl (InputHandling inputHandling);
+	NodeEditorNSViewControl (InputHandling inputHandling, const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorNSViewControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;

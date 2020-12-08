@@ -32,8 +32,8 @@ public:
 		virtual HBITMAP LoadImage (const NUIE::IconId& iconId) = 0;
 	};
 
-	NodeEditorNodeTreeHwndControl (const Settings& settings);
-	NodeEditorNodeTreeHwndControl (const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext);
+	NodeEditorNodeTreeHwndControl (InputHandling inputHandling, const Settings& settings);
+	NodeEditorNodeTreeHwndControl (InputHandling inputHandling, const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorNodeTreeHwndControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;

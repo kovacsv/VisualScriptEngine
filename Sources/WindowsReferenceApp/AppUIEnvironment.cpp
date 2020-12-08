@@ -104,7 +104,7 @@ AppUIEnvironment::AppUIEnvironment () :
 	eventHandler (),
 	clipboardHandler (),
 	evaluationEnv (nullptr),
-	nodeEditorControl (NodeTreeControlSettings, CreateDrawingContext ()),
+	nodeEditorControl (NUIE::NativeNodeEditorControl::InputHandling::Enabled, NodeTreeControlSettings, CreateDrawingContext ()),
 	fileMenu (nullptr),
 	toolbar (nullptr)
 {

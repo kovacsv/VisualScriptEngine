@@ -9,8 +9,16 @@ namespace NUIE
 class NativeNodeEditorControl
 {
 public:
-	NativeNodeEditorControl ();
+	enum class InputHandling
+	{
+		Enabled,
+		Disabled
+	};
+
+	NativeNodeEditorControl (InputHandling inputHandling);
 	virtual ~NativeNodeEditorControl ();
+
+	bool						IsInputHandlingEnabled () const;
 
 	virtual bool				Init (NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) = 0;
 	virtual void*				GetEditorNativeHandle () const = 0;
@@ -21,6 +29,9 @@ public:
 	virtual void				Draw () = 0;
 
 	virtual DrawingContext&		GetDrawingContext () = 0;
+
+private:
+	InputHandling				inputHandling;
 };
 
 using NativeNodeEditorControlPtr = std::shared_ptr<NativeNodeEditorControl>;

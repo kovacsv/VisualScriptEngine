@@ -208,14 +208,14 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 namespace MAS
 {
 
-NodeEditorNSViewControl::NodeEditorNSViewControl () :
-	NodeEditorNSViewControl (NUIE::NativeDrawingContextPtr (new NSViewContext ()))
+NodeEditorNSViewControl::NodeEditorNSViewControl (InputHandling inputHandling) :
+	NodeEditorNSViewControl (inputHandling, NUIE::NativeDrawingContextPtr (new NSViewContext ()))
 {
 
 }
 
-NodeEditorNSViewControl::NodeEditorNSViewControl (const NUIE::NativeDrawingContextPtr& nativeContext) :
-	NativeNodeEditorControl (),
+NodeEditorNSViewControl::NodeEditorNSViewControl (InputHandling inputHandling, const NUIE::NativeDrawingContextPtr& nativeContext) :
+	NativeNodeEditorControl (inputHandling),
 	nodeEditor (nullptr),
 	nativeContext (nativeContext),
 	nsView (nil)

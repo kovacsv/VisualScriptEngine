@@ -83,11 +83,11 @@ NodeEditorNodeTreeHwndControl::ImageLoader::~ImageLoader ()
 
 }
 
-NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& settings) :
-	NUIE::NativeNodeEditorControl (),
+NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (InputHandling inputHandling, const Settings& settings) :
+	NUIE::NativeNodeEditorControl (inputHandling),
 	settings (settings),
 	nodeTreeView (),
-	nodeEditorControl (),
+	nodeEditorControl (inputHandling),
 	mainControl (),
 	selectedNode (InvalidNode),
 	draggedNode (InvalidNode)
@@ -95,11 +95,11 @@ NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& se
 
 }
 
-NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext) :
-	NUIE::NativeNodeEditorControl (),
+NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (InputHandling inputHandling, const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext) :
+	NUIE::NativeNodeEditorControl (inputHandling),
 	settings (settings),
 	nodeTreeView (),
-	nodeEditorControl (nativeContext),
+	nodeEditorControl (inputHandling, nativeContext),
 	mainControl (),
 	selectedNode (InvalidNode),
 	draggedNode (InvalidNode)
