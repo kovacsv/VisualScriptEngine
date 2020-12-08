@@ -15,10 +15,11 @@ public:
 		Disabled
 	};
 
-	NativeNodeEditorControl (InputHandling inputHandling);
+	NativeNodeEditorControl ();
 	virtual ~NativeNodeEditorControl ();
 
 	bool						IsInputHandlingEnabled () const;
+	virtual void				SetInputHandling (InputHandling newInputHandling);
 
 	virtual bool				Init (NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) = 0;
 	virtual void*				GetEditorNativeHandle () const = 0;

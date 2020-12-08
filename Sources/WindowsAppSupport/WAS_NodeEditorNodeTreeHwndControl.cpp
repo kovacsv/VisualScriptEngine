@@ -83,11 +83,11 @@ NodeEditorNodeTreeHwndControl::ImageLoader::~ImageLoader ()
 
 }
 
-NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (InputHandling inputHandling, const Settings& settings) :
-	NUIE::NativeNodeEditorControl (inputHandling),
+NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& settings) :
+	NUIE::NativeNodeEditorControl (),
 	settings (settings),
 	nodeTreeView (),
-	nodeEditorControl (inputHandling),
+	nodeEditorControl (),
 	mainControl (),
 	selectedNode (InvalidNode),
 	draggedNode (InvalidNode)
@@ -95,11 +95,11 @@ NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (InputHandling inpu
 
 }
 
-NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (InputHandling inputHandling, const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext) :
-	NUIE::NativeNodeEditorControl (inputHandling),
+NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext) :
+	NUIE::NativeNodeEditorControl (),
 	settings (settings),
 	nodeTreeView (),
-	nodeEditorControl (inputHandling, nativeContext),
+	nodeEditorControl (nativeContext),
 	mainControl (),
 	selectedNode (InvalidNode),
 	draggedNode (InvalidNode)
@@ -110,6 +110,12 @@ NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (InputHandling inpu
 NodeEditorNodeTreeHwndControl::~NodeEditorNodeTreeHwndControl ()
 {
 
+}
+
+void NodeEditorNodeTreeHwndControl::SetInputHandling (InputHandling newInputHandling)
+{
+	NativeNodeEditorControl::SetInputHandling (newInputHandling);
+	nodeEditorControl.SetInputHandling (newInputHandling);
 }
 
 bool NodeEditorNodeTreeHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height)

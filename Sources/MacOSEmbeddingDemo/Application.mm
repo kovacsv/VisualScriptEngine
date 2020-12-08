@@ -246,7 +246,7 @@ AppNodeUIEnvironment::AppNodeUIEnvironment () :
 	evaluationEnv (NE::EmptyEvaluationEnv),
 	eventHandler (),
 	clipboardHandler (),
-	nodeEditorControl (NUIE::NativeNodeEditorControl::InputHandling::Enabled, NUIE::NativeDrawingContextPtr (new MAS::NSViewContext (MAS::NSImageLoaderPtr (new AppImageLoader ()))))
+	nodeEditorControl (NUIE::NativeDrawingContextPtr (new MAS::NSViewContext (MAS::NSImageLoaderPtr (new AppImageLoader ()))))
 {
 	
 }

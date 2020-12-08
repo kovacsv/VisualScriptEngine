@@ -189,14 +189,14 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
-NodeEditorHwndControl::NodeEditorHwndControl (InputHandling inputHandling) :
-	NodeEditorHwndControl (inputHandling, NUIE::NativeDrawingContextPtr (new BitmapContextGdi ()))
+NodeEditorHwndControl::NodeEditorHwndControl () :
+	NodeEditorHwndControl ( NUIE::NativeDrawingContextPtr (new BitmapContextGdi ()))
 {
 
 }
 
-NodeEditorHwndControl::NodeEditorHwndControl (InputHandling inputHandling, const NUIE::NativeDrawingContextPtr& nativeContext) :
-	NativeNodeEditorControl (inputHandling),
+NodeEditorHwndControl::NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext) :
+	NativeNodeEditorControl (),
 	nodeEditor (nullptr),
 	nativeContext (nativeContext),
 	control ()

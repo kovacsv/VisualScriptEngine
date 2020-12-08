@@ -104,11 +104,11 @@ AppUIEnvironment::AppUIEnvironment () :
 	eventHandler (),
 	clipboardHandler (),
 	evaluationEnv (nullptr),
-	nodeEditorControl (NUIE::NativeNodeEditorControl::InputHandling::Enabled, NodeTreeControlSettings, CreateDrawingContext ()),
+	nodeEditorControl (NodeTreeControlSettings, CreateDrawingContext ()),
 	fileMenu (nullptr),
 	toolbar (nullptr)
 {
-	
+
 }
 
 void AppUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, WAS::FileMenu* fileMenuPtr, WAS::Toolbar* toolbarPtr, HWND parentHandle)

@@ -13,8 +13,8 @@ namespace WAS
 class NodeEditorHwndControl : public NUIE::NativeNodeEditorControl
 {
 public:
-	NodeEditorHwndControl (InputHandling inputHandling);
-	NodeEditorHwndControl (InputHandling inputHandling, const NUIE::NativeDrawingContextPtr& nativeContext);
+	NodeEditorHwndControl ();
+	NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorHwndControl ();
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;
