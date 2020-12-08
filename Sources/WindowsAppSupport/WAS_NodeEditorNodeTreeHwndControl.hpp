@@ -36,7 +36,7 @@ public:
 	NodeEditorNodeTreeHwndControl (const Settings& settings, const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorNodeTreeHwndControl ();
 
-	virtual void					SetInputHandling (InputHandling newInputHandling) override;
+	virtual void					EnableInputHandling (bool enabled) override;
 
 	virtual bool					Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height) override;
 	virtual void*					GetEditorNativeHandle () const override;

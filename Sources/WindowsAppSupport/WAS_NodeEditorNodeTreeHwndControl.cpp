@@ -112,10 +112,10 @@ NodeEditorNodeTreeHwndControl::~NodeEditorNodeTreeHwndControl ()
 
 }
 
-void NodeEditorNodeTreeHwndControl::SetInputHandling (InputHandling newInputHandling)
+void NodeEditorNodeTreeHwndControl::EnableInputHandling (bool enabled)
 {
-	NativeNodeEditorControl::SetInputHandling (newInputHandling);
-	nodeEditorControl.SetInputHandling (newInputHandling);
+	NativeNodeEditorControl::EnableInputHandling (enabled);
+	nodeEditorControl.EnableInputHandling (enabled);
 }
 
 bool NodeEditorNodeTreeHwndControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativeParentHandle, int x, int y, int width, int height)
