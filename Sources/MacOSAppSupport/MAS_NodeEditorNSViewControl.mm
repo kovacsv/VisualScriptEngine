@@ -14,13 +14,13 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 	}
 }
 
-@interface CocoaNSViewControl : NSView
+@interface EditorView : NSView
 {
 @private MAS::NodeEditorNSViewControl* nodeEditorControl;
 }
 @end
 
-@implementation CocoaNSViewControl
+@implementation EditorView
 
 - (BOOL) acceptsFirstResponder
 {
@@ -49,6 +49,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) mouseDown : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	if ([event modifierFlags] & NSEventModifierFlagControl) {
@@ -60,6 +63,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) mouseUp : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Left, position.GetX (), position.GetY ());
@@ -67,6 +73,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) rightMouseDown : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	MouseDownEvent (nodeEditor, event, NUIE::MouseButton::Right, position.GetX (), position.GetY ());
@@ -74,6 +83,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) rightMouseUp : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Right, position.GetX (), position.GetY ());
@@ -81,6 +93,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) otherMouseDown : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	MouseDownEvent (nodeEditor, event, NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
@@ -88,6 +103,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) otherMouseUp : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OnMouseUp (MAS::GetModifierKeysFromEvent (event), NUIE::MouseButton::Middle, position.GetX (), position.GetY ());
@@ -95,6 +113,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) mouseDragged : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
@@ -102,6 +123,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) rightMouseDragged : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
@@ -109,6 +133,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) otherMouseDragged : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OnMouseMove (MAS::GetModifierKeysFromEvent (event), position.GetX (), position.GetY ());
@@ -116,6 +143,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) scrollWheel : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	NUIE::ModifierKeys modifierKeys = MAS::GetModifierKeysFromEvent (event);
 	float deltaX = [event scrollingDeltaX];
@@ -134,6 +164,9 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) magnifyWithEvent : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
 	NUIE::MouseWheelRotation rotation = NUIE::MouseWheelRotation::Forward;
 	if ([event magnification] < 0.0f) {
@@ -145,12 +178,18 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (void) swipeWithEvent : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
 	nodeEditor->OnMouseSwipe (MAS::GetModifierKeysFromEvent (event), [event deltaX], [event deltaY]);
 }
 
 - (void) keyDown : (NSEvent*) event
 {
+	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		return;
+	}
 	if (!nodeEditorControl->IsMouseOverEditorWindow ()) {
 		return;
 	}
@@ -242,8 +281,8 @@ bool NodeEditorNSViewControl::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativ
 	@autoreleasepool {
 		@try {
 			NSRect viewRect = NSMakeRect (x, y, width, height);
-			nsView = [[CocoaNSViewControl alloc] initWithFrame : viewRect];
-			[((CocoaNSViewControl*) nsView) setNodeEditorControl : this];
+			nsView = [[EditorView alloc] initWithFrame : viewRect];
+			[((EditorView*) nsView) setNodeEditorControl : this];
 			[((NSView*) nativeParentHandle) addSubview : nsView];
 		} @catch (NSException*) {
 			
