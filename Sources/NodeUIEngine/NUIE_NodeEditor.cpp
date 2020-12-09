@@ -131,6 +131,12 @@ void NodeEditor::ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outpu
 	Update ();
 }
 
+void NodeEditor::InvalidateAllDrawings ()
+{
+	uiManager.InvalidateAllDrawings ();
+	Update ();
+}
+
 Point NodeEditor::ViewToModel (const Point& viewPoint) const
 {
 	const ViewBox& viewBox = uiManager.GetViewBox ();

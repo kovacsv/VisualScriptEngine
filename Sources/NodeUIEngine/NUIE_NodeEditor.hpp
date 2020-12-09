@@ -44,6 +44,7 @@ public:
 
 	void						AddNode (const UINodePtr& uiNode);
 	void						ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
+	void						InvalidateAllDrawings ();
 
 	Point						ViewToModel (const Point& viewPoint) const;
 	void						AlignToWindow ();
