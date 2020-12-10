@@ -19,6 +19,8 @@ NSPoint						CreatePoint (const NSView* view, const NUIE::Point& point);
 NSPoint						CreateScreenPoint (const NSView* view, const NUIE::Point& point);
 NSRect						CreateRect (const NSView* view, const NUIE::Rect& rect);
 NSColor*					CreateColor (const NUIE::Color& color);
+NSImage*					FlipImageVertically (const NSImage* image);
+NSImage*					FlipImageHorizontally (const NSImage* image);
 	
 NUIE::MenuCommandPtr		SelectCommandFromContextMenu (const NSView* nsView, const NUIE::Point& position, const NUIE::MenuCommandStructure& commands);
 	

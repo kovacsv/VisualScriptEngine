@@ -95,7 +95,41 @@ NSColor* CreateColor (const NUIE::Color& color)
 {
 	return [NSColor colorWithRed:color.GetR () / 255.0f green:color.GetG () / 255.0f blue:color.GetB () / 255.0f alpha:1.0f];
 }
-	
+
+NSImage* FlipImageVertically (const NSImage* image)
+{
+	NSImage *tmpImage;
+	NSAffineTransform *transform = [NSAffineTransform transform];
+
+	NSSize dimensions = [image size];
+	NSAffineTransformStruct flip = {1.0, 0.0, 0.0, -1.0, 0.0, dimensions.height};
+	tmpImage = [[NSImage alloc] initWithSize:dimensions];
+	[tmpImage lockFocus];
+	[transform setTransformStruct:flip];
+	[transform concat];
+	[image drawAtPoint:NSMakePoint(0,0) fromRect:NSMakeRect(0,0, dimensions.width, dimensions.height) operation:NSCompositingOperationCopy fraction:1.0];
+	[tmpImage unlockFocus];
+
+	return [tmpImage autorelease];
+}
+
+NSImage* FlipImageHorizontally (const NSImage* image)
+{
+	NSImage *tmpImage;
+	NSAffineTransform *transform = [NSAffineTransform transform];
+
+	NSSize dimensions = [image size];
+	NSAffineTransformStruct flip = {-1.0, 0.0, 0.0, 1.0, 0.0, dimensions.width};
+	tmpImage = [[NSImage alloc] initWithSize:dimensions];
+	[tmpImage lockFocus];
+	[transform setTransformStruct:flip];
+	[transform concat];
+	[image drawAtPoint:NSMakePoint(0,0) fromRect:NSMakeRect(0,0, dimensions.width, dimensions.height) operation:NSCompositingOperationCopy fraction:1.0];
+	[tmpImage unlockFocus];
+
+	return [tmpImage autorelease];
+}
+
 static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordered_map<int, NUIE::MenuCommandPtr>& commandTable, ContextMenu* originalMenu, ContextMenu* currentMenu, int& currentCommandId)
 {
 	if (command->HasChildCommands ()) {
