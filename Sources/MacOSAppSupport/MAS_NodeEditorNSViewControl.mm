@@ -50,6 +50,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) mouseDown : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super mouseDown: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -64,6 +65,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) mouseUp : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super mouseUp: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -74,6 +76,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) rightMouseDown : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super rightMouseDown: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -84,6 +87,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) rightMouseUp : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super rightMouseUp: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -94,6 +98,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) otherMouseDown : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super otherMouseDown: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -104,6 +109,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) otherMouseUp : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super otherMouseUp: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -114,6 +120,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) mouseDragged : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super mouseDragged: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -124,6 +131,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) rightMouseDragged : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super rightMouseDragged: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -134,6 +142,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) otherMouseDragged : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super otherMouseDragged: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -144,6 +153,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) scrollWheel : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super scrollWheel: event];
 		return;
 	}
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
@@ -165,6 +175,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) magnifyWithEvent : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super magnifyWithEvent: event];
 		return;
 	}
 	NUIE::Point position = MAS::GetViewPositionFromEvent (self, event);
@@ -179,6 +190,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) swipeWithEvent : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super swipeWithEvent: event];
 		return;
 	}
 	NUIE::NodeEditor* nodeEditor = nodeEditorControl->GetNodeEditor ();
@@ -188,6 +200,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 - (void) keyDown : (NSEvent*) event
 {
 	if (!nodeEditorControl->IsInputHandlingEnabled ()) {
+		[super keyDown: event];
 		return;
 	}
 	if (!nodeEditorControl->IsMouseOverEditorWindow ()) {
