@@ -35,14 +35,18 @@ def Main (argv):
 		sourceFolders.append (argv[i])
 	resultPoFile = os.path.abspath (argv[argCount - 1])
 	
+	stringEscapeChar = '\\"'
+	stringEscapePlaceholder = '$$$'
 	locStrings = []
 	for sourceFolder in sourceFolders:
 		sourceFiles = GetFilesInDirectory (sourceFolder)
 		for sourceFile in sourceFiles:
 			fileContent = GetFileContent (sourceFile)
+			fileContent = fileContent.replace (stringEscapeChar, stringEscapePlaceholder)
 			for searchCriteria in searchCriterias:
 				currLocStrings = re.findall (searchCriteria, fileContent)
 				for locString in currLocStrings:
+					locString = locString.replace (stringEscapePlaceholder, stringEscapeChar);
 					if not locString in locStrings:
 						locStrings.append (locString)
 	

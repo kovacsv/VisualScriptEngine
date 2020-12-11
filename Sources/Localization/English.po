@@ -55,6 +55,9 @@ msgstr "Ungroup Nodes"
 msgid "Select Nodes"
 msgstr "Select Nodes"
 
+msgid "Add To Group \"%ls\""
+msgstr "Add To Group \"%ls\""
+
 msgid "Grouping"
 msgstr "Grouping"
 
