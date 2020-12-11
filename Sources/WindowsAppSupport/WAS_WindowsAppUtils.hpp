@@ -28,6 +28,8 @@ FileFilter					GetDefaultFileFilter ();
 bool						OpenFileDialog (HWND hwnd, const FileFilter& filter, std::wstring& selectedFileName);
 bool						SaveFileDialog (HWND hwnd, const FileFilter& filter, std::wstring& selectedFileName);
 
+std::wstring				GetResourceFileContentUtf8BOM (LPCWSTR resourceName, LPCWSTR resourceType);
+
 }
 
 #endif

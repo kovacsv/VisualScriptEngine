@@ -1,9 +1,11 @@
 #include "WAS_WindowsAppUtils.hpp"
+#include "NE_StringUtils.hpp"
 
 #include <unordered_map>
 
 #define MAX_PATH_LENGTH 4096
 #define MAX_STR_LENGTH 4096
+#define BOM_SIZE 3
 
 namespace WAS
 {
@@ -164,6 +166,35 @@ bool OpenFileDialog (HWND hwnd, const FileFilter& filter, std::wstring& selected
 bool SaveFileDialog (HWND hwnd, const FileFilter& filter, std::wstring& selectedFileName)
 {
 	return OpenSaveFileDialog (FileDialogType::Save, hwnd, filter, selectedFileName);
+}
+
+std::wstring GetResourceFileContentUtf8BOM (LPCWSTR resourceName, LPCWSTR resourceType)
+{
+	std::wstring result;
+
+	HRSRC resourceHandle = FindResource (NULL, resourceName, resourceType);
+	if (resourceHandle == NULL) {
+		return result;
+	}
+
+	DWORD resourceSize = SizeofResource (NULL, resourceHandle);
+	if (resourceSize < BOM_SIZE) {
+		return result;
+	}
+
+	HGLOBAL resourceData = LoadResource (NULL, resourceHandle);
+	if (resourceData == NULL) {
+		return result;
+	}
+
+	const void* resourcePtr = LockResource (resourceData);
+	if (resourcePtr == NULL) {
+		return result;
+	}
+
+	std::string resultStr ((const char*) resourcePtr + 3, resourceSize - 3);
+	result = NE::StringToWString (resultStr);
+	return result;
 }
 
 }
