@@ -1,5 +1,4 @@
 #include "WAS_NodeEditorHwndControl.hpp"
-#include "WAS_BitmapContextGdi.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "NE_Debug.hpp"
 
@@ -187,12 +186,6 @@ static LRESULT CALLBACK NodeEditorStaticWindowProc (HWND hwnd, UINT msg, WPARAM 
 	}
 
 	return DefWindowProc (hwnd, msg, wParam, lParam);
-}
-
-NodeEditorHwndControl::NodeEditorHwndControl () :
-	NodeEditorHwndControl ( NUIE::NativeDrawingContextPtr (new BitmapContextGdi ()))
-{
-
 }
 
 NodeEditorHwndControl::NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext) :

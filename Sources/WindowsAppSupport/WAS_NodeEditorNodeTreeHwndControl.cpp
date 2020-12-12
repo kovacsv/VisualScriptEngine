@@ -1,5 +1,5 @@
 #include "WAS_NodeEditorNodeTreeHwndControl.hpp"
-#include "WAS_BitmapContextGdi.hpp"
+#include "WAS_GdiOffscreenContext.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "NE_Debug.hpp"
 
@@ -79,18 +79,6 @@ NodeEditorNodeTreeHwndControl::ImageLoader::ImageLoader ()
 }
 
 NodeEditorNodeTreeHwndControl::ImageLoader::~ImageLoader ()
-{
-
-}
-
-NodeEditorNodeTreeHwndControl::NodeEditorNodeTreeHwndControl (const Settings& settings) :
-	NUIE::NativeNodeEditorControl (),
-	settings (settings),
-	nodeTreeView (),
-	nodeEditorControl (),
-	mainControl (),
-	selectedNode (InvalidNode),
-	draggedNode (InvalidNode)
 {
 
 }

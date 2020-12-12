@@ -1,7 +1,10 @@
 #include "AppUIEnvironment.hpp"
 #include "BI_BuiltInNodes.hpp"
 #include "WAS_WindowsAppUtils.hpp"
+#include "WAS_GdiOffscreenContext.hpp"
+#include "WAS_GdiplusOffscreenContext.hpp"
 #include "WAS_Direct2DContext.hpp"
+#include "WAS_Direct2DOffscreenContext.hpp"
 #include "WAS_GdiplusUtils.hpp"
 
 #include "ResourceIds.hpp"
@@ -91,10 +94,29 @@ public:
 	}
 };
 
-static NUIE::NativeDrawingContextPtr CreateDrawingContext ()
+enum class ContextType
 {
-	WAS::Direct2DImageLoaderPtr imageLoader (new AppResourceImageLoader ());
-	return NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (imageLoader));
+	Gdi,
+	Gdiplus,
+	Direct2D,
+	Direct2DOffscreen
+};
+
+static NUIE::NativeDrawingContextPtr CreateDrawingContext (ContextType contextType)
+{
+	if (contextType == ContextType::Gdi) {
+		return NUIE::NativeDrawingContextPtr (new WAS::GdiOffscreenContext ());
+	} else if (contextType == ContextType::Gdiplus) {
+		return NUIE::NativeDrawingContextPtr (new WAS::GdiplusOffscreenContext ());
+	} else if (contextType == ContextType::Direct2D) {
+		WAS::Direct2DImageLoaderPtr imageLoader (new AppResourceImageLoader ());
+		return NUIE::NativeDrawingContextPtr (new WAS::Direct2DContext (imageLoader));
+	} else if (contextType == ContextType::Direct2DOffscreen) {
+		WAS::Direct2DImageLoaderPtr imageLoader (new AppResourceImageLoader ());
+		return NUIE::NativeDrawingContextPtr (new WAS::Direct2DOffscreenContext (imageLoader));
+	}
+	DBGBREAK ();
+	return nullptr;
 }
 
 AppUIEnvironment::AppUIEnvironment () :
@@ -104,7 +126,7 @@ AppUIEnvironment::AppUIEnvironment () :
 	eventHandler (),
 	clipboardHandler (),
 	evaluationEnv (nullptr),
-	nodeEditorControl (NodeTreeControlSettings, CreateDrawingContext ()),
+	nodeEditorControl (NodeTreeControlSettings, CreateDrawingContext (ContextType::Direct2DOffscreen)),
 	fileMenu (nullptr),
 	toolbar (nullptr)
 {

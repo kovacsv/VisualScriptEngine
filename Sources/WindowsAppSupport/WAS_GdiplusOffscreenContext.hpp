@@ -1,5 +1,5 @@
-#ifndef WAS_BITMAPCONTEXTGDIPLUS_HPP
-#define WAS_BITMAPCONTEXTGDIPLUS_HPP
+#ifndef WAS_GDIPLUSOFFSCREENCONTEXT_HPP
+#define WAS_GDIPLUSOFFSCREENCONTEXT_HPP
 
 #include <memory>
 
@@ -10,11 +10,11 @@
 namespace WAS
 {
 
-class BitmapContextGdiplus : public NUIE::NativeDrawingContext
+class GdiplusOffscreenContext : public NUIE::NativeDrawingContext
 {
 public:
-	BitmapContextGdiplus ();
-	virtual ~BitmapContextGdiplus ();
+	GdiplusOffscreenContext ();
+	virtual ~GdiplusOffscreenContext ();
 
 	virtual void		Init (void* nativeHandle) override;
 	virtual void		BlitToWindow (void* nativeHandle) override;

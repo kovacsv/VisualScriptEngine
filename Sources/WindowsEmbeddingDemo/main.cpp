@@ -1,6 +1,6 @@
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_NodeTree.hpp"
-#include "WAS_BitmapContextGdi.hpp"
+#include "WAS_GdiOffscreenContext.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_HwndEventHandler.hpp"
 #include "WAS_ParameterDialog.hpp"
@@ -95,7 +95,7 @@ public:
 		eventHandler (),
 		clipboardHandler (),
 		evaluationEnv (nullptr),
-		drawingContext (new WAS::BitmapContextGdi ()),
+		drawingContext (new WAS::GdiOffscreenContext ()),
 		nodeEditor (nullptr),
 		editorHandle (nullptr)
 	{

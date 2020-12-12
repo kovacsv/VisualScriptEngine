@@ -1,4 +1,4 @@
-#include "WAS_BitmapContextGdiplus.hpp"
+#include "WAS_GdiplusOffscreenContext.hpp"
 #include "NE_Debug.hpp"
 
 #include <cmath>
@@ -6,7 +6,7 @@
 namespace WAS
 {
 
-BitmapContextGdiplus::BitmapContextGdiplus () :
+GdiplusOffscreenContext::GdiplusOffscreenContext () :
 	NUIE::NativeDrawingContext (),
 	gdiplusInitializer (),
 	width (0),
@@ -17,12 +17,12 @@ BitmapContextGdiplus::BitmapContextGdiplus () :
 	
 }
 
-BitmapContextGdiplus::~BitmapContextGdiplus ()
+GdiplusOffscreenContext::~GdiplusOffscreenContext ()
 {
 
 }
 
-void BitmapContextGdiplus::Init (void* nativeHandle)
+void GdiplusOffscreenContext::Init (void* nativeHandle)
 {
 	HWND hwnd = (HWND) nativeHandle;
 
@@ -33,7 +33,7 @@ void BitmapContextGdiplus::Init (void* nativeHandle)
 	InitGraphics ();
 }
 
-void BitmapContextGdiplus::BlitToWindow (void* nativeHandle)
+void GdiplusOffscreenContext::BlitToWindow (void* nativeHandle)
 {
 	HWND hwnd = (HWND) nativeHandle;
 
@@ -43,7 +43,7 @@ void BitmapContextGdiplus::BlitToWindow (void* nativeHandle)
 	EndPaint (hwnd, &ps);
 }
 
-void BitmapContextGdiplus::BlitToContext (void* nativeContext)
+void GdiplusOffscreenContext::BlitToContext (void* nativeContext)
 {
 	HDC hdc = (HDC) nativeContext;
 
@@ -61,79 +61,79 @@ void BitmapContextGdiplus::BlitToContext (void* nativeContext)
 	DeleteDC (memoryDC);
 }
 
-void BitmapContextGdiplus::Resize (int newWidth, int newHeight)
+void GdiplusOffscreenContext::Resize (int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
 	InitGraphics ();
 }
 
-int BitmapContextGdiplus::GetWidth () const
+int GdiplusOffscreenContext::GetWidth () const
 {
 	return width;
 }
 
-int BitmapContextGdiplus::GetHeight () const
+int GdiplusOffscreenContext::GetHeight () const
 {
 	return height;
 }
 
-void BitmapContextGdiplus::BeginDraw ()
+void GdiplusOffscreenContext::BeginDraw ()
 {
 
 }
 
-void BitmapContextGdiplus::EndDraw ()
+void GdiplusOffscreenContext::EndDraw ()
 {
 
 }
 
-bool BitmapContextGdiplus::NeedToDraw (ItemPreviewMode)
+bool GdiplusOffscreenContext::NeedToDraw (ItemPreviewMode)
 {
 	return true;
 }
 
-void BitmapContextGdiplus::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
+void GdiplusOffscreenContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	graphics->DrawLine (&gdiPen, CreatePoint (beg), CreatePoint (end));
 }
 
-void BitmapContextGdiplus::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
+void GdiplusOffscreenContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
 	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	graphics->DrawBezier (&gdiPen, CreatePoint (p1), CreatePoint (p2), CreatePoint (p3), CreatePoint (p4));
 }
 
-void BitmapContextGdiplus::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
+void GdiplusOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	Gdiplus::Rect gdiRect = CreateRect (rect);
 	graphics->DrawRectangle (&gdiPen, gdiRect);
 }
 
-void BitmapContextGdiplus::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
+void GdiplusOffscreenContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	Gdiplus::SolidBrush brush (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()));
 	Gdiplus::Rect gdiRect = CreateRect (rect);
 	graphics->FillRectangle (&brush, gdiRect);
 }
 
-void BitmapContextGdiplus::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
+void GdiplusOffscreenContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	Gdiplus::Rect gdiRect = CreateRect (rect);
 	graphics->DrawEllipse (&gdiPen, gdiRect);
 }
 
-void BitmapContextGdiplus::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
+void GdiplusOffscreenContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	Gdiplus::SolidBrush brush (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()));
 	Gdiplus::Rect gdiRect = CreateRect (rect);
 	graphics->FillEllipse (&brush, gdiRect);
 }
 
-void BitmapContextGdiplus::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
+void GdiplusOffscreenContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
 	Gdiplus::Font gdiFont (font.GetFamily ().c_str (), (Gdiplus::REAL) font.GetSize ());
 	Gdiplus::SolidBrush brush (Gdiplus::Color (textColor.GetR (), textColor.GetG (), textColor.GetB ()));
@@ -168,7 +168,7 @@ void BitmapContextGdiplus::DrawFormattedText (const NUIE::Rect& rect, const NUIE
 	graphics->DrawString (text.c_str (), (int) text.length (), &gdiFont, gdiRect, &format, &brush);
 }
 
-NUIE::Size BitmapContextGdiplus::MeasureText (const NUIE::Font& font, const std::wstring & text)
+NUIE::Size GdiplusOffscreenContext::MeasureText (const NUIE::Font& font, const std::wstring & text)
 {
 	Gdiplus::Font gdiFont (font.GetFamily ().c_str (), (Gdiplus::REAL) font.GetSize ());
 	Gdiplus::RectF textRect (0, 0, 0, 0);
@@ -181,35 +181,35 @@ NUIE::Size BitmapContextGdiplus::MeasureText (const NUIE::Font& font, const std:
 	return NUIE::Size (textRect.Width, textRect.Height);
 }
 
-bool BitmapContextGdiplus::CanDrawIcon ()
+bool GdiplusOffscreenContext::CanDrawIcon ()
 {
 	return false;
 }
 
-void BitmapContextGdiplus::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
+void GdiplusOffscreenContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 {
 	DBGBREAK ();
 }
 
-Gdiplus::Point BitmapContextGdiplus::CreatePoint (const NUIE::Point& point) const
+Gdiplus::Point GdiplusOffscreenContext::CreatePoint (const NUIE::Point& point) const
 {
 	Gdiplus::Point gdiPoint ((int) std::ceil (point.GetX ()), (int) std::ceil (point.GetY ()));
 	return gdiPoint;
 }
 
-Gdiplus::Rect BitmapContextGdiplus::CreateRect (const NUIE::Rect& rect) const
+Gdiplus::Rect GdiplusOffscreenContext::CreateRect (const NUIE::Rect& rect) const
 {
 	Gdiplus::Rect gdiRect ((int) std::ceil (rect.GetX ()), (int) std::ceil (rect.GetY ()), (int) std::ceil (rect.GetWidth ()), (int) std::ceil (rect.GetHeight ()));
 	return gdiRect;
 }
 
-Gdiplus::RectF BitmapContextGdiplus::CreateRectF (const NUIE::Rect& rect) const
+Gdiplus::RectF GdiplusOffscreenContext::CreateRectF (const NUIE::Rect& rect) const
 {
 	Gdiplus::RectF gdiRect ((float) rect.GetX (), (float) rect.GetY (), (float) rect.GetWidth (), (float) rect.GetHeight ());
 	return gdiRect;
 }
 
-void BitmapContextGdiplus::InitGraphics ()
+void GdiplusOffscreenContext::InitGraphics ()
 {
 	bitmap.reset (new Gdiplus::Bitmap (width, height));
 	graphics.reset (new Gdiplus::Graphics (bitmap.get ()));

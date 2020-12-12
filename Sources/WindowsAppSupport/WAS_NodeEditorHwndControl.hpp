@@ -13,7 +13,6 @@ namespace WAS
 class NodeEditorHwndControl : public NUIE::NativeNodeEditorControl
 {
 public:
-	NodeEditorHwndControl ();
 	NodeEditorHwndControl (const NUIE::NativeDrawingContextPtr& nativeContext);
 	virtual ~NodeEditorHwndControl ();
 

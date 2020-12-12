@@ -1,4 +1,4 @@
-#include "WAS_BitmapContextGdi.hpp"
+#include "WAS_GdiOffscreenContext.hpp"
 #include "NE_Debug.hpp"
 
 namespace WAS
@@ -40,7 +40,7 @@ private:
 	HANDLE	oldHandle;
 };
 
-BitmapContextGdi::BitmapContextGdi () :
+GdiOffscreenContext::GdiOffscreenContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
@@ -50,13 +50,13 @@ BitmapContextGdi::BitmapContextGdi () :
 
 }
 
-BitmapContextGdi::~BitmapContextGdi ()
+GdiOffscreenContext::~GdiOffscreenContext ()
 {
 	DeleteObject (memoryBitmap);
 	DeleteDC (memoryDC);
 }
 
-void BitmapContextGdi::Init (void* nativeHandle)
+void GdiOffscreenContext::Init (void* nativeHandle)
 {
 	HWND hwnd = (HWND) nativeHandle;
 
@@ -68,7 +68,7 @@ void BitmapContextGdi::Init (void* nativeHandle)
 	CreateOffscreenContext ();
 }
 
-void BitmapContextGdi::BlitToWindow (void* nativeHandle)
+void GdiOffscreenContext::BlitToWindow (void* nativeHandle)
 {
 	HWND hwnd = (HWND) nativeHandle;
 
@@ -78,46 +78,46 @@ void BitmapContextGdi::BlitToWindow (void* nativeHandle)
 	EndPaint (hwnd, &ps);
 }
 
-void BitmapContextGdi::BlitToContext (void* nativeContext)
+void GdiOffscreenContext::BlitToContext (void* nativeContext)
 {
 	HDC hdc = (HDC) nativeContext;
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
 }
 
-void BitmapContextGdi::Resize (int newWidth, int newHeight)
+void GdiOffscreenContext::Resize (int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
 	CreateOffscreenContext ();
 }
 
-int BitmapContextGdi::GetWidth () const
+int GdiOffscreenContext::GetWidth () const
 {
 	return width;
 }
 
-int BitmapContextGdi::GetHeight () const
+int GdiOffscreenContext::GetHeight () const
 {
 	return height;
 }
 
-void BitmapContextGdi::BeginDraw ()
+void GdiOffscreenContext::BeginDraw ()
 {
 
 }
 
-void BitmapContextGdi::EndDraw ()
+void GdiOffscreenContext::EndDraw ()
 {
 
 }
 
-bool BitmapContextGdi::NeedToDraw (ItemPreviewMode)
+bool GdiOffscreenContext::NeedToDraw (ItemPreviewMode)
 {
 	return true;
 }
 
-void BitmapContextGdi::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
+void GdiOffscreenContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	POINT gdiBeg = CreatePoint (beg);
@@ -128,7 +128,7 @@ void BitmapContextGdi::DrawLine (const NUIE::Point& beg, const NUIE::Point& end,
 	::LineTo (memoryDC, gdiEnd.x, gdiEnd.y);
 }
 
-void BitmapContextGdi::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
+void GdiOffscreenContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	POINT points[4] = {
@@ -142,7 +142,7 @@ void BitmapContextGdi::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2,
 	::PolyBezier (memoryDC, points, 4);
 }
 
-void BitmapContextGdi::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
+void GdiOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	RECT gdiRect = CreateRect (rect, pen);
@@ -151,14 +151,14 @@ void BitmapContextGdi::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
     ::Rectangle (memoryDC, gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
 }
 
-void BitmapContextGdi::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
+void GdiOffscreenContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	RECT gdiRect = CreateRect (rect);
 	::FillRect (memoryDC, &gdiRect, (HBRUSH) brushCache.Get (color));
 }
 
-void BitmapContextGdi::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
+void GdiOffscreenContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	RECT gdiRect = CreateRect (rect, pen);
@@ -167,7 +167,7 @@ void BitmapContextGdi::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen
     ::Ellipse (memoryDC, gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
 }
 
-void BitmapContextGdi::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
+void GdiOffscreenContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	RECT gdiRect = CreateRect (rect);
@@ -176,7 +176,7 @@ void BitmapContextGdi::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& c
     ::Ellipse (memoryDC, gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
 }
 
-void BitmapContextGdi::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
+void GdiOffscreenContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 
@@ -212,7 +212,7 @@ void BitmapContextGdi::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Fo
 	::DrawText (memoryDC, text.c_str (), (int) text.length (), &gdiRect, format);
 }
 
-NUIE::Size BitmapContextGdi::MeasureText (const NUIE::Font& font, const std::wstring& text)
+NUIE::Size GdiOffscreenContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
 	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
 	SelectObject (memoryDC, fontCache.Get (font));
@@ -221,17 +221,17 @@ NUIE::Size BitmapContextGdi::MeasureText (const NUIE::Font& font, const std::wst
 	return NUIE::Size (gdiRect.right - gdiRect.left + 5, gdiRect.bottom - gdiRect.top);
 }
 
-bool BitmapContextGdi::CanDrawIcon ()
+bool GdiOffscreenContext::CanDrawIcon ()
 {
 	return false;
 }
 
-void BitmapContextGdi::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
+void GdiOffscreenContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 {
 	DBGBREAK ();
 }
 
-void BitmapContextGdi::CreateOffscreenContext ()
+void GdiOffscreenContext::CreateOffscreenContext ()
 {
 	DeleteObject (memoryBitmap);
 	DeleteDC (memoryDC);
@@ -241,7 +241,7 @@ void BitmapContextGdi::CreateOffscreenContext ()
 	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
 }
 
-POINT BitmapContextGdi::CreatePoint (const NUIE::Point& point) const
+POINT GdiOffscreenContext::CreatePoint (const NUIE::Point& point) const
 {
 	NUIE::IntPoint intPoint (point);
 	POINT gdiPoint;
@@ -250,7 +250,7 @@ POINT BitmapContextGdi::CreatePoint (const NUIE::Point& point) const
 	return gdiPoint;
 }
 
-RECT BitmapContextGdi::CreateRect (const NUIE::Rect& rect) const
+RECT GdiOffscreenContext::CreateRect (const NUIE::Rect& rect) const
 {
 	NUIE::IntRect intRect (rect);
 	RECT gdiRect;
@@ -261,7 +261,7 @@ RECT BitmapContextGdi::CreateRect (const NUIE::Rect& rect) const
 	return gdiRect;
 }
 
-RECT BitmapContextGdi::CreateRect (const NUIE::Rect& rect, const NUIE::Pen& pen) const
+RECT GdiOffscreenContext::CreateRect (const NUIE::Rect& rect, const NUIE::Pen& pen) const
 {
 	RECT gdiRect = CreateRect (rect);
 	int penThickness = (int) std::floor (pen.GetThickness ());

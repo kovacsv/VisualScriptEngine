@@ -1,5 +1,5 @@
-#ifndef WAS_BITMAPCONTEXTGDI_HPP
-#define WAS_BITMAPCONTEXTGDI_HPP
+#ifndef WAS_GDIOFFSCREENCONTEXT_HPP
+#define WAS_GDIOFFSCREENCONTEXT_HPP
 
 #include <unordered_map>
 
@@ -46,12 +46,12 @@ private:
 	std::unordered_map<KeyType, HANDLE> cache;
 };
 
-class BitmapContextGdi : public NUIE::NativeDrawingContext
+class GdiOffscreenContext : public NUIE::NativeDrawingContext
 {
 public:
-	BitmapContextGdi ();
-	BitmapContextGdi (const BitmapContextGdi& rhs) = delete;
-	virtual ~BitmapContextGdi ();
+	GdiOffscreenContext ();
+	GdiOffscreenContext (const GdiOffscreenContext& rhs) = delete;
+	virtual ~GdiOffscreenContext ();
 
 	virtual void				Init (void* nativeHandle) override;
 	virtual void				BlitToWindow (void* nativeHandle) override;
