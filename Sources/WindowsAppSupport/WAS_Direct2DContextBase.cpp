@@ -1,11 +1,11 @@
-#include "WAS_Direct2DUtils.hpp"
+#include "WAS_Direct2DContextBase.hpp"
 #include "NE_Debug.hpp"
 
 namespace WAS
 {
 
 static const float SafetyTextRatio = 1.05f;
-	
+
 template<class Interface>
 static void SafeRelease (Interface** interfaceToRelease)
 {
@@ -14,6 +14,7 @@ static void SafeRelease (Interface** interfaceToRelease)
 		(*interfaceToRelease) = NULL;
 	}
 }
+
 
 Direct2DHandler::Direct2DHandler () :
 	direct2DFactory (nullptr),
@@ -38,17 +39,25 @@ Direct2DHandler::~Direct2DHandler ()
 	SafeRelease (&directWriteFactory);
 }
 
-Direct2DAntialiasGuard::Direct2DAntialiasGuard (ID2D1RenderTarget* renderTarget, D2D1_ANTIALIAS_MODE newMode) :
-	renderTarget (renderTarget),
-	oldMode (renderTarget->GetAntialiasMode ())
+class Direct2DAntialiasGuard
 {
-	renderTarget->SetAntialiasMode (newMode);
-}
+public:
+	Direct2DAntialiasGuard (ID2D1RenderTarget* renderTarget, D2D1_ANTIALIAS_MODE newMode) :
+		renderTarget (renderTarget),
+		oldMode (renderTarget->GetAntialiasMode ())
+	{
+		renderTarget->SetAntialiasMode (newMode);
+	}
 
-Direct2DAntialiasGuard::~Direct2DAntialiasGuard ()
-{
-	renderTarget->SetAntialiasMode (oldMode);
-}
+	~Direct2DAntialiasGuard ()
+	{
+		renderTarget->SetAntialiasMode (oldMode);
+	}
+
+private:
+	ID2D1RenderTarget*		renderTarget;
+	D2D1_ANTIALIAS_MODE		oldMode;
+};
 
 static ID2D1SolidColorBrush* CreateBrush (ID2D1RenderTarget* renderTarget, const NUIE::Color& color)
 {
@@ -97,19 +106,72 @@ static float GetPenThickness (const NUIE::Pen& pen)
 	return std::floor (penThickness);
 }
 
-void D2D1DrawLine (ID2D1RenderTarget* renderTarget, const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
+Direct2DContextBase::Direct2DContextBase () :
+	Direct2DContextBase (nullptr)
+{
+
+}
+
+Direct2DContextBase::Direct2DContextBase (const Direct2DImageLoaderPtr& imageLoader) :
+	NUIE::NativeDrawingContext (),
+	direct2DHandler (),
+	width (0),
+	height (0),
+	imageLoader (imageLoader),
+	renderTarget (nullptr)
+{
+
+}
+
+Direct2DContextBase::~Direct2DContextBase ()
+{
+	SafeRelease (&renderTarget);
+}
+
+int Direct2DContextBase::GetWidth () const
+{
+	return width;
+}
+
+int Direct2DContextBase::GetHeight () const
+{
+	return height;
+}
+
+void Direct2DContextBase::BeginDraw ()
+{
+	renderTarget->BeginDraw ();
+	renderTarget->SetAntialiasMode (D2D1_ANTIALIAS_MODE_ALIASED);
+	renderTarget->SetTransform (D2D1::Matrix3x2F::Identity ());
+	renderTarget->Clear (D2D1::ColorF (D2D1::ColorF::White));
+}
+
+void Direct2DContextBase::EndDraw ()
+{
+	HRESULT result = renderTarget->EndDraw ();
+	if (result == D2DERR_RECREATE_TARGET) {
+		InitRenderTarget ();
+	}
+}
+
+bool Direct2DContextBase::NeedToDraw (ItemPreviewMode)
+{
+	return true;
+}
+
+void Direct2DContextBase::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
 	renderTarget->DrawLine (CreatePoint (beg), CreatePoint (end), d2Brush, GetPenThickness (pen));
 	SafeRelease (&d2Brush);
 }
 
-void D2D1DrawBezier (ID2D1Factory* direct2DFactory, ID2D1RenderTarget* renderTarget, const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
+void Direct2DContextBase::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
 	Direct2DAntialiasGuard antialiasGuard (renderTarget, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
 
 	ID2D1PathGeometry* path = nullptr;
-	direct2DFactory->CreatePathGeometry (&path);
+	direct2DHandler.direct2DFactory->CreatePathGeometry (&path);
 
 	ID2D1GeometrySink *sink = nullptr;
 	path->Open (&sink);
@@ -127,7 +189,7 @@ void D2D1DrawBezier (ID2D1Factory* direct2DFactory, ID2D1RenderTarget* renderTar
 	SafeRelease (&path);
 }
 
-void D2D1DrawRect (ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, const NUIE::Pen& pen)
+void Direct2DContextBase::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	D2D1_RECT_F d2Rect = CreateRect (rect);
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
@@ -135,7 +197,7 @@ void D2D1DrawRect (ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, cons
 	SafeRelease (&d2Brush);
 }
 
-void D2D1FillRect (ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, const NUIE::Color& color)
+void Direct2DContextBase::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	D2D1_RECT_F d2Rect = CreateRect (rect);
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, color);
@@ -143,7 +205,7 @@ void D2D1FillRect (ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, cons
 	SafeRelease (&d2Brush);
 }
 
-void D2D1DrawEllipse (ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, const NUIE::Pen& pen)
+void Direct2DContextBase::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	Direct2DAntialiasGuard antialiasGuard (renderTarget, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
 
@@ -153,7 +215,7 @@ void D2D1DrawEllipse (ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, c
 	SafeRelease (&d2Brush);
 }
 
-void D2D1FillEllipse (ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, const NUIE::Color& color)
+void Direct2DContextBase::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	Direct2DAntialiasGuard antialiasGuard (renderTarget, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
 
@@ -163,35 +225,35 @@ void D2D1FillEllipse (ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, c
 	SafeRelease (&d2Brush);
 }
 
-void D2D1DrawFormattedText (IDWriteFactory* directWriteFactory, ID2D1RenderTarget* renderTarget, const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
+void Direct2DContextBase::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
-	IDWriteTextFormat* textFormat = CreateTextFormat (directWriteFactory, renderTarget, font);
+	IDWriteTextFormat* textFormat = CreateTextFormat (direct2DHandler.directWriteFactory, renderTarget, font);
 
 	IDWriteTextLayout* textLayout = nullptr;
-	directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, (float) rect.GetWidth (), (float) rect.GetHeight (), &textLayout);
+	direct2DHandler.directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, (float) rect.GetWidth (), (float) rect.GetHeight (), &textLayout);
 
 	switch (hAnchor) {
-	case NUIE::HorizontalAnchor::Left:
-		textLayout->SetTextAlignment (DWRITE_TEXT_ALIGNMENT_LEADING);
-		break;
-	case NUIE::HorizontalAnchor::Center:
-		textLayout->SetTextAlignment (DWRITE_TEXT_ALIGNMENT_CENTER);
-		break;
-	case NUIE::HorizontalAnchor::Right:
-		textLayout->SetTextAlignment (DWRITE_TEXT_ALIGNMENT_TRAILING);
-		break;
+		case NUIE::HorizontalAnchor::Left:
+			textLayout->SetTextAlignment (DWRITE_TEXT_ALIGNMENT_LEADING);
+			break;
+		case NUIE::HorizontalAnchor::Center:
+			textLayout->SetTextAlignment (DWRITE_TEXT_ALIGNMENT_CENTER);
+			break;
+		case NUIE::HorizontalAnchor::Right:
+			textLayout->SetTextAlignment (DWRITE_TEXT_ALIGNMENT_TRAILING);
+			break;
 	}
 
 	switch (vAnchor) {
-	case NUIE::VerticalAnchor::Top:
-		textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
-		break;
-	case NUIE::VerticalAnchor::Center:
-		textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
-		break;
-	case NUIE::VerticalAnchor::Bottom:
-		textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_FAR);
-		break;
+		case NUIE::VerticalAnchor::Top:
+			textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+			break;
+		case NUIE::VerticalAnchor::Center:
+			textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+			break;
+		case NUIE::VerticalAnchor::Bottom:
+			textLayout->SetParagraphAlignment (DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+			break;
 	}
 
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, textColor);
@@ -202,11 +264,11 @@ void D2D1DrawFormattedText (IDWriteFactory* directWriteFactory, ID2D1RenderTarge
 	SafeRelease (&textFormat);
 }
 
-NUIE::Size D2D1MeasureText (IDWriteFactory* directWriteFactory, ID2D1RenderTarget* renderTarget, const NUIE::Font& font, const std::wstring& text)
+NUIE::Size Direct2DContextBase::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
 	IDWriteTextLayout* textLayout = nullptr;
-	IDWriteTextFormat* textFormat = CreateTextFormat (directWriteFactory, renderTarget, font);
-	directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, FLT_MAX, FLT_MAX, &textLayout);
+	IDWriteTextFormat* textFormat = CreateTextFormat (direct2DHandler.directWriteFactory, renderTarget, font);
+	direct2DHandler.directWriteFactory->CreateTextLayout (text.c_str (), (UINT32) text.length (), textFormat, FLT_MAX, FLT_MAX, &textLayout);
 	DWRITE_TEXT_METRICS metrics;
 	textLayout->GetMetrics (&metrics);
 	SafeRelease (&textLayout);
@@ -214,9 +276,14 @@ NUIE::Size D2D1MeasureText (IDWriteFactory* directWriteFactory, ID2D1RenderTarge
 	return NUIE::Size (metrics.width * SafetyTextRatio, metrics.height * SafetyTextRatio);
 }
 
-void D2D1DrawIcon (ID2D1RenderTarget* renderTarget, Direct2DImageLoader* imageLoader, const NUIE::Rect& rect, const NUIE::IconId& iconId)
+bool Direct2DContextBase::CanDrawIcon ()
 {
-	if (imageLoader == nullptr) {
+	return imageLoader != nullptr;
+}
+
+void Direct2DContextBase::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId)
+{
+	if (DBGERROR (imageLoader == nullptr)) {
 		return;
 	}
 	D2D1_RECT_F d2Rect = CreateRect (rect);
