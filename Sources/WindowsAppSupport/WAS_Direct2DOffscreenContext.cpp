@@ -97,7 +97,7 @@ void Direct2DOffscreenContext::InitRenderTarget ()
 void Direct2DOffscreenContext::InitOffscreenContext ()
 {
 	bitmap.Init (width, height);
-	SelectObject (bitmap.GetContext (), bitmap.GetBitmap ());
+	bitmap.SelectBitmapObject ();
 	RECT clientRect = { 0, 0, width, height };
 	ID2D1DCRenderTarget* dcRenderTarget = (ID2D1DCRenderTarget*) renderTarget;
 	dcRenderTarget->BindDC (bitmap.GetContext (), &clientRect);

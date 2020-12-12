@@ -1,4 +1,5 @@
 #include "WAS_GdiplusOffscreenContext.hpp"
+#include "WAS_OffscreenBitmap.hpp"
 #include "NE_Debug.hpp"
 
 #include <cmath>
@@ -47,18 +48,15 @@ void GdiplusOffscreenContext::BlitToContext (void* nativeContext)
 {
 	HDC hdc = (HDC) nativeContext;
 
-	HDC memoryDC = CreateCompatibleDC (hdc);
-	HBITMAP memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
+	OffscreenBitmap offscreenBitmap;
+	offscreenBitmap.Init (hdc, width, height);
 
-	HANDLE oldHandle = SelectObject (memoryDC, memoryBitmap);
-	Gdiplus::Graphics targetGraphics (memoryDC);
+	HANDLE oldHandle = offscreenBitmap.SelectBitmapObject ();
+	Gdiplus::Graphics targetGraphics (offscreenBitmap.GetContext ());
 	targetGraphics.DrawImage (bitmap.get (), 0, 0, width, height);
-	targetGraphics.ReleaseHDC (memoryDC);
-	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
-	SelectObject (memoryDC, oldHandle);
-
-	DeleteObject (memoryBitmap);
-	DeleteDC (memoryDC);
+	targetGraphics.ReleaseHDC (offscreenBitmap.GetContext ());
+	BitBlt (hdc, 0, 0, width, height, offscreenBitmap.GetContext (), 0, 0, SRCCOPY);
+	offscreenBitmap.SelectOtherObject (oldHandle);
 }
 
 void GdiplusOffscreenContext::Resize (int newWidth, int newHeight)
