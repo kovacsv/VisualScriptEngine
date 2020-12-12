@@ -22,12 +22,12 @@ HANDLE CreateHandle (const NUIE::FontCacheKey& key)
 class SelectObjectGuard
 {
 public:
-	SelectObjectGuard (HDC hdcToSelect, HANDLE objectToSelect) :
+	SelectObjectGuard (OffscreenBitmap& bitmap) :
 		hdc (NULL),
 		oldHandle (NULL)
 	{
-		hdc = hdcToSelect;
-		oldHandle = SelectObject (hdc, objectToSelect);
+		hdc = bitmap.GetContext ();
+		oldHandle = SelectObject (hdc, bitmap.GetBitmap ());
 	}
 
 	~SelectObjectGuard ()
@@ -44,16 +44,14 @@ GdiOffscreenContext::GdiOffscreenContext () :
 	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
-	memoryDC (NULL),
-	memoryBitmap (NULL)
+	bitmap ()
 {
 
 }
 
 GdiOffscreenContext::~GdiOffscreenContext ()
 {
-	DeleteObject (memoryBitmap);
-	DeleteDC (memoryDC);
+	
 }
 
 void GdiOffscreenContext::Init (void* nativeHandle)
@@ -81,8 +79,8 @@ void GdiOffscreenContext::BlitToWindow (void* nativeHandle)
 void GdiOffscreenContext::BlitToContext (void* nativeContext)
 {
 	HDC hdc = (HDC) nativeContext;
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
-	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
+	SelectObjectGuard selectGuard (bitmap);
+	BitBlt (hdc, 0, 0, width, height, bitmap.GetContext (), 0, 0, SRCCOPY);
 }
 
 void GdiOffscreenContext::Resize (int newWidth, int newHeight)
@@ -119,66 +117,66 @@ bool GdiOffscreenContext::NeedToDraw (ItemPreviewMode)
 
 void GdiOffscreenContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
+	SelectObjectGuard selectGuard (bitmap);
 	POINT gdiBeg = CreatePoint (beg);
 	POINT gdiEnd = CreatePoint (end);
-	SelectObject (memoryDC, GetStockObject (NULL_BRUSH));
-	SelectObject (memoryDC, penCache.Get (pen));
-	::MoveToEx (memoryDC, gdiBeg.x, gdiBeg.y, NULL);
-	::LineTo (memoryDC, gdiEnd.x, gdiEnd.y);
+	SelectObject (bitmap.GetContext (), GetStockObject (NULL_BRUSH));
+	SelectObject (bitmap.GetContext (), penCache.Get (pen));
+	::MoveToEx (bitmap.GetContext (), gdiBeg.x, gdiBeg.y, NULL);
+	::LineTo (bitmap.GetContext (), gdiEnd.x, gdiEnd.y);
 }
 
 void GdiOffscreenContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
+	SelectObjectGuard selectGuard (bitmap);
 	POINT points[4] = {
 		CreatePoint (p1),
 		CreatePoint (p2),
 		CreatePoint (p3),
 		CreatePoint (p4)
 	};
-	SelectObject (memoryDC, GetStockObject (NULL_BRUSH));
-	SelectObject (memoryDC, penCache.Get (pen));
-	::PolyBezier (memoryDC, points, 4);
+	SelectObject (bitmap.GetContext (), GetStockObject (NULL_BRUSH));
+	SelectObject (bitmap.GetContext (), penCache.Get (pen));
+	::PolyBezier (bitmap.GetContext (), points, 4);
 }
 
 void GdiOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
+	SelectObjectGuard selectGuard (bitmap);
 	RECT gdiRect = CreateRect (rect, pen);
-	SelectObject (memoryDC, GetStockObject (NULL_BRUSH));
-	SelectObject (memoryDC, penCache.Get (pen));
-    ::Rectangle (memoryDC, gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
+	SelectObject (bitmap.GetContext (), GetStockObject (NULL_BRUSH));
+	SelectObject (bitmap.GetContext (), penCache.Get (pen));
+    ::Rectangle (bitmap.GetContext (), gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
 }
 
 void GdiOffscreenContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
+	SelectObjectGuard selectGuard (bitmap);
 	RECT gdiRect = CreateRect (rect);
-	::FillRect (memoryDC, &gdiRect, (HBRUSH) brushCache.Get (color));
+	::FillRect (bitmap.GetContext (), &gdiRect, (HBRUSH) brushCache.Get (color));
 }
 
 void GdiOffscreenContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
+	SelectObjectGuard selectGuard (bitmap);
 	RECT gdiRect = CreateRect (rect, pen);
-	SelectObject (memoryDC, GetStockObject (NULL_BRUSH));
-	SelectObject (memoryDC, penCache.Get (pen));
-    ::Ellipse (memoryDC, gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
+	SelectObject (bitmap.GetContext (), GetStockObject (NULL_BRUSH));
+	SelectObject (bitmap.GetContext (), penCache.Get (pen));
+    ::Ellipse (bitmap.GetContext (), gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
 }
 
 void GdiOffscreenContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
+	SelectObjectGuard selectGuard (bitmap);
 	RECT gdiRect = CreateRect (rect);
-	SelectObject (memoryDC, brushCache.Get (color));
-	SelectObject (memoryDC, GetStockObject (NULL_PEN));
-    ::Ellipse (memoryDC, gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
+	SelectObject (bitmap.GetContext (), brushCache.Get (color));
+	SelectObject (bitmap.GetContext (), GetStockObject (NULL_PEN));
+    ::Ellipse (bitmap.GetContext (), gdiRect.left, gdiRect.top, gdiRect.right, gdiRect.bottom);
 }
 
 void GdiOffscreenContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
+	SelectObjectGuard selectGuard (bitmap);
 
 	UINT format = 0;
 	switch (hAnchor) {
@@ -206,18 +204,18 @@ void GdiOffscreenContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE:
 	}
 	
 	RECT gdiRect = CreateRect (rect);
-	SetBkMode (memoryDC, TRANSPARENT);
-	SetTextColor (memoryDC, RGB (textColor.GetR (), textColor.GetG (), textColor.GetB ()));
-	SelectObject (memoryDC, fontCache.Get (font));
-	::DrawText (memoryDC, text.c_str (), (int) text.length (), &gdiRect, format);
+	SetBkMode (bitmap.GetContext (), TRANSPARENT);
+	SetTextColor (bitmap.GetContext (), RGB (textColor.GetR (), textColor.GetG (), textColor.GetB ()));
+	SelectObject (bitmap.GetContext (), fontCache.Get (font));
+	::DrawText (bitmap.GetContext (), text.c_str (), (int) text.length (), &gdiRect, format);
 }
 
 NUIE::Size GdiOffscreenContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
-	SelectObjectGuard selectGuard (memoryDC, memoryBitmap);
-	SelectObject (memoryDC, fontCache.Get (font));
+	SelectObjectGuard selectGuard (bitmap);
+	SelectObject (bitmap.GetContext (), fontCache.Get (font));
 	RECT gdiRect = { 0, 0, 0, 0 };
-	::DrawText (memoryDC, text.c_str (), (int) text.length (), &gdiRect, DT_CALCRECT);
+	::DrawText (bitmap.GetContext (), text.c_str (), (int) text.length (), &gdiRect, DT_CALCRECT);
 	return NUIE::Size (gdiRect.right - gdiRect.left + 5, gdiRect.bottom - gdiRect.top);
 }
 
@@ -233,12 +231,7 @@ void GdiOffscreenContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 
 void GdiOffscreenContext::CreateOffscreenContext ()
 {
-	DeleteObject (memoryBitmap);
-	DeleteDC (memoryDC);
-
-	HDC hdc = GetDC (NULL);
-	memoryDC = CreateCompatibleDC (hdc);
-	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
+	bitmap.Init (width, height);
 }
 
 POINT GdiOffscreenContext::CreatePoint (const NUIE::Point& point) const

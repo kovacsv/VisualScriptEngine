@@ -96,17 +96,17 @@ public:
 
 enum class ContextType
 {
-	Gdi,
-	Gdiplus,
+	GdiOffscreen,
+	GdiplusOffscreen,
 	Direct2D,
 	Direct2DOffscreen
 };
 
 static NUIE::NativeDrawingContextPtr CreateDrawingContext (ContextType contextType)
 {
-	if (contextType == ContextType::Gdi) {
+	if (contextType == ContextType::GdiOffscreen) {
 		return NUIE::NativeDrawingContextPtr (new WAS::GdiOffscreenContext ());
-	} else if (contextType == ContextType::Gdiplus) {
+	} else if (contextType == ContextType::GdiplusOffscreen) {
 		return NUIE::NativeDrawingContextPtr (new WAS::GdiplusOffscreenContext ());
 	} else if (contextType == ContextType::Direct2D) {
 		WAS::Direct2DImageLoaderPtr imageLoader (new AppResourceImageLoader ());

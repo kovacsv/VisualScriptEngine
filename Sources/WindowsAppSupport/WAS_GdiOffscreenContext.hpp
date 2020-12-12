@@ -7,6 +7,7 @@
 #include "NUIE_Drawing.hpp"
 #include "NUIE_DrawingCacheKeys.hpp"
 #include "WAS_IncludeWindowsHeaders.hpp"
+#include "WAS_OffscreenBitmap.hpp"
 
 namespace WAS
 {
@@ -90,8 +91,7 @@ private:
 
 	int									width;
 	int									height;
-	HDC									memoryDC;
-	HBITMAP								memoryBitmap;
+	OffscreenBitmap						bitmap;
 
 	HandleCache<NUIE::PenCacheKey>		penCache;
 	HandleCache<NUIE::ColorCacheKey>	brushCache;

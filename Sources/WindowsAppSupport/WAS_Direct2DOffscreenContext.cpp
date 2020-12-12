@@ -23,16 +23,14 @@ Direct2DOffscreenContext::Direct2DOffscreenContext () :
 
 Direct2DOffscreenContext::Direct2DOffscreenContext (const Direct2DImageLoaderPtr& imageLoader) :
 	Direct2DContextBase (imageLoader),
-	memoryDC (NULL),
-	memoryBitmap (NULL)
+	bitmap ()
 {
 
 }
 
 Direct2DOffscreenContext::~Direct2DOffscreenContext ()
 {
-	DeleteObject (memoryBitmap);
-	DeleteDC (memoryDC);
+
 }
 
 void Direct2DOffscreenContext::Init (void* nativeHandle)
@@ -60,7 +58,7 @@ void Direct2DOffscreenContext::BlitToWindow (void* nativeHandle)
 void Direct2DOffscreenContext::BlitToContext (void* nativeContext)
 {
 	HDC hdc = (HDC) nativeContext;
-	BitBlt (hdc, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
+	BitBlt (hdc, 0, 0, width, height, bitmap.GetContext (), 0, 0, SRCCOPY);
 }
 
 void Direct2DOffscreenContext::Resize (int newWidth, int newHeight)
@@ -93,33 +91,16 @@ void Direct2DOffscreenContext::InitRenderTarget ()
 	direct2DHandler.direct2DFactory->CreateDCRenderTarget (&renderTargetProperties, dcRenderTarget);
 	DBGASSERT (renderTarget != nullptr);
 
-	DeleteObject (memoryBitmap);
-	DeleteDC (memoryDC);
-
-	HDC hdc = GetDC (NULL);
-	memoryDC = CreateCompatibleDC (hdc);
-	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
-	SelectObject (memoryDC, memoryBitmap);
-
-	RECT clientRect = { 0, 0, width, height };
-	(*dcRenderTarget)->BindDC (memoryDC, &clientRect);
-
 	InitOffscreenContext ();
 }
 
 void Direct2DOffscreenContext::InitOffscreenContext ()
 {
-	DeleteObject (memoryBitmap);
-	DeleteDC (memoryDC);
-
-	HDC hdc = GetDC (NULL);
-	memoryDC = CreateCompatibleDC (hdc);
-	memoryBitmap = CreateCompatibleBitmap (hdc, width, height);
-	SelectObject (memoryDC, memoryBitmap);
-
+	bitmap.Init (width, height);
+	SelectObject (bitmap.GetContext (), bitmap.GetBitmap ());
 	RECT clientRect = { 0, 0, width, height };
 	ID2D1DCRenderTarget* dcRenderTarget = (ID2D1DCRenderTarget*) renderTarget;
-	dcRenderTarget->BindDC (memoryDC, &clientRect);
+	dcRenderTarget->BindDC (bitmap.GetContext (), &clientRect);
 }
 
 }

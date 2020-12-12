@@ -2,6 +2,7 @@
 #define WAS_DIRECT2DOFFSCREENCONTEXT_HPP
 
 #include "WAS_Direct2DContextBase.hpp"
+#include "WAS_OffscreenBitmap.hpp"
 
 namespace WAS
 {
@@ -23,8 +24,7 @@ private:
 	virtual void				InitRenderTarget () override;
 	void						InitOffscreenContext ();
 
-	HDC							memoryDC;
-	HBITMAP						memoryBitmap;
+	OffscreenBitmap				bitmap;
 };
 
 }
