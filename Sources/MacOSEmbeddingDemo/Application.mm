@@ -3,10 +3,66 @@
 #include "MAS_MacOSAppUtils.hpp"
 #include "MAS_NSImageLoader.hpp"
 #include "MAS_NSViewContext.hpp"
+#include "MAS_NSViewOffscreenContext.hpp"
 #include "MAS_IncludeCocoaHeaders.hpp"
 
 #include "NUIE_NodeTree.hpp"
 #include "BI_BuiltInNodes.hpp"
+
+static const std::vector<NSString*> IconResourceNames = {
+	@"Boolean.png",
+	@"Integer.png",
+	@"Double.png",
+	@"IntegerIncremented.png",
+	@"DoubleIncremented.png",
+	@"DoubleDistributed.png",
+	@"Addition.png",
+	@"Subtraction.png",
+	@"Multiplication.png",
+	@"Division.png",
+	@"Floor.png",
+	@"Ceil.png",
+	@"Abs.png",
+	@"Negative.png",
+	@"Sqrt.png",
+	@"ListBuilder.png",
+	@"Viewer.png"
+};
+
+class AppImageLoader : public MAS::NSImageLoader
+{
+public:
+	AppImageLoader () :
+	MAS::NSImageLoader ()
+	{
+		
+	}
+	
+private:
+	virtual NSImage* CreateNSImage (const NUIE::IconId& iconId) override
+	{
+		return [NSImage imageNamed : IconResourceNames[iconId.GetId () - 1]];
+	}
+};
+
+enum class ContextType
+{
+	NSView,
+	NSViewOffscreen
+};
+
+static NUIE::NativeDrawingContextPtr CreateDrawingContext (ContextType contextType)
+{
+	if (contextType == ContextType::NSView) {
+		MAS::NSImageLoaderPtr imageLoader (new AppImageLoader ());
+		return NUIE::NativeDrawingContextPtr (new MAS::NSViewContext (imageLoader));
+	} else if (contextType == ContextType::NSViewOffscreen) {
+		MAS::NSImageLoaderPtr imageLoader (new AppImageLoader ());
+		return NUIE::NativeDrawingContextPtr (new MAS::NSViewOffscreenContext (imageLoader));
+	}
+	DBGBREAK ();
+	return nullptr;
+}
 
 @interface WindowController : NSWindowController<NSWindowDelegate>
 {
@@ -91,26 +147,6 @@ static const NUIE::BasicSkinParams& GetAppSkinParams ()
 	return skinParams;
 }
 
-static const std::vector<NSString*> IconResourceNames = {
-	@"Boolean.png",
-	@"Integer.png",
-	@"Double.png",
-	@"IntegerIncremented.png",
-	@"DoubleIncremented.png",
-	@"DoubleDistributed.png",
-	@"Addition.png",
-	@"Subtraction.png",
-	@"Multiplication.png",
-	@"Division.png",
-	@"Floor.png",
-	@"Ceil.png",
-	@"Abs.png",
-	@"Negative.png",
-	@"Sqrt.png",
-	@"ListBuilder.png",
-	@"Viewer.png"
-};
-
 static void AddNodeTreeItem (NUIE::NodeTree& nodeTree, size_t groupIndex, const std::wstring& name, const NUIE::IconId& iconId, const NUIE::CreatorFunction& creator)
 {
 	nodeTree.AddItem (groupIndex, name, [=] (const NUIE::Point& position) {
@@ -181,22 +217,6 @@ static void InitNodeTree (NUIE::NodeTree& nodeTree)
 	});
 }
 
-class AppImageLoader : public MAS::NSImageLoader
-{
-public:
-	AppImageLoader () :
-		MAS::NSImageLoader ()
-	{
-		
-	}
-	
-private:
-	virtual NSImage* CreateNSImage (const NUIE::IconId& iconId) override
-	{
-		return [NSImage imageNamed : IconResourceNames[iconId.GetId () - 1]];
-	}
-};
-
 AppEventHandler::AppEventHandler () :
 	nodeTree (),
 	nodeEditor (nullptr),
@@ -246,7 +266,7 @@ AppNodeUIEnvironment::AppNodeUIEnvironment () :
 	evaluationEnv (NE::EmptyEvaluationEnv),
 	eventHandler (),
 	clipboardHandler (),
-	nodeEditorControl (NUIE::NativeDrawingContextPtr (new MAS::NSViewContext (MAS::NSImageLoaderPtr (new AppImageLoader ()))))
+	nodeEditorControl (CreateDrawingContext (ContextType::NSViewOffscreen))
 {
 	
 }

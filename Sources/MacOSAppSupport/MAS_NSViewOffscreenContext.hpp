@@ -1,5 +1,5 @@
-#ifndef MAS_NSIMAGECONTEXT_HPP
-#define MAS_NSIMAGECONTEXT_HPP
+#ifndef MAS_NSVIEWOFFSCREENCONTEXT_HPP
+#define MAS_NSVIEWOFFSCREENCONTEXT_HPP
 
 #include "NUIE_DrawingContext.hpp"
 #include "NUIE_Drawing.hpp"
@@ -23,13 +23,13 @@
 namespace MAS
 {
 
-class NSImageContext : public NUIE::NativeDrawingContext
+class NSViewOffscreenContext : public NUIE::NativeDrawingContext
 {
 public:
-	NSImageContext ();
-	NSImageContext (const NSImageLoaderPtr& imageLoader);
-	NSImageContext (const NSImageContext& rhs) = delete;
-	virtual ~NSImageContext ();
+	NSViewOffscreenContext ();
+	NSViewOffscreenContext (const NSImageLoaderPtr& imageLoader);
+	NSViewOffscreenContext (const NSViewOffscreenContext& rhs) = delete;
+	virtual ~NSViewOffscreenContext ();
 
 	virtual void				Init (void* nativeHandle) override;
 	virtual void				BlitToWindow (void* nativeHandle) override;

@@ -1,4 +1,4 @@
-#include "MAS_NSImageContext.hpp"
+#include "MAS_NSViewOffscreenContext.hpp"
 #include "MAS_CocoaAppUtils.hpp"
 #include "MAS_IncludeCocoaHeaders.hpp"
 
@@ -9,13 +9,13 @@ namespace MAS
 
 static const float SafetyTextRatio = 1.05f;
 
-NSImageContext::NSImageContext () :
-	NSImageContext (nullptr)
+NSViewOffscreenContext::NSViewOffscreenContext () :
+	NSViewOffscreenContext (nullptr)
 {
 
 }
 
-NSImageContext::NSImageContext (const NSImageLoaderPtr& imageLoader) :
+NSViewOffscreenContext::NSViewOffscreenContext (const NSImageLoaderPtr& imageLoader) :
 	NUIE::NativeDrawingContext (),
 	width (0),
 	height (0),
@@ -27,7 +27,7 @@ NSImageContext::NSImageContext (const NSImageLoaderPtr& imageLoader) :
 
 }
 
-NSImageContext::~NSImageContext ()
+NSViewOffscreenContext::~NSViewOffscreenContext ()
 {
 	@autoreleasepool {
 		@try {
@@ -41,17 +41,17 @@ NSImageContext::~NSImageContext ()
 	}
 }
 
-void NSImageContext::Init (void* nativeHandle)
+void NSViewOffscreenContext::Init (void* nativeHandle)
 {
 	nsView = (NSView*) nativeHandle;
 }
 
-void NSImageContext::BlitToWindow (void*)
+void NSViewOffscreenContext::BlitToWindow (void*)
 {
 
 }
 
-void NSImageContext::BlitToContext (void* cgContext)
+void NSViewOffscreenContext::BlitToContext (void* cgContext)
 {
 	NSRect imgRect = nsView.frame;
 	NSSize imgSize = nsView.frame.size;
@@ -64,23 +64,23 @@ void NSImageContext::BlitToContext (void* cgContext)
 	}
 }
 
-void NSImageContext::Resize (int newWidth, int newHeight)
+void NSViewOffscreenContext::Resize (int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
 }
 
-int NSImageContext::GetWidth () const
+int NSViewOffscreenContext::GetWidth () const
 {
 	return width;
 }
 
-int NSImageContext::GetHeight () const
+int NSViewOffscreenContext::GetHeight () const
 {
 	return height;
 }
 
-void NSImageContext::BeginDraw ()
+void NSViewOffscreenContext::BeginDraw ()
 {
 	@try {
 		image = [[NSImage alloc] initWithSize:nsView.frame.size];
@@ -90,7 +90,7 @@ void NSImageContext::BeginDraw ()
 	}
 }
 
-void NSImageContext::EndDraw ()
+void NSViewOffscreenContext::EndDraw ()
 {
 	@try {
 		[image unlockFocus];
@@ -100,12 +100,12 @@ void NSImageContext::EndDraw ()
 	}
 }
 
-bool NSImageContext::NeedToDraw (ItemPreviewMode)
+bool NSViewOffscreenContext::NeedToDraw (ItemPreviewMode)
 {
 	return true;
 }
 
-void NSImageContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
+void NSViewOffscreenContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
 	@autoreleasepool {
 		@try {
@@ -121,7 +121,7 @@ void NSImageContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, c
 	}
 }
 
-void NSImageContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
+void NSViewOffscreenContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
 	@autoreleasepool {
 		@try {
@@ -137,7 +137,7 @@ void NSImageContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, c
 	}
 }
 
-void NSImageContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
+void NSViewOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	@autoreleasepool {
 		@try {
@@ -149,7 +149,7 @@ void NSImageContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 	}
 }
 
-void NSImageContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
+void NSViewOffscreenContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	@autoreleasepool {
 		@try {
@@ -161,7 +161,7 @@ void NSImageContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 	}
 }
 
-void NSImageContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
+void NSViewOffscreenContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
 	@autoreleasepool {
 		@try {
@@ -175,7 +175,7 @@ void NSImageContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 	}
 }
 
-void NSImageContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
+void NSViewOffscreenContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& color)
 {
 	@autoreleasepool {
 		@try {
@@ -188,7 +188,7 @@ void NSImageContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& col
 	}
 }
 
-void NSImageContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
+void NSViewOffscreenContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font& font, const std::wstring& text, NUIE::HorizontalAnchor hAnchor, NUIE::VerticalAnchor vAnchor, const NUIE::Color& textColor)
 {
 	@autoreleasepool {
 		@try {
@@ -224,7 +224,7 @@ void NSImageContext::DrawFormattedText (const NUIE::Rect& rect, const NUIE::Font
 	}
 }
 
-NUIE::Size NSImageContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
+NUIE::Size NSViewOffscreenContext::MeasureText (const NUIE::Font& font, const std::wstring& text)
 {
 	@autoreleasepool {
 		@try {
@@ -239,12 +239,12 @@ NUIE::Size NSImageContext::MeasureText (const NUIE::Font& font, const std::wstri
 	return NUIE::Size ();
 }
 
-bool NSImageContext::CanDrawIcon ()
+bool NSViewOffscreenContext::CanDrawIcon ()
 {
 	return imageLoader != nullptr;
 }
 
-void NSImageContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId)
+void NSViewOffscreenContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId)
 {
 	if (DBGERROR (imageLoader == nullptr)) {
 		return;
@@ -257,7 +257,7 @@ void NSImageContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconI
 	}
 }
 
-NSFont* NSImageContext::GetFont (const NUIE::Font& font)
+NSFont* NSViewOffscreenContext::GetFont (const NUIE::Font& font)
 {
 	@autoreleasepool {
 		@try {
