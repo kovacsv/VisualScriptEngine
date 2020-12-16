@@ -57,8 +57,9 @@ static NUIE::NativeDrawingContextPtr CreateDrawingContext (ContextType contextTy
 		MAS::NSImageLoaderPtr imageLoader (new AppImageLoader ());
 		return NUIE::NativeDrawingContextPtr (new MAS::NSViewContext (imageLoader));
 	} else if (contextType == ContextType::NSViewOffscreen) {
+		MAS::NSViewOffscreenContext::Orientation orientation = MAS::NSViewOffscreenContext::Orientation::Normal;
 		MAS::NSImageLoaderPtr imageLoader (new AppImageLoader ());
-		return NUIE::NativeDrawingContextPtr (new MAS::NSViewOffscreenContext (imageLoader));
+		return NUIE::NativeDrawingContextPtr (new MAS::NSViewOffscreenContext (orientation, imageLoader));
 	}
 	DBGBREAK ();
 	return nullptr;
@@ -266,7 +267,7 @@ AppNodeUIEnvironment::AppNodeUIEnvironment () :
 	evaluationEnv (NE::EmptyEvaluationEnv),
 	eventHandler (),
 	clipboardHandler (),
-	nodeEditorControl (CreateDrawingContext (ContextType::NSView))
+	nodeEditorControl (CreateDrawingContext (ContextType::NSViewOffscreen))
 {
 	
 }

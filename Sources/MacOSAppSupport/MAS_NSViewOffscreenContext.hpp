@@ -26,8 +26,14 @@ namespace MAS
 class NSViewOffscreenContext : public NUIE::NativeDrawingContext
 {
 public:
-	NSViewOffscreenContext ();
-	NSViewOffscreenContext (const NSImageLoaderPtr& imageLoader);
+	enum class Orientation
+	{
+		Normal,
+		FlippedVertically
+	};
+	
+	NSViewOffscreenContext (Orientation orientation);
+	NSViewOffscreenContext (Orientation orientation, const NSImageLoaderPtr& imageLoader);
 	NSViewOffscreenContext (const NSViewOffscreenContext& rhs) = delete;
 	virtual ~NSViewOffscreenContext ();
 
@@ -63,6 +69,7 @@ public:
 private:
 	NSFont*						GetFont (const NUIE::Font& font);
 	
+	Orientation					orientation;
 	int							width;
 	int							height;
 	NSView*						nsView;

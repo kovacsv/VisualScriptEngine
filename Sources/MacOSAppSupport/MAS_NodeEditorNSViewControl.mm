@@ -349,6 +349,8 @@ void NodeEditorNSViewControl::Invalidate ()
 void NodeEditorNSViewControl::Draw ()
 {
 	nodeEditor->Draw ();
+	CGContextRef cgContext = [[NSGraphicsContext currentContext] CGContext];
+	nativeContext->BlitToContext (cgContext);
 }
 
 NUIE::DrawingContext& NodeEditorNSViewControl::GetDrawingContext ()

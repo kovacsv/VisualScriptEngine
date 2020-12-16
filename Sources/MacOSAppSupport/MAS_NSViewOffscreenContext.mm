@@ -9,14 +9,15 @@ namespace MAS
 
 static const float SafetyTextRatio = 1.05f;
 
-NSViewOffscreenContext::NSViewOffscreenContext () :
-	NSViewOffscreenContext (nullptr)
+NSViewOffscreenContext::NSViewOffscreenContext (Orientation orientation) :
+	NSViewOffscreenContext (orientation, nullptr)
 {
 
 }
 
-NSViewOffscreenContext::NSViewOffscreenContext (const NSImageLoaderPtr& imageLoader) :
+NSViewOffscreenContext::NSViewOffscreenContext (Orientation orientation, const NSImageLoaderPtr& imageLoader) :
 	NUIE::NativeDrawingContext (),
+	orientation (orientation),
 	width (0),
 	height (0),
 	nsView (nil),
@@ -34,7 +35,9 @@ NSViewOffscreenContext::~NSViewOffscreenContext ()
 			for (auto& it : fontCache) {
 				[it.second release];
 			}
-			[image release];
+			if (image != nil) {
+				[image release];
+			}
 		} @catch (NSException*) {
 			
 		}
@@ -44,11 +47,16 @@ NSViewOffscreenContext::~NSViewOffscreenContext ()
 void NSViewOffscreenContext::Init (void* nativeHandle)
 {
 	nsView = (NSView*) nativeHandle;
+	width = nsView.frame.size.width;
+	height = nsView.frame.size.height;
+	
+	CGSize size = { (CGFloat) width, (CGFloat) height };
+	image = [[NSImage alloc] initWithSize:size];
 }
 
 void NSViewOffscreenContext::BlitToWindow (void*)
 {
-
+	
 }
 
 void NSViewOffscreenContext::BlitToContext (void* cgContext)
@@ -58,8 +66,11 @@ void NSViewOffscreenContext::BlitToContext (void* cgContext)
 
 	CGContextRef ctx = (CGContextRef)cgContext;
 	if (ctx != nil) {
-		NSImage* newImage = FlipImageVertically (image);
-		CGImageRef cgImage = [newImage CGImageForProposedRect: &imgRect context: [NSGraphicsContext currentContext] hints: nil];
+		NSImage* finalImage = image;
+		if (orientation == Orientation::FlippedVertically) {
+			finalImage = FlipImageVertically (image);
+		}
+		CGImageRef cgImage = [finalImage CGImageForProposedRect: &imgRect context: [NSGraphicsContext currentContext] hints: nil];
 		CGContextDrawImage (ctx, CGRectMake (0, 0, imgSize.width, imgSize.height), cgImage);
 	}
 }
@@ -68,6 +79,8 @@ void NSViewOffscreenContext::Resize (int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
+	CGSize size = { (CGFloat) width, (CGFloat) height };
+	image = [[NSImage alloc] initWithSize:size];
 }
 
 int NSViewOffscreenContext::GetWidth () const
@@ -83,7 +96,6 @@ int NSViewOffscreenContext::GetHeight () const
 void NSViewOffscreenContext::BeginDraw ()
 {
 	@try {
-		image = [[NSImage alloc] initWithSize:nsView.frame.size];
 		[image lockFocus];
 	} @catch (NSException*) {
 		
@@ -94,7 +106,6 @@ void NSViewOffscreenContext::EndDraw ()
 {
 	@try {
 		[image unlockFocus];
-		[image drawInRect: nsView.frame];
 	} @catch (NSException*) {
 		
 	}
@@ -250,8 +261,8 @@ void NSViewOffscreenContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconI
 		return;
 	}
 	@try {
-		NSImage* image = imageLoader->LoadNSImage (iconId);
-		[image drawInRect:CreateRect (nsView, rect) fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0f];
+		NSImage* iconImage = imageLoader->LoadNSImage (iconId);
+		[iconImage drawInRect:CreateRect (nsView, rect) fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0f];
 	} @catch (NSException*) {
 
 	}
