@@ -266,7 +266,7 @@ AppNodeUIEnvironment::AppNodeUIEnvironment () :
 	evaluationEnv (NE::EmptyEvaluationEnv),
 	eventHandler (),
 	clipboardHandler (),
-	nodeEditorControl (CreateDrawingContext (ContextType::NSViewOffscreen))
+	nodeEditorControl (CreateDrawingContext (ContextType::NSView))
 {
 	
 }
