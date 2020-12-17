@@ -64,14 +64,18 @@ void NSViewOffscreenContext::BlitToContext (void* cgContext)
 	NSRect imgRect = nsView.frame;
 	NSSize imgSize = nsView.frame.size;
 
-	CGContextRef ctx = (CGContextRef)cgContext;
+	CGContextRef ctx = (CGContextRef) cgContext;
 	if (ctx != nil) {
-		NSImage* finalImage = image;
 		if (orientation == Orientation::FlippedVertically) {
-			finalImage = FlipImageVertically (image);
+			CGContextTranslateCTM (ctx, 1.0, imgSize.height);
+			CGContextScaleCTM (ctx, 1.0, -1.0);
 		}
-		CGImageRef cgImage = [finalImage CGImageForProposedRect: &imgRect context: [NSGraphicsContext currentContext] hints: nil];
+		CGImageRef cgImage = [image CGImageForProposedRect: &imgRect context: [NSGraphicsContext currentContext] hints: nil];
 		CGContextDrawImage (ctx, CGRectMake (0, 0, imgSize.width, imgSize.height), cgImage);
+		if (orientation == Orientation::FlippedVertically) {
+			CGContextScaleCTM (ctx, 1.0, -1.0);
+			CGContextTranslateCTM (ctx, 1.0, -imgSize.height);
+		}
 	}
 }
 
