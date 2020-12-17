@@ -72,7 +72,6 @@ private:
 	Orientation					orientation;
 	int							width;
 	int							height;
-	NSView*						nsView;
 	NSImageLoaderPtr			imageLoader;
 	NSImage*					image;
 	

@@ -71,29 +71,29 @@ NUIE::Point GetViewPositionFromEvent (const NSView* view, const NSEvent* event)
 	return NUIE::Point (position.x, view.frame.size.height - position.y);
 }
 	
-NSPoint CreatePoint (const NSView* view, const NUIE::Point& point)
+NSPoint CreatePoint (CGFloat viewHeight, const NUIE::Point& point)
 {
 	NUIE::IntPoint intPoint (point);
-	int height = (int) std::floor (view.frame.size.height) - 1;
+	int height = (int) std::floor (viewHeight) - 1;
 	return NSMakePoint (intPoint.GetX (), height - intPoint.GetY ());
 }
 	
-NSPoint CreateScreenPoint (const NSView* view, const NUIE::Point& point)
-{
-	NSPoint viewPoint = CreatePoint (view, point);
-	return [view convertPoint:viewPoint toView:nil];
-}
-	
-NSRect CreateRect (const NSView* view, const NUIE::Rect& rect)
+NSRect CreateRect (CGFloat viewHeight, const NUIE::Rect& rect)
 {
 	NUIE::IntRect intRect (rect);
-	int height = (int) std::floor (view.frame.size.height) - 1;
+	int height = (int) std::floor (viewHeight) - 1;
 	return NSMakeRect (intRect.GetX (), height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
 }
 
 NSColor* CreateColor (const NUIE::Color& color)
 {
 	return [NSColor colorWithRed:color.GetR () / 255.0f green:color.GetG () / 255.0f blue:color.GetB () / 255.0f alpha:1.0f];
+}
+	
+NSPoint CreateScreenPoint (const NSView* view, const NUIE::Point& point)
+{
+	NSPoint viewPoint = CreatePoint (view.frame.size.height, point);
+	return [view convertPoint:viewPoint toView:nil];
 }
 
 NSImage* FlipImageVertically (const NSImage* image)

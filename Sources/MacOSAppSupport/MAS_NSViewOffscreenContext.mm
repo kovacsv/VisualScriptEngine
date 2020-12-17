@@ -20,7 +20,6 @@ NSViewOffscreenContext::NSViewOffscreenContext (Orientation orientation, const N
 	orientation (orientation),
 	width (0),
 	height (0),
-	nsView (nil),
 	imageLoader (imageLoader),
 	image (nil),
 	fontCache ()
@@ -46,7 +45,7 @@ NSViewOffscreenContext::~NSViewOffscreenContext ()
 
 void NSViewOffscreenContext::Init (void* nativeHandle)
 {
-	nsView = (NSView*) nativeHandle;
+	NSView* nsView = (NSView*) nativeHandle;
 	width = nsView.frame.size.width;
 	height = nsView.frame.size.height;
 	
@@ -61,20 +60,18 @@ void NSViewOffscreenContext::BlitToWindow (void*)
 
 void NSViewOffscreenContext::BlitToContext (void* cgContext)
 {
-	NSRect imgRect = nsView.frame;
-	NSSize imgSize = nsView.frame.size;
-
 	CGContextRef ctx = (CGContextRef) cgContext;
 	if (ctx != nil) {
 		if (orientation == Orientation::FlippedVertically) {
-			CGContextTranslateCTM (ctx, 1.0, imgSize.height);
+			CGContextTranslateCTM (ctx, 1.0, height);
 			CGContextScaleCTM (ctx, 1.0, -1.0);
 		}
+		CGRect imgRect = CGRectMake (0, 0, width, height);
 		CGImageRef cgImage = [image CGImageForProposedRect: &imgRect context: [NSGraphicsContext currentContext] hints: nil];
-		CGContextDrawImage (ctx, CGRectMake (0, 0, imgSize.width, imgSize.height), cgImage);
+		CGContextDrawImage (ctx, imgRect, cgImage);
 		if (orientation == Orientation::FlippedVertically) {
 			CGContextScaleCTM (ctx, 1.0, -1.0);
-			CGContextTranslateCTM (ctx, 1.0, -imgSize.height);
+			CGContextTranslateCTM (ctx, 1.0, -height);
 		}
 	}
 }
@@ -127,8 +124,8 @@ void NSViewOffscreenContext::DrawLine (const NUIE::Point& beg, const NUIE::Point
 			[CreateColor (pen.GetColor ()) set];
 			NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 			[bezierPath setLineWidth:pen.GetThickness ()];
-			[bezierPath moveToPoint:CreatePoint (nsView, beg)];
-			[bezierPath lineToPoint:CreatePoint (nsView, end)];
+			[bezierPath moveToPoint:CreatePoint (height, beg)];
+			[bezierPath lineToPoint:CreatePoint (height, end)];
 			[bezierPath stroke];
 		} @catch (NSException*) {
 			
@@ -143,8 +140,8 @@ void NSViewOffscreenContext::DrawBezier (const NUIE::Point& p1, const NUIE::Poin
 			[CreateColor (pen.GetColor ()) set];
 			NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 			[bezierPath setLineWidth:pen.GetThickness ()];
-			[bezierPath moveToPoint:CreatePoint (nsView, p1)];
-			[bezierPath curveToPoint:CreatePoint (nsView, p4) controlPoint1:CreatePoint (nsView, p2) controlPoint2:CreatePoint (nsView, p3)];
+			[bezierPath moveToPoint:CreatePoint (height, p1)];
+			[bezierPath curveToPoint:CreatePoint (height, p4) controlPoint1:CreatePoint (height, p2) controlPoint2:CreatePoint (height, p3)];
 			[bezierPath stroke];
 		} @catch (NSException*) {
 			
@@ -157,7 +154,7 @@ void NSViewOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& 
 	@autoreleasepool {
 		@try {
 			[CreateColor (pen.GetColor ()) set];
-			NSFrameRectWithWidth (CreateRect (nsView, rect), pen.GetThickness ());
+			NSFrameRectWithWidth (CreateRect (height, rect), pen.GetThickness ());
 		} @catch (NSException*) {
 			
 		}
@@ -169,7 +166,7 @@ void NSViewOffscreenContext::FillRect (const NUIE::Rect& rect, const NUIE::Color
 	@autoreleasepool {
 		@try {
 			[CreateColor (color) set];
-			NSRectFill (CreateRect (nsView, rect));
+			NSRectFill (CreateRect (height, rect));
 		} @catch (NSException*) {
 			
 		}
@@ -181,7 +178,7 @@ void NSViewOffscreenContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pe
 	@autoreleasepool {
 		@try {
 			[CreateColor (pen.GetColor ()) set];
-			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (nsView, rect)];
+			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (height, rect)];
 			[bezierPath setLineWidth:pen.GetThickness ()];
 			[bezierPath stroke];
 		} @catch (NSException*) {
@@ -195,7 +192,7 @@ void NSViewOffscreenContext::FillEllipse (const NUIE::Rect& rect, const NUIE::Co
 	@autoreleasepool {
 		@try {
 			[CreateColor (color) set];
-			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (nsView, rect)];
+			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (height, rect)];
 			[bezierPath fill];
 		} @catch (NSException*) {
 			
@@ -223,7 +220,7 @@ void NSViewOffscreenContext::DrawFormattedText (const NUIE::Rect& rect, const NU
 				NSForegroundColorAttributeName : CreateColor (textColor),
 				NSParagraphStyleAttributeName : style
 			};
-			NSRect textRect = CreateRect (nsView, rect);
+			NSRect textRect = CreateRect (height, rect);
 			NSSize textSize = [nsText sizeWithAttributes:attributes];
 			if (vAnchor == NUIE::VerticalAnchor::Top) {
 				// nothing to do
@@ -266,7 +263,7 @@ void NSViewOffscreenContext::DrawIcon (const NUIE::Rect& rect, const NUIE::IconI
 	}
 	@try {
 		NSImage* iconImage = imageLoader->LoadNSImage (iconId);
-		[iconImage drawInRect:CreateRect (nsView, rect) fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0f];
+		[iconImage drawInRect:CreateRect (height, rect) fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0f];
 	} @catch (NSException*) {
 
 	}
