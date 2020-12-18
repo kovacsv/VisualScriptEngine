@@ -61,4 +61,6 @@ Stream::Status SlotId::Write (OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
+const SlotId NullSlotId;
+
 }

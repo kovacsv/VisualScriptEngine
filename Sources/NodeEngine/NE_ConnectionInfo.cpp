@@ -7,6 +7,15 @@
 namespace NE
 {
 
+SERIALIZATION_INFO (SlotInfo, 1);
+SERIALIZATION_INFO (ConnectionInfo, 1);
+
+SlotInfo::SlotInfo () :
+	SlotInfo (NullNodeId, NullSlotId)
+{
+
+}
+
 SlotInfo::SlotInfo (const NodeId& nodeId, const SlotId& slotId) :
 	nodeId (nodeId),
 	slotId (slotId)
@@ -34,6 +43,11 @@ bool SlotInfo::operator== (const SlotInfo& rhs) const
 	return nodeId == rhs.nodeId && slotId == rhs.slotId;
 }
 
+bool SlotInfo::operator!=(const SlotInfo& rhs) const
+{
+	return !operator== (rhs);
+}
+
 bool SlotInfo::operator< (const SlotInfo& rhs) const
 {
 	return nodeId < rhs.nodeId && slotId < rhs.slotId;
@@ -42,6 +56,27 @@ bool SlotInfo::operator< (const SlotInfo& rhs) const
 bool SlotInfo::operator> (const SlotInfo& rhs) const
 {
 	return nodeId > rhs.nodeId && slotId > rhs.slotId;
+}
+
+Stream::Status SlotInfo::Read (InputStream& inputStream)
+{
+	ObjectHeader header (inputStream);
+	nodeId.Read (inputStream);
+	slotId.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+Stream::Status SlotInfo::Write (OutputStream& outputStream) const
+{
+	ObjectHeader header (outputStream, serializationInfo);
+	nodeId.Write (outputStream);
+	slotId.Write (outputStream);
+	return outputStream.GetStatus ();
+}
+
+ConnectionInfo::ConnectionInfo ()
+{
+
 }
 
 ConnectionInfo::ConnectionInfo (const SlotInfo& outputSlotInfo, const SlotInfo& inputSlotInfo) :
@@ -86,6 +121,11 @@ bool ConnectionInfo::operator== (const ConnectionInfo& rhs) const
 	return outputSlotInfo == rhs.outputSlotInfo && inputSlotInfo == rhs.inputSlotInfo;
 }
 
+bool ConnectionInfo::operator!=(const ConnectionInfo& rhs) const
+{
+	return !operator== (rhs);
+}
+
 bool ConnectionInfo::operator< (const ConnectionInfo& rhs) const
 {
 	return outputSlotInfo < rhs.outputSlotInfo && inputSlotInfo < rhs.inputSlotInfo;
@@ -94,6 +134,22 @@ bool ConnectionInfo::operator< (const ConnectionInfo& rhs) const
 bool ConnectionInfo::operator> (const ConnectionInfo& rhs) const
 {
 	return outputSlotInfo > rhs.outputSlotInfo && inputSlotInfo > rhs.inputSlotInfo;
+}
+
+Stream::Status ConnectionInfo::Read (InputStream& inputStream)
+{
+	ObjectHeader header (inputStream);
+	outputSlotInfo.Read (inputStream);
+	inputSlotInfo.Read (inputStream);
+	return inputStream.GetStatus ();
+}
+
+Stream::Status ConnectionInfo::Write (OutputStream& outputStream) const
+{
+	ObjectHeader header (outputStream, serializationInfo);
+	outputSlotInfo.Write (outputStream);
+	inputSlotInfo.Write (outputStream);
+	return outputStream.GetStatus ();
 }
 
 }

@@ -31,6 +31,8 @@ private:
 	std::string id;
 };
 
+extern const SlotId NullSlotId;
+
 }
 
 namespace std

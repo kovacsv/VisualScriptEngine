@@ -150,7 +150,7 @@ private:
 	NodeGroupPtr		AddUninitializedNodeGroup (const NodeGroupPtr& group);
 	NodeGroupPtr		AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling);
 
-	Stream::Status		ReadNodes (InputStream& inputStream);
+	Stream::Status		ReadNodes (InputStream& inputStream, const ObjectVersion& version);
 	Stream::Status		WriteNodes (OutputStream& outputStream) const;
 
 	Stream::Status		ReadGroups (InputStream& inputStream, const ObjectVersion& version);

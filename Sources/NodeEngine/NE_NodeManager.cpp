@@ -9,7 +9,7 @@
 namespace NE
 {
 
-SERIALIZATION_INFO (NodeManager, 2);
+SERIALIZATION_INFO (NodeManager, 3);
 
 template <typename SlotListType, typename SlotType>
 static bool HasDuplicates (const SlotListType& slots)
@@ -675,7 +675,7 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 	ObjectHeader header (inputStream);
 	idGenerator.Read (inputStream);
 
-	Stream::Status nodeStatus = ReadNodes (inputStream);
+	Stream::Status nodeStatus = ReadNodes (inputStream, header.GetVersion ());
 	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
 		return nodeStatus;
 	}
@@ -816,7 +816,7 @@ NodeGroupPtr NodeManager::AddInitializedNodeGroup (const NodeGroupPtr& group, Id
 	return AddNodeGroup (group, newGroupId);
 }
 
-Stream::Status NodeManager::ReadNodes (InputStream& inputStream)
+Stream::Status NodeManager::ReadNodes (InputStream& inputStream, const ObjectVersion& version)
 {
 	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
 
@@ -835,22 +835,33 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream)
 	size_t connectionCount = 0;
 	inputStream.Read (connectionCount);
 	for (size_t i = 0; i < connectionCount; ++i) {
-		NodeId outputNodeId;
-		SlotId outputSlotId;
-		NodeId inputNodeId;
-		SlotId inputSlotId;
-		
-		outputNodeId.Read (inputStream);
-		outputSlotId.Read (inputStream);
-		inputNodeId.Read (inputStream);
-		inputSlotId.Read (inputStream);
+		ConnectionInfo connection;
+		if (version < 3) {
+			NodeId outputNodeId;
+			SlotId outputSlotId;
+			NodeId inputNodeId;
+			SlotId inputSlotId;
 
-		NodePtr outputNode = GetNode (oldToNewNodeIdTable[outputNodeId]);
-		NodePtr inputNode = GetNode (oldToNewNodeIdTable[inputNodeId]);
+			outputNodeId.Read (inputStream);
+			outputSlotId.Read (inputStream);
+			inputNodeId.Read (inputStream);
+			inputSlotId.Read (inputStream);
+
+			SlotInfo outputSlotInfo (outputNodeId, outputSlotId);
+			SlotInfo inputSlotInfo (inputNodeId, inputSlotId);
+			connection = ConnectionInfo (outputSlotInfo, inputSlotInfo);
+		} else {
+			connection.Read (inputStream);
+		}
+		
+		NodePtr outputNode = GetNode (oldToNewNodeIdTable[connection.GetOutputNodeId ()]);
+		NodePtr inputNode = GetNode (oldToNewNodeIdTable[connection.GetInputNodeId ()]);
 		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
 			return Stream::Status::Error;
 		}
-		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputNode->GetOutputSlot (outputSlotId), inputNode->GetInputSlot (inputSlotId)))) {
+		OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (connection.GetOutputSlotId ());
+		InputSlotConstPtr inputSlot = inputNode->GetInputSlot (connection.GetInputSlotId ());
+		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
 			return Stream::Status::Error;
 		}
 	}
@@ -887,10 +898,7 @@ Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
 
 	outputStream.Write (connectionsToWrite.size ());
 	for (const ConnectionInfo& connection : connectionsToWrite) {
-		connection.GetOutputNodeId ().Write (outputStream);
-		connection.GetOutputSlotId ().Write (outputStream);
-		connection.GetInputNodeId ().Write (outputStream);
-		connection.GetInputSlotId ().Write (outputStream);
+		connection.Write (outputStream);
 	}
 
 	return outputStream.GetStatus ();
