@@ -70,7 +70,7 @@ static void WriteTestFile ()
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
 	InitNodeEditor (env.nodeEditor);
 
-	std::wstring fileName = GetTestFilesPath () + L"Current_CompatibilityTest.vse";
+	std::wstring fileName = GetCompatibilityTestFilesPath () + L"Current_CompatibilityTest.vse";
 	env.nodeEditor.Save (fileName);
 }
 
