@@ -9,6 +9,11 @@ std::wstring GetTestFilesPath ()
 	return SimpleTest::GetAppFolderLocation () + L"VisualTestFiles" + PATH_SEPARATOR;
 }
 
+std::wstring GetCompatibilityTestFilesPath ()
+{
+	return SimpleTest::GetAppFolderLocation () + L"CompatibilityTestFiles" + PATH_SEPARATOR;
+}
+
 bool CheckDrawingReference (const SvgDrawingContext& context, const std::wstring& referenceFileName)
 {
 	std::wstring testFilesPath = GetTestFilesPath ();

@@ -122,6 +122,7 @@ target_link_libraries (NodeEngineTest NodeEngine NodeUIEngine BuiltInNodes)
 get_filename_component (NodeEngineTestSourcesFolderAbsolute "${CMAKE_CURRENT_LIST_DIR}/${NodeEngineTestSourcesFolder}" ABSOLUTE)
 add_custom_command (TARGET NodeEngineTest POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${NodeEngineTestSourcesFolderAbsolute}/VisualTestFiles $<TARGET_FILE_DIR:NodeEngineTest>/VisualTestFiles
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${NodeEngineTestSourcesFolderAbsolute}/CompatibilityTestFiles $<TARGET_FILE_DIR:NodeEngineTest>/CompatibilityTestFiles
 )
 SetCompilerOptions (NodeEngineTest)
 add_test (NodeEngineTest NodeEngineTest)

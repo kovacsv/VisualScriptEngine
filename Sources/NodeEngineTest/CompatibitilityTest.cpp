@@ -78,13 +78,18 @@ TEST (CompatibilityTest)
 {
 	NodeEditorTestEnv env (GetDefaultSkinParams ());
 
-	std::wstring fileName = GetTestFilesPath () + L"CompatibilityTest.vse";
-	bool readSuccess = env.nodeEditor.Open (fileName);
-	if (DBGERROR (!readSuccess)) {
-		WriteTestFile ();
+	std::vector<std::wstring> fileNames = {
+		L"CompatibilityTest_0_3_11.vse",
+		L"CompatibilityTest_0_4_6.ne"
+	};
+	for (const std::wstring& fileName : fileNames) {
+		std::wstring filePath = GetCompatibilityTestFilesPath () + fileName;
+		bool readSuccess = env.nodeEditor.Open (filePath);
+		if (DBGERROR (!readSuccess)) {
+			WriteTestFile ();
+		}
+		ASSERT (env.CheckReference (L"Compatibility_AfterRead.svg"));
 	}
-
-	ASSERT (env.CheckReference (L"Compatibility_AfterRead.svg"));
 }
 
 TEST (NewestVersionReadWriteTest)
