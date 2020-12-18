@@ -1,4 +1,5 @@
 #include "NE_Debug.hpp"
+#include "NUIE_VersionInfo.hpp"
 #include "Application.hpp"
 #include "ResourceIds.hpp"
 #include "CommandIds.hpp"
@@ -140,8 +141,10 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	RECT requiredRect = { 0, 0, 1200, 800 };
 	AdjustWindowRect (&requiredRect, WS_OVERLAPPEDWINDOW, false);
 
+	std::wstring appName = L"Visual Script Engine Demo";
+	std::wstring appTitle = appName + L" " + VSE_VERSION_STRING;
 	HWND windowHandle = CreateWindowEx (
-		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, L"Visual Script Engine Demo", WS_OVERLAPPEDWINDOW,
+		WS_EX_WINDOWEDGE | WS_CLIPCHILDREN, windowClass.lpszClassName, appTitle.c_str (), WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, requiredRect.right - requiredRect.left, requiredRect.bottom - requiredRect.top, NULL, NULL, NULL, &application
 	);
 
