@@ -11,27 +11,6 @@
 namespace NUIE
 {
 
-static void EnumerateInternalConnections (NodeUIDrawingEnvironment& drawingEnv, const NodeUIManager& uiManager, const NE::NodeCollection& nodes, const std::function<void (const Point&, const Point&)>& processor)
-{
-	nodes.Enumerate ([&] (const NE::NodeId& nodeId) {
-		UINodeConstPtr inputNode = uiManager.GetNode (nodeId);
-		inputNode->EnumerateUIInputSlots ([&] (const UIInputSlotConstPtr& inputSlot) {
-			NE::SlotInfo inputSlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ());
-			uiManager.EnumerateConnectedUIOutputSlots (inputSlot, [&] (const UIOutputSlotConstPtr outputSlot) {
-				if (nodes.Contains (outputSlot->GetOwnerNodeId ())) {
-					UINodeConstPtr outputNode = uiManager.GetNode (outputSlot->GetOwnerNodeId ());
-					processor (
-						outputNode->GetOutputSlotConnPosition (drawingEnv, outputSlot->GetId ()),
-						inputNode->GetInputSlotConnPosition (drawingEnv, inputSlot->GetId ())
-					);
-				}
-			});
-			return true;
-		});
-		return true;
-	});
-}
-
 class PanningHandler : public MouseMoveHandler
 {
 public:
@@ -206,8 +185,13 @@ public:
 		uiManager (uiManager),
 		relevantNodes (relevantNodes)
 	{
-		EnumerateInternalConnections (drawingEnv, uiManager, relevantNodes, [&] (const Point& beg, const Point& end) {
-			temporaryConnections.push_back ({ beg, end });
+		uiManager.EnumerateUIConnections (relevantNodes, [&] (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) {
+			UINodeConstPtr outputNode = uiManager.GetNode (outputSlot->GetOwnerNodeId ());
+			UINodeConstPtr inputNode = uiManager.GetNode (inputSlot->GetOwnerNodeId ());
+			temporaryConnections.push_back ({
+				outputNode->GetOutputSlotConnPosition (drawingEnv, outputSlot->GetId ()),
+				inputNode->GetInputSlotConnPosition (drawingEnv, inputSlot->GetId ())
+			});
 		});
 	}
 

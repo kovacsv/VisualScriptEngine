@@ -395,6 +395,26 @@ void NodeUIManager::EnumerateConnectedUIOutputSlots (const UIInputSlotConstPtr& 
 	});
 }
 
+void NodeUIManager::EnumerateUIConnections (const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const
+{
+	nodeManager.EnumerateConnections ([&] (const NE::OutputSlotConstPtr& outputSlot, const NE::InputSlotConstPtr& inputSlot) {
+		processor (
+			std::dynamic_pointer_cast<const UIOutputSlot> (outputSlot),
+			std::dynamic_pointer_cast<const UIInputSlot> (inputSlot)
+		);
+	});
+}
+
+void NodeUIManager::EnumerateUIConnections (const NE::NodeCollection& nodes, const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const
+{
+	nodeManager.EnumerateConnections (nodes, [&] (const NE::OutputSlotConstPtr& outputSlot, const NE::InputSlotConstPtr& inputSlot) {
+		processor (
+			std::dynamic_pointer_cast<const UIOutputSlot> (outputSlot),
+			std::dynamic_pointer_cast<const UIInputSlot> (inputSlot)
+		);
+	});
+}
+
 bool NodeUIManager::ContainsNode (const NE::NodeId& nodeId) const
 {
 	return nodeManager.ContainsNode (nodeId);

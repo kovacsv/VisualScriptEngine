@@ -125,25 +125,6 @@ static std::vector<SlotInfo> GetConnectedOutputSlots (const NodeManager& nodeMan
 	return result;
 }
 
-static void EnumerateInternalConnections (const NodeManager& nodeManager, const NodeCollection& nodes, const std::function<void (const ConnectionInfo&)>& processor)
-{
-	nodes.Enumerate ([&] (const NodeId& nodeId) {
-		NodeConstPtr node = nodeManager.GetNode (nodeId);
-		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
-			SlotInfo inputSlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ());
-			nodeManager.EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
-				if (nodes.Contains (outputSlot->GetOwnerNodeId ())) {
-					SlotInfo outputSlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ());
-					ConnectionInfo connection (outputSlotInfo, inputSlotInfo);
-					processor (connection);
-				}
-			});
-			return true;
-		});
-		return true;
-	});
-}
-
 bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager& target, const NodeFilter& nodeFilter, AppendEventHandler& eventHandler)
 {
 	// collect nodes to create
@@ -170,15 +151,15 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 
 	// maintain connections between added nodes
 	bool success = true;
-	EnumerateInternalConnections (source, nodesToClone, [&] (const ConnectionInfo& connection) {
-		NodeConstPtr outputNode = target.GetNode (oldToNewNodeIdTable[connection.GetOutputNodeId ()]);
-		NodeConstPtr inputNode = target.GetNode (oldToNewNodeIdTable[connection.GetInputNodeId ()]);
+	source.EnumerateConnections (nodesToClone, [&] (const OutputSlotConstPtr& oldOutputSlot, const InputSlotConstPtr& oldInputSlot) {
+		NodeConstPtr outputNode = target.GetNode (oldToNewNodeIdTable[oldOutputSlot->GetOwnerNodeId ()]);
+		NodeConstPtr inputNode = target.GetNode (oldToNewNodeIdTable[oldInputSlot->GetOwnerNodeId ()]);
 		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
 			success = false;
 			return;
 		}
-		OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (connection.GetOutputSlotId ());
-		InputSlotConstPtr inputSlot = inputNode->GetInputSlot (connection.GetInputSlotId ());
+		OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (oldOutputSlot->GetId ());
+		InputSlotConstPtr inputSlot = inputNode->GetInputSlot (oldInputSlot->GetId ());
 		if (DBGERROR (outputSlot == nullptr || inputSlot == nullptr)) {
 			success = false;
 			return;

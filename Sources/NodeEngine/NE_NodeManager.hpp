@@ -97,6 +97,8 @@ public:
 	size_t					GetConnectedInputSlotCount (const OutputSlotConstPtr& outputSlot) const;
 	void					EnumerateConnectedOutputSlots (const InputSlotConstPtr& inputSlot, const std::function<void (const OutputSlotConstPtr&)>& processor) const;
 	void					EnumerateConnectedInputSlots (const OutputSlotConstPtr& outputSlot, const std::function<void (const InputSlotConstPtr&)>& processor) const;
+	void					EnumerateConnections (const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const;
+	void					EnumerateConnections (const NodeCollection& nodes, const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const;
 
 	void					EvaluateAllNodes (EvaluationEnv& env) const;
 	void					ForceEvaluateAllNodes (EvaluationEnv& env) const;
@@ -152,6 +154,9 @@ private:
 
 	Stream::Status		ReadNodes (InputStream& inputStream, const ObjectVersion& version);
 	Stream::Status		WriteNodes (OutputStream& outputStream) const;
+
+	Stream::Status		ReadConnections (InputStream& inputStream, const ObjectVersion& version);
+	Stream::Status		WriteConnections (OutputStream& outputStream) const;
 
 	Stream::Status		ReadGroups (InputStream& inputStream, const ObjectVersion& version);
 	Stream::Status		WriteGroups (OutputStream& outputStream) const;

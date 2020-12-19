@@ -506,6 +506,35 @@ void NodeManager::EnumerateConnectedInputSlots (const OutputSlotConstPtr& output
 	connectionManager.EnumerateConnectedInputSlots (outputSlot, processor);
 }
 
+void NodeManager::EnumerateConnections (const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
+{
+	nodeList.Enumerate ([&] (const NodeConstPtr& node) {
+		node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
+			connectionManager.EnumerateConnectedInputSlots (outputSlot, [&] (const InputSlotConstPtr& inputSlot) {
+				processor (outputSlot, inputSlot);
+			});
+			return true;
+		});
+		return true;
+	});
+}
+
+void NodeManager::EnumerateConnections (const NodeCollection& nodes, const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
+{
+	nodes.Enumerate ([&] (const NodeId& nodeId) {
+		NodeConstPtr node = GetNode (nodeId);
+		node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
+			connectionManager.EnumerateConnectedInputSlots (outputSlot, [&] (const InputSlotConstPtr& inputSlot) {
+				if (nodes.Contains (inputSlot->GetOwnerNodeId ())) {
+					processor (outputSlot, inputSlot);
+				}
+			});
+			return true;
+		});
+		return true;
+	});
+}
+
 void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 {
 	EnumerateNodes ([&] (const NodeConstPtr& node) {
@@ -680,6 +709,11 @@ Stream::Status NodeManager::Read (InputStream& inputStream)
 		return nodeStatus;
 	}
 
+	Stream::Status connectionStatus = ReadConnections (inputStream, header.GetVersion ());
+	if (DBGERROR (connectionStatus != Stream::Status::NoError)) {
+		return connectionStatus;
+	}
+
 	Stream::Status groupStatus = ReadGroups (inputStream, header.GetVersion ());
 	if (DBGERROR (groupStatus != Stream::Status::NoError)) {
 		return groupStatus;
@@ -698,6 +732,11 @@ Stream::Status NodeManager::Write (OutputStream& outputStream) const
 	Stream::Status nodeStatus = WriteNodes (outputStream);
 	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
 		return nodeStatus;
+	}
+
+	Stream::Status connectionStatus = WriteConnections (outputStream);
+	if (DBGERROR (connectionStatus != Stream::Status::NoError)) {
+		return connectionStatus;
 	}
 
 	Stream::Status groupStatus = WriteGroups (outputStream);
@@ -816,22 +855,36 @@ NodeGroupPtr NodeManager::AddInitializedNodeGroup (const NodeGroupPtr& group, Id
 	return AddNodeGroup (group, newGroupId);
 }
 
-Stream::Status NodeManager::ReadNodes (InputStream& inputStream, const ObjectVersion& version)
+Stream::Status NodeManager::ReadNodes (InputStream& inputStream, const ObjectVersion&)
 {
-	std::unordered_map<NodeId, NodeId> oldToNewNodeIdTable;
-
 	size_t nodeCount = 0;
 	inputStream.Read (nodeCount);
 	for (size_t i = 0; i < nodeCount; ++i) {
 		NodePtr node (ReadDynamicObject<Node> (inputStream));
 		NodeId oldNodeId = node->GetId ();
 		NodePtr addedNode = AddInitializedNode (node, IdHandlingPolicy::KeepOriginalId);
+		DBGASSERT (oldNodeId == addedNode->GetId ());
 		if (DBGERROR (addedNode == nullptr)) {
 			return Stream::Status::Error;
 		}
-		oldToNewNodeIdTable.insert ({ oldNodeId, addedNode->GetId () });
 	}
 
+	return inputStream.GetStatus ();
+}
+
+Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
+{
+	outputStream.Write (GetNodeCount ());
+	EnumerateNodes ([&] (const NodeConstPtr& node) {
+		WriteDynamicObject (outputStream, node.get ());
+		return true;
+	});
+
+	return outputStream.GetStatus ();
+}
+
+Stream::Status NodeManager::ReadConnections (InputStream& inputStream, const ObjectVersion& version)
+{
 	size_t connectionCount = 0;
 	inputStream.Read (connectionCount);
 	for (size_t i = 0; i < connectionCount; ++i) {
@@ -853,9 +906,9 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream, const ObjectVer
 		} else {
 			connection.Read (inputStream);
 		}
-		
-		NodePtr outputNode = GetNode (oldToNewNodeIdTable[connection.GetOutputNodeId ()]);
-		NodePtr inputNode = GetNode (oldToNewNodeIdTable[connection.GetInputNodeId ()]);
+
+		NodePtr outputNode = GetNode (connection.GetOutputNodeId ());
+		NodePtr inputNode = GetNode (connection.GetInputNodeId ());
 		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
 			return Stream::Status::Error;
 		}
@@ -869,37 +922,16 @@ Stream::Status NodeManager::ReadNodes (InputStream& inputStream, const ObjectVer
 	return inputStream.GetStatus ();
 }
 
-Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
+Stream::Status NodeManager::WriteConnections (OutputStream& outputStream) const
 {
-	std::vector<NodeConstPtr> nodesToWrite;
-	EnumerateNodes ([&] (const NodeConstPtr& node) {
-		nodesToWrite.push_back (node);
-		return true;
-	});
-
-	outputStream.Write (nodesToWrite.size ());
-	for (const NodeConstPtr& node : nodesToWrite) {
-		WriteDynamicObject (outputStream, node.get ());
-	};
-
-	std::vector<ConnectionInfo> connectionsToWrite;
-	for (const NodeConstPtr& node : nodesToWrite) {
-		node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
-			EnumerateConnectedOutputSlots (inputSlot, [&] (const OutputSlotConstPtr& outputSlot) {
-				ConnectionInfo connection (
-					SlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ()),
-					SlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ())
-				);
-				connectionsToWrite.push_back (connection);
-			});
-			return true;
-		});
-	}
-
-	outputStream.Write (connectionsToWrite.size ());
-	for (const ConnectionInfo& connection : connectionsToWrite) {
+	outputStream.Write (GetConnectionCount ());
+	EnumerateConnections ([&] (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) {
+		ConnectionInfo connection (
+			SlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ()),
+			SlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ())
+		);
 		connection.Write (outputStream);
-	}
+	});
 
 	return outputStream.GetStatus ();
 }

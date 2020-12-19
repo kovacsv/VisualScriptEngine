@@ -128,6 +128,8 @@ public:
 	void						EnumerateConnectedOutputSlots (const NE::InputSlotConstPtr& inputSlot, const std::function<void (const NE::OutputSlotConstPtr&)>& processor) const;
 	void						EnumerateConnectedUIInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const;
 	void						EnumerateConnectedUIOutputSlots (const UIInputSlotConstPtr& inputSlot, const std::function<void (UIOutputSlotConstPtr)>& processor) const;
+	void						EnumerateUIConnections (const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const;
+	void						EnumerateUIConnections (const NE::NodeCollection& nodes, const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const;
 
 	bool						ContainsNode (const NE::NodeId& nodeId) const;
 	UINodePtr					GetNode (const NE::NodeId& nodeId);
