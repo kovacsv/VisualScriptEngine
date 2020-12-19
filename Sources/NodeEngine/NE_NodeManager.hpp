@@ -44,6 +44,7 @@ class NodeManager
 {
 	SERIALIZABLE;
 	friend class NodeManagerMerge;
+	friend class NodeManagerSerialization;
 
 public:
 	enum class UpdateMode
@@ -63,6 +64,7 @@ public:
 	void					Clear ();
 	bool					IsEmpty () const;
 	size_t					GetNodeCount () const;
+	size_t					GetNodeGroupCount () const;
 	size_t					GetConnectionCount () const;
 
 	void					EnumerateNodes (const std::function<bool (const NodePtr&)>& processor);
@@ -151,15 +153,6 @@ private:
 	NodeGroupPtr		AddNodeGroup (const NodeGroupPtr& group, const NodeGroupId& groupId);
 	NodeGroupPtr		AddUninitializedNodeGroup (const NodeGroupPtr& group);
 	NodeGroupPtr		AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling);
-
-	Stream::Status		ReadNodes (InputStream& inputStream, const ObjectVersion& version);
-	Stream::Status		WriteNodes (OutputStream& outputStream) const;
-
-	Stream::Status		ReadConnections (InputStream& inputStream, const ObjectVersion& version);
-	Stream::Status		WriteConnections (OutputStream& outputStream) const;
-
-	Stream::Status		ReadGroups (InputStream& inputStream, const ObjectVersion& version);
-	Stream::Status		WriteGroups (OutputStream& outputStream) const;
 
 	UniqueIdGenerator						idGenerator;
 	NodeList								nodeList;

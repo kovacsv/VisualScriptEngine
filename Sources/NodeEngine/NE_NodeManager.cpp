@@ -5,6 +5,7 @@
 #include "NE_InputSlot.hpp"
 #include "NE_OutputSlot.hpp"
 #include "NE_MemoryStream.hpp"
+#include "NE_NodeManagerSerialization.hpp"
 
 namespace NE
 {
@@ -158,21 +159,30 @@ NodeManager::~NodeManager ()
 
 void NodeManager::Clear ()
 {
+	idGenerator.Clear ();
 	nodeList.Clear ();
 	connectionManager.Clear ();
 	nodeGroupList.Clear ();
-	nodeValueCache.Clear ();
 	updateMode = UpdateMode::Automatic;
+
+	nodeValueCache.Clear ();
+	nodeEvaluator.reset (new NodeManagerNodeEvaluator (*this, nodeValueCache));
+	isForceCalculate = false;
 }
 
 bool NodeManager::IsEmpty () const
 {
-	return nodeList.IsEmpty () && connectionManager.IsEmpty ();
+	return nodeList.IsEmpty () && nodeGroupList.IsEmpty () && connectionManager.IsEmpty ();
 }
 
 size_t NodeManager::GetNodeCount () const
 {
 	return nodeList.Count ();
+}
+
+size_t NodeManager::GetNodeGroupCount () const
+{
+	return nodeGroupList.Count ();
 }
 
 size_t NodeManager::GetConnectionCount () const
@@ -697,56 +707,12 @@ void NodeManager::SetUpdateMode (UpdateMode newUpdateMode)
 
 Stream::Status NodeManager::Read (InputStream& inputStream)
 {
-	if (DBGERROR (!IsEmpty ())) {
-		return Stream::Status::Error;
-	}
-
-	ObjectHeader header (inputStream);
-	idGenerator.Read (inputStream);
-
-	Stream::Status nodeStatus = ReadNodes (inputStream, header.GetVersion ());
-	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
-		return nodeStatus;
-	}
-
-	Stream::Status connectionStatus = ReadConnections (inputStream, header.GetVersion ());
-	if (DBGERROR (connectionStatus != Stream::Status::NoError)) {
-		return connectionStatus;
-	}
-
-	Stream::Status groupStatus = ReadGroups (inputStream, header.GetVersion ());
-	if (DBGERROR (groupStatus != Stream::Status::NoError)) {
-		return groupStatus;
-	}
-	
-	ReadEnum (inputStream, updateMode);
-
-	return inputStream.GetStatus ();
+	return NodeManagerSerialization::Read (*this, inputStream);
 }
 
 Stream::Status NodeManager::Write (OutputStream& outputStream) const
 {
-	ObjectHeader header (outputStream, serializationInfo);
-	idGenerator.Write (outputStream);
-
-	Stream::Status nodeStatus = WriteNodes (outputStream);
-	if (DBGERROR (nodeStatus != Stream::Status::NoError)) {
-		return nodeStatus;
-	}
-
-	Stream::Status connectionStatus = WriteConnections (outputStream);
-	if (DBGERROR (connectionStatus != Stream::Status::NoError)) {
-		return connectionStatus;
-	}
-
-	Stream::Status groupStatus = WriteGroups (outputStream);
-	if (DBGERROR (groupStatus != Stream::Status::NoError)) {
-		return groupStatus;
-	}
-
-	WriteEnum (outputStream, updateMode);
-
-	return outputStream.GetStatus ();
+	return NodeManagerSerialization::Write (*this, outputStream);
 }
 
 bool NodeManager::Clone (const NodeManager& source, NodeManager& target)
@@ -853,130 +819,6 @@ NodeGroupPtr NodeManager::AddInitializedNodeGroup (const NodeGroupPtr& group, Id
 	}
 
 	return AddNodeGroup (group, newGroupId);
-}
-
-Stream::Status NodeManager::ReadNodes (InputStream& inputStream, const ObjectVersion&)
-{
-	size_t nodeCount = 0;
-	inputStream.Read (nodeCount);
-	for (size_t i = 0; i < nodeCount; ++i) {
-		NodePtr node (ReadDynamicObject<Node> (inputStream));
-		NodeId oldNodeId = node->GetId ();
-		NodePtr addedNode = AddInitializedNode (node, IdHandlingPolicy::KeepOriginalId);
-		DBGASSERT (oldNodeId == addedNode->GetId ());
-		if (DBGERROR (addedNode == nullptr)) {
-			return Stream::Status::Error;
-		}
-	}
-
-	return inputStream.GetStatus ();
-}
-
-Stream::Status NodeManager::WriteNodes (OutputStream& outputStream) const
-{
-	outputStream.Write (GetNodeCount ());
-	EnumerateNodes ([&] (const NodeConstPtr& node) {
-		WriteDynamicObject (outputStream, node.get ());
-		return true;
-	});
-
-	return outputStream.GetStatus ();
-}
-
-Stream::Status NodeManager::ReadConnections (InputStream& inputStream, const ObjectVersion& version)
-{
-	size_t connectionCount = 0;
-	inputStream.Read (connectionCount);
-	for (size_t i = 0; i < connectionCount; ++i) {
-		ConnectionInfo connection;
-		if (version < 3) {
-			NodeId outputNodeId;
-			SlotId outputSlotId;
-			NodeId inputNodeId;
-			SlotId inputSlotId;
-
-			outputNodeId.Read (inputStream);
-			outputSlotId.Read (inputStream);
-			inputNodeId.Read (inputStream);
-			inputSlotId.Read (inputStream);
-
-			SlotInfo outputSlotInfo (outputNodeId, outputSlotId);
-			SlotInfo inputSlotInfo (inputNodeId, inputSlotId);
-			connection = ConnectionInfo (outputSlotInfo, inputSlotInfo);
-		} else {
-			connection.Read (inputStream);
-		}
-
-		NodePtr outputNode = GetNode (connection.GetOutputNodeId ());
-		NodePtr inputNode = GetNode (connection.GetInputNodeId ());
-		if (DBGERROR (outputNode == nullptr || inputNode == nullptr)) {
-			return Stream::Status::Error;
-		}
-		OutputSlotConstPtr outputSlot = outputNode->GetOutputSlot (connection.GetOutputSlotId ());
-		InputSlotConstPtr inputSlot = inputNode->GetInputSlot (connection.GetInputSlotId ());
-		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
-			return Stream::Status::Error;
-		}
-	}
-
-	return inputStream.GetStatus ();
-}
-
-Stream::Status NodeManager::WriteConnections (OutputStream& outputStream) const
-{
-	outputStream.Write (GetConnectionCount ());
-	EnumerateConnections ([&] (const OutputSlotConstPtr& outputSlot, const InputSlotConstPtr& inputSlot) {
-		ConnectionInfo connection (
-			SlotInfo (outputSlot->GetOwnerNodeId (), outputSlot->GetId ()),
-			SlotInfo (inputSlot->GetOwnerNodeId (), inputSlot->GetId ())
-		);
-		connection.Write (outputStream);
-	});
-
-	return outputStream.GetStatus ();
-}
-
-Stream::Status NodeManager::ReadGroups (InputStream& inputStream, const ObjectVersion& version)
-{
-	DBGASSERT (nodeGroupList.IsEmpty ());
-	if (version < 2) {
-		ObjectHeader legacyGroupListHeader (inputStream);
-		if (DBGERROR (legacyGroupListHeader.GetVersion () != 1)) {
-			return Stream::Status::Error;
-		}
-	}
-
-	size_t groupCount = 0;
-	inputStream.Read (groupCount);
-	for (size_t i = 0; i < groupCount; i++) {
-		NodeGroupPtr group (ReadDynamicObject<NodeGroup> (inputStream));
-		if (version < 2) {
-			AddUninitializedNodeGroup (group);
-		} else {
-			AddInitializedNodeGroup (group, IdHandlingPolicy::KeepOriginalId);
-		}
-
-		NodeCollection nodes;
-		nodes.Read (inputStream);
-		nodes.Enumerate ([&] (const NodeId& nodeId) {
-			nodeGroupList.AddNodeToGroup (group->GetId (), nodeId);
-			return true;
-		});
-	}
-
-	return inputStream.GetStatus ();
-}
-
-Stream::Status NodeManager::WriteGroups (OutputStream& outputStream) const
-{
-	outputStream.Write (nodeGroupList.Count ());
-	nodeGroupList.Enumerate ([&] (const NodeGroupConstPtr& group) {
-		WriteDynamicObject (outputStream, group.get ());
-		const NodeCollection& nodes = nodeGroupList.GetGroupNodes (group->GetId ());
-		nodes.Write (outputStream);
-		return true;
-	});
-	return outputStream.GetStatus ();
 }
 
 }

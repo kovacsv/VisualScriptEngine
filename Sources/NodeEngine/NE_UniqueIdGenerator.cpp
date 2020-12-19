@@ -17,6 +17,12 @@ UniqueIdGenerator::~UniqueIdGenerator ()
 
 }
 
+void UniqueIdGenerator::Clear ()
+{
+	nextNodeId = 1;
+	nextNodeGroupId = 1;
+}
+
 NodeId UniqueIdGenerator::GenerateNodeId ()
 {
 	IdType newNodeId = nextNodeId++;

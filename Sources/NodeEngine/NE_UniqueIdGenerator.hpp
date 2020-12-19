@@ -20,6 +20,7 @@ public:
 	UniqueIdGenerator ();
 	~UniqueIdGenerator ();
 
+	void					Clear ();
 	NodeId					GenerateNodeId ();
 	NodeGroupId				GenerateNodeGroupId ();
 
