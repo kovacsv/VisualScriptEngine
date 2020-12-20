@@ -67,8 +67,7 @@ size_t ConnectionList<BegSlotType, EndSlotType>::GetConnectionCount (const BegSl
 	if (foundEndSlots == connections.end ()) {
 		return 0;
 	}
-	const std::vector<EndSlotType>& endSlots = foundEndSlots->second;
-	return endSlots.size ();
+	return foundEndSlots->second.size ();
 }
 
 template <class BegSlotType, class EndSlotType>
@@ -123,10 +122,13 @@ void ConnectionList<BegSlotType, EndSlotType>::DeleteConnection (const BegSlotTy
 	DBGASSERT (HasConnection (begSlot, endSlot));
 	auto foundEndSlots = connections.find (begSlot);
 	if (DBGVERIFY (foundEndSlots != connections.end ())) {
-		auto foundEndSlot = std::find (foundEndSlots->second.begin (), foundEndSlots->second.end (), endSlot);
-		foundEndSlots->second.erase (foundEndSlot);
-		if (foundEndSlots->second.empty ()) {
-			connections.erase (begSlot);
+		std::vector<EndSlotType>& endSlots = foundEndSlots->second;
+		auto foundEndSlot = std::find (endSlots.begin (), endSlots.end (), endSlot);
+		if (DBGVERIFY (foundEndSlot != endSlots.end ())) {
+			endSlots.erase (foundEndSlot);
+			if (endSlots.empty ()) {
+				connections.erase (begSlot);
+			}
 		}
 	}
 }

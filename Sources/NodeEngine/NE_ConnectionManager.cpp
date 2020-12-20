@@ -6,7 +6,9 @@
 namespace NE
 {
 
-ConnectionManager::ConnectionManager ()
+ConnectionManager::ConnectionManager () :
+	outputToInputConnections (),
+	inputToOutputConnections ()
 {
 
 }
