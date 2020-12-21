@@ -287,7 +287,7 @@ void Direct2DContextBase::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& 
 		return;
 	}
 	ID2D1Bitmap* bitmap = imageLoader->LoadDirect2DImage (iconId, renderTarget);
-	if (DBGERROR (bitmap != nullptr)) {
+	if (DBGVERIFY (bitmap != nullptr)) {
 		D2D1_RECT_F d2Rect = CreateRect (rect);
 		renderTarget->DrawBitmap (bitmap, d2Rect);
 	}
