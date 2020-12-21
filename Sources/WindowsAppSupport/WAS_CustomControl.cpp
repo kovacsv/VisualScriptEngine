@@ -34,9 +34,8 @@ public:
 		WNDCLASSEX windowClass;
 		ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
 		windowClass.cbSize = sizeof (WNDCLASSEX);
-		windowClass.style = 0;
-		windowClass.lpfnWndProc = windowProc;
 		windowClass.style = CS_DBLCLKS;
+		windowClass.lpfnWndProc = windowProc;
 		windowClass.cbClsExtra = 0;
 		windowClass.cbWndExtra = 0;
 		windowClass.hInstance = NULL;

@@ -88,7 +88,7 @@ public:
 			return false;
 		}
 		ValueConstPtr val1 = testNode1->GetCalculatedValue ();
-		ValueConstPtr val2 = testNode1->GetCalculatedValue ();
+		ValueConstPtr val2 = testNode2->GetCalculatedValue ();
 		if (IntValue::Get (val1) != nodeVal1 || IntValue::Get (val2) != nodeVal2) {
 			return false;
 		}

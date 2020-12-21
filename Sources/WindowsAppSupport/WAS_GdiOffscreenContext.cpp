@@ -16,7 +16,7 @@ HANDLE CreateHandle (const NUIE::ColorCacheKey& key)
 
 HANDLE CreateHandle (const NUIE::FontCacheKey& key)
 {
-	return ::CreateFont (key.size, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, key.family.c_str ());
+	return ::CreateFont (key.size, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, key.family.c_str ());
 }
 
 GdiOffscreenContext::GdiOffscreenContext () :

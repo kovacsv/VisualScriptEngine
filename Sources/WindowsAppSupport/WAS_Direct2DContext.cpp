@@ -84,8 +84,8 @@ void Direct2DContext::InitRenderTarget ()
 
 	ID2D1HwndRenderTarget** hwndRenderTarget = (ID2D1HwndRenderTarget**) (&renderTarget);
 	direct2DHandler.direct2DFactory->CreateHwndRenderTarget (renderTargetProperties, hwndRenderTargetProperties, hwndRenderTarget);
-	renderTarget->SetDpi (96.0f, 96.0f);
 	DBGASSERT (renderTarget != nullptr);
+	renderTarget->SetDpi (96.0f, 96.0f);
 }
 
 }

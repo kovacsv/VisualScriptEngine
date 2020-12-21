@@ -121,9 +121,8 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	WNDCLASSEX windowClass;
 	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
 	windowClass.cbSize = sizeof(WNDCLASSEX);
-	windowClass.style = 0;
-	windowClass.lpfnWndProc = ApplicationWindowProc;
 	windowClass.style = CS_DBLCLKS;
+	windowClass.lpfnWndProc = ApplicationWindowProc;
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
 	windowClass.hInstance = hInstance;
@@ -135,7 +134,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 	windowClass.lpszClassName = L"VisualScriptEngineDemo";
 
 	if (!RegisterClassEx (&windowClass)) {
-		return false;
+		return 1;
 	}
 
 	RECT requiredRect = { 0, 0, 1200, 800 };
