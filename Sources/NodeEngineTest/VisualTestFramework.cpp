@@ -382,6 +382,21 @@ void NodeEditorTestEnv::SetNextCommandParameterSettings (const ParameterSettings
 	uiEnvironment.SetNextCommandParameterSettings (handler);
 }
 
+Rect NodeEditorTestEnv::GetNodeRect (const UINodePtr& node)
+{
+	return node->GetRect (uiEnvironment);
+}
+
+Point NodeEditorTestEnv::GetOutputSlotConnPosition (const UINodePtr& node, const std::string& slotId)
+{
+	return node->GetOutputSlotConnPosition (uiEnvironment, SlotId (slotId));
+}
+
+Point NodeEditorTestEnv::GetInputSlotConnPosition (const UINodePtr& node, const std::string& slotId)
+{
+	return node->GetInputSlotConnPosition (uiEnvironment, SlotId (slotId));
+}
+
 SimpleNodeEditorTestEnv::SimpleNodeEditorTestEnv (const BasicSkinParams& skinParams) :
 	NodeEditorTestEnv (skinParams)
 {

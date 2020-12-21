@@ -87,6 +87,9 @@ public:
 	void	ExecuteCommand (const NUIE::CommandCode& commandCode);
 	void	SetNextCommandName (const std::wstring& nextCommandName);
 	void	SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
+	Rect	GetNodeRect (const UINodePtr& node);
+	Point	GetOutputSlotConnPosition (const UINodePtr& node, const std::string& slotId);
+	Point	GetInputSlotConnPosition (const UINodePtr& node, const std::string& slotId);
 
 	TestNodeUIEnvironment	uiEnvironment;
 	NodeEditor				nodeEditor;
