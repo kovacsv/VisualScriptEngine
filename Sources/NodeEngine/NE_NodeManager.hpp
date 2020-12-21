@@ -146,7 +146,7 @@ private:
 		GenerateNewId
 	};
 
-	NodePtr				AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter);
+	NodePtr				AddNode (const NodePtr& node, const NodeEvaluatorInitializer& initializer);
 	NodePtr				AddUninitializedNode (const NodePtr& node);
 	NodePtr				AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling);
 

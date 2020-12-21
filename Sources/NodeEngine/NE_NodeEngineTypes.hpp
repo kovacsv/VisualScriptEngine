@@ -8,10 +8,6 @@ namespace NE
 
 class EvaluationEnv;
 
-class NodeEvaluator;
-using NodeEvaluatorPtr = std::shared_ptr<NodeEvaluator>;
-using NodeEvaluatorConstPtr = std::shared_ptr<const NodeEvaluator>;
-
 class Node;
 using NodePtr = std::shared_ptr<Node>;
 using NodeConstPtr = std::shared_ptr<const Node>;

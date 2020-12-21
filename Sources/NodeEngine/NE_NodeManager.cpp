@@ -77,10 +77,10 @@ private:
 	NodeValueCache&		nodeValueCache;
 };
 
-class NodeManagerNodeEvaluatorSetter : public NodeEvaluatorSetter
+class NodeManagerNodeEvaluatorInitializer : public NodeEvaluatorInitializer
 {
 public:
-	NodeManagerNodeEvaluatorSetter (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator, InitializationMode initMode) :
+	NodeManagerNodeEvaluatorInitializer (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator, NodeEvaluatorInitializer::Mode initMode) :
 		newNodeId (newNodeId),
 		newNodeEvaluator (newNodeEvaluator),
 		initMode (initMode)
@@ -98,7 +98,7 @@ public:
 		return newNodeEvaluator;
 	}
 
-	virtual InitializationMode GetInitializationMode () const override
+	virtual Mode GetInitializationMode () const override
 	{
 		return initMode;
 	}
@@ -106,7 +106,7 @@ public:
 private:
 	const NodeId&					newNodeId;
 	const NodeEvaluatorConstPtr&	newNodeEvaluator;
-	InitializationMode				initMode;
+	NodeEvaluatorInitializer::Mode			initMode;
 };
 
 OutputSlotList::OutputSlotList ()
@@ -230,7 +230,7 @@ bool NodeManager::DeleteNode (const NodeId& id)
 
 bool NodeManager::DeleteNode (const NodePtr& node)
 {
-	if (DBGERROR (node == nullptr || node->GetId () == NullNodeId || !node->HasNodeEvaluator ())) {
+	if (DBGERROR (node == nullptr || !node->IsEvaluatorInitialized ())) {
 		return false;
 	}
 
@@ -252,7 +252,7 @@ bool NodeManager::DeleteNode (const NodePtr& node)
 	});
 
 	nodeList.DeleteNode (node->GetId ());
-	node->ClearNodeEvaluator ();
+	node->ClearEvaluator ();
 
 	return true;
 }
@@ -753,30 +753,30 @@ bool NodeManager::WriteToBuffer (const NodeManager& nodeManager, std::vector<cha
 	return true;
 }
 
-NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorSetter& setter)
+NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorInitializer& initializer)
 {
-	if (DBGERROR (ContainsNode (setter.GetNodeId ()))) {
+	if (DBGERROR (ContainsNode (initializer.GetNodeId ()))) {
 		return nullptr;
 	}
-	node->SetNodeEvaluator (setter);
+	node->InitializeEvaluator (initializer);
 	nodeList.AddNode (node->GetId (), node);
 	return node;
 }
 
 NodePtr NodeManager::AddUninitializedNode (const NodePtr& node)
 {
-	if (DBGERROR (node == nullptr || node->HasNodeEvaluator () || node->GetId () != NullNodeId)) {
+	if (DBGERROR (node == nullptr || node->IsEvaluatorInitialized ())) {
 		return nullptr;
 	}
 
 	NodeId newNodeId = idGenerator.GenerateNodeId ();
-	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::Initialize);
-	return AddNode (node, setter);
+	NodeManagerNodeEvaluatorInitializer initializer (newNodeId, nodeEvaluator, NodeEvaluatorInitializer::Mode::InitializeNode);
+	return AddNode (node, initializer);
 }
 
 NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling)
 {
-	if (DBGERROR (node == nullptr || node->HasNodeEvaluator () || node->GetId () == NullNodeId)) {
+	if (DBGERROR (node == nullptr || node->IsEvaluatorInitialized ())) {
 		return nullptr;
 	}
 
@@ -789,8 +789,8 @@ NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy i
 		DBGBREAK ();
 	}
 
-	NodeManagerNodeEvaluatorSetter setter (newNodeId, nodeEvaluator, InitializationMode::DoNotInitialize);
-	return AddNode (node, setter);
+	NodeManagerNodeEvaluatorInitializer initializer (newNodeId, nodeEvaluator, NodeEvaluatorInitializer::Mode::DoNotInitializeNode);
+	return AddNode (node, initializer);
 }
 
 NodeGroupPtr NodeManager::AddUninitializedNodeGroup (const NodeGroupPtr& group)

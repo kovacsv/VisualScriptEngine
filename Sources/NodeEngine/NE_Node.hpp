@@ -34,21 +34,24 @@ public:
 	virtual void			SetCalculatedNodeValue (const NodeId& nodeId, const ValueConstPtr& valuePtr) const = 0;
 };
 
-enum class InitializationMode
-{
-	Initialize,
-	DoNotInitialize
-};
+using NodeEvaluatorPtr = std::shared_ptr<NodeEvaluator>;
+using NodeEvaluatorConstPtr = std::shared_ptr<const NodeEvaluator>;
 
-class NodeEvaluatorSetter
+class NodeEvaluatorInitializer
 {
 public:
-	NodeEvaluatorSetter ();
-	virtual ~NodeEvaluatorSetter ();
+	enum class Mode
+	{
+		InitializeNode,
+		DoNotInitializeNode
+	};
+
+	NodeEvaluatorInitializer ();
+	virtual ~NodeEvaluatorInitializer ();
 
 	virtual const NodeId&					GetNodeId () const = 0;
 	virtual const NodeEvaluatorConstPtr&	GetNodeEvaluator () const = 0;
-	virtual InitializationMode				GetInitializationMode () const = 0;
+	virtual Mode							GetInitializationMode () const = 0;
 };
 
 class Node : public DynamicSerializable
@@ -128,9 +131,9 @@ protected:
 	OutputSlotPtr			GetModifiableOutputSlot (const SlotId& slotId);
 
 private:
-	void					SetNodeEvaluator (const NodeEvaluatorSetter& evaluatorSetter);
-	bool					HasNodeEvaluator () const;
-	void					ClearNodeEvaluator ();
+	void					InitializeEvaluator (const NodeEvaluatorInitializer& initializer);
+	bool					IsEvaluatorInitialized () const;
+	void					ClearEvaluator ();
 
 	virtual void			Initialize () = 0;
 	virtual ValueConstPtr	Calculate (EvaluationEnv& env) const = 0;
@@ -141,10 +144,10 @@ private:
 	ValueConstPtr			EvaluateInputSlot (const InputSlotConstPtr& inputSlot, EvaluationEnv& env) const;
 
 	NodeId					nodeId;
-	NodeEvaluatorConstPtr	nodeEvaluator;
-
 	SlotList<InputSlot>		inputSlots;
 	SlotList<OutputSlot>	outputSlots;
+
+	NodeEvaluatorConstPtr	nodeEvaluator;
 };
 
 template <class Type>
