@@ -22,11 +22,6 @@ const NodeGroupId& NodeGroup::GetId () const
 	return id;
 }
 
-void NodeGroup::SetId (const NodeGroupId& newId)
-{
-	id = newId;
-}
-
 Stream::Status NodeGroup::Read (InputStream& inputStream)
 {
 	ObjectHeader header (inputStream);
@@ -57,6 +52,11 @@ NodeGroupPtr NodeGroup::Clone (const NodeGroupConstPtr& nodeGroup)
 	}
 
 	return result;
+}
+
+void NodeGroup::SetId (const NodeGroupId& newId)
+{
+	id = newId;
 }
 
 }

@@ -3,6 +3,7 @@
 
 #include "NE_NodeGroup.hpp"
 #include "NE_OrderedMap.hpp"
+#include "NE_NodeCollection.hpp"
 
 #include <memory>
 #include <unordered_map>

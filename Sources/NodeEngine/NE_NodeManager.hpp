@@ -116,6 +116,8 @@ public:
 	void					EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 	void					EnumerateDependentNodesRecursive (const NodeConstPtr& node, const std::function<void (const NodeConstPtr&)>& processor) const;
 
+	bool					ContainsNodeGroup (const NodeGroupId& groupId) const;
+	
 	NodeGroupPtr			AddNodeGroup (const NodeGroupPtr& group);
 	void					DeleteNodeGroup (const NodeGroupId& groupId);
 	void					AddNodeToGroup (const NodeGroupId& groupId, const NodeId& nodeId);
@@ -140,19 +142,20 @@ public:
 	static bool				WriteToBuffer (const NodeManager& nodeManager, std::vector<char>& buffer);
 
 private:
-	enum class IdHandlingPolicy
+	enum class IdPolicy
 	{
-		KeepOriginalId,
-		GenerateNewId
+		KeepOriginal,
+		GenerateNew
 	};
 
-	NodePtr				AddNode (const NodePtr& node, const NodeEvaluatorInitializer& initializer);
-	NodePtr				AddUninitializedNode (const NodePtr& node);
-	NodePtr				AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling);
+	enum class InitPolicy
+	{
+		Initialize,
+		DoNotInitialize
+	};
 
-	NodeGroupPtr		AddNodeGroup (const NodeGroupPtr& group, const NodeGroupId& groupId);
-	NodeGroupPtr		AddUninitializedNodeGroup (const NodeGroupPtr& group);
-	NodeGroupPtr		AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling);
+	NodePtr				AddNode (const NodePtr& node, IdPolicy idHandling, InitPolicy initPolicy);
+	NodeGroupPtr		AddNodeGroup (const NodeGroupPtr& group, IdPolicy idHandling);
 
 	UniqueIdGenerator						idGenerator;
 	NodeList								nodeList;

@@ -66,7 +66,7 @@ Stream::Status NodeManagerSerialization::ReadNodes (NodeManager& nodeManager, In
 	for (size_t i = 0; i < nodeCount; ++i) {
 		NodePtr node (ReadDynamicObject<Node> (inputStream));
 		NodeId oldNodeId = node->GetId ();
-		NodePtr addedNode = nodeManager.AddInitializedNode (node, NodeManager::IdHandlingPolicy::KeepOriginalId);
+		NodePtr addedNode = nodeManager.AddNode (node, NodeManager::IdPolicy::KeepOriginal, NodeManager::InitPolicy::DoNotInitialize);
 		DBGASSERT (oldNodeId == addedNode->GetId ());
 		if (DBGERROR (addedNode == nullptr)) {
 			return Stream::Status::Error;
@@ -133,9 +133,9 @@ Stream::Status NodeManagerSerialization::ReadGroups (NodeManager& nodeManager, I
 	for (size_t i = 0; i < groupCount; i++) {
 		NodeGroupPtr group (ReadDynamicObject<NodeGroup> (inputStream));
 		if (version < 2) {
-			nodeManager.AddUninitializedNodeGroup (group);
+			nodeManager.AddNodeGroup (group, NodeManager::IdPolicy::GenerateNew);
 		} else {
-			nodeManager.AddInitializedNodeGroup (group, NodeManager::IdHandlingPolicy::KeepOriginalId);
+			nodeManager.AddNodeGroup (group, NodeManager::IdPolicy::KeepOriginal);
 		}
 
 		NodeCollection nodes;

@@ -19,16 +19,6 @@ NodeEvaluator::~NodeEvaluator ()
 
 }
 
-NodeEvaluatorInitializer::NodeEvaluatorInitializer ()
-{
-
-}
-
-NodeEvaluatorInitializer::~NodeEvaluatorInitializer ()
-{
-
-}
-
 Node::Node () :
 	nodeId (NullNodeId),
 	inputSlots (),
@@ -287,18 +277,19 @@ OutputSlotPtr Node::GetModifiableOutputSlot (const SlotId& slotId)
 	return outputSlots.Get (slotId);
 }
 
-void Node::InitializeEvaluator (const NodeEvaluatorInitializer& initializer)
+void Node::SetId (const NodeId& newNodeId)
 {
-	nodeId = initializer.GetNodeId ();
-	nodeEvaluator = initializer.GetNodeEvaluator ();
-	if (initializer.GetInitializationMode () == NodeEvaluatorInitializer::Mode::InitializeNode) {
-		Initialize ();
-	}
+	nodeId = newNodeId;
 }
 
-bool Node::IsEvaluatorInitialized () const
+void Node::SetEvaluator (const NodeEvaluatorConstPtr& newNodeEvaluator)
 {
-	return nodeId != NullNodeId && nodeEvaluator != nullptr;
+	nodeEvaluator = newNodeEvaluator;
+}
+
+bool Node::IsEvaluatorSet () const
+{
+	return nodeEvaluator != nullptr;
 }
 
 void Node::ClearEvaluator ()

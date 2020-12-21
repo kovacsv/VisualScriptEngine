@@ -77,38 +77,6 @@ private:
 	NodeValueCache&		nodeValueCache;
 };
 
-class NodeManagerNodeEvaluatorInitializer : public NodeEvaluatorInitializer
-{
-public:
-	NodeManagerNodeEvaluatorInitializer (const NodeId& newNodeId, const NodeEvaluatorConstPtr& newNodeEvaluator, NodeEvaluatorInitializer::Mode initMode) :
-		newNodeId (newNodeId),
-		newNodeEvaluator (newNodeEvaluator),
-		initMode (initMode)
-	{
-		
-	}
-
-	virtual const NodeId& GetNodeId () const override
-	{
-		return newNodeId;
-	}
-
-	virtual const NodeEvaluatorConstPtr& GetNodeEvaluator () const override
-	{
-		return newNodeEvaluator;
-	}
-
-	virtual Mode GetInitializationMode () const override
-	{
-		return initMode;
-	}
-
-private:
-	const NodeId&					newNodeId;
-	const NodeEvaluatorConstPtr&	newNodeEvaluator;
-	NodeEvaluatorInitializer::Mode			initMode;
-};
-
 OutputSlotList::OutputSlotList ()
 {
 
@@ -217,7 +185,7 @@ NodePtr NodeManager::GetNode (const NodeId& id)
 
 NodePtr NodeManager::AddNode (const NodePtr& node)
 {
-	return AddUninitializedNode (node);
+	return AddNode (node, IdPolicy::GenerateNew, InitPolicy::Initialize);
 }
 
 bool NodeManager::DeleteNode (const NodeId& id)
@@ -230,7 +198,7 @@ bool NodeManager::DeleteNode (const NodeId& id)
 
 bool NodeManager::DeleteNode (const NodePtr& node)
 {
-	if (DBGERROR (node == nullptr || !node->IsEvaluatorInitialized ())) {
+	if (DBGERROR (node == nullptr || !node->IsEvaluatorSet ())) {
 		return false;
 	}
 
@@ -637,16 +605,14 @@ void NodeManager::EnumerateDependentNodesRecursive (const NodeConstPtr& node, co
 	});
 }
 
-NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group)
+bool NodeManager::ContainsNodeGroup (const NodeGroupId& groupId) const
 {
-	return AddUninitializedNodeGroup (group);
+	return nodeGroupList.Contains (groupId);
 }
 
-NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group, const NodeGroupId& groupId)
+NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group)
 {
-	group->SetId (groupId);
-	nodeGroupList.AddGroup (group);
-	return group;
+	return AddNodeGroup (group, IdPolicy::GenerateNew);
 }
 
 void NodeManager::DeleteNodeGroup (const NodeGroupId& groupId)
@@ -753,72 +719,65 @@ bool NodeManager::WriteToBuffer (const NodeManager& nodeManager, std::vector<cha
 	return true;
 }
 
-NodePtr NodeManager::AddNode (const NodePtr& node, const NodeEvaluatorInitializer& initializer)
+NE::NodePtr NodeManager::AddNode (const NodePtr& node, IdPolicy idPolicy, InitPolicy initPolicy)
 {
-	if (DBGERROR (ContainsNode (initializer.GetNodeId ()))) {
+	if (DBGERROR (node == nullptr || node->IsEvaluatorSet ())) {
 		return nullptr;
 	}
-	node->InitializeEvaluator (initializer);
-	nodeList.AddNode (node->GetId (), node);
+
+	NodeId nodeId;
+	if (idPolicy == IdPolicy::KeepOriginal) {
+		nodeId = node->GetId ();
+	} else if (idPolicy == IdPolicy::GenerateNew) {
+		nodeId = idGenerator.GenerateNodeId ();
+	} else {
+		DBGBREAK ();
+		return nullptr;
+	}
+
+	if (DBGERROR (ContainsNode (nodeId))) {
+		return nullptr;
+	}
+
+	node->SetId (nodeId);
+	node->SetEvaluator (nodeEvaluator);
+	if (initPolicy == InitPolicy::Initialize) {
+		node->Initialize ();
+	}
+
+	if (DBGERROR (!nodeList.AddNode (node->GetId (), node))) {
+		return nullptr;
+	}
+
 	return node;
 }
 
-NodePtr NodeManager::AddUninitializedNode (const NodePtr& node)
+NE::NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group, IdPolicy idHandling)
 {
-	if (DBGERROR (node == nullptr || node->IsEvaluatorInitialized ())) {
+	if (DBGERROR (group == nullptr)) {
 		return nullptr;
 	}
 
-	NodeId newNodeId = idGenerator.GenerateNodeId ();
-	NodeManagerNodeEvaluatorInitializer initializer (newNodeId, nodeEvaluator, NodeEvaluatorInitializer::Mode::InitializeNode);
-	return AddNode (node, initializer);
-}
-
-NodePtr NodeManager::AddInitializedNode (const NodePtr& node, IdHandlingPolicy idHandling)
-{
-	if (DBGERROR (node == nullptr || node->IsEvaluatorInitialized ())) {
-		return nullptr;
-	}
-
-	NodeId newNodeId;
-	if (idHandling == IdHandlingPolicy::KeepOriginalId) {
-		newNodeId = node->GetId ();
-	} else if (idHandling == IdHandlingPolicy::GenerateNewId) {
-		newNodeId = idGenerator.GenerateNodeId ();
+	NodeGroupId groupId;
+	if (idHandling == IdPolicy::KeepOriginal) {
+		groupId = group->GetId ();
+	} else if (idHandling == IdPolicy::GenerateNew) {
+		groupId = idGenerator.GenerateNodeGroupId ();
 	} else {
 		DBGBREAK ();
-	}
-
-	NodeManagerNodeEvaluatorInitializer initializer (newNodeId, nodeEvaluator, NodeEvaluatorInitializer::Mode::DoNotInitializeNode);
-	return AddNode (node, initializer);
-}
-
-NodeGroupPtr NodeManager::AddUninitializedNodeGroup (const NodeGroupPtr& group)
-{
-	if (DBGERROR (group == nullptr || group->GetId () != NullNodeGroupId)) {
 		return nullptr;
 	}
 
-	NodeGroupId newGroupId = idGenerator.GenerateNodeGroupId ();
-	return AddNodeGroup (group, newGroupId);
-}
-
-NodeGroupPtr NodeManager::AddInitializedNodeGroup (const NodeGroupPtr& group, IdHandlingPolicy idHandling)
-{
-	if (DBGERROR (group == nullptr || group->GetId () == NullNodeGroupId)) {
+	if (DBGERROR (ContainsNodeGroup (groupId))) {
 		return nullptr;
 	}
 
-	NodeGroupId newGroupId;
-	if (idHandling == IdHandlingPolicy::KeepOriginalId) {
-		newGroupId = group->GetId ();
-	} else if (idHandling == IdHandlingPolicy::GenerateNewId) {
-		newGroupId = idGenerator.GenerateNodeGroupId ();
-	} else {
-		DBGBREAK ();
+	group->SetId (groupId);
+	if (DBGERROR (!nodeGroupList.AddGroup (group))) {
+		return nullptr;
 	}
 
-	return AddNodeGroup (group, newGroupId);
+	return group;
 }
 
 }

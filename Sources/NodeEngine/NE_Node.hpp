@@ -37,23 +37,6 @@ public:
 using NodeEvaluatorPtr = std::shared_ptr<NodeEvaluator>;
 using NodeEvaluatorConstPtr = std::shared_ptr<const NodeEvaluator>;
 
-class NodeEvaluatorInitializer
-{
-public:
-	enum class Mode
-	{
-		InitializeNode,
-		DoNotInitializeNode
-	};
-
-	NodeEvaluatorInitializer ();
-	virtual ~NodeEvaluatorInitializer ();
-
-	virtual const NodeId&					GetNodeId () const = 0;
-	virtual const NodeEvaluatorConstPtr&	GetNodeEvaluator () const = 0;
-	virtual Mode							GetInitializationMode () const = 0;
-};
-
 class Node : public DynamicSerializable
 {
 	SERIALIZABLE;
@@ -131,8 +114,9 @@ protected:
 	OutputSlotPtr			GetModifiableOutputSlot (const SlotId& slotId);
 
 private:
-	void					InitializeEvaluator (const NodeEvaluatorInitializer& initializer);
-	bool					IsEvaluatorInitialized () const;
+	void					SetId (const NodeId& newNodeId);
+	void					SetEvaluator (const NodeEvaluatorConstPtr& newNodeEvaluator);
+	bool					IsEvaluatorSet () const;
 	void					ClearEvaluator ();
 
 	virtual void			Initialize () = 0;

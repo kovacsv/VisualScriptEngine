@@ -143,7 +143,7 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 	nodesToClone.Enumerate ([&] (const NodeId& nodeId) {
 		NodeConstPtr sourceNode = source.GetNode (nodeId);
 		NodePtr targetNode = Node::Clone (sourceNode);
-		target.AddInitializedNode (targetNode, NodeManager::IdHandlingPolicy::GenerateNewId);
+		target.AddNode (targetNode, NodeManager::IdPolicy::GenerateNew, NodeManager::InitPolicy::DoNotInitialize);
 		oldToNewNodeIdTable.insert ({ sourceNode->GetId (), targetNode->GetId () });
 		eventHandler.TargetNodeAdded (targetNode->GetId ());
 		return true;
@@ -204,7 +204,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 	}
 	for (const NodeId& nodeId : nodesToCreate) {
 		NodePtr cloned = Node::Clone (source.GetNode (nodeId));
-		target.AddInitializedNode (cloned, NodeManager::IdHandlingPolicy::KeepOriginalId);
+		target.AddNode (cloned, NodeManager::IdPolicy::KeepOriginal, NodeManager::InitPolicy::DoNotInitialize);
 	}
 
 	// collect input slots with changed connections
@@ -245,7 +245,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 	target.DeleteAllNodeGroups ();
 	source.EnumerateNodeGroups ([&] (const NodeGroupConstPtr& sourceGroup) {
 		NodeGroupPtr targetGroup (NodeGroup::Clone (sourceGroup));
-		target.AddInitializedNodeGroup (targetGroup, NodeManager::IdHandlingPolicy::KeepOriginalId);
+		target.AddNodeGroup (targetGroup, NodeManager::IdPolicy::KeepOriginal);
 		const NodeCollection& sourceGroupNodes = source.GetGroupNodes (sourceGroup->GetId ());
 		sourceGroupNodes.Enumerate ([&] (const NodeId& sourceNodeId) {
 			if (target.ContainsNode (sourceNodeId)) {
