@@ -134,22 +134,22 @@ bool ParameterDialog::Show (const std::wstring& dialogTitle, HWND parentHwnd, sh
 		} else if (type == NUIE::ParameterType::Integer) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				paramDialog.AddEdit (controlText.c_str (), StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
+				paramDialog.AddEdit (controlText, StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Float) {
 			if (DBGVERIFY (NE::Value::IsType<NE::FloatValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				paramDialog.AddEdit (controlText.c_str (), StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
+				paramDialog.AddEdit (controlText, StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Double) {
 			if (DBGVERIFY (NE::Value::IsType<NE::DoubleValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				paramDialog.AddEdit (controlText.c_str (), StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
+				paramDialog.AddEdit (controlText, StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::String) {
 			if (DBGVERIFY (NE::Value::IsType<NE::StringValue> (value))) {
 				std::wstring controlText = NUIE::ParameterValueToString (value, type);
-				paramDialog.AddEdit (controlText.c_str (), StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
+				paramDialog.AddEdit (controlText, StaticWidth + 2 * DialogPadding, currentY, ControlWidth, ControlHeight, controlId);
 			}
 		} else if (type == NUIE::ParameterType::Enumeration) {
 			if (DBGVERIFY (NE::Value::IsType<NE::IntValue> (value))) {

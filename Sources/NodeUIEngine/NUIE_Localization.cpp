@@ -56,7 +56,7 @@ private:
 			if (!onMessageFound (RemoveEscapeChars (messageId), RemoveEscapeChars (str))) {
 				return false;
 			}
-			messageId = std::wstring ();
+			messageId.clear ();
 		}
 		return true;
 	}

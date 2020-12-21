@@ -247,10 +247,10 @@ void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const 
 
 void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, SelectionMode selectionMode, const UINode* uiNode) const
 {
-	Rect nodeRect = uiNode->GetRect (drawingEnv);
-	double selectionThickness = scaleIndependentData.GetSelectionThickness ();
-	Rect selectionRect = nodeRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
 	if (selectionMode == SelectionMode::Selected) {
+		Rect nodeRect = uiNode->GetRect (drawingEnv);
+		double selectionThickness = scaleIndependentData.GetSelectionThickness ();
+		Rect selectionRect = nodeRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
 		drawingEnv.GetDrawingContext ().FillRect (selectionRect, drawingEnv.GetSkinParams ().GetNodeSelectionRectPen ().GetColor ());
 		ColorBlenderContextDecorator selectionContext (drawingEnv.GetDrawingContext (), drawingEnv.GetSkinParams ().GetSelectionBlendColor ());
 		DrawingEnvironmentContextDecorator selectionEnv (drawingEnv, selectionContext);
