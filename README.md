@@ -2,7 +2,7 @@
 
 A visual scripting engine designed for embedding. The engine is written in modern C++ and compiles on several platforms with no external dependencies. Some platform dependent user interface utilities are also provided for Windows and MacOS platforms.
 
-[![Build Status](https://travis-ci.org/kovacsv/VisualScriptEngine.svg?branch=master)](https://travis-ci.org/kovacsv/VisualScriptEngine)
+[![Build Status](https://travis-ci.com/kovacsv/VisualScriptEngine.svg?branch=master)](https://travis-ci.com/kovacsv/VisualScriptEngine)
 [![Build Status](https://ci.appveyor.com/api/projects/status/c0qxxixyhymfxfdf?svg=true)](https://ci.appveyor.com/project/kovacsv/visualscriptengine)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/kovacsv/VisualScriptEngine.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kovacsv/VisualScriptEngine/context:cpp)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/kovacsv/VisualScriptEngine.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kovacsv/VisualScriptEngine/alerts/)
