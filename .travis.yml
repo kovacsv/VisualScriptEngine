@@ -89,6 +89,26 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - PACKAGE_NAME=OSX_XCode12U
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
+        coverity_scan:
+          project:
+            name: "kovacsv/VisualScriptEngine"
+          notification_email: viktorkovacs@gmail.com
+          build_command_prepend: >-
+            cov-configure --compiler g++-9 --comptype g++ --template &&
+            mkdir CovBuild && cd CovBuild && cmake -DCMAKE_BUILD_TYPE=Debug ..
+          build_command: make
+          branch_pattern: coverity_scan
+      env:
+        - secure: "aUNsXQXL4JZoRpdPkLuOvIzHitW+qu57mgWXL1mwhMSzGD7nMeLKmBChRIdfQm5DWdw+t6qcMgC830Pi6W2plkpgBryK4Rk6gDhlhA7s6lEANdHMTD9hmOcBEz5UWJ0IxRyR6nscEBKrzjku5ct3gOt/B3yCyRsjG5uDsBeggDY28A310ijxjWHS7bGu52ihN/45eCyNXzP3Bq3ogwwWertJDAq2rNkBBnj7ISDQWZ9VMOD6iYSOFWvAXGYM9dW2yJAjHQfdv2I7hEW69LzFZ6WZT4UBoZBSeewoeq81yXVfvnr/y0yqfNHuEHJehjOa3bQFrdKOt2CFIWD/TXpEdnE6ICWIGs8dM1adMkLGpi54UMXXU4FSyDP07xMZhfqKvhjYgbITXSVsGmi+mSVaRMWl9McN3hLI4MKZvx/e6LCyP7QbodHN4VxCGdC79KX0RgSVcJLipGuj/zVtTQ9jqaAkaPa4FnGeY3377QIaDrFxShAVhPOrWcjSqEy0MpqFEI8HBG0WYpEGO3ErqASAwpp/UJ19pbaSzXYjYvZZycTFMOaKIQfm5r+BDD2U7iJD7GFvDOM6ftIsdqbWCOIHwBxfqfmbloKUr7/smu19DUVAdDLDkbfoZwbEjJufyYqQBt+3kocoi6AoiptMpVGwfh5mrXjZ3Ncl+Rv8PRtqxeU="
+        - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
+        - PACKAGE_NAME=CoverityScan_gcc9        
 
 before_install:
   - eval "${MATRIX_EVAL}"
@@ -98,7 +118,7 @@ script:
   - cd Build
   - mkdir Debug
   - cd Debug
-  - cmake ../.. -DCMAKE_BUILD_TYPE=Debug
+  - cmake -DCMAKE_BUILD_TYPE=Debug ../..
   - make
   - make test ARGS="-V"
   - make install
@@ -108,7 +128,7 @@ script:
   - cd Build
   - mkdir Release
   - cd Release
-  - cmake ../.. -DCMAKE_BUILD_TYPE=Release
+  - cmake -DCMAKE_BUILD_TYPE=Release ../..
   - make
   - make test ARGS="-V"
   - make install
@@ -118,7 +138,7 @@ script:
   - cd Build
   - mkdir RelWithDebInfo
   - cd RelWithDebInfo
-  - cmake ../.. -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  - cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ../..
   - make
   - make test ARGS="-V"
   - make install
