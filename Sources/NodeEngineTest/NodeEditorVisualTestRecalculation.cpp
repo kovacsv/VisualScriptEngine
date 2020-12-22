@@ -124,7 +124,7 @@ TEST (RecalculationVisualTest)
 	{
 		Rect test1NodeRect = env.testNode1->GetRect (env.uiEnvironment);
 		Point test1HeaderPoint = test1NodeRect.GetTopLeft () + Point (5.0, 5.0);
-		env.SetNextCommandParameterSettings ([&] (ParameterInterfacePtr paramInterface) {
+		env.SetNextCommandNodeParameterSettings ([&] (ParameterInterfacePtr paramInterface) {
 			paramInterface->SetParameterValue (0, ValueConstPtr (new StringValue (L"Test 1 New")));
 			return true;
 		});

@@ -165,9 +165,15 @@ void TestEventHandler::SetNextCommandName (const std::wstring& nextCommandName)
 	commandToSelect = nextCommandName;
 }
 
-void TestEventHandler::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
+void TestEventHandler::SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler)
 {
 	SetNextCommandName (L"Node Settings");
+	paramSettingsHandler = handler;
+}
+
+void TestEventHandler::SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler)
+{
+	SetNextCommandName (L"Group Settings");
 	paramSettingsHandler = handler;
 }
 
@@ -296,9 +302,14 @@ void TestNodeUIEnvironment::SetNextCommandName (const std::wstring& nextCommandN
 	eventHandler.SetNextCommandName (nextCommandName);
 }
 
-void TestNodeUIEnvironment::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
+void TestNodeUIEnvironment::SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler)
 {
-	eventHandler.SetNextCommandParameterSettings (handler);
+	eventHandler.SetNextCommandNodeParameterSettings (handler);
+}
+
+void TestNodeUIEnvironment::SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler)
+{
+	eventHandler.SetNextCommandGroupParameterSettings (handler);
 }
 
 const SvgDrawingContext& TestNodeUIEnvironment::GetSvgDrawingContext () const
@@ -377,22 +388,27 @@ void NodeEditorTestEnv::SetNextCommandName (const std::wstring& nextCommandName)
 	uiEnvironment.SetNextCommandName (nextCommandName);
 }
 
-void NodeEditorTestEnv::SetNextCommandParameterSettings (const ParameterSettingsHandler& handler)
+void NodeEditorTestEnv::SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler)
 {
-	uiEnvironment.SetNextCommandParameterSettings (handler);
+	uiEnvironment.SetNextCommandNodeParameterSettings (handler);
 }
 
-Rect NodeEditorTestEnv::GetNodeRect (const UINodePtr& node)
+void NodeEditorTestEnv::SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler)
+{
+	uiEnvironment.SetNextCommandGroupParameterSettings (handler);
+}
+
+Rect NodeEditorTestEnv::GetNodeRect (const UINodeConstPtr& node)
 {
 	return node->GetRect (uiEnvironment);
 }
 
-Point NodeEditorTestEnv::GetOutputSlotConnPosition (const UINodePtr& node, const std::string& slotId)
+Point NodeEditorTestEnv::GetOutputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId)
 {
 	return node->GetOutputSlotConnPosition (uiEnvironment, SlotId (slotId));
 }
 
-Point NodeEditorTestEnv::GetInputSlotConnPosition (const UINodePtr& node, const std::string& slotId)
+Point NodeEditorTestEnv::GetInputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId)
 {
 	return node->GetInputSlotConnPosition (uiEnvironment, SlotId (slotId));
 }

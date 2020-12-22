@@ -22,7 +22,8 @@ public:
 	virtual void				OnDoubleClick (const Point&, MouseButton) override;
 
 	void						SetNextCommandName (const std::wstring& nextCommandName);
-	void						SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
+	void						SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler);
+	void						SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler);
 
 private:
 	MenuCommandPtr				SelectCommandByName (const MenuCommandStructure& commands);
@@ -55,7 +56,8 @@ public:
 	virtual void					OnIncompatibleVersionPasted (const Version& version) override;
 
 	void							SetNextCommandName (const std::wstring& nextCommandName);
-	void							SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
+	void							SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler);
+	void							SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler);
 	const SvgDrawingContext&		GetSvgDrawingContext () const;
 	void							SetWindowScale (double newWindowScale);
 
@@ -86,10 +88,11 @@ public:
 	void	DragDrop (const ModifierKeys& keys, const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr); 
 	void	ExecuteCommand (const NUIE::CommandCode& commandCode);
 	void	SetNextCommandName (const std::wstring& nextCommandName);
-	void	SetNextCommandParameterSettings (const ParameterSettingsHandler& handler);
-	Rect	GetNodeRect (const UINodePtr& node);
-	Point	GetOutputSlotConnPosition (const UINodePtr& node, const std::string& slotId);
-	Point	GetInputSlotConnPosition (const UINodePtr& node, const std::string& slotId);
+	void	SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler);
+	void	SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler);
+	Rect	GetNodeRect (const UINodeConstPtr& node);
+	Point	GetOutputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId);
+	Point	GetInputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId);
 
 	TestNodeUIEnvironment	uiEnvironment;
 	NodeEditor				nodeEditor;
