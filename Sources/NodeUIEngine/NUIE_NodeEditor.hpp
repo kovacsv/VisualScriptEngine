@@ -14,15 +14,6 @@
 namespace NUIE
 {
 
-class NodeFinder
-{
-public:
-	NodeFinder ();
-	virtual ~NodeFinder ();
-
-	virtual bool IsMatch (const UINodeConstPtr& uiNode) const = 0;
-};
-
 class NodeEditor
 {
 public:
@@ -52,7 +43,7 @@ public:
 	void							Draw ();
 
 	void							AddNode (const UINodePtr& uiNode);
-	std::vector<UINodeConstPtr>		FindNodes (const NodeFinder& nodeFinder) const;
+	std::vector<UINodeConstPtr>		FindNodes (const UINodeFilter& nodeFilter) const;
 
 	void							ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
 	void							InvalidateAllDrawings ();

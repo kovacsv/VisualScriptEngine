@@ -160,6 +160,16 @@ Rect NodeUIManagerNodeRectGetter::GetNodeRect (const NE::NodeId& nodeId) const
 	return uiNode->GetRect (drawingEnv);
 }
 
+UINodeFilter::UINodeFilter ()
+{
+
+}
+
+UINodeFilter::~UINodeFilter ()
+{
+
+}
+
 UIOutputSlotList::UIOutputSlotList () :
 	NE::OutputSlotList ()
 {
@@ -418,6 +428,18 @@ void NodeUIManager::EnumerateUIConnections (const NE::NodeCollection& nodes, con
 bool NodeUIManager::ContainsNode (const NE::NodeId& nodeId) const
 {
 	return nodeManager.ContainsNode (nodeId);
+}
+
+std::vector<NUIE::UINodeConstPtr> NodeUIManager::FindNodes (const UINodeFilter& nodeFilter) const
+{
+	std::vector<NUIE::UINodeConstPtr> result;
+	EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
+		if (nodeFilter.IsMatch (uiNode)) {
+			result.push_back (uiNode);
+		}
+		return true;
+	});
+	return result;
 }
 
 UINodePtr NodeUIManager::GetNode (const NE::NodeId& nodeId)

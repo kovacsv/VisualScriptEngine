@@ -11,11 +11,11 @@ using namespace BI;
 namespace NodeEditorVisualTestWorkflow
 {
 
-class NodeFinderByName : public NodeFinder
+class NodeFilterByName : public UINodeFilter
 {
 public:
-	NodeFinderByName (const std::wstring& nodeName) :
-		NodeFinder (),
+	NodeFilterByName (const std::wstring& nodeName) :
+		UINodeFilter (),
 		nodeName (nodeName)
 	{
 
@@ -50,8 +50,8 @@ public:
 
 	UINodeConstPtr GetNode (const std::wstring& name)
 	{
-		NodeFinderByName finder (name);
-		std::vector<UINodeConstPtr> nodes = nodeEditor.FindNodes (finder);
+		NodeFilterByName filter (name);
+		std::vector<UINodeConstPtr> nodes = nodeEditor.FindNodes (filter);
 		if (DBGERROR (nodes.size () != 1)) {
 			return nullptr;
 		}

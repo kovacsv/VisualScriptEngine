@@ -62,6 +62,15 @@ private:
 	NodeUIDrawingEnvironment& drawingEnv;
 };
 
+class UINodeFilter
+{
+public:
+	UINodeFilter ();
+	virtual ~UINodeFilter ();
+
+	virtual bool IsMatch (const UINodeConstPtr& uiNode) const = 0;
+};
+
 class UIOutputSlotList : public NE::OutputSlotList
 {
 public:
@@ -92,110 +101,111 @@ public:
 	NodeUIManager (NodeUIManager&& src) = delete;
 	~NodeUIManager ();
 
-	NodeUIManager&				operator= (const NodeUIManager& rhs) = delete;
-	NodeUIManager&				operator= (NodeUIManager&& rhs) = delete;
+	NodeUIManager&					operator= (const NodeUIManager& rhs) = delete;
+	NodeUIManager&					operator= (NodeUIManager&& rhs) = delete;
 
-	UINodePtr					AddNode (const UINodePtr& uiNode);
-	bool						DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
-	bool						DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
+	UINodePtr						AddNode (const UINodePtr& uiNode);
+	bool							DeleteNode (const UINodePtr& uiNode, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
+	bool							DeleteNode (const NE::NodeId& nodeId, NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
 
-	const Selection&			GetSelection () const;
-	void						SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& interactionEnv);
+	const Selection&				GetSelection () const;
+	void							SetSelection (const Selection& newSelection, NodeUIInteractionEnvironment& interactionEnv);
 
-	bool						IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
+	bool							IsOutputSlotConnectedToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
 
-	bool						CanConnectOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;
-	bool						CanConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
-	bool						CanConnectOutputSlotsToInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot) const;
-	bool						CanConnectOutputSlotToInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots) const;
+	bool							CanConnectOutputSlotToInputSlot (const UIInputSlotConstPtr& inputSlot) const;
+	bool							CanConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot) const;
+	bool							CanConnectOutputSlotsToInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot) const;
+	bool							CanConnectOutputSlotToInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots) const;
 
-	bool						ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
-	bool						ConnectOutputSlotsToInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot);
-	bool						ConnectOutputSlotToInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots);
+	bool							ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
+	bool							ConnectOutputSlotsToInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot);
+	bool							ConnectOutputSlotToInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots);
 
-	bool						DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
-	bool						DisconnectOutputSlotsFromInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot);
-	bool						DisconnectOutputSlotFromInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots);
-	bool						DisconnectAllInputSlotsFromOutputSlot (const UIOutputSlotConstPtr& outputSlot);
-	bool						DisconnectAllOutputSlotsFromInputSlot (const UIInputSlotConstPtr& inputSlot);
+	bool							DisconnectOutputSlotFromInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
+	bool							DisconnectOutputSlotsFromInputSlot (const UIOutputSlotList& outputSlots, const UIInputSlotConstPtr& inputSlot);
+	bool							DisconnectOutputSlotFromInputSlots (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotList& inputSlots);
+	bool							DisconnectAllInputSlotsFromOutputSlot (const UIOutputSlotConstPtr& outputSlot);
+	bool							DisconnectAllOutputSlotsFromInputSlot (const UIInputSlotConstPtr& inputSlot);
 
-	bool						HasConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot) const;
-	bool						HasConnectedOutputSlots (const UIInputSlotConstPtr& inputSlot) const;
-	size_t						GetConnectedInputSlotCount (const UIOutputSlotConstPtr& outputSlot) const;
-	size_t						GetConnectedOutputSlotCount (const UIInputSlotConstPtr& inputSlot) const;
+	bool							HasConnectedInputSlots (const UIOutputSlotConstPtr& outputSlot) const;
+	bool							HasConnectedOutputSlots (const UIInputSlotConstPtr& inputSlot) const;
+	size_t							GetConnectedInputSlotCount (const UIOutputSlotConstPtr& outputSlot) const;
+	size_t							GetConnectedOutputSlotCount (const UIInputSlotConstPtr& inputSlot) const;
 
-	void						EnumerateConnectedInputSlots (const NE::OutputSlotConstPtr& outputSlot, const std::function<void (const NE::InputSlotConstPtr&)>& processor) const;
-	void						EnumerateConnectedOutputSlots (const NE::InputSlotConstPtr& inputSlot, const std::function<void (const NE::OutputSlotConstPtr&)>& processor) const;
-	void						EnumerateConnectedUIInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const;
-	void						EnumerateConnectedUIOutputSlots (const UIInputSlotConstPtr& inputSlot, const std::function<void (UIOutputSlotConstPtr)>& processor) const;
-	void						EnumerateUIConnections (const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const;
-	void						EnumerateUIConnections (const NE::NodeCollection& nodes, const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const;
+	void							EnumerateConnectedInputSlots (const NE::OutputSlotConstPtr& outputSlot, const std::function<void (const NE::InputSlotConstPtr&)>& processor) const;
+	void							EnumerateConnectedOutputSlots (const NE::InputSlotConstPtr& inputSlot, const std::function<void (const NE::OutputSlotConstPtr&)>& processor) const;
+	void							EnumerateConnectedUIInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const;
+	void							EnumerateConnectedUIOutputSlots (const UIInputSlotConstPtr& inputSlot, const std::function<void (UIOutputSlotConstPtr)>& processor) const;
+	void							EnumerateUIConnections (const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const;
+	void							EnumerateUIConnections (const NE::NodeCollection& nodes, const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const;
 
-	bool						ContainsNode (const NE::NodeId& nodeId) const;
-	UINodePtr					GetNode (const NE::NodeId& nodeId);
-	UINodeConstPtr				GetNode (const NE::NodeId& nodeId) const;
+	bool							ContainsNode (const NE::NodeId& nodeId) const;
+	std::vector<UINodeConstPtr>		FindNodes (const UINodeFilter& nodeFilter) const;
+	UINodePtr						GetNode (const NE::NodeId& nodeId);
+	UINodeConstPtr					GetNode (const NE::NodeId& nodeId) const;
 
-	void						EnumerateNodes (const std::function<bool (const UINodePtr&)>& processor);
-	void						EnumerateNodes (const std::function<bool (const UINodeConstPtr&)>& processor) const;
+	void							EnumerateNodes (const std::function<bool (const UINodePtr&)>& processor);
+	void							EnumerateNodes (const std::function<bool (const UINodeConstPtr&)>& processor) const;
 
-	void						RequestRecalculateAndRedraw ();
-	void						RequestRecalculate ();
-	void						RequestRedraw ();
+	void							RequestRecalculateAndRedraw ();
+	void							RequestRecalculate ();
+	void							RequestRedraw ();
 
-	void						InvalidateAllDrawings ();
-	void						InvalidateAllNodesDrawing ();
-	void						InvalidateAllNodeGroupsDrawing ();
-	void						InvalidateNodeValue (const NE::NodeId& nodeId);
-	void						InvalidateNodeValue (const UINodePtr& uiNode);
-	void						InvalidateNodeDrawing (const NE::NodeId& nodeId);
-	void						InvalidateNodeDrawing (const UINodePtr& uiNode);
-	void						InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
-	void						InvalidateNodeGroupDrawing (const UINodePtr& uiNode);
+	void							InvalidateAllDrawings ();
+	void							InvalidateAllNodesDrawing ();
+	void							InvalidateAllNodeGroupsDrawing ();
+	void							InvalidateNodeValue (const NE::NodeId& nodeId);
+	void							InvalidateNodeValue (const UINodePtr& uiNode);
+	void							InvalidateNodeDrawing (const NE::NodeId& nodeId);
+	void							InvalidateNodeDrawing (const UINodePtr& uiNode);
+	void							InvalidateNodeGroupDrawing (const NE::NodeId& nodeId);
+	void							InvalidateNodeGroupDrawing (const UINodePtr& uiNode);
 
-	void						Update (NodeUICalculationEnvironment& calcEnv);
-	void						ManualUpdate (NodeUICalculationEnvironment& calcEnv);
-	void						Draw (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawingModifier);
-	void						ResizeContext (NodeUIDrawingEnvironment& drawingEnv, int newWidth, int newHeight);
+	void							Update (NodeUICalculationEnvironment& calcEnv);
+	void							ManualUpdate (NodeUICalculationEnvironment& calcEnv);
+	void							Draw (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawingModifier);
+	void							ResizeContext (NodeUIDrawingEnvironment& drawingEnv, int newWidth, int newHeight);
 
-	bool						GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& rect) const;
-	void						AlignToWindow (NodeUIDrawingEnvironment& drawingEnv);
-	void						CenterToWindow (NodeUIDrawingEnvironment& drawingEnv);
-	void						FitToWindow (NodeUIDrawingEnvironment& drawingEnv);
+	bool							GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect& rect) const;
+	void							AlignToWindow (NodeUIDrawingEnvironment& drawingEnv);
+	void							CenterToWindow (NodeUIDrawingEnvironment& drawingEnv);
+	void							FitToWindow (NodeUIDrawingEnvironment& drawingEnv);
 
-	const ViewBox&				GetViewBox () const;
-	void						SetViewBox (const ViewBox& newViewBox);
-	bool						IsPreviewMode () const;
+	const ViewBox&					GetViewBox () const;
+	void							SetViewBox (const ViewBox& newViewBox);
+	bool							IsPreviewMode () const;
 
-	UpdateMode					GetUpdateMode () const;
-	void						SetUpdateMode (UpdateMode newUpdateMode);
+	UpdateMode						GetUpdateMode () const;
+	void							SetUpdateMode (UpdateMode newUpdateMode);
 
-	void						New (NodeUIEnvironment& uiEnvironment);
-	bool						Open (NodeUIEnvironment& uiEnvironment, NE::InputStream& inputStream);
-	bool						Save (NE::OutputStream& outputStream);
-	bool						NeedToSave () const;
+	void							New (NodeUIEnvironment& uiEnvironment);
+	bool							Open (NodeUIEnvironment& uiEnvironment, NE::InputStream& inputStream);
+	bool							Save (NE::OutputStream& outputStream);
+	bool							NeedToSave () const;
 
-	bool						Copy (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const;
-	NE::NodeCollection			Paste (const NE::NodeManager& source);
-	NE::NodeCollection			Duplicate (const NE::NodeCollection& nodeCollection);
+	bool							Copy (const NE::NodeCollection& nodeCollection, NE::NodeManager& result) const;
+	NE::NodeCollection				Paste (const NE::NodeManager& source);
+	NE::NodeCollection				Duplicate (const NE::NodeCollection& nodeCollection);
 
-	bool						CanUndo () const;
-	bool						CanRedo () const;
-	void						Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
-	void						Redo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
+	bool							CanUndo () const;
+	bool							CanRedo () const;
+	void							Undo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
+	void							Redo (NE::EvaluationEnv& evalEnv, NodeUIInteractionEnvironment& interactionEnv);
 
-	UINodeGroupPtr				AddNodeGroup (const UINodeGroupPtr& group);
-	void						DeleteNodeGroup (const UINodeGroupPtr& group);
-	void						AddNodesToGroup (const UINodeGroupPtr& group, const NE::NodeCollection& nodeCollection);
-	bool						RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection);
+	UINodeGroupPtr					AddNodeGroup (const UINodeGroupPtr& group);
+	void							DeleteNodeGroup (const UINodeGroupPtr& group);
+	void							AddNodesToGroup (const UINodeGroupPtr& group, const NE::NodeCollection& nodeCollection);
+	bool							RemoveNodesFromGroup (const NE::NodeCollection& nodeCollection);
 
-	const NE::NodeCollection&	GetGroupNodes (const UINodeGroupConstPtr& group) const;
-	UINodeGroupConstPtr			GetNodeGroup (const NE::NodeId& nodeId) const;
+	const NE::NodeCollection&		GetGroupNodes (const UINodeGroupConstPtr& group) const;
+	UINodeGroupConstPtr				GetNodeGroup (const NE::NodeId& nodeId) const;
 
-	void						EnumerateNodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
-	void						EnumerateNodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
+	void							EnumerateNodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
+	void							EnumerateNodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
 
-	void						ExecuteCommand (NodeUIManagerCommand& command, NodeUIInteractionEnvironment& interactionEnv);
-	void						ExecuteCommand (NodeUIManagerCommandPtr& command, NodeUIInteractionEnvironment& interactionEnv);
+	void							ExecuteCommand (NodeUIManagerCommand& command, NodeUIInteractionEnvironment& interactionEnv);
+	void							ExecuteCommand (NodeUIManagerCommandPtr& command, NodeUIInteractionEnvironment& interactionEnv);
 
 private:
 	class Status
