@@ -11,6 +11,16 @@ namespace NUIE
 
 static const std::string NodeEditorFileMarker = "NodeEditorFile";
 
+NodeFinder::NodeFinder ()
+{
+
+}
+
+NodeFinder::~NodeFinder ()
+{
+
+}
+
 NodeEditor::NodeEditor (NodeUIEnvironment& uiEnvironment) :
 	uiManager (uiEnvironment),
 	interactionHandler (uiManager),
@@ -122,6 +132,18 @@ void NodeEditor::AddNode (const UINodePtr& uiNode)
 	AddNodeCommand command (uiNode);
 	uiManager.ExecuteCommand (command, uiEnvironment);
 	Update ();
+}
+
+std::vector<NUIE::UINodeConstPtr> NodeEditor::FindNodes (const NodeFinder& nodeFinder) const
+{
+	std::vector<NUIE::UINodeConstPtr> result;
+	uiManager.EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
+		if (nodeFinder.IsMatch (uiNode)) {
+			result.push_back (uiNode);
+		}
+		return true;
+	});
+	return result;
 }
 
 void NodeEditor::ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot)

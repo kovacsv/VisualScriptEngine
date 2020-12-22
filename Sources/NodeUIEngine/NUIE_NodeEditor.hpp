@@ -14,6 +14,15 @@
 namespace NUIE
 {
 
+class NodeFinder
+{
+public:
+	NodeFinder ();
+	virtual ~NodeFinder ();
+
+	virtual bool IsMatch (const UINodeConstPtr& uiNode) const = 0;
+};
+
 class NodeEditor
 {
 public:
@@ -26,52 +35,54 @@ public:
 	NodeEditor (NodeUIEnvironment& uiEnvironment);
 	virtual ~NodeEditor ();
 
-	void						OnMouseDown (const ModifierKeys& keys, MouseButton button, int posX, int posY);
-	void						OnMouseUp (const ModifierKeys& keys, MouseButton button, int posX, int posY);
-	void						OnMouseMove (const ModifierKeys& keys, int posX, int posY);
-	void						OnMouseWheel (const ModifierKeys& keys, MouseWheelRotation rotation, int posX, int posY);
-	void						OnMouseSwipe (const ModifierKeys& keys, int offsetX, int offsetY);
-	void						OnMouseDoubleClick (const ModifierKeys& keys, MouseButton button, int posX, int posY);
-	void						OnContextMenuRequest (int posX, int posY);
-	void						OnResize (int newWidth, int newHeight);
+	void							OnMouseDown (const ModifierKeys& keys, MouseButton button, int posX, int posY);
+	void							OnMouseUp (const ModifierKeys& keys, MouseButton button, int posX, int posY);
+	void							OnMouseMove (const ModifierKeys& keys, int posX, int posY);
+	void							OnMouseWheel (const ModifierKeys& keys, MouseWheelRotation rotation, int posX, int posY);
+	void							OnMouseSwipe (const ModifierKeys& keys, int offsetX, int offsetY);
+	void							OnMouseDoubleClick (const ModifierKeys& keys, MouseButton button, int posX, int posY);
+	void							OnContextMenuRequest (int posX, int posY);
+	void							OnResize (int newWidth, int newHeight);
 
-	UpdateMode					GetUpdateMode () const;
-	void						SetUpdateMode (UpdateMode newUpdateMode);
-	void						ManualUpdate ();
+	UpdateMode						GetUpdateMode () const;
+	void							SetUpdateMode (UpdateMode newUpdateMode);
+	void							ManualUpdate ();
 
-	void						Update ();
-	void						Draw ();
+	void							Update ();
+	void							Draw ();
 
-	void						AddNode (const UINodePtr& uiNode);
-	void						ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
-	void						InvalidateAllDrawings ();
+	void							AddNode (const UINodePtr& uiNode);
+	std::vector<UINodeConstPtr>		FindNodes (const NodeFinder& nodeFinder) const;
 
-	Point						ViewToModel (const Point& viewPoint) const;
-	void						AlignToWindow ();
-	void						CenterToWindow ();
-	void						FitToWindow ();
+	void							ConnectOutputSlotToInputSlot (const UIOutputSlotConstPtr& outputSlot, const UIInputSlotConstPtr& inputSlot);
+	void							InvalidateAllDrawings ();
 
-	const ViewBox&				GetViewBox () const;
-	void						SetViewBox (const ViewBox& newViewBox);
+	Point							ViewToModel (const Point& viewPoint) const;
+	void							AlignToWindow ();
+	void							CenterToWindow ();
+	void							FitToWindow ();
 
-	const Selection&			GetSelection () const;
-	void						SetSelection (const Selection& newSelection);
+	const ViewBox&					GetViewBox () const;
+	void							SetViewBox (const ViewBox& newViewBox);
 
-	void						New ();
-	bool						Open (const std::wstring& fileName);
-	bool						Open (NE::InputStream& inputStream);
-	bool						Save (const std::wstring& fileName);
-	bool						Save (NE::OutputStream& outputStream);
-	bool						NeedToSave () const;
+	const Selection&				GetSelection () const;
+	void							SetSelection (const Selection& newSelection);
 
-	void						ExecuteCommand (CommandCode command);
-	void						ExecuteMenuCommand (const MenuCommandPtr& command);
-	void						ApplyParameterChanges (const ParameterInterfacePtr& parameters);
+	void							New ();
+	bool							Open (const std::wstring& fileName);
+	bool							Open (NE::InputStream& inputStream);
+	bool							Save (const std::wstring& fileName);
+	bool							Save (NE::OutputStream& outputStream);
+	bool							NeedToSave () const;
 
-	void						Undo ();
-	void						Redo ();
+	void							ExecuteCommand (CommandCode command);
+	void							ExecuteMenuCommand (const MenuCommandPtr& command);
+	void							ApplyParameterChanges (const ParameterInterfacePtr& parameters);
 
-	NodeEditorInfo				GetInfo () const;
+	void							Undo ();
+	void							Redo ();
+
+	NodeEditorInfo					GetInfo () const;
 
 private:
 	NodeUIManager				uiManager;
