@@ -169,7 +169,7 @@ TEST (MoveCopyNodesTest)
 
 	{ // duplicate the three nodes together
 		Point targetPoint = env.rangeInputHeaderPoint + Point (50.0, -60.0);
-		env.DragDrop (ModifierKeys ({ ModifierKeyCode::Command }), env.rangeInputHeaderPoint, targetPoint, [&] () {
+		env.CtrlDragDrop (env.rangeInputHeaderPoint, targetPoint, [&] () {
 			ASSERT (env.CheckReference (L"MoveCopy_DoubleAndRangeDuringDuplicate.svg"));
 		});
 		ASSERT (env.CheckReference (L"MoveCopy_DoubleAndRangeDuplicated.svg"));
@@ -360,7 +360,7 @@ TEST (InputSlotReconnectionTest)
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference (L"InputSlotReconnection_Basic.svg"));
 
-	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Command }), env.viewer1InputSlotRect.GetCenter (), env.viewer2InputSlotRect.GetCenter (), [&] () {
+	env.CtrlDragDrop (env.viewer1InputSlotRect.GetCenter (), env.viewer2InputSlotRect.GetCenter (), [&] () {
 		ASSERT (env.CheckReference (L"InputSlotReconnection_DuringConnection.svg"));
 	});
 
@@ -369,7 +369,7 @@ TEST (InputSlotReconnectionTest)
 	env.nodeEditor.Undo ();
 	ASSERT (env.CheckReference (L"InputSlotReconnection_AfterUndo.svg"));
 
-	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Command }), env.viewer1InputSlotRect.GetCenter (), Point (0.0, 0.0));
+	env.CtrlDragDrop (env.viewer1InputSlotRect.GetCenter (), Point (0.0, 0.0));
 	ASSERT (env.CheckReference (L"InputSlotReconnection_AfterDisconnect.svg"));
 }
 
@@ -378,7 +378,7 @@ TEST (OutputSlotReconnectionTest)
 	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
 	ASSERT (env.CheckReference (L"OutputSlotReconnection_Basic.svg"));
 
-	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Command }), env.rangeOutputSlotSRect.GetCenter (), env.doubleUpDownOutputSlotRect.GetCenter (), [&] () {
+	env.CtrlDragDrop (env.rangeOutputSlotSRect.GetCenter (), env.doubleUpDownOutputSlotRect.GetCenter (), [&] () {
 		ASSERT (env.CheckReference (L"OutputSlotReconnection_DuringConnection.svg"));
 	});
 
@@ -387,7 +387,7 @@ TEST (OutputSlotReconnectionTest)
 	env.nodeEditor.Undo ();
 	ASSERT (env.CheckReference (L"OutputSlotReconnection_AfterUndo.svg"));
 
-	env.DragDrop (ModifierKeys ({ ModifierKeyCode::Command }), env.rangeOutputSlotSRect.GetCenter (), Point (0.0, 0.0));
+	env.CtrlDragDrop (env.rangeOutputSlotSRect.GetCenter (), Point (0.0, 0.0));
 	ASSERT (env.CheckReference (L"OutputSlotReconnection_AfterDisconnect.svg"));
 }
 

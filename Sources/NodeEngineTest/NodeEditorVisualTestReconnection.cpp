@@ -70,11 +70,10 @@ public:
 TEST (ReconnectionTest_ReconnectInputSlot)
 {
 	ReconnectionTestEnv env (GetDefaultSkinParams ());
-	ModifierKeys commandKey ({ ModifierKeyCode::Command });
 	ASSERT (env.CheckReference (L"Reconnection_InputSlotBasic.svg"));
 
 	{
-		env.DragDrop (commandKey, env.listBuilder1InputSlotPosition, env.listBuilder2InputSlotPosition, [&] () {
+		env.CtrlDragDrop (env.listBuilder1InputSlotPosition, env.listBuilder2InputSlotPosition, [&] () {
 			ASSERT (env.CheckReference (L"Reconnection_InputSlotBeforeReconnect.svg"));
 		});
 		ASSERT (env.CheckReference (L"Reconnection_InputSlotReconnected.svg"));
@@ -82,7 +81,7 @@ TEST (ReconnectionTest_ReconnectInputSlot)
 
 	{
 		Point disconnectPosition = env.listBuilder2InputSlotPosition - Point (0, 100);
-		env.DragDrop (commandKey, env.listBuilder2InputSlotPosition, disconnectPosition, [&] () {
+		env.CtrlDragDrop (env.listBuilder2InputSlotPosition, disconnectPosition, [&] () {
 			ASSERT (env.CheckReference (L"Reconnection_InputSlotBeforeDisconnect.svg"));
 		});
 		ASSERT (env.CheckReference (L"Reconnection_InputSlotDisconnected.svg"));
@@ -92,20 +91,19 @@ TEST (ReconnectionTest_ReconnectInputSlot)
 TEST (ReconnectionTest_ReconnectOutputSlot)
 {
 	ReconnectionTestEnv env (GetDefaultSkinParams ());
-	ModifierKeys commandKey ({ ModifierKeyCode::Command });
 
-	env.DragDrop (commandKey, env.listBuilder1InputSlotPosition, env.listBuilder2InputSlotPosition);
+	env.CtrlDragDrop (env.listBuilder1InputSlotPosition, env.listBuilder2InputSlotPosition);
 	ASSERT (env.CheckReference (L"Reconnection_OutputSlotBasic.svg"));
 
 	{
-		env.DragDrop (commandKey, env.listBuilder1OutputSlotPosition, env.listBuilder2OutputSlotPosition, [&] () {
+		env.CtrlDragDrop (env.listBuilder1OutputSlotPosition, env.listBuilder2OutputSlotPosition, [&] () {
 			ASSERT (env.CheckReference (L"Reconnection_OutputSlotBeforeReconnect1.svg"));
 		});
 		ASSERT (env.CheckReference (L"Reconnection_OutputSlotReconnected1.svg"));
 	}
 
 	{
-		env.DragDrop (commandKey, env.listBuilder2OutputSlotPosition, env.listBuilder1OutputSlotPosition, [&] () {
+		env.CtrlDragDrop (env.listBuilder2OutputSlotPosition, env.listBuilder1OutputSlotPosition, [&] () {
 			ASSERT (env.CheckReference (L"Reconnection_OutputSlotBeforeReconnect2.svg"));
 		});
 		ASSERT (env.CheckReference (L"Reconnection_OutputSlotReconnected2.svg"));
@@ -113,7 +111,7 @@ TEST (ReconnectionTest_ReconnectOutputSlot)
 
 	{
 		Point disconnectPosition = env.listBuilder1OutputSlotPosition + Point (50, 100);
-		env.DragDrop (commandKey, env.listBuilder1OutputSlotPosition, disconnectPosition, [&] () {
+		env.CtrlDragDrop (env.listBuilder1OutputSlotPosition, disconnectPosition, [&] () {
 			ASSERT (env.CheckReference (L"Reconnection_OutputSlotBeforeDisconnect.svg"));
 		});
 		ASSERT (env.CheckReference (L"Reconnection_OutputSlotDisconnected.svg"));

@@ -257,6 +257,20 @@ TEST (WorkflowTest)
 		env.RightClick (env.GetNodeRect (env.GetNode (L"Numbers")).GetTopLeft () - Point (10.0, 0.0));
 		ASSERT (env.CheckStepReference (28));
 	}
+
+	{ // disconnect viewer 2 from division
+		env.SetNextCommandName (L"Division (Result)");
+		env.RightClick (env.GetInputSlotConnPosition (env.GetNode (L"Renamed 2"), "in"));
+		ASSERT (env.CheckStepReference (29));
+	}
+
+	{ // reconnect division from viewer 1 to viewer 2
+		env.CtrlDragDrop (
+			env.GetInputSlotConnPosition (env.GetNode (L"Renamed 1"), "in"),
+			env.GetInputSlotConnPosition (env.GetNode (L"Renamed 2"), "in")
+		);
+		ASSERT (env.CheckStepReference (30));
+	}
 }
 
 }

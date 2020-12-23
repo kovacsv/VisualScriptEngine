@@ -54,7 +54,7 @@ TEST (CreateAndDeleteGroupTest)
 
 	{
 		Point groupPoint = env.viewer1HeaderPoint - Point (0.0, 5.5);
-		env.DragDrop (EmptyModifierKeys, groupPoint, groupPoint + Point (50.0, 0.0));
+		env.DragDrop (groupPoint, groupPoint + Point (50.0, 0.0));
 		ASSERT (env.CheckReference (L"Grouping_GroupMoved.svg"));
 		env.RecalcPositions ();
 	}

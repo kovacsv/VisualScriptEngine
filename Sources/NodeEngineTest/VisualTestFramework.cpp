@@ -368,6 +368,11 @@ void NodeEditorTestEnv::DragDrop (const Point& from, const Point& to, const std:
 	DragDrop (EmptyModifierKeys, from, to, beforeMouseUp);
 }
 
+void NodeEditorTestEnv::CtrlDragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp /*= nullptr*/)
+{
+	DragDrop (ModifierKeys ({ ModifierKeyCode::Command }), from, to, beforeMouseUp);
+}
+
 void NodeEditorTestEnv::DragDrop (const ModifierKeys& keys, const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp)
 {
 	nodeEditor.OnMouseDown (keys, MouseButton::Left, (int) from.GetX (), (int) from.GetY ());
