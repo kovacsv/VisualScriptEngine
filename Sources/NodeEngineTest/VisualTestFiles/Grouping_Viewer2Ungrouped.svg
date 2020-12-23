@@ -4,9 +4,9 @@
 <text x="31" y="125" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
 <rect x="212" y="290" width="176" height="186" style="fill:rgb(160,200,240);"/>
 <text x="222" y="312" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
-<path d="M169,199 C196,199 196,386 222,386" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
-<path d="M169,199 C196,199 196,417 222,417" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
-<path d="M169,199 C364,199 364,99 558,99" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M169,199 C195,199 195,386 222,386" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M169,199 C195,199 195,417 222,417" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M169,199 C363,199 363,99 558,99" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <path d="M378,386 C462,386 462,329 546,329" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
 <rect x="31" y="147" width="138" height="34" style="fill:rgb(41,127,255);"/>
 <text x="100" y="164" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Number</text>

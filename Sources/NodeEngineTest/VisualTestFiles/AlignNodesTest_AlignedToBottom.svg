@@ -1,8 +1,8 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<path d="M169,469 C196,469 196,443 222,443" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
-<path d="M169,469 C196,469 196,474 222,474" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
-<path d="M169,469 C339,469 339,99 508,99" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
+<path d="M169,469 C195,469 195,443 222,443" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
+<path d="M169,469 C195,469 195,474 222,474" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
+<path d="M169,469 C338,469 338,99 508,99" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
 <path d="M378,443 C437,443 437,329 496,329" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
 <rect x="28" y="414" width="144" height="112" style="fill:rgb(41,127,255);"/>
 <rect x="31" y="417" width="138" height="34" style="fill:rgb(32,129,240);"/>

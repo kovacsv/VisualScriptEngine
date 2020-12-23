@@ -1,6 +1,6 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<path d="M219,239 C246,239 246,426 272,426" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
+<path d="M219,239 C245,239 245,426 272,426" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
 <rect x="78" y="184" width="144" height="112" style="fill:rgb(41,127,255);"/>
 <rect x="81" y="187" width="138" height="34" style="fill:rgb(32,129,240);"/>
 <text x="150" y="204" dominant-baseline="central" text-anchor="middle" style="fill:rgb(200,227,236);font-family:Arial;font-size:16px;">Number</text>

@@ -1,16 +1,16 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<path d="M51,-279 C162,-279 162,502 272,502" style="fill:none;stroke-width:5px;stroke:rgb(38,50,56);"/>
-<rect x="271" y="284" width="652" height="143" style="fill:rgb(41,127,255);"/>
-<text x="597" y="355" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:67px;">Range</text>
-<rect x="271" y="426" width="652" height="410" style="fill:rgb(236,236,236);"/>
+<path d="M50,-280 C161,-280 161,501 271,501" style="fill:none;stroke-width:4px;stroke:rgb(38,50,56);"/>
+<rect x="271" y="284" width="652" height="142" style="fill:rgb(41,127,255);"/>
+<text x="597" y="355" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:66px;">Range</text>
+<rect x="271" y="426" width="652" height="409" style="fill:rgb(236,236,236);"/>
 <rect x="271" y="446" width="335" height="109" style="fill:rgb(246,246,246);"/>
-<text x="292" y="501" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:59px;">Start</text>
+<text x="292" y="501" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:58px;">Start</text>
 <rect x="271" y="576" width="335" height="109" style="fill:rgb(246,246,246);"/>
-<text x="292" y="630" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:59px;">Step</text>
+<text x="292" y="630" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:58px;">Step</text>
 <rect x="271" y="705" width="335" height="109" style="fill:rgb(246,246,246);"/>
-<text x="292" y="760" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:59px;">Count</text>
+<text x="292" y="760" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:58px;">Count</text>
 <rect x="647" y="446" width="276" height="109" style="fill:rgb(246,246,246);"/>
-<text x="902" y="501" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:59px;">List</text>
-<rect x="271" y="284" width="652" height="552" style="fill:none;stroke-width:5px;stroke:rgb(38,50,56);"/>
+<text x="902" y="501" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:58px;">List</text>
+<rect x="271" y="284" width="652" height="551" style="fill:none;stroke-width:4px;stroke:rgb(38,50,56);"/>
 </svg>

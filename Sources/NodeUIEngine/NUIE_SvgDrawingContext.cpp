@@ -53,34 +53,24 @@ std::wstring SvgBuilder::GetAsString () const
 	return svgContent.str ();
 }
 
-std::wstring SvgBuilder::ToString (double val)
+std::wstring SvgBuilder::NumberToString (double num)
 {
-	return std::to_wstring ((int) ceil (val));
-}
-
-std::wstring SvgBuilder::BegToString (double val)
-{
-	return std::to_wstring ((int) floor (val));
-}
-
-std::wstring SvgBuilder::EndToString (double val)
-{
-	return std::to_wstring ((int) ceil (val));
+	return std::to_wstring ((int) std::floor (num));
 }
 
 std::wstring SvgBuilder::PenToStrokeStyle (const Pen& pen)
 {
 	std::wstring style;
 	const Color& color = pen.GetColor ();
-	style += L"stroke-width:" + ToString (pen.GetThickness ()) + L"px;";
-	style += L"stroke:rgb(" + ToString (color.GetR ()) + L"," + ToString (color.GetG ()) + L"," + ToString (color.GetB ()) + L");";
+	style += L"stroke-width:" + NumberToString (pen.GetThickness ()) + L"px;";
+	style += L"stroke:rgb(" + std::to_wstring (color.GetR ()) + L"," + std::to_wstring (color.GetG ()) + L"," + std::to_wstring (color.GetB ()) + L");";
 	return style;
 }
 
 std::wstring SvgBuilder::ColorToFillStyle (const Color& color)
 {
 	std::wstring style;
-	style += L"fill:rgb(" + ToString (color.GetR ()) + L"," + ToString (color.GetG ()) + L"," + ToString (color.GetB ()) + L");";
+	style += L"fill:rgb(" + std::to_wstring (color.GetR ()) + L"," + std::to_wstring (color.GetG ()) + L"," + std::to_wstring (color.GetB ()) + L");";
 	return style;
 }
 
@@ -88,13 +78,14 @@ std::wstring SvgBuilder::FontToFontStyle (const Font& font)
 {
 	std::wstring style;
 	style += L"font-family:" + font.GetFamily () + L";";
-	style += L"font-size:" + SvgBuilder::ToString (font.GetSize ()) + L"px;";
+	style += L"font-size:" + NumberToString (font.GetSize ()) + L"px;";
 	return style;
 }
 
 std::wstring SvgBuilder::PointToPath (const Point& point)
 {
-	return ToString (point.GetX ()) + L"," + ToString (point.GetY ());
+	IntPoint intPoint (point);
+	return std::to_wstring (intPoint.GetX ()) + L"," + std::to_wstring (intPoint.GetY ());
 }
 
 void SvgBuilder::AddAttributes (const std::vector<std::pair<std::wstring, std::wstring>>& attributes)
@@ -138,8 +129,8 @@ void SvgDrawingContext::BeginDraw ()
 	svgBuilder.AddOpenTag (L"svg", {
 		{ L"version", L"1.1" },
 		{ L"xmlns", L"http://www.w3.org/2000/svg" },
-		{ L"width", SvgBuilder::ToString (GetWidth ()) },
-		{ L"height", SvgBuilder::ToString (GetHeight ()) },
+		{ L"width", std::to_wstring (GetWidth ()) },
+		{ L"height", std::to_wstring (GetHeight ()) },
 		{ L"shape-rendering", L"crispEdges" }
 	});
 }
@@ -156,11 +147,13 @@ bool SvgDrawingContext::NeedToDraw (ItemPreviewMode)
 
 void SvgDrawingContext::DrawLine (const Point& beg, const Point& end, const Pen& pen)
 {
+	IntPoint intBeg (beg);
+	IntPoint intEnd (end);
 	svgBuilder.AddTag (L"line", {
-		{ L"x1", SvgBuilder::ToString (beg.GetX ()) },
-		{ L"y1", SvgBuilder::ToString (beg.GetY ()) },
-		{ L"x2", SvgBuilder::ToString (end.GetX ()) },
-		{ L"y2", SvgBuilder::ToString (end.GetY ()) },
+		{ L"x1", std::to_wstring (intBeg.GetX ()) },
+		{ L"y1", std::to_wstring (intBeg.GetY ()) },
+		{ L"x2", std::to_wstring (intEnd.GetX ()) },
+		{ L"y2", std::to_wstring (intEnd.GetY ()) },
 		{ L"style", L"fill:none;" + SvgBuilder::PenToStrokeStyle (pen) }
 	});
 }
@@ -175,44 +168,48 @@ void SvgDrawingContext::DrawBezier (const Point& p1, const Point& p2, const Poin
 				 
 void SvgDrawingContext::DrawRect (const Rect& rect, const Pen& pen)
 {
+	IntRect intRect (rect);
 	svgBuilder.AddTag (L"rect", {
-		{ L"x", SvgBuilder::BegToString (rect.GetLeft ()) },
-		{ L"y", SvgBuilder::BegToString (rect.GetTop ()) },
-		{ L"width", SvgBuilder::EndToString (rect.GetWidth ()) },
-		{ L"height", SvgBuilder::EndToString (rect.GetHeight ()) },
+		{ L"x", std::to_wstring (intRect.GetLeft ()) },
+		{ L"y", std::to_wstring (intRect.GetTop ()) },
+		{ L"width", std::to_wstring (intRect.GetWidth ()) },
+		{ L"height", std::to_wstring (intRect.GetHeight ()) },
 		{ L"style", L"fill:none;" + SvgBuilder::PenToStrokeStyle (pen) }
 	});
 }
 
 void SvgDrawingContext::FillRect (const Rect& rect, const Color& color)
 {
+	IntRect intRect (rect);
 	svgBuilder.AddTag (L"rect", {
-		{ L"x", SvgBuilder::BegToString (rect.GetLeft ()) },
-		{ L"y", SvgBuilder::BegToString (rect.GetTop ()) },
-		{ L"width", SvgBuilder::EndToString (rect.GetWidth ()) },
-		{ L"height", SvgBuilder::EndToString (rect.GetHeight ()) },
+		{ L"x", std::to_wstring (intRect.GetLeft ()) },
+		{ L"y", std::to_wstring (intRect.GetTop ()) },
+		{ L"width", std::to_wstring (intRect.GetWidth ()) },
+		{ L"height", std::to_wstring (intRect.GetHeight ()) },
 		{ L"style", SvgBuilder::ColorToFillStyle (color) }
 	});
 }
 				 
 void SvgDrawingContext::DrawEllipse (const Rect& rect, const Pen& pen)
 {
+	IntRect intRect (rect);
 	svgBuilder.AddTag (L"ellipse", {
-		{ L"cx", SvgBuilder::BegToString (rect.GetCenter ().GetX ()) },
-		{ L"cy", SvgBuilder::BegToString (rect.GetCenter ().GetY ()) },
-		{ L"rx", SvgBuilder::EndToString (rect.GetWidth () / 2.0) },
-		{ L"ry", SvgBuilder::EndToString (rect.GetHeight () / 2.0) },
+		{ L"cx", std::to_wstring (intRect.GetCenter ().GetX ()) },
+		{ L"cy", std::to_wstring (intRect.GetCenter ().GetY ()) },
+		{ L"rx", std::to_wstring (intRect.GetWidth () / 2) },
+		{ L"ry", std::to_wstring (intRect.GetHeight () / 2) },
 		{ L"style", L"fill:none;" + SvgBuilder::PenToStrokeStyle (pen) }
 	});
 }
 
 void SvgDrawingContext::FillEllipse (const Rect& rect, const Color& color)
 {
+	IntRect intRect (rect);
 	svgBuilder.AddTag (L"ellipse", {
-		{ L"cx", SvgBuilder::BegToString (rect.GetCenter ().GetX ()) },
-		{ L"cy", SvgBuilder::BegToString (rect.GetCenter ().GetY ()) },
-		{ L"rx", SvgBuilder::EndToString (rect.GetWidth () / 2.0) },
-		{ L"ry", SvgBuilder::EndToString (rect.GetHeight () / 2.0) },
+		{ L"cx", std::to_wstring (intRect.GetCenter ().GetX ()) },
+		{ L"cy", std::to_wstring (intRect.GetCenter ().GetY ()) },
+		{ L"rx", std::to_wstring (intRect.GetWidth () / 2) },
+		{ L"ry", std::to_wstring (intRect.GetHeight () / 2) },
 		{ L"style", SvgBuilder::ColorToFillStyle (color) }
 	});
 }
@@ -255,8 +252,8 @@ void SvgDrawingContext::DrawFormattedText (const Rect& rect, const Font& font, c
 	}
 
 	svgBuilder.AddTag (L"text", text, {
-		{ L"x", SvgBuilder::BegToString (x) },
-		{ L"y", SvgBuilder::BegToString (y) },
+		{ L"x", SvgBuilder::NumberToString (x) },
+		{ L"y", SvgBuilder::NumberToString (y) },
 		{ L"dominant-baseline", dominantBaseline },
 		{ L"text-anchor", textAnchor },
 		{ L"style", SvgBuilder::ColorToFillStyle (textColor) + SvgBuilder::FontToFontStyle (font) }

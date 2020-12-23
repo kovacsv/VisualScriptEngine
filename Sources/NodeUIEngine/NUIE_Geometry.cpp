@@ -338,8 +338,8 @@ IntPoint::IntPoint (int x, int y) :
 }
 
 IntPoint::IntPoint (const Point& point) :
-	x ((int) std::floor (point.GetX ()) - 1),
-	y ((int) std::floor (point.GetY ()) - 1)
+	x ((int) std::floor (point.GetX ())),
+	y ((int) std::floor (point.GetY ()))
 {
 
 }
@@ -373,8 +373,8 @@ IntRect::IntRect (int x, int y, int width, int height) :
 }
 
 IntRect::IntRect (const Rect& rect) :
-	x ((int) std::floor (rect.GetLeft ()) - 1),
-	y ((int) std::floor (rect.GetTop ()) - 1),
+	x ((int) std::floor (rect.GetLeft ())),
+	y ((int) std::floor (rect.GetTop ())),
 	width ((int) std::floor (rect.GetRight ()) - x),
 	height ((int) std::floor (rect.GetBottom ()) - y)
 {
@@ -409,6 +409,11 @@ int IntRect::GetWidth () const
 int IntRect::GetHeight () const
 {
 	return height;
+}
+
+NUIE::IntPoint IntRect::GetCenter () const
+{
+	return IntPoint (x + width / 2, y + height / 2);
 }
 
 BoundingRect::BoundingRect () :

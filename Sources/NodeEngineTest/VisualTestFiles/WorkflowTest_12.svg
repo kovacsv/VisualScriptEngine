@@ -1,9 +1,9 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<path d="M178,136 C230,136 230,152 281,152" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
-<path d="M212,299 C247,299 247,183 281,183" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
-<path d="M419,152 C458,152 458,79 496,79" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
-<path d="M419,152 C458,152 458,379 496,379" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M178,136 C229,136 229,151 281,151" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M212,299 C246,299 246,182 281,182" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M419,151 C457,151 457,79 496,79" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M419,151 C457,151 457,379 496,379" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <rect x="22" y="84" width="156" height="34" style="fill:rgb(41,127,255);"/>
 <text x="100" y="101" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Numbers</text>
 <rect x="22" y="118" width="156" height="98" style="fill:rgb(236,236,236);"/>

@@ -136,13 +136,15 @@ public:
 	IntRect (int x, int y, int width, int height);
 	IntRect (const Rect& rect);
 
-	int		GetLeft () const;
-	int		GetRight () const;
-	int		GetTop () const;
-	int		GetBottom () const;
+	int			GetLeft () const;
+	int			GetRight () const;
+	int			GetTop () const;
+	int			GetBottom () const;
 
-	int		GetWidth () const;
-	int		GetHeight () const;
+	int			GetWidth () const;
+	int			GetHeight () const;
+
+	IntPoint	GetCenter () const;
 
 private:
 	int x;

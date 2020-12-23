@@ -1,9 +1,9 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<path d="M103,171 C142,171 142,452 182,452" style="fill:none;stroke-width:2px;stroke:rgb(38,50,56);"/>
-<path d="M103,171 C142,171 142,498 182,498" style="fill:none;stroke-width:2px;stroke:rgb(38,50,56);"/>
-<path d="M103,171 C357,171 357,21 611,21" style="fill:none;stroke-width:2px;stroke:rgb(38,50,56);"/>
-<path d="M416,452 C505,452 505,366 593,366" style="fill:none;stroke-width:2px;stroke:rgb(38,50,56);"/>
+<path d="M102,171 C142,171 142,451 181,451" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M102,171 C142,171 142,498 181,498" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M102,171 C356,171 356,21 610,21" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M415,451 C504,451 504,366 592,366" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <rect x="-105" y="93" width="207" height="51" style="fill:rgb(41,127,255);"/>
 <text x="-2" y="118" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:24px;">Number</text>
 <rect x="-105" y="144" width="207" height="54" style="fill:rgb(236,236,236);"/>
@@ -13,11 +13,11 @@
 <text x="-2" y="225" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">20.00</text>
 <rect x="-98" y="205" width="36" height="39" style="fill:rgb(217,217,217);"/>
 <text x="-80" y="225" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">&lt;</text>
-<rect x="-98" y="205" width="36" height="39" style="fill:none;stroke-width:2px;stroke:rgb(146,152,155);"/>
+<rect x="-98" y="205" width="36" height="39" style="fill:none;stroke-width:1px;stroke:rgb(146,152,155);"/>
 <rect x="58" y="205" width="36" height="39" style="fill:rgb(217,217,217);"/>
 <text x="76" y="225" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">&gt;</text>
-<rect x="58" y="205" width="36" height="39" style="fill:none;stroke-width:2px;stroke:rgb(146,152,155);"/>
-<rect x="-105" y="93" width="207" height="159" style="fill:none;stroke-width:2px;stroke:rgb(38,50,56);"/>
+<rect x="58" y="205" width="36" height="39" style="fill:none;stroke-width:1px;stroke:rgb(146,152,155);"/>
+<rect x="-105" y="93" width="207" height="159" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <rect x="181" y="373" width="234" height="51" style="fill:rgb(41,127,255);"/>
 <text x="298" y="399" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:24px;">Range</text>
 <rect x="181" y="424" width="234" height="147" style="fill:rgb(236,236,236);"/>
@@ -29,7 +29,7 @@
 <text x="189" y="544" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">Count</text>
 <rect x="316" y="432" width="99" height="39" style="fill:rgb(246,246,246);"/>
 <text x="408" y="451" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">List</text>
-<rect x="181" y="373" width="234" height="198" style="fill:none;stroke-width:2px;stroke:rgb(38,50,56);"/>
+<rect x="181" y="373" width="234" height="198" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <rect x="610" y="-57" width="276" height="51" style="fill:rgb(41,127,255);"/>
 <text x="748" y="-32" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:24px;">Viewer</text>
 <rect x="610" y="-6" width="276" height="54" style="fill:rgb(236,236,236);"/>
@@ -39,7 +39,7 @@
 <text x="879" y="21" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">Output</text>
 <rect x="610" y="48" width="276" height="54" style="fill:rgb(236,236,236);"/>
 <text x="748" y="75" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">20.00</text>
-<rect x="610" y="-57" width="276" height="159" style="fill:none;stroke-width:2px;stroke:rgb(38,50,56);"/>
+<rect x="610" y="-57" width="276" height="159" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <rect x="592" y="288" width="312" height="51" style="fill:rgb(41,127,255);"/>
 <text x="748" y="313" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:24px;">Viewer 2</text>
 <rect x="592" y="339" width="312" height="54" style="fill:rgb(236,236,236);"/>
@@ -57,9 +57,9 @@
 <text x="748" y="630" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">1 / 2 (10)</text>
 <rect x="600" y="610" width="36" height="39" style="fill:rgb(217,217,217);"/>
 <text x="618" y="630" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">&lt;</text>
-<rect x="600" y="610" width="36" height="39" style="fill:none;stroke-width:2px;stroke:rgb(146,152,155);"/>
+<rect x="600" y="610" width="36" height="39" style="fill:none;stroke-width:1px;stroke:rgb(146,152,155);"/>
 <rect x="861" y="610" width="36" height="39" style="fill:rgb(217,217,217);"/>
 <text x="879" y="630" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:21px;">&gt;</text>
-<rect x="861" y="610" width="36" height="39" style="fill:none;stroke-width:2px;stroke:rgb(146,152,155);"/>
-<rect x="592" y="288" width="312" height="369" style="fill:none;stroke-width:2px;stroke:rgb(38,50,56);"/>
+<rect x="861" y="610" width="36" height="39" style="fill:none;stroke-width:1px;stroke:rgb(146,152,155);"/>
+<rect x="592" y="288" width="312" height="369" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 </svg>

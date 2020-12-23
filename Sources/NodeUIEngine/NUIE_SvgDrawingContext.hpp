@@ -24,9 +24,7 @@ public:
 
 	std::wstring GetAsString () const;
 
-	static std::wstring ToString (double val);
-	static std::wstring BegToString (double val);
-	static std::wstring EndToString (double val);
+	static std::wstring NumberToString (double num);
 	static std::wstring PenToStrokeStyle (const Pen& pen);
 	static std::wstring ColorToFillStyle (const Color& color);
 	static std::wstring FontToFontStyle (const Font& font);

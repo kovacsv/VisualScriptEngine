@@ -1,8 +1,8 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<path d="M143,157 C170,157 170,344 196,344" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
-<path d="M143,157 C170,157 170,375 196,375" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
-<path d="M143,157 C313,157 313,57 482,57" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M143,157 C169,157 169,344 196,344" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M143,157 C169,157 169,375 196,375" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M143,157 C312,157 312,57 482,57" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <path d="M352,344 C411,344 411,287 470,287" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <rect x="5" y="105" width="138" height="34" style="fill:rgb(41,127,255);"/>
 <text x="74" y="122" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Number</text>
