@@ -12,14 +12,14 @@ static const float SafetyTextRatio = 1.05f;
 static NSPoint CreatePoint (CGFloat viewHeight, const NUIE::Point& point)
 {
 	NUIE::IntPoint intPoint (point);
-	int height = (int) std::floor (viewHeight) - 1;
+	int height = (int) std::floor (viewHeight);
 	return NSMakePoint (intPoint.GetX (), height - intPoint.GetY ());
 }
 
 static NSRect CreateRect (CGFloat viewHeight, const NUIE::Rect& rect)
 {
 	NUIE::IntRect intRect (rect);
-	int height = (int) std::floor (viewHeight) - 1;
+	int height = (int) std::floor (viewHeight);
 	return NSMakeRect (intRect.GetLeft (), height - intRect.GetHeight () - intRect.GetTop (), intRect.GetWidth (), intRect.GetHeight ());
 }
 
