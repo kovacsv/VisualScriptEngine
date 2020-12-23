@@ -151,7 +151,7 @@ void UINodeGroup::UpdateDrawingImage (NodeUIDrawingEnvironment& env, const NodeR
 	);
 
 	Rect textRect = Rect::FromPositionAndSize (
-		Point (fullRect.GetX () + groupPadding, fullRect.GetY () + groupPadding),
+		Point (fullRect.GetLeft () + groupPadding, fullRect.GetTop () + groupPadding),
 		Size (maxWidth, textSize.GetHeight ())
 	);
 

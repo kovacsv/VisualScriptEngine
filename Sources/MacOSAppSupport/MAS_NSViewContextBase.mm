@@ -20,7 +20,7 @@ static NSRect CreateRect (CGFloat viewHeight, const NUIE::Rect& rect)
 {
 	NUIE::IntRect intRect (rect);
 	int height = (int) std::floor (viewHeight) - 1;
-	return NSMakeRect (intRect.GetX (), height - intRect.GetHeight () - intRect.GetY (), intRect.GetWidth (), intRect.GetHeight ());
+	return NSMakeRect (intRect.GetLeft (), height - intRect.GetHeight () - intRect.GetTop (), intRect.GetWidth (), intRect.GetHeight ());
 }
 
 static NSColor* CreateColor (const NUIE::Color& color)

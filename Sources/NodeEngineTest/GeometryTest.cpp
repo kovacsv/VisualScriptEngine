@@ -59,15 +59,13 @@ TEST (RectTest)
 	ASSERT (r1 == Rect (1.0, 2.0, 3.0, 4.0));
 	ASSERT (r1 != Rect (2.0, 3.0, 4.0, 5.0));
 
-	ASSERT (r1.GetX () == 1.0);
-	ASSERT (r1.GetY () == 2.0);
-	ASSERT (r1.GetWidth () == 3.0);
-	ASSERT (r1.GetHeight () == 4.0);
-
 	ASSERT (r1.GetLeft () == 1.0);
 	ASSERT (r1.GetRight () == 4.0);
 	ASSERT (r1.GetTop () == 2.0);
 	ASSERT (r1.GetBottom () == 6.0);
+
+	ASSERT (r1.GetWidth () == 3.0);
+	ASSERT (r1.GetHeight () == 4.0);
 
 	ASSERT (r1.GetTopLeft () == Point (1.0, 2.0));
 	ASSERT (r1.GetTopRight () == Point (4.0, 2.0));

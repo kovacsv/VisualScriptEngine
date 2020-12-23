@@ -46,9 +46,6 @@ public:
 	virtual void		DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& iconId) override;
 
 private:
-	Gdiplus::Point		CreatePoint (const NUIE::Point& point) const;
-	Gdiplus::Rect		CreateRect (const NUIE::Rect& rect) const;
-	Gdiplus::RectF		CreateRectF (const NUIE::Rect& rect) const;
 	void				InitGraphics ();
 
 	GdiplusInitializer					gdiplusInitializer;

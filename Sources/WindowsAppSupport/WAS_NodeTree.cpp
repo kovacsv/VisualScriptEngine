@@ -76,7 +76,6 @@ void NodeTreeView::AddGroup (const std::wstring& group)
 	tvInsertStruct.hInsertAfter = NULL;
 	tvInsertStruct.item.mask = TVIF_TEXT | TVIF_PARAM;
 	tvInsertStruct.item.pszText = (LPWSTR) group.c_str ();
-	tvInsertStruct.item.cchTextMax = sizeof (tvInsertStruct.item.pszText) / sizeof (wchar_t);
 	tvInsertStruct.item.lParam = (LPARAM) -1;
 
 	if (imageList != NULL) {
@@ -102,7 +101,6 @@ void NodeTreeView::AddItem (const std::wstring& group, const std::wstring& text,
 	tvInsertStruct.hInsertAfter = NULL;
 	tvInsertStruct.item.mask = TVIF_TEXT | TVIF_PARAM;
 	tvInsertStruct.item.pszText = (LPWSTR) text.c_str ();
-	tvInsertStruct.item.cchTextMax = sizeof (tvInsertStruct.item.pszText) / sizeof (wchar_t);
 	tvInsertStruct.item.lParam = lParam;
 
 	if (imageList != NULL && bitmap != NULL) {

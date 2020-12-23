@@ -226,10 +226,10 @@ RECT GdiOffscreenContext::CreateRect (const NUIE::Rect& rect) const
 {
 	NUIE::IntRect intRect (rect);
 	RECT gdiRect;
-	gdiRect.left = intRect.GetX ();
-	gdiRect.top = intRect.GetY ();
-	gdiRect.right = intRect.GetX () + intRect.GetWidth ();
-	gdiRect.bottom = intRect.GetY () + intRect.GetHeight ();
+	gdiRect.left = intRect.GetLeft ();
+	gdiRect.top = intRect.GetTop ();
+	gdiRect.right = intRect.GetRight ();
+	gdiRect.bottom = intRect.GetBottom ();
 	return gdiRect;
 }
 
@@ -238,12 +238,12 @@ RECT GdiOffscreenContext::CreateRect (const NUIE::Rect& rect, const NUIE::Pen& p
 	RECT gdiRect = CreateRect (rect);
 	int penThickness = (int) std::floor (pen.GetThickness ());
 	if (penThickness > 1) {
-		int leftDiff = (int) (penThickness / 2.0);
-		int rightDiff = penThickness - leftDiff - 1;
-		gdiRect.left += leftDiff;
-		gdiRect.top += leftDiff;
-		gdiRect.right -= rightDiff;
-		gdiRect.bottom -= rightDiff;
+		int begDiff = (int) (penThickness / 2.0);
+		int endDiff = penThickness - begDiff - 1;
+		gdiRect.left += begDiff;
+		gdiRect.top += begDiff;
+		gdiRect.right -= endDiff;
+		gdiRect.bottom -= endDiff;
 	}
 	return gdiRect;
 }

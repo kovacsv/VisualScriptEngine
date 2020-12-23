@@ -7,6 +7,24 @@
 namespace WAS
 {
 
+static Gdiplus::Point CreatePoint (const NUIE::Point& point)
+{
+	Gdiplus::Point gdiPoint ((int) std::ceil (point.GetX ()), (int) std::ceil (point.GetY ()));
+	return gdiPoint;
+}
+
+static Gdiplus::Rect CreateRect (const NUIE::Rect& rect)
+{
+	Gdiplus::Rect gdiRect ((int) std::ceil (rect.GetLeft ()), (int) std::ceil (rect.GetTop ()), (int) std::ceil (rect.GetWidth ()), (int) std::ceil (rect.GetHeight ()));
+	return gdiRect;
+}
+
+static Gdiplus::RectF CreateRectF (const NUIE::Rect& rect)
+{
+	Gdiplus::RectF gdiRect ((float) rect.GetLeft (), (float) rect.GetTop (), (float) rect.GetWidth (), (float) rect.GetHeight ());
+	return gdiRect;
+}
+
 GdiplusOffscreenContext::GdiplusOffscreenContext () :
 	NUIE::NativeDrawingContext (),
 	gdiplusInitializer (),
@@ -93,19 +111,22 @@ bool GdiplusOffscreenContext::NeedToDraw (ItemPreviewMode)
 
 void GdiplusOffscreenContext::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
-	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());
+	const NUIE::Color& color = pen.GetColor ();
+	Gdiplus::Pen gdiPen (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	graphics->DrawLine (&gdiPen, CreatePoint (beg), CreatePoint (end));
 }
 
 void GdiplusOffscreenContext::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2, const NUIE::Point& p3, const NUIE::Point& p4, const NUIE::Pen& pen)
 {
-	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());
+	const NUIE::Color& color = pen.GetColor ();
+	Gdiplus::Pen gdiPen (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	graphics->DrawBezier (&gdiPen, CreatePoint (p1), CreatePoint (p2), CreatePoint (p3), CreatePoint (p4));
 }
 
 void GdiplusOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());
+	const NUIE::Color& color = pen.GetColor ();
+	Gdiplus::Pen gdiPen (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	Gdiplus::Rect gdiRect = CreateRect (rect);
 	graphics->DrawRectangle (&gdiPen, gdiRect);
 }
@@ -119,7 +140,8 @@ void GdiplusOffscreenContext::FillRect (const NUIE::Rect& rect, const NUIE::Colo
 
 void GdiplusOffscreenContext::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
-	Gdiplus::Pen gdiPen (Gdiplus::Color (pen.GetColor ().GetR (), pen.GetColor ().GetG (), pen.GetColor ().GetB ()), (Gdiplus::REAL) pen.GetThickness ());
+	const NUIE::Color& color = pen.GetColor ();
+	Gdiplus::Pen gdiPen (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	Gdiplus::Rect gdiRect = CreateRect (rect);
 	graphics->DrawEllipse (&gdiPen, gdiRect);
 }
@@ -187,24 +209,6 @@ bool GdiplusOffscreenContext::CanDrawIcon ()
 void GdiplusOffscreenContext::DrawIcon (const NUIE::Rect&, const NUIE::IconId&)
 {
 	DBGBREAK ();
-}
-
-Gdiplus::Point GdiplusOffscreenContext::CreatePoint (const NUIE::Point& point) const
-{
-	Gdiplus::Point gdiPoint ((int) std::ceil (point.GetX ()), (int) std::ceil (point.GetY ()));
-	return gdiPoint;
-}
-
-Gdiplus::Rect GdiplusOffscreenContext::CreateRect (const NUIE::Rect& rect) const
-{
-	Gdiplus::Rect gdiRect ((int) std::ceil (rect.GetX ()), (int) std::ceil (rect.GetY ()), (int) std::ceil (rect.GetWidth ()), (int) std::ceil (rect.GetHeight ()));
-	return gdiRect;
-}
-
-Gdiplus::RectF GdiplusOffscreenContext::CreateRectF (const NUIE::Rect& rect) const
-{
-	Gdiplus::RectF gdiRect ((float) rect.GetX (), (float) rect.GetY (), (float) rect.GetWidth (), (float) rect.GetHeight ());
-	return gdiRect;
 }
 
 void GdiplusOffscreenContext::InitGraphics ()

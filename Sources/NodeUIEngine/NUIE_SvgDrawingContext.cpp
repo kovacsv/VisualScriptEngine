@@ -71,8 +71,9 @@ std::wstring SvgBuilder::EndToString (double val)
 std::wstring SvgBuilder::PenToStrokeStyle (const Pen& pen)
 {
 	std::wstring style;
+	const Color& color = pen.GetColor ();
 	style += L"stroke-width:" + ToString (pen.GetThickness ()) + L"px;";
-	style += L"stroke:rgb(" + ToString (pen.GetColor ().GetR ()) + L"," + ToString (pen.GetColor ().GetG ()) + L"," + ToString (pen.GetColor ().GetB ()) + L");";
+	style += L"stroke:rgb(" + ToString (color.GetR ()) + L"," + ToString (color.GetG ()) + L"," + ToString (color.GetB ()) + L");";
 	return style;
 }
 
@@ -175,8 +176,8 @@ void SvgDrawingContext::DrawBezier (const Point& p1, const Point& p2, const Poin
 void SvgDrawingContext::DrawRect (const Rect& rect, const Pen& pen)
 {
 	svgBuilder.AddTag (L"rect", {
-		{ L"x", SvgBuilder::BegToString (rect.GetX ()) },
-		{ L"y", SvgBuilder::BegToString (rect.GetY ()) },
+		{ L"x", SvgBuilder::BegToString (rect.GetLeft ()) },
+		{ L"y", SvgBuilder::BegToString (rect.GetTop ()) },
 		{ L"width", SvgBuilder::EndToString (rect.GetWidth ()) },
 		{ L"height", SvgBuilder::EndToString (rect.GetHeight ()) },
 		{ L"style", L"fill:none;" + SvgBuilder::PenToStrokeStyle (pen) }
@@ -186,8 +187,8 @@ void SvgDrawingContext::DrawRect (const Rect& rect, const Pen& pen)
 void SvgDrawingContext::FillRect (const Rect& rect, const Color& color)
 {
 	svgBuilder.AddTag (L"rect", {
-		{ L"x", SvgBuilder::BegToString (rect.GetX ()) },
-		{ L"y", SvgBuilder::BegToString (rect.GetY ()) },
+		{ L"x", SvgBuilder::BegToString (rect.GetLeft ()) },
+		{ L"y", SvgBuilder::BegToString (rect.GetTop ()) },
 		{ L"width", SvgBuilder::EndToString (rect.GetWidth ()) },
 		{ L"height", SvgBuilder::EndToString (rect.GetHeight ()) },
 		{ L"style", SvgBuilder::ColorToFillStyle (color) }

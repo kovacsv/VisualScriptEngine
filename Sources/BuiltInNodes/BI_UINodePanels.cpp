@@ -312,10 +312,11 @@ NodeUILeftRightButtonsPanel::NodeUILeftRightButtonsPanel (	const std::string& le
 	panelText (panelText)
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
+	NUIE::DrawingContext& drawingContext = env.GetDrawingContext ();
 	double nodePadding = skinParams.GetNodePadding ();
-	leftButtonSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeContentTextFont (), leftButtonText).Grow (2.0 * nodePadding, nodePadding);
-	panelTextSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeContentTextFont (), panelText).Grow (2.0 * nodePadding, nodePadding);
-	rightButtonSize = env.GetDrawingContext ().MeasureText (skinParams.GetNodeContentTextFont (), rightButtonText).Grow (2.0 * nodePadding, nodePadding);
+	leftButtonSize = drawingContext.MeasureText (skinParams.GetNodeContentTextFont (), leftButtonText).Grow (2.0 * nodePadding, nodePadding);
+	panelTextSize = drawingContext.MeasureText (skinParams.GetNodeContentTextFont (), panelText).Grow (2.0 * nodePadding, nodePadding);
+	rightButtonSize = drawingContext.MeasureText (skinParams.GetNodeContentTextFont (), rightButtonText).Grow (2.0 * nodePadding, nodePadding);
 }
 
 NUIE::Size NodeUILeftRightButtonsPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) const

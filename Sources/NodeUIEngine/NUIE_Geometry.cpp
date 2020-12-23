@@ -178,26 +178,6 @@ Rect::Rect (double x, double y, double width, double height) :
 
 }
 
-double Rect::GetX () const
-{
-	return position.GetX ();
-}
-
-double Rect::GetY () const
-{
-	return position.GetY ();
-}
-
-double Rect::GetWidth () const
-{
-	return size.GetWidth ();
-}
-
-double Rect::GetHeight () const
-{
-	return size.GetHeight ();
-}
-
 double Rect::GetLeft () const
 {
 	return position.GetX ();
@@ -216,6 +196,16 @@ double Rect::GetTop () const
 double Rect::GetBottom () const
 {
 	return position.GetY () + size.GetHeight ();
+}
+
+double Rect::GetWidth () const
+{
+	return size.GetWidth ();
+}
+
+double Rect::GetHeight () const
+{
+	return size.GetHeight ();
 }
 
 Point Rect::GetCenter () const
@@ -391,14 +381,24 @@ IntRect::IntRect (const Rect& rect) :
 
 }
 
-int IntRect::GetX () const
+int IntRect::GetLeft () const
 {
 	return x;
 }
 
-int IntRect::GetY () const
+int IntRect::GetRight () const
+{
+	return x + width;
+}
+
+int IntRect::GetTop () const
 {
 	return y;
+}
+
+int IntRect::GetBottom () const
+{
+	return y + height;
 }
 
 int IntRect::GetWidth () const
