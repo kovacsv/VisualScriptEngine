@@ -1,1 +1,1 @@
-python CppCheck.py
+"C:\Program Files\Cppcheck\cppcheck.exe" ..\Sources --quiet --enable=all --suppress=unreadVariable --suppress=unusedFunction --suppress=noExplicitConstructor --suppress=cstyleCast --suppress=missingInclude --suppress=useStlAlgorithm -iNodeEngineTest
