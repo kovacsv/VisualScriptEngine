@@ -168,12 +168,18 @@ void TestEventHandler::SetNextCommandName (const std::wstring& nextCommandName)
 void TestEventHandler::SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler)
 {
 	SetNextCommandName (L"Node Settings");
-	paramSettingsHandler = handler;
+	SetParameterSettingsHandler (handler);
 }
 
 void TestEventHandler::SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler)
 {
 	SetNextCommandName (L"Group Settings");
+	SetParameterSettingsHandler (handler);
+}
+
+void TestEventHandler::SetParameterSettingsHandler (const ParameterSettingsHandler& handler)
+{
+	DBGASSERT (paramSettingsHandler == nullptr);
 	paramSettingsHandler = handler;
 }
 
@@ -312,6 +318,11 @@ void TestNodeUIEnvironment::SetNextCommandGroupParameterSettings (const Paramete
 	eventHandler.SetNextCommandGroupParameterSettings (handler);
 }
 
+void TestNodeUIEnvironment::SetParameterSettingsHandler (const ParameterSettingsHandler& handler)
+{
+	eventHandler.SetParameterSettingsHandler (handler);
+}
+
 const SvgDrawingContext& TestNodeUIEnvironment::GetSvgDrawingContext () const
 {
 	return drawingContext;
@@ -344,6 +355,11 @@ void NodeEditorTestEnv::Click (const Point& point)
 {
 	nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
 	nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
+}
+
+void NodeEditorTestEnv::DoubleClick (const Point& point)
+{
+	nodeEditor.OnMouseDoubleClick (EmptyModifierKeys, MouseButton::Left, (int) point.GetX (), (int) point.GetY ());
 }
 
 void NodeEditorTestEnv::CtrlClick (const Point& point)
@@ -403,6 +419,11 @@ void NodeEditorTestEnv::SetNextCommandGroupParameterSettings (const ParameterSet
 	uiEnvironment.SetNextCommandGroupParameterSettings (handler);
 }
 
+void NodeEditorTestEnv::SetParameterSettingsHandler (const ParameterSettingsHandler& handler)
+{
+	uiEnvironment.SetParameterSettingsHandler (handler);
+}
+
 Rect NodeEditorTestEnv::GetNodeRect (const UINodeConstPtr& node)
 {
 	return node->GetRect (uiEnvironment);
@@ -416,6 +437,11 @@ Point NodeEditorTestEnv::GetOutputSlotConnPosition (const UINodeConstPtr& node, 
 Point NodeEditorTestEnv::GetInputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId)
 {
 	return node->GetInputSlotConnPosition (uiEnvironment, SlotId (slotId));
+}
+
+void NodeEditorTestEnv::Resize (int width, int height)
+{
+	nodeEditor.OnResize (width, height);
 }
 
 SimpleNodeEditorTestEnv::SimpleNodeEditorTestEnv (const BasicSkinParams& skinParams) :

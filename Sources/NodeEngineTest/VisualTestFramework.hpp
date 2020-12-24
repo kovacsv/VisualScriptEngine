@@ -24,6 +24,7 @@ public:
 	void						SetNextCommandName (const std::wstring& nextCommandName);
 	void						SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler);
 	void						SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler);
+	void						SetParameterSettingsHandler (const ParameterSettingsHandler& handler);
 
 private:
 	MenuCommandPtr				SelectCommandByName (const MenuCommandStructure& commands);
@@ -58,6 +59,7 @@ public:
 	void							SetNextCommandName (const std::wstring& nextCommandName);
 	void							SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler);
 	void							SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler);
+	void							SetParameterSettingsHandler (const ParameterSettingsHandler& handler);
 	const SvgDrawingContext&		GetSvgDrawingContext () const;
 	void							SetWindowScale (double newWindowScale);
 
@@ -81,6 +83,7 @@ public:
 
 	bool	CheckReference (const std::wstring& referenceFileName);
 	void	Click (const Point& point);
+	void	DoubleClick (const Point& point);
 	void	CtrlClick (const Point& point);
 	void	RightClick (const Point& point);
 	void	Wheel (MouseWheelRotation rotation, const Point& point);
@@ -91,9 +94,11 @@ public:
 	void	SetNextCommandName (const std::wstring& nextCommandName);
 	void	SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler);
 	void	SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler);
+	void	SetParameterSettingsHandler (const ParameterSettingsHandler& handler);
 	Rect	GetNodeRect (const UINodeConstPtr& node);
 	Point	GetOutputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId);
 	Point	GetInputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId);
+	void	Resize (int width, int height);
 
 	TestNodeUIEnvironment	uiEnvironment;
 	NodeEditor				nodeEditor;

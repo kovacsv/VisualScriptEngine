@@ -271,6 +271,26 @@ TEST (WorkflowTest)
 		);
 		ASSERT (env.CheckStepReference (30));
 	}
+
+	{ // modify texts per page by opening parameter settings with double click
+		env.SetParameterSettingsHandler ([&] (ParameterInterfacePtr paramInterface) {
+			env.SetParameter (paramInterface, L"Texts per page", ValueConstPtr (new IntValue (4)));
+			return true;
+		});
+		env.DoubleClick (env.GetNodeRect (env.GetNode (L"Renamed 2")).GetTopLeft () + padding);
+		ASSERT (env.CheckStepReference (31));
+	}
+
+	{ // resize canvas
+		env.Resize (1000, 800);
+		ASSERT (env.CheckStepReference (32));
+	}
+
+	{ // center to window
+		env.SetNextCommandName (L"Center To Window");
+		env.RightClick (Point (10.0, 10.0));
+		ASSERT (env.CheckStepReference (33));
+	}
 }
 
 }
