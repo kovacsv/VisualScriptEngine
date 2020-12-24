@@ -24,10 +24,6 @@ init:
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2017" ( set cMakeParams=-G "Visual Studio 15 2017 Win64" )
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" ( set cMakeParams=-G "Visual Studio 16 2019" -A "x64")
 
-install:
-  - choco install opencppcoverage codecov
-  - set PATH=C:\Program Files\OpenCppCoverage;%PATH%
-
 before_build:
   - mkdir Build
   - cd Build
@@ -58,9 +54,13 @@ for:
     matrix:
       only:
         - configuration: Debug
+        - image: Visual Studio 2017
+    install:
+      - choco install opencppcoverage codecov
+      - set PATH=C:\Program Files\OpenCppCoverage;%PATH%
     test_script:
       - cd Build
-      - OpenCppCoverage.exe --export_type cobertura:coverage.xml --sources=*Sources\NodeEngine --sources=*Sources\NodeUIEngine --sources=*Sources\BuiltInNodes --excluded_sources=*Sources\NodeEngineTest NodeEngineTest.exe -- ctest --verbose --build-config %configuration%
+      - OpenCppCoverage.exe --export_type cobertura:coverage.xml --sources=*Sources\NodeEngine --sources=*Sources\NodeUIEngine --sources=*Sources\BuiltInNodes --excluded_sources=*Sources\NodeEngineTest -- ctest --verbose --build-config %configuration%
       - codecov -f coverage.xml --root %APPVEYOR_BUILD_FOLDER%
       - cd ..
 
