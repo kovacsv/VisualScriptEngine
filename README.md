@@ -6,6 +6,7 @@ A visual scripting engine designed for embedding. The engine is written in moder
 [![Build Status](https://ci.appveyor.com/api/projects/status/c0qxxixyhymfxfdf?svg=true)](https://ci.appveyor.com/project/kovacsv/visualscriptengine)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/kovacsv/VisualScriptEngine.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kovacsv/VisualScriptEngine/context:cpp)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/kovacsv/VisualScriptEngine.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kovacsv/VisualScriptEngine/alerts/)
+[![codecov](https://codecov.io/gh/kovacsv/VisualScriptEngine/branch/master/graph/badge.svg?token=LAB72UD38J)](https://codecov.io/gh/kovacsv/VisualScriptEngine)
 
 ## Documentation
 

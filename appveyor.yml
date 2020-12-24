@@ -60,6 +60,7 @@ for:
       - set PATH=C:\Program Files\OpenCppCoverage;%PATH%
     test_script:
       - cd Build
+      - ctest --verbose --build-config %configuration%
       - OpenCppCoverage.exe --export_type cobertura:coverage.xml --modules "*.exe" --cover_children --sources=*Sources\NodeEngine --sources=*Sources\NodeUIEngine --sources=*Sources\BuiltInNodes --excluded_sources=*Sources\NodeEngineTest -- ctest --verbose --build-config %configuration%
       - codecov -f coverage.xml --root %APPVEYOR_BUILD_FOLDER%
       - cd ..
