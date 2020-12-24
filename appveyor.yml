@@ -54,7 +54,7 @@ for:
     matrix:
       only:
         - configuration: Debug
-        - image: Visual Studio 2017
+          image: Visual Studio 2017
     install:
       - choco install opencppcoverage codecov
       - set PATH=C:\Program Files\OpenCppCoverage;%PATH%
