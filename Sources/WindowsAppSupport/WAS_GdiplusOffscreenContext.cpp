@@ -25,6 +25,26 @@ static Gdiplus::RectF CreateRectF (const NUIE::Rect& rect)
 	return gdiRect;
 }
 
+class DisableAntialiasGuard
+{
+public:
+	DisableAntialiasGuard (Gdiplus::Graphics* graphics) :
+		graphics (graphics),
+		oldMode (graphics->GetSmoothingMode ())
+	{
+		graphics->SetSmoothingMode (Gdiplus::SmoothingMode::SmoothingModeNone);
+	}
+
+	~DisableAntialiasGuard ()
+	{
+		graphics->SetSmoothingMode (oldMode);
+	}
+
+private:
+	Gdiplus::Graphics*		graphics;
+	Gdiplus::SmoothingMode	oldMode;
+};
+
 GdiplusOffscreenContext::GdiplusOffscreenContext () :
 	NUIE::NativeDrawingContext (),
 	gdiplusInitializer (),
@@ -96,7 +116,7 @@ int GdiplusOffscreenContext::GetHeight () const
 
 void GdiplusOffscreenContext::BeginDraw ()
 {
-
+	graphics->SetSmoothingMode (Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
 }
 
 void GdiplusOffscreenContext::EndDraw ()
@@ -125,6 +145,7 @@ void GdiplusOffscreenContext::DrawBezier (const NUIE::Point& p1, const NUIE::Poi
 
 void GdiplusOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen)
 {
+	DisableAntialiasGuard antialiasGuard (graphics.get ());
 	const NUIE::Color& color = pen.GetColor ();
 	Gdiplus::Pen gdiPen (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()), (Gdiplus::REAL) pen.GetThickness ());
 	Gdiplus::Rect gdiRect = CreateRect (rect);
@@ -133,6 +154,7 @@ void GdiplusOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen&
 
 void GdiplusOffscreenContext::FillRect (const NUIE::Rect& rect, const NUIE::Color& color)
 {
+	DisableAntialiasGuard antialiasGuard (graphics.get ());
 	Gdiplus::SolidBrush brush (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()));
 	Gdiplus::Rect gdiRect = CreateRect (rect);
 	graphics->FillRectangle (&brush, gdiRect);
@@ -215,7 +237,6 @@ void GdiplusOffscreenContext::InitGraphics ()
 {
 	bitmap.reset (new Gdiplus::Bitmap (width, height));
 	graphics.reset (new Gdiplus::Graphics (bitmap.get ()));
-	graphics->SetSmoothingMode (Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
 }
 
 }
