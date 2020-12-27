@@ -274,10 +274,10 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 		drawingImage.AddInputSlotConnPosition (slotId, slotRect.GetLeftCenter ());
 		drawingImage.AddInputSlotRect (slotId, slotRect);
 		if (skinParams.GetSlotMarker () == NUIE::SkinParams::SlotMarker::Circle) {
-			if (uiSlot->GetConnectionDisplayMode () == NUIE::ConnectionDisplayMode::Hidden && node.IsInputSlotConnected (uiSlot->GetId ())) {
-				NUIE::Size slotMarkerHiddenConnectionSize = skinParams.GetSlotMarkerSize () + NUIE::Size (3.0, 3.0);
-				NUIE::Rect bigConnCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), slotMarkerHiddenConnectionSize);
-				NUIE::Rect smallConnCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), slotMarkerHiddenConnectionSize - NUIE::Size (5.0, 5.0));
+			bool drawHiddenConnectionMarker = uiSlot->GetConnectionDisplayMode () == NUIE::ConnectionDisplayMode::Hidden && node.IsInputSlotConnected (uiSlot->GetId ());
+			if (drawHiddenConnectionMarker) {
+				NUIE::Rect bigConnCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetHiddenConnectionMarkerBigSize ());
+				NUIE::Rect smallConnCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetHiddenConnectionMarkerSmallSize ());
 				drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (bigConnCircleRect, skinParams.GetSlotTextBackgroundColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 				drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (bigConnCircleRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 				drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (smallConnCircleRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);

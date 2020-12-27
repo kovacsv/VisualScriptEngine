@@ -638,4 +638,22 @@ TEST (AlignNodesTest)
 	}
 }
 
+TEST (HideConnectionsTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithMarkers ());
+
+	ASSERT (env.CheckReference (L"HideConnectionsTest_Initial.svg"));
+	
+	{ // hide input connections for viewer 2
+		env.SetNextCommandName (L"Hidden");
+		env.RightClick (env.viewer2InputSlotRect.GetCenter ());
+		ASSERT (env.CheckReference (L"HideConnectionsTest_ConnectionHidden.svg"));
+	}
+
+	{ // select viewer 2
+		env.Click (env.viewer2HeaderPoint);
+		ASSERT (env.CheckReference (L"HideConnectionsTest_Viewer2Selected.svg"));
+	}
+}
+
 }
