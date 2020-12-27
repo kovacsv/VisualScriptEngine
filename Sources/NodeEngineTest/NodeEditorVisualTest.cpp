@@ -19,8 +19,6 @@ const BasicSkinParams& GetSkinParamsWithMarkers ()
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*connectionMarker*/ NUIE::SkinParams::ConnectionMarker::Circle,
 		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
-		/*hiddenConnectionMarkerBigSize*/ NUIE::Size (11.0, 11.0),
-		/*hiddenConnectionMarkerSmallSize*/ NUIE::Size (6.0, 6.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
@@ -34,6 +32,7 @@ const BasicSkinParams& GetSkinParamsWithMarkers ()
 		/*slotTextColor*/ NUIE::Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
 		/*slotMarker*/ SkinParams::SlotMarker::Circle,
+		/*hiddenSlotMarker*/ NUIE::SkinParams::SlotMarker::Rectangle,
 		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
@@ -578,8 +577,6 @@ TEST (SkinParamsTest)
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (0, 0, 200), 5.0),
 		/*connectionMarker*/ NUIE::SkinParams::ConnectionMarker::None,
 		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
-		/*hiddenConnectionMarkerBigSize*/ NUIE::Size (11.0, 11.0),
-		/*hiddenConnectionMarkerSmallSize*/ NUIE::Size (6.0, 6.0),
 		/*nodePadding*/ 10.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (0, 200, 0), 5.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
@@ -593,6 +590,7 @@ TEST (SkinParamsTest)
 		/*slotTextColor*/ NUIE::Color (100, 100, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (180, 250, 250),
 		/*slotMarker*/ SkinParams::SlotMarker::None,
+		/*hiddenSlotMarker*/ SkinParams::SlotMarker::None,
 		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 0, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
@@ -649,7 +647,7 @@ TEST (HideConnectionsTest)
 		env.RightClick (env.viewer2InputSlotRect.GetCenter ());
 		ASSERT (env.CheckReference (L"HideConnectionsTest_ConnectionHidden.svg"));
 	}
-
+	
 	{ // select viewer 2
 		env.Click (env.viewer2HeaderPoint);
 		ASSERT (env.CheckReference (L"HideConnectionsTest_Viewer2Selected.svg"));

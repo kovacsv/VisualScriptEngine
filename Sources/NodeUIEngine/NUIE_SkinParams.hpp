@@ -38,7 +38,8 @@ public:
 	enum class SlotMarker
 	{
 		None,
-		Circle
+		Circle,
+		Rectangle
 	};
 
 	SkinParams ();
@@ -48,8 +49,6 @@ public:
 	virtual const Pen&				GetConnectionLinePen () const = 0;
 	virtual ConnectionMarker		GetConnectionMarker () const = 0;
 	virtual const Size&				GetConnectionMarkerSize () const = 0;
-	virtual const Size&				GetHiddenConnectionMarkerBigSize () const = 0;
-	virtual const Size&				GetHiddenConnectionMarkerSmallSize () const = 0;
 
 	virtual double					GetNodePadding () const = 0;
 	virtual const Pen&				GetNodeBorderPen () const = 0;
@@ -67,6 +66,7 @@ public:
 	virtual const Color&			GetSlotTextColor () const = 0;
 	virtual const Color&			GetSlotTextBackgroundColor () const = 0;
 	virtual SlotMarker				GetSlotMarker () const = 0;
+	virtual SlotMarker				GetHiddenSlotMarker () const = 0;
 	virtual const Size&				GetSlotMarkerSize () const = 0;
 
 	virtual const BlendColor&		GetDisabledBlendColor () const = 0;
@@ -98,8 +98,6 @@ public:
 		const Pen&				connectionLinePen,
 		ConnectionMarker		connectionMarker,
 		const Size&				connectionMarkerSize,
-		const Size&				hiddenConnectionMarkerBigSize,
-		const Size&				hiddenConnectionMarkerSmallSize,
 		const double&			nodePadding,
 		const Pen&				nodeBorderPen,
 		const Font&				nodeHeaderTextFont,
@@ -113,6 +111,7 @@ public:
 		const Color&			slotTextColor,
 		const Color&			slotTextBackgroundColor,
 		SlotMarker				slotMarker,
+		SlotMarker				hiddenSlotMarker,
 		const Size&				slotMarkerSize,
 		const BlendColor&		disabledBlendColor,
 		const BlendColor&		selectionBlendColor,
@@ -133,8 +132,6 @@ public:
 	virtual const Pen&				GetConnectionLinePen () const override;
 	virtual ConnectionMarker		GetConnectionMarker () const override;
 	virtual const Size&				GetConnectionMarkerSize () const override;
-	virtual const Size&				GetHiddenConnectionMarkerBigSize () const override;
-	virtual const Size&				GetHiddenConnectionMarkerSmallSize () const override;
 
 	virtual double					GetNodePadding () const override;
 	virtual const Font&				GetNodeContentTextFont () const override;
@@ -150,6 +147,7 @@ public:
 	virtual const Color&			GetSlotTextColor () const override;
 	virtual const Color&			GetSlotTextBackgroundColor () const override;
 	virtual SlotMarker				GetSlotMarker () const override;
+	virtual SlotMarker				GetHiddenSlotMarker () const override;
 	virtual const Size&				GetSlotMarkerSize () const override;
 
 	virtual const BlendColor&		GetDisabledBlendColor () const override;
@@ -173,8 +171,6 @@ private:
 	Pen					connectionLinePen;
 	ConnectionMarker	connectionMarker;
 	Size				connectionMarkerSize;
-	Size				hiddenConnectionMarkerBigSize;
-	Size				hiddenConnectionMarkerSmallSize;
 
 	double				nodePadding;
 	Pen					nodeBorderPen;
@@ -192,6 +188,7 @@ private:
 	Color				slotTextColor;
 	Color				slotTextBackgroundColor;
 	SlotMarker			slotMarker;
+	SlotMarker			hiddenSlotMarker;
 	Size				slotMarkerSize;
 
 	BlendColor			disabledBlendColor;

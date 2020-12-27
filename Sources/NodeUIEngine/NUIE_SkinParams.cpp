@@ -29,8 +29,6 @@ BasicSkinParams::BasicSkinParams (
 	const Pen&				connectionLinePen,
 	ConnectionMarker		connectionMarker,
 	const Size&				connectionMarkerSize,
-	const Size&				hiddenConnectionMarkerBigSize,
-	const Size&				hiddenConnectionMarkerSmallSize,
 	const double&			nodePadding,
 	const Pen&				nodeBorderPen,
 	const Font&				nodeHeaderTextFont,
@@ -44,6 +42,7 @@ BasicSkinParams::BasicSkinParams (
 	const Color&			slotTextColor,
 	const Color&			slotTextBackgroundColor,
 	SlotMarker				slotMarker,
+	SlotMarker				hiddenSlotMarker,
 	const Size&				slotMarkerSize,
 	const BlendColor&		disabledBlendColor,
 	const BlendColor&		selectionBlendColor,
@@ -62,8 +61,6 @@ BasicSkinParams::BasicSkinParams (
 	connectionLinePen (connectionLinePen),
 	connectionMarker (connectionMarker),
 	connectionMarkerSize (connectionMarkerSize),
-	hiddenConnectionMarkerBigSize (hiddenConnectionMarkerBigSize),
-	hiddenConnectionMarkerSmallSize (hiddenConnectionMarkerSmallSize),
 	nodePadding (nodePadding),
 	nodeBorderPen (nodeBorderPen),
 	nodeHeaderTextFont (nodeHeaderTextFont),
@@ -77,6 +74,7 @@ BasicSkinParams::BasicSkinParams (
 	slotTextColor (slotTextColor),
 	slotTextBackgroundColor (slotTextBackgroundColor),
 	slotMarker (slotMarker),
+	hiddenSlotMarker (hiddenSlotMarker),
 	slotMarkerSize (slotMarkerSize),
 	disabledBlendColor (disabledBlendColor),
 	selectionBlendColor (selectionBlendColor),
@@ -117,16 +115,6 @@ SkinParams::ConnectionMarker BasicSkinParams::GetConnectionMarker () const
 const Size& BasicSkinParams::GetConnectionMarkerSize () const
 {
 	return connectionMarkerSize;
-}
-
-const NUIE::Size& BasicSkinParams::GetHiddenConnectionMarkerBigSize () const
-{
-	return hiddenConnectionMarkerBigSize;
-}
-
-const NUIE::Size& BasicSkinParams::GetHiddenConnectionMarkerSmallSize () const
-{
-	return hiddenConnectionMarkerSmallSize;
 }
 
 double BasicSkinParams::GetNodePadding () const
@@ -192,6 +180,11 @@ const Color& BasicSkinParams::GetSlotTextBackgroundColor () const
 SkinParams::SlotMarker BasicSkinParams::GetSlotMarker () const
 {
 	return slotMarker;
+}
+
+SkinParams::SlotMarker BasicSkinParams::GetHiddenSlotMarker () const
+{
+	return hiddenSlotMarker;
 }
 
 const Size& BasicSkinParams::GetSlotMarkerSize () const
@@ -266,8 +259,6 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*connectionMarker*/ NUIE::SkinParams::ConnectionMarker::None,
 		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
-		/*hiddenConnectionMarkerBigSize*/ NUIE::Size (11.0, 11.0),
-		/*hiddenConnectionMarkerSmallSize*/ NUIE::Size (6.0, 6.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),
@@ -281,6 +272,7 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*slotTextColor*/ NUIE::Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
 		/*slotMarker*/ NUIE::SkinParams::SlotMarker::None,
+		/*hiddenSlotMarker*/ NUIE::SkinParams::SlotMarker::None,
 		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
