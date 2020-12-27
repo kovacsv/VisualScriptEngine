@@ -30,7 +30,7 @@ bool ClipboardHandler::IsCompatibleVersion (const NUIE::Version& version) const
 
 bool ClipboardHandler::HasClipboardContent () const
 {
-	if (DBGERROR (!OpenClipboard (NULL))) {
+	if (!OpenClipboard (NULL)) {
 		return false;
 	}
 
