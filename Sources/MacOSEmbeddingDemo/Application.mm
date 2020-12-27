@@ -114,6 +114,8 @@ static const NUIE::BasicSkinParams& GetAppSkinParams ()
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*connectionMarker */ NUIE::SkinParams::ConnectionMarker::Circle,
 		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
+		/*hiddenConnectionMarkerBigSize*/ NUIE::Size (11.0, 11.0),
+		/*hiddenConnectionMarkerSmallSize*/ NUIE::Size (6.0, 6.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Helvetica", 16.0),

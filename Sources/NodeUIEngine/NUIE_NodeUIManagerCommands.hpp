@@ -181,6 +181,18 @@ private:
 	const UIInputSlotConstPtr& inputSlot;
 };
 
+class SetInputSlotConnectionDisplayModeCommand : public UndoableCommand
+{
+public:
+	SetInputSlotConnectionDisplayModeCommand (const UIInputSlotPtr& inputSlot, ConnectionDisplayMode connDisplayMode);
+
+	virtual void Do (NodeUIManager& uiManager) override;
+
+private:
+	const UIInputSlotPtr& inputSlot;
+	ConnectionDisplayMode connDisplayMode;
+};
+
 class CopyNodesCommand : public NotUndoableCommand
 {
 public:

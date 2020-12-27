@@ -133,20 +133,18 @@ public:
 	size_t							GetConnectedInputSlotCount (const UIOutputSlotConstPtr& outputSlot) const;
 	size_t							GetConnectedOutputSlotCount (const UIInputSlotConstPtr& inputSlot) const;
 
-	void							EnumerateConnectedInputSlots (const NE::OutputSlotConstPtr& outputSlot, const std::function<void (const NE::InputSlotConstPtr&)>& processor) const;
-	void							EnumerateConnectedOutputSlots (const NE::InputSlotConstPtr& inputSlot, const std::function<void (const NE::OutputSlotConstPtr&)>& processor) const;
 	void							EnumerateConnectedUIInputSlots (const UIOutputSlotConstPtr& outputSlot, const std::function<void (UIInputSlotConstPtr)>& processor) const;
 	void							EnumerateConnectedUIOutputSlots (const UIInputSlotConstPtr& inputSlot, const std::function<void (UIOutputSlotConstPtr)>& processor) const;
-	void							EnumerateUIConnections (const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const;
-	void							EnumerateUIConnections (const NE::NodeCollection& nodes, const std::function<void (const UIOutputSlotConstPtr&, const UIInputSlotConstPtr&)>& processor) const;
+	void							EnumerateUIConnections (const std::function<void (UIOutputSlotConstPtr, UIInputSlotConstPtr)>& processor) const;
+	void							EnumerateUIConnections (const NE::NodeCollection& nodes, const std::function<void (UIOutputSlotConstPtr, UIInputSlotConstPtr)>& processor) const;
 
 	bool							ContainsNode (const NE::NodeId& nodeId) const;
 	std::vector<UINodeConstPtr>		FindNodes (const UINodeFilter& nodeFilter) const;
 	UINodePtr						GetNode (const NE::NodeId& nodeId);
 	UINodeConstPtr					GetNode (const NE::NodeId& nodeId) const;
 
-	void							EnumerateNodes (const std::function<bool (const UINodePtr&)>& processor);
-	void							EnumerateNodes (const std::function<bool (const UINodeConstPtr&)>& processor) const;
+	void							EnumerateNodes (const std::function<bool (UINodePtr)>& processor);
+	void							EnumerateNodes (const std::function<bool (UINodeConstPtr)>& processor) const;
 
 	void							RequestRecalculateAndRedraw ();
 	void							RequestRecalculate ();
@@ -201,8 +199,8 @@ public:
 	const NE::NodeCollection&		GetGroupNodes (const UINodeGroupConstPtr& group) const;
 	UINodeGroupConstPtr				GetNodeGroup (const NE::NodeId& nodeId) const;
 
-	void							EnumerateNodeGroups (const std::function<bool (const UINodeGroupConstPtr&)>& processor) const;
-	void							EnumerateNodeGroups (const std::function<bool (const UINodeGroupPtr&)>& processor);
+	void							EnumerateNodeGroups (const std::function<bool (UINodeGroupConstPtr)>& processor) const;
+	void							EnumerateNodeGroups (const std::function<bool (UINodeGroupPtr)>& processor);
 
 	void							ExecuteCommand (NodeUIManagerCommand& command, NodeUIInteractionEnvironment& interactionEnv);
 	void							ExecuteCommand (NodeUIManagerCommandPtr& command, NodeUIInteractionEnvironment& interactionEnv);

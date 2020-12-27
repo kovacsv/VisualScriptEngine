@@ -302,14 +302,14 @@ NodeEditorInfo NodeEditor::GetInfo () const
 	info.view.height = context.GetHeight ();
 
 	const ViewBox& viewBox = uiManager.GetViewBox ();
-	uiManager.EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
+	uiManager.EnumerateNodes ([&] (UINodeConstPtr uiNode) {
 		NodeInfo nodeInfo;
 		nodeInfo.id = uiNode->GetId ();
 		nodeInfo.name = uiNode->GetName ().GetLocalized ();
 		nodeInfo.modelRect = uiNode->GetRect (uiEnvironment);
 		nodeInfo.viewRect = viewBox.ModelToView (nodeInfo.modelRect);
 
-		uiNode->EnumerateUIInputSlots ([&] (const UIInputSlotConstPtr& inputSlot) {
+		uiNode->EnumerateUIInputSlots ([&] (UIInputSlotConstPtr inputSlot) {
 			SlotInfo slotInfo;
 			slotInfo.id = inputSlot->GetId ();
 			slotInfo.name = inputSlot->GetName ().GetLocalized ();
@@ -319,7 +319,7 @@ NodeEditorInfo NodeEditor::GetInfo () const
 			return true;
 		});
 
-		uiNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
+		uiNode->EnumerateUIOutputSlots ([&] (UIOutputSlotConstPtr outputSlot) {
 			SlotInfo slotInfo;
 			slotInfo.id = outputSlot->GetId ();
 			slotInfo.name = outputSlot->GetName ().GetLocalized ();
@@ -329,8 +329,8 @@ NodeEditorInfo NodeEditor::GetInfo () const
 			return true;
 		});
 
-		uiNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
-			uiManager.EnumerateConnectedUIInputSlots (outputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
+		uiNode->EnumerateUIOutputSlots ([&] (UIOutputSlotConstPtr outputSlot) {
+			uiManager.EnumerateConnectedUIInputSlots (outputSlot, [&] (UIInputSlotConstPtr inputSlot) {
 				ConnectionInfo connectionInfo;
 				connectionInfo.fromNodeId = uiNode->GetId ();
 				connectionInfo.fromSlotId = outputSlot->GetId ();
@@ -346,7 +346,7 @@ NodeEditorInfo NodeEditor::GetInfo () const
 	});
 
 	NodeUIManagerNodeRectGetter rectGetter (uiManager, uiEnvironment);
-	uiManager.EnumerateNodeGroups ([&] (const UINodeGroupConstPtr& uiGroup) {
+	uiManager.EnumerateNodeGroups ([&] (UINodeGroupConstPtr uiGroup) {
 		GroupInfo groupInfo;
 		NE::NodeCollection nodesInGroup = uiManager.GetGroupNodes (uiGroup);
 		groupInfo.id = uiGroup->GetId ();

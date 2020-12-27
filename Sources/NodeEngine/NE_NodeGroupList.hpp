@@ -35,8 +35,8 @@ public:
 
 	void					Clear ();
 
-	void					Enumerate (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
-	void					Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor);
+	void					Enumerate (const std::function<bool (NodeGroupConstPtr)>& processor) const;
+	void					Enumerate (const std::function<bool (NodeGroupPtr)>& processor);
 
 private:
 	OrderedMap<NodeGroupId, NodeGroupPtr>				groups;

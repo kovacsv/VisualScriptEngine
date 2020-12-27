@@ -212,11 +212,26 @@ DisconnectAllOutputSlotsCommand::DisconnectAllOutputSlotsCommand (const UIInputS
 	UndoableCommand (),
 	inputSlot (inputSlot)
 {
+
 }
 
 void DisconnectAllOutputSlotsCommand::Do (NodeUIManager& uiManager)
 {
 	uiManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
+}
+
+SetInputSlotConnectionDisplayModeCommand::SetInputSlotConnectionDisplayModeCommand (const UIInputSlotPtr& inputSlot, ConnectionDisplayMode connDisplayMode) :
+	UndoableCommand (),
+	inputSlot (inputSlot),
+	connDisplayMode (connDisplayMode)
+{
+
+}
+
+void SetInputSlotConnectionDisplayModeCommand::Do (NodeUIManager& uiManager)
+{
+	inputSlot->SetConnectionDisplayMode (connDisplayMode);
+	uiManager.InvalidateNodeDrawing (inputSlot->GetOwnerNodeId ());
 }
 
 CopyNodesCommand::CopyNodesCommand (NodeUIEnvironment& uiEnvironment, const NE::NodeCollection& nodes) :

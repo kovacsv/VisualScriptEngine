@@ -61,14 +61,11 @@ public:
 	UIInputSlotConstPtr			GetUIInputSlot (const NE::SlotId& slotId) const;
 	UIOutputSlotConstPtr		GetUIOutputSlot (const NE::SlotId& slotId) const;
 
-	void						EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const;
-	void						EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const;
+	void						EnumerateUIInputSlots (const std::function<bool (UIInputSlotPtr)>& processor);
+	void						EnumerateUIOutputSlots (const std::function<bool (UIOutputSlotPtr)>& processor);
 
-	NE::LocString				GetUIInputSlotName (const NE::SlotId& slotId) const;
-	void						SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
-
-	NE::LocString				GetUIOutputSlotName (const NE::SlotId& slotId) const;
-	void						SetUIOutputSlotName (const NE::SlotId& slotId, const std::wstring& newName);
+	void						EnumerateUIInputSlots (const std::function<bool (UIInputSlotConstPtr)>& processor) const;
+	void						EnumerateUIOutputSlots (const std::function<bool (UIOutputSlotConstPtr)>& processor) const;
 
 	virtual EventHandlerResult	HandleMouseClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, UINodeCommandInterface& commandInterface);
 	virtual EventHandlerResult	HandleMouseDoubleClick (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, MouseButton mouseButton, const Point& position, UINodeCommandInterface& commandInterface);
@@ -81,18 +78,6 @@ public:
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
 	virtual NE::Stream::Status	Write (NE::OutputStream& outputStream) const override;
 
-	template <class SlotType>
-	Point GetSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
-
-	template <class SlotType>
-	bool HasSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
-
-	template <class SlotType>
-	Rect GetSlotRect (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;
-
-	template <class SlotConstType>
-	void EnumerateUISlots (const std::function<bool (const SlotConstType&)>& processor) const;
-
 protected:
 	bool						RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot);
 	bool						RegisterUIOutputSlot (const UIOutputSlotPtr& newOutputSlot);
@@ -100,9 +85,6 @@ protected:
 	virtual void				DrawInplace (NodeUIDrawingEnvironment& env) const;
 
 private:
-	UIInputSlotPtr				GetModifiableUIInputSlot (const NE::SlotId& slotId);
-	UIOutputSlotPtr				GetModifiableUIOutputSlot (const NE::SlotId& slotId);
-
 	const NodeDrawingImage&		GetDrawingImage (NodeUIDrawingEnvironment& env) const;
 	virtual void				UpdateDrawingImage (NodeUIDrawingEnvironment& env, NodeDrawingImage& drawingImage) const = 0;
 

@@ -51,7 +51,7 @@ TEST (EnumerationOrderTest)
 	}
 
 	int nodeCount = 0;
-	nodeManager.EnumerateNodes ([&] (const NE::NodePtr& node) {
+	nodeManager.EnumerateNodes ([&] (NE::NodePtr node) {
 		ASSERT (node->GetId () == nodeAddOrder[nodeCount]);
 		nodeCount += 1;
 		return true;

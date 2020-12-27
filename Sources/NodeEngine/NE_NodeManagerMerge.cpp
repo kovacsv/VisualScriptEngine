@@ -129,7 +129,7 @@ bool NodeManagerMerge::AppendNodeManager (const NodeManager& source, NodeManager
 {
 	// collect nodes to create
 	NodeCollection nodesToClone;
-	source.EnumerateNodes ([&] (const NodeConstPtr& node) {
+	source.EnumerateNodes ([&] (NodeConstPtr node) {
 		NodeId nodeId = node->GetId ();
 		if (!nodeFilter.NeedToProcessSourceNode (nodeId)) {
 			return true;
@@ -178,7 +178,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 	// collect nodes to create or delete
 	std::vector<NodeId> nodesToCreate;
 	std::vector<NodeId> nodesToDelete;
-	source.EnumerateNodes ([&] (const NodeConstPtr& sourceNode) {
+	source.EnumerateNodes ([&] (NodeConstPtr sourceNode) {
 		if (target.ContainsNode (sourceNode->GetId ())) {
 			NodeConstPtr targetNode = target.GetNode (sourceNode->GetId ());
 			if (!Node::IsEqual (sourceNode, targetNode)) {
@@ -190,7 +190,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 		}
 		return true;
 	});
-	target.EnumerateNodes ([&] (const NodeConstPtr& targetNode) {
+	target.EnumerateNodes ([&] (NodeConstPtr targetNode) {
 		if (!source.ContainsNode (targetNode->GetId ())) {
 			nodesToDelete.push_back (targetNode->GetId ());
 		}
@@ -209,12 +209,12 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 
 	// collect input slots with changed connections
 	std::unordered_map<InputSlotConstPtr, std::vector<SlotInfo>> inputSlotsToReconnect;
-	target.EnumerateNodes ([&] (const NodeConstPtr& targetNode) {
+	target.EnumerateNodes ([&] (NodeConstPtr targetNode) {
 		if (!source.ContainsNode (targetNode->GetId ())) {
 			return true;
 		}
 		NodeConstPtr sourceNode = source.GetNode (targetNode->GetId ());
-		targetNode->EnumerateInputSlots ([&] (const InputSlotConstPtr& targetInputSlot) {
+		targetNode->EnumerateInputSlots ([&] (InputSlotConstPtr targetInputSlot) {
 			if (!sourceNode->HasInputSlot (targetInputSlot->GetId ())) {
 				return true;
 			}
@@ -243,7 +243,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 
 	// recreate groups in target
 	target.DeleteAllNodeGroups ();
-	source.EnumerateNodeGroups ([&] (const NodeGroupConstPtr& sourceGroup) {
+	source.EnumerateNodeGroups ([&] (NodeGroupConstPtr sourceGroup) {
 		NodeGroupPtr targetGroup (NodeGroup::Clone (sourceGroup));
 		target.AddNodeGroup (targetGroup, NodeManager::IdPolicy::KeepOriginal);
 		const NodeCollection& sourceGroupNodes = source.GetGroupNodes (sourceGroup->GetId ());

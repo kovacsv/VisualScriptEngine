@@ -30,7 +30,7 @@ public:
 		return slots.size ();
 	}
 
-	virtual void Enumerate (const std::function<bool (const OutputSlotConstPtr&)>& processor) const override
+	virtual void Enumerate (const std::function<bool (OutputSlotConstPtr)>& processor) const override
 	{
 		for (const OutputSlotConstPtr& slot : slots) {
 			if (!processor (slot)) {
@@ -62,7 +62,7 @@ public:
 		return slots.size ();
 	}
 
-	virtual void Enumerate (const std::function<bool (const InputSlotConstPtr&)>& processor) const override
+	virtual void Enumerate (const std::function<bool (InputSlotConstPtr)>& processor) const override
 	{
 		for (const InputSlotConstPtr& slot : slots) {
 			if (!processor (slot)) {

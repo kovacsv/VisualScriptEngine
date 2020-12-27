@@ -152,7 +152,7 @@ Stream::Status NodeManagerSerialization::ReadGroups (NodeManager& nodeManager, I
 Stream::Status NodeManagerSerialization::WriteNodes (const NodeManager& nodeManager, OutputStream& outputStream)
 {
 	outputStream.Write (nodeManager.GetNodeCount ());
-	nodeManager.EnumerateNodes ([&] (const NodeConstPtr& node) {
+	nodeManager.EnumerateNodes ([&] (NodeConstPtr node) {
 		WriteDynamicObject (outputStream, node.get ());
 		return true;
 	});
@@ -177,7 +177,7 @@ Stream::Status NodeManagerSerialization::WriteConnections (const NodeManager& no
 Stream::Status NodeManagerSerialization::WriteGroups (const NodeManager& nodeManager, OutputStream& outputStream)
 {
 	outputStream.Write (nodeManager.GetNodeGroupCount ());
-	nodeManager.EnumerateNodeGroups ([&] (const NodeGroupConstPtr& group) {
+	nodeManager.EnumerateNodeGroups ([&] (NodeGroupConstPtr group) {
 		WriteDynamicObject (outputStream, group.get ());
 		const NodeCollection& nodes = nodeManager.GetGroupNodes (group->GetId ());
 		nodes.Write (outputStream);

@@ -64,14 +64,14 @@ void NodeList::Clear ()
 	nodes.Clear ();
 }
 
-void NodeList::Enumerate (const std::function<bool (const NodePtr&)>& processor)
+void NodeList::Enumerate (const std::function<bool (NodePtr)>& processor)
 {
-	nodes.Enumerate ([&] (const NodePtr& node) {
+	nodes.Enumerate ([&] (NodePtr& node) {
 		return processor (node);
 	});
 }
 
-void NodeList::Enumerate (const std::function<bool (const NodeConstPtr&)>& processor) const
+void NodeList::Enumerate (const std::function<bool (NodeConstPtr)>& processor) const
 {
 	nodes.Enumerate ([&] (const NodePtr& node) {
 		return processor (node);

@@ -6,13 +6,74 @@ namespace NUIE
 static const double SlotSnappingDistanceInPixel = 20.0;
 
 template <class SlotType>
+Point GetSlotConnPosition (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env);
+
+template <class SlotType>
+bool HasSlotRect (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env);
+
+template <class SlotType>
+Rect GetSlotRect (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env);
+
+template <class SlotType>
+static void EnumerateUISlots (const UINodePtr& uiNode, const std::function<bool (SlotType)>& processor);
+
+template <>
+Point GetSlotConnPosition<UIInputSlotPtr> (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env)
+{
+	return uiNode->GetInputSlotConnPosition (env, slotId);
+}
+
+template <>
+Point GetSlotConnPosition<UIOutputSlotPtr> (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env)
+{
+	return uiNode->GetOutputSlotConnPosition (env, slotId);
+}
+
+template <>
+bool HasSlotRect <UIInputSlotPtr> (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env)
+{
+	return uiNode->HasInputSlotRect (env, slotId);
+}
+
+template <>
+bool HasSlotRect<UIOutputSlotPtr> (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env)
+{
+	return uiNode->HasOutputSlotRect (env, slotId);
+}
+
+template <>
+Rect GetSlotRect<UIInputSlotPtr> (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env)
+{
+	return uiNode->GetInputSlotRect (env, slotId);
+}
+
+template <>
+Rect GetSlotRect<UIOutputSlotPtr> (const UINodePtr& uiNode, const NE::SlotId& slotId, NodeUIDrawingEnvironment& env)
+{
+	return uiNode->GetOutputSlotRect (env, slotId);
+}
+
+template <>
+void EnumerateUISlots<UIInputSlotPtr> (const UINodePtr& uiNode, const std::function<bool (UIInputSlotPtr)>& processor)
+{
+	uiNode->EnumerateUIInputSlots (processor);
+}
+
+template <>
+void EnumerateUISlots<UIOutputSlotPtr> (const UINodePtr& uiNode, const std::function<bool (UIOutputSlotPtr)>& processor)
+{
+	uiNode->EnumerateUIOutputSlots (processor);
+}
+
+template <class SlotType>
 static SlotType FindSlotInNode (const UINodePtr& uiNode, const NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	SlotType foundSlot = nullptr;
 	const ViewBox& viewBox = uiManager.GetViewBox ();
-	uiNode->EnumerateUISlots<SlotType> ([&] (const SlotType& currentSlot) {
-		if (uiNode->HasSlotRect<SlotType> (env, currentSlot->GetId ())) {
-			Rect slotRect = viewBox.ModelToView (uiNode->GetSlotRect<SlotType> (env, currentSlot->GetId ()));
+	EnumerateUISlots<SlotType> (uiNode, [&] (SlotType currentSlot) {
+		if (HasSlotRect<SlotType> (uiNode, currentSlot->GetId (), env)) {
+			Rect slotModelRect = GetSlotRect<SlotType> (uiNode, currentSlot->GetId (), env);
+			Rect slotRect = viewBox.ModelToView (slotModelRect);
 			if (slotRect.Contains (viewPosition)) {
 				foundSlot = currentSlot;
 				return false;
@@ -29,9 +90,10 @@ static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIDrawingE
 	SlotType foundSlot = nullptr;
 	double minDistance = INF;
 	const ViewBox& viewBox = uiManager.GetViewBox ();
-	uiManager.EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
-		uiNode->EnumerateUISlots<SlotType> ([&] (const SlotType& currentSlot) {
-			Point slotConnPosition = viewBox.ModelToView (uiNode->GetSlotConnPosition<SlotType> (env, currentSlot->GetId ()));
+	uiManager.EnumerateNodes ([&] (UINodePtr uiNode) {
+		EnumerateUISlots<SlotType> (uiNode, [&] (SlotType currentSlot) {
+			Point slotModelConnPosition = GetSlotConnPosition<SlotType> (uiNode, currentSlot->GetId (), env);
+			Point slotConnPosition = viewBox.ModelToView (slotModelConnPosition);
 			double distance = Point::Distance (viewPosition, slotConnPosition);
 			if (distance < minDistance) {
 				foundSlot = currentSlot;
@@ -47,24 +109,24 @@ static SlotType FindSlotByConnPosition (NodeUIManager& uiManager, NodeUIDrawingE
 	return foundSlot;
 }
 
-static UIInputSlotConstPtr FindInputSlotUnderPosition (const UINodePtr& nodeToFindIn, NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
+static UIInputSlotPtr FindInputSlotUnderPosition (const UINodePtr& nodeToFindIn, NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
-	UIInputSlotConstPtr foundInputSlot = nullptr;
+	UIInputSlotPtr foundInputSlot = nullptr;
 	if (nodeToFindIn != nullptr) {
-		foundInputSlot = FindSlotInNode<UIInputSlotConstPtr> (nodeToFindIn, uiManager, env, viewPosition);
+		foundInputSlot = FindSlotInNode<UIInputSlotPtr> (nodeToFindIn, uiManager, env, viewPosition);
 	} else {
-		foundInputSlot = FindSlotByConnPosition<UIInputSlotConstPtr> (uiManager, env, viewPosition);
+		foundInputSlot = FindSlotByConnPosition<UIInputSlotPtr> (uiManager, env, viewPosition);
 	}
 	return foundInputSlot;
 }
 
-static UIOutputSlotConstPtr FindOutputSlotUnderPosition (const UINodePtr& nodeToFindIn, NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
+static UIOutputSlotPtr FindOutputSlotUnderPosition (const UINodePtr& nodeToFindIn, NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
-	UIOutputSlotConstPtr foundOutputSlot = nullptr;
+	UIOutputSlotPtr foundOutputSlot = nullptr;
 	if (nodeToFindIn != nullptr) {
-		foundOutputSlot = FindSlotInNode<UIOutputSlotConstPtr> (nodeToFindIn, uiManager, env, viewPosition);
+		foundOutputSlot = FindSlotInNode<UIOutputSlotPtr> (nodeToFindIn, uiManager, env, viewPosition);
 	} else {
-		foundOutputSlot = FindSlotByConnPosition<UIOutputSlotConstPtr> (uiManager, env, viewPosition);
+		foundOutputSlot = FindSlotByConnPosition<UIOutputSlotPtr> (uiManager, env, viewPosition);
 	}
 	return foundOutputSlot;
 }
@@ -78,7 +140,7 @@ UINodePtr FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironm
 {
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	UINodePtr foundNode = nullptr;
-	uiManager.EnumerateNodes ([&] (const UINodePtr& uiNode) {
+	uiManager.EnumerateNodes ([&] (UINodePtr uiNode) {
 		Rect nodeRect = viewBox.ModelToView (uiNode->GetRect (env));
 		if (nodeRect.Contains (viewPosition)) {
 			if (foundNode == nullptr || foundNode->GetId () < uiNode->GetId ()) {
@@ -95,7 +157,7 @@ UINodeGroupPtr FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawi
 	const ViewBox& viewBox = uiManager.GetViewBox ();
 	NodeUIManagerNodeRectGetter rectGetter (uiManager, env);
 	UINodeGroupPtr foundGroup = nullptr;
-	uiManager.EnumerateNodeGroups ([&] (const UINodeGroupPtr& group) {
+	uiManager.EnumerateNodeGroups ([&] (UINodeGroupPtr group) {
 		Rect groupRect = viewBox.ModelToView (group->GetRect (env, rectGetter, uiManager.GetGroupNodes (group)));
 		if (groupRect.Contains (viewPosition)) {
 			foundGroup = group;
@@ -105,7 +167,7 @@ UINodeGroupPtr FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawi
 	return foundGroup;
 }
 
-UIInputSlotConstPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
+UIInputSlotPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	if (!NeedToFindSlots (uiManager)) {
 		return nullptr;
@@ -114,7 +176,7 @@ UIInputSlotConstPtr FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUI
 	return FindInputSlotUnderPosition (foundNode, uiManager, env, viewPosition);
 }
 
-UIOutputSlotConstPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
+UIOutputSlotPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition)
 {
 	if (!NeedToFindSlots (uiManager)) {
 		return nullptr;
@@ -124,19 +186,19 @@ UIOutputSlotConstPtr FindOutputSlotUnderPosition (NodeUIManager& uiManager, Node
 }
 
 bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition,
-							const std::function<void (const UIInputSlotConstPtr&)>& inputSlotFound,
-							const std::function<void (const UIOutputSlotConstPtr&)>& outputSlotFound,
+							const std::function<void (const UIInputSlotPtr&)>& inputSlotFound,
+							const std::function<void (const UIOutputSlotPtr&)>& outputSlotFound,
 							const std::function<void (const UINodePtr&)>& nodeFound,
 							const std::function<void (const UINodeGroupPtr&)>& nodeGroupFound)
 {
 	UINodePtr foundNode = FindNodeUnderPosition (uiManager, env, viewPosition);
 	if (NeedToFindSlots (uiManager)) {
-		UIInputSlotConstPtr foundInputSlot = FindInputSlotUnderPosition (foundNode, uiManager, env, viewPosition);
+		UIInputSlotPtr foundInputSlot = FindInputSlotUnderPosition (foundNode, uiManager, env, viewPosition);
 		if (foundInputSlot != nullptr) {
 			inputSlotFound (foundInputSlot);
 			return true;
 		}
-		UIOutputSlotConstPtr foundOutputSlot = FindOutputSlotUnderPosition (foundNode, uiManager, env, viewPosition);
+		UIOutputSlotPtr foundOutputSlot = FindOutputSlotUnderPosition (foundNode, uiManager, env, viewPosition);
 		if (foundOutputSlot != nullptr) {
 			outputSlotFound (foundOutputSlot);
 			return true;

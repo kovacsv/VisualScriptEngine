@@ -26,7 +26,7 @@ public:
 
 	bool			IsEmpty () const;
 	virtual size_t	GetSize () const = 0;
-	virtual void	Enumerate (const std::function<bool (const OutputSlotConstPtr&)>& processor) const = 0;
+	virtual void	Enumerate (const std::function<bool (OutputSlotConstPtr)>& processor) const = 0;
 };
 
 class InputSlotList
@@ -37,7 +37,7 @@ public:
 
 	bool			IsEmpty () const;
 	virtual size_t	GetSize () const = 0;
-	virtual void	Enumerate (const std::function<bool (const InputSlotConstPtr&)>& processor) const = 0;
+	virtual void	Enumerate (const std::function<bool (InputSlotConstPtr)>& processor) const = 0;
 };
 
 class NodeManager
@@ -67,8 +67,8 @@ public:
 	size_t					GetNodeGroupCount () const;
 	size_t					GetConnectionCount () const;
 
-	void					EnumerateNodes (const std::function<bool (const NodePtr&)>& processor);
-	void					EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const;
+	void					EnumerateNodes (const std::function<bool (NodePtr)>& processor);
+	void					EnumerateNodes (const std::function<bool (NodeConstPtr)>& processor) const;
 
 	bool					ContainsNode (const NodeId& id) const;
 	NodeConstPtr			GetNode (const NodeId& id) const;
@@ -126,8 +126,8 @@ public:
 	NodeGroupConstPtr		GetNodeGroup (const NodeId& nodeId) const;
 	const NodeCollection&	GetGroupNodes (const NodeGroupId& groupId) const;
 
-	void					EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const;
-	void					EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor);
+	void					EnumerateNodeGroups (const std::function<bool (NodeGroupConstPtr)>& processor) const;
+	void					EnumerateNodeGroups (const std::function<bool (NodeGroupPtr)>& processor);
 	void					DeleteAllNodeGroups ();
 
 	bool					IsCalculationEnabled () const;

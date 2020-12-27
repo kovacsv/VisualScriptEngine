@@ -59,6 +59,7 @@ public:
 
 	bool					HasInputSlot (const SlotId& slotId) const;
 	bool					HasOutputSlot (const SlotId& slotId) const;
+	bool					IsInputSlotConnected (const SlotId& slotId) const;
 
 	InputSlotConstPtr		GetInputSlot (const SlotId& slotId) const;
 	OutputSlotConstPtr		GetOutputSlot (const SlotId& slotId) const;
@@ -66,8 +67,11 @@ public:
 	size_t					GetInputSlotCount () const;
 	size_t					GetOutputSlotCount () const;
 
-	void					EnumerateInputSlots (const std::function<bool (const InputSlotConstPtr&)>& processor) const;
-	void					EnumerateOutputSlots (const std::function<bool (const OutputSlotConstPtr&)>& processor) const;
+	void					EnumerateInputSlots (const std::function<bool (InputSlotPtr)>& processor);
+	void					EnumerateOutputSlots (const std::function<bool (OutputSlotPtr)>& processor);
+
+	void					EnumerateInputSlots (const std::function<bool (InputSlotConstPtr)>& processor) const;
+	void					EnumerateOutputSlots (const std::function<bool (OutputSlotConstPtr)>& processor) const;
 
 	ValueConstPtr			Evaluate (EvaluationEnv& env) const;
 	ValueConstPtr			GetCalculatedValue () const;
@@ -83,9 +87,6 @@ public:
 
 	static NodePtr			Clone (const NodeConstPtr& node);
 	static bool				IsEqual (const NodeConstPtr& aNode, const NodeConstPtr& bNode);
-
-	template <class SlotConstType>
-	void EnumerateSlots (const std::function<bool (const SlotConstType&)>& processor) const;
 
 	template <class Type>
 	static bool IsType (Node* node);
@@ -109,9 +110,6 @@ protected:
 	bool					RegisterInputSlot (const InputSlotPtr& newInputSlot);
 	bool					RegisterOutputSlot (const OutputSlotPtr& newOutputSlot);
 	ValueConstPtr			EvaluateInputSlot (const SlotId& slotId, EvaluationEnv& env) const;
-
-	InputSlotPtr			GetModifiableInputSlot (const SlotId& slotId);
-	OutputSlotPtr			GetModifiableOutputSlot (const SlotId& slotId);
 
 private:
 	void					SetId (const NodeId& newNodeId);

@@ -80,7 +80,7 @@ DYNAMIC_SERIALIZATION_INFO (TestNode, 1, "{16CF9B46-D77D-4F5E-96EB-494617522929}
 std::vector<NodeConstPtr> FindNodesByName (const NodeManager& manager, const std::wstring& name)
 {
 	std::vector<NodeConstPtr> result;
-	manager.EnumerateNodes ([&] (const NodeConstPtr& node) {
+	manager.EnumerateNodes ([&] (NodeConstPtr node) {
 		std::shared_ptr<const TestNode> testNode = std::dynamic_pointer_cast<const TestNode> (node);
 		if (DBGERROR (testNode == nullptr)) {
 			return true;
@@ -113,7 +113,7 @@ static bool IsEqualNodeManagers (const NodeManager& source, const NodeManager& t
 		return false;
 	}
 	bool isEqual = true;
-	source.EnumerateNodes ([&] (const NodeConstPtr& sourceNode) {
+	source.EnumerateNodes ([&] (NodeConstPtr sourceNode) {
 		NodeConstPtr targetNode = target.GetNode (sourceNode->GetId ());
 		if (!Node::IsEqual (sourceNode, targetNode)) {
 			isEqual = false;

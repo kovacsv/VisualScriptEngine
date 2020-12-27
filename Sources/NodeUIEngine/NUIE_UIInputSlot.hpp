@@ -9,6 +9,12 @@ namespace NUIE
 
 class InputSlotCommandRegistrator;
 
+enum class ConnectionDisplayMode
+{
+	Normal,
+	Hidden
+};
+
 class UIInputSlot : public NE::InputSlot
 {
 	DYNAMIC_SERIALIZABLE (UIInputSlot);
@@ -21,6 +27,9 @@ public:
 	const NE::LocString&		GetName () const;
 	void						SetName (const std::wstring& newName);
 
+	ConnectionDisplayMode		GetConnectionDisplayMode () const;
+	void						SetConnectionDisplayMode (ConnectionDisplayMode newConnectionDisplayMode);
+
 	virtual void				RegisterCommands (InputSlotCommandRegistrator& commandRegistrator) const;
 	
 	virtual NE::Stream::Status	Read (NE::InputStream& inputStream) override;
@@ -28,6 +37,7 @@ public:
 
 private:
 	NE::LocString				name;
+	ConnectionDisplayMode		connDisplayMode;
 };
 
 using UIInputSlotPtr = std::shared_ptr<UIInputSlot>;

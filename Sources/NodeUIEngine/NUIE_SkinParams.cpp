@@ -29,6 +29,8 @@ BasicSkinParams::BasicSkinParams (
 	const Pen&				connectionLinePen,
 	ConnectionMarker		connectionMarker,
 	const Size&				connectionMarkerSize,
+	const Size&				hiddenConnectionMarkerBigSize,
+	const Size&				hiddenConnectionMarkerSmallSize,
 	const double&			nodePadding,
 	const Pen&				nodeBorderPen,
 	const Font&				nodeHeaderTextFont,
@@ -60,6 +62,8 @@ BasicSkinParams::BasicSkinParams (
 	connectionLinePen (connectionLinePen),
 	connectionMarker (connectionMarker),
 	connectionMarkerSize (connectionMarkerSize),
+	hiddenConnectionMarkerBigSize (hiddenConnectionMarkerBigSize),
+	hiddenConnectionMarkerSmallSize (hiddenConnectionMarkerSmallSize),
 	nodePadding (nodePadding),
 	nodeBorderPen (nodeBorderPen),
 	nodeHeaderTextFont (nodeHeaderTextFont),
@@ -113,6 +117,16 @@ SkinParams::ConnectionMarker BasicSkinParams::GetConnectionMarker () const
 const Size& BasicSkinParams::GetConnectionMarkerSize () const
 {
 	return connectionMarkerSize;
+}
+
+const NUIE::Size& BasicSkinParams::GetHiddenConnectionMarkerBigSize () const
+{
+	return hiddenConnectionMarkerBigSize;
+}
+
+const NUIE::Size& BasicSkinParams::GetHiddenConnectionMarkerSmallSize () const
+{
+	return hiddenConnectionMarkerSmallSize;
 }
 
 double BasicSkinParams::GetNodePadding () const
@@ -252,6 +266,8 @@ const BasicSkinParams& GetDefaultSkinParams ()
 		/*connectionLinePen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*connectionMarker*/ NUIE::SkinParams::ConnectionMarker::None,
 		/*connectionMarkerSize*/ NUIE::Size (8.0, 8.0),
+		/*hiddenConnectionMarkerBigSize*/ NUIE::Size (11.0, 11.0),
+		/*hiddenConnectionMarkerSmallSize*/ NUIE::Size (6.0, 6.0),
 		/*nodePadding*/ 5.0,
 		/*nodeBorderPen*/ NUIE::Pen (NUIE::Color (38, 50, 56), 1.0),
 		/*nodeHeaderTextFont*/ NUIE::Font (L"Arial", 16.0),

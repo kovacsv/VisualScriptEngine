@@ -48,6 +48,8 @@ public:
 	virtual const Pen&				GetConnectionLinePen () const = 0;
 	virtual ConnectionMarker		GetConnectionMarker () const = 0;
 	virtual const Size&				GetConnectionMarkerSize () const = 0;
+	virtual const Size&				GetHiddenConnectionMarkerBigSize () const = 0;
+	virtual const Size&				GetHiddenConnectionMarkerSmallSize () const = 0;
 
 	virtual double					GetNodePadding () const = 0;
 	virtual const Pen&				GetNodeBorderPen () const = 0;
@@ -96,6 +98,8 @@ public:
 		const Pen&				connectionLinePen,
 		ConnectionMarker		connectionMarker,
 		const Size&				connectionMarkerSize,
+		const Size&				hiddenConnectionMarkerBigSize,
+		const Size&				hiddenConnectionMarkerSmallSize,
 		const double&			nodePadding,
 		const Pen&				nodeBorderPen,
 		const Font&				nodeHeaderTextFont,
@@ -129,6 +133,8 @@ public:
 	virtual const Pen&				GetConnectionLinePen () const override;
 	virtual ConnectionMarker		GetConnectionMarker () const override;
 	virtual const Size&				GetConnectionMarkerSize () const override;
+	virtual const Size&				GetHiddenConnectionMarkerBigSize () const override;
+	virtual const Size&				GetHiddenConnectionMarkerSmallSize () const override;
 
 	virtual double					GetNodePadding () const override;
 	virtual const Font&				GetNodeContentTextFont () const override;
@@ -167,6 +173,8 @@ private:
 	Pen					connectionLinePen;
 	ConnectionMarker	connectionMarker;
 	Size				connectionMarkerSize;
+	Size				hiddenConnectionMarkerBigSize;
+	Size				hiddenConnectionMarkerSmallSize;
 
 	double				nodePadding;
 	Pen					nodeBorderPen;

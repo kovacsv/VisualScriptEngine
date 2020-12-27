@@ -25,8 +25,8 @@ public:
 	bool			DeleteNode (const NodeId& nodeId);
 	void			Clear ();
 
-	void			Enumerate (const std::function<bool (const NodePtr&)>& processor);
-	void			Enumerate (const std::function<bool (const NodeConstPtr&)>& processor) const;
+	void			Enumerate (const std::function<bool (NodePtr)>& processor);
+	void			Enumerate (const std::function<bool (NodeConstPtr)>& processor) const;
 
 private:
 	OrderedMap<NodeId, NodePtr>		nodes;

@@ -31,7 +31,7 @@ public:
 	size_t								Count () const;
 	bool								IsEmpty () const;
 
-	void								Enumerate (const std::function<bool (const std::shared_ptr<SlotType>&)>& processor);
+	void								Enumerate (const std::function<bool (std::shared_ptr<SlotType>&)>& processor);
 	void								Enumerate (const std::function<bool (const std::shared_ptr<const SlotType>&)>& processor) const;
 
 private:
@@ -100,9 +100,9 @@ bool SlotList<SlotType>::IsEmpty () const
 }
 
 template <class SlotType>
-void SlotList<SlotType>::Enumerate (const std::function<bool (const std::shared_ptr<SlotType>&)>& processor)
+void SlotList<SlotType>::Enumerate (const std::function<bool (std::shared_ptr<SlotType>&)>& processor)
 {
-	slots.Enumerate ([&] (const std::shared_ptr<SlotType>& slot) {
+	slots.Enumerate ([&] (std::shared_ptr<SlotType>& slot) {
 		return processor (slot);
 	});
 }

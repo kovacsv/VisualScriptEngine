@@ -6,14 +6,14 @@
 namespace NUIE
 {
 
-UINodePtr				FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
-UINodeGroupPtr			FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
-UIInputSlotConstPtr		FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
-UIOutputSlotConstPtr	FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
+UINodePtr			FindNodeUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
+UINodeGroupPtr		FindNodeGroupUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
+UIInputSlotPtr		FindInputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
+UIOutputSlotPtr		FindOutputSlotUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition);
 
 bool FindItemUnderPosition (NodeUIManager& uiManager, NodeUIDrawingEnvironment& env, const Point& viewPosition,
-							const std::function<void (const UIInputSlotConstPtr&)>& inputSlotFound,
-							const std::function<void (const UIOutputSlotConstPtr&)>& outputSlotFound,
+							const std::function<void (const UIInputSlotPtr&)>& inputSlotFound,
+							const std::function<void (const UIOutputSlotPtr&)>& outputSlotFound,
 							const std::function<void (const UINodePtr&)>& nodeFound,
 							const std::function<void (const UINodeGroupPtr&)>& nodeGroupFound);
 

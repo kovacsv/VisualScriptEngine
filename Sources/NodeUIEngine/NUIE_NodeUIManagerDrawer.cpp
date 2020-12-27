@@ -18,7 +18,7 @@ static void GetBezierControlPoints (const Point& beg, const Point& end, Point& c
 
 NodeIdToNodeMap::NodeIdToNodeMap (const NodeUIManager& uiManager)
 {
-	uiManager.EnumerateNodes ([&] (const UINodeConstPtr& uiNode) {
+	uiManager.EnumerateNodes ([&] (UINodeConstPtr uiNode) {
 		const UINode* uiNodePtr = uiNode.get ();
 		Insert (uiNodePtr->GetId (), uiNodePtr);
 		return true;
@@ -125,7 +125,7 @@ void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& drawingEnv, cons
 	};
 
 	ModifiedNodeRectGetter rectGetter (uiManager, *this, drawModifier, drawingEnv);
-	uiManager.EnumerateNodeGroups ([&] (const UINodeGroupConstPtr& group) {
+	uiManager.EnumerateNodeGroups ([&] (UINodeGroupConstPtr group) {
 		Rect groupRect = group->GetRect (drawingEnv, rectGetter, uiManager.GetGroupNodes (group));
 		if (IsRectVisible (drawingEnv, groupRect)) {
 			group->Draw (drawingEnv, rectGetter, uiManager.GetGroupNodes (group));
@@ -144,9 +144,9 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv,
 	const NE::NodeCollection& selectedNodes = selection.GetNodes ();
 	for (const UINode* begNode : sortedNodeList) {
 		bool begSelected = selectedNodes.Contains (begNode->GetId ());
-		begNode->EnumerateUIOutputSlots ([&] (const UIOutputSlotConstPtr& outputSlot) {
+		begNode->EnumerateUIOutputSlots ([&] (UIOutputSlotConstPtr outputSlot) {
 			Point beg = GetOutputSlotConnPosition (drawingEnv, drawModifier, begNode, outputSlot->GetId ());
-			uiManager.EnumerateConnectedUIInputSlots (outputSlot, [&] (const UIInputSlotConstPtr& inputSlot) {
+			uiManager.EnumerateConnectedUIInputSlots (outputSlot, [&] (UIInputSlotConstPtr inputSlot) {
 				const UINode* endNode = nodeIdToNodeMap.GetUINode (inputSlot->GetOwnerNodeId ());
 				if (DBGERROR (endNode == nullptr)) {
 					return;
@@ -160,7 +160,9 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv,
 					if (begSelected || endSelected) {
 						DrawConnection (drawingEnv, selectionPen, beg, end);
 					} else {
-						DrawConnection (drawingEnv, pen, beg, end);
+						if (inputSlot->GetConnectionDisplayMode () == ConnectionDisplayMode::Normal) {
+							DrawConnection (drawingEnv, pen, beg, end);
+						}
 					}
 				}
 			});

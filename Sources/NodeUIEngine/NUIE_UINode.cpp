@@ -150,9 +150,31 @@ UIOutputSlotConstPtr UINode::GetUIOutputSlot (const NE::SlotId& slotId) const
 	return std::dynamic_pointer_cast<const UIOutputSlot> (outputSlot);
 }
 
-void UINode::EnumerateUIInputSlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const
+void UINode::EnumerateUIInputSlots (const std::function<bool (UIInputSlotPtr)>& processor)
 {
-	EnumerateInputSlots ([&] (const NE::InputSlotConstPtr& inputSlot) {
+	EnumerateInputSlots ([&] (NE::InputSlotPtr inputSlot) {
+		UIInputSlotPtr uiInputSlot = std::dynamic_pointer_cast<UIInputSlot> (inputSlot);
+		if (DBGERROR (uiInputSlot == nullptr)) {
+			return false;
+		}
+		return processor (uiInputSlot);
+	});
+}
+
+void UINode::EnumerateUIOutputSlots (const std::function<bool (UIOutputSlotPtr)>& processor)
+{
+	EnumerateOutputSlots ([&] (NE::OutputSlotPtr outputSlot) {
+		UIOutputSlotPtr uiOutputSlot = std::dynamic_pointer_cast<UIOutputSlot> (outputSlot);
+		if (DBGERROR (uiOutputSlot == nullptr)) {
+			return false;
+		}
+		return processor (uiOutputSlot);
+	});
+}
+
+void UINode::EnumerateUIInputSlots (const std::function<bool (UIInputSlotConstPtr)>& processor) const
+{
+	EnumerateInputSlots ([&] (NE::InputSlotConstPtr inputSlot) {
 		UIInputSlotConstPtr uiInputSlot = std::dynamic_pointer_cast<const UIInputSlot> (inputSlot);
 		if (DBGERROR (uiInputSlot == nullptr)) {
 			return false;
@@ -161,51 +183,15 @@ void UINode::EnumerateUIInputSlots (const std::function<bool (const UIInputSlotC
 	});
 }
 
-void UINode::EnumerateUIOutputSlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const
+void UINode::EnumerateUIOutputSlots (const std::function<bool (UIOutputSlotConstPtr)>& processor) const
 {
-	EnumerateOutputSlots ([&] (const NE::OutputSlotConstPtr& outputSlot) {
+	EnumerateOutputSlots ([&] (NE::OutputSlotConstPtr outputSlot) {
 		UIOutputSlotConstPtr uiOutputSlot = std::dynamic_pointer_cast<const UIOutputSlot> (outputSlot);
 		if (DBGERROR (uiOutputSlot == nullptr)) {
 			return false;
 		}
 		return processor (uiOutputSlot);
 	});
-}
-
-NE::LocString UINode::GetUIInputSlotName (const NE::SlotId& slotId) const
-{
-	UIInputSlotConstPtr inputSlot = GetUIInputSlot (slotId);
-	if (DBGERROR (inputSlot == nullptr)) {
-		return NE::LocString ();
-	}
-	return inputSlot->GetName ();
-}
-
-void UINode::SetUIInputSlotName (const NE::SlotId& slotId, const std::wstring& newName)
-{
-	UIInputSlotPtr inputSlot = GetModifiableUIInputSlot (slotId);
-	if (DBGERROR (inputSlot == nullptr)) {
-		return;
-	}
-	inputSlot->SetName (newName);
-}
-
-NE::LocString UINode::GetUIOutputSlotName (const NE::SlotId& slotId) const
-{
-	UIOutputSlotConstPtr outputSlot = GetUIOutputSlot (slotId);
-	if (DBGERROR (outputSlot == nullptr)) {
-		return NE::LocString ();
-	}
-	return outputSlot->GetName ();
-}
-
-void UINode::SetUIOutputSlotName (const NE::SlotId& slotId, const std::wstring& newName)
-{
-	UIOutputSlotPtr outputSlot = GetModifiableUIOutputSlot (slotId);
-	if (DBGERROR (outputSlot == nullptr)) {
-		return;
-	}
-	outputSlot->SetName (newName);
 }
 
 EventHandlerResult UINode::HandleMouseClick (NodeUIEnvironment&, const ModifierKeys&, MouseButton, const Point&, UINodeCommandInterface&)
@@ -273,54 +259,6 @@ NE::Stream::Status UINode::Write (NE::OutputStream& outputStream) const
 	return outputStream.GetStatus ();
 }
 
-template <>
-Point UINode::GetSlotConnPosition<UIInputSlotConstPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
-{
-	return GetInputSlotConnPosition (env, slotId);
-}
-
-template <>
-Point UINode::GetSlotConnPosition<UIOutputSlotConstPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
-{
-	return GetOutputSlotConnPosition (env, slotId);
-}
-
-template <>
-bool UINode::HasSlotRect <UIInputSlotConstPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
-{
-	return HasInputSlotRect (env, slotId);
-}
-
-template <>
-bool UINode::HasSlotRect<UIOutputSlotConstPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
-{
-	return HasOutputSlotRect (env, slotId);
-}
-
-template <>
-Rect UINode::GetSlotRect <UIInputSlotConstPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
-{
-	return GetInputSlotRect (env, slotId);
-}
-
-template <>
-Rect UINode::GetSlotRect<UIOutputSlotConstPtr> (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const
-{
-	return GetOutputSlotRect (env, slotId);
-}
-
-template <>
-void UINode::EnumerateUISlots (const std::function<bool (const UIInputSlotConstPtr&)>& processor) const
-{
-	EnumerateUIInputSlots (processor);
-}
-
-template <>
-void UINode::EnumerateUISlots (const std::function<bool (const UIOutputSlotConstPtr&)>& processor) const
-{
-	EnumerateUIOutputSlots (processor);
-}
-
 bool UINode::RegisterUIInputSlot (const UIInputSlotPtr& newInputSlot)
 {
 	if (!RegisterInputSlot (newInputSlot)) {
@@ -341,18 +279,6 @@ void UINode::DrawInplace (NodeUIDrawingEnvironment& env) const
 {
 	const NodeDrawingImage& drawingImage = GetDrawingImage (env);
 	drawingImage.Draw (env.GetDrawingContext ());
-}
-
-UIInputSlotPtr UINode::GetModifiableUIInputSlot (const NE::SlotId& slotId)
-{
-	NE::InputSlotPtr inputSlot = GetModifiableInputSlot (slotId);
-	return std::dynamic_pointer_cast<UIInputSlot> (inputSlot);
-}
-
-UIOutputSlotPtr UINode::GetModifiableUIOutputSlot (const NE::SlotId& slotId)
-{
-	NE::OutputSlotPtr outputSlot = GetModifiableOutputSlot (slotId);
-	return std::dynamic_pointer_cast<UIOutputSlot> (outputSlot);
 }
 
 const NodeDrawingImage& UINode::GetDrawingImage (NodeUIDrawingEnvironment& env) const

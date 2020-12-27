@@ -158,12 +158,12 @@ size_t NodeManager::GetConnectionCount () const
 	return connectionManager.GetConnectionCount ();
 }
 
-void NodeManager::EnumerateNodes (const std::function<bool (const NodePtr&)>& processor)
+void NodeManager::EnumerateNodes (const std::function<bool (NodePtr)>& processor)
 {
 	nodeList.Enumerate (processor);
 }
 
-void NodeManager::EnumerateNodes (const std::function<bool (const NodeConstPtr&)>& processor) const
+void NodeManager::EnumerateNodes (const std::function<bool (NodeConstPtr)>& processor) const
 {
 	nodeList.Enumerate (processor);
 }
@@ -209,12 +209,12 @@ bool NodeManager::DeleteNode (const NodePtr& node)
 	nodeGroupList.RemoveNodeFromGroup (node->GetId ());
 	node->InvalidateValue ();
 
-	node->EnumerateInputSlots ([&] (const InputSlotConstPtr& inputSlot) {
+	node->EnumerateInputSlots ([&] (InputSlotConstPtr inputSlot) {
 		connectionManager.DisconnectAllOutputSlotsFromInputSlot (inputSlot);
 		return true;
 	});
 
-	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
+	node->EnumerateOutputSlots ([&] (OutputSlotConstPtr outputSlot) {
 		connectionManager.DisconnectAllInputSlotsFromOutputSlot (outputSlot);
 		return true;
 	});
@@ -335,7 +335,7 @@ bool NodeManager::ConnectOutputSlotsToInputSlot (const OutputSlotList& outputSlo
 	}
 
 	bool success = true;
-	outputSlots.Enumerate ([&] (const OutputSlotConstPtr& outputSlot) {
+	outputSlots.Enumerate ([&] (OutputSlotConstPtr outputSlot) {
 		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
 			success = false;
 		}
@@ -352,7 +352,7 @@ bool NodeManager::ConnectOutputSlotToInputSlots (const OutputSlotConstPtr& outpu
 	}
 
 	bool success = true;
-	inputSlots.Enumerate ([&] (const InputSlotConstPtr& inputSlot) {
+	inputSlots.Enumerate ([&] (InputSlotConstPtr inputSlot) {
 		if (DBGERROR (!ConnectOutputSlotToInputSlot (outputSlot, inputSlot))) {
 			success = false;
 		}
@@ -388,7 +388,7 @@ bool NodeManager::DisconnectOutputSlotsFromInputSlot (const OutputSlotList& outp
 	}
 
 	bool canDisconnect = true;
-	outputSlots.Enumerate ([&] (const OutputSlotConstPtr& outputSlot) {
+	outputSlots.Enumerate ([&] (OutputSlotConstPtr outputSlot) {
 		if (DBGERROR (!IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot))) {
 			canDisconnect = false;
 		}
@@ -399,7 +399,7 @@ bool NodeManager::DisconnectOutputSlotsFromInputSlot (const OutputSlotList& outp
 	}
 
 	bool success = true;
-	outputSlots.Enumerate ([&] (const OutputSlotConstPtr& outputSlot) {
+	outputSlots.Enumerate ([&] (OutputSlotConstPtr outputSlot) {
 		if (DBGERROR (!DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot))) {
 			success = false;
 		}
@@ -421,7 +421,7 @@ bool NodeManager::DisconnectOutputSlotFromInputSlots (const OutputSlotConstPtr& 
 	}
 
 	bool canDisconnect = true;
-	inputSlots.Enumerate ([&] (const InputSlotConstPtr& inputSlot) {
+	inputSlots.Enumerate ([&] (InputSlotConstPtr inputSlot) {
 		if (DBGERROR (!IsOutputSlotConnectedToInputSlot (outputSlot, inputSlot))) {
 			canDisconnect = false;
 		}
@@ -432,7 +432,7 @@ bool NodeManager::DisconnectOutputSlotFromInputSlots (const OutputSlotConstPtr& 
 	}
 
 	bool success = true;
-	inputSlots.Enumerate ([&] (const InputSlotConstPtr& inputSlot) {
+	inputSlots.Enumerate ([&] (InputSlotConstPtr inputSlot) {
 		if (DBGERROR (!DisconnectOutputSlotFromInputSlot (outputSlot, inputSlot))) {
 			success = false;
 		}
@@ -487,7 +487,7 @@ void NodeManager::EnumerateConnectedInputSlots (const OutputSlotConstPtr& output
 void NodeManager::EnumerateConnections (const std::function<void (const OutputSlotConstPtr&, const InputSlotConstPtr&)>& processor) const
 {
 	nodeList.Enumerate ([&] (const NodeConstPtr& node) {
-		node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
+		node->EnumerateOutputSlots ([&] (OutputSlotConstPtr outputSlot) {
 			connectionManager.EnumerateConnectedInputSlots (outputSlot, [&] (const InputSlotConstPtr& inputSlot) {
 				processor (outputSlot, inputSlot);
 			});
@@ -501,7 +501,7 @@ void NodeManager::EnumerateConnections (const NodeCollection& nodes, const std::
 {
 	nodes.Enumerate ([&] (const NodeId& nodeId) {
 		NodeConstPtr node = GetNode (nodeId);
-		node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
+		node->EnumerateOutputSlots ([&] (OutputSlotConstPtr outputSlot) {
 			connectionManager.EnumerateConnectedInputSlots (outputSlot, [&] (const InputSlotConstPtr& inputSlot) {
 				if (nodes.Contains (inputSlot->GetOwnerNodeId ())) {
 					processor (outputSlot, inputSlot);
@@ -515,7 +515,7 @@ void NodeManager::EnumerateConnections (const NodeCollection& nodes, const std::
 
 void NodeManager::EvaluateAllNodes (EvaluationEnv& env) const
 {
-	EnumerateNodes ([&] (const NodeConstPtr& node) {
+	EnumerateNodes ([&] (NodeConstPtr node) {
 		node->Evaluate (env);
 		return true;
 	});
@@ -525,7 +525,7 @@ void NodeManager::ForceEvaluateAllNodes (EvaluationEnv& env) const
 {
 	ValueGuard<bool> isForceCalculateGuard (isForceCalculate, true);
 	std::vector<NodeConstPtr> nodesToRecalculate;
-	EnumerateNodes ([&] (const NodeConstPtr& node) {
+	EnumerateNodes ([&] (NodeConstPtr node) {
 		Node::CalculationStatus calcStatus = node->GetCalculationStatus ();
 		DBGASSERT (calcStatus != Node::CalculationStatus::NeedToCalculateButDisabled);
 		if (calcStatus == Node::CalculationStatus::NeedToCalculate) {
@@ -558,7 +558,7 @@ void NodeManager::InvalidateNodeValue (const NodeConstPtr& node) const
 
 void NodeManager::EnumerateDependentNodes (const NodeConstPtr& node, const std::function<void (const NodeId&)>& processor) const
 {
-	node->EnumerateOutputSlots ([&] (const OutputSlotConstPtr& outputSlot) {
+	node->EnumerateOutputSlots ([&] (OutputSlotConstPtr outputSlot) {
 		if (connectionManager.HasConnectedInputSlots (outputSlot)) {
 			connectionManager.EnumerateConnectedInputSlots (outputSlot, [&] (const InputSlotConstPtr& inputSlot) {
 				processor (inputSlot->GetOwnerNodeId ());
@@ -641,12 +641,12 @@ const NodeCollection& NodeManager::GetGroupNodes (const NodeGroupId& groupId) co
 	return nodeGroupList.GetGroupNodes (groupId);
 }
 
-void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupConstPtr&)>& processor) const
+void NodeManager::EnumerateNodeGroups (const std::function<bool (NodeGroupConstPtr)>& processor) const
 {
 	nodeGroupList.Enumerate (processor);
 }
 
-void NodeManager::EnumerateNodeGroups (const std::function<bool (const NodeGroupPtr&)>& processor)
+void NodeManager::EnumerateNodeGroups (const std::function<bool (NodeGroupPtr)>& processor)
 {
 	nodeGroupList.Enumerate (processor);
 }

@@ -142,14 +142,14 @@ void NodeGroupList::Clear ()
 	nodeToGroup.clear ();
 }
 
-void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupConstPtr&)>& processor) const
+void NodeGroupList::Enumerate (const std::function<bool (NodeGroupConstPtr)>& processor) const
 {
 	groups.Enumerate ([&] (const NodeGroupPtr& group) {
 		return processor (group);
 	});
 }
 
-void NodeGroupList::Enumerate (const std::function<bool (const NodeGroupPtr&)>& processor)
+void NodeGroupList::Enumerate (const std::function<bool (NodeGroupPtr)>& processor)
 {
 	groups.Enumerate ([&] (const NodeGroupPtr& group) {
 		return processor (group);
