@@ -49,8 +49,8 @@ class NodeManager
 public:
 	enum class UpdateMode
 	{
-		Automatic,
-		Manual
+		Automatic	= 0,
+		Manual		= 1
 	};
 
 	NodeManager ();

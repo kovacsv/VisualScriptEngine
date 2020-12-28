@@ -15,6 +15,7 @@ class LocString
 public:
 	enum class Localization
 	{
+		Undefined		= 0,
 		Localize		= 1,
 		DoNotLocalize	= 2
 	};

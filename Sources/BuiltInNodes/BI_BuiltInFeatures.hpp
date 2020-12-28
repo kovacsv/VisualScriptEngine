@@ -24,8 +24,8 @@ public:
 
 	enum class Mode
 	{
-		DoNotInvalidate = 0,
-		Invalidate = 1
+		DoNotInvalidate		= 0,
+		Invalidate			= 1
 	};
 
 	EnableDisableFeature ();

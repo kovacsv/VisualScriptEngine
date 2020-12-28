@@ -11,8 +11,8 @@ class InputSlotCommandRegistrator;
 
 enum class ConnectionDisplayMode
 {
-	Normal,
-	Hidden
+	Normal	= 0,
+	Hidden	= 1
 };
 
 class UIInputSlot : public NE::InputSlot

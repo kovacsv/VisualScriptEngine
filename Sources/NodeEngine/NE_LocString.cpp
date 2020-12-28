@@ -6,7 +6,7 @@ namespace NE
 SERIALIZATION_INFO (LocString, 1);
 
 LocString::LocString () :
-	LocString (std::wstring ())
+	LocString (std::wstring (), Localization::Undefined)
 {
 }
 

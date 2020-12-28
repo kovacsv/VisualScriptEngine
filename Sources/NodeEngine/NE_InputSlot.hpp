@@ -9,9 +9,9 @@ namespace NE
 
 enum class OutputSlotConnectionMode
 {
-	Disabled,
-	Single,
-	Multiple
+	Disabled	= 0,
+	Single		= 1,
+	Multiple	= 2
 };
 
 class InputSlot : public Slot
