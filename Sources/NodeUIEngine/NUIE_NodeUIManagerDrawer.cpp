@@ -329,11 +329,15 @@ Point NodeUIManagerDrawer::GetInputSlotConnPosition (NodeUIDrawingEnvironment& d
 Rect ExtendNodeRect (NodeUIDrawingEnvironment& drawingEnv, const Rect& originalRect)
 {
 	const SkinParams& skinParams = drawingEnv.GetSkinParams ();
-	if (skinParams.GetSlotMarker () == SkinParams::SlotMarker::None) {
-		return originalRect;
-	}
 	const Size& slotMarkerSize = skinParams.GetSlotMarkerSize ();
-	return originalRect.Expand (Size (slotMarkerSize.GetWidth (), 0.0));
+	double extendSize = 0.0;
+	if (skinParams.GetSlotMarker () != SkinParams::SlotMarker::None) {
+		extendSize += slotMarkerSize.GetWidth () / 2.0;
+	}
+	if (skinParams.GetHiddenSlotMarker () != SkinParams::HiddenSlotMarker::None) {
+		extendSize += slotMarkerSize.GetWidth ();
+	}
+	return originalRect.ExpandHorizontally (extendSize, extendSize);
 }
 
 Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& drawingEnv, const UINode* uiNode)

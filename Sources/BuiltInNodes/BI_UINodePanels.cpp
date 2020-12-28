@@ -274,21 +274,21 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 		drawingImage.AddInputSlotConnPosition (slotId, slotRect.GetLeftCenter ());
 		drawingImage.AddInputSlotRect (slotId, slotRect);
 
-		NUIE::SkinParams::SlotMarker slotMarker = NUIE::SkinParams::SlotMarker::None;
-		bool hasHiddenConnection = (uiSlot->GetConnectionDisplayMode () == NUIE::ConnectionDisplayMode::Hidden && node.IsInputSlotConnected (uiSlot->GetId ()));
-		if (!hasHiddenConnection) {
-			slotMarker = skinParams.GetSlotMarker ();
-		} else {
-			slotMarker = skinParams.GetHiddenSlotMarker ();
-		}
-
-		if (slotMarker == NUIE::SkinParams::SlotMarker::Circle) {
+		if (skinParams.GetSlotMarker () == NUIE::SkinParams::SlotMarker::Circle) {
 			NUIE::Rect markerRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetSlotMarkerSize ());
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (markerRect, skinParams.GetSlotTextBackgroundColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (markerRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-		} else if (slotMarker == NUIE::SkinParams::SlotMarker::FilledCircle) {
-			NUIE::Rect markerRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetSlotMarkerSize ());
-			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (markerRect, skinParams.GetConnectionLinePen ().GetColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+		}
+
+		if (skinParams.GetHiddenSlotMarker () == NUIE::SkinParams::HiddenSlotMarker::Arrow) {
+			bool hasHiddenConnection = (uiSlot->GetConnectionDisplayMode () == NUIE::ConnectionDisplayMode::Hidden && node.IsInputSlotConnected (uiSlot->GetId ()));
+			if (hasHiddenConnection) {
+				const NUIE::Size markerSize = skinParams.GetSlotMarkerSize ();
+				NUIE::Point hiddenConnectionCenter = slotRect.GetLeftCenter () - NUIE::Point (markerSize.GetWidth () / 3.0 * 2.0, 0.0);
+				NUIE::Rect markerRect = NUIE::Rect::FromCenterAndSize (hiddenConnectionCenter, skinParams.GetSlotMarkerSize ());
+				drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (markerRect.GetTopCenter (), markerRect.GetLeftCenter (), skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+				drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (markerRect.GetLeftCenter (), markerRect.GetBottomCenter (), skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+			}
 		}
 
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));

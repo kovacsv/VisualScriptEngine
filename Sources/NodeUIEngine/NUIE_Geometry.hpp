@@ -100,6 +100,8 @@ public:
 
 	Rect	Offset (const Point& p) const;
 	Rect	Expand (const Size& s) const;
+	Rect	ExpandHorizontally (double left, double right) const;
+	Rect	ExpandVertically (double top, double bottom) const;
 
 	bool	operator== (const Rect& r) const;
 	bool	operator!= (const Rect& r) const;

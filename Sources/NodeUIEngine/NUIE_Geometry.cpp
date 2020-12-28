@@ -280,8 +280,28 @@ Rect Rect::Offset (const Point& p) const
 
 Rect Rect::Expand (const Size& s) const
 {
-	Point sp (s.GetWidth (), s.GetHeight ());
-	return Rect::FromPositionAndSize (position - sp / 2.0, size + s);
+	Point positionOffset (s.GetWidth (), s.GetHeight ());
+	return Rect::FromPositionAndSize (position - positionOffset / 2.0, size + s);
+}
+
+Rect Rect::ExpandHorizontally (double left, double right) const
+{
+	return Rect (
+		position.GetX () - left,
+		position.GetY (),
+		size.GetWidth () + left + right,
+		size.GetHeight ()
+	);
+}
+
+Rect Rect::ExpandVertically (double top, double bottom) const
+{
+	return Rect (
+		position.GetX (),
+		position.GetY () - top,
+		size.GetWidth (),
+		size.GetHeight () + top + bottom
+	);
 }
 
 bool Rect::operator== (const Rect& r) const

@@ -92,6 +92,47 @@ TEST (RectTest)
 	ASSERT (IsEqual (r1.Expand (Size (5.0, 6.0)), Rect::FromCenterAndSize (r1.GetCenter (), r1.GetSize () + Size (5.0, 6.0))));
 }
 
+TEST (RectExpandTest)
+{
+	{
+		Rect rect (0.0, 0.0, 1.0, 1.0);
+
+		Rect expandedHorizontally = rect.ExpandHorizontally (1.0, 1.0);
+		ASSERT (IsEqual (expandedHorizontally.GetLeft (), -1.0));
+		ASSERT (IsEqual (expandedHorizontally.GetRight (), 2.0));
+
+		Rect expandedVertically = rect.ExpandVertically (1.0, 1.0);
+		ASSERT (IsEqual (expandedVertically.GetTop (), -1.0));
+		ASSERT (IsEqual (expandedVertically.GetBottom (), 2.0));
+	}
+
+	{
+		Rect rect (0.0, 0.0, 1.0, 1.0);
+
+		Rect expandedHorizontally = rect.ExpandHorizontally (1.0, 0.0);
+		ASSERT (IsEqual (expandedHorizontally.GetLeft (), -1.0));
+		ASSERT (IsEqual (expandedHorizontally.GetRight (), 1.0));
+
+		Rect expandedVertically = rect.ExpandVertically (1.0, 0.0);
+		ASSERT (IsEqual (expandedVertically.GetTop (), -1.0));
+		ASSERT (IsEqual (expandedVertically.GetBottom (), 1.0));
+	}
+
+	{
+		Rect rect (1.0, 1.0, 2.0, 2.0);
+
+		Rect expandedHorizontally = rect.ExpandHorizontally (2.0, 3.0);
+		ASSERT (IsEqual (expandedHorizontally, Rect (-1.0, 1.0, 7.0, 2.0)));
+		ASSERT (IsEqual (expandedHorizontally.GetWidth (), 7.0));
+		ASSERT (IsEqual (expandedHorizontally.GetHeight (), 2.0));
+
+		Rect expandedVertically = rect.ExpandVertically (2.0, 3.0);
+		ASSERT (IsEqual (expandedVertically, Rect (1.0, -1.0, 2.0, 7.0)));
+		ASSERT (IsEqual (expandedVertically.GetWidth (), 2.0));
+		ASSERT (IsEqual (expandedVertically.GetHeight (), 7.0));
+	}
+}
+
 TEST (BoundingRectTest_FromRects)
 {
 	BoundingRect boundingRect;

@@ -66,6 +66,22 @@ static ID2D1SolidColorBrush* CreateBrush (ID2D1RenderTarget* renderTarget, const
 	return d2Brush;
 }
 
+static ID2D1StrokeStyle* CreateStrokeStyle (ID2D1Factory* direct2DFactory)
+{
+	static const D2D1_STROKE_STYLE_PROPERTIES properties = {
+		D2D1_CAP_STYLE_ROUND,
+		D2D1_CAP_STYLE_ROUND,
+		D2D1_CAP_STYLE_ROUND,
+		D2D1_LINE_JOIN_ROUND,
+		0.0f,
+		D2D1_DASH_STYLE_SOLID,
+		0.0f
+	};
+	ID2D1StrokeStyle* strokeStyle = nullptr;
+	direct2DFactory->CreateStrokeStyle (properties, nullptr, 0, &strokeStyle);
+	return strokeStyle;
+}
+
 static IDWriteTextFormat* CreateTextFormat (IDWriteFactory* directWriteFactory, ID2D1RenderTarget*, const NUIE::Font& font)
 {
 	IDWriteTextFormat* textFormat = nullptr;
@@ -163,7 +179,9 @@ void Direct2DContextBase::DrawLine (const NUIE::Point& beg, const NUIE::Point& e
 {
 	Direct2DAntialiasGuard antialiasGuard (renderTarget, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
-	renderTarget->DrawLine (CreatePoint (beg), CreatePoint (end), d2Brush, GetPenThickness (pen));
+	ID2D1StrokeStyle* d2StrokeStyle = CreateStrokeStyle (direct2DHandler.direct2DFactory);
+	renderTarget->DrawLine (CreatePoint (beg), CreatePoint (end), d2Brush, GetPenThickness (pen), d2StrokeStyle);
+	SafeRelease (&d2StrokeStyle);
 	SafeRelease (&d2Brush);
 }
 
@@ -183,7 +201,9 @@ void Direct2DContextBase::DrawBezier (const NUIE::Point& p1, const NUIE::Point& 
 	sink->Close ();
 
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
-	renderTarget->DrawGeometry (path, d2Brush, GetPenThickness (pen));
+	ID2D1StrokeStyle* d2StrokeStyle = CreateStrokeStyle (direct2DHandler.direct2DFactory);
+	renderTarget->DrawGeometry (path, d2Brush, GetPenThickness (pen), d2StrokeStyle);
+	SafeRelease (&d2StrokeStyle);
 	SafeRelease (&d2Brush);
 
 	SafeRelease (&sink);
@@ -194,7 +214,9 @@ void Direct2DContextBase::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen
 {
 	D2D1_RECT_F d2Rect = CreateRect (rect);
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
-	renderTarget->DrawRectangle (&d2Rect, d2Brush, GetPenThickness (pen));
+	ID2D1StrokeStyle* d2StrokeStyle = CreateStrokeStyle (direct2DHandler.direct2DFactory);
+	renderTarget->DrawRectangle (&d2Rect, d2Brush, GetPenThickness (pen), d2StrokeStyle);
+	SafeRelease (&d2StrokeStyle);
 	SafeRelease (&d2Brush);
 }
 

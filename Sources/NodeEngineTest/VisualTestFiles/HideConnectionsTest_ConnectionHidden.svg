@@ -56,7 +56,10 @@
 <rect x="496" y="277" width="208" height="34" style="fill:rgb(41,127,255);"/>
 <text x="600" y="294" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Viewer 2</text>
 <rect x="496" y="311" width="208" height="36" style="fill:rgb(236,236,236);"/>
-<ellipse cx="496" cy="329" rx="4" ry="4" style="fill:rgb(38,50,56);"/>
+<ellipse cx="496" cy="329" rx="4" ry="4" style="fill:rgb(246,246,246);"/>
+<ellipse cx="496" cy="329" rx="4" ry="4" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<line x1="490" y1="325" x2="486" y2="329" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<line x1="486" y1="329" x2="490" y2="333" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <rect x="496" y="316" width="80" height="26" style="fill:rgb(246,246,246);"/>
 <text x="501" y="329" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Input</text>
 <ellipse cx="704" cy="329" rx="4" ry="4" style="fill:rgb(246,246,246);"/>

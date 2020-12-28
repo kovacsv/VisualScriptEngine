@@ -38,8 +38,13 @@ public:
 	enum class SlotMarker
 	{
 		None,
-		Circle,
-		FilledCircle
+		Circle
+	};
+
+	enum class HiddenSlotMarker
+	{
+		None,
+		Arrow
 	};
 
 	SkinParams ();
@@ -66,7 +71,7 @@ public:
 	virtual const Color&			GetSlotTextColor () const = 0;
 	virtual const Color&			GetSlotTextBackgroundColor () const = 0;
 	virtual SlotMarker				GetSlotMarker () const = 0;
-	virtual SlotMarker				GetHiddenSlotMarker () const = 0;
+	virtual HiddenSlotMarker		GetHiddenSlotMarker () const = 0;
 	virtual const Size&				GetSlotMarkerSize () const = 0;
 
 	virtual const BlendColor&		GetDisabledBlendColor () const = 0;
@@ -111,7 +116,7 @@ public:
 		const Color&			slotTextColor,
 		const Color&			slotTextBackgroundColor,
 		SlotMarker				slotMarker,
-		SlotMarker				hiddenSlotMarker,
+		HiddenSlotMarker		hiddenSlotMarker,
 		const Size&				slotMarkerSize,
 		const BlendColor&		disabledBlendColor,
 		const BlendColor&		selectionBlendColor,
@@ -147,7 +152,7 @@ public:
 	virtual const Color&			GetSlotTextColor () const override;
 	virtual const Color&			GetSlotTextBackgroundColor () const override;
 	virtual SlotMarker				GetSlotMarker () const override;
-	virtual SlotMarker				GetHiddenSlotMarker () const override;
+	virtual HiddenSlotMarker		GetHiddenSlotMarker () const override;
 	virtual const Size&				GetSlotMarkerSize () const override;
 
 	virtual const BlendColor&		GetDisabledBlendColor () const override;
@@ -188,7 +193,7 @@ private:
 	Color				slotTextColor;
 	Color				slotTextBackgroundColor;
 	SlotMarker			slotMarker;
-	SlotMarker			hiddenSlotMarker;
+	HiddenSlotMarker	hiddenSlotMarker;
 	Size				slotMarkerSize;
 
 	BlendColor			disabledBlendColor;
