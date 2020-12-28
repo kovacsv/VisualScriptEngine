@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "NUIE_FeatureSet.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_GdiplusUtils.hpp"
 
@@ -25,6 +26,7 @@ void Application::Init (HWND hwnd)
 {
 	InitFileMenu (hwnd);
 	InitToolbar (hwnd);
+	NUIE::EnableFeature ("HideConnections", true);
 	uiEnvironment.Init (&nodeEditor, &fileMenu, &toolbar, hwnd);
 }
 

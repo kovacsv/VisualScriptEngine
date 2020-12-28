@@ -1,6 +1,7 @@
 #include "NUIE_UIInputSlot.hpp"
 #include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeUIManagerCommands.hpp"
+#include "NUIE_FeatureSet.hpp"
 
 namespace NUIE
 {
@@ -68,10 +69,12 @@ void UIInputSlot::RegisterCommands (InputSlotCommandRegistrator& commandRegistra
 		ConnectionDisplayMode connDisplayMode;
 	};
 
-	InputSlotGroupCommandPtr connectionDisplayGroupCommand (new NodeGroupCommand<InputSlotCommandPtr> (NE::LocString (L"Connection Display")));
-	connectionDisplayGroupCommand->AddChildCommand (InputSlotCommandPtr (new SetConnectionDisplayModeCommand (NE::LocString (L"Normal"), connDisplayMode == ConnectionDisplayMode::Normal, ConnectionDisplayMode::Normal)));
-	connectionDisplayGroupCommand->AddChildCommand (InputSlotCommandPtr (new SetConnectionDisplayModeCommand (NE::LocString (L"Hidden"), connDisplayMode == ConnectionDisplayMode::Hidden, ConnectionDisplayMode::Hidden)));
-	commandRegistrator.RegisterSlotGroupCommand (connectionDisplayGroupCommand);
+	if (IsFeatureEnabled ("HideConnections")) {
+		InputSlotGroupCommandPtr connectionDisplayGroupCommand (new NodeGroupCommand<InputSlotCommandPtr> (NE::LocString (L"Connection Display")));
+		connectionDisplayGroupCommand->AddChildCommand (InputSlotCommandPtr (new SetConnectionDisplayModeCommand (NE::LocString (L"Normal"), connDisplayMode == ConnectionDisplayMode::Normal, ConnectionDisplayMode::Normal)));
+		connectionDisplayGroupCommand->AddChildCommand (InputSlotCommandPtr (new SetConnectionDisplayModeCommand (NE::LocString (L"Hidden"), connDisplayMode == ConnectionDisplayMode::Hidden, ConnectionDisplayMode::Hidden)));
+		commandRegistrator.RegisterSlotGroupCommand (connectionDisplayGroupCommand);
+	}
 }
 
 NE::Stream::Status UIInputSlot::Read (NE::InputStream& inputStream)
