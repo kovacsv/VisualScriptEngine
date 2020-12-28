@@ -161,6 +161,7 @@ bool Direct2DContextBase::NeedToDraw (ItemPreviewMode)
 
 void Direct2DContextBase::DrawLine (const NUIE::Point& beg, const NUIE::Point& end, const NUIE::Pen& pen)
 {
+	Direct2DAntialiasGuard antialiasGuard (renderTarget, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
 	renderTarget->DrawLine (CreatePoint (beg), CreatePoint (end), d2Brush, GetPenThickness (pen));
 	SafeRelease (&d2Brush);
