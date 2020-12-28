@@ -133,6 +133,7 @@ void GdiplusOffscreenContext::DrawLine (const NUIE::Point& beg, const NUIE::Poin
 {
 	const NUIE::Color& color = pen.GetColor ();
 	Gdiplus::Pen gdiPen (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()), (Gdiplus::REAL) pen.GetThickness ());
+	gdiPen.SetLineCap (Gdiplus::LineCap::LineCapRound, Gdiplus::LineCap::LineCapRound, Gdiplus::DashCap::DashCapRound);
 	graphics->DrawLine (&gdiPen, CreatePoint (beg), CreatePoint (end));
 }
 
@@ -140,6 +141,7 @@ void GdiplusOffscreenContext::DrawBezier (const NUIE::Point& p1, const NUIE::Poi
 {
 	const NUIE::Color& color = pen.GetColor ();
 	Gdiplus::Pen gdiPen (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()), (Gdiplus::REAL) pen.GetThickness ());
+	gdiPen.SetLineCap (Gdiplus::LineCap::LineCapRound, Gdiplus::LineCap::LineCapRound, Gdiplus::DashCap::DashCapRound);
 	graphics->DrawBezier (&gdiPen, CreatePoint (p1), CreatePoint (p2), CreatePoint (p3), CreatePoint (p4));
 }
 
@@ -148,6 +150,7 @@ void GdiplusOffscreenContext::DrawRect (const NUIE::Rect& rect, const NUIE::Pen&
 	DisableAntialiasGuard antialiasGuard (graphics.get ());
 	const NUIE::Color& color = pen.GetColor ();
 	Gdiplus::Pen gdiPen (Gdiplus::Color (color.GetR (), color.GetG (), color.GetB ()), (Gdiplus::REAL) pen.GetThickness ());
+	gdiPen.SetLineCap (Gdiplus::LineCap::LineCapRound, Gdiplus::LineCap::LineCapRound, Gdiplus::DashCap::DashCapRound);
 	Gdiplus::Rect gdiRect = CreateRect (rect);
 	graphics->DrawRectangle (&gdiPen, gdiRect);
 }
