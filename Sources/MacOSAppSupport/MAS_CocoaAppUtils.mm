@@ -26,9 +26,10 @@
 	return subMenu;
 }
 
-- (void) addMenuItem : (NSString*) name : (int) tag : (ContextMenu*) target
+- (void) addMenuItem : (NSString*) name : (bool) isChecked : (int) tag : (ContextMenu*) target
 {
 	NSMenuItem* item = [self addItemWithTitle : name action : @selector(onItemSelected:) keyEquivalent : @""];
+	[item setState : isChecked ? NSControlStateValueOn : NSControlStateValueOff];
 	[item setTarget : target];
 	[item setTag : tag];
 }
@@ -124,7 +125,7 @@ static void AddCommandToMenu (const NUIE::MenuCommandPtr& command, std::unordere
 		});
 		currentMenu = oldMenu;
 	} else {
-		[currentMenu addMenuItem:StdWStringToNSString (command->GetName ()) : currentCommandId : originalMenu];
+		[currentMenu addMenuItem:StdWStringToNSString (command->GetName ()) : command->IsChecked () : currentCommandId : originalMenu];
 		commandTable.insert ({ currentCommandId, command });
 		currentCommandId += 1;
 	}
