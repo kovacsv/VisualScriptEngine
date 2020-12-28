@@ -39,7 +39,7 @@ public:
 	{
 		None,
 		Circle,
-		Rectangle
+		FilledCircle
 	};
 
 	SkinParams ();

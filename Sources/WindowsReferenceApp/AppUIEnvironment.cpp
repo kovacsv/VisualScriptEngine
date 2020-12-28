@@ -32,7 +32,7 @@ static const NUIE::BasicSkinParams& GetAppSkinParams ()
 		/*slotTextColor*/ NUIE::Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
 		/*slotMarker*/ NUIE::SkinParams::SlotMarker::Circle,
-		/*hiddenSlotMarker*/ NUIE::SkinParams::SlotMarker::Rectangle,
+		/*hiddenSlotMarker*/ NUIE::SkinParams::SlotMarker::FilledCircle,
 		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),

@@ -5,6 +5,18 @@
 namespace NUIE
 {
 
+FeatureEnableGuard::FeatureEnableGuard (const std::string& featureId, bool enabled) :
+	featureId (featureId),
+	oldEnabled (IsFeatureEnabled (featureId))
+{
+	EnableFeature (featureId, enabled);
+}
+
+FeatureEnableGuard::~FeatureEnableGuard ()
+{
+	EnableFeature (featureId, oldEnabled);
+}
+
 static std::unordered_map<std::string, bool> features;
 
 void EnableFeature (const std::string& featureId, bool enabled)

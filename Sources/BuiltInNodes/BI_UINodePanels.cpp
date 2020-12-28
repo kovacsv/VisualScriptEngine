@@ -286,10 +286,9 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 			NUIE::Rect markerRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetSlotMarkerSize ());
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (markerRect, skinParams.GetSlotTextBackgroundColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (markerRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-		} else if (slotMarker == NUIE::SkinParams::SlotMarker::Rectangle) {
+		} else if (slotMarker == NUIE::SkinParams::SlotMarker::FilledCircle) {
 			NUIE::Rect markerRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetSlotMarkerSize ());
-			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (markerRect, skinParams.GetSlotTextBackgroundColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (markerRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (markerRect, skinParams.GetConnectionLinePen ().GetColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 		}
 
 		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));

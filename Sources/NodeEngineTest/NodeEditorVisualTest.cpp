@@ -1,6 +1,7 @@
 #include "SimpleTest.hpp"
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_NodeCommonMenuCommands.hpp"
+#include "NUIE_FeatureSet.hpp"
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
 #include "VisualTestFramework.hpp"
@@ -32,7 +33,7 @@ const BasicSkinParams& GetSkinParamsWithMarkers ()
 		/*slotTextColor*/ NUIE::Color (0, 0, 0),
 		/*slotTextBackgroundColor*/ NUIE::Color (246, 246, 246),
 		/*slotMarker*/ SkinParams::SlotMarker::Circle,
-		/*hiddenSlotMarker*/ NUIE::SkinParams::SlotMarker::Rectangle,
+		/*hiddenSlotMarker*/ NUIE::SkinParams::SlotMarker::FilledCircle,
 		/*slotMarkerSize*/ NUIE::Size (8.0, 8.0),
 		/*selectionBlendColor*/ NUIE::BlendColor (NUIE::Color (41, 127, 255), 0.25),
 		/*disabledBlendColor*/ NUIE::BlendColor (NUIE::Color (0, 138, 184), 0.2),
@@ -638,6 +639,7 @@ TEST (AlignNodesTest)
 
 TEST (HideConnectionsTest)
 {
+	FeatureEnableGuard featureGuard ("HideConnections", true);
 	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithMarkers ());
 
 	ASSERT (env.CheckReference (L"HideConnectionsTest_Initial.svg"));
