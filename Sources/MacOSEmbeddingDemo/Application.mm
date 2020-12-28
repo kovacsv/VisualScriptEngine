@@ -7,6 +7,7 @@
 #include "MAS_IncludeCocoaHeaders.hpp"
 
 #include "NUIE_NodeTree.hpp"
+#include "NUIE_FeatureSet.hpp"
 #include "BI_BuiltInNodes.hpp"
 
 static const std::vector<NSString*> IconResourceNames = {
@@ -400,6 +401,7 @@ void Application::Run ()
 	[myWindow setContentView:contentView];
 	[myWindow setDelegate:myWindowController];
 
+	NUIE::EnableFeature ("HideConnections", true);
 	uiEnvironment.Init (&nodeEditor, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow center];
 	[myWindow makeKeyAndOrderFront:nil];
