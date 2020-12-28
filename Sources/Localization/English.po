@@ -109,6 +109,15 @@ msgstr "Green"
 msgid "Red"
 msgstr "Red"
 
+msgid "Connection Display"
+msgstr "Connection Display"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Hidden"
+msgstr "Hidden"
+
 msgid "Node Name"
 msgstr "Node Name"
 
