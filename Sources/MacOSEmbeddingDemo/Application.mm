@@ -401,7 +401,7 @@ void Application::Run ()
 	[myWindow setContentView:contentView];
 	[myWindow setDelegate:myWindowController];
 
-	NUIE::EnableFeature ("HideConnections", true);
+	NUIE::EnableFeature (Feature::ConnectionDisplay, true);
 	uiEnvironment.Init (&nodeEditor, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow center];
 	[myWindow makeKeyAndOrderFront:nil];

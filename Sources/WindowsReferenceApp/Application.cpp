@@ -26,7 +26,7 @@ void Application::Init (HWND hwnd)
 {
 	InitFileMenu (hwnd);
 	InitToolbar (hwnd);
-	NUIE::EnableFeature ("HideConnections", true);
+	NUIE::EnableFeature (Feature::ConnectionDisplay, true);
 	uiEnvironment.Init (&nodeEditor, &fileMenu, &toolbar, hwnd);
 }
 

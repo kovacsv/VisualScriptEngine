@@ -5,7 +5,7 @@
 namespace NUIE
 {
 
-FeatureEnableGuard::FeatureEnableGuard (const std::string& featureId, bool enabled) :
+FeatureEnableGuard::FeatureEnableGuard (Feature featureId, bool enabled) :
 	featureId (featureId),
 	oldEnabled (IsFeatureEnabled (featureId))
 {
@@ -17,9 +17,9 @@ FeatureEnableGuard::~FeatureEnableGuard ()
 	EnableFeature (featureId, oldEnabled);
 }
 
-static std::unordered_map<std::string, bool> features;
+static std::unordered_map<Feature, bool> features;
 
-void EnableFeature (const std::string& featureId, bool enabled)
+void EnableFeature (Feature featureId, bool enabled)
 {
 	auto found = features.find (featureId);
 	if (found == features.end ()) {
@@ -29,7 +29,7 @@ void EnableFeature (const std::string& featureId, bool enabled)
 	found->second = enabled;
 }
 
-bool IsFeatureEnabled (const std::string& featureId)
+bool IsFeatureEnabled (Feature featureId)
 {
 	auto found = features.find (featureId);
 	if (found == features.end ()) {

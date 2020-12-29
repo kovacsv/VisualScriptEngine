@@ -3,22 +3,27 @@
 
 #include <string>
 
+enum class Feature
+{
+	ConnectionDisplay
+};
+
 namespace NUIE
 {
 
 class FeatureEnableGuard
 {
 public:
-	FeatureEnableGuard (const std::string& featureId, bool enabled);
+	FeatureEnableGuard (Feature featureId, bool enabled);
 	~FeatureEnableGuard ();
 
 private:
-	std::string		featureId;
-	bool			oldEnabled;
+	Feature		featureId;
+	bool		oldEnabled;
 };
 
-void	EnableFeature (const std::string& featureId, bool enabled);
-bool	IsFeatureEnabled (const std::string& featureId);
+void	EnableFeature (Feature featureId, bool enabled);
+bool	IsFeatureEnabled (Feature featureId);
 
 }
 

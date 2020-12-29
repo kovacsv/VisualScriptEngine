@@ -69,7 +69,7 @@ void UIInputSlot::RegisterCommands (InputSlotCommandRegistrator& commandRegistra
 		ConnectionDisplayMode connDisplayMode;
 	};
 
-	if (IsFeatureEnabled ("HideConnections")) {
+	if (IsFeatureEnabled (Feature::ConnectionDisplay)) {
 		InputSlotGroupCommandPtr connectionDisplayGroupCommand (new NodeGroupCommand<InputSlotCommandPtr> (NE::LocString (L"Connection Display")));
 		connectionDisplayGroupCommand->AddChildCommand (InputSlotCommandPtr (new SetConnectionDisplayModeCommand (NE::LocString (L"Normal"), connDisplayMode == ConnectionDisplayMode::Normal, ConnectionDisplayMode::Normal)));
 		connectionDisplayGroupCommand->AddChildCommand (InputSlotCommandPtr (new SetConnectionDisplayModeCommand (NE::LocString (L"Hidden"), connDisplayMode == ConnectionDisplayMode::Hidden, ConnectionDisplayMode::Hidden)));

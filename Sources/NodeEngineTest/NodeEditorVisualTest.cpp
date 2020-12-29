@@ -639,7 +639,7 @@ TEST (AlignNodesTest)
 
 TEST (HideConnectionsTest)
 {
-	FeatureEnableGuard featureGuard ("HideConnections", true);
+	FeatureEnableGuard featureGuard (Feature::ConnectionDisplay, true);
 	SimpleNodeEditorTestEnvWithConnections env (GetSkinParamsWithMarkers ());
 
 	ASSERT (env.CheckReference (L"HideConnectionsTest_Initial.svg"));
