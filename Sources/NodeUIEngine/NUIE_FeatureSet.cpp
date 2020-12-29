@@ -1,6 +1,7 @@
 #include "NUIE_FeatureSet.hpp"
 
 #include <unordered_map>
+#include <functional>
 
 namespace NUIE
 {
