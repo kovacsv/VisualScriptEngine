@@ -331,11 +331,10 @@ Rect ExtendNodeRect (NodeUIDrawingEnvironment& drawingEnv, const Rect& originalR
 	const SkinParams& skinParams = drawingEnv.GetSkinParams ();
 	const Size& slotMarkerSize = skinParams.GetSlotMarkerSize ();
 	double extendSize = 0.0;
-	if (skinParams.GetSlotMarker () != SkinParams::SlotMarker::None) {
-		extendSize += slotMarkerSize.GetWidth () / 2.0;
-	}
 	if (skinParams.GetHiddenSlotMarker () != SkinParams::HiddenSlotMarker::None) {
-		extendSize += slotMarkerSize.GetWidth ();
+		extendSize = slotMarkerSize.GetWidth () + slotMarkerSize.GetWidth () / 2.0;
+	} else if (skinParams.GetSlotMarker () != SkinParams::SlotMarker::None) {
+		extendSize = slotMarkerSize.GetWidth () / 2.0;
 	}
 	return originalRect.ExpandHorizontally (extendSize, extendSize);
 }
