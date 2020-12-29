@@ -80,7 +80,8 @@ TEST (CompatibilityTest)
 
 	std::vector<std::wstring> fileNames = {
 		L"CompatibilityTest_0_3_11.vse",
-		L"CompatibilityTest_0_4_6.vse"
+		L"CompatibilityTest_0_4_6.vse",
+		L"CompatibilityTest_0_5_1.vse"
 	};
 	for (const std::wstring& fileName : fileNames) {
 		std::wstring filePath = GetCompatibilityTestFilesPath () + fileName;
