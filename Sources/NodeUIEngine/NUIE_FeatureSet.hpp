@@ -3,13 +3,13 @@
 
 #include <string>
 
+namespace NUIE
+{
+
 enum class Feature
 {
 	ConnectionDisplay
 };
-
-namespace NUIE
-{
 
 class FeatureEnableGuard
 {

@@ -3,6 +3,18 @@
 #include <unordered_map>
 #include <functional>
 
+namespace std
+{
+	template <>
+	struct hash<NUIE::Feature>
+	{
+		size_t operator() (const NUIE::Feature& featureId) const noexcept
+		{
+			return (size_t) featureId;
+		}
+	};
+}
+
 namespace NUIE
 {
 
