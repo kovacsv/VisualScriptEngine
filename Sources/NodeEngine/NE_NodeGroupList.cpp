@@ -81,6 +81,11 @@ void NodeGroupList::DeleteGroup (const NodeGroupId& groupId)
 	groupIdToNodes.erase (groupId);
 }
 
+void NodeGroupList::MakeSorted ()
+{
+	groups.MakeSorted ();
+}
+
 void NodeGroupList::AddNodeToGroup (const NodeGroupId& groupId, const NodeId& nodeId)
 {
 	if (DBGERROR (!groups.Contains (groupId))) {

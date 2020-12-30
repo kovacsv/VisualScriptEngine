@@ -34,6 +34,7 @@ public:
 	bool			Insert (const Key& key, const Value& value);
 	bool			InsertBefore (const Key& key, const Value& value, const Key& nextKey);
 	bool			InsertAfter (const Key& key, const Value& value, const Key& prevKey);
+	void			MakeSorted ();
 	bool			Erase (const Key& key);
 	void			Clear ();
 
@@ -184,6 +185,14 @@ bool OrderedMap<Key, Value>::InsertAfter (const Key& key, const Value& value, co
 	auto inserted = valueList.insert (std::next (foundPrevValue->second), { key, value });
 	keyToValueMap.insert ({ key, inserted });
 	return true;
+}
+
+template <typename Key, typename Value>
+void OrderedMap<Key, Value>::MakeSorted ()
+{
+	valueList.sort ([&] (const KeyValue& a, const KeyValue& b) {
+		return a.first < b.first;
+	});
 }
 
 template <typename Key, typename Value>

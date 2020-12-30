@@ -59,6 +59,11 @@ bool NodeList::DeleteNode (const NodeId& nodeId)
 	return nodes.Erase (nodeId);
 }
 
+void NodeList::MakeSorted ()
+{
+	nodes.MakeSorted ();
+}
+
 void NodeList::Clear ()
 {
 	nodes.Clear ();

@@ -566,4 +566,38 @@ TEST (AlignNodesTest)
 	}
 }
 
+TEST (NodeOrderTest)
+{
+	NodeEditorTestEnv env (GetDefaultSkinParams ());
+	Point padding (10.0, 10.0);
+
+	{ // create two nodes
+		env.nodeEditor.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Number 1"), Point (100.0, 100.0), 0.0, 1.0)));
+		env.nodeEditor.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Number 2"), Point (150.0, 100.0), 0.0, 1.0)));
+		ASSERT (env.CheckReference (L"NodeOrderTest_Initial.svg"));
+	}
+
+	{ // select top node
+		env.Click (env.GetNodeRect (env.GetNode (L"Number 2")).GetTopLeft () + padding);
+		ASSERT (env.CheckReference (L"NodeOrderTest_Number2Selected.svg"));
+	}
+
+	{ // delete bottom node
+		env.ExecuteCommand (CommandCode::Escape);
+		env.SetNextCommandName (L"Delete Nodes");
+		env.RightClick (env.GetNodeRect (env.GetNode (L"Number 1")).GetTopLeft () + padding);
+		ASSERT (env.CheckReference (L"NodeOrderTest_Number1Deleted.svg"));
+	}
+
+	{ // undo delete
+		env.ExecuteCommand (CommandCode::Undo);
+		ASSERT (env.CheckReference (L"NodeOrderTest_Number1Recreated.svg"));
+	}
+
+	{ // select top node
+		env.Click (env.GetNodeRect (env.GetNode (L"Number 2")).GetTopLeft () + padding);
+		ASSERT (env.CheckReference (L"NodeOrderTest_Number2SelectedAfterUndo.svg"));
+	}
+}
+
 }

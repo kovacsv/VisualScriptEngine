@@ -444,6 +444,35 @@ void NodeEditorTestEnv::Resize (int width, int height)
 	nodeEditor.OnResize (width, height);
 }
 
+UINodeConstPtr NodeEditorTestEnv::GetNode (const std::wstring& name)
+{
+	class NodeFilterByName : public UINodeFilter
+	{
+	public:
+		NodeFilterByName (const std::wstring& nodeName) :
+			UINodeFilter (),
+			nodeName (nodeName)
+		{
+
+		}
+
+		virtual bool IsMatch (const UINodeConstPtr& uiNode) const override
+		{
+			return uiNode->GetName ().GetLocalized () == nodeName;
+		}
+
+	private:
+		std::wstring nodeName;
+	};
+
+	NodeFilterByName filter (name);
+	std::vector<UINodeConstPtr> nodes = nodeEditor.FindNodes (filter);
+	if (DBGERROR (nodes.size () != 1)) {
+		return nullptr;
+	}
+	return nodes[0];
+}
+
 SimpleNodeEditorTestEnv::SimpleNodeEditorTestEnv (const BasicSkinParams& skinParams) :
 	NodeEditorTestEnv (skinParams)
 {

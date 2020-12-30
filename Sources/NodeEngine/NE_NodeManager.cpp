@@ -10,7 +10,7 @@
 namespace NE
 {
 
-SERIALIZATION_INFO (NodeManager, 3);
+SERIALIZATION_INFO (NodeManager, 4);
 
 template <typename SlotListType, typename SlotType>
 static bool HasDuplicates (const SlotListType& slots)
@@ -613,6 +613,12 @@ bool NodeManager::ContainsNodeGroup (const NodeGroupId& groupId) const
 NodeGroupPtr NodeManager::AddNodeGroup (const NodeGroupPtr& group)
 {
 	return AddNodeGroup (group, IdPolicy::GenerateNew);
+}
+
+void NodeManager::MakeNodesAndGroupsSorted ()
+{
+	nodeList.MakeSorted ();
+	nodeGroupList.MakeSorted ();
 }
 
 void NodeManager::DeleteNodeGroup (const NodeGroupId& groupId)

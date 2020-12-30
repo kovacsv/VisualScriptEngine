@@ -23,6 +23,7 @@ public:
 
 	bool			AddNode (const NodeId& nodeId, const NodePtr& nodePtr);
 	bool			DeleteNode (const NodeId& nodeId);
+	void			MakeSorted ();
 	void			Clear ();
 
 	void			Enumerate (const std::function<bool (NodePtr)>& processor);

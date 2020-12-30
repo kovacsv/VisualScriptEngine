@@ -256,6 +256,7 @@ bool NodeManagerMerge::UpdateNodeManager (const NodeManager& source, NodeManager
 		return true;
 	});
 
+	target.MakeNodesAndGroupsSorted ();
 	return true;
 }
 

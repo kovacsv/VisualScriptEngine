@@ -11,25 +11,6 @@ using namespace BI;
 namespace NodeEditorVisualTestWorkflow
 {
 
-class NodeFilterByName : public UINodeFilter
-{
-public:
-	NodeFilterByName (const std::wstring& nodeName) :
-		UINodeFilter (),
-		nodeName (nodeName)
-	{
-
-	}
-
-	virtual bool IsMatch (const UINodeConstPtr& uiNode) const override
-	{
-		return uiNode->GetName ().GetLocalized () == nodeName;
-	}
-
-private:
-	std::wstring nodeName;
-};
-
 class WorkflowTestEnv : public NodeEditorTestEnv
 {
 public:
@@ -46,16 +27,6 @@ public:
 			stepString = L"0" + stepString;
 		}
 		return CheckReference (L"WorkflowTest_" + stepString + L".svg");
-	}
-
-	UINodeConstPtr GetNode (const std::wstring& name)
-	{
-		NodeFilterByName filter (name);
-		std::vector<UINodeConstPtr> nodes = nodeEditor.FindNodes (filter);
-		if (DBGERROR (nodes.size () != 1)) {
-			return nullptr;
-		}
-		return nodes[0];
 	}
 
 	void SetParameter (ParameterInterfacePtr paramInterface, std::wstring name, ValueConstPtr val)

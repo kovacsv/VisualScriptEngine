@@ -27,6 +27,10 @@ Stream::Status NodeManagerSerialization::Read (NodeManager& nodeManager, InputSt
 		return groupStatus;
 	}
 
+	if (header.GetVersion () < 4) {
+		nodeManager.MakeNodesAndGroupsSorted ();
+	}
+
 	ReadEnum (inputStream, nodeManager.updateMode);
 
 	return inputStream.GetStatus ();

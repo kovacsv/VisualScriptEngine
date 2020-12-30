@@ -156,6 +156,7 @@ private:
 
 	NodePtr				AddNode (const NodePtr& node, IdPolicy idHandling, InitPolicy initPolicy);
 	NodeGroupPtr		AddNodeGroup (const NodeGroupPtr& group, IdPolicy idHandling);
+	void				MakeNodesAndGroupsSorted ();
 
 	UniqueIdGenerator						idGenerator;
 	NodeList								nodeList;

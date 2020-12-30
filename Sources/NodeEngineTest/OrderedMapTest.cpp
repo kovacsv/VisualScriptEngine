@@ -214,4 +214,19 @@ TEST (OrderedMapMoveTest)
 	ASSERT (map2.GetValue (6) == "six");
 }
 
+TEST (OrderedMapMakeSortedTest)
+{
+	OrderedMap<int, std::string> map;
+	std::vector<std::string> numbers = { "one", "two", "three", "four", "five" };
+	ASSERT (map.Insert (3, numbers[2]));
+	ASSERT (map.Insert (1, numbers[0]));
+	ASSERT (map.Insert (4, numbers[3]));
+	ASSERT (map.Insert (2, numbers[1]));
+	ASSERT (map.Insert (5, numbers[4]));
+	ASSERT (GetEnumeratedValues (map) == std::vector<std::string> ({ "three", "one", "four", "two", "five" }));
+
+	map.MakeSorted ();
+	ASSERT (GetEnumeratedValues (map) == std::vector<std::string> ({ "one", "two", "three", "four", "five" }));
+}
+
 }

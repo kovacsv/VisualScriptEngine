@@ -26,6 +26,7 @@ public:
 
 	bool					AddGroup (const NodeGroupPtr& group);
 	void					DeleteGroup (const NodeGroupId& groupId);
+	void					MakeSorted ();
 
 	void					AddNodeToGroup (const NodeGroupId& groupId, const NodeId& nodeId);
 	void					RemoveNodeFromGroup (const NodeId& nodeId);

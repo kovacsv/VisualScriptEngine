@@ -81,24 +81,26 @@ public:
 	NodeEditorTestEnv (const BasicSkinParams& skinParams);
 	virtual ~NodeEditorTestEnv ();
 
-	bool	CheckReference (const std::wstring& referenceFileName);
-	void	Click (const Point& point);
-	void	DoubleClick (const Point& point);
-	void	CtrlClick (const Point& point);
-	void	RightClick (const Point& point);
-	void	Wheel (MouseWheelRotation rotation, const Point& point);
-	void	DragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
-	void	CtrlDragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
-	void	DragDrop (const ModifierKeys& keys, const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr); 
-	void	ExecuteCommand (const NUIE::CommandCode& commandCode);
-	void	SetNextCommandName (const std::wstring& nextCommandName);
-	void	SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler);
-	void	SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler);
-	void	SetParameterSettingsHandler (const ParameterSettingsHandler& handler);
-	Rect	GetNodeRect (const UINodeConstPtr& node);
-	Point	GetOutputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId);
-	Point	GetInputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId);
-	void	Resize (int width, int height);
+	bool			CheckReference (const std::wstring& referenceFileName);
+	void			Click (const Point& point);
+	void			DoubleClick (const Point& point);
+	void			CtrlClick (const Point& point);
+	void			RightClick (const Point& point);
+	void			Wheel (MouseWheelRotation rotation, const Point& point);
+	void			DragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
+	void			CtrlDragDrop (const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
+	void			DragDrop (const ModifierKeys& keys, const Point& from, const Point& to, const std::function<void ()>& beforeMouseUp = nullptr);
+	void			ExecuteCommand (const NUIE::CommandCode& commandCode);
+	void			SetNextCommandName (const std::wstring& nextCommandName);
+	void			SetNextCommandNodeParameterSettings (const ParameterSettingsHandler& handler);
+	void			SetNextCommandGroupParameterSettings (const ParameterSettingsHandler& handler);
+	void			SetParameterSettingsHandler (const ParameterSettingsHandler& handler);
+	Rect			GetNodeRect (const UINodeConstPtr& node);
+	Point			GetOutputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId);
+	Point			GetInputSlotConnPosition (const UINodeConstPtr& node, const std::string& slotId);
+	void			Resize (int width, int height);
+
+	UINodeConstPtr	GetNode (const std::wstring& name);
 
 	TestNodeUIEnvironment	uiEnvironment;
 	NodeEditor				nodeEditor;
