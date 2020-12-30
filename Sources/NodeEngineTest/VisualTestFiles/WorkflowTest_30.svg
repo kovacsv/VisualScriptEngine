@@ -1,9 +1,9 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<rect x="46" y="40" width="176" height="323" style="fill:rgb(160,200,240);"/>
-<text x="56" y="62" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group 1</text>
-<rect x="486" y="309" width="228" height="248" style="fill:rgb(160,200,240);"/>
-<text x="496" y="331" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
+<rect x="44" y="36" width="180" height="329" style="fill:rgb(160,200,240);"/>
+<text x="56" y="60" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group 1</text>
+<rect x="484" y="305" width="232" height="254" style="fill:rgb(160,200,240);"/>
+<text x="496" y="329" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
 <path d="M212,136 C246,136 246,151 281,151" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <path d="M212,299 C246,299 246,182 281,182" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
 <path d="M419,151 C457,151 457,405 496,405" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>

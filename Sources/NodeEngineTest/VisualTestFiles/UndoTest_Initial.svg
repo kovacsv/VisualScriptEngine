@@ -1,7 +1,7 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<rect x="518" y="123" width="204" height="160" style="fill:rgb(160,200,240);"/>
-<text x="528" y="145" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
+<rect x="516" y="119" width="208" height="166" style="fill:rgb(160,200,240);"/>
+<text x="528" y="143" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
 <rect x="38" y="47" width="124" height="34" style="fill:rgb(41,127,255);"/>
 <text x="100" y="64" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Number</text>
 <rect x="38" y="81" width="124" height="36" style="fill:rgb(236,236,236);"/>

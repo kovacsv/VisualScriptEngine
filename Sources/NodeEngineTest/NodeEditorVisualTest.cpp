@@ -537,7 +537,7 @@ TEST (SkinParamsTest)
 			{ NE::LocalizeString (L"Green"), NUIE::Color (160, 239, 160) },
 			{ NE::LocalizeString (L"Red"), NUIE::Color (239, 189, 160) }
 			}),
-		/*groupPadding*/ 10.0
+		/*groupPadding*/ 12.0
 	);
 
 	SimpleNodeEditorTestEnvWithConnections env (skinParams);

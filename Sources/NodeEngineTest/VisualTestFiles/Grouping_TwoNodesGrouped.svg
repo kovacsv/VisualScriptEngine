@@ -1,9 +1,9 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
 <rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
-<rect x="21" y="103" width="158" height="160" style="fill:rgb(160,200,240);"/>
-<text x="31" y="125" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
-<rect x="212" y="290" width="176" height="186" style="fill:rgb(160,200,240);"/>
-<text x="222" y="312" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
+<rect x="19" y="99" width="162" height="166" style="fill:rgb(160,200,240);"/>
+<text x="31" y="123" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
+<rect x="210" y="286" width="180" height="192" style="fill:rgb(160,200,240);"/>
+<text x="222" y="310" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:16px;">Group</text>
 <path d="M169,199 C195,199 195,386 222,386" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
 <path d="M169,199 C195,199 195,417 222,417" style="fill:none;stroke-width:3px;stroke:rgb(41,127,255);"/>
 <path d="M169,199 C338,199 338,99 508,99" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
