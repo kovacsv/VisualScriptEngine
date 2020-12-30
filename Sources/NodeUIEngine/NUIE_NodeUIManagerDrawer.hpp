@@ -54,7 +54,7 @@ private:
 };
 
 Rect ExtendNodeRect (NodeUIDrawingEnvironment& drawingEnv, const Rect& originalRect);
-Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& drawingEnv, const UINode* uiNode);
+Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& drawingEnv, const UINodeConstPtr& uiNode);
 
 }
 

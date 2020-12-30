@@ -296,7 +296,7 @@ Rect ExtendNodeRect (NodeUIDrawingEnvironment& drawingEnv, const Rect& originalR
 	return originalRect.ExpandHorizontally (extendSize, extendSize);
 }
 
-Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& drawingEnv, const UINode* uiNode)
+Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& drawingEnv, const UINodeConstPtr& uiNode)
 {
 	Rect nodeRect = uiNode->GetRect (drawingEnv);
 	return ExtendNodeRect (drawingEnv, nodeRect);
