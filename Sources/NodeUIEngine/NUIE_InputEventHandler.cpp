@@ -13,8 +13,8 @@ ModifierKeys::ModifierKeys () :
 
 }
 
-ModifierKeys::ModifierKeys (const std::unordered_set<ModifierKeyCode>& keys) :
-	keys (keys)
+ModifierKeys::ModifierKeys (const std::initializer_list<ModifierKeyCode>& keyCodes) :
+	keys (keyCodes)
 {
 
 }

@@ -1,19 +1,8 @@
 #include "NUIE_FeatureToggle.hpp"
+#include "NUIE_HashUtils.hpp"
 
 #include <unordered_map>
 #include <functional>
-
-namespace std
-{
-	template <>
-	struct hash<NUIE::Feature>
-	{
-		size_t operator() (const NUIE::Feature& featureId) const noexcept
-		{
-			return (size_t) featureId;
-		}
-	};
-}
 
 namespace NUIE
 {
@@ -30,7 +19,7 @@ FeatureEnableGuard::~FeatureEnableGuard ()
 	EnableFeature (featureId, oldEnabled);
 }
 
-static std::unordered_map<Feature, bool> features;
+static std::unordered_map<Feature, bool, EnumHash> features;
 
 void EnableFeature (Feature featureId, bool enabled)
 {

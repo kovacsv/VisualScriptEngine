@@ -1,6 +1,7 @@
 #ifndef NUIE_INPUTEVENTHANDLER_HPP
 #define NUIE_INPUTEVENTHANDLER_HPP
 
+#include "NUIE_HashUtils.hpp"
 #include "NUIE_Geometry.hpp"
 #include "NUIE_NodeUIEnvironment.hpp"
 
@@ -34,44 +35,18 @@ enum class KeyCode
 	Escape
 };
 
-}
-
-namespace std
-{
-	template <>
-	struct hash<NUIE::MouseButton>
-	{
-		size_t operator() (const NUIE::MouseButton& button) const noexcept
-		{
-			return (size_t) button;
-		}
-	};
-
-	template <>
-	struct hash<NUIE::ModifierKeyCode>
-	{
-		size_t operator() (const NUIE::ModifierKeyCode& keyCode) const noexcept
-		{
-			return (size_t) keyCode;
-		}
-	};
-}
-
-namespace NUIE
-{
-
 class ModifierKeys
 {
 public:
 	ModifierKeys ();
-	ModifierKeys (const std::unordered_set<ModifierKeyCode>& keys);
+	ModifierKeys (const std::initializer_list<ModifierKeyCode>& keyCodes);
 	~ModifierKeys ();
 
 	void	Insert (ModifierKeyCode keyCode);
 	bool	Contains (ModifierKeyCode keyCode) const;
 
 private:
-	std::unordered_set<ModifierKeyCode> keys;
+	std::unordered_set<ModifierKeyCode, EnumHash> keys;
 };
 
 extern const ModifierKeys EmptyModifierKeys;
@@ -109,9 +84,9 @@ public:
 	void	OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position);
 
 private:
-	InputEventHandler&						handler;
-	std::unordered_map<MouseButton, Point>	downMouseButtons;
-	std::unordered_set<MouseButton>			movingMouseButtons;
+	InputEventHandler&									handler;
+	std::unordered_map<MouseButton, Point, EnumHash>	downMouseButtons;
+	std::unordered_set<MouseButton, EnumHash>			movingMouseButtons;
 };
 
 }
