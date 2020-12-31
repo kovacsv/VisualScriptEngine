@@ -249,8 +249,7 @@ bool NodeUIManagerDrawer::IsConnectionVisible (NodeUIDrawingEnvironment& drawing
 
 bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode) const
 {
-	Rect boundingRect = GetNodeRect (drawingEnv, drawModifier, uiNode);
-	boundingRect = ExtendNodeRect (drawingEnv, boundingRect);
+	Rect boundingRect = GetExtendedNodeRect (drawingEnv, drawModifier, uiNode);
 
 	double selectionThickness = scaleIndependentData.GetSelectionThickness ();
 	boundingRect = boundingRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
@@ -271,6 +270,12 @@ Rect NodeUIManagerDrawer::GetNodeRect (NodeUIDrawingEnvironment& drawingEnv, con
 	return nodeRect.Offset (drawModifier->GetNodeOffset (uiNode->GetId ()));
 }
 
+Rect NodeUIManagerDrawer::GetExtendedNodeRect (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode) const
+{
+	Rect nodeRect = uiNode->GetExtendedRect (drawingEnv);
+	return nodeRect.Offset (drawModifier->GetNodeOffset (uiNode->GetId ()));
+}
+
 Point NodeUIManagerDrawer::GetOutputSlotConnPosition (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode, const NE::SlotId& slotId) const
 {
 	Point position = uiNode->GetOutputSlotConnPosition (drawingEnv, slotId);
@@ -281,25 +286,6 @@ Point NodeUIManagerDrawer::GetInputSlotConnPosition (NodeUIDrawingEnvironment& d
 {
 	Point position = uiNode->GetInputSlotConnPosition (drawingEnv, slotId);
 	return position + drawModifier->GetNodeOffset (uiNode->GetId ());
-}
-
-Rect ExtendNodeRect (NodeUIDrawingEnvironment& drawingEnv, const Rect& originalRect)
-{
-	const SkinParams& skinParams = drawingEnv.GetSkinParams ();
-	const Size& slotMarkerSize = skinParams.GetSlotMarkerSize ();
-	double extendSize = 0.0;
-	if (skinParams.GetHiddenSlotMarker () != SkinParams::HiddenSlotMarker::None) {
-		extendSize = slotMarkerSize.GetWidth () + slotMarkerSize.GetWidth () / 2.0;
-	} else if (skinParams.GetSlotMarker () != SkinParams::SlotMarker::None) {
-		extendSize = slotMarkerSize.GetWidth () / 2.0;
-	}
-	return originalRect.ExpandHorizontally (extendSize, extendSize);
-}
-
-Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& drawingEnv, const UINodeConstPtr& uiNode)
-{
-	Rect nodeRect = uiNode->GetRect (drawingEnv);
-	return ExtendNodeRect (drawingEnv, nodeRect);
 }
 
 }

@@ -22,6 +22,9 @@ public:
 	void				SetNodeRect (const Rect& rect);
 	const Rect&			GetNodeRect () const;
 
+	void				SetExtendedNodeRect (const Rect& rect);
+	const Rect&			GetExtendedNodeRect () const;
+
 	void				AddInputSlotConnPosition (const NE::SlotId& slotId, const Point& position);
 	const Point&		GetInputSlotConnPosition (const NE::SlotId& slotId) const;
 
@@ -42,6 +45,7 @@ public:
 
 private:
 	Rect									nodeRect;
+	Rect									extendedNodeRect;
 	std::unordered_map<NE::SlotId, Point>	inputSlotConnPositions;
 	std::unordered_map<NE::SlotId, Point>	outputSlotConnPositions;
 	std::unordered_map<NE::SlotId, Rect>	inputSlotRects;

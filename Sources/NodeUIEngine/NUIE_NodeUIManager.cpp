@@ -571,7 +571,7 @@ bool NodeUIManager::GetBoundingRect (NodeUIDrawingEnvironment& drawingEnv, Rect&
 {
 	BoundingRect boundingRect;
 	EnumerateNodes ([&] (UINodeConstPtr uiNode) {
-		Rect nodeRect = GetNodeExtendedRect (drawingEnv, uiNode);
+		Rect nodeRect = uiNode->GetExtendedRect (drawingEnv);
 		boundingRect.AddRect (nodeRect);
 		return true;
 	});

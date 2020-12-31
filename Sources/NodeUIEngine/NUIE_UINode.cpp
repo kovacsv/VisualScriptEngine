@@ -80,6 +80,13 @@ Rect UINode::GetRect (NodeUIDrawingEnvironment& env) const
 	return nodeRect.Offset (nodePosition);
 }
 
+Rect UINode::GetExtendedRect (NodeUIDrawingEnvironment& env) const
+{
+	const NodeDrawingImage& drawingImage = GetDrawingImage (env);
+	Rect nodeRect = drawingImage.GetExtendedNodeRect ();
+	return nodeRect.Offset (nodePosition);
+}
+
 void UINode::InvalidateDrawing () const
 {
 	nodeDrawingImage.Reset ();

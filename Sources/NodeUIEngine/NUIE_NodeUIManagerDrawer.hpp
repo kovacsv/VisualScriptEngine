@@ -47,14 +47,12 @@ private:
 	bool					IsRectVisible (NodeUIDrawingEnvironment& drawingEnv, const Rect& rect) const;
 
 	Rect					GetNodeRect (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode) const;
+	Rect					GetExtendedNodeRect (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode) const;
 	Point					GetOutputSlotConnPosition (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode, const NE::SlotId& slotId) const;
 	Point					GetInputSlotConnPosition (NodeUIDrawingEnvironment& drawingEnv, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode, const NE::SlotId& slotId) const;
 
 	const NodeUIManager&	uiManager;
 };
-
-Rect ExtendNodeRect (NodeUIDrawingEnvironment& drawingEnv, const Rect& originalRect);
-Rect GetNodeExtendedRect (NodeUIDrawingEnvironment& drawingEnv, const UINodeConstPtr& uiNode);
 
 }
 

@@ -4,7 +4,14 @@
 namespace NUIE
 {
 
-NodeDrawingImage::NodeDrawingImage ()
+NodeDrawingImage::NodeDrawingImage () :
+	nodeRect (),
+	extendedNodeRect (),
+	inputSlotConnPositions (),
+	outputSlotConnPositions (),
+	inputSlotRects (),
+	outputSlotRects (),
+	specialRects ()
 {
 
 }
@@ -33,6 +40,16 @@ void NodeDrawingImage::SetNodeRect (const Rect& rect)
 const Rect& NodeDrawingImage::GetNodeRect () const
 {
 	return nodeRect;
+}
+
+void NodeDrawingImage::SetExtendedNodeRect (const Rect& rect)
+{
+	extendedNodeRect = rect;
+}
+
+const NUIE::Rect& NodeDrawingImage::GetExtendedNodeRect () const
+{
+	return extendedNodeRect;
 }
 
 void NodeDrawingImage::AddInputSlotConnPosition (const NE::SlotId& slotId, const Point& position)

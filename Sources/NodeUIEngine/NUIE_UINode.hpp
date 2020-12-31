@@ -44,6 +44,7 @@ public:
 	void						Draw (NodeUIDrawingEnvironment& env) const;
 
 	Rect						GetRect (NodeUIDrawingEnvironment& env) const;
+	Rect						GetExtendedRect (NodeUIDrawingEnvironment& env) const;
 	void						InvalidateDrawing () const;
 
 	Point						GetInputSlotConnPosition (NodeUIDrawingEnvironment& env, const NE::SlotId& slotId) const;

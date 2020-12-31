@@ -7,6 +7,18 @@
 namespace NUIE
 {
 
+static Rect ExtendNodeRect (const Rect& originalRect, const SkinParams& skinParams)
+{
+	const Size& slotMarkerSize = skinParams.GetSlotMarkerSize ();
+	double extendSize = 0.0;
+	if (skinParams.GetHiddenSlotMarker () != SkinParams::HiddenSlotMarker::None) {
+		extendSize = slotMarkerSize.GetWidth () + slotMarkerSize.GetWidth () / 2.0;
+	} else if (skinParams.GetSlotMarker () != SkinParams::SlotMarker::None) {
+		extendSize = slotMarkerSize.GetWidth () / 2.0;
+	}
+	return originalRect.ExpandHorizontally (extendSize, extendSize);
+}
+
 NodePanelDrawer::NodePanelDrawer ()
 {
 
@@ -50,6 +62,9 @@ void NodePanelDrawer::Draw (NodeUIDrawingEnvironment& env, NodeDrawingImage& dra
 
 	drawingImage.AddItem (DrawingItemConstPtr (new DrawingRect (nodeRect, skinParams.GetNodeBorderPen ())));
 	drawingImage.SetNodeRect (nodeRect);
+
+	Rect extendedNodeRect = ExtendNodeRect (nodeRect, skinParams);
+	drawingImage.SetExtendedNodeRect (extendedNodeRect);
 }
 
 }
