@@ -1,5 +1,5 @@
-#ifndef NUIE_FEATURESET_HPP
-#define NUIE_FEATURESET_HPP
+#ifndef NUIE_FEATURETOGGLE_HPP
+#define NUIE_FEATURETOGGLE_HPP
 
 #include <string>
 

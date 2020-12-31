@@ -1,5 +1,5 @@
 #include "Application.hpp"
-#include "NUIE_FeatureSet.hpp"
+#include "NUIE_FeatureToggle.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_GdiplusUtils.hpp"
 

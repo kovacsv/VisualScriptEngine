@@ -1,7 +1,7 @@
 #include "SimpleTest.hpp"
 #include "NUIE_NodeEditor.hpp"
 #include "NUIE_NodeCommonMenuCommands.hpp"
-#include "NUIE_FeatureSet.hpp"
+#include "NUIE_FeatureToggle.hpp"
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
 #include "VisualTestFramework.hpp"

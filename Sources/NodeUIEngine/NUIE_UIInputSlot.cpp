@@ -1,7 +1,7 @@
 #include "NUIE_UIInputSlot.hpp"
 #include "NUIE_NodeMenuCommands.hpp"
 #include "NUIE_NodeUIManagerCommands.hpp"
-#include "NUIE_FeatureSet.hpp"
+#include "NUIE_FeatureToggle.hpp"
 
 namespace NUIE
 {

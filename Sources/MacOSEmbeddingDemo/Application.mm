@@ -7,7 +7,7 @@
 #include "MAS_IncludeCocoaHeaders.hpp"
 
 #include "NUIE_NodeTree.hpp"
-#include "NUIE_FeatureSet.hpp"
+#include "NUIE_FeatureToggle.hpp"
 #include "BI_BuiltInNodes.hpp"
 
 static const std::vector<NSString*> IconResourceNames = {
