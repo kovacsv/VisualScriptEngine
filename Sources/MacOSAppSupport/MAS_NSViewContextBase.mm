@@ -106,7 +106,6 @@ void NSViewContextBase::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2
 			[CreateColor (pen.GetColor ()) set];
 			NSBezierPath* bezierPath = [NSBezierPath bezierPath];
 			[bezierPath setLineWidth:pen.GetThickness ()];
-			[bezierPath setLineCapStyle:NSLineCapStyleRound];
 			[bezierPath moveToPoint:CreatePoint (height, p1)];
 			[bezierPath curveToPoint:CreatePoint (height, p4) controlPoint1:CreatePoint (height, p2) controlPoint2:CreatePoint (height, p3)];
 			[bezierPath stroke];
