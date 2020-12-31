@@ -66,7 +66,7 @@ public:
 	virtual Point						GetNodeOffset (const NE::NodeId& nodeId) const override;
 
 private:
-	std::unordered_map<MouseButton, std::shared_ptr<MouseMoveHandler>> handlers;
+	std::unordered_map<MouseButton, std::shared_ptr<MouseMoveHandler>, EnumHash> handlers;
 };
 
 }
