@@ -60,7 +60,7 @@ void NodePanelDrawer::Draw (NodeUIDrawingEnvironment& env, NodeDrawingImage& dra
 		panelYOffset += panelMinSize.GetHeight ();
 	}
 
-	drawingImage.AddItem (DrawingItemConstPtr (new DrawingRect (nodeRect, skinParams.GetNodeBorderPen ())));
+	drawingImage.AddItem (std::make_shared<DrawingRect> (nodeRect, skinParams.GetNodeBorderPen ()));
 	drawingImage.SetNodeRect (nodeRect);
 
 	Rect extendedNodeRect = ExtendNodeRect (nodeRect, skinParams);

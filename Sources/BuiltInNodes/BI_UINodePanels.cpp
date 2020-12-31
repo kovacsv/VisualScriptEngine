@@ -78,8 +78,8 @@ NUIE::Size NodeUIHeaderPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) c
 
 void NodeUIHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, GetBackgroundColor (env))));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rect, GetTextFont (env), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env))), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (rect, GetBackgroundColor (env)));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (rect, GetTextFont (env), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 }
 
 const NUIE::Font& NodeUIHeaderPanel::GetTextFont (NUIE::NodeUIDrawingEnvironment& env) const
@@ -142,9 +142,9 @@ void NodeUIIconHeaderPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUI
 	double centerOffset = (rect.GetWidth () - minWidth) / 2.0;
 	NUIE::Rect iconRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + centerOffset, rect.GetTop () + nodePadding), NUIE::Size (iconSize, iconSize));
 	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (NUIE::Point (rect.GetLeft () + centerOffset + iconSize + nodePadding, rect.GetTop ()), NUIE::Size (textSize.GetWidth (), rect.GetHeight ()));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, GetBackgroundColor (env))));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingIcon (iconRect, iconId)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, GetTextFont (env), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env))), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (rect, GetBackgroundColor (env)));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingIcon> (iconRect, iconId), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (textRect, GetTextFont (env), headerText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 }
 
 NodeUITextPanel::NodeUITextPanel (const std::wstring& text) :
@@ -165,8 +165,8 @@ NUIE::Size NodeUITextPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment& env) con
 void NodeUITextPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, skinParams.GetTextPanelBackgroundColor ())));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rect, skinParams.GetNodeContentTextFont (), text, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, skinParams.GetNodeContentTextColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (rect, skinParams.GetTextPanelBackgroundColor ()));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (rect, skinParams.GetNodeContentTextFont (), text, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, skinParams.GetNodeContentTextColor ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 }
 
 NodeUIMultiLineTextPanel::NodeUIMultiLineTextPanel (const std::vector<std::wstring>& nodeTexts, size_t allTextCount, size_t textsPerPage, NUIE::NodeUIDrawingEnvironment& env) :
@@ -200,7 +200,7 @@ NUIE::Size NodeUIMultiLineTextPanel::GetMinSize (NUIE::NodeUIDrawingEnvironment&
 
 void NodeUIMultiLineTextPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rect& rect, NUIE::NodeDrawingImage& drawingImage) const
 {
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, GetBackgroundColor (env))));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (rect, GetBackgroundColor (env)));
 	
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
@@ -211,7 +211,7 @@ void NodeUIMultiLineTextPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const 
 		NUIE::Point textRectPosition (rect.GetLeft () + xOffset, rect.GetTop () + yOffset);
 		NUIE::Size textRectSize (textRectWidth, maxTextSize.GetHeight ());
 		NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (textRectPosition, textRectSize);
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeContentTextFont (), nodeText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env))), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+		drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (textRect, skinParams.GetNodeContentTextFont (), nodeText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, GetTextColor (env)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 		yOffset += maxTextSize.GetHeight ();
 	}
 }
@@ -265,7 +265,7 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 	const NUIE::SkinParams& skinParams = env.GetSkinParams ();
 	double nodePadding = skinParams.GetNodePadding ();
 
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, skinParams.GetNodeContentBackgroundColor ())));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (rect, skinParams.GetNodeContentBackgroundColor ()));
 
 	NUIE::Point inputSlotsStartPoint = rect.GetTopLeft () + NUIE::Point (0.0, nodePadding);
 	inputSlots.Enumerate (SlotRectCollection::RefPointMode::TopLeft, inputSlotsStartPoint, nodePadding, [&] (const NE::SlotId& slotId, const NUIE::Rect& slotRect) {
@@ -276,8 +276,8 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 
 		if (skinParams.GetSlotMarker () == NUIE::SkinParams::SlotMarker::Circle) {
 			NUIE::Rect markerRect = NUIE::Rect::FromCenterAndSize (slotRect.GetLeftCenter (), skinParams.GetSlotMarkerSize ());
-			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (markerRect, skinParams.GetSlotTextBackgroundColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (markerRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+			drawingImage.AddItem (std::make_shared<NUIE::DrawingFillEllipse> (markerRect, skinParams.GetSlotTextBackgroundColor ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+			drawingImage.AddItem (std::make_shared<NUIE::DrawingEllipse> (markerRect, skinParams.GetConnectionLinePen ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 		}
 
 		if (skinParams.GetHiddenSlotMarker () == NUIE::SkinParams::HiddenSlotMarker::Arrow) {
@@ -286,13 +286,13 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 				const NUIE::Size markerSize = skinParams.GetSlotMarkerSize ();
 				NUIE::Point hiddenConnectionCenter = slotRect.GetLeftCenter () - NUIE::Point (markerSize.GetWidth () / 3.0 * 2.0, 0.0);
 				NUIE::Rect markerRect = NUIE::Rect::FromCenterAndSize (hiddenConnectionCenter, skinParams.GetSlotMarkerSize ());
-				drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (markerRect.GetTopCenter (), markerRect.GetLeftCenter (), skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-				drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingLine (markerRect.GetLeftCenter (), markerRect.GetBottomCenter (), skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+				drawingImage.AddItem (std::make_shared<NUIE::DrawingLine> (markerRect.GetTopCenter (), markerRect.GetLeftCenter (), skinParams.GetConnectionLinePen ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+				drawingImage.AddItem (std::make_shared<NUIE::DrawingLine> (markerRect.GetLeftCenter (), markerRect.GetBottomCenter (), skinParams.GetConnectionLinePen ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 			}
 		}
 
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeContentTextFont (), uiSlot->GetName ().GetLocalized (), NUIE::HorizontalAnchor::Left, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+		drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (slotRect, skinParams.GetSlotTextBackgroundColor ()));
+		drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (textRect, skinParams.GetNodeContentTextFont (), uiSlot->GetName ().GetLocalized (), NUIE::HorizontalAnchor::Left, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 	});
 
 	NUIE::Point outputSlotsStartPoint = rect.GetTopRight () + NUIE::Point (0.0, nodePadding);
@@ -303,11 +303,11 @@ void NodeUISlotPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::Rec
 		drawingImage.AddOutputSlotRect (slotId, slotRect);
 		if (skinParams.GetSlotMarker () == NUIE::SkinParams::SlotMarker::Circle) {
 			NUIE::Rect connCircleRect = NUIE::Rect::FromCenterAndSize (slotRect.GetRightCenter (), skinParams.GetSlotMarkerSize ());
-			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillEllipse (connCircleRect, skinParams.GetSlotTextBackgroundColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-			drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingEllipse (connCircleRect, skinParams.GetConnectionLinePen ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+			drawingImage.AddItem (std::make_shared<NUIE::DrawingFillEllipse> (connCircleRect, skinParams.GetSlotTextBackgroundColor ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+			drawingImage.AddItem (std::make_shared<NUIE::DrawingEllipse> (connCircleRect, skinParams.GetConnectionLinePen ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 		}
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (slotRect, skinParams.GetSlotTextBackgroundColor ())));
-		drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeContentTextFont (), uiSlot->GetName ().GetLocalized (), NUIE::HorizontalAnchor::Right, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ())), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+		drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (slotRect, skinParams.GetSlotTextBackgroundColor ()));
+		drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (textRect, skinParams.GetNodeContentTextFont (), uiSlot->GetName ().GetLocalized (), NUIE::HorizontalAnchor::Right, NUIE::VerticalAnchor::Center, skinParams.GetSlotTextColor ()), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 	});
 }
 
@@ -351,21 +351,21 @@ void NodeUILeftRightButtonsPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, con
 	const NUIE::Color& backgroundColor = skinParams.GetNodeContentBackgroundColor ();
 	const NUIE::Color& textColor = skinParams.GetNodeContentTextColor ();
 
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, backgroundColor)));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (rect, backgroundColor));
 
 	NUIE::Rect leftButtonRect = NUIE::Rect::FromPositionAndSize (rect.GetTopLeft () + NUIE::Point (nodePadding, nodePadding), leftButtonSize);
 	NUIE::Rect rightButtonRect = NUIE::Rect::FromPositionAndSize (rect.GetTopRight () - NUIE::Point (rightButtonSize.GetWidth () + nodePadding, -nodePadding), rightButtonSize);
 	NUIE::Rect textRect = NUIE::Rect::FromPositionAndSize (leftButtonRect.GetTopRight (), NUIE::Size (rightButtonRect.GetLeft () - leftButtonRect.GetRight (), panelTextSize.GetHeight ()));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (textRect, skinParams.GetNodeContentTextFont (), panelText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (textRect, skinParams.GetNodeContentTextFont (), panelText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
 
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (leftButtonRect, skinParams.GetButtonBackgroundColor ())));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (leftButtonRect, skinParams.GetNodeContentTextFont (), leftButtonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (leftButtonRect, skinParams.GetButtonBorderPen ())));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (leftButtonRect, skinParams.GetButtonBackgroundColor ()));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (leftButtonRect, skinParams.GetNodeContentTextFont (), leftButtonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingRect> (leftButtonRect, skinParams.GetButtonBorderPen ()));
 	drawingImage.AddSpecialRect (leftButtonId, leftButtonRect);
 
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rightButtonRect, skinParams.GetButtonBackgroundColor ())));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (rightButtonRect, skinParams.GetNodeContentTextFont (), rightButtonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (rightButtonRect, skinParams.GetButtonBorderPen ())));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (rightButtonRect, skinParams.GetButtonBackgroundColor ()));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (rightButtonRect, skinParams.GetNodeContentTextFont (), rightButtonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingRect> (rightButtonRect, skinParams.GetButtonBorderPen ()));
 	drawingImage.AddSpecialRect (rightButtonId, rightButtonRect);
 }
 
@@ -396,12 +396,12 @@ void NodeUIButtonPanel::Draw (NUIE::NodeUIDrawingEnvironment& env, const NUIE::R
 	const NUIE::Color& backgroundColor = skinParams.GetNodeContentBackgroundColor ();
 	const NUIE::Color& textColor = skinParams.GetNodeContentTextColor ();
 
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (rect, backgroundColor)));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (rect, backgroundColor));
 
 	NUIE::Rect buttonRect = NUIE::Rect::FromCenterAndSize (rect.GetCenter (), rect.GetSize ().Grow (-2.0 * nodePadding, -2.0 * nodePadding));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingFillRect (buttonRect, skinParams.GetButtonBackgroundColor ())));
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingText (buttonRect, skinParams.GetNodeContentTextFont (), buttonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor)), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
-	drawingImage.AddItem (NUIE::DrawingItemConstPtr (new NUIE::DrawingRect (buttonRect, skinParams.GetButtonBorderPen ())));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingFillRect> (buttonRect, skinParams.GetButtonBackgroundColor ()));
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingText> (buttonRect, skinParams.GetNodeContentTextFont (), buttonText, NUIE::HorizontalAnchor::Center, NUIE::VerticalAnchor::Center, textColor), NUIE::DrawingContext::ItemPreviewMode::HideInPreview);
+	drawingImage.AddItem (std::make_shared<NUIE::DrawingRect> (buttonRect, skinParams.GetButtonBorderPen ()));
 	drawingImage.AddSpecialRect (buttonRectId, buttonRect);
 }
 
