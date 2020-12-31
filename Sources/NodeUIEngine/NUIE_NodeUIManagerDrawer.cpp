@@ -16,19 +16,19 @@ static void GetBezierControlPoints (const Point& beg, const Point& end, Point& c
 	controlPoint2 = end - bezierOffset;
 }
 
-NodeUIScaleIndependentData::NodeUIScaleIndependentData (const NodeUIManager& uiManager, const SkinParams& skinParams) :
-	selectionThickness (0.0)
+SelectionParams::SelectionParams (const NodeUIManager& uiManager, const SkinParams& skinParams) :
+	thickness (0.0)
 {
 	double scale = uiManager.GetViewBox ().GetScale ();
-	selectionThickness = skinParams.GetNodeSelectionRectPen ().GetThickness ();
+	thickness = skinParams.GetNodeSelectionRectPen ().GetThickness ();
 	if (scale < 1.0) {
-		selectionThickness /= scale;
+		thickness /= scale;
 	}
 }
 
-double NodeUIScaleIndependentData::GetSelectionThickness () const
+double SelectionParams::GetThickness () const
 {
-	return selectionThickness;
+	return thickness;
 }
 
 NodeUIManagerDrawer::NodeUIManagerDrawer (const NodeUIManager& uiManager) :
@@ -45,14 +45,14 @@ void NodeUIManagerDrawer::Draw (NodeUIDrawingEnvironment& drawingEnv, const Node
 	DrawBackground (drawingEnv);
 
 	{
-		NodeUIScaleIndependentData scaleIndependentData (uiManager, drawingEnv.GetSkinParams ());
+		SelectionParams selectionParams (uiManager, drawingEnv.GetSkinParams ());
 		PreviewContextDecorator textSkipperContext (drawingContext, uiManager.IsPreviewMode ());
 		ViewBoxContextDecorator viewBoxContext (textSkipperContext, uiManager.GetViewBox ());
 		DrawingEnvironmentContextDecorator drawEnv (drawingEnv, viewBoxContext);
 		
 		DrawGroups (drawEnv, drawModifier);
-		DrawConnections (drawEnv, scaleIndependentData, drawModifier);
-		DrawNodes (drawEnv, scaleIndependentData, drawModifier);
+		DrawConnections (drawEnv, selectionParams, drawModifier);
+		DrawNodes (drawEnv, selectionParams, drawModifier);
 	}
 
 	DrawSelectionRect (drawingEnv, drawModifier);
@@ -103,11 +103,11 @@ void NodeUIManagerDrawer::DrawGroups (NodeUIDrawingEnvironment& drawingEnv, cons
 	});
 }
 
-void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier) const
+void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv, const SelectionParams& selectionParams, const NodeDrawingModifier* drawModifier) const
 {
 	const SkinParams& skinParams = drawingEnv.GetSkinParams ();
-	const Pen& pen = skinParams.GetConnectionLinePen ();
-	Pen selectionPen (skinParams.GetNodeSelectionRectPen ().GetColor (), scaleIndependentData.GetSelectionThickness ());
+	const Pen& normalPen = skinParams.GetConnectionLinePen ();
+	Pen selectionPen (skinParams.GetNodeSelectionRectPen ().GetColor (), selectionParams.GetThickness ());
 
 	const Selection& selection = uiManager.GetSelection ();
 	const NE::NodeCollection& selectedNodes = selection.GetNodes ();
@@ -125,13 +125,14 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv,
 				}
 				bool endSelected = selectedNodes.Contains (endNode->GetId ());
 				Point end = GetInputSlotConnPosition (drawingEnv, drawModifier, endNode, inputSlot->GetId ());
-				if (IsConnectionVisible (drawingEnv, beg, end)) {
-					if (begSelected || endSelected) {
-						DrawConnection (drawingEnv, selectionPen, beg, end);
-					} else {
-						if (inputSlot->GetConnectionDisplayMode () == ConnectionDisplayMode::Normal) {
-							DrawConnection (drawingEnv, pen, beg, end);
-						}
+				if (!IsConnectionVisible (drawingEnv, beg, end)) {
+					return;
+				}
+				if (begSelected || endSelected) {
+					DrawConnection (drawingEnv, selectionPen, beg, end);
+				} else {
+					if (inputSlot->GetConnectionDisplayMode () == ConnectionDisplayMode::Normal) {
+						DrawConnection (drawingEnv, normalPen, beg, end);
 					}
 				}
 			});
@@ -143,7 +144,7 @@ void NodeUIManagerDrawer::DrawConnections (NodeUIDrawingEnvironment& drawingEnv,
 	if (drawModifier != nullptr) {
 		drawModifier->EnumerateTemporaryConnections ([&] (const Point& beg, const Point& end, NodeDrawingModifier::Direction dir) {
 			if (IsConnectionVisible (drawingEnv, beg, end)) {
-				DrawTemporaryConnection (drawingEnv, pen, beg, end, dir);
+				DrawTemporaryConnection (drawingEnv, normalPen, beg, end, dir);
 			}
 		});
 	}
@@ -177,10 +178,10 @@ void NodeUIManagerDrawer::DrawTemporaryConnection (NodeUIDrawingEnvironment& dra
 	}
 }
 
-void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier) const
+void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& drawingEnv, const SelectionParams& selectionParams, const NodeDrawingModifier* drawModifier) const
 {
 	uiManager.EnumerateNodes ([&] (UINodeConstPtr uiNode) {
-		if (!IsNodeVisible (drawingEnv, scaleIndependentData, drawModifier, uiNode)) {
+		if (!IsNodeVisible (drawingEnv, selectionParams, drawModifier, uiNode)) {
 			return true;
 		}
 		
@@ -190,7 +191,7 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& drawingEnv, const
 		}
 
 		Point nodeOffset = drawModifier->GetNodeOffset (uiNode->GetId ());
-		DrawNode (drawingEnv, scaleIndependentData, nodeOffset, selectionMode, uiNode);
+		DrawNode (drawingEnv, selectionParams, nodeOffset, selectionMode, uiNode);
 		return true;
 	});
 
@@ -202,24 +203,24 @@ void NodeUIManagerDrawer::DrawNodes (NodeUIDrawingEnvironment& drawingEnv, const
 		for (const auto& duplicatedNode : duplicatedNodes) {
 			UINodeConstPtr uiNode = uiManager.GetNode (duplicatedNode.first);
 			Point nodeOffset = drawModifier->GetNodeOffset (uiNode->GetId ());
-			DrawNode (drawingEnv, scaleIndependentData, nodeOffset + duplicatedNode.second, SelectionMode::NotSelected, uiNode);
+			DrawNode (drawingEnv, selectionParams, nodeOffset + duplicatedNode.second, SelectionMode::NotSelected, uiNode);
 		}
 	}
 }
 
-void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const Point& offset, SelectionMode selectionMode, const UINodeConstPtr& uiNode) const
+void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const SelectionParams& selectionParams, const Point& offset, SelectionMode selectionMode, const UINodeConstPtr& uiNode) const
 {
 	ViewBox offsetViewBox (offset, 1.0);
 	ViewBoxContextDecorator offsetContext (drawingEnv.GetDrawingContext (), offsetViewBox);
 	DrawingEnvironmentContextDecorator offsetEnv (drawingEnv, offsetContext);
-	DrawNode (offsetEnv, scaleIndependentData, selectionMode, uiNode);
+	DrawNode (offsetEnv, selectionParams, selectionMode, uiNode);
 }
 
-void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, SelectionMode selectionMode, const UINodeConstPtr& uiNode) const
+void NodeUIManagerDrawer::DrawNode (NodeUIDrawingEnvironment& drawingEnv, const SelectionParams& selectionParams, SelectionMode selectionMode, const UINodeConstPtr& uiNode) const
 {
 	if (selectionMode == SelectionMode::Selected) {
 		Rect nodeRect = uiNode->GetRect (drawingEnv);
-		double selectionThickness = scaleIndependentData.GetSelectionThickness ();
+		double selectionThickness = selectionParams.GetThickness ();
 		Rect selectionRect = nodeRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
 		drawingEnv.GetDrawingContext ().FillRect (selectionRect, drawingEnv.GetSkinParams ().GetNodeSelectionRectPen ().GetColor ());
 		ColorBlenderContextDecorator selectionContext (drawingEnv.GetDrawingContext (), drawingEnv.GetSkinParams ().GetSelectionBlendColor ());
@@ -247,11 +248,11 @@ bool NodeUIManagerDrawer::IsConnectionVisible (NodeUIDrawingEnvironment& drawing
 	return IsRectVisible (drawingEnv, boundingRect);
 }
 
-bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& drawingEnv, const NodeUIScaleIndependentData& scaleIndependentData, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode) const
+bool NodeUIManagerDrawer::IsNodeVisible (NodeUIDrawingEnvironment& drawingEnv, const SelectionParams& selectionParams, const NodeDrawingModifier* drawModifier, const UINodeConstPtr& uiNode) const
 {
 	Rect boundingRect = GetExtendedNodeRect (drawingEnv, drawModifier, uiNode);
 
-	double selectionThickness = scaleIndependentData.GetSelectionThickness ();
+	double selectionThickness = selectionParams.GetThickness ();
 	boundingRect = boundingRect.Expand (Size (selectionThickness * 2.0, selectionThickness * 2.0));
 
 	return IsRectVisible (drawingEnv, boundingRect);
