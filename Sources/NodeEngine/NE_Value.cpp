@@ -221,7 +221,7 @@ ValueConstPtr CreateSingleValue (const ValueConstPtr& value)
 IListValueConstPtr CreateListValue (const ValueConstPtr& value)
 {
 	if (Value::IsType<SingleValue> (value)) {
-		return IListValueConstPtr (new ValueToListValueAdapter (value));
+		return std::make_shared<ValueToListValueAdapter> (value);
 	} else if (Value::IsType<ListValue> (value)) {
 		return std::dynamic_pointer_cast<const IListValue> (value);
 	}

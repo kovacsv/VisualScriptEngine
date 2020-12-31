@@ -29,7 +29,7 @@ BooleanValue::~BooleanValue ()
 
 ValuePtr BooleanValue::Clone () const
 {
-	return ValuePtr (new BooleanValue (val));
+	return std::make_shared<BooleanValue> (val);
 }
 
 std::wstring BooleanValue::ToString (const StringConverter&) const
@@ -72,7 +72,7 @@ StringValue::~StringValue ()
 
 ValuePtr StringValue::Clone () const
 {
-	return ValuePtr (new StringValue (val));
+	return std::make_shared<StringValue> (val);
 }
 
 std::wstring StringValue::ToString (const StringConverter&) const
@@ -171,7 +171,7 @@ IntValue::~IntValue ()
 
 ValuePtr IntValue::Clone () const
 {
-	return ValuePtr (new IntValue (val));
+	return std::make_shared<IntValue> (val);
 }
 
 std::wstring IntValue::ToString (const StringConverter&) const
@@ -230,7 +230,7 @@ FloatValue::~FloatValue ()
 
 ValuePtr FloatValue::Clone () const
 {
-	return ValuePtr (new FloatValue (val));
+	return std::make_shared<FloatValue> (val);
 }
 
 std::wstring FloatValue::ToString (const StringConverter& stringConverter) const
@@ -289,7 +289,7 @@ DoubleValue::~DoubleValue ()
 
 ValuePtr DoubleValue::Clone () const
 {
-	return ValuePtr (new DoubleValue (val));
+	return std::make_shared<DoubleValue> (val);
 }
 
 std::wstring DoubleValue::ToString (const StringConverter& stringConverter) const
