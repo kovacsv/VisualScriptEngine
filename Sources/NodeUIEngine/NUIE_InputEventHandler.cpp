@@ -74,7 +74,7 @@ void MouseEventTranslator::OnMouseUp (NodeUIEnvironment& env, const ModifierKeys
 
 void MouseEventTranslator::OnMouseMove (NodeUIEnvironment& env, const ModifierKeys& modifierKeys, const Point& position)
 {
-	std::unordered_set<MouseButton> downButtonsMoved;
+	std::unordered_set<MouseButton, EnumHash> downButtonsMoved;
 	for (const auto& it : downMouseButtons) {
 		if (Point::Distance (it.second, position) > MouseMoveMinOffset) {
 			movingMouseButtons.insert (it.first);
