@@ -57,7 +57,7 @@ public:
 
 	virtual ValuePtr Clone () const override
 	{
-		return ValuePtr (new AValue (val));
+		return std::make_shared<AValue> (val);
 	}
 
 	virtual std::wstring ToString (const StringConverter&) const override
