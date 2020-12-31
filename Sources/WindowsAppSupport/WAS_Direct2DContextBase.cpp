@@ -201,9 +201,7 @@ void Direct2DContextBase::DrawBezier (const NUIE::Point& p1, const NUIE::Point& 
 	sink->Close ();
 
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
-	ID2D1StrokeStyle* d2StrokeStyle = CreateStrokeStyle (direct2DHandler.direct2DFactory);
-	renderTarget->DrawGeometry (path, d2Brush, GetPenThickness (pen), d2StrokeStyle);
-	SafeRelease (&d2StrokeStyle);
+	renderTarget->DrawGeometry (path, d2Brush, GetPenThickness (pen));
 	SafeRelease (&d2Brush);
 
 	SafeRelease (&sink);
@@ -214,9 +212,7 @@ void Direct2DContextBase::DrawRect (const NUIE::Rect& rect, const NUIE::Pen& pen
 {
 	D2D1_RECT_F d2Rect = CreateRect (rect);
 	ID2D1SolidColorBrush* d2Brush = CreateBrush (renderTarget, pen.GetColor ());
-	ID2D1StrokeStyle* d2StrokeStyle = CreateStrokeStyle (direct2DHandler.direct2DFactory);
-	renderTarget->DrawRectangle (&d2Rect, d2Brush, GetPenThickness (pen), d2StrokeStyle);
-	SafeRelease (&d2StrokeStyle);
+	renderTarget->DrawRectangle (&d2Rect, d2Brush, GetPenThickness (pen));
 	SafeRelease (&d2Brush);
 }
 
