@@ -36,6 +36,16 @@ matrix:
       addons:
         apt:
           sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-10
+      env:
+        - MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
+        - PACKAGE_NAME=Linux_gcc10
+    - os: linux
+      addons:
+        apt:
+          sources:
             - llvm-toolchain-xenial-7
           packages:
             - clang-7
@@ -84,6 +94,11 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
         - PACKAGE_NAME=OSX_XCode12
+    - os: osx
+      osx_image: xcode12.2
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+        - PACKAGE_NAME=OSX_XCode12_2
     - os: osx
       osx_image: xcode12u
       env:
