@@ -11,6 +11,19 @@ using namespace BI;
 namespace NodeEditorVisualTestGrouping
 {
 
+TEST (GroupSelectedNodesTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference (L"GroupSelectedNodes_Basic.svg"));
+	env.Click (env.rangeInputHeaderPoint);
+	
+	env.nodeEditor.ExecuteCommand (NUIE::CommandCode::Group);
+	ASSERT (env.CheckReference (L"GroupSelectedNodes_AfterGroup.svg"));
+
+	env.nodeEditor.ExecuteCommand (NUIE::CommandCode::Ungroup);
+	ASSERT (env.CheckReference (L"GroupSelectedNodes_AfterUngroup.svg"));
+}
+
 TEST (CreateGroupTest)
 {
 	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());

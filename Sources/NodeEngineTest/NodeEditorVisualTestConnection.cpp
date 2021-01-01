@@ -8,7 +8,7 @@ using namespace NE;
 using namespace NUIE;
 using namespace BI;
 
-namespace NodeEditorVisualTestReconnection
+namespace NodeEditorVisualTestConnection
 {
 
 class ReconnectionTestEnv : public NodeEditorTestEnv
@@ -66,6 +66,108 @@ public:
 	Point		listBuilder1OutputSlotPosition;
 	Point		listBuilder2OutputSlotPosition;
 };
+
+TEST (SlotConnectionTest)
+{
+	SimpleNodeEditorTestEnv env (GetDefaultSkinParams ());
+
+	Point doubleOutputSlotPosition = env.doubleUpDownNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Point rangeOutputSlotPosition = env.rangeInputNode->GetOutputSlotRect (env.uiEnvironment, SlotId ("out")).GetCenter ();
+	Rect viewer1InputSlotRect = env.viewerUINode1->GetInputSlotRect (env.uiEnvironment, SlotId ("in"));
+	Point viewer1InputSlotPosition = viewer1InputSlotRect.GetCenter ();
+	Point viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
+	Point rangeStartInputSlotPosition = env.rangeInputNode->GetInputSlotRect (env.uiEnvironment, SlotId ("start")).GetCenter ();
+
+	ASSERT (env.CheckReference (L"SlotConnection_Basic.svg"));
+
+	{ // start connecting double output slot without target
+		Point targetPosition = doubleOutputSlotPosition + Point (200.0, -100.0);
+		env.DragDrop (doubleOutputSlotPosition, targetPosition, [&] () {
+			ASSERT (env.CheckReference (L"SlotConnection_DraggingDoubleOutput.svg"));
+		});
+		ASSERT (env.CheckReference (L"SlotConnection_Basic.svg"));
+	}
+
+	{ // start connecting viewer1 input slot without target
+		Point targetPosition = viewer1InputSlotPosition - Point (200.0, -100.0);
+		env.DragDrop (viewer1InputSlotPosition, targetPosition, [&] () {
+			ASSERT (env.CheckReference (L"SlotConnection_DraggingViewer1Input.svg"));
+		});
+		ASSERT (env.CheckReference (L"SlotConnection_Basic.svg"));
+	}
+
+	{ // connect double output slot to viewer1 input slot
+		Point targetPos = viewer1InputSlotRect.GetLeftCenter () - Point (5.0, 0.0);
+		env.DragDrop (doubleOutputSlotPosition, targetPos, [&] () {
+			ASSERT (env.CheckReference (L"SlotConnection_ConnectingDoubleToViewer1.svg"));
+		});
+		ASSERT (env.CheckReference (L"SlotConnection_DoubleConnectedToViewer1.svg"));
+	}
+
+	{ // start connecting double output slot without target again
+		Point targetPosition = doubleOutputSlotPosition + Point (200.0, -100.0);
+		env.DragDrop (doubleOutputSlotPosition, targetPosition, [&] () {
+			ASSERT (env.CheckReference (L"SlotConnection_DraggingConnectedViewer1Input.svg"));
+		});
+		ASSERT (env.CheckReference (L"SlotConnection_DoubleConnectedToViewer1.svg"));
+	}
+
+	{ // connect viewer2 input slot to range output slot
+		env.DragDrop (viewer2InputSlotPosition, rangeOutputSlotPosition, [&] () {
+			ASSERT (env.CheckReference (L"SlotConnection_ConnectingViewer2ToRange.svg"));
+		});
+		ASSERT (env.CheckReference (L"SlotConnection_AllViewersConnected.svg"));
+	}
+
+	{ // connect double output slot to range start slot
+		env.DragDrop (doubleOutputSlotPosition, rangeStartInputSlotPosition);
+		ASSERT (env.CheckReference (L"SlotConnection_AllConnected.svg"));
+	}
+
+	viewer2InputSlotPosition = env.viewerUINode2->GetInputSlotRect (env.uiEnvironment, SlotId ("in")).GetCenter ();
+	{ // connect double output slot to viewer2 input slot
+		env.DragDrop (doubleOutputSlotPosition, viewer2InputSlotPosition, [&] () {
+			ASSERT (env.CheckReference (L"SlotConnection_ConnectingDoubleToViewer2.svg"));
+		});
+		ASSERT (env.CheckReference (L"SlotConnection_DoubleToViewer2Connected.svg"));
+	}
+}
+
+TEST (InputSlotReconnectionTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference (L"InputSlotReconnection_Basic.svg"));
+
+	env.CtrlDragDrop (env.viewer1InputSlotRect.GetCenter (), env.viewer2InputSlotRect.GetCenter (), [&] () {
+		ASSERT (env.CheckReference (L"InputSlotReconnection_DuringConnection.svg"));
+	});
+
+	ASSERT (env.CheckReference (L"InputSlotReconnection_Reconnected.svg"));
+
+	env.nodeEditor.Undo ();
+	ASSERT (env.CheckReference (L"InputSlotReconnection_AfterUndo.svg"));
+
+	env.CtrlDragDrop (env.viewer1InputSlotRect.GetCenter (), Point (0.0, 0.0));
+	ASSERT (env.CheckReference (L"InputSlotReconnection_AfterDisconnect.svg"));
+}
+
+TEST (OutputSlotReconnectionTest)
+{
+	SimpleNodeEditorTestEnvWithConnections env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference (L"OutputSlotReconnection_Basic.svg"));
+
+	env.CtrlDragDrop (env.rangeOutputSlotSRect.GetCenter (), env.doubleUpDownOutputSlotRect.GetCenter (), [&] () {
+		ASSERT (env.CheckReference (L"OutputSlotReconnection_DuringConnection.svg"));
+	});
+
+	ASSERT (env.CheckReference (L"OutputSlotReconnection_Reconnected.svg"));
+
+	env.nodeEditor.Undo ();
+	ASSERT (env.CheckReference (L"OutputSlotReconnection_AfterUndo.svg"));
+
+	env.CtrlDragDrop (env.rangeOutputSlotSRect.GetCenter (), Point (0.0, 0.0));
+	ASSERT (env.CheckReference (L"OutputSlotReconnection_AfterDisconnect.svg"));
+}
 
 TEST (ReconnectionTest_ReconnectInputSlot)
 {
