@@ -74,6 +74,18 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang-9 && CXX=clang++-9"
         - PACKAGE_NAME=Linux_clang9
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-10 main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+          packages:
+            - clang-9
+      env:
+        - MATRIX_EVAL="CC=clang-10 && CXX=clang++-10"
+        - PACKAGE_NAME=Linux_clang10
     - os: osx
       osx_image: xcode10.3
       env:
