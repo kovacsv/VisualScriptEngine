@@ -600,4 +600,38 @@ TEST (NodeOrderTest)
 	}
 }
 
+TEST (MultiMouseMoveHandlerTest)
+{
+	NodeEditorTestEnv env (GetDefaultSkinParams ());
+	Point padding (10.0, 10.0);
+
+	{ // create two nodes
+		env.nodeEditor.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Number 1"), Point (100.0, 100.0), 0.0, 1.0)));
+		env.nodeEditor.AddNode (UINodePtr (new DoubleUpDownNode (LocString (L"Number 2"), Point (250.0, 250.0), 0.0, 1.0)));
+		ASSERT (env.CheckReference (L"MultiMouseMoveHandlerTest_Initial.svg"));
+	}
+
+	Point mousePosition;
+	{ // start dragging number 2
+		mousePosition = env.GetNodeRect (env.GetNode (L"Number 2")).GetTopLeft () + padding;
+		env.nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Left, (int) mousePosition.GetX (), (int) mousePosition.GetY ());
+		mousePosition = mousePosition + Point (100, 0);
+		env.nodeEditor.OnMouseMove (EmptyModifierKeys, (int) mousePosition.GetX (), (int) mousePosition.GetY ());
+		ASSERT (env.CheckReference (L"MultiMouseMoveHandlerTest_Number2Dragging.svg"));
+	}
+
+	{ // start panning the canvas
+		env.nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Right, (int) mousePosition.GetX (), (int) mousePosition.GetY ());
+		mousePosition = mousePosition + Point (0, 50);
+		env.nodeEditor.OnMouseMove (EmptyModifierKeys, (int) mousePosition.GetX (), (int) mousePosition.GetY ());
+		ASSERT (env.CheckReference (L"MultiMouseMoveHandlerTest_Number2DraggingAndPanning.svg"));
+	}
+
+	{ // release mouse buttons
+		env.nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Right, (int) mousePosition.GetX (), (int) mousePosition.GetY ());
+		env.nodeEditor.OnMouseUp (EmptyModifierKeys, MouseButton::Left, (int) mousePosition.GetX (), (int) mousePosition.GetY ());
+		ASSERT (env.CheckReference (L"MultiMouseMoveHandlerTest_Final.svg"));
+	}
+}
+
 }

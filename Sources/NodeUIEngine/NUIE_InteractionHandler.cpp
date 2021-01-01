@@ -120,11 +120,6 @@ public:
 	
 	}
 
-	virtual bool AreOtherHandlersAllowed () const override
-	{
-		return false;
-	}
-
 	virtual void HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
 	{
 		const ViewBox& viewBox = uiManager.GetViewBox ();
@@ -193,11 +188,6 @@ public:
 				inputNode->GetInputSlotConnPosition (drawingEnv, inputSlot->GetId ())
 			});
 		});
-	}
-
-	virtual bool AreOtherHandlersAllowed () const override
-	{
-		return false;
 	}
 
 	virtual void HandleMouseDown (NodeUIEnvironment&, const ModifierKeys&, const Point& position) override
@@ -591,10 +581,10 @@ EventHandlerResult InteractionHandler::HandleMouseDragStart (NodeUIEnvironment& 
 		multiMouseMoveHandler.AddHandler (mouseButton, new PanningHandler (uiManager));
 	}
 
-	multiMouseMoveHandler.EnumerateHandlers ([&] (const std::shared_ptr<MouseMoveHandler>& handler) {
-		handler->OnMouseDown (uiEnvironment, modifierKeys, position);
+	if (multiMouseMoveHandler.HasHandler (mouseButton)) {
+		multiMouseMoveHandler.GetHandler (mouseButton)->OnMouseDown (uiEnvironment, modifierKeys, position);
 		handlerResult = EventHandlerResult::EventHandled;
-	});
+	}
 
 	return handlerResult;
 }
