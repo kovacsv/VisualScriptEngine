@@ -2,7 +2,7 @@
 #include "NE_MemoryStream.hpp"
 #include "NUIE_NodeEditor.hpp"
 #include "BI_BuiltInNodes.hpp"
-#include "VisualTestFramework.hpp"
+#include "TestEnvironment.hpp"
 
 using namespace NE;
 using namespace NUIE;

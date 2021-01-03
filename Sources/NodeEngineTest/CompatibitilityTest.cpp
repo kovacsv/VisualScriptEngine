@@ -4,7 +4,7 @@
 #include "BI_InputUINodes.hpp"
 #include "BI_BinaryOperationNodes.hpp"
 #include "BI_ViewerUINodes.hpp"
-#include "VisualTestFramework.hpp"
+#include "TestEnvironment.hpp"
 #include "TestReference.hpp"
 
 #include <fstream>

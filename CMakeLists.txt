@@ -99,8 +99,10 @@ install (FILES ${LocalizationFiles} DESTINATION localization)
 # NodeEngineTest
 
 set (TestFrameworkSourcesFolder Sources/TestFramework)
+set (TestEnvironmentSourcesFolder Sources/NodeEngineTest/TestEnvironment)
 set (NodeEngineTestSourcesFolder Sources/NodeEngineTest)
 file (GLOB TestFrameworkFiles ${TestFrameworkSourcesFolder}/*.hpp ${TestFrameworkSourcesFolder}/*.cpp)
+file (GLOB TestEnvironmentFiles ${TestEnvironmentSourcesFolder}/*.hpp ${TestEnvironmentSourcesFolder}/*.cpp)
 file (GLOB NodeEngineTestHeaderFiles ${NodeEngineTestSourcesFolder}/*.hpp)
 file (GLOB NodeEngineTestSourceFiles ${NodeEngineTestSourcesFolder}/*.cpp)
 set (
@@ -111,13 +113,22 @@ set (
 set (
 	NodeEngineTestFiles
 	${TestFrameworkFiles}
+	${TestEnvironmentFiles}
 	${NodeEngineTestTestFiles}
 )
 source_group ("Framework" FILES ${TestFrameworkFiles})
+source_group ("Environment" FILES ${TestEnvironmentFiles})
 source_group ("Sources" FILES ${NodeEngineTestTestFiles})
 add_executable (NodeEngineTest ${NodeEngineTestFiles})
 set_target_properties (NodeEngineTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIG>")
-target_include_directories (NodeEngineTest PUBLIC ${NodeEngineSourcesFolder} ${NodeUIEngineSourcesFolder} ${BuiltInNodesSourcesFolder} ${TestFrameworkSourcesFolder})
+target_include_directories (
+	NodeEngineTest PUBLIC
+	${NodeEngineSourcesFolder}
+	${NodeUIEngineSourcesFolder}
+	${BuiltInNodesSourcesFolder}
+	${TestFrameworkSourcesFolder}
+	${TestEnvironmentSourcesFolder}
+)
 target_link_libraries (NodeEngineTest NodeEngine NodeUIEngine BuiltInNodes)
 get_filename_component (NodeEngineTestSourcesFolderAbsolute "${CMAKE_CURRENT_LIST_DIR}/${NodeEngineTestSourcesFolder}" ABSOLUTE)
 add_custom_command (TARGET NodeEngineTest POST_BUILD

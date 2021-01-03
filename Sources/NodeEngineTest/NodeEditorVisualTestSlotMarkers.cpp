@@ -4,7 +4,7 @@
 #include "NUIE_FeatureToggle.hpp"
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
-#include "VisualTestFramework.hpp"
+#include "TestEnvironment.hpp"
 
 using namespace NE;
 using namespace NUIE;

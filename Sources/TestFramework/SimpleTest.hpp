@@ -9,26 +9,6 @@
 #define WIN_PATH_SEPARATOR	L'\\'
 #define PATH_SEPARATOR		L'/'
 
-#define TEST(TESTNAME)											\
-class TESTNAME##_Test : public SimpleTest::Test {				\
-public:															\
-	TESTNAME##_Test () :										\
-		SimpleTest::Test (#TESTNAME)							\
-	{															\
-	}															\
-	virtual void RunTest () override;							\
-};																\
-static class TESTNAME##_Registrator {							\
-	public:														\
-		TESTNAME##_Registrator ()								\
-		{														\
-			SimpleTest::RegisterTest (new TESTNAME##_Test ());	\
-		}														\
-} TESTNAME##_RegistratorInstance;								\
-void TESTNAME##_Test::RunTest ()
-
-#define ASSERT(condition) TestAssert (condition, __FILE__, __LINE__)
-
 namespace SimpleTest
 {
 
@@ -71,5 +51,25 @@ bool			RunTests ();
 void			RegisterTest (Test* test);
 
 }
+
+#define TEST(TESTNAME)											\
+class TESTNAME##_Test : public SimpleTest::Test {				\
+public:															\
+	TESTNAME##_Test () :										\
+		SimpleTest::Test (#TESTNAME)							\
+	{															\
+	}															\
+	virtual void RunTest () override;							\
+};																\
+static class TESTNAME##_Registrator {							\
+	public:														\
+		TESTNAME##_Registrator ()								\
+		{														\
+			SimpleTest::RegisterTest (new TESTNAME##_Test ());	\
+		}														\
+} TESTNAME##_RegistratorInstance;								\
+void TESTNAME##_Test::RunTest ()
+
+#define ASSERT(condition) TestAssert (condition, __FILE__, __LINE__)
 
 #endif

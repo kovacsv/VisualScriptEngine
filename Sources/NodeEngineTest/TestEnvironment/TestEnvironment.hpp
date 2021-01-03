@@ -1,5 +1,5 @@
-#ifndef VISUALTESTFRAMEWORK_HPP
-#define VISUALTESTFRAMEWORK_HPP
+#ifndef TESTENVIRONMENT_HPP
+#define TESTENVIRONMENT_HPP
 
 #include "NE_StringConverter.hpp"
 #include "NE_EvaluationEnv.hpp"

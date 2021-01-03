@@ -1,4 +1,4 @@
-#include "VisualTestFramework.hpp"
+#include "TestEnvironment.hpp"
 #include "NUIE_FileIO.hpp"
 #include "NUIE_InputEventHandler.hpp"
 #include "BI_BuiltInNodes.hpp"
