@@ -1,4 +1,5 @@
 #include "NE_StringUtils.hpp"
+#include "NE_Debug.hpp"
 
 #include <locale>
 #include <codecvt>
@@ -26,6 +27,22 @@ std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, c
 		result.replace (searchPos, from.length (), to);
 		searchPos = result.find (from, searchPos + to.length ());
 	}
+	return result;
+}
+
+std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, const std::initializer_list<std::wstring>& to)
+{
+	std::wstring result = string;
+	auto toIt = to.begin ();
+	size_t searchPos = string.find (from);
+	while (searchPos != std::wstring::npos && toIt != to.end ()) {
+		const std::wstring currStr = *toIt;
+		result.replace (searchPos, from.length (), currStr);
+		searchPos = result.find (from, searchPos + currStr.length ());
+		++toIt;
+	}
+
+	DBGASSERT (searchPos == std::wstring::npos && toIt == to.end ());
 	return result;
 }
 

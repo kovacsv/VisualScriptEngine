@@ -50,15 +50,10 @@ public:
 	~NonLocalizedCollectorGuard ();
 };
 
-template<typename... Args>
-std::wstring FormatString (const std::wstring& format, Args... args)
-{
-	wchar_t resultString[2048];
-	swprintf (resultString, 2048, format.c_str (), args...);
-	return std::wstring (resultString);
-}
-
 void			SetNonLocalizedCollector (NonLocalizedCollector* collector);
+
+// Replaces all %S symbols in the format string with the corresponding string.
+std::wstring	FormatString (const std::wstring& format, const std::initializer_list<std::wstring>& strings);
 
 bool			FillDictionary (Dictionary& dictionary, DictionarySource& source);
 std::wstring	LocalizeString (const Dictionary& dictionary, const std::wstring& str);

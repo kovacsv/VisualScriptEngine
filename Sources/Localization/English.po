@@ -55,9 +55,6 @@ msgstr "Ungroup Nodes"
 msgid "Select Nodes"
 msgstr "Select Nodes"
 
-msgid "Add To Group \"%ls\""
-msgstr "Add To Group \"%ls\""
-
 msgid "Grouping"
 msgstr "Grouping"
 
@@ -94,11 +91,14 @@ msgstr "Vertical"
 msgid "Disconnect"
 msgstr "Disconnect"
 
-msgid "%ls (%ls)"
-msgstr "%ls (%ls)"
-
 msgid "All"
 msgstr "All"
+
+msgid "Add To Group \"%S\""
+msgstr "Add To Group \"%S\""
+
+msgid "%S (%S)"
+msgstr "%S (%S)"
 
 msgid "Blue"
 msgstr "Blue"
@@ -190,8 +190,8 @@ msgstr "<"
 msgid ">"
 msgstr ">"
 
-msgid "%d / %d (%d)"
-msgstr "%d / %d (%d)"
+msgid "%S / %S (%S)"
+msgstr "%S / %S (%S)"
 
 msgid "Texts per page"
 msgstr "Texts per page"

@@ -1,5 +1,6 @@
 #include "NE_Localization.hpp"
 #include "NE_Debug.hpp"
+#include "NE_StringUtils.hpp"
 
 namespace NE
 {
@@ -82,6 +83,12 @@ static Dictionary& GetGlobalDictionary ()
 void SetNonLocalizedCollector (NonLocalizedCollector* collector)
 {
 	nonLocalizedCollector = collector;
+}
+
+std::wstring FormatString (const std::wstring& format, const std::initializer_list<std::wstring>& strings)
+{
+	static const std::wstring StringMarker = L"%S";
+	return ReplaceAll (format, StringMarker, strings);
 }
 
 bool FillDictionary (Dictionary& dictionary, DictionarySource& source)

@@ -78,14 +78,14 @@ TEST (SimplePoFileWithFormatTest)
 	std::wstring poContent = LR"(
 		msgid "apple"
 		msgstr "alma"
-		msgid "this is an %ls"
-		msgstr "ez itt egy %ls"
+		msgid "this is an %S"
+		msgstr "ez itt egy %S"
 	)";
 	Dictionary dictionary;
 	PoDictionarySource poDictionarySource (poContent);
 	ASSERT (FillDictionary (dictionary, poDictionarySource));
 	ASSERT (dictionary.GetLocalizedString (L"apple") == L"alma");
-	ASSERT (FormatString (dictionary.GetLocalizedString (L"this is an %ls"), dictionary.GetLocalizedString (L"apple").c_str ()) == L"ez itt egy alma");
+	ASSERT (FormatString (dictionary.GetLocalizedString (L"this is an %S"), { dictionary.GetLocalizedString (L"apple") }) == L"ez itt egy alma");
 }
 
 TEST (SimplePoFileWithInvalidFormatTest)
@@ -170,6 +170,31 @@ TEST (StringLocalizationTest)
 
 	appleString.SetCustom (L"apple");
 	ASSERT (appleString.GetLocalized (dictionary) == L"apple");
+}
+
+TEST (FormatStringTest)
+{
+	ASSERT (FormatString (L"", {}) == L"");
+	ASSERT (FormatString (L"Example", {}) == L"Example");
+	ASSERT (FormatString (L"Example%", {}) == L"Example%");
+	ASSERT (FormatString (L"Example%s", { }) == L"Example%s");
+
+	ASSERT (FormatString (L"%S", { L"" }) == L"");
+	ASSERT (FormatString (L"%S", { L"A" }) == L"A");
+	
+	ASSERT (FormatString (L"Example%S", { L"A" }) == L"ExampleA");
+	ASSERT (FormatString (L"Example%S", { L"%S" }) == L"Example%S");
+	ASSERT (FormatString (L"Example%S%S", { L"%S", L"A" }) == L"Example%SA");
+	ASSERT (FormatString (L"Example%S%S", { L"A", L"BC" }) == L"ExampleABC");
+	ASSERT (FormatString (L"%SExample%S%S", { L"A", L"BC", L"DEF" }) == L"AExampleBCDEF");
+	ASSERT (FormatString (L"%SExam%Sple%S%S", { L"A", L"BC", L"DEF", L"GHIJ" }) == L"AExamBCpleDEFGHIJ");
+
+	ASSERT (FormatString (L"%S (%S)", { L"A", L"B" }) == L"A (B)");
+	ASSERT (FormatString (L"%S / %S (%S)", { L"A", L"B", L"C" }) == L"A / B (C)");
+	ASSERT (FormatString (L"Add To Group \"%S\"", { L"Group Name" }) == L"Add To Group \"Group Name\"");
+
+	ASSERT (FormatString (L"\u03c0 unicode %S unicode \u03c0", { L"\u03c0" }) == L"\u03c0 unicode \u03c0 unicode \u03c0");
+	ASSERT (FormatString (L"\u03c0 unicode %S unicode \u03c0", { L"\u03c0 unicode \u03c0" }) == L"\u03c0 unicode \u03c0 unicode \u03c0 unicode \u03c0");
 }
 
 }

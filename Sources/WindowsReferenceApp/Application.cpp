@@ -13,14 +13,16 @@ static void InitLocalization ()
 	if (!TestLocalization) {
 		return;
 	}
-	std::wstring poContent = LR"S(
-		msgid "%ls (%ls)"
-		msgstr "%ls - %ls"
-		msgid "%d / %d (%d)"
-		msgstr "%d / %d - %d"
-		msgid "Add To Group \"%ls\""
-		msgstr "Add To Group: %ls"
-	)S";
+
+	std::wstring poContent = LR"PO(
+		msgid "%S (%S)"
+		msgstr "%S - %S"
+		msgid "%S / %S (%S)"
+		msgstr "%S / %S - %S"
+		msgid "Add To Group \"%S\""
+		msgstr "Add To Group: %S"
+	)PO";
+
 	NE::Dictionary dictionary;
 	NUIE::PoDictionarySource poDictionarySource (poContent);
 	NE::FillDictionary (poDictionarySource);
