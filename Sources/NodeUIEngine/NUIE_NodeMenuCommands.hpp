@@ -72,8 +72,8 @@ public:
 	NodeCommandBase (const NE::LocString& name, bool isChecked);
 	virtual ~NodeCommandBase ();
 
-	virtual std::wstring	GetName () const;
-	bool					IsChecked () const;
+	std::wstring	GetName () const;
+	bool			IsChecked () const;
 
 private:
 	NE::LocString	name;

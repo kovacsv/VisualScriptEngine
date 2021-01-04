@@ -1,10 +1,30 @@
 #include "Application.hpp"
 #include "NUIE_FeatureToggle.hpp"
+#include "NUIE_Localization.hpp"
 #include "WAS_WindowsAppUtils.hpp"
 #include "WAS_GdiplusUtils.hpp"
 
 #include "ResourceIds.hpp"
 #include "CommandIds.hpp"
+
+static void InitLocalization ()
+{
+	static const bool TestLocalization = false;
+	if (!TestLocalization) {
+		return;
+	}
+	std::wstring poContent = LR"S(
+		msgid "%ls (%ls)"
+		msgstr "%ls - %ls"
+		msgid "%d / %d (%d)"
+		msgstr "%d / %d - %d"
+		msgid "Add To Group \"%ls\""
+		msgstr "Add To Group: %ls"
+	)S";
+	NE::Dictionary dictionary;
+	NUIE::PoDictionarySource poDictionarySource (poContent);
+	NE::FillDictionary (poDictionarySource);
+}
 
 static bool ContinueWithNoSave (HWND hwnd, LPCWSTR caption)
 {
@@ -24,6 +44,7 @@ Application::Application () :
 
 void Application::Init (HWND hwnd)
 {
+	InitLocalization ();
 	InitFileMenu (hwnd);
 	InitToolbar (hwnd);
 	NUIE::EnableFeature (NUIE::Feature::ConnectionDisplay, true);
