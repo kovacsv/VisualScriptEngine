@@ -177,6 +177,7 @@ TEST (FormatStringTest)
 	ASSERT (FormatString (L"", {}) == L"");
 	ASSERT (FormatString (L"Example", {}) == L"Example");
 	ASSERT (FormatString (L"Example%", {}) == L"Example%");
+	ASSERT (FormatString (L"Example%Example", {}) == L"Example%Example");
 	ASSERT (FormatString (L"Example%s", { }) == L"Example%s");
 
 	ASSERT (FormatString (L"%S", { L"" }) == L"");
