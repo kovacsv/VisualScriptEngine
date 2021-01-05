@@ -19,30 +19,29 @@ std::string WStringToString (const std::wstring& str)
 	return std::string (convert.to_bytes (str));
 }
 
-std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, const std::wstring& to)
+std::wstring ReplaceAll (const std::wstring& string, const std::wstring& fromString, const std::wstring& toString)
 {
 	std::wstring result = string;
-	size_t searchPos = string.find (from);
+	size_t searchPos = string.find (fromString);
 	while (searchPos != std::wstring::npos) {
-		result.replace (searchPos, from.length (), to);
-		searchPos = result.find (from, searchPos + to.length ());
+		result.replace (searchPos, fromString.length (), toString);
+		searchPos = result.find (fromString, searchPos + toString.length ());
 	}
 	return result;
 }
 
-std::wstring ReplaceAll (const std::wstring& string, const std::wstring& from, const std::initializer_list<std::wstring>& to)
+std::wstring ReplaceAll (const std::wstring& string, const std::wstring& fromString, const std::initializer_list<std::wstring>& toStrings)
 {
 	std::wstring result = string;
-	auto toIt = to.begin ();
-	size_t searchPos = string.find (from);
-	while (searchPos != std::wstring::npos && toIt != to.end ()) {
-		const std::wstring currStr = *toIt;
-		result.replace (searchPos, from.length (), currStr);
-		searchPos = result.find (from, searchPos + currStr.length ());
-		++toIt;
+	auto toStringIt = toStrings.begin ();
+	size_t searchPos = string.find (fromString);
+	while (searchPos != std::wstring::npos && toStringIt != toStrings.end ()) {
+		const std::wstring& currStr = *toStringIt;
+		result.replace (searchPos, fromString.length (), currStr);
+		searchPos = result.find (fromString, searchPos + currStr.length ());
+		++toStringIt;
 	}
-
-	DBGASSERT (searchPos == std::wstring::npos && toIt == to.end ());
+	DBGASSERT (searchPos == std::wstring::npos && toStringIt == toStrings.end ());
 	return result;
 }
 
