@@ -51,7 +51,7 @@ void NSViewOffscreenContext::BlitToContext (void* cgContext)
 	CGContextRef ctx = (CGContextRef) cgContext;
 	if (ctx != nil) {
 		if (orientation == Orientation::FlippedVertically) {
-			CGContextTranslateCTM (ctx, 1.0, height);
+			CGContextTranslateCTM (ctx, 0.0, height);
 			CGContextScaleCTM (ctx, 1.0, -1.0);
 		}
 		CGRect imgRect = CGRectMake (0, 0, width, height);
@@ -59,7 +59,7 @@ void NSViewOffscreenContext::BlitToContext (void* cgContext)
 		CGContextDrawImage (ctx, imgRect, cgImage);
 		if (orientation == Orientation::FlippedVertically) {
 			CGContextScaleCTM (ctx, 1.0, -1.0);
-			CGContextTranslateCTM (ctx, 1.0, -height);
+			CGContextTranslateCTM (ctx, 0.0, -height);
 		}
 	}
 }
