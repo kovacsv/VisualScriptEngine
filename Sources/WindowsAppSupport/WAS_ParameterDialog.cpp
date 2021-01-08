@@ -114,14 +114,14 @@ ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface, H
 
 bool ParameterDialog::Show (const std::wstring& dialogTitle, short x, short y)
 {
-	WORD paramCount = (WORD) paramInterface->GetParameterCount ();
+	size_t paramCount = paramInterface->GetParameterCount ();
 	short dialogInnerWidth = StaticWidth + ControlWidth + DialogPadding;
 	short dialogWidth = dialogInnerWidth + 2 * DialogPadding;
-	short dialogHeight = paramCount * ControlHeight + (paramCount + 3) * DialogPadding + ButtonHeight;
+	short dialogHeight = (short) paramCount * ControlHeight + ((short) paramCount + 3) * DialogPadding + ButtonHeight;
 	paramDialog.SetParameters (dialogTitle, x, y, dialogWidth, dialogHeight);
 
 	short currentY = DialogPadding;
-	for (WORD paramIndex = 0; paramIndex < paramCount; ++paramIndex) {
+	for (size_t paramIndex = 0; paramIndex < paramCount; ++paramIndex) {
 		DWORD controlId = ParamIdToControlId (paramIndex);
 
 		NUIE::ParameterType type = paramInterface->GetParameterType (paramIndex);
@@ -171,12 +171,7 @@ bool ParameterDialog::Show (const std::wstring& dialogTitle, short x, short y)
 	paramDialog.AddButton (NE::LocalizeString (L"Cancel"), dialogInnerWidth - 2 * ButtonWidth, currentY + DialogPadding, ButtonWidth, ButtonHeight, CancelButtonId);
 	paramDialog.AddDefButton (NE::LocalizeString (L"OK"), dialogInnerWidth - ButtonWidth + DialogPadding, currentY + DialogPadding, ButtonWidth, ButtonHeight, OkButtonId);
 
-	INT_PTR dialogResult = paramDialog.Show (parentWindowHandle, DlgProc, (LPARAM) this);
-	if (dialogResult == IDOK) {
-		return true;
-	}
-
-	return false;
+	return ShowDialog ();
 }
 
 void ParameterDialog::Init ()
@@ -211,6 +206,16 @@ bool ParameterDialog::ApplyParameterChanges ()
 void ParameterDialog::SetDialogHandle (HWND hwnd)
 {
 	dialogHandle = hwnd;
+}
+
+bool ParameterDialog::ShowDialog ()
+{
+	INT_PTR dialogResult = paramDialog.Show (parentWindowHandle, DlgProc, (LPARAM) this);
+	if (dialogResult == IDOK) {
+		return true;
+	}
+
+	return false;
 }
 
 void ParameterDialog::CenterToParent ()

@@ -37,6 +37,7 @@ private:
 		NE::ValuePtr	value;
 	};
 
+	bool							ShowDialog ();
 	void							CenterToParent ();
 	bool							CollectChangedValues (std::vector<ChangedParameter>& changedParamValues) const;
 
