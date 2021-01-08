@@ -72,8 +72,7 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 						case CBN_SELCHANGE:
 							{
 								DWORD controlId = GetWindowLong ((HWND) lParam, GWL_ID);
-								size_t paramIndex = ControlIdToParamId (controlId);
-								paramDialog->SetParameterChanged (paramIndex);
+								paramDialog->SetControlChanged (controlId);
 							}
 							break;
 					}
@@ -183,12 +182,12 @@ void ParameterDialog::Init ()
 	CenterToParent ();
 }
 
-void ParameterDialog::SetParameterChanged (size_t paramIndex)
+void ParameterDialog::SetControlChanged (DWORD controlId)
 {
 	if (paramDialog.GetStatus () != InMemoryDialog::Status::Initialized) {
 		return;
 	}
-	changedParams.insert (paramIndex);
+	changedParams.insert (ControlIdToParamId (controlId));
 }
 
 bool ParameterDialog::ApplyParameterChanges ()

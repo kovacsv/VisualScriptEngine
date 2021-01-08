@@ -18,7 +18,7 @@ public:
 	bool	Show (const std::wstring& dialogTitle, short x, short y);
 	void	Init ();
 
-	void	SetParameterChanged (size_t paramIndex);
+	void	SetControlChanged (DWORD controlId);
 	bool	ApplyParameterChanges ();
 
 	void	SetDialogHandle (HWND hwnd);
