@@ -13,13 +13,15 @@ namespace WAS
 class ParameterDialog
 {
 public:
-	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface);
+	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface, HWND parentHwnd);
 
-	bool	Show (const std::wstring& dialogTitle, HWND parentHwnd, short x, short y);
-	void	CenterToParent (HWND dialogHwnd);
-	void	SetupControls (HWND dialogHwnd);
-	void	SetParameterChanged (DWORD controlId);
-	bool	CollectChangedValues (HWND hwnd);
+	bool	Show (const std::wstring& dialogTitle, short x, short y);
+	void	Init ();
+
+	void	SetParameterChanged (size_t paramIndex);
+	bool	ApplyParameterChanges ();
+
+	void	SetDialogHandle (HWND hwnd);
 
 private:
 	class ChangedParameter
@@ -35,14 +37,15 @@ private:
 		NE::ValuePtr	value;
 	};
 
-	void	ApplyParameterChanges () const;
+	void							CenterToParent ();
+	bool							CollectChangedValues (std::vector<ChangedParameter>& changedParamValues) const;
 
 	NUIE::ParameterInterfacePtr		paramInterface;
-	std::vector<ChangedParameter>	paramValues;
 	std::unordered_set<size_t>		changedParams;
 
 	InMemoryDialog					paramDialog;
 	HWND							parentWindowHandle;
+	HWND							dialogHandle;
 };
 
 }

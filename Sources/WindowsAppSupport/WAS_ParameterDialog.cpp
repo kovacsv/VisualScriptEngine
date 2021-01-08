@@ -41,8 +41,8 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				SetWindowLongPtr (hwnd, GWLP_USERDATA, lParam);
 				ParameterDialog* paramDialog = (ParameterDialog*) lParam;
 				if (paramDialog != nullptr) {
-					paramDialog->CenterToParent (hwnd);
-					paramDialog->SetupControls (hwnd);
+					paramDialog->SetDialogHandle (hwnd);
+					paramDialog->Init ();
 				}
 			}
 			break;
@@ -60,7 +60,7 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 				WORD commandId = LOWORD (wParam);
 				if (commandId == OkButtonId) {
-					if (paramDialog->CollectChangedValues (hwnd)) {
+					if (paramDialog->ApplyParameterChanges ()) {
 						EndDialog (hwnd, IDOK);
 					}
 				} else if (commandId == CancelButtonId) {
@@ -72,7 +72,8 @@ INT_PTR CALLBACK DlgProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 						case CBN_SELCHANGE:
 							{
 								DWORD controlId = GetWindowLong ((HWND) lParam, GWL_ID);
-								paramDialog->SetParameterChanged (controlId);
+								size_t paramIndex = ControlIdToParamId (controlId);
+								paramDialog->SetParameterChanged (paramIndex);
 							}
 							break;
 					}
@@ -101,15 +102,17 @@ const NE::ValuePtr& ParameterDialog::ChangedParameter::GetValue () const
 	return value;
 }
 
-ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface) :
+ParameterDialog::ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface, HWND parentHwnd) :
 	paramInterface (paramInterface),
+	changedParams (),
 	paramDialog (),
-	parentWindowHandle (NULL)
+	parentWindowHandle (parentHwnd),
+	dialogHandle (NULL)
 {
 
 }
 
-bool ParameterDialog::Show (const std::wstring& dialogTitle, HWND parentHwnd, short x, short y)
+bool ParameterDialog::Show (const std::wstring& dialogTitle, short x, short y)
 {
 	WORD paramCount = (WORD) paramInterface->GetParameterCount ();
 	short dialogInnerWidth = StaticWidth + ControlWidth + DialogPadding;
@@ -168,19 +171,51 @@ bool ParameterDialog::Show (const std::wstring& dialogTitle, HWND parentHwnd, sh
 	paramDialog.AddButton (NE::LocalizeString (L"Cancel"), dialogInnerWidth - 2 * ButtonWidth, currentY + DialogPadding, ButtonWidth, ButtonHeight, CancelButtonId);
 	paramDialog.AddDefButton (NE::LocalizeString (L"OK"), dialogInnerWidth - ButtonWidth + DialogPadding, currentY + DialogPadding, ButtonWidth, ButtonHeight, OkButtonId);
 
-	parentWindowHandle = parentHwnd;
-	INT_PTR dialogResult = paramDialog.Show (parentHwnd, DlgProc, (LPARAM) this);
+	INT_PTR dialogResult = paramDialog.Show (parentWindowHandle, DlgProc, (LPARAM) this);
 	if (dialogResult == IDOK) {
-		ApplyParameterChanges ();
 		return true;
 	}
 
 	return false;
 }
 
-void ParameterDialog::CenterToParent (HWND dialogHwnd)
+void ParameterDialog::Init ()
 {
-	if (DBGERROR (parentWindowHandle == NULL)) {
+	if (DBGERROR (paramDialog.GetStatus () != InMemoryDialog::Status::Opened)) {
+		return;
+	}
+	paramDialog.InitControls (dialogHandle);
+	CenterToParent ();
+}
+
+void ParameterDialog::SetParameterChanged (size_t paramIndex)
+{
+	if (paramDialog.GetStatus () != InMemoryDialog::Status::Initialized) {
+		return;
+	}
+	changedParams.insert (paramIndex);
+}
+
+bool ParameterDialog::ApplyParameterChanges ()
+{
+	std::vector<ChangedParameter> changedParamValues;
+	if (!CollectChangedValues (changedParamValues)) {
+		return false;
+	}
+	for (const ChangedParameter& param : changedParamValues) {
+		paramInterface->SetParameterValue (param.GetIndex (), param.GetValue ());
+	}
+	return true;
+}
+
+void ParameterDialog::SetDialogHandle (HWND hwnd)
+{
+	dialogHandle = hwnd;
+}
+
+void ParameterDialog::CenterToParent ()
+{
+	if (DBGERROR (parentWindowHandle == NULL || dialogHandle == NULL)) {
 		return;
 	}
 
@@ -188,13 +223,13 @@ void ParameterDialog::CenterToParent (HWND dialogHwnd)
 	GetWindowRect (parentWindowHandle, &parentRect);
 	LONG parentWidth = parentRect.right - parentRect.left;
 	LONG parentHeight = parentRect.bottom - parentRect.top;
-	
+
 	RECT dialogRect;
-	GetWindowRect (dialogHwnd, &dialogRect);
+	GetWindowRect (dialogHandle, &dialogRect);
 	LONG dialogWidth = dialogRect.right - dialogRect.left;
 	LONG dialogHeight = dialogRect.bottom - dialogRect.top;
 
-	MoveWindow (dialogHwnd,
+	MoveWindow (dialogHandle,
 		parentRect.left + (parentWidth - dialogWidth) / 2,
 		parentRect.top + (parentHeight - dialogHeight) / 2,
 		dialogWidth,
@@ -203,23 +238,7 @@ void ParameterDialog::CenterToParent (HWND dialogHwnd)
 	);
 }
 
-void ParameterDialog::SetupControls (HWND dialogHwnd)
-{
-	if (DBGERROR (paramDialog.GetStatus () != InMemoryDialog::Status::Opened)) {
-		return;
-	}
-	paramDialog.InitControls (dialogHwnd);
-}
-
-void ParameterDialog::SetParameterChanged (DWORD controlId)
-{
-	if (paramDialog.GetStatus () != InMemoryDialog::Status::Initialized) {
-		return;
-	}
-	changedParams.insert (ControlIdToParamId (controlId));
-}
-
-bool ParameterDialog::CollectChangedValues (HWND hwnd)
+bool ParameterDialog::CollectChangedValues (std::vector<ChangedParameter>& changedParamValues) const
 {
 	bool isAllParameterValid = true;
 	for (size_t paramId = 0; paramId < paramInterface->GetParameterCount (); ++paramId) {
@@ -228,20 +247,19 @@ bool ParameterDialog::CollectChangedValues (HWND hwnd)
 		}
 
 		DWORD controlId = ParamIdToControlId (paramId);
-
 		NUIE::ParameterType type = paramInterface->GetParameterType (paramId);
 
 		NE::ValuePtr value;
 		if (type == NUIE::ParameterType::Boolean) {
-			HWND comboBoxHwnd = GetDlgItem (hwnd, controlId);
+			HWND comboBoxHwnd = GetDlgItem (dialogHandle, controlId);
 			LRESULT selected = SendMessage (comboBoxHwnd, CB_GETCURSEL, 0, 0);
 			value = NE::ValuePtr (new NE::BooleanValue (selected == 0 ? true : false));
 		} else if (type == NUIE::ParameterType::Integer || type == NUIE::ParameterType::Float || type == NUIE::ParameterType::Double || type == NUIE::ParameterType::String) {
 			wchar_t itemText[1024];
-			GetDlgItemText (hwnd, controlId, itemText, 1024);
+			GetDlgItemText (dialogHandle, controlId, itemText, 1024);
 			value = NUIE::StringToParameterValue (std::wstring (itemText), type);
 		} else if (type == NUIE::ParameterType::Enumeration) {
-			HWND comboBoxHwnd = GetDlgItem (hwnd, controlId);
+			HWND comboBoxHwnd = GetDlgItem (dialogHandle, controlId);
 			LRESULT selected = SendMessage (comboBoxHwnd, CB_GETCURSEL, 0, 0);
 			value = NE::ValuePtr (new NE::IntValue ((int) selected));
 		} else {
@@ -251,26 +269,19 @@ bool ParameterDialog::CollectChangedValues (HWND hwnd)
 
 		if (paramInterface->IsValidParameterValue (paramId, value)) {
 			ChangedParameter param (paramId, value);
-			paramValues.push_back (param);
+			changedParamValues.push_back (param);
 		} else {
 			NE::ValueConstPtr oldValue = paramInterface->GetParameterValue (paramId);
 			std::wstring oldValueString = NUIE::ParameterValueToString (oldValue, type);
-			SetDlgItemText (hwnd, controlId, oldValueString.c_str ());
+			SetDlgItemText (dialogHandle, controlId, oldValueString.c_str ());
 			isAllParameterValid = false;
 		}
 	}
 
 	if (!isAllParameterValid) {
-		paramValues.clear ();
+		changedParamValues.clear ();
 	}
 	return isAllParameterValid;
-}
-
-void ParameterDialog::ApplyParameterChanges () const
-{
-	for (const ChangedParameter& param : paramValues) {
-		paramInterface->SetParameterValue (param.GetIndex (), param.GetValue ());
-	}
 }
 
 }
