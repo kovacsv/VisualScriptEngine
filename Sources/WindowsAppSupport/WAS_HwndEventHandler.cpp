@@ -29,7 +29,6 @@ NUIE::MenuCommandPtr HwndEventHandler::OnContextMenu (NUIE::EventHandler::Contex
 
 bool HwndEventHandler::OnParameterSettings (NUIE::EventHandler::ParameterSettingsType type, NUIE::ParameterInterfacePtr paramAccessor)
 {
-	ParameterDialog paramDialog (paramAccessor, hwnd);
 	std::wstring title;
 	if (type == NUIE::EventHandler::ParameterSettingsType::Node) {
 		title = NE::LocalizeString (L"Node Parameters");
@@ -38,7 +37,8 @@ bool HwndEventHandler::OnParameterSettings (NUIE::EventHandler::ParameterSetting
 	} else {
 		DBGBREAK ();
 	}
-	return paramDialog.Show (title, 0, 0);
+	ParameterDialog paramDialog (title, paramAccessor, hwnd);
+	return paramDialog.Show (0, 0);
 }
 
 void HwndEventHandler::OnDoubleClick (const NUIE::Point&, NUIE::MouseButton)

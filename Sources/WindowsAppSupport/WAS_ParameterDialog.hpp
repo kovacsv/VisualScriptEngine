@@ -4,49 +4,40 @@
 #include "WAS_IncludeWindowsHeaders.hpp"
 #include "WAS_InMemoryDialog.hpp"
 #include "NUIE_ParameterInterface.hpp"
+#include "NUIE_ParameterDialog.hpp"
 
 #include <unordered_set>
 
 namespace WAS
 {
 
-class ParameterDialog
+class ParameterDialog : public NUIE::ParameterDialogBase
 {
 public:
-	ParameterDialog (NUIE::ParameterInterfacePtr& paramInterface, HWND parentHwnd);
+	ParameterDialog (const std::wstring& dialogTitle, NUIE::ParameterInterfacePtr& paramInterface, HWND parentHwnd);
 
-	bool	Show (const std::wstring& dialogTitle, short x, short y);
-	void	Init ();
-
-	void	SetControlChanged (DWORD controlId);
-	bool	ApplyParameterChanges ();
-
-	void	SetDialogHandle (HWND hwnd);
+	void					Init (HWND hwnd);
+	bool					IsInitialized () const;
 
 private:
-	class ChangedParameter
-	{
-	public:
-		ChangedParameter (size_t index, const NE::ValuePtr& value);
+	virtual void			SetDialogRect (const NUIE::IntRect& rect) override;
+	virtual void			AddParamNameStatic (size_t paramIndex, const std::wstring& controlText, const NUIE::IntRect& rect) override;
+	virtual void			AddParamEditText (size_t paramIndex, const std::wstring& controlText, const NUIE::IntRect& rect) override;
+	virtual void			AddParamComboBox (size_t paramIndex, int selectedChoice, const std::vector<std::wstring>& choices, const NUIE::IntRect& rect) override;
+	virtual void			AddHorizontalSeparator (int x, int y, int width) override;
+	virtual void			AddCancelButton (const std::wstring& controlText, const NUIE::IntRect& rect) override;
+	virtual void			AddOkButton (const std::wstring& controlText, const NUIE::IntRect& rect) override;
+	virtual bool			ShowDialog () override;
 
-		size_t					GetIndex () const;
-		const NE::ValuePtr&		GetValue () const;
+	virtual std::wstring	GetEditTextValue (size_t paramIndex) override;
+	virtual void			SetEditTextValue (size_t paramIndex, const std::wstring& text) override;
+	virtual int				GetComboboxSelectedItem (size_t paramIndex) override;
 
-	private:
-		size_t			index;
-		NE::ValuePtr	value;
-	};
+	void					CenterToParent ();
 
-	bool							ShowDialog ();
-	void							CenterToParent ();
-	bool							CollectChangedValues (std::vector<ChangedParameter>& changedParamValues) const;
-
-	NUIE::ParameterInterfacePtr		paramInterface;
-	std::unordered_set<size_t>		changedParams;
-
-	InMemoryDialog					paramDialog;
-	HWND							parentWindowHandle;
-	HWND							dialogHandle;
+	InMemoryDialog			paramDialog;
+	HWND					parentWindowHandle;
+	HWND					dialogHandle;
 };
 
 }
