@@ -1,7 +1,7 @@
 #ifndef TESTREFERENCE_HPP
 #define TESTREFERENCE_HPP
 
-#include "NUIE_SvgDrawingContext.hpp"
+#include "SvgDrawingContext.hpp"
 
 #include <string>
 

@@ -1,4 +1,4 @@
-#include "NUIE_SvgDrawingContext.hpp"
+#include "SvgDrawingContext.hpp"
 #include "NE_StringUtils.hpp"
 
 #include <cmath>

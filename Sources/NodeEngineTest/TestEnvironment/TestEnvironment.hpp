@@ -5,7 +5,7 @@
 #include "NE_EvaluationEnv.hpp"
 #include "NUIE_EventHandler.hpp"
 #include "NUIE_NodeEditor.hpp"
-#include "NUIE_SvgDrawingContext.hpp"
+#include "SvgDrawingContext.hpp"
 
 using namespace NE;
 using namespace NUIE;

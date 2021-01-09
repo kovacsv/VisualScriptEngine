@@ -1,6 +1,6 @@
 #include "SimpleTest.hpp"
 #include "NUIE_Geometry.hpp"
-#include "NUIE_SvgDrawingContext.hpp"
+#include "SvgDrawingContext.hpp"
 
 #include "TestReference.hpp"
 
