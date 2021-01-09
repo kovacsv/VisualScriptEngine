@@ -4,6 +4,7 @@
 #include "MAS_NSImageLoader.hpp"
 #include "MAS_NSViewContext.hpp"
 #include "MAS_NSViewOffscreenContext.hpp"
+#include "MAS_ParameterDialog.hpp"
 #include "MAS_IncludeCocoaHeaders.hpp"
 
 #include "NUIE_NodeTree.hpp"
@@ -252,9 +253,16 @@ NUIE::MenuCommandPtr AppEventHandler::OnContextMenu (NUIE::EventHandler::Context
 
 bool AppEventHandler::OnParameterSettings (NUIE::EventHandler::ParameterSettingsType type, NUIE::ParameterInterfacePtr paramAccessor)
 {
-	#pragma unused (type)
-	#pragma unused (paramAccessor)
-	return false;
+	std::wstring title;
+	if (type == NUIE::EventHandler::ParameterSettingsType::Node) {
+		title = NE::LocalizeString (L"Node Parameters");
+	} else if (type == NUIE::EventHandler::ParameterSettingsType::Group) {
+		title = NE::LocalizeString (L"Group Parameters");
+	} else {
+		DBGBREAK ();
+	}
+	MAS::ParameterDialog paramDialog (title, paramAccessor);
+	return paramDialog.Show (0, 0);
 }
 
 void AppEventHandler::OnDoubleClick (const NUIE::Point& position, NUIE::MouseButton mouseButton)
@@ -283,6 +291,9 @@ void AppNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativePa
 {
 	nodeEditorControl.Init (nodeEditorPtr, nativeParentHandle, x, y, width, height);
 	eventHandler.Init (nodeEditorPtr, nativeParentHandle);
+	// TODO: remove
+	nodeEditorPtr->AddNode (std::make_shared<BI::IntegerIncrementedNode> (NE::LocString (L"Integer Increment"), NUIE::Point (100,100)));
+	nodeEditorPtr->AddNode (std::make_shared<BI::AdditionNode> (NE::LocString (L"Addition"), NUIE::Point (250,250)));
 }
 
 void AppNodeUIEnvironment::Resize (int x, int y, int width, int height)
