@@ -11,13 +11,18 @@
 
 - (void) addStaticControl : (NSString*) text : (NSRect) rect
 {
-	// TODO: align to center vertically
 	NSTextField* textField = [[NSTextField alloc] initWithFrame : rect];
 	[textField setStringValue : text];
     [textField setBezeled : NO];
     [textField setDrawsBackground : NO];
     [textField setEditable : NO];
     [textField setSelectable : NO];
+
+    NSRect oldFrame = [textField frame];
+    CGFloat textHeight = [[textField attributedStringValue] size].height;
+	CGFloat textDiff = oldFrame.size.height - textHeight;
+    [textField setFrame : NSMakeRect (oldFrame.origin.x, oldFrame.origin.y + textDiff / 2.0, oldFrame.size.width, oldFrame.size.height - textDiff)];
+
     [[self contentView] addSubview : textField];
 }
 
@@ -55,7 +60,7 @@
 	NSButton* button = [[NSButton alloc] initWithFrame : rect];
 	[button setIdentifier : identifier];
 	[button setTitle : text];
-	[button setBezelStyle : NSBezelStyleRounded];
+	[button setBezelStyle : NSBezelStyleRegularSquare];
 	[button setTarget : [self windowController]];
 	[button setAction : @selector (buttonClicked:)];
 	[[self contentView] addSubview : button];

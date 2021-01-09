@@ -291,9 +291,9 @@ void AppNodeUIEnvironment::Init (NUIE::NodeEditor* nodeEditorPtr, void* nativePa
 {
 	nodeEditorControl.Init (nodeEditorPtr, nativeParentHandle, x, y, width, height);
 	eventHandler.Init (nodeEditorPtr, nativeParentHandle);
-	// TODO: remove
-	nodeEditorPtr->AddNode (std::make_shared<BI::IntegerIncrementedNode> (NE::LocString (L"Integer Increment"), NUIE::Point (100,100)));
-	nodeEditorPtr->AddNode (std::make_shared<BI::AdditionNode> (NE::LocString (L"Addition"), NUIE::Point (250,250)));
+	// TODO: temporary
+	nodeEditorPtr->AddNode (std::make_shared<BI::IntegerIncrementedNode> (NE::LocString (L"Integer Increment"), NUIE::Point (100, 100)));
+	nodeEditorPtr->AddNode (std::make_shared<BI::AdditionNode> (NE::LocString (L"Addition"), NUIE::Point (300, 250)));
 }
 
 void AppNodeUIEnvironment::Resize (int x, int y, int width, int height)
