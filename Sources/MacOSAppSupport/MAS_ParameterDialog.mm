@@ -254,17 +254,17 @@ bool ParameterDialog::ShowDialog ()
 
 std::wstring ParameterDialog::GetEditTextValue (size_t paramIndex)
 {
-	return NSStringToStdWString ([paramDialog getEditControlValue:paramIndex]);
+	return NSStringToStdWString ([paramDialog getEditControlValue : paramIndex]);
 }
 
 void ParameterDialog::SetEditTextValue (size_t paramIndex, const std::wstring& text)
 {
-	[paramDialog setEditControlValue:paramIndex:StdWStringToNSString (text)];
+	[paramDialog setEditControlValue : paramIndex : StdWStringToNSString (text)];
 }
 
 int ParameterDialog::GetComboboxSelectedItem (size_t paramIndex)
 {
-	return ([paramDialog getComboboxSelectedItem:paramIndex]);
+	return ([paramDialog getComboboxSelectedItem : paramIndex]);
 }
 	
 }

@@ -43,7 +43,7 @@ bool SlotInfo::operator== (const SlotInfo& rhs) const
 	return nodeId == rhs.nodeId && slotId == rhs.slotId;
 }
 
-bool SlotInfo::operator!=(const SlotInfo& rhs) const
+bool SlotInfo::operator!= (const SlotInfo& rhs) const
 {
 	return !operator== (rhs);
 }
@@ -121,7 +121,7 @@ bool ConnectionInfo::operator== (const ConnectionInfo& rhs) const
 	return outputSlotInfo == rhs.outputSlotInfo && inputSlotInfo == rhs.inputSlotInfo;
 }
 
-bool ConnectionInfo::operator!=(const ConnectionInfo& rhs) const
+bool ConnectionInfo::operator!= (const ConnectionInfo& rhs) const
 {
 	return !operator== (rhs);
 }

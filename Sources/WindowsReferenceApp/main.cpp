@@ -120,7 +120,7 @@ int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLi
 
 	WNDCLASSEX windowClass;
 	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));
-	windowClass.cbSize = sizeof(WNDCLASSEX);
+	windowClass.cbSize = sizeof (WNDCLASSEX);
 	windowClass.style = CS_DBLCLKS;
 	windowClass.lpfnWndProc = ApplicationWindowProc;
 	windowClass.cbClsExtra = 0;

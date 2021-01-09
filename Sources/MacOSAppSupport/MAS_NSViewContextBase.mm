@@ -25,7 +25,7 @@ static NSRect CreateRect (CGFloat viewHeight, const NUIE::Rect& rect)
 
 static NSColor* CreateColor (const NUIE::Color& color)
 {
-	return [NSColor colorWithRed:color.GetR () / 255.0f green:color.GetG () / 255.0f blue:color.GetB () / 255.0f alpha:1.0f];
+	return [NSColor colorWithRed : color.GetR () / 255.0f green : color.GetG () / 255.0f blue : color.GetB () / 255.0f alpha : 1.0f];
 }
 	
 NSViewContextBase::NSViewContextBase () :
@@ -88,10 +88,10 @@ void NSViewContextBase::DrawLine (const NUIE::Point& beg, const NUIE::Point& end
 		@try {
 			[CreateColor (pen.GetColor ()) set];
 			NSBezierPath* bezierPath = [NSBezierPath bezierPath];
-			[bezierPath setLineWidth:pen.GetThickness ()];
-			[bezierPath setLineCapStyle:NSLineCapStyleRound];
-			[bezierPath moveToPoint:CreatePoint (height, beg)];
-			[bezierPath lineToPoint:CreatePoint (height, end)];
+			[bezierPath setLineWidth : pen.GetThickness ()];
+			[bezierPath setLineCapStyle : NSLineCapStyleRound];
+			[bezierPath moveToPoint : CreatePoint (height, beg)];
+			[bezierPath lineToPoint : CreatePoint (height, end)];
 			[bezierPath stroke];
 		} @catch (NSException*) {
 			
@@ -105,9 +105,9 @@ void NSViewContextBase::DrawBezier (const NUIE::Point& p1, const NUIE::Point& p2
 		@try {
 			[CreateColor (pen.GetColor ()) set];
 			NSBezierPath* bezierPath = [NSBezierPath bezierPath];
-			[bezierPath setLineWidth:pen.GetThickness ()];
-			[bezierPath moveToPoint:CreatePoint (height, p1)];
-			[bezierPath curveToPoint:CreatePoint (height, p4) controlPoint1:CreatePoint (height, p2) controlPoint2:CreatePoint (height, p3)];
+			[bezierPath setLineWidth : pen.GetThickness ()];
+			[bezierPath moveToPoint : CreatePoint (height, p1)];
+			[bezierPath curveToPoint : CreatePoint (height, p4) controlPoint1 : CreatePoint (height, p2) controlPoint2 : CreatePoint (height, p3)];
 			[bezierPath stroke];
 		} @catch (NSException*) {
 			
@@ -144,8 +144,8 @@ void NSViewContextBase::DrawEllipse (const NUIE::Rect& rect, const NUIE::Pen& pe
 	@autoreleasepool {
 		@try {
 			[CreateColor (pen.GetColor ()) set];
-			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (height, rect)];
-			[bezierPath setLineWidth:pen.GetThickness ()];
+			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect : CreateRect (height, rect)];
+			[bezierPath setLineWidth : pen.GetThickness ()];
 			[bezierPath stroke];
 		} @catch (NSException*) {
 			
@@ -158,7 +158,7 @@ void NSViewContextBase::FillEllipse (const NUIE::Rect& rect, const NUIE::Color& 
 	@autoreleasepool {
 		@try {
 			[CreateColor (color) set];
-			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect:CreateRect (height, rect)];
+			NSBezierPath* bezierPath = [NSBezierPath bezierPathWithOvalInRect : CreateRect (height, rect)];
 			[bezierPath fill];
 		} @catch (NSException*) {
 			
@@ -187,7 +187,7 @@ void NSViewContextBase::DrawFormattedText (const NUIE::Rect& rect, const NUIE::F
 				NSParagraphStyleAttributeName : style
 			};
 			NSRect textRect = CreateRect (height, rect);
-			NSSize textSize = [nsText sizeWithAttributes:attributes];
+			NSSize textSize = [nsText sizeWithAttributes : attributes];
 			if (vAnchor == NUIE::VerticalAnchor::Top) {
 				// nothing to do
 			} else if (vAnchor == NUIE::VerticalAnchor::Center) {
@@ -195,7 +195,7 @@ void NSViewContextBase::DrawFormattedText (const NUIE::Rect& rect, const NUIE::F
 			} else if (vAnchor == NUIE::VerticalAnchor::Bottom) {
 				textRect.origin.y -= (textRect.size.height - textSize.height);
 			}
-			[nsText drawInRect:textRect withAttributes:attributes];
+			[nsText drawInRect : textRect withAttributes : attributes];
 		} @catch (NSException*) {
 			
 		}
@@ -208,7 +208,7 @@ NUIE::Size NSViewContextBase::MeasureText (const NUIE::Font& font, const std::ws
 		@try {
 			NSString* nsText = StdWStringToNSString (text);
 			NSDictionary* attributes = @{NSFontAttributeName: GetFont (font)};
-			NSSize size = [nsText sizeWithAttributes:attributes];
+			NSSize size = [nsText sizeWithAttributes : attributes];
 			return NUIE::Size (size.width * SafetyTextRatio, size.height * SafetyTextRatio);
 		} @catch (NSException*) {
 
@@ -229,7 +229,7 @@ void NSViewContextBase::DrawIcon (const NUIE::Rect& rect, const NUIE::IconId& ic
 	}
 	@try {
 		NSImage* image = imageLoader->LoadNSImage (iconId);
-		[image drawInRect:CreateRect (height, rect) fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:1.0f];
+		[image drawInRect : CreateRect (height, rect) fromRect : NSZeroRect operation : NSCompositingOperationSourceOver fraction : 1.0f];
 	} @catch (NSException*) {
 
 	}
@@ -243,7 +243,7 @@ NSFont* NSViewContextBase::GetFont (const NUIE::Font& font)
 			auto found = fontCache.find (key);
 			if (found == fontCache.end ()) {
 				NSString* nsFontName = StdWStringToNSString (key.family);
-				NSFont* nsFont = [[NSFont fontWithName:nsFontName size:key.size] copy];
+				NSFont* nsFont = [[NSFont fontWithName : nsFontName size : key.size] copy];
 				fontCache.insert ({ key, nsFont });
 			}
 			return fontCache.at (key);

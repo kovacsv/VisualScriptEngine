@@ -29,7 +29,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 
 - (id) initWithFrame : (NSRect) frame
 {
-	self = [super initWithFrame:frame];
+	self = [super initWithFrame : frame];
 	if (self) {
 		nodeEditorControl = nil;
 	}
@@ -211,7 +211,7 @@ static void MouseDownEvent (NUIE::NodeEditor* nodeEditor, NSEvent* event, NUIE::
 	NSString* characters = [event charactersIgnoringModifiers];
 	
 	if ([characters length] == 1) {
-		unichar character = tolower ([characters characterAtIndex:0]);
+		unichar character = tolower ([characters characterAtIndex : 0]);
 		bool isCommandPressed = [event modifierFlags] & NSEventModifierFlagCommand;
 		bool isShiftPressed = [event modifierFlags] & NSEventModifierFlagShift;
 		if (isCommandPressed) {
@@ -325,7 +325,7 @@ void NodeEditorNSViewControl::Resize (int x, int y, int width, int height)
 	@autoreleasepool {
 		@try {
 			NSRect viewRect = NSMakeRect (x, y, width, height);
-			[nsView setFrame:viewRect];
+			[nsView setFrame : viewRect];
 			if (nodeEditor != nullptr) {
 				nodeEditor->OnResize (width, height);
 			}
@@ -339,7 +339,7 @@ void NodeEditorNSViewControl::Invalidate ()
 {
 	@autoreleasepool {
 		@try {
-			[nsView setNeedsDisplay:YES];
+			[nsView setNeedsDisplay : YES];
 		} @catch (NSException*) {
 			
 		}

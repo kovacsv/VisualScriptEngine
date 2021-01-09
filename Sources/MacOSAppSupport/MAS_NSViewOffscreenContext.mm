@@ -38,7 +38,7 @@ void NSViewOffscreenContext::Init (void* nativeHandle)
 	height = nsView.frame.size.height;
 	
 	CGSize size = { (CGFloat) width, (CGFloat) height };
-	image = [[NSImage alloc] initWithSize:size];
+	image = [[NSImage alloc] initWithSize : size];
 }
 
 void NSViewOffscreenContext::BlitToWindow (void*)
@@ -69,7 +69,7 @@ void NSViewOffscreenContext::Resize (int newWidth, int newHeight)
 	width = newWidth;
 	height = newHeight;
 	CGSize size = { (CGFloat) width, (CGFloat) height };
-	image = [[NSImage alloc] initWithSize:size];
+	image = [[NSImage alloc] initWithSize : size];
 }
 
 void NSViewOffscreenContext::BeginDraw ()

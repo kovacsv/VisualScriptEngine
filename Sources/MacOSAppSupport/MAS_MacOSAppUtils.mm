@@ -11,8 +11,8 @@ NE::BasicStringSettings GetStringSettingsFromSystem ()
 	NE::BasicStringSettings result = NE::GetDefaultStringSettings ();
 	@autoreleasepool {
 		@try {
-			NSString* decSeparator = (NSString*) [[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator];
-			std::wstring decimalSeparatorStr = NE::StringToWString ([decSeparator cStringUsingEncoding:NSUTF8StringEncoding]);
+			NSString* decSeparator = (NSString*) [[NSLocale currentLocale] objectForKey : NSLocaleDecimalSeparator];
+			std::wstring decimalSeparatorStr = NE::StringToWString ([decSeparator cStringUsingEncoding : NSUTF8StringEncoding]);
 			wchar_t decimalSeparatorChar = decimalSeparatorStr[0];
 			result.SetDecimalSeparator (decimalSeparatorChar);
 

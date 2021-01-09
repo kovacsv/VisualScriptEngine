@@ -12,7 +12,7 @@
 
 class IncreaseNode : public BI::BasicUINode
 {
-	DYNAMIC_SERIALIZABLE(IncreaseNode);
+	DYNAMIC_SERIALIZABLE (IncreaseNode);
 
 public:
 	IncreaseNode () :

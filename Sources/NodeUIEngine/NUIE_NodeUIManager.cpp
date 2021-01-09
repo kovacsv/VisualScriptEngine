@@ -691,7 +691,7 @@ bool NodeUIManager::Open (NodeUIEnvironment& uiEnvironment, NE::InputStream& inp
 	Clear (uiEnvironment);
 	Read (inputStream);
 	RequestRecalculateAndRedraw ();
-	return inputStream.GetStatus() == NE::Stream::Status::NoError;
+	return inputStream.GetStatus () == NE::Stream::Status::NoError;
 }
 
 bool NodeUIManager::Save (NE::OutputStream& outputStream)

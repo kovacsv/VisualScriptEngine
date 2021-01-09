@@ -125,7 +125,7 @@ TEST (DifferentMaximumsTest)
 TEST (DifferentMaximumsTest2)
 {
 	std::vector<std::vector<size_t>> variations;
-	bool success = EnumerateVariationIndices({2, 3},
+	bool success = EnumerateVariationIndices ({2, 3},
 		[&] (const std::vector<size_t>& variation) {
 			variations.push_back (variation);
 			return true;

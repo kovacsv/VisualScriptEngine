@@ -213,42 +213,42 @@ Point Rect::GetCenter () const
 	return Point (position.GetX () + size.GetWidth () / 2.0, position.GetY () + size.GetHeight () / 2.0);
 }
 
-Point Rect::GetLeftCenter() const
+Point Rect::GetLeftCenter () const
 {
 	return Point::GetMidPoint (GetTopLeft (), GetBottomLeft ());
 }
 
-Point Rect::GetRightCenter() const
+Point Rect::GetRightCenter () const
 {
 	return Point::GetMidPoint (GetTopRight (), GetBottomRight ());
 }
 
-Point Rect::GetTopCenter() const
+Point Rect::GetTopCenter () const
 {
 	return Point::GetMidPoint (GetTopLeft (), GetTopRight ());
 }
 
-Point Rect::GetBottomCenter() const
+Point Rect::GetBottomCenter () const
 {
 	return Point::GetMidPoint (GetBottomLeft (), GetBottomRight ());
 }
 
-Point Rect::GetTopLeft() const
+Point Rect::GetTopLeft () const
 {
 	return position;
 }
 
-Point Rect::GetTopRight() const
+Point Rect::GetTopRight () const
 {
 	return Point (position.GetX () + size.GetWidth (), position.GetY ());
 }
 
-Point Rect::GetBottomLeft() const
+Point Rect::GetBottomLeft () const
 {
 	return Point (position.GetX (), position.GetY () + size.GetHeight ());
 }
 
-Point Rect::GetBottomRight() const
+Point Rect::GetBottomRight () const
 {
 	return Point (position.GetX () + size.GetWidth (), position.GetY () + size.GetHeight ());
 }

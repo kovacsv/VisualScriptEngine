@@ -97,7 +97,7 @@ static NUIE::NativeDrawingContextPtr CreateDrawingContext (ContextType contextTy
 - (void) windowWillClose : (NSNotification*) notification
 {
 	#pragma unused (notification)
-	[NSApp terminate:self];
+	[NSApp terminate : self];
 }
 
 - (void) windowDidResize : (NSNotification *) notification
@@ -311,7 +311,7 @@ const NUIE::SkinParams& AppNodeUIEnvironment::GetSkinParams ()
 	return skinParams;
 }
 
-NUIE::DrawingContext& AppNodeUIEnvironment::GetDrawingContext( )
+NUIE::DrawingContext& AppNodeUIEnvironment::GetDrawingContext ()
 {
 	return nodeEditorControl.GetDrawingContext ();
 }
@@ -391,31 +391,31 @@ void Application::Run ()
 	NSRect windowRect = NSMakeRect (0.0f, 0.0f, 900.0f, 500.0f);
 	NSWindow* myWindow = [
 	[NSWindow alloc]
-		initWithContentRect:windowRect
+		initWithContentRect : windowRect
 		styleMask:
 			NSWindowStyleMaskTitled |
 			NSWindowStyleMaskClosable |
 			NSWindowStyleMaskMiniaturizable |
 			NSWindowStyleMaskResizable
-		backing:NSBackingStoreBuffered
-		defer:NO
+		backing : NSBackingStoreBuffered
+		defer : NO
 	];
 
-	[myWindow setTitle:@"Visual Script Engine Demo"];
+	[myWindow setTitle : @"Visual Script Engine Demo"];
 
 	WindowController* myWindowController = [[WindowController alloc] autorelease];
-	NSView* contentView = [[[NSView alloc] initWithFrame:windowRect] autorelease];
+	NSView* contentView = [[[NSView alloc] initWithFrame : windowRect] autorelease];
 
-	[myWindowController setWindow:myWindow];
-	[myWindowController setUIEnvironment:&uiEnvironment];
+	[myWindowController setWindow : myWindow];
+	[myWindowController setUIEnvironment : &uiEnvironment];
 
-	[myWindow setContentView:contentView];
-	[myWindow setDelegate:myWindowController];
+	[myWindow setContentView : contentView];
+	[myWindow setDelegate : myWindowController];
 
 	NUIE::EnableFeature (NUIE::Feature::ConnectionDisplay, true);
 	uiEnvironment.Init (&nodeEditor, contentView, 0, 0, windowRect.size.width, windowRect.size.height);
 	[myWindow center];
-	[myWindow makeKeyAndOrderFront:nil];
+	[myWindow makeKeyAndOrderFront : nil];
 
 	[NSApp run];
 
