@@ -6,8 +6,6 @@
 #include "NUIE_ParameterInterface.hpp"
 #include "NUIE_ParameterDialog.hpp"
 
-#include <unordered_set>
-
 namespace WAS
 {
 

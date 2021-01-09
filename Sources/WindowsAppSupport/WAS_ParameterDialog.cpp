@@ -90,7 +90,7 @@ ParameterDialog::ParameterDialog (const std::wstring& dialogTitle, NUIE::Paramet
 	parentWindowHandle (parentHwnd),
 	dialogHandle (NULL)
 {
-
+	paramDialog.SetTitle (dialogTitle);
 }
 
 void ParameterDialog::Init (HWND hwnd)
@@ -107,7 +107,7 @@ bool ParameterDialog::IsInitialized () const
 
 void ParameterDialog::SetDialogRect (const NUIE::IntRect& rect)
 {
-	paramDialog.SetParameters (dialogTitle, (short) rect.GetLeft (), (short) rect.GetTop (), (short) rect.GetWidth (), (short) rect.GetHeight ());
+	paramDialog.SetRect ((short) rect.GetLeft (), (short) rect.GetTop (), (short) rect.GetWidth (), (short) rect.GetHeight ());
 }
 
 void ParameterDialog::AddParamNameStatic (size_t paramIndex, const std::wstring& controlText, const NUIE::IntRect& rect)

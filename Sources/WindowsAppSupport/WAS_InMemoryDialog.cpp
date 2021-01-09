@@ -216,12 +216,17 @@ InMemoryDialog::InMemoryDialog () :
 {
 }
 
-void InMemoryDialog::SetParameters (const std::wstring& dialogTitle, short x, short y, short width, short height)
+void InMemoryDialog::SetTitle (const std::wstring& dialogTitle)
 {
-	if (DBGERROR (status != Status::Draft)) {
-		return;
-	}
-	parameters = DialogParameters (dialogTitle, x, y, width, height);
+	parameters.dialogTitle = dialogTitle;
+}
+
+void InMemoryDialog::SetRect (short x, short y, short width, short height)
+{
+	parameters.x = x;
+	parameters.y = y;
+	parameters.width = width;
+	parameters.height = height;
 }
 
 void InMemoryDialog::AddStatic (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId)

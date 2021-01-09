@@ -65,7 +65,8 @@ public:
 
 	InMemoryDialog ();
 
-	void		SetParameters (const std::wstring& dialogTitle, short x, short y, short width, short height);
+	void		SetTitle (const std::wstring& dialogTitle);
+	void		SetRect (short x, short y, short width, short height);
 	void		AddStatic (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
 	void		AddEdit (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
 	void		AddButton (const std::wstring& controlText, short x, short y, short width, short height, DWORD controlId);
