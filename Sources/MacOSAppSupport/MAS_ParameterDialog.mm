@@ -21,21 +21,25 @@
     [[self contentView] addSubview:textField];
 }
 
-- (void) addEditControl : (NSString*) text : (NSRect) rect
+- (void) addEditControl : (size_t) id : (NSString*) text : (NSRect) rect
 {
 	NSTextField* textField = [[NSTextField alloc] initWithFrame:rect];
 	[textField setStringValue:text];
+	[textField setIdentifier:(NSUserInterfaceItemIdentifier ([@(id) stringValue]))];
 	[textField setDelegate:[self windowController]];
 	[[self contentView] addSubview:textField];
 }
 
-- (void) addComboBox : (int) selectedChoice : (const std::vector<std::wstring>&) choices : (NSRect) rect
+- (void) addComboBox : (size_t) id : (int) selectedChoice : (const std::vector<std::wstring>&) choices : (NSRect) rect
 {
 	NSPopUpButton* popup = [[NSPopUpButton alloc] initWithFrame:rect];
 	for (const std::wstring& choice : choices) {
 		[popup addItemWithTitle:MAS::StdWStringToNSString(choice)];
 	}
 	[popup selectItemAtIndex:selectedChoice];
+	[popup setIdentifier:(NSUserInterfaceItemIdentifier ([@(id) stringValue]))];
+	[popup setTarget:[self windowController]];
+	[popup setAction:@selector(popupDidChange:)];
 	[[self contentView] addSubview:popup];
 }
 
@@ -46,20 +50,68 @@
 	[[self contentView] addSubview:separator];
 }
 
-- (void) addButton : (NSString*) text : (NSRect) rect
+- (void) addButton : (NSUserInterfaceItemIdentifier) identifier : (NSString*) text : (NSRect) rect
 {
 	NSButton* button = [[NSButton alloc] initWithFrame:rect];
+	[button setIdentifier:identifier];
 	[button setTitle:text];
 	[button setBezelStyle:NSBezelStyleRounded];
+	[button setTarget:[self windowController]];
+	[button setAction:@selector(buttonClicked:)];
 	[[self contentView] addSubview:button];
 }
 
+- (NSString*) getEditControlValue : (size_t) id
+{
+	for (NSView* view in [[self contentView] subviews]) {
+		if ([[view identifier] length] == 0) {
+			continue;
+		}
+		size_t itemId = [[view identifier] intValue];
+		if (itemId == id) {
+			NSTextField* textField = (NSTextField*) view;
+			return [textField stringValue];
+		}
+	}
+	return nil;
+}
+
+- (NSString*) setEditControlValue : (size_t) id : (NSString*) value
+{
+	for (NSView* view in [[self contentView] subviews]) {
+		if ([[view identifier] length] == 0) {
+			continue;
+		}
+		size_t itemId = [[view identifier] intValue];
+		if (itemId == id) {
+			NSTextField* textField = (NSTextField*) view;
+			[textField setStringValue : value];
+		}
+	}
+	return nil;
+}
+
+- (int) getComboboxSelectedItem : (size_t) id
+{
+	for (NSView* view in [[self contentView] subviews]) {
+		if ([[view identifier] length] == 0) {
+			continue;
+		}
+		size_t itemId = [[view identifier] intValue];
+		if (itemId == id) {
+			NSPopUpButton* popupButton = (NSPopUpButton*) view;
+			return [popupButton indexOfSelectedItem];
+		}
+	}
+	return 0;
+}
 
 @end
 
 @interface ParameterDialogController : NSWindowController<NSWindowDelegate>
 {
 @private MAS::ParameterDialog* paramDialog;
+@private NSModalResponse modalResponse;
 }
 @end
 
@@ -68,12 +120,36 @@
 - (id) init : (MAS::ParameterDialog*) newParamDialog
 {
 	paramDialog = newParamDialog;
+	modalResponse = NSModalResponseCancel;
 	return self;
 }
 
-- (void) controlTextDidChange:(NSNotification*) obj
+- (void) popupDidChange : (id) sender
 {
-	#pragma unused (obj)
+	NSPopUpButton* popup = sender;
+	size_t paramIndex = [[popup identifier] intValue];
+	paramDialog->SetParameterChanged (paramIndex);
+}
+
+- (void) controlTextDidChange : (NSNotification*) notification
+{
+	NSTextField* textField = [notification object];
+	size_t paramIndex = [[textField identifier] intValue];
+	paramDialog->SetParameterChanged (paramIndex);
+	#pragma unused (notification)
+}
+
+- (void) buttonClicked : (id) sender
+{
+	NSButton* button = sender;
+	if ([[button identifier] isEqualToString:@"cancel"]) {
+		[[self window] close];
+	} else if ([[button identifier] isEqualToString:@"ok"]) {
+		if (paramDialog->ApplyParameterChanges ()) {
+			modalResponse = NSModalResponseOK;
+			[[self window] close];
+		}
+	}
 }
 
 - (void) windowDidLoad
@@ -84,7 +160,7 @@
 - (void) windowWillClose : (NSNotification*) notification
 {
 	#pragma unused (notification)
-	[NSApp stopModal];
+	[NSApp stopModalWithCode : modalResponse];
 }
 
 @end
@@ -137,14 +213,12 @@ void ParameterDialog::AddParamNameStatic (size_t, const std::wstring& controlTex
 
 void ParameterDialog::AddParamEditText (size_t paramIndex, const std::wstring& controlText, const NUIE::IntRect& rect)
 {
-	[paramDialog addEditControl:StdWStringToNSString(controlText):CreateDialogRect (paramDialog, rect)];
-	(void) paramIndex;
+	[paramDialog addEditControl:paramIndex:StdWStringToNSString(controlText):CreateDialogRect (paramDialog, rect)];
 }
 
 void ParameterDialog::AddParamComboBox (size_t paramIndex, int selectedChoice, const std::vector<std::wstring>& choices, const NUIE::IntRect& rect)
 {
-	[paramDialog addComboBox:selectedChoice:choices:CreateDialogRect (paramDialog, rect)];
-	(void) paramIndex;
+	[paramDialog addComboBox:paramIndex:selectedChoice:choices:CreateDialogRect (paramDialog, rect)];
 }
 
 void ParameterDialog::AddHorizontalSeparator (int x, int y, int width)
@@ -154,38 +228,38 @@ void ParameterDialog::AddHorizontalSeparator (int x, int y, int width)
 
 void ParameterDialog::AddCancelButton (const std::wstring& controlText, const NUIE::IntRect& rect)
 {
-	[paramDialog addButton:StdWStringToNSString(controlText):CreateDialogRect (paramDialog, rect)];
+	[paramDialog addButton:@"cancel":StdWStringToNSString(controlText):CreateDialogRect (paramDialog, rect)];
 }
 
 void ParameterDialog::AddOkButton (const std::wstring& controlText, const NUIE::IntRect& rect)
 {
-	[paramDialog addButton:StdWStringToNSString(controlText):CreateDialogRect (paramDialog, rect)];
+	[paramDialog addButton:@"ok":StdWStringToNSString(controlText):CreateDialogRect (paramDialog, rect)];
 }
 
 bool ParameterDialog::ShowDialog ()
 {
 	[paramDialog center];
 	[paramDialog makeKeyAndOrderFront:nil];
-	[NSApp runModalForWindow:paramDialog];
+	NSModalResponse response = [NSApp runModalForWindow:paramDialog];
+	if (response == NSModalResponseOK) {
+		return true;
+	}
 	return false;
 }
 
 std::wstring ParameterDialog::GetEditTextValue (size_t paramIndex)
 {
-	(void) paramIndex;
-	return L"";
+	return NSStringToStdWString ([paramDialog getEditControlValue:paramIndex]);
 }
 
 void ParameterDialog::SetEditTextValue (size_t paramIndex, const std::wstring& text)
 {
-	(void) paramIndex;
-	(void) text;
+	[paramDialog setEditControlValue:paramIndex:StdWStringToNSString(text)];
 }
 
 int ParameterDialog::GetComboboxSelectedItem (size_t paramIndex)
 {
-	(void) paramIndex;
-	return 0;
+	return ([paramDialog getComboboxSelectedItem:paramIndex]);
 }
 	
 }

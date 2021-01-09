@@ -54,6 +54,12 @@ NSString* StdWStringToNSString (const std::wstring& str)
 	return [[[NSString alloc] initWithBytes : str.data () length : str.length() * sizeof (wchar_t) encoding : NSUTF32LittleEndianStringEncoding] autorelease];
 }
 
+std::wstring NSStringToStdWString (const NSString* str)
+{
+    NSData* data = [str dataUsingEncoding : NSUTF32LittleEndianStringEncoding];
+    return std::wstring ((wchar_t*) [data bytes], [data length] / sizeof (wchar_t));
+}
+
 NUIE::ModifierKeys GetModifierKeysFromEvent (const NSEvent* event)
 {
 	NUIE::ModifierKeys keys;

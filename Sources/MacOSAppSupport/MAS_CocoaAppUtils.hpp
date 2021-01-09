@@ -11,6 +11,7 @@ namespace MAS
 {
 
 NSString*					StdWStringToNSString (const std::wstring& str);
+std::wstring				NSStringToStdWString (const NSString* str);
 	
 NUIE::ModifierKeys			GetModifierKeysFromEvent (const NSEvent* event);
 NUIE::Point					GetViewPositionFromEvent (const NSView* view, const NSEvent* event);
