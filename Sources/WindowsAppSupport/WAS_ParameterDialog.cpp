@@ -16,9 +16,14 @@ static const DWORD SeparatorId = 3000;
 static const DWORD CancelButtonId = IDCANCEL;
 static const DWORD OkButtonId = IDOK;
 
-static DWORD ParamIndexToControlId (size_t paramId)
+static DWORD ParamIndexToStaticId (size_t paramIndex)
 {
-	return FirstControlId + (DWORD) paramId;
+	return StaticControlIdOffset + (DWORD) paramIndex;
+}
+
+static DWORD ParamIndexToControlId (size_t paramIndex)
+{
+	return FirstControlId + (DWORD) paramIndex;
 }
 
 static size_t ControlIdToParamIndex (DWORD controlId)
@@ -107,8 +112,8 @@ void ParameterDialog::SetDialogRect (const NUIE::IntRect& rect)
 
 void ParameterDialog::AddParamNameStatic (size_t paramIndex, const std::wstring& controlText, const NUIE::IntRect& rect)
 {
-	DWORD staticControlId = StaticControlIdOffset + (DWORD) paramIndex;
-	paramDialog.AddStatic (controlText, (short) rect.GetLeft (), (short) rect.GetTop (), (short) rect.GetWidth (), (short) rect.GetHeight (), staticControlId);
+	DWORD controlId = ParamIndexToStaticId (paramIndex);
+	paramDialog.AddStatic (controlText, (short) rect.GetLeft (), (short) rect.GetTop (), (short) rect.GetWidth (), (short) rect.GetHeight (), controlId);
 }
 
 void ParameterDialog::AddParamEditText (size_t paramIndex, const std::wstring& controlText, const NUIE::IntRect& rect)
