@@ -1,6 +1,42 @@
 #include "MAS_ParameterDialog.hpp"
 #include "MAS_CocoaAppUtils.hpp"
 
+@interface NSTextFieldWithKeyboardEvents : NSTextField
+
+@end
+
+@implementation NSTextFieldWithKeyboardEvents
+
+- (BOOL) performKeyEquivalent : (NSEvent*) event
+{
+	if ([event type] == NSEventTypeKeyDown) {
+		bool commandPressed = ([event modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask) != 0;
+		if (commandPressed) {
+			NSString* inputKey = [[event charactersIgnoringModifiers] lowercaseString];
+			if ([inputKey isEqualToString : @"c"]) {
+				if ([self sendAction : @selector (copy:) to : nil]) {
+					return true;
+				}
+			} else if ([inputKey isEqualToString : @"x"]) {
+				if ([self sendAction : @selector (cut:) to : nil]) {
+					return true;
+				}
+			} else if ([inputKey isEqualToString : @"v"]) {
+				if ([self sendAction : @selector (paste:) to : nil]) {
+					return true;
+				}
+			} else if ([inputKey isEqualToString : @"a"]) {
+				if ([self sendAction : @selector (selectAll:) to : nil]) {
+					return true;
+				}
+			}
+		}
+	}
+	return [super performKeyEquivalent : event];
+}
+
+@end
+
 @interface ParameterWindow : NSWindow
 {
 	
@@ -28,7 +64,7 @@
 
 - (void) addEditControl : (size_t) id : (NSString*) text : (NSRect) rect
 {
-	NSTextField* textField = [[NSTextField alloc] initWithFrame : rect];
+	NSTextField* textField = [[NSTextFieldWithKeyboardEvents alloc] initWithFrame : rect];
 	[textField setStringValue : text];
 	[textField setIdentifier : (NSUserInterfaceItemIdentifier ([@(id) stringValue]))];
 	[textField setDelegate : [self windowController]];
