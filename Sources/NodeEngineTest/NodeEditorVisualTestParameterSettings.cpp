@@ -5,6 +5,9 @@
 #include "BI_ViewerUINodes.hpp"
 #include "TestEnvironment.hpp"
 
+#include <vector>
+#include <tuple>
+
 using namespace NE;
 using namespace NUIE;
 using namespace BI;
