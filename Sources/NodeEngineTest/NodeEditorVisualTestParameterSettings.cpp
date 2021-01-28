@@ -356,7 +356,7 @@ private:
 	{
 		context.DrawRect (CreateRect (rect), DialogDefaultPen);
 		context.DrawFormattedText (CreateRect (rect), DialogDefaultFont, controlText, HorizontalAnchor::Left, VerticalAnchor::Center, DialogDefaultColor);
-		controls.push_back ({ controlText, 0 });
+		controls.push_back (std::tuple<std::wstring, int> (controlText, 0));
 	}
 
 	virtual void AddParamComboBox (size_t, int selectedChoice, const std::vector<std::wstring>& choices, const IntRect& rect) override
@@ -364,7 +364,7 @@ private:
 		std::wstring controlText = choices[selectedChoice];
 		context.DrawRect (CreateRect (rect), DialogDefaultPen);
 		context.DrawFormattedText (CreateRect (rect), DialogDefaultFont, controlText, HorizontalAnchor::Left, VerticalAnchor::Center, DialogDefaultColor);
-		controls.push_back ({ L"", selectedChoice });
+		controls.push_back (std::tuple<std::wstring, int> (L"", selectedChoice));
 	}
 
 	virtual void AddHorizontalSeparator (int x, int y, int width) override
