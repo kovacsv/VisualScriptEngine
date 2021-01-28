@@ -1,5 +1,6 @@
 #include "SimpleTest.hpp"
 #include "NUIE_NodeEditor.hpp"
+#include "NUIE_ParameterDialog.hpp"
 #include "BI_InputUINodes.hpp"
 #include "BI_ViewerUINodes.hpp"
 #include "TestEnvironment.hpp"
@@ -303,6 +304,127 @@ private:
 
 DYNAMIC_SERIALIZATION_INFO (AllParametersTestNode, 1, "{75CBE853-BC71-41E5-B46D-1AD44D1A8AC6}");
 
+static const Color DialogDefaultColor (0, 0, 0);
+static const Pen DialogDefaultPen (DialogDefaultColor, 1.0);
+static const Font DialogDefaultFont (L"Arial", 12.0);
+
+class SvgParameterDialog : public ParameterDialogBase
+{
+public:
+	SvgParameterDialog (const std::wstring& dialogTitle, const ParameterInterfacePtr& paramInterface) :
+		ParameterDialogBase (dialogTitle, paramInterface),
+		context (800, 600),
+		origin (0, 0)
+	{
+
+	}
+
+	const SvgDrawingContext& GetContext () const
+	{
+		return context;
+	}
+	
+	void ModifyEditParameter (size_t paramIndex, const std::wstring& paramValue)
+	{
+		std::get<std::wstring> (controls[paramIndex]) = paramValue;
+		SetParameterChanged (paramIndex);
+	}
+
+	void ModifyComboParameter (size_t paramIndex, int paramValue)
+	{
+		std::get<int> (controls[paramIndex]) = paramValue;
+		SetParameterChanged (paramIndex);
+	}
+
+private:
+	virtual void SetDialogRect (const IntRect& rect) override
+	{
+		context.BeginDraw ();
+		context.DrawRect (CreateRect (rect), DialogDefaultPen);
+		origin = Point (rect.GetLeft (), rect.GetTop ());
+	}
+
+	virtual void AddParamNameStatic (size_t, const std::wstring& controlText, const IntRect& rect) override
+	{
+		context.DrawFormattedText (CreateRect (rect), DialogDefaultFont, controlText, HorizontalAnchor::Left, VerticalAnchor::Center, DialogDefaultColor);
+	}
+
+	virtual void AddParamEditText (size_t, const std::wstring& controlText, const IntRect& rect) override
+	{
+		context.DrawRect (CreateRect (rect), DialogDefaultPen);
+		context.DrawFormattedText (CreateRect (rect), DialogDefaultFont, controlText, HorizontalAnchor::Left, VerticalAnchor::Center, DialogDefaultColor);
+		controls.push_back ({ controlText, 0 });
+	}
+
+	virtual void AddParamComboBox (size_t, int selectedChoice, const std::vector<std::wstring>& choices, const IntRect& rect) override
+	{
+		std::wstring controlText = choices[selectedChoice];
+		context.DrawRect (CreateRect (rect), DialogDefaultPen);
+		context.DrawFormattedText (CreateRect (rect), DialogDefaultFont, controlText, HorizontalAnchor::Left, VerticalAnchor::Center, DialogDefaultColor);
+		controls.push_back ({ L"", selectedChoice });
+	}
+
+	virtual void AddHorizontalSeparator (int x, int y, int width) override
+	{
+		context.DrawLine (CreatePoint (x, y), CreatePoint (x + width, y), DialogDefaultPen);
+	}
+
+	virtual void AddCancelButton (const std::wstring& controlText, const IntRect& rect) override
+	{
+		context.DrawRect (CreateRect (rect), DialogDefaultPen);
+		context.DrawFormattedText (CreateRect (rect), DialogDefaultFont, controlText, HorizontalAnchor::Center, VerticalAnchor::Center, DialogDefaultColor);
+	}
+
+	virtual void AddOkButton (const std::wstring& controlText, const IntRect& rect) override
+	{
+		context.DrawRect (CreateRect (rect), DialogDefaultPen);
+		context.DrawFormattedText (CreateRect (rect), DialogDefaultFont, controlText, HorizontalAnchor::Center, VerticalAnchor::Center, DialogDefaultColor);
+	}
+
+	virtual bool ShowDialog () override
+	{
+		context.EndDraw ();
+		return true;
+	}
+
+	virtual std::wstring GetEditTextValue (size_t paramIndex) override
+	{
+		return std::get<std::wstring> (controls[paramIndex]);
+	}
+
+	virtual void SetEditTextValue (size_t, const std::wstring&) override
+	{
+		DBGBREAK ();
+	}
+
+	virtual int GetComboboxSelectedItem (size_t paramIndex) override
+	{
+		return std::get<int> (controls[paramIndex]);
+	}
+
+	Point CreatePoint (int x, int y) const
+	{
+		return Point (
+			x * 2 + origin.GetX () * 2,
+			y * 2 + origin.GetY () * 2
+		);
+	}
+
+	Rect CreateRect (const IntRect& intRect) const
+	{
+		return Rect (
+			intRect.GetLeft () * 2 + origin.GetX () * 2,
+			intRect.GetTop () * 2 + origin.GetY () * 2,
+			intRect.GetWidth () * 2,
+			intRect.GetHeight () * 2
+		);
+	}
+
+	std::vector<std::tuple<std::wstring, int>>	controls;
+	SvgDrawingContext							context;
+	Point										origin;
+};
+
 class ParameterSettingsTestEnv : public NodeEditorTestEnv
 {
 public:
@@ -338,10 +460,10 @@ public:
 
 static const Point Padding = Point (10.0, 10.0);
 
-TEST (ParameterSettingsTest_ModifyParameter_Single)
+TEST (ParameterModificationTest_Single)
 {
 	ParameterSettingsTestEnv env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference (L"ParameterSettingsTest_Single_Initial.svg"));
+	ASSERT (env.CheckReference (L"ParameterModificationTest_Single_Initial.svg"));
 
 	{ // set Params 1 node parameters
 		env.SetNextCommandNodeParameterSettings ([&] (ParameterInterfacePtr paramInterface) {
@@ -355,14 +477,14 @@ TEST (ParameterSettingsTest_ModifyParameter_Single)
 			return true;
 		});
 		env.RightClick (env.GetNodeRect (env.GetNode (L"Params 1")).GetTopLeft () + Padding);
-		ASSERT (env.CheckReference (L"ParameterSettingsTest_Single_ParamsChanged.svg"));
+		ASSERT (env.CheckReference (L"ParameterModificationTest_Single_ParamsChanged.svg"));
 	}
 }
 
-TEST (ParameterSettingsTest_ModifyParameter_Multiple)
+TEST (ParameterModificationTest_Multiple)
 {
 	ParameterSettingsTestEnv env (GetDefaultSkinParams ());
-	ASSERT (env.CheckReference (L"ParameterSettingsTest_Multiple_Initial.svg"));
+	ASSERT (env.CheckReference (L"ParameterModificationTest_Multiple_Initial.svg"));
 
 	{ // set Params 1 node parameters
 		env.SetNextCommandNodeParameterSettings ([&] (ParameterInterfacePtr paramInterface) {
@@ -370,7 +492,7 @@ TEST (ParameterSettingsTest_ModifyParameter_Multiple)
 			return true;
 		});
 		env.RightClick (env.GetNodeRect (env.GetNode (L"Params 1")).GetTopLeft () + Padding);
-		ASSERT (env.CheckReference (L"ParameterSettingsTest_Multiple_Params1Changed.svg"));
+		ASSERT (env.CheckReference (L"ParameterModificationTest_Multiple_Params1Changed.svg"));
 	}
 
 	{ // select and set Params 1 and Params 2 nodes parameters
@@ -384,7 +506,40 @@ TEST (ParameterSettingsTest_ModifyParameter_Multiple)
 		);
 		env.RightClick (env.GetNodeRect (env.GetNode (L"Params 1")).GetTopLeft () + Padding);
 		env.ExecuteCommand (CommandCode::Escape);
-		ASSERT (env.CheckReference (L"ParameterSettingsTest_Multiple_Params2Changed.svg"));
+		ASSERT (env.CheckReference (L"ParameterModificationTest_Multiple_Params2Changed.svg"));
+	}
+}
+
+TEST (ParameterDialogTest)
+{
+	ParameterSettingsTestEnv env (GetDefaultSkinParams ());
+	ASSERT (env.CheckReference (L"ParameterDialogTest_Canvas_Initial.svg"));
+
+	{ // set Params 1 node parameters
+		env.SetNextCommandNodeParameterSettings ([&] (ParameterInterfacePtr paramInterface) {
+			SvgParameterDialog dialog (L"Node Settings", paramInterface);
+			dialog.Show (20, 10);
+			env.CheckReference (dialog.GetContext (), L"ParameterDialogTest_Dialog_Initial.svg");
+
+			dialog.ModifyComboParameter (1, 1);
+			dialog.ModifyEditParameter (2, L"5");
+			dialog.ModifyComboParameter (6, 2);
+			dialog.ApplyParameterChanges ();
+
+			return true;
+		});
+		env.RightClick (env.GetNodeRect (env.GetNode (L"Params 1")).GetTopLeft () + Padding);
+		ASSERT (env.CheckReference (L"ParameterDialogTest_Canvas_AfterModify.svg"));
+	}
+
+	{ // check Params 1 node parameters
+		env.SetNextCommandNodeParameterSettings ([&] (ParameterInterfacePtr paramInterface) {
+			SvgParameterDialog dialog (L"Node Settings", paramInterface);
+			dialog.Show (20, 10);
+			env.CheckReference (dialog.GetContext (), L"ParameterDialogTest_Dialog_AfterModify.svg");
+			return true;
+		});
+		env.RightClick (env.GetNodeRect (env.GetNode (L"Params 1")).GetTopLeft () + Padding);
 	}
 }
 

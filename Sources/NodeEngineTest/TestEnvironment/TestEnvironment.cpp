@@ -351,6 +351,11 @@ bool NodeEditorTestEnv::CheckReference (const std::wstring& referenceFileName)
 	return CheckDrawingReference (context, referenceFileName);
 }
 
+bool NodeEditorTestEnv::CheckReference (const SvgDrawingContext& context, const std::wstring& referenceFileName)
+{
+	return CheckDrawingReference (context, referenceFileName);
+}
+
 void NodeEditorTestEnv::Click (const Point& point)
 {
 	nodeEditor.OnMouseDown (EmptyModifierKeys, MouseButton::Left, (int) point.GetX (), (int) point.GetY ());

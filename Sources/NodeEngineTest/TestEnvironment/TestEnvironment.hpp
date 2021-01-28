@@ -82,6 +82,7 @@ public:
 	virtual ~NodeEditorTestEnv ();
 
 	bool			CheckReference (const std::wstring& referenceFileName);
+	bool			CheckReference (const SvgDrawingContext& context, const std::wstring& referenceFileName);
 	void			Click (const Point& point);
 	void			DoubleClick (const Point& point);
 	void			CtrlClick (const Point& point);

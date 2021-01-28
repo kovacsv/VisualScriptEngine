@@ -1,0 +1,29 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
+<rect x="40" y="20" width="450" height="298" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="50" y="42" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Node Name</text>
+<rect x="180" y="30" width="300" height="24" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="180" y="42" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Params 1</text>
+<text x="50" y="76" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Boolean</text>
+<rect x="180" y="64" width="300" height="24" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="180" y="76" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">true</text>
+<text x="50" y="110" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Integer</text>
+<rect x="180" y="98" width="300" height="24" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="180" y="110" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">1</text>
+<text x="50" y="144" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Float</text>
+<rect x="180" y="132" width="300" height="24" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="180" y="144" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">2.000000</text>
+<text x="50" y="178" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Double</text>
+<rect x="180" y="166" width="300" height="24" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="180" y="178" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">3.000000</text>
+<text x="50" y="212" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">String</text>
+<rect x="180" y="200" width="300" height="24" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="180" y="212" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">str</text>
+<text x="50" y="246" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Enumeration</text>
+<rect x="180" y="234" width="300" height="24" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="180" y="246" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Enum Value 1</text>
+<line x1="50" y1="268" x2="480" y2="268" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<rect x="270" y="278" width="100" height="30" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="320" y="293" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">Cancel</text>
+<rect x="380" y="278" width="100" height="30" style="fill:none;stroke-width:1px;stroke:rgb(0,0,0);"/>
+<text x="430" y="293" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:12px;">OK</text>
+</svg>
