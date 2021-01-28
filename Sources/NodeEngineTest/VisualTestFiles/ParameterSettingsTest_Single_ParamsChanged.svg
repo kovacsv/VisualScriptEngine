@@ -1,0 +1,47 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600" shape-rendering="crispEdges">
+<rect x="0" y="0" width="800" height="600" style="fill:rgb(250,250,250);"/>
+<path d="M177,217 C342,217 342,134 508,134" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<path d="M169,317 C213,317 213,334 258,334" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<rect x="23" y="165" width="154" height="34" style="fill:rgb(41,127,255);"/>
+<text x="100" y="182" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Renamed 1</text>
+<rect x="23" y="199" width="154" height="36" style="fill:rgb(236,236,236);"/>
+<rect x="97" y="204" width="80" height="26" style="fill:rgb(246,246,246);"/>
+<text x="172" y="217" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Value</text>
+<rect x="23" y="165" width="154" height="70" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<rect x="31" y="265" width="138" height="34" style="fill:rgb(41,127,255);"/>
+<text x="100" y="282" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Params 2</text>
+<rect x="31" y="299" width="138" height="36" style="fill:rgb(236,236,236);"/>
+<rect x="89" y="304" width="80" height="26" style="fill:rgb(246,246,246);"/>
+<text x="164" y="317" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Value</text>
+<rect x="31" y="265" width="138" height="70" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<rect x="508" y="82" width="184" height="34" style="fill:rgb(41,127,255);"/>
+<text x="600" y="99" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Viewer 1</text>
+<rect x="508" y="116" width="184" height="36" style="fill:rgb(236,236,236);"/>
+<rect x="508" y="121" width="80" height="26" style="fill:rgb(246,246,246);"/>
+<text x="513" y="134" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Input</text>
+<rect x="598" y="121" width="94" height="26" style="fill:rgb(246,246,246);"/>
+<text x="687" y="134" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Output</text>
+<rect x="508" y="152" width="184" height="166" style="fill:rgb(236,236,236);"/>
+<text x="600" y="170" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">false</text>
+<text x="600" y="196" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">5</text>
+<text x="600" y="222" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">6.00</text>
+<text x="600" y="248" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">7.00</text>
+<text x="600" y="274" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">str2</text>
+<text x="600" y="300" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">1</text>
+<rect x="508" y="82" width="184" height="236" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+<rect x="258" y="282" width="184" height="34" style="fill:rgb(41,127,255);"/>
+<text x="350" y="299" dominant-baseline="central" text-anchor="middle" style="fill:rgb(250,250,250);font-family:Arial;font-size:16px;">Viewer 2</text>
+<rect x="258" y="316" width="184" height="36" style="fill:rgb(236,236,236);"/>
+<rect x="258" y="321" width="80" height="26" style="fill:rgb(246,246,246);"/>
+<text x="263" y="334" dominant-baseline="central" text-anchor="start" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Input</text>
+<rect x="348" y="321" width="94" height="26" style="fill:rgb(246,246,246);"/>
+<text x="437" y="334" dominant-baseline="central" text-anchor="end" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">Output</text>
+<rect x="258" y="352" width="184" height="166" style="fill:rgb(236,236,236);"/>
+<text x="350" y="370" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">true</text>
+<text x="350" y="396" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">1</text>
+<text x="350" y="422" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">2.00</text>
+<text x="350" y="448" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">3.00</text>
+<text x="350" y="474" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">str</text>
+<text x="350" y="500" dominant-baseline="central" text-anchor="middle" style="fill:rgb(0,0,0);font-family:Arial;font-size:14px;">0</text>
+<rect x="258" y="282" width="184" height="236" style="fill:none;stroke-width:1px;stroke:rgb(38,50,56);"/>
+</svg>
