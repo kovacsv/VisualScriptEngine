@@ -326,13 +326,13 @@ public:
 	
 	void ModifyEditParameter (size_t paramIndex, const std::wstring& paramValue)
 	{
-		std::get<std::wstring> (controls[paramIndex]) = paramValue;
+		std::get<0> (controls[paramIndex]) = paramValue;
 		SetParameterChanged (paramIndex);
 	}
 
 	void ModifyComboParameter (size_t paramIndex, int paramValue)
 	{
-		std::get<int> (controls[paramIndex]) = paramValue;
+		std::get<1> (controls[paramIndex]) = paramValue;
 		SetParameterChanged (paramIndex);
 	}
 
@@ -389,7 +389,7 @@ private:
 
 	virtual std::wstring GetEditTextValue (size_t paramIndex) override
 	{
-		return std::get<std::wstring> (controls[paramIndex]);
+		return std::get<0> (controls[paramIndex]);
 	}
 
 	virtual void SetEditTextValue (size_t, const std::wstring&) override
@@ -399,7 +399,7 @@ private:
 
 	virtual int GetComboboxSelectedItem (size_t paramIndex) override
 	{
-		return std::get<int> (controls[paramIndex]);
+		return std::get<1> (controls[paramIndex]);
 	}
 
 	Point CreatePoint (int x, int y) const
