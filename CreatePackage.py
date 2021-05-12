@@ -52,6 +52,9 @@ def Main (argv):
 		for file in os.listdir (folder):
 			zip.write (os.path.join (folder, file), os.path.join (os.path.basename (folder), file))	
 
+	for folder, subs, files in os.walk(buildDir):
+		for file in files:
+			print (os.path.join (folder, file))
 	if platform.system () == 'Windows':
 		if buildType in ['Debug', 'RelWithDebInfo']:
 			libPath = os.path.abspath (os.path.join (devKitDir, 'lib'))
