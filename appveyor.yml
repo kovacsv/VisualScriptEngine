@@ -49,22 +49,6 @@ test_script:
 artifacts:
   - path: Build\Package\*
 
-for:
-  -
-    matrix:
-      only:
-        - configuration: Debug
-          image: Visual Studio 2017
-    install:
-      - choco install opencppcoverage codecov
-      - set PATH=C:\Program Files\OpenCppCoverage;%PATH%
-    test_script:
-      - cd Build
-      - ctest --verbose --build-config %configuration%
-      - OpenCppCoverage.exe --export_type cobertura:coverage.xml --modules "*.exe" --cover_children --sources=*Sources\NodeEngine --sources=*Sources\NodeUIEngine --sources=*Sources\BuiltInNodes --excluded_sources=*Sources\NodeEngineTest -- ctest --verbose --build-config %configuration%
-      - codecov -f coverage.xml --root %APPVEYOR_BUILD_FOLDER%
-      - cd ..
-
 deploy:
   description: 'News:\n- ...\n\nMigration:\n- ...'
   provider: GitHub
