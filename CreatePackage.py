@@ -19,7 +19,19 @@ def GetVersionFromCMakeLists (cMakeListsPath):
 	match2 = re.search (r'set \(VSE_VERSION_2 ([0-9]+)\)', content)
 	match3 = re.search (r'set \(VSE_VERSION_3 ([0-9]+)\)', content)
 	return ".".join ([match1.group (1), match2.group (1), match3.group (1)])
-	
+
+def FindPDB (buildDir, moduleName, buildType):
+	pdbPath = os.path.join (buildDir, moduleName + '.dir', buildType, moduleName + '.pdb')
+	if os.path.exists (pdbPath):
+		return pdbPath
+	pdbPath = os.path.join (buildDir, buildType, moduleName + '.pdb')
+	if os.path.exists (pdbPath):
+		return pdbPath
+	pdbPath = os.path.join (buildDir, buildType, moduleName + 'Debug.pdb')
+	if os.path.exists (pdbPath):
+		return pdbPath
+	return None
+
 def Main (argv):
 	currentDir = os.path.dirname (os.path.abspath (__file__))
 	os.chdir (currentDir)
@@ -52,15 +64,12 @@ def Main (argv):
 		for file in os.listdir (folder):
 			zip.write (os.path.join (folder, file), os.path.join (os.path.basename (folder), file))	
 
-	for folder, subs, files in os.walk(buildDir):
-		for file in files:
-			print (os.path.join (folder, file))
 	if platform.system () == 'Windows':
 		if buildType in ['Debug', 'RelWithDebInfo']:
 			libPath = os.path.abspath (os.path.join (devKitDir, 'lib'))
-			for module in ['NodeEngine', 'NodeUIEngine', 'BuiltInNodes', 'WindowsAppSupport']:
-				pdbPath = os.path.join (buildDir, module + '.dir', buildType, module + '.pdb')
-				zip.write (pdbPath, os.path.join (os.path.basename (libPath), module + '.pdb'))
+			for moduleName in ['NodeEngine', 'NodeUIEngine', 'BuiltInNodes', 'WindowsAppSupport']:
+				pdbPath = FindPDB (buildDir, moduleName, buildType)
+				zip.write (pdbPath, os.path.join (os.path.basename (libPath), moduleName + '.pdb'))
 		outputPath = os.path.abspath (os.path.join (buildDir, buildType))
 		for testFile in ['WindowsReferenceApp.exe']:
 			zip.write (os.path.join (outputPath, testFile), os.path.join ('testapp', testFile))
