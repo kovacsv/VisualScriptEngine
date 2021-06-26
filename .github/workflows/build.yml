@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    
+    runs-on: ${{matrix.os-type}}
+    
+    strategy:
+      matrix:
+        os-type: [windows-latest, macos-latest, ubuntu-latest]
+        configuration: [Debug, Release, RelWithDebInfo]    
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Configure
+      run: cmake -B ${{github.workspace}}/Build -DCMAKE_BUILD_TYPE=${{matrix.configuration}}
+    - name: Build
+      run: cmake --build ${{github.workspace}}/Build --config ${{matrix.configuration}}
+    - name: Test
+      working-directory: ${{github.workspace}}/Build
+      run: ctest -C ${{matrix.configuration}}
