@@ -8,7 +8,7 @@ set (VSE_CUSTOM_BUILD_OPTIONS ${VSE_CUSTOM_BUILD_OPTIONS})
 
 function (SetCompilerOptions module)
 	target_compile_options (${module} PUBLIC "$<$<CONFIG:Debug>:-DDEBUG>")
-	if (WIN32)
+	if (MSVC)
 		set (AdditionalWarnings /w44061 /w44062 /w44265 /w44266 /w44355 /w44596 /w44800)
 		target_compile_options (${module} PUBLIC /W4 /WX ${AdditionalWarnings} ${VSE_CUSTOM_BUILD_OPTIONS})
 	else ()
@@ -159,14 +159,13 @@ target_include_directories (
 )
 target_link_libraries (EmbeddingTutorial NodeEngine NodeUIEngine BuiltInNodes)
 SetCompilerOptions (EmbeddingTutorial)
-if (WIN32)
+if (MSVC)
 	target_compile_options (EmbeddingTutorial PUBLIC /wd4100)
 else ()
 	target_compile_options (EmbeddingTutorial PUBLIC -Wno-unused-parameter)
 endif ()
 
 if (WIN32)
-
 	# WindowsAppSupport
 
 	set (WindowsAppSupportSourcesFolder Sources/WindowsAppSupport)
