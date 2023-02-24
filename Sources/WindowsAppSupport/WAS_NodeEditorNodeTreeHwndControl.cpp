@@ -14,7 +14,7 @@ static LRESULT CALLBACK NodeEditorNodeListStaticWindowProc (HWND hwnd, UINT msg,
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
 	} else if (msg == WM_DESTROY) {
-		SetWindowLongPtr (hwnd, GWLP_USERDATA, NULL);
+		SetWindowLongPtr (hwnd, GWLP_USERDATA, 0);
 	}
 
 	NodeEditorNodeTreeHwndControl* control = (NodeEditorNodeTreeHwndControl*) GetWindowLongPtr (hwnd, GWLP_USERDATA);

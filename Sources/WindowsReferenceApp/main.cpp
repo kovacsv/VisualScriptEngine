@@ -4,12 +4,14 @@
 #include "ResourceIds.hpp"
 #include "CommandIds.hpp"
 
+#ifdef _MSC_VER
 #pragma comment (lib, "gdiplus.lib")
 #pragma comment (lib, "comctl32.lib")
 #pragma comment (lib, "windowscodecs.lib")
 #pragma comment (lib, "d2d1.lib")
 #pragma comment (lib, "dwrite.lib")
 #pragma comment (linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#endif
 
 LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -17,7 +19,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 		LPCREATESTRUCT createStruct = LPCREATESTRUCT (lParam);
 		SetWindowLongPtr (hwnd, GWLP_USERDATA, (LONG_PTR) createStruct->lpCreateParams);
 	} else if (msg == WM_DESTROY) {
-		SetWindowLongPtr (hwnd, GWLP_USERDATA, NULL);
+		SetWindowLongPtr (hwnd, GWLP_USERDATA, 0);
 		PostQuitMessage (0);
 	}
 
@@ -70,7 +72,7 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 					case FILE_NEW:
 						application->New (hwnd);
 						break;
-					case FILE_OPEN:
+					case OPEN_FILE:
 						application->Open (hwnd);
 						break;
 					case FILE_SAVE:
@@ -111,7 +113,11 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
+#ifdef _MSC_VER
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
+#else
+int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE, LPSTR, int)
+#endif
 {
 	EnableLeakDetection ();
 	InitCommonControls ();

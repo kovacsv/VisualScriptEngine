@@ -2,7 +2,7 @@
 #define COMMANDIDS_HPP
 
 #define FILE_NEW		1101
-#define FILE_OPEN		1102
+#define OPEN_FILE		1102
 #define FILE_SAVE		1103
 #define FILE_QUIT		1104
 #define EDIT_UNDO		1201

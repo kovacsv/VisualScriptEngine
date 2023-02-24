@@ -211,6 +211,14 @@ if (WIN32)
 		${WindowsAppSupportSourcesFolder}
 	)
 	target_link_libraries (WindowsReferenceApp NodeEngine NodeUIEngine BuiltInNodes WindowsAppSupport)
+	target_link_libraries(
+		WindowsReferenceApp
+		gdiplus
+		comctl32
+		windowscodecs
+		d2d1
+		dwrite
+	)
 	SetCompilerOptions (WindowsReferenceApp)
 	
 	# WindowsEmbeddingDemo

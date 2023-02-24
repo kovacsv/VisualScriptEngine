@@ -1,6 +1,7 @@
 #include "NUIE_NodeAlignment.hpp"
 
 #include <algorithm>
+#include <limits>
 
 namespace NUIE
 {

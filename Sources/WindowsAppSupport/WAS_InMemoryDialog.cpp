@@ -289,7 +289,8 @@ INT_PTR InMemoryDialog::Show (HWND parentHwnd, DLGPROC dialogProc, LPARAM initPa
 		return -1;
 	}
 
-	NONCLIENTMETRICS metrics = { sizeof (NONCLIENTMETRICS) };
+	NONCLIENTMETRICS metrics;
+	metrics.cbSize = sizeof (NONCLIENTMETRICS);
 	if (DBGERROR (!SystemParametersInfo (SPI_GETNONCLIENTMETRICS, 0, &metrics, 0))) {
 		return -1;
 	}

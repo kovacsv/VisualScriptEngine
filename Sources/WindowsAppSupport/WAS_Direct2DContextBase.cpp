@@ -1,5 +1,6 @@
 #include "WAS_Direct2DContextBase.hpp"
 #include "NE_Debug.hpp"
+#include <float.h>
 
 namespace WAS
 {
@@ -130,9 +131,9 @@ Direct2DContextBase::Direct2DContextBase () :
 
 Direct2DContextBase::Direct2DContextBase (const Direct2DImageLoaderPtr& imageLoader) :
 	NUIE::NativeDrawingContext (),
-	direct2DHandler (),
 	width (0),
 	height (0),
+	direct2DHandler (),
 	imageLoader (imageLoader),
 	renderTarget (nullptr)
 {
@@ -165,7 +166,7 @@ void Direct2DContextBase::BeginDraw ()
 void Direct2DContextBase::EndDraw ()
 {
 	HRESULT result = renderTarget->EndDraw ();
-	if (result == D2DERR_RECREATE_TARGET) {
+	if ((unsigned int)result == D2DERR_RECREATE_TARGET) {
 		InitRenderTarget ();
 	}
 }

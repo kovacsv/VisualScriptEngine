@@ -117,7 +117,7 @@ void Application::InitFileMenu (HWND hwnd)
 {
 	HMENU file = fileMenu.AddPopupMenu (L"File");
 	fileMenu.AddPopupMenuItem (file, FILE_NEW, L"New");
-	fileMenu.AddPopupMenuItem (file, FILE_OPEN, L"Open");
+	fileMenu.AddPopupMenuItem (file, OPEN_FILE, L"Open");
 	fileMenu.AddPopupMenuItem (file, FILE_SAVE, L"Save");
 	fileMenu.AddPopupMenuSeparator (file);
 	fileMenu.AddPopupMenuItem (file, FILE_QUIT, L"Quit");
@@ -142,7 +142,7 @@ void Application::InitToolbar (HWND hwnd)
 	toolbar.Init (hwnd);
 
 	AddToolbarItem (TOOLBAR_ENABLED_NEW_ICON, FILE_NEW);
-	AddToolbarItem (TOOLBAR_ENABLED_OPEN_ICON, FILE_OPEN);
+	AddToolbarItem (TOOLBAR_ENABLED_OPEN_ICON, OPEN_FILE);
 	AddToolbarItem (TOOLBAR_ENABLED_SAVE_ICON, FILE_SAVE);
 	toolbar.AddSeparator ();
 

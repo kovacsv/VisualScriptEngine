@@ -12,8 +12,14 @@
 namespace WAS
 {
 
+#ifdef _MSC_VER
 template <typename KeyType>
 HANDLE CreateHandle (const KeyType& key);
+#else
+HANDLE CreateHandle (const NUIE::PenCacheKey& key);
+HANDLE CreateHandle (const NUIE::ColorCacheKey& key);
+HANDLE CreateHandle (const NUIE::FontCacheKey& key);
+#endif
 
 template <typename KeyType>
 class HandleCache
