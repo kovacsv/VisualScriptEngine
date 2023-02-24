@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <vector>
+#include <cstddef>
 
 namespace NE
 {

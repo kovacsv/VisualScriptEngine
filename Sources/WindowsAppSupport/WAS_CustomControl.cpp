@@ -2,6 +2,7 @@
 #include "NE_Debug.hpp"
 
 #include <vector>
+#include <algorithm>
 
 namespace WAS
 {
