@@ -10,7 +10,7 @@ jobs:
     
     strategy:
       matrix:
-        os-type: [windows-latest, macos-latest, ubuntu-latest]
+        os-type: [windows-2022, macos-13, ubuntu-20.04]
         configuration: [Debug, Release, RelWithDebInfo]
       fail-fast: false        
     
