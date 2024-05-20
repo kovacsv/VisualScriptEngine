@@ -2,9 +2,6 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -13,11 +10,12 @@ jobs:
     
     strategy:
       matrix:
-        os-type: [windows-latest, macos-latest, ubuntu-latest]
-        configuration: [Debug, Release, RelWithDebInfo]    
+        os-type: [windows-2022, macos-13, ubuntu-20.04]
+        configuration: [Debug, Release, RelWithDebInfo]
+      fail-fast: false        
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Configure
       run: cmake -B ${{github.workspace}}/Build -DCMAKE_BUILD_TYPE=${{matrix.configuration}}
     - name: Build

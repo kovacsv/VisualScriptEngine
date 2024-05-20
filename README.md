@@ -2,7 +2,6 @@
 
 A visual scripting engine designed for embedding. The engine is written in modern C++ and compiles on several platforms with no external dependencies. Some platform dependent user interface utilities are also provided for Windows and MacOS platforms.
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/c0qxxixyhymfxfdf?svg=true)](https://ci.appveyor.com/project/kovacsv/visualscriptengine)
 [![Build Status](https://github.com/kovacsv/VisualScriptEngine/actions/workflows/build.yml/badge.svg)](https://github.com/kovacsv/VisualScriptEngine/actions/workflows/build.yml)
 
 ## Documentation
