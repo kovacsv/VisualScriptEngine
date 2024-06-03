@@ -382,7 +382,11 @@ LRESULT CALLBACK ApplicationWindowProc (HWND hwnd, UINT msg, WPARAM wParam, LPAR
 	return DefWindowProc (hwnd, msg, wParam, lParam);
 }
 
+#ifdef _MSC_VER
 int wWinMain (HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
+#else
+int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE, LPSTR, int)
+#endif
 {
 	WNDCLASSEX windowClass;
 	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));

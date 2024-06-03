@@ -4,6 +4,7 @@
 #include "NE_Debug.hpp"
 
 #include <algorithm>
+#include <limits>
 
 namespace NE
 {
